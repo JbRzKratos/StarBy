@@ -728,12 +728,13 @@ export function CustomizerCanvas({
 
     void initCanvas();
 
+    const currentContainer = containerRef.current;
     return () => {
       if (activeFabricCanvas) {
         (activeFabricCanvas as { dispose: () => void }).dispose();
       }
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
+      if (currentContainer) {
+        currentContainer.innerHTML = '';
       }
     };
   }, [

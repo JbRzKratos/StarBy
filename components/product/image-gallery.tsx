@@ -82,4 +82,3 @@ export function ImageGallery({ colorHex, productName, images }: ImageGalleryProp
     </div>
   );
 }
-
