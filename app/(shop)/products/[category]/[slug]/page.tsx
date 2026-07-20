@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { getProductBySlug, products } from '@/data/products';
 import { ProductDetailClient } from '@/components/product/product-detail-client';
 
+export const runtime = 'edge';
+
 interface ProductPageProps {
   params: { category: string; slug: string };
 }

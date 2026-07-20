@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const runtime = 'edge';
+
 /**
  * POST /api/checkout
  * Processes checkout. Stub — replace with payment integration.

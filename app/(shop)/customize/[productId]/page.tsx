@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { CustomizerClient } from '@/components/customizer/Customizer.client';
 
+export const runtime = 'edge';
+
 interface CustomizePageProps {
   params: { productId: string };
 }

@@ -21,8 +21,20 @@ export function CustomizerCanvas({ productId, initialImage }: CustomizerCanvasPr
     let activeFabricCanvas: any = null;
 
     const initCanvas = async () => {
-      const fabricModule = await import('fabric');
-      const fabric = fabricModule.default ?? fabricModule;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const loadFabric = () =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        new Promise<any>((resolve) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if ((window as any).fabric) return resolve((window as any).fabric);
+          const script = document.createElement('script');
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js';
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          script.onload = () => resolve((window as any).fabric);
+          document.body.appendChild(script);
+        });
+
+      const fabric = await loadFabric();
 
       if (!canvasRef.current) return;
 

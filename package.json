@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "pages:build": "npx @opennextjs/cloudflare@latest build",
+    "pages:build": "npx @cloudflare/next-on-pages@1",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
@@ -15,9 +15,7 @@
   "dependencies": {
     "@gsap/react": "^2.1.1",
     "clsx": "^2.1.1",
-    "fabric": "^6.5.1",
     "gsap": "^3.12.7",
-    "jimp": "^0.16.13",
     "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
