@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { fontDisplay, fontMono } from '@/lib/fonts';
@@ -21,9 +20,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const cookieStore = cookies();
-  const device = (cookieStore.get('device')?.value as 'mobile' | 'desktop') || 'desktop';
-
   return (
     <html
       lang="en"
@@ -31,7 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body suppressHydrationWarning>
-        <DeviceProvider initialDevice={device}>
+        <DeviceProvider initialDevice="desktop">
           <GsapProvider>
             <CustomCursor />
             <FloatingActions />

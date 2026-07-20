@@ -13,14 +13,14 @@ export function CustomizerHubClient() {
 
   if (device === 'mobile') {
     return (
-      <div className="w-full px-5 py-24 min-h-screen flex flex-col">
+      <div className="w-full px-5 pt-40 pb-24 min-h-screen flex flex-col">
         <Mobile />
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-8 py-24">
+    <div className="w-full max-w-7xl mx-auto px-8 pt-40 pb-24">
       <Desktop />
     </div>
   );

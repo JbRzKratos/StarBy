@@ -1,6 +1,6 @@
 export default function SplitPosterLoading() {
   return (
-    <main className="pt-24 md:pt-28 pb-20">
+    <main className="pt-36 md:pt-40 pb-20">
       <div className="section-container">
         <div className="mb-12 max-w-2xl">
           <div className="h-4 w-32 bg-smoke rounded mb-4 animate-pulse" />

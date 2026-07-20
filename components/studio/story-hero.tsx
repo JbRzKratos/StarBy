@@ -32,7 +32,7 @@ export function StoryHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center grain-overlay overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center grain-overlay overflow-hidden pt-40"
       style={{ background: 'linear-gradient(180deg, #0E0E0F 0%, #1A1A1E 50%, #0E0E0F 100%)' }}
     >
       <div className="relative z-10 text-center px-5 max-w-4xl">

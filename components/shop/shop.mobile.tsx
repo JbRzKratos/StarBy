@@ -91,7 +91,7 @@ export function ShopMobile({ category, products }: { category: string; products:
   return (
     <main className="min-h-screen bg-charcoal text-bone relative pb-24">
       {/* Sticky Header with Categories */}
-      <header className="sticky top-0 left-0 w-full z-40 bg-charcoal/95 backdrop-blur-md border-b border-smoke/20 pt-20">
+      <header className="sticky top-0 left-0 w-full z-40 bg-charcoal/95 backdrop-blur-md border-b border-smoke/20 pt-28">
         <div className="px-5 pb-4 flex items-center justify-between">
           <h1 className="font-display text-4xl tracking-tighter uppercase">
             {activeTab === 'all' ? 'Catalog' : activeTab}

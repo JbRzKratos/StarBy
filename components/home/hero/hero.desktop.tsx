@@ -113,7 +113,7 @@ export function HeroDesktop() {
     <ScrollTriggerWrapper>
       <section
         ref={containerRef}
-        className="relative w-full h-[calc(100vh-32px)] flex overflow-hidden bg-charcoal"
+        className="relative w-full h-[calc(100vh-100px)] flex overflow-hidden bg-charcoal"
       >
         {/* LEFT HALF */}
         <div className="w-1/2 h-full relative flex flex-col items-center justify-center pt-20 pb-12 z-10">

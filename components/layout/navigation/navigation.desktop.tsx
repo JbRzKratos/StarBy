@@ -6,11 +6,14 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
 
+import { OfferBannerDesktop } from '@/components/home/offer-banner/offer-banner.desktop';
+
 const navLinks = [
   { href: '/products/all', label: 'Shop' },
   { href: '/studio', label: 'Studio' },
   { href: '/split-poster', label: 'Split Poster' },
   { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 export function NavigationDesktop() {
@@ -42,10 +45,13 @@ export function NavigationDesktop() {
   );
 
   return (
-    <>
+    <div className="fixed top-0 left-0 right-0 z-sticky flex flex-col pointer-events-none">
+      <div className="pointer-events-auto">
+        <OfferBannerDesktop />
+      </div>
       <nav
         ref={containerRef}
-        className="fixed top-0 left-0 right-0 z-sticky px-5 md:px-8 py-4 flex items-center justify-between border-b border-transparent transition-colors"
+        className="pointer-events-auto w-full px-5 md:px-8 py-4 flex items-center justify-between border-b border-transparent transition-colors"
       >
         {/* Logo */}
         <Link
@@ -84,6 +90,6 @@ export function NavigationDesktop() {
           </button>
         </div>
       </nav>
-    </>
+    </div>
   );
 }

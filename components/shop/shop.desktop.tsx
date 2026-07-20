@@ -87,7 +87,7 @@ export function ShopDesktop({ category, products }: { category: string; products
   const displayProducts = filteredProducts.slice(0, visibleCount);
 
   return (
-    <main className="min-h-screen bg-charcoal text-bone pt-32 pb-24">
+    <main className="min-h-screen bg-charcoal text-bone pt-40 pb-24">
       {activeTab === 'diy' ? (
         <div className="pt-12 px-12">
           <button

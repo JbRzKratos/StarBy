@@ -50,7 +50,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   };
 
   return (
-    <main className="pt-24 md:pt-28 pb-20">
+    <main className="pt-36 md:pt-40 pb-20">
       <div
         ref={containerRef}
         className="section-container grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16"

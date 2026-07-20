@@ -11,7 +11,7 @@ export default function CartPage() {
   const totalItems = useCartStore((s) => s.totalItems);
 
   return (
-    <main className="pt-24 md:pt-28 pb-20">
+    <main className="pt-36 md:pt-40 pb-20">
       <div className="section-container max-w-4xl">
         <div className="mb-10">
           <span className="overline-label block mb-3">Shopping</span>

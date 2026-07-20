@@ -46,7 +46,7 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
   };
 
   return (
-    <div className="pt-24 md:pt-28 pb-20 section-container">
+    <div className="pt-36 md:pt-40 pb-20 section-container">
       <div className="mb-8 flex items-end justify-between">
         <div>
           <span className="font-mono text-caption text-cobalt uppercase tracking-widest block mb-2">

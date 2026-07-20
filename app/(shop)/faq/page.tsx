@@ -43,7 +43,7 @@ const faqs = [
 
 export default function FaqPage() {
   return (
-    <main className="pt-24 md:pt-28 pb-20">
+    <main className="pt-36 md:pt-40 pb-20">
       <div className="section-container max-w-3xl">
         <div className="mb-12">
           <span className="overline-label block mb-3">Help</span>

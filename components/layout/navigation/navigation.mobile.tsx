@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
 
+import { OfferBannerMobile } from '@/components/home/offer-banner/offer-banner.mobile';
+
 const menuLinks = [
   { href: '/', label: 'Home' },
   { href: '/products/all', label: 'Shop' },
@@ -88,38 +90,46 @@ export function NavigationMobile() {
 
   return (
     <>
-      <nav
-        ref={navRef}
-        className="fixed top-0 left-0 right-0 z-sticky px-5 py-4 flex items-center justify-between border-b border-transparent transition-all duration-300"
-      >
-        <Link href="/" className="font-display text-display-sm font-bold tracking-tight text-bone">
-          StarBy
-        </Link>
-
-        <div className="flex items-center gap-4">
-          <button
-            onClick={toggleCart}
-            className="relative font-mono text-caption uppercase tracking-widest text-pearl hover:text-cobalt transition-colors"
-            aria-label="Open cart"
-          >
-            Cart
-            {totalItems() > 0 && (
-              <span className="absolute -top-2 -right-4 w-4 h-4 bg-cobalt text-bone text-[10px] rounded-full flex items-center justify-center">
-                {totalItems()}
-              </span>
-            )}
-          </button>
-
-          <button
-            onClick={() => setIsOpen(true)}
-            className="flex flex-col gap-1.5 p-2"
-            aria-label="Open menu"
-          >
-            <span className="block w-6 h-px bg-bone" />
-            <span className="block w-4 h-px bg-bone ml-auto" />
-          </button>
+      <div className="fixed top-0 left-0 right-0 z-sticky flex flex-col pointer-events-none">
+        <div className="pointer-events-auto">
+          <OfferBannerMobile />
         </div>
-      </nav>
+        <nav
+          ref={navRef}
+          className="pointer-events-auto w-full px-5 py-4 flex items-center justify-between border-b border-transparent transition-all duration-300"
+        >
+          <Link
+            href="/"
+            className="font-display text-display-sm font-bold tracking-tight text-bone"
+          >
+            StarBy
+          </Link>
+
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleCart}
+              className="relative font-mono text-caption uppercase tracking-widest text-pearl hover:text-cobalt transition-colors"
+              aria-label="Open cart"
+            >
+              Cart
+              {totalItems() > 0 && (
+                <span className="absolute -top-2 -right-4 w-4 h-4 bg-cobalt text-bone text-[10px] rounded-full flex items-center justify-center">
+                  {totalItems()}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => setIsOpen(true)}
+              className="flex flex-col gap-1.5 p-2"
+              aria-label="Open menu"
+            >
+              <span className="block w-6 h-px bg-bone" />
+              <span className="block w-4 h-px bg-bone ml-auto" />
+            </button>
+          </div>
+        </nav>
+      </div>
 
       {/* Drawer */}
       <div

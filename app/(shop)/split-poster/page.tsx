@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function SplitPosterPage() {
   return (
-    <main className="pt-24 md:pt-28 pb-20">
+    <main className="pt-36 md:pt-40 pb-20">
       <div className="section-container">
         <div className="mb-12 max-w-2xl">
           <span className="overline-label block mb-3">Design Tool</span>

@@ -1,4 +1,3 @@
-import { OfferBanner } from '@/components/home/offer-banner';
 import { Navigation } from '@/components/layout/navigation';
 import { Footer } from '@/components/layout/footer';
 import { CartDrawer } from '@/components/layout/cart-drawer';
@@ -12,7 +11,6 @@ import { Testimonials } from '@/components/home/testimonials';
 export default function HomePage() {
   return (
     <>
-      <OfferBanner />
       <Navigation />
       <CartDrawer />
       <main>
