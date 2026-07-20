@@ -13,10 +13,10 @@ export function DeviceSelector({ selectedDeviceId, onSelectDevice }: DeviceSelec
   const [search, setSearch] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const selectedDevice = (deviceModels.find((d) => d.id === selectedDeviceId) ?? deviceModels[0])!;
+  const selectedDevice = deviceModels.find((d) => d.id === selectedDeviceId) ?? deviceModels[0];
 
   const filteredDevices = deviceModels.filter((d) =>
-    d.name.toLowerCase().includes(search.toLowerCase())
+    d.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   // Close dropdown when clicking outside
@@ -29,6 +29,8 @@ export function DeviceSelector({ selectedDeviceId, onSelectDevice }: DeviceSelec
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  if (!selectedDevice) return null;
 
   return (
     <div className="bg-graphite border border-smoke/30 p-6 rounded-lg" ref={dropdownRef}>
@@ -79,7 +81,8 @@ export function DeviceSelector({ selectedDeviceId, onSelectDevice }: DeviceSelec
                       setIsOpen(false);
                     }}
                   >
-                    {d.name} <span className="text-pearl text-[10px] uppercase ml-2">({d.type})</span>
+                    {d.name}{' '}
+                    <span className="text-pearl text-[10px] uppercase ml-2">({d.type})</span>
                   </div>
                 ))
               ) : (

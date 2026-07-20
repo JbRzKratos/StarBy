@@ -161,7 +161,9 @@ export function CartDrawer() {
 
           <div className="flex items-baseline gap-4 mb-8">
             <span className="font-mono text-body-lg text-pearl uppercase">Total</span>
-            <span className="font-mono text-display-md text-bone tracking-normal">₹ {totalPrice()}</span>
+            <span className="font-mono text-display-md text-bone tracking-normal">
+              ₹ {totalPrice()}
+            </span>
             <span className="font-mono text-caption text-ash uppercase ml-2">
               ({totalItems} items)
             </span>
@@ -224,109 +226,110 @@ export function CartDrawer() {
             </div>
 
             {items.map((item, index) => {
-              const product = products.find(p => p.id === item.productId);
-              const variant = product?.variants.find(v => v.id === item.variantId);
+              const product = products.find((p) => p.id === item.productId);
+              const variant = product?.variants.find((v) => v.id === item.variantId);
               const displayName = product ? product.name : item.productId.replace('-', ' ');
               const displayVariantName = variant ? variant.name : item.variantId.replace('-', ' ');
-              const displayImage = item.customization?.imageUrl || variant?.images[0] || product?.variants[0]?.images[0];
+              const displayImage =
+                item.customization?.imageUrl ||
+                variant?.images[0] ||
+                product?.variants[0]?.images[0];
 
               return (
-              <div
-                key={`${item.productId}-${item.variantId}-${index}`}
-                className="cart-item group relative flex flex-row gap-4 sm:gap-6 p-4 lg:p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-all duration-300 rounded-lg"
-              >
-                {/* Image Placeholder / Visual */}
-                <div className="w-24 h-24 sm:w-32 sm:h-32 bg-charcoal rounded flex-shrink-0 relative overflow-hidden border border-smoke/30 flex items-center justify-center">
-                  {displayImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={displayImage}
-                      alt={displayName}
-                      className="w-full h-full object-cover opacity-80"
-                    />
-                  ) : (
-                    <span className="font-mono text-caption text-smoke uppercase rotate-45">
-                      Preview
-                    </span>
-                  )}
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-cobalt/20 to-transparent mix-blend-overlay pointer-events-none" />
-                </div>
-
-                {/* Details */}
-                <div className="flex-1 flex flex-col justify-between min-w-0">
-                  <div>
-                    <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-display text-h4 text-bone truncate pr-4 capitalize">
-                        {displayName}
-                      </h3>
-                      <span className="font-mono text-body-sm text-bone shrink-0 tracking-normal">
-                        ₹ {item.price * item.quantity}
+                <div
+                  key={`${item.productId}-${item.variantId}-${index}`}
+                  className="cart-item group relative flex flex-row gap-4 sm:gap-6 p-4 lg:p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-all duration-300 rounded-lg"
+                >
+                  {/* Image Placeholder / Visual */}
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 bg-charcoal rounded flex-shrink-0 relative overflow-hidden border border-smoke/30 flex items-center justify-center">
+                    {displayImage ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={displayImage}
+                        alt={displayName}
+                        className="w-full h-full object-cover opacity-80"
+                      />
+                    ) : (
+                      <span className="font-mono text-caption text-smoke uppercase rotate-45">
+                        Preview
                       </span>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-caption text-ash mb-4">
-                      <span className="uppercase tracking-wider">
-                        {displayVariantName}
-                      </span>
-                      {item.customization && (
-                        <>
-                          <span className="w-1 h-1 rounded-full bg-smoke" />
-                          <span>Customized</span>
-                        </>
-                      )}
-                      {item.size && (
-                        <>
-                          <span className="w-1 h-1 rounded-full bg-smoke" />
-                          <span>Size: {item.size}</span>
-                        </>
-                      )}
-                    </div>
+                    )}
+                    {/* Overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-cobalt/20 to-transparent mix-blend-overlay pointer-events-none" />
                   </div>
 
-                  {/* Controls */}
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex items-center bg-charcoal border border-smoke/50 rounded-sm">
-                      <button
-                        onClick={() =>
-                          updateQuantity(
-                            item.productId,
-                            item.variantId,
-                            Math.max(1, item.quantity - 1),
-                            item.size,
-                          )
-                        }
-                        className="w-11 h-11 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/20 transition-colors"
-                      >
-                        −
-                      </button>
-                      <span className="w-10 text-center font-mono text-caption text-bone">
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() =>
-                          updateQuantity(
-                            item.productId,
-                            item.variantId,
-                            item.quantity + 1,
-                            item.size,
-                          )
-                        }
-                        className="w-11 h-11 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/20 transition-colors"
-                      >
-                        +
-                      </button>
+                  {/* Details */}
+                  <div className="flex-1 flex flex-col justify-between min-w-0">
+                    <div>
+                      <div className="flex justify-between items-start mb-1">
+                        <h3 className="font-display text-h4 text-bone truncate pr-4 capitalize">
+                          {displayName}
+                        </h3>
+                        <span className="font-mono text-body-sm text-bone shrink-0 tracking-normal">
+                          ₹ {item.price * item.quantity}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-caption text-ash mb-4">
+                        <span className="uppercase tracking-wider">{displayVariantName}</span>
+                        {item.customization && (
+                          <>
+                            <span className="w-1 h-1 rounded-full bg-smoke" />
+                            <span>Customized</span>
+                          </>
+                        )}
+                        {item.size && (
+                          <>
+                            <span className="w-1 h-1 rounded-full bg-smoke" />
+                            <span>Size: {item.size}</span>
+                          </>
+                        )}
+                      </div>
                     </div>
 
-                    <button
-                      onClick={() => removeItem(item.productId, item.variantId, item.size)}
-                      className="font-mono text-caption text-pearl/70 hover:text-ember uppercase tracking-widest transition-colors flex items-center gap-2 underline decoration-smoke/50 hover:decoration-ember underline-offset-4"
-                    >
-                      <span>Remove</span>
-                    </button>
+                    {/* Controls */}
+                    <div className="flex items-center justify-between mt-auto">
+                      <div className="flex items-center bg-charcoal border border-smoke/50 rounded-sm">
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.productId,
+                              item.variantId,
+                              Math.max(1, item.quantity - 1),
+                              item.size,
+                            )
+                          }
+                          className="w-11 h-11 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/20 transition-colors"
+                        >
+                          −
+                        </button>
+                        <span className="w-10 text-center font-mono text-caption text-bone">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.productId,
+                              item.variantId,
+                              item.quantity + 1,
+                              item.size,
+                            )
+                          }
+                          className="w-11 h-11 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/20 transition-colors"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={() => removeItem(item.productId, item.variantId, item.size)}
+                        className="font-mono text-caption text-pearl/70 hover:text-ember uppercase tracking-widest transition-colors flex items-center gap-2 underline decoration-smoke/50 hover:decoration-ember underline-offset-4"
+                      >
+                        <span>Remove</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
               );
             })}
           </div>

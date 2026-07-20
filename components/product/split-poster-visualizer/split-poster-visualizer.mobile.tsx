@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef, useState, useMemo, ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { SplitPosterPanel } from '../split-poster-panel';
@@ -321,14 +322,14 @@ export function SplitPosterVisualizerMobile() {
 
       {/* Order Bar */}
       <div className="mt-8 flex flex-col sm:flex-row gap-4">
-        <input 
-          type="file" 
-          accept="image/png, image/jpeg" 
-          className="hidden" 
-          ref={fileInputRef} 
-          onChange={handleFileUpload} 
+        <input
+          type="file"
+          accept="image/png, image/jpeg"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleFileUpload}
         />
-        <div 
+        <div
           onClick={() => fileInputRef.current?.click()}
           className="flex-1 border border-smoke rounded-lg px-6 py-4 flex items-center justify-between hover:border-cobalt transition-colors cursor-pointer bg-graphite"
         >

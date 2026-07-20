@@ -26,7 +26,7 @@ export function Testimonials() {
             start: 'top 80%',
             once: true,
           },
-        }
+        },
       );
       // Endless scroll marquee
       gsap.to(trackRef.current, {
@@ -64,32 +64,32 @@ export function Testimonials() {
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div
               key={`${t.id}-${idx}`}
-            className="flex-shrink-0 w-[320px] md:w-[380px] bg-graphite border border-smoke rounded-lg p-6 md:p-8"
-          >
-            {/* Rating */}
-            <div className="flex gap-1 mb-4">
-              {Array.from({ length: t.rating }).map((_, i) => (
-                <span key={i} className="text-cobalt text-sm">
-                  ★
-                </span>
-              ))}
-            </div>
-
-            {/* Quote */}
-            <p className="font-display text-body-md text-bone mb-6 leading-relaxed">
-              &ldquo;{t.quote}&rdquo;
-            </p>
-
-            {/* Author */}
-            <div className="flex items-center gap-3 pt-4 border-t border-smoke">
-              <div className="w-8 h-8 rounded-full bg-smoke flex-shrink-0" />
-              <div>
-                <p className="font-display text-body-sm text-bone">{t.name}</p>
-                <p className="font-mono text-caption text-ash">{t.handle}</p>
+              className="flex-shrink-0 w-[320px] md:w-[380px] bg-graphite border border-smoke rounded-lg p-6 md:p-8"
+            >
+              {/* Rating */}
+              <div className="flex gap-1 mb-4">
+                {Array.from({ length: t.rating }).map((_, i) => (
+                  <span key={i} className="text-cobalt text-sm">
+                    ★
+                  </span>
+                ))}
               </div>
-              <span className="ml-auto font-mono text-caption text-pearl">{t.product}</span>
+
+              {/* Quote */}
+              <p className="font-display text-body-md text-bone mb-6 leading-relaxed">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-4 border-t border-smoke">
+                <div className="w-8 h-8 rounded-full bg-smoke flex-shrink-0" />
+                <div>
+                  <p className="font-display text-body-sm text-bone">{t.name}</p>
+                  <p className="font-mono text-caption text-ash">{t.handle}</p>
+                </div>
+                <span className="ml-auto font-mono text-caption text-pearl">{t.product}</span>
+              </div>
             </div>
-          </div>
           ))}
         </div>
       </div>

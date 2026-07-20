@@ -32,8 +32,8 @@ export function CustomizerPanelMobile() {
       setUploadedImage(dataUrl);
 
       // Kick off composite generation asynchronously but sequentially to not block UI thread completely
-      const productIds = Object.keys(templates).filter(pid => {
-        const product = products.find(p => p.id === templates[pid]?.productId);
+      const productIds = Object.keys(templates).filter((pid) => {
+        const product = products.find((p) => p.id === templates[pid]?.productId);
         return product?.customizable;
       });
       for (const pid of productIds) {
@@ -148,9 +148,9 @@ export function CustomizerPanelMobile() {
             className="flex gap-4 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-8"
           >
             {Object.entries(templates).map(([pid, template]) => {
-              const product = products.find(p => p.id === template.productId);
+              const product = products.find((p) => p.id === template.productId);
               if (!product?.customizable) return null;
-              
+
               const compUrl = composites[pid];
 
               return (
@@ -173,7 +173,7 @@ export function CustomizerPanelMobile() {
 
                   <div className="flex items-center justify-between">
                     <h3 className="font-mono text-body-sm text-bone">
-                      {products.find(p => p.id === template.productId)?.name || 'Custom Product'}
+                      {products.find((p) => p.id === template.productId)?.name || 'Custom Product'}
                     </h3>
                     {compUrl && (
                       <Link

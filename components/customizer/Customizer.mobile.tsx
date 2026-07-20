@@ -15,7 +15,8 @@ const CustomizerCanvas = dynamic(
 );
 
 export function CustomizerMobile({ productId }: { productId: string }) {
-  const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } = useCustomizerStore();
+  const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } =
+    useCustomizerStore();
   const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useCartStore((s) => s.setCartOpen);
@@ -82,10 +83,10 @@ export function CustomizerMobile({ productId }: { productId: string }) {
           onChange={handleInlineUpload}
         />
 
-        <CustomizerCanvas 
-          productId={productId} 
-          initialImage={uploadedImage} 
-          selectedColor={selectedColor} 
+        <CustomizerCanvas
+          productId={productId}
+          initialImage={uploadedImage}
+          selectedColor={selectedColor}
           selectedDeviceId={selectedDeviceId}
           selectedSize={selectedSize}
         />
@@ -97,8 +98,6 @@ export function CustomizerMobile({ productId }: { productId: string }) {
           <h1 className="font-display text-3xl font-bold text-bone uppercase">{product?.name}</h1>
           <p className="font-mono text-pearl">₹{product?.basePrice}</p>
         </div>
-
-
 
         {/* Sizing (if applicable) */}
         {product?.sizes && product.sizes.length > 0 && (
@@ -128,14 +127,14 @@ export function CustomizerMobile({ productId }: { productId: string }) {
             <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest">
               Split Config
             </h3>
-            
+
             <div className="flex flex-col gap-1.5">
               <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Style</span>
               <div className="flex border border-smoke rounded-sm overflow-hidden">
                 {['classic', 'stepped', 'grid'].map((s) => (
                   <button
                     key={s}
-                    onClick={() => setSplitStyle(s as any)}
+                    onClick={() => setSplitStyle(s as 'classic' | 'stepped' | 'grid')}
                     className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
                       splitStyle === s
                         ? 'bg-cobalt text-bone'
@@ -151,12 +150,16 @@ export function CustomizerMobile({ productId }: { productId: string }) {
             {splitStyle === 'classic' && (
               <>
                 <div className="flex flex-col gap-1.5">
-                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Orientation</span>
+                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                    Orientation
+                  </span>
                   <div className="flex border border-smoke rounded-sm overflow-hidden">
                     <button
                       onClick={() => setSplitOrientation('vertical')}
                       className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors border-r border-smoke ${
-                        splitOrientation === 'vertical' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                        splitOrientation === 'vertical'
+                          ? 'bg-cobalt text-bone'
+                          : 'bg-charcoal text-ash'
                       }`}
                     >
                       Side-by-Side
@@ -164,7 +167,9 @@ export function CustomizerMobile({ productId }: { productId: string }) {
                     <button
                       onClick={() => setSplitOrientation('horizontal')}
                       className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
-                        splitOrientation === 'horizontal' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                        splitOrientation === 'horizontal'
+                          ? 'bg-cobalt text-bone'
+                          : 'bg-charcoal text-ash'
                       }`}
                     >
                       Top-to-Bottom
@@ -172,7 +177,9 @@ export function CustomizerMobile({ productId }: { productId: string }) {
                   </div>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Panels</span>
+                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                    Panels
+                  </span>
                   <div className="flex gap-2">
                     {[3, 4, 5].map((n) => (
                       <button
@@ -194,7 +201,9 @@ export function CustomizerMobile({ productId }: { productId: string }) {
 
             {splitStyle === 'stepped' && (
               <div className="flex flex-col gap-1.5">
-                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Panels</span>
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                  Panels
+                </span>
                 <div className="flex gap-2">
                   {[3, 5].map((n) => (
                     <button
@@ -215,7 +224,9 @@ export function CustomizerMobile({ productId }: { productId: string }) {
 
             {splitStyle === 'grid' && (
               <div className="flex flex-col gap-1.5">
-                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Format</span>
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                  Format
+                </span>
                 <div className="flex border border-smoke rounded-sm overflow-hidden">
                   {[
                     { label: '2x2', cols: 2, rows: 2 },
@@ -243,13 +254,8 @@ export function CustomizerMobile({ productId }: { productId: string }) {
 
         {/* Device Selector (Skins Only) */}
         {product?.categorySlug === 'skins' && (
-          <DeviceSelector 
-            selectedDeviceId={selectedDeviceId} 
-            onSelectDevice={setSelectedDevice} 
-          />
+          <DeviceSelector selectedDeviceId={selectedDeviceId} onSelectDevice={setSelectedDevice} />
         )}
-
-
 
         {/* Instructions */}
         {uploadedImage && (

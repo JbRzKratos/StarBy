@@ -58,16 +58,18 @@ export async function generateCompositePreview(
     canvas.width = CANVAS_SIZE;
     canvas.height = CANVAS_SIZE;
 
-    const product = products.find(p => p.id === template.productId);
+    const product = products.find((p) => p.id === template.productId);
     const isSkin = product?.categorySlug === 'skins';
-    const isPoster = product?.categorySlug === 'posters' || product?.categorySlug === 'split-posters';
+    const isPoster =
+      product?.categorySlug === 'posters' || product?.categorySlug === 'split-posters';
 
     if (isSkin) {
       // Background
       ctx.fillStyle = '#1A1A1E';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const deviceShape = (deviceModels[0])!;
+      const deviceShape = deviceModels[0];
+      if (!deviceShape) throw new Error('No device models defined');
       const maxH = canvas.height * 0.65;
       const paH = maxH;
       const paW = paH * deviceShape.aspectRatio;
@@ -90,7 +92,8 @@ export async function generateCompositePreview(
       // Frame
       ctx.fillStyle = '#333';
       ctx.beginPath();
-      if (typeof ctx.roundRect === 'function') ctx.roundRect(paX - 2, paY - 2, paW + 4, paH + 4, borderRadius + 2);
+      if (typeof ctx.roundRect === 'function')
+        ctx.roundRect(paX - 2, paY - 2, paW + 4, paH + 4, borderRadius + 2);
       else ctx.rect(paX - 2, paY - 2, paW + 4, paH + 4);
       ctx.fill();
 
@@ -105,9 +108,15 @@ export async function generateCompositePreview(
       const paRatio = paW / paH;
       let drawW, drawH, drawX, drawY;
       if (imgRatio > paRatio) {
-        drawH = paH; drawW = drawH * imgRatio; drawX = paX - (drawW - paW) / 2; drawY = paY;
+        drawH = paH;
+        drawW = drawH * imgRatio;
+        drawX = paX - (drawW - paW) / 2;
+        drawY = paY;
       } else {
-        drawW = paW; drawH = drawW / imgRatio; drawX = paX; drawY = paY - (drawH - paH) / 2;
+        drawW = paW;
+        drawH = drawW / imgRatio;
+        drawX = paX;
+        drawY = paY - (drawH - paH) / 2;
       }
       ctx.drawImage(userImg, drawX, drawY, drawW, drawH);
       ctx.restore();
@@ -116,8 +125,8 @@ export async function generateCompositePreview(
       if (deviceShape.cameraCutout) {
         const cw = paW * deviceShape.cameraCutout.width;
         const ch = paH * deviceShape.cameraCutout.height;
-        const cx = paX + (paW * deviceShape.cameraCutout.x);
-        const cy = paY + (paH * deviceShape.cameraCutout.y);
+        const cx = paX + paW * deviceShape.cameraCutout.x;
+        const cy = paY + paH * deviceShape.cameraCutout.y;
         const cr = cw * deviceShape.cameraCutout.borderRadius;
 
         ctx.fillStyle = '#0E0E0F';
@@ -133,15 +142,15 @@ export async function generateCompositePreview(
       // Logo Cutout
       if (deviceShape.logoCutout) {
         const lw = paW * deviceShape.logoCutout.width;
-        const lx = paX + (paW * deviceShape.logoCutout.x);
-        const ly = paY + (paH * deviceShape.logoCutout.y);
-        
+        const lx = paX + paW * deviceShape.logoCutout.x;
+        const ly = paY + paH * deviceShape.logoCutout.y;
+
         ctx.fillStyle = '#E5E5E5';
         ctx.shadowColor = 'rgba(0,0,0,0.3)';
         ctx.shadowBlur = 4;
         ctx.shadowOffsetY = 2;
         ctx.beginPath();
-        ctx.arc(lx, ly, lw/2, 0, Math.PI * 2);
+        ctx.arc(lx, ly, lw / 2, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowColor = 'transparent'; // reset shadow
       }
@@ -156,25 +165,25 @@ export async function generateCompositePreview(
       if (typeof ctx.roundRect === 'function') ctx.roundRect(paX, paY, paW, paH, borderRadius);
       else ctx.rect(paX, paY, paW, paH);
       ctx.fill();
-
     } else if (isPoster) {
       // Background
       ctx.fillStyle = '#1A1A1E';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       let maxH = canvas.height * 0.7;
-      let maxW = maxH * (5/7); // portrait
-      
-      const { splitStyle, splitOrientation, splitPanels, splitGridCols, splitGridRows } = useCustomizerStore.getState();
+      let maxW = maxH * (5 / 7); // portrait
+
+      const { splitStyle, splitOrientation, splitPanels, splitGridCols, splitGridRows } =
+        useCustomizerStore.getState();
 
       if (product?.categorySlug === 'split-posters') {
         const isV = splitOrientation === 'vertical';
         if (splitStyle === 'classic') {
-          maxW = isV ? maxH * (4/7) : canvas.width * 0.7;
-          maxH = isV ? canvas.height * 0.7 : maxW * (4/7);
+          maxW = isV ? maxH * (4 / 7) : canvas.width * 0.7;
+          maxH = isV ? canvas.height * 0.7 : maxW * (4 / 7);
         } else if (splitStyle === 'stepped') {
           maxW = canvas.width * 0.7;
-          maxH = maxW * (4/7);
+          maxH = maxW * (4 / 7);
         } else if (splitStyle === 'grid') {
           maxW = canvas.height * 0.6;
           maxH = canvas.height * 0.6;
@@ -218,9 +227,15 @@ export async function generateCompositePreview(
       const paRatio = paW / paH;
       let drawW, drawH, drawX, drawY;
       if (imgRatio > paRatio) {
-        drawH = paH; drawW = drawH * imgRatio; drawX = paX - (drawW - paW) / 2; drawY = paY;
+        drawH = paH;
+        drawW = drawH * imgRatio;
+        drawX = paX - (drawW - paW) / 2;
+        drawY = paY;
       } else {
-        drawW = paW; drawH = drawW / imgRatio; drawX = paX; drawY = paY - (drawH - paH) / 2;
+        drawW = paW;
+        drawH = drawW / imgRatio;
+        drawX = paX;
+        drawY = paY - (drawH - paH) / 2;
       }
       ctx.drawImage(userImg, drawX, drawY, drawW, drawH);
       ctx.restore();
@@ -234,37 +249,37 @@ export async function generateCompositePreview(
           for (let i = 1; i < splitPanels; i++) {
             if (isV) {
               const step = paW / splitPanels;
-              ctx.fillRect(paX + (step * i) - (gapSize/2), paY - 20, gapSize, paH + 40);
+              ctx.fillRect(paX + step * i - gapSize / 2, paY - 20, gapSize, paH + 40);
             } else {
               const step = paH / splitPanels;
-              ctx.fillRect(paX - 20, paY + (step * i) - (gapSize/2), paW + 40, gapSize);
+              ctx.fillRect(paX - 20, paY + step * i - gapSize / 2, paW + 40, gapSize);
             }
           }
         } else if (splitStyle === 'stepped') {
           const step = paW / splitPanels;
           const pCount = splitPanels === 5 ? 5 : 3;
           const heights = pCount === 3 ? [0.8, 1, 0.8] : [0.6, 0.8, 1, 0.8, 0.6];
-          
+
           for (let i = 1; i < splitPanels; i++) {
-            ctx.fillRect(paX + (step * i) - (gapSize/2), paY - 20, gapSize, paH + 40);
+            ctx.fillRect(paX + step * i - gapSize / 2, paY - 20, gapSize, paH + 40);
           }
-          
+
           for (let i = 0; i < splitPanels; i++) {
-            const hScale = heights[i]!;
-            const removedH = (paH - (paH * hScale)) / 2;
+            const hScale = heights[i] ?? 1;
+            const removedH = (paH - paH * hScale) / 2;
             if (removedH > 0) {
-              ctx.fillRect(paX + (step * i), paY - 20, step, removedH + 20);
-              ctx.fillRect(paX + (step * i), paY + paH - removedH, step, removedH + 20);
+              ctx.fillRect(paX + step * i, paY - 20, step, removedH + 20);
+              ctx.fillRect(paX + step * i, paY + paH - removedH, step, removedH + 20);
             }
           }
         } else if (splitStyle === 'grid') {
           const stepX = paW / splitGridCols;
           const stepY = paH / splitGridRows;
           for (let i = 1; i < splitGridCols; i++) {
-            ctx.fillRect(paX + (stepX * i) - (gapSize/2), paY - 20, gapSize, paH + 40);
+            ctx.fillRect(paX + stepX * i - gapSize / 2, paY - 20, gapSize, paH + 40);
           }
           for (let i = 1; i < splitGridRows; i++) {
-            ctx.fillRect(paX - 20, paY + (stepY * i) - (gapSize/2), paW + 40, gapSize);
+            ctx.fillRect(paX - 20, paY + stepY * i - gapSize / 2, paW + 40, gapSize);
           }
         }
       }
@@ -276,7 +291,6 @@ export async function generateCompositePreview(
       grad.addColorStop(1, 'rgba(0,0,0,0.15)');
       ctx.fillStyle = grad;
       ctx.fillRect(paX - 20, paY - 20, paW + 40, paH + 40);
-
     } else {
       // 3. Draw mockup background
       ctx.drawImage(mockupImg, 0, 0, canvas.width, canvas.height);

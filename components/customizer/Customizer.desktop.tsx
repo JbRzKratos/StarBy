@@ -18,7 +18,8 @@ const CustomizerCanvas = dynamic(
 );
 
 export function CustomizerDesktop({ productId }: { productId: string }) {
-  const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } = useCustomizerStore();
+  const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } =
+    useCustomizerStore();
   const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useCartStore((s) => s.setCartOpen);
@@ -99,10 +100,10 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
             onChange={handleInlineUpload}
           />
 
-          <CustomizerCanvas 
-            productId={productId} 
-            initialImage={uploadedImage} 
-            selectedColor={selectedColor} 
+          <CustomizerCanvas
+            productId={productId}
+            initialImage={uploadedImage}
+            selectedColor={selectedColor}
             selectedDeviceId={selectedDeviceId}
             selectedSize={selectedSize}
           />
@@ -112,13 +113,11 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
         <div className="lg:col-span-4 flex flex-col gap-8">
           {/* Device Selector (Skins Only) */}
           {product?.categorySlug === 'skins' && (
-            <DeviceSelector 
-              selectedDeviceId={selectedDeviceId} 
-              onSelectDevice={setSelectedDevice} 
+            <DeviceSelector
+              selectedDeviceId={selectedDeviceId}
+              onSelectDevice={setSelectedDevice}
             />
           )}
-
-
 
           {/* Sizing (if applicable) */}
           {product?.sizes && product.sizes.length > 0 && (
@@ -150,14 +149,16 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
               <h3 className="font-mono text-caption text-bone uppercase tracking-widest">
                 Split Configuration
               </h3>
-              
+
               <div className="flex flex-col gap-2">
-                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Style</span>
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                  Style
+                </span>
                 <div className="flex border border-smoke rounded-sm overflow-hidden">
                   {['classic', 'stepped', 'grid'].map((s) => (
                     <button
                       key={s}
-                      onClick={() => setSplitStyle(s as any)}
+                      onClick={() => setSplitStyle(s as 'classic' | 'stepped' | 'grid')}
                       className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
                         splitStyle === s
                           ? 'bg-cobalt text-bone'
@@ -173,12 +174,16 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
               {splitStyle === 'classic' && (
                 <>
                   <div className="flex flex-col gap-2">
-                    <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Orientation</span>
+                    <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                      Orientation
+                    </span>
                     <div className="flex border border-smoke rounded-sm overflow-hidden">
                       <button
                         onClick={() => setSplitOrientation('vertical')}
                         className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors border-r border-smoke ${
-                          splitOrientation === 'vertical' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                          splitOrientation === 'vertical'
+                            ? 'bg-cobalt text-bone'
+                            : 'bg-charcoal text-ash'
                         }`}
                       >
                         Side-by-Side
@@ -186,7 +191,9 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
                       <button
                         onClick={() => setSplitOrientation('horizontal')}
                         className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
-                          splitOrientation === 'horizontal' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                          splitOrientation === 'horizontal'
+                            ? 'bg-cobalt text-bone'
+                            : 'bg-charcoal text-ash'
                         }`}
                       >
                         Top-to-Bottom
@@ -194,7 +201,9 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Panels</span>
+                    <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                      Panels
+                    </span>
                     <div className="flex gap-2">
                       {[3, 4, 5].map((n) => (
                         <button
@@ -216,7 +225,9 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
 
               {splitStyle === 'stepped' && (
                 <div className="flex flex-col gap-2">
-                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Panels</span>
+                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                    Panels
+                  </span>
                   <div className="flex gap-2">
                     {[3, 5].map((n) => (
                       <button
@@ -237,7 +248,9 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
 
               {splitStyle === 'grid' && (
                 <div className="flex flex-col gap-2">
-                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Format</span>
+                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                    Format
+                  </span>
                   <div className="flex border border-smoke rounded-sm overflow-hidden">
                     {[
                       { label: '2x2', cols: 2, rows: 2 },
@@ -250,7 +263,9 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
                           key={opt.label}
                           onClick={() => setSplitGrid(opt.cols, opt.rows)}
                           className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors border-l first:border-l-0 border-smoke ${
-                            isActive ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash hover:text-pearl'
+                            isActive
+                              ? 'bg-cobalt text-bone'
+                              : 'bg-charcoal text-ash hover:text-pearl'
                           }`}
                         >
                           {opt.label}
