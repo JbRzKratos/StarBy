@@ -25,7 +25,7 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
 
   const [error, setError] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>(product?.sizes?.[0] || 'M');
-  const [selectedColor, setSelectedColor] = useState<string>('#0E0E0F');
+  const [selectedColor] = useState<string>('#0E0E0F');
   const {
     splitStyle,
     splitOrientation,
