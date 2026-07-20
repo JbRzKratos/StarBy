@@ -2,6 +2,7 @@ interface SplitPosterPanelProps {
   width: string;
   height: string;
   gradient: string;
+  imageSrc?: string | null;
   bgPosition: string;
   bgSize: string;
 }
@@ -10,6 +11,7 @@ export function SplitPosterPanel({
   width,
   height,
   gradient,
+  imageSrc,
   bgPosition,
   bgSize,
 }: SplitPosterPanelProps) {
@@ -19,9 +21,10 @@ export function SplitPosterPanel({
       style={{
         width,
         height,
-        background: gradient,
+        backgroundImage: imageSrc ? `url(${imageSrc})` : gradient,
         backgroundPosition: bgPosition,
         backgroundSize: bgSize,
+        backgroundRepeat: 'no-repeat',
       }}
     />
   );

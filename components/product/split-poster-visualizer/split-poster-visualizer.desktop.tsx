@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useMemo } from 'react';
+import { useRef, useState, useMemo, ChangeEvent } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { SplitPosterPanel } from '../split-poster-panel';
@@ -28,9 +28,19 @@ export function SplitPosterVisualizerDesktop() {
     cols: 3,
     rows: 2,
   });
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setUploadedImage(url);
+    }
+  };
 
   // Layout Engine
   const panelsData = useMemo(() => {
@@ -293,6 +303,7 @@ export function SplitPosterVisualizerDesktop() {
               bgPosition={data.bgPosition}
               bgSize={data.bgSize}
               gradient={sampleGradient}
+              imageSrc={uploadedImage}
             />
           ))}
         </div>
@@ -305,7 +316,17 @@ export function SplitPosterVisualizerDesktop() {
 
       {/* Order Bar */}
       <div className="mt-8 flex flex-col sm:flex-row gap-4">
-        <div className="flex-1 border border-smoke rounded-lg px-6 py-4 flex items-center justify-between hover:border-cobalt transition-colors cursor-pointer bg-graphite">
+        <input 
+          type="file" 
+          accept="image/png, image/jpeg" 
+          className="hidden" 
+          ref={fileInputRef} 
+          onChange={handleFileUpload} 
+        />
+        <div 
+          onClick={() => fileInputRef.current?.click()}
+          className="flex-1 border border-smoke rounded-lg px-6 py-4 flex items-center justify-between hover:border-cobalt transition-colors cursor-pointer bg-graphite"
+        >
           <div>
             <p className="font-mono text-body-sm text-pearl">Upload Your Photo</p>
             <p className="font-mono text-caption text-ash mt-1">High-Res PNG or JPG required</p>
