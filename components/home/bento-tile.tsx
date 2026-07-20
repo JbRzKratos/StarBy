@@ -51,8 +51,21 @@ export function BentoTile({ category, size }: BentoTileProps) {
       className={`${sizeClasses[size]} relative overflow-hidden rounded-lg group`}
       style={{ background: category.gradient }}
     >
+      {/* Background Image */}
+      {category.image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={category.image}
+          alt={category.name}
+          className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700 ease-out mix-blend-luminosity"
+        />
+      )}
+
+      {/* Dark gradient for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/20 to-transparent" />
+
       {/* Hover overlay */}
-      <div ref={overlayRef} className="absolute inset-0 bg-cobalt opacity-0 mix-blend-overlay" />
+      <div ref={overlayRef} className="absolute inset-0 bg-cobalt opacity-0 mix-blend-color" />
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6">

@@ -18,26 +18,26 @@ export const templates: Record<string, CustomizationTemplate> = {
     productId: 'prod_001',
     mockupImage: '/images/products/eclipse_tee.png', // Assuming this exists or falls back to hero tees
     printArea: {
-      x: 0.35, // 35% from left
-      y: 0.25, // 25% from top
-      width: 0.3, // 30% of image width
-      height: 0.4, // 40% of image height
+      x: 0.34, // Perfectly centered (0.34 + 0.32/2 = 0.5)
+      y: 0.26, // Pushed down to sit cleanly below the collar
+      width: 0.32, // Slightly narrowed for a more realistic max print width
+      height: 0.44, // Adjusted height to match proportions
     },
-    blendMode: 'multiply',
+    blendMode: 'source-over',
   },
   'orbit-hoodie': {
-    productId: 'prod_002',
+    productId: 'prod_007', // Orbit Hoodie
     mockupImage: '/images/products/orbit_hoodie.png',
     printArea: {
-      x: 0.38,
-      y: 0.3,
-      width: 0.24,
-      height: 0.25,
+      x: 0.35,
+      y: 0.28,
+      width: 0.30,
+      height: 0.30,
     },
-    blendMode: 'multiply',
+    blendMode: 'source-over',
   },
   'phantom-skin': {
-    productId: 'prod_003',
+    productId: 'prod_022', // Phantom Skin
     mockupImage: '/images/products/phantom_skin.png',
     printArea: {
       x: 0.2,
@@ -47,7 +47,7 @@ export const templates: Record<string, CustomizationTemplate> = {
     },
   },
   'monolith-poster': {
-    productId: 'prod_004',
+    productId: 'prod_013', // Monolith Poster
     mockupImage: '/images/products/monolith_poster.png',
     printArea: {
       x: 0.1,
@@ -57,7 +57,7 @@ export const templates: Record<string, CustomizationTemplate> = {
     },
   },
   'prism-split': {
-    productId: 'prod_005',
+    productId: 'prod_018', // Prism Split
     mockupImage: '/images/hero/split_posters.png', // Fallback to hero image for split posters
     printArea: {
       x: 0.2,
@@ -67,14 +67,14 @@ export const templates: Record<string, CustomizationTemplate> = {
     },
   },
   'chronicle-diary': {
-    productId: 'prod_006',
+    productId: 'prod_032', // Chronicle Diary
     mockupImage: '/images/hero/stationery.png', // Fallback to hero image
     printArea: {
-      x: 0.25,
-      y: 0.15,
-      width: 0.5,
-      height: 0.7,
-      rotation: -10, // Simulate the isometric angle of the diary mockup
+      x: 0.38,
+      y: 0.30,
+      width: 0.35,
+      height: 0.50,
+      rotation: -26, // Steeper isometric angle to match the notebook cover
     },
   },
 };

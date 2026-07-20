@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
@@ -20,6 +20,11 @@ export function NavigationDesktop() {
   const containerRef = useRef<HTMLElement>(null);
   const totalItems = useCartStore((s) => s.totalItems);
   const toggleCart = useCartStore((s) => s.toggleCart);
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useGSAP(
     () => {
@@ -82,7 +87,7 @@ export function NavigationDesktop() {
             aria-label="Open cart"
           >
             Cart
-            {totalItems() > 0 && (
+            {mounted && totalItems() > 0 && (
               <span className="absolute -top-2 -right-4 w-4 h-4 bg-cobalt text-bone text-[10px] rounded-full flex items-center justify-center">
                 {totalItems()}
               </span>

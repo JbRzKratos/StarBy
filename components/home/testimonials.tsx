@@ -26,11 +26,26 @@ export function Testimonials() {
             start: 'top 80%',
             once: true,
           },
-        },
+        }
       );
+      // Endless scroll marquee
+      gsap.to(trackRef.current, {
+        xPercent: -50,
+        ease: 'none',
+        duration: 40,
+        repeat: -1,
+      });
     },
     { scope: sectionRef },
   );
+
+  const handleMouseEnter = () => {
+    gsap.getTweensOf(trackRef.current).forEach((t) => t.pause());
+  };
+
+  const handleMouseLeave = () => {
+    gsap.getTweensOf(trackRef.current).forEach((t) => t.play());
+  };
 
   return (
     <section ref={sectionRef} className="py-20 md:py-32 overflow-hidden">
@@ -39,13 +54,16 @@ export function Testimonials() {
         <h2 className="font-display text-display-md font-bold text-bone">What People Create</h2>
       </div>
 
-      <div
-        ref={trackRef}
-        className="flex gap-4 md:gap-6 px-5 md:px-8 overflow-x-auto hide-scrollbar pb-4"
-      >
-        {testimonials.map((t) => (
-          <div
-            key={t.id}
+      <div className="relative overflow-hidden group py-4">
+        <div
+          ref={trackRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="flex gap-4 md:gap-6 px-4 md:px-8 w-max"
+        >
+          {[...testimonials, ...testimonials].map((t, idx) => (
+            <div
+              key={`${t.id}-${idx}`}
             className="flex-shrink-0 w-[320px] md:w-[380px] bg-graphite border border-smoke rounded-lg p-6 md:p-8"
           >
             {/* Rating */}
@@ -72,7 +90,8 @@ export function Testimonials() {
               <span className="ml-auto font-mono text-caption text-pearl">{t.product}</span>
             </div>
           </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

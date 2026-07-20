@@ -3,9 +3,10 @@
 import { useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useCustomizerStore } from '@/store/customizer';
-import { getProductBySlug } from '@/data/products';
+import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { validateImage, fileToDataUrl } from '@/components/customizer-hub/CustomizerHub.shared';
+import { DeviceSelector } from './DeviceSelector';
 
 // Dynamically import the canvas to avoid SSR issues
 const CustomizerCanvas = dynamic(
@@ -14,13 +15,25 @@ const CustomizerCanvas = dynamic(
 );
 
 export function CustomizerMobile({ productId }: { productId: string }) {
-  const { uploadedImage, setUploadedImage } = useCustomizerStore();
-  const product = getProductBySlug(productId.replace('prod_', ''));
+  const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } = useCustomizerStore();
+  const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useCartStore((s) => s.setCartOpen);
 
   const [error, setError] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>(product?.sizes?.[0] || 'M');
+  const [selectedColor, setSelectedColor] = useState<string>('#0E0E0F');
+  const {
+    splitStyle,
+    splitOrientation,
+    splitPanels,
+    splitGridCols,
+    splitGridRows,
+    setSplitStyle,
+    setSplitOrientation,
+    setSplitPanels,
+    setSplitGrid,
+  } = useCustomizerStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInlineUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +82,13 @@ export function CustomizerMobile({ productId }: { productId: string }) {
           onChange={handleInlineUpload}
         />
 
-        <CustomizerCanvas productId={productId} initialImage={uploadedImage} />
+        <CustomizerCanvas 
+          productId={productId} 
+          initialImage={uploadedImage} 
+          selectedColor={selectedColor} 
+          selectedDeviceId={selectedDeviceId}
+          selectedSize={selectedSize}
+        />
       </div>
 
       {/* Tools Area (Scrollable Bottom) */}
@@ -79,22 +98,10 @@ export function CustomizerMobile({ productId }: { productId: string }) {
           <p className="font-mono text-pearl">₹{product?.basePrice}</p>
         </div>
 
-        {/* Colors */}
-        <div>
-          <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest mb-3">Color</h3>
-          <div className="flex gap-3">
-            {['#0E0E0F', '#F5F1EA', '#2A2A2F', '#C45D3E', '#3B5EFF'].map((c) => (
-              <button
-                key={c}
-                className="w-12 h-12 rounded-full border-2 border-smoke hover:border-bone transition-colors"
-                style={{ backgroundColor: c }}
-              />
-            ))}
-          </div>
-        </div>
 
-        {/* Sizing */}
-        {product?.sizes && (
+
+        {/* Sizing (if applicable) */}
+        {product?.sizes && product.sizes.length > 0 && (
           <div>
             <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest mb-3">Size</h3>
             <div className="flex flex-wrap gap-2">
@@ -114,6 +121,135 @@ export function CustomizerMobile({ productId }: { productId: string }) {
             </div>
           </div>
         )}
+
+        {/* Split Poster Configuration */}
+        {product?.categorySlug === 'split-posters' && (
+          <div className="bg-graphite border border-smoke/30 p-4 rounded-lg flex flex-col gap-4">
+            <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest">
+              Split Config
+            </h3>
+            
+            <div className="flex flex-col gap-1.5">
+              <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Style</span>
+              <div className="flex border border-smoke rounded-sm overflow-hidden">
+                {['classic', 'stepped', 'grid'].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSplitStyle(s as any)}
+                    className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                      splitStyle === s
+                        ? 'bg-cobalt text-bone'
+                        : 'bg-charcoal text-ash hover:text-pearl border-l first:border-l-0 border-smoke'
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {splitStyle === 'classic' && (
+              <>
+                <div className="flex flex-col gap-1.5">
+                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Orientation</span>
+                  <div className="flex border border-smoke rounded-sm overflow-hidden">
+                    <button
+                      onClick={() => setSplitOrientation('vertical')}
+                      className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors border-r border-smoke ${
+                        splitOrientation === 'vertical' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                      }`}
+                    >
+                      Side-by-Side
+                    </button>
+                    <button
+                      onClick={() => setSplitOrientation('horizontal')}
+                      className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                        splitOrientation === 'horizontal' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                      }`}
+                    >
+                      Top-to-Bottom
+                    </button>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Panels</span>
+                  <div className="flex gap-2">
+                    {[3, 4, 5].map((n) => (
+                      <button
+                        key={n}
+                        onClick={() => setSplitPanels(n)}
+                        className={`flex-1 h-8 border font-mono text-xs flex items-center justify-center transition-colors rounded-sm ${
+                          splitPanels === n
+                            ? 'border-cobalt text-cobalt bg-cobalt/10'
+                            : 'border-smoke text-ash hover:text-pearl'
+                        }`}
+                      >
+                        {n}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {splitStyle === 'stepped' && (
+              <div className="flex flex-col gap-1.5">
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Panels</span>
+                <div className="flex gap-2">
+                  {[3, 5].map((n) => (
+                    <button
+                      key={n}
+                      onClick={() => setSplitPanels(n)}
+                      className={`flex-1 h-8 border font-mono text-xs flex items-center justify-center transition-colors rounded-sm ${
+                        (splitPanels === 5 ? 5 : 3) === n
+                          ? 'border-cobalt text-cobalt bg-cobalt/10'
+                          : 'border-smoke text-ash hover:text-pearl'
+                      }`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {splitStyle === 'grid' && (
+              <div className="flex flex-col gap-1.5">
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">Format</span>
+                <div className="flex border border-smoke rounded-sm overflow-hidden">
+                  {[
+                    { label: '2x2', cols: 2, rows: 2 },
+                    { label: '3x2', cols: 3, rows: 2 },
+                    { label: '3x3', cols: 3, rows: 3 },
+                  ].map((opt) => {
+                    const isActive = splitGridCols === opt.cols && splitGridRows === opt.rows;
+                    return (
+                      <button
+                        key={opt.label}
+                        onClick={() => setSplitGrid(opt.cols, opt.rows)}
+                        className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors border-l first:border-l-0 border-smoke ${
+                          isActive ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash hover:text-pearl'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Device Selector (Skins Only) */}
+        {product?.categorySlug === 'skins' && (
+          <DeviceSelector 
+            selectedDeviceId={selectedDeviceId} 
+            onSelectDevice={setSelectedDevice} 
+          />
+        )}
+
+
 
         {/* Instructions */}
         {uploadedImage && (

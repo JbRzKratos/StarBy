@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
 import Link from 'next/link';
+import { products } from '@/data/products';
 
 export function CartDrawer() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,6 +20,11 @@ export function CartDrawer() {
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const totalPrice = useCartStore((s) => s.totalPrice);
   const totalItems = useCartStore((s) => s.totalItems());
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useGSAP(
     () => {
@@ -100,6 +106,8 @@ export function CartDrawer() {
     { dependencies: [isOpen], scope: containerRef },
   );
 
+  if (!mounted) return null;
+
   return (
     <div ref={containerRef} className="fixed inset-0 z-modal hidden flex-col lg:flex-row">
       {/* Background Overlay */}
@@ -135,7 +143,7 @@ export function CartDrawer() {
       {/* Left Column: Summary & CTA */}
       <div
         ref={leftColRef}
-        className="w-full lg:w-5/12 h-[40vh] lg:h-full p-8 lg:p-20 flex flex-col justify-end lg:justify-between border-b lg:border-b-0 lg:border-r border-smoke/30 relative"
+        className="w-full lg:w-5/12 flex-shrink-0 pt-24 pb-8 px-8 lg:p-20 flex flex-col lg:justify-between border-b lg:border-b-0 lg:border-r border-smoke/30 relative"
       >
         <div className="hidden lg:block">
           <h2 className="font-mono text-caption text-ash uppercase tracking-widest mb-2">
@@ -153,7 +161,7 @@ export function CartDrawer() {
 
           <div className="flex items-baseline gap-4 mb-8">
             <span className="font-mono text-body-lg text-pearl uppercase">Total</span>
-            <span className="font-mono text-display-md text-bone">₹{totalPrice()}</span>
+            <span className="font-mono text-display-md text-bone tracking-normal">₹ {totalPrice()}</span>
             <span className="font-mono text-caption text-ash uppercase ml-2">
               ({totalItems} items)
             </span>
@@ -185,7 +193,7 @@ export function CartDrawer() {
       {/* Right Column: Items */}
       <div
         ref={rightColRef}
-        className="w-full lg:w-7/12 h-[60vh] lg:h-full overflow-y-auto p-4 md:p-8 lg:p-20 custom-scrollbar"
+        className="w-full lg:w-7/12 flex-1 lg:h-full overflow-y-auto p-4 md:p-8 lg:p-20 custom-scrollbar"
       >
         {items.length === 0 ? (
           <div className="empty-state h-full flex flex-col items-center justify-center text-center">
@@ -215,19 +223,26 @@ export function CartDrawer() {
               </span>
             </div>
 
-            {items.map((item, index) => (
+            {items.map((item, index) => {
+              const product = products.find(p => p.id === item.productId);
+              const variant = product?.variants.find(v => v.id === item.variantId);
+              const displayName = product ? product.name : item.productId.replace('-', ' ');
+              const displayVariantName = variant ? variant.name : item.variantId.replace('-', ' ');
+              const displayImage = item.customization?.imageUrl || variant?.images[0] || product?.variants[0]?.images[0];
+
+              return (
               <div
                 key={`${item.productId}-${item.variantId}-${index}`}
-                className="cart-item group relative flex flex-col sm:flex-row gap-6 p-4 lg:p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-all duration-300 rounded-lg"
+                className="cart-item group relative flex flex-row gap-4 sm:gap-6 p-4 lg:p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-all duration-300 rounded-lg"
               >
                 {/* Image Placeholder / Visual */}
-                <div className="w-full sm:w-32 h-32 bg-charcoal rounded flex-shrink-0 relative overflow-hidden border border-smoke/30 flex items-center justify-center">
-                  {item.customization?.imageUrl ? (
+                <div className="w-24 h-24 sm:w-32 sm:h-32 bg-charcoal rounded flex-shrink-0 relative overflow-hidden border border-smoke/30 flex items-center justify-center">
+                  {displayImage ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={item.customization.imageUrl}
-                      alt="Custom design"
-                      className="w-full h-full object-cover mix-blend-screen opacity-70"
+                      src={displayImage}
+                      alt={displayName}
+                      className="w-full h-full object-cover opacity-80"
                     />
                   ) : (
                     <span className="font-mono text-caption text-smoke uppercase rotate-45">
@@ -243,16 +258,16 @@ export function CartDrawer() {
                   <div>
                     <div className="flex justify-between items-start mb-1">
                       <h3 className="font-display text-h4 text-bone truncate pr-4 capitalize">
-                        {item.productId.replace('-', ' ')}
+                        {displayName}
                       </h3>
-                      <span className="font-mono text-body-sm text-bone shrink-0">
-                        ₹{item.price * item.quantity}
+                      <span className="font-mono text-body-sm text-bone shrink-0 tracking-normal">
+                        ₹ {item.price * item.quantity}
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3 font-mono text-caption text-ash mb-4">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-caption text-ash mb-4">
                       <span className="uppercase tracking-wider">
-                        {item.variantId.replace('-', ' ')}
+                        {displayVariantName}
                       </span>
                       {item.customization && (
                         <>
@@ -305,29 +320,15 @@ export function CartDrawer() {
 
                     <button
                       onClick={() => removeItem(item.productId, item.variantId, item.size)}
-                      className="font-mono text-caption text-ash hover:text-ember uppercase tracking-widest transition-colors flex items-center gap-2 group/btn"
+                      className="font-mono text-caption text-pearl/70 hover:text-ember uppercase tracking-widest transition-colors flex items-center gap-2 underline decoration-smoke/50 hover:decoration-ember underline-offset-4"
                     >
-                      <span className="hidden sm:inline">Remove</span>
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="opacity-50 group-hover/btn:opacity-100 transition-opacity"
-                      >
-                        <path
-                          d="M1 11L11 1M1 1L11 11"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
+                      <span>Remove</span>
                     </button>
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

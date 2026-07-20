@@ -23,6 +23,11 @@ export function NavigationMobile() {
   const totalItems = useCartStore((s) => s.totalItems);
   const toggleCart = useCartStore((s) => s.toggleCart);
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const navRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -112,7 +117,7 @@ export function NavigationMobile() {
               aria-label="Open cart"
             >
               Cart
-              {totalItems() > 0 && (
+              {mounted && totalItems() > 0 && (
                 <span className="absolute -top-2 -right-4 w-4 h-4 bg-cobalt text-bone text-[10px] rounded-full flex items-center justify-center">
                   {totalItems()}
                 </span>

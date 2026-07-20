@@ -8,6 +8,7 @@ import { gsap } from '@/lib/gsap-config';
 import { useCustomizerStore } from '@/store/customizer';
 import { validateImage, fileToDataUrl } from './CustomizerHub.shared';
 import { templates } from '@/data/customizationTemplates';
+import { products } from '@/data/products';
 import { generateCompositePreview } from '@/lib/utils/compositeCanvas';
 
 export function CustomizerPanelDesktop() {
@@ -32,7 +33,10 @@ export function CustomizerPanelDesktop() {
       setUploadedImage(dataUrl);
 
       // Kick off composite generation asynchronously but sequentially to not block UI thread completely
-      const productIds = Object.keys(templates);
+      const productIds = Object.keys(templates).filter(pid => {
+        const product = products.find(p => p.id === templates[pid]?.productId);
+        return product?.customizable;
+      });
       for (const pid of productIds) {
         // Yield to main thread briefly between generations
         await new Promise((r) => setTimeout(r, 50));
@@ -168,12 +172,15 @@ export function CustomizerPanelDesktop() {
           ref={gridRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 gap-y-16"
         >
-          {Object.values(templates).map((template) => {
-            const compUrl = composites[template.productId];
+          {Object.entries(templates).map(([pid, template]) => {
+            const product = products.find(p => p.id === template.productId);
+            if (!product?.customizable) return null;
+            
+            const compUrl = composites[pid];
 
             return (
               <div
-                key={template.productId}
+                key={pid}
                 className="composite-tile opacity-0 translate-y-8 scale-95 flex flex-col gap-4 group"
               >
                 <div className="relative aspect-[4/5] bg-smoke/5 rounded-md overflow-hidden">
@@ -203,10 +210,9 @@ export function CustomizerPanelDesktop() {
                   )}
                 </div>
 
-                {/* Fallback to generic name if we can't look it up easily here */}
                 <div>
-                  <h3 className="font-mono text-body-sm text-bone capitalize">
-                    {template.productId.replace('-', ' ')}
+                  <h3 className="font-mono text-body-sm text-bone">
+                    {products.find(p => p.id === template.productId)?.name || 'Custom Product'}
                   </h3>
                 </div>
               </div>

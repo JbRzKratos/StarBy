@@ -8,6 +8,7 @@ import { gsap } from '@/lib/gsap-config';
 import { useCustomizerStore } from '@/store/customizer';
 import { validateImage, fileToDataUrl } from './CustomizerHub.shared';
 import { templates } from '@/data/customizationTemplates';
+import { products } from '@/data/products';
 import { generateCompositePreview } from '@/lib/utils/compositeCanvas';
 
 export function CustomizerPanelMobile() {
@@ -30,8 +31,11 @@ export function CustomizerPanelMobile() {
       const dataUrl = await fileToDataUrl(file);
       setUploadedImage(dataUrl);
 
-      // Kick off composite generation sequentially
-      const productIds = Object.keys(templates);
+      // Kick off composite generation asynchronously but sequentially to not block UI thread completely
+      const productIds = Object.keys(templates).filter(pid => {
+        const product = products.find(p => p.id === templates[pid]?.productId);
+        return product?.customizable;
+      });
       for (const pid of productIds) {
         await new Promise((r) => setTimeout(r, 50)); // Yield
         try {
@@ -143,12 +147,15 @@ export function CustomizerPanelMobile() {
             ref={carouselRef}
             className="flex gap-4 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-8"
           >
-            {Object.values(templates).map((template) => {
-              const compUrl = composites[template.productId];
+            {Object.entries(templates).map(([pid, template]) => {
+              const product = products.find(p => p.id === template.productId);
+              if (!product?.customizable) return null;
+              
+              const compUrl = composites[pid];
 
               return (
                 <div
-                  key={template.productId}
+                  key={pid}
                   className="composite-tile opacity-0 scale-95 shrink-0 w-[85vw] snap-center flex flex-col gap-4"
                 >
                   <div className="relative aspect-[4/5] bg-smoke/5 rounded-md overflow-hidden">
@@ -165,8 +172,8 @@ export function CustomizerPanelMobile() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <h3 className="font-mono text-body-sm text-bone capitalize">
-                      {template.productId.replace('-', ' ')}
+                    <h3 className="font-mono text-body-sm text-bone">
+                      {products.find(p => p.id === template.productId)?.name || 'Custom Product'}
                     </h3>
                     {compUrl && (
                       <Link

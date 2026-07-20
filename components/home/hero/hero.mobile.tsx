@@ -128,7 +128,7 @@ export function HeroMobile() {
         <div className="flex-1 w-full relative flex flex-col items-center justify-end pb-8 z-10">
           <div
             ref={leftImagesRef}
-            className="absolute inset-0 w-full h-full -z-10 opacity-70 mix-blend-screen pointer-events-none"
+            className="absolute inset-0 w-full h-full -z-10 opacity-60 mix-blend-screen pointer-events-none"
           >
             {designsImages.map((src, idx) => (
               <Image
@@ -137,11 +137,13 @@ export function HeroMobile() {
                 alt={`StarBy Original Design ${idx + 1}`}
                 fill
                 priority={idx === 0}
-                className="object-contain p-8"
+                className="object-cover"
                 sizes="100vw"
               />
             ))}
           </div>
+
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent -z-10 pointer-events-none" />
 
           <div className="flex flex-col items-center gap-4 px-6 w-full max-w-sm">
             <h1
@@ -155,7 +157,7 @@ export function HeroMobile() {
             <Link
               href="/products/all"
               ref={leftCTARef}
-              className="w-full text-center bg-bone text-charcoal font-mono text-[10px] uppercase tracking-widest px-6 py-4"
+              className="bg-bone text-charcoal font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-sm w-fit mx-auto"
             >
               Shop Designs
             </Link>
@@ -179,7 +181,7 @@ export function HeroMobile() {
         <div className="flex-1 w-full relative flex flex-col items-center justify-start pt-8 z-10 bg-cobalt/5">
           <div
             ref={rightImagesRef}
-            className="absolute inset-0 w-full h-full -z-10 opacity-80 mix-blend-screen pointer-events-none"
+            className="absolute inset-0 w-full h-full -z-10 opacity-60 mix-blend-screen pointer-events-none"
           >
             {personalizedImages.map((src, idx) => (
               <Image
@@ -188,11 +190,13 @@ export function HeroMobile() {
                 alt={`Personalized Example ${idx + 1}`}
                 fill
                 priority={idx === 0}
-                className="object-contain p-8"
+                className="object-cover"
                 sizes="100vw"
               />
             ))}
           </div>
+
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent -z-10 pointer-events-none" />
 
           <div className="flex flex-col items-center gap-4 px-6 w-full max-w-sm mt-auto mb-10">
             <h1
@@ -206,7 +210,7 @@ export function HeroMobile() {
             <Link
               href="/customize"
               ref={rightCTARef}
-              className="w-full text-center bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest px-6 py-4"
+              className="bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-sm w-fit mx-auto"
             >
               Customize Yours
             </Link>
