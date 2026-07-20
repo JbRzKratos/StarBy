@@ -7,8 +7,6 @@ import { FloatingActions } from '@/components/layout/floating-actions';
 import { DeviceProvider } from '@/lib/providers/device-provider';
 import './globals.css';
 
-export const runtime = 'edge';
-
 export const metadata: Metadata = {
   title: {
     default: 'StarBy — Personalized Premium',
