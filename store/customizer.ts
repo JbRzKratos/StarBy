@@ -23,7 +23,7 @@ interface CustomizerState {
 export const useCustomizerStore = create<CustomizerState>((set) => ({
   uploadedImage: null,
   composites: {},
-  selectedDeviceId: 'iphone-15-pro', // Default
+  selectedDeviceId: 'iphone-16-pro-max', // Default — first entry in devices.ts
   splitStyle: 'classic',
   splitOrientation: 'horizontal',
   splitPanels: 3,

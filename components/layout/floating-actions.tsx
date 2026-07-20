@@ -83,7 +83,7 @@ export function FloatingActions() {
 
       {/* WhatsApp */}
       <Link
-        href="https://wa.me/1234567890" // Replace with actual number
+        href="https://wa.me/REPLACE_WITH_ACTUAL_WHATSAPP_NUMBER" // ⚠️ TODO: Replace placeholder
         target="_blank"
         rel="noopener noreferrer"
         ref={waRef}

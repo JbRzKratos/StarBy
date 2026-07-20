@@ -121,38 +121,93 @@ export async function generateCompositePreview(
       ctx.drawImage(userImg, drawX, drawY, drawW, drawH);
       ctx.restore();
 
-      // Camera Cutout
-      if (deviceShape.cameraCutout) {
-        const cw = paW * deviceShape.cameraCutout.width;
-        const ch = paH * deviceShape.cameraCutout.height;
-        const cx = paX + paW * deviceShape.cameraCutout.x;
-        const cy = paY + paH * deviceShape.cameraCutout.y;
-        const cr = cw * deviceShape.cameraCutout.borderRadius;
+      // Camera Module
+      if (deviceShape.cameraModule) {
+        const mod = deviceShape.cameraModule;
+        let mX: number, mY: number, mW: number, mH: number;
+        if (mod.shape === 'circle') {
+          const cx = paX + paW * mod.x;
+          const cy = paY + paH * mod.y;
+          const r = paW * mod.w;
+          mX = cx - r;
+          mY = cy - r;
+          mW = r * 2;
+          mH = r * 2;
+        } else {
+          mX = paX + paW * mod.x;
+          mY = paY + paH * mod.y;
+          mW = paW * mod.w;
+          mH = paH * mod.h;
+        }
 
-        ctx.fillStyle = '#0E0E0F';
-        ctx.strokeStyle = '#2A2A2F';
+        ctx.fillStyle = mod.shape === 'strip-vertical' ? 'rgba(14,14,16,0.6)' : '#0C0C0E';
+        ctx.strokeStyle = '#2E2E34';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        if (typeof ctx.roundRect === 'function') ctx.roundRect(cx, cy, cw, ch, cr);
-        else ctx.rect(cx, cy, cw, ch);
+        if (mod.shape === 'circle') {
+          ctx.arc(mX + mW / 2, mY + mH / 2, mW / 2, 0, Math.PI * 2);
+        } else {
+          let cr = 0;
+          if (mod.shape === 'pill-vertical') cr = mW / 2;
+          else if (mod.shape === 'pill-horizontal') cr = mH / 2;
+          else if (mod.shape === 'rect-rounded') cr = mW * 0.15;
+          else if (mod.shape === 'strip-vertical') cr = mW * 0.3;
+          if (typeof ctx.roundRect === 'function') ctx.roundRect(mX, mY, mW, mH, cr);
+          else ctx.rect(mX, mY, mW, mH);
+        }
+        if (mod.shape !== 'strip-vertical') ctx.stroke();
         ctx.fill();
-        ctx.stroke();
+
+        // Individual lenses
+        for (const lens of mod.lenses ?? []) {
+          const lCx = mX + mW * lens.cx;
+          const lCy = mY + mH * lens.cy;
+          const lR = mW * lens.r;
+          ctx.fillStyle = '#181820';
+          ctx.strokeStyle = '#3C3C46';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(lCx, lCy, lR, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          // Inner glass
+          const innerR = lR * 0.62;
+          ctx.fillStyle = 'rgba(8,10,18,0.95)';
+          ctx.beginPath();
+          ctx.arc(lCx, lCy, innerR, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Flash
+        if (mod.flash) {
+          const fCx = mX + mW * mod.flash.cx;
+          const fCy = mY + mH * mod.flash.cy;
+          const fR = mW * mod.flash.r;
+          ctx.fillStyle = '#FFF5D6';
+          ctx.strokeStyle = '#9A8B60';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(fCx, fCy, fR, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
       }
 
-      // Logo Cutout
+      // Logo Cutout (laptops)
       if (deviceShape.logoCutout) {
-        const lw = paW * deviceShape.logoCutout.width;
-        const lx = paX + paW * deviceShape.logoCutout.x;
-        const ly = paY + paH * deviceShape.logoCutout.y;
+        const lc = deviceShape.logoCutout;
+        const lcCx = paX + paW * lc.cx;
+        const lcCy = paY + paH * lc.cy;
+        const lcR = paW * lc.r;
 
         ctx.fillStyle = '#E5E5E5';
         ctx.shadowColor = 'rgba(0,0,0,0.3)';
         ctx.shadowBlur = 4;
         ctx.shadowOffsetY = 2;
         ctx.beginPath();
-        ctx.arc(lx, ly, lw / 2, 0, Math.PI * 2);
+        ctx.arc(lcCx, lcCy, lcR, 0, Math.PI * 2);
         ctx.fill();
-        ctx.shadowColor = 'transparent'; // reset shadow
+        ctx.shadowColor = 'transparent';
       }
 
       // Glass Reflection

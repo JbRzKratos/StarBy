@@ -15,8 +15,8 @@ export interface CustomizationTemplate {
 // When compositing on canvas, we scale these relative to the canvas size.
 export const templates: Record<string, CustomizationTemplate> = {
   'eclipse-tee': {
-    productId: 'prod_001',
-    mockupImage: '/images/products/eclipse_tee.png', // Assuming this exists or falls back to hero tees
+    productId: 'prod_002',
+    mockupImage: '/images/products/eclipse-tee.png',
     printArea: {
       x: 0.34, // Perfectly centered (0.34 + 0.32/2 = 0.5)
       y: 0.26, // Pushed down to sit cleanly below the collar
@@ -27,7 +27,7 @@ export const templates: Record<string, CustomizationTemplate> = {
   },
   'orbit-hoodie': {
     productId: 'prod_007', // Orbit Hoodie
-    mockupImage: '/images/products/orbit_hoodie.png',
+    mockupImage: '/images/products/orbit-hoodie.png',
     printArea: {
       x: 0.35,
       y: 0.28,
@@ -38,7 +38,7 @@ export const templates: Record<string, CustomizationTemplate> = {
   },
   'phantom-skin': {
     productId: 'prod_022', // Phantom Skin
-    mockupImage: '/images/products/phantom_skin.png',
+    mockupImage: '/images/products/phantom-skin.png',
     printArea: {
       x: 0.2,
       y: 0.1,
@@ -48,7 +48,7 @@ export const templates: Record<string, CustomizationTemplate> = {
   },
   'monolith-poster': {
     productId: 'prod_013', // Monolith Poster
-    mockupImage: '/images/products/monolith_poster.png',
+    mockupImage: '/images/products/monolith-poster.png',
     printArea: {
       x: 0.1,
       y: 0.1,

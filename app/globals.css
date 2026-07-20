@@ -35,9 +35,12 @@
     }
   }
 
-  /* Touch devices: restore default cursor */
+  /* Touch devices: restore default cursor on everything */
   @media (hover: none) {
-    html {
+    html,
+    a,
+    button,
+    [role='button'] {
       cursor: auto;
     }
   }

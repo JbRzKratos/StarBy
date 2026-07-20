@@ -194,42 +194,158 @@ export function CustomizerCanvas({
           absolutePositioned: true,
         });
 
-        // 4. Overlays (Camera, Logo)
+        // 4. Camera module overlays (shape-aware) + logo (laptop)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const overlays: any[] = [];
 
-        if (deviceShape.cameraCutout) {
-          const cw = paW * deviceShape.cameraCutout.width;
-          const ch = paH * deviceShape.cameraCutout.height;
-          const cx = paX + paW * deviceShape.cameraCutout.x;
-          const cy = paY + paH * deviceShape.cameraCutout.y;
-          const cr = cw * deviceShape.cameraCutout.borderRadius;
+        // 4a. Camera module + individual lenses
+        if (deviceShape.cameraModule) {
+          const mod = deviceShape.cameraModule;
 
-          const cameraBump = new (fabric as any).Rect({
-            left: cx,
-            top: cy,
-            width: cw,
-            height: ch,
-            rx: cr,
-            ry: cr,
-            fill: '#0E0E0F',
-            stroke: '#2A2A2F',
-            strokeWidth: 2,
-            selectable: false,
-            evented: false,
-          });
-          overlays.push(cameraBump);
+          // Compute module bounding box in absolute canvas coordinates
+          let mX: number, mY: number, mW: number, mH: number;
+          if (mod.shape === 'circle') {
+            // For circles: x/y = center, w = radius (fraction of device WIDTH)
+            const cx = paX + paW * mod.x;
+            const cy = paY + paH * mod.y;
+            const r = paW * mod.w;
+            mX = cx - r;
+            mY = cy - r;
+            mW = r * 2;
+            mH = r * 2;
+          } else {
+            mX = paX + paW * mod.x;
+            mY = paY + paH * mod.y;
+            mW = paW * mod.w;
+            mH = paH * mod.h;
+          }
+
+          // Draw the module background shape
+          if (mod.shape === 'circle') {
+            const moduleBody = new (fabric as any).Circle({
+              left: mX,
+              top: mY,
+              radius: mW / 2,
+              fill: '#0C0C0E',
+              stroke: '#2E2E34',
+              strokeWidth: 2,
+              selectable: false,
+              evented: false,
+            });
+            overlays.push(moduleBody);
+          } else {
+            // Compute corner radius based on shape
+            let rx = 0;
+            let ry = 0;
+            if (mod.shape === 'pill-vertical') {
+              rx = mW / 2;
+              ry = mW / 2;
+            } else if (mod.shape === 'pill-horizontal') {
+              rx = mH / 2;
+              ry = mH / 2;
+            } else if (mod.shape === 'rect-rounded') {
+              rx = mW * 0.15;
+              ry = mW * 0.15;
+            } else if (mod.shape === 'strip-vertical') {
+              // Very subtle strip — render with minimal rounding and near-transparent fill
+              rx = mW * 0.3;
+              ry = mW * 0.3;
+            }
+
+            const stripFill = mod.shape === 'strip-vertical' ? 'rgba(14,14,16,0.6)' : '#0C0C0E';
+            const moduleBody = new (fabric as any).Rect({
+              left: mX,
+              top: mY,
+              width: mW,
+              height: mH,
+              rx,
+              ry,
+              fill: stripFill,
+              stroke: '#2E2E34',
+              strokeWidth: mod.shape === 'strip-vertical' ? 0 : 2,
+              selectable: false,
+              evented: false,
+            });
+            overlays.push(moduleBody);
+          }
+
+          // Draw individual lenses
+          for (const lens of mod.lenses ?? []) {
+            const lCx = mX + mW * lens.cx;
+            const lCy = mY + mH * lens.cy;
+            const lR = mW * lens.r;
+
+            // Outer bezel ring
+            const lensRing = new (fabric as any).Circle({
+              left: lCx - lR,
+              top: lCy - lR,
+              radius: lR,
+              fill: '#181820',
+              stroke: '#3C3C46',
+              strokeWidth: 1.5,
+              selectable: false,
+              evented: false,
+            });
+
+            // Inner glass element
+            const innerR = lR * 0.62;
+            const lensGlass = new (fabric as any).Circle({
+              left: lCx - innerR,
+              top: lCy - innerR,
+              radius: innerR,
+              fill: new (fabric as any).Gradient({
+                type: 'radial',
+                coords: {
+                  x1: innerR * 0.4,
+                  y1: innerR * 0.4,
+                  x2: innerR,
+                  y2: innerR,
+                  r1: 0,
+                  r2: innerR,
+                },
+                colorStops: [
+                  { offset: 0, color: 'rgba(50,60,90,0.9)' },
+                  { offset: 0.6, color: 'rgba(8,10,18,0.95)' },
+                  { offset: 1, color: 'rgba(4,5,10,1)' },
+                ],
+              }),
+              selectable: false,
+              evented: false,
+            });
+
+            overlays.push(lensRing);
+            overlays.push(lensGlass);
+          }
+
+          // Draw LED flash if specified
+          if (mod.flash) {
+            const fCx = mX + mW * mod.flash.cx;
+            const fCy = mY + mH * mod.flash.cy;
+            const fR = mW * mod.flash.r;
+            const flashDot = new (fabric as any).Circle({
+              left: fCx - fR,
+              top: fCy - fR,
+              radius: fR,
+              fill: '#FFF5D6',
+              stroke: '#9A8B60',
+              strokeWidth: 1,
+              selectable: false,
+              evented: false,
+            });
+            overlays.push(flashDot);
+          }
         }
 
+        // 4b. Logo cutout (laptops — Apple logo, Dell logo, etc.)
         if (deviceShape.logoCutout) {
-          const lw = paW * deviceShape.logoCutout.width;
-          const lh = paH * deviceShape.logoCutout.height;
-          const lx = paX + paW * deviceShape.logoCutout.x - lw / 2;
-          const ly = paY + paH * deviceShape.logoCutout.y - lh / 2;
-
+          const lc = deviceShape.logoCutout;
+          const lcCx = paX + paW * lc.cx;
+          const lcCy = paY + paH * lc.cy;
+          const lcR = paW * lc.r;
           const logo = new (fabric as any).Circle({
-            left: lx,
-            top: ly,
-            radius: lw / 2,
+            left: lcCx - lcR,
+            top: lcCy - lcR,
+            radius: lcR,
             fill: '#E5E5E5',
             shadow: new (fabric as any).Shadow({
               color: 'rgba(0,0,0,0.3)',

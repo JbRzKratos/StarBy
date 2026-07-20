@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
@@ -13,6 +13,7 @@ interface ImageGalleryProps {
 
 export function ImageGallery({ colorHex, productName, images }: ImageGalleryProps) {
   const mainRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useGSAP(
     () => {
@@ -26,17 +27,19 @@ export function ImageGallery({ colorHex, productName, images }: ImageGalleryProp
     { scope: mainRef },
   );
 
+  const hasMultipleImages = images && images.length > 1;
+
   return (
     <div className="flex flex-col gap-3">
-      {/* Main image placeholder */}
+      {/* Main image */}
       <div
         ref={mainRef}
         className="w-full aspect-[3/4] rounded-lg overflow-hidden relative"
         style={{ background: `linear-gradient(145deg, ${colorHex}66, ${colorHex})` }}
       >
-        {images?.[0] ? (
+        {images?.[activeIndex] ? (
           <Image
-            src={images[0]}
+            src={images[activeIndex]}
             alt={productName}
             fill
             className="object-cover"
@@ -51,28 +54,32 @@ export function ImageGallery({ colorHex, productName, images }: ImageGalleryProp
         )}
       </div>
 
-      {/* Thumbnail strip */}
-      <div className="flex gap-2">
-        {[0, 1, 2, 3].map((i) => (
-          <button
-            key={i}
-            className={`flex-1 aspect-square rounded overflow-hidden border-2 transition-colors relative ${
-              i === 0 ? 'border-cobalt' : 'border-smoke hover:border-pearl'
-            }`}
-            style={{ background: `linear-gradient(145deg, ${colorHex}44, ${colorHex})` }}
-          >
-            {images?.[i] && (
+      {/* Thumbnail strip — only render if more than one image */}
+      {hasMultipleImages && (
+        <div className="flex gap-2">
+          {images.map((src, i) => (
+            <button
+              key={i}
+              aria-label={`View ${productName} image ${i + 1}`}
+              aria-pressed={i === activeIndex}
+              onClick={() => setActiveIndex(i)}
+              className={`flex-1 aspect-square rounded overflow-hidden border-2 transition-colors relative ${
+                i === activeIndex ? 'border-cobalt' : 'border-smoke hover:border-pearl'
+              }`}
+              style={{ background: `linear-gradient(145deg, ${colorHex}44, ${colorHex})` }}
+            >
               <Image
-                src={images[i]}
+                src={src}
                 alt={`${productName} view ${i + 1}`}
                 fill
                 className="object-cover"
                 sizes="25vw"
               />
-            )}
-          </button>
-        ))}
-      </div>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
+

@@ -99,7 +99,9 @@ export function ShopMobile({ category, products }: { category: string; products:
           {activeTab !== 'diy' && (
             <button
               onClick={() => setIsFilterOpen(true)}
-              className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-2 border border-smoke/30 rounded-full px-4 py-2"
+              className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-2 border border-smoke/30 rounded-full px-4 py-3 min-h-[44px]"
+              aria-label="Open filters"
+              aria-expanded={isFilterOpen}
             >
               Filter
               <svg

@@ -58,8 +58,8 @@ export function CustomizerMobile({ productId }: { productId: string }) {
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-charcoal pb-24 pt-20">
-      {/* Canvas Area (Top) */}
-      <div className="relative w-full h-[50vh] bg-graphite shrink-0">
+      {/* Canvas Area (Top) — height must match CustomizerCanvas h-[60vh] */}
+      <div className="relative w-full h-[60vh] bg-graphite shrink-0">
         {!uploadedImage && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-graphite/90 p-6">
             <h3 className="font-display text-2xl text-bone mb-2">Upload Image</h3>
@@ -266,7 +266,7 @@ export function CustomizerMobile({ productId }: { productId: string }) {
       </div>
 
       {/* Sticky Bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 p-5 bg-charcoal/90 backdrop-blur-md border-t border-smoke/20 z-50">
+      <div className="fixed bottom-0 left-0 right-0 px-5 pt-5 pb-[max(20px,env(safe-area-inset-bottom))] bg-charcoal/90 backdrop-blur-md border-t border-smoke/20 z-50">
         <button
           onClick={() => {
             if (!product || !uploadedImage || !product.variants[0]) return;
