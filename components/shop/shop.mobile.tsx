@@ -133,7 +133,7 @@ export function ShopMobile({ category, products }: { category: string; products:
               className={`font-mono text-[10px] uppercase tracking-widest whitespace-nowrap snap-start transition-colors ${
                 activeTab === tab.id
                   ? 'text-bone border-b border-bone pb-1'
-                  : 'text-ash pb-1 border-b border-transparent'
+                  : 'text-pearl pb-1 border-b border-transparent'
               }`}
             >
               {tab.label}

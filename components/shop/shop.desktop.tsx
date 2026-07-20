@@ -114,7 +114,7 @@ export function ShopDesktop({ category, products }: { category: string; products
                   className={`font-mono text-[11px] uppercase tracking-widest pb-4 border-b-2 whitespace-nowrap transition-colors ${
                     activeTab === tab.id
                       ? 'border-bone text-bone'
-                      : 'border-transparent text-ash hover:text-pearl'
+                      : 'border-transparent text-pearl hover:text-bone'
                   }`}
                 >
                   {tab.label}

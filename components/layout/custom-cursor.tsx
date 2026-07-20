@@ -22,8 +22,8 @@ export function CustomCursor() {
       gsap.set(cursor, { xPercent: -50, yPercent: -50 });
       gsap.set(dot, { xPercent: -50, yPercent: -50 });
 
-      const xToCursor = gsap.quickTo(cursor, 'x', { duration: 0.6, ease: 'power3' });
-      const yToCursor = gsap.quickTo(cursor, 'y', { duration: 0.6, ease: 'power3' });
+      const xToCursor = gsap.quickTo(cursor, 'x', { duration: 0.1, ease: 'power3' });
+      const yToCursor = gsap.quickTo(cursor, 'y', { duration: 0.1, ease: 'power3' });
 
       const xToDot = gsap.quickTo(dot, 'x', { duration: 0.1, ease: 'power3' });
       const yToDot = gsap.quickTo(dot, 'y', { duration: 0.1, ease: 'power3' });
