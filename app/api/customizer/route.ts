@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const runtime = 'edge';
+
 /**
  * POST /api/customizer/save
  * Saves customization data. Stub — replace with storage logic.
