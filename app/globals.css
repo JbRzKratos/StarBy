@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    cursor: none;
+  }
+
+  body {
+    @apply bg-charcoal text-bone font-sans;
+    min-height: 100dvh;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Touch devices: restore default cursor */
+  @media (hover: none) {
+    html {
+      cursor: auto;
+    }
+  }
+
+  ::selection {
+    @apply bg-cobalt text-bone;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-charcoal;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-smoke rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-cobalt;
+  }
+
+  a,
+  button,
+  [role='button'] {
+    cursor: none;
+  }
+}
+
+@layer components {
+  /* Grain texture overlay — apply to any section */
+  .grain-overlay {
+    position: relative;
+  }
+  .grain-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/textures/grain.svg');
+    background-repeat: repeat;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  /* Section container */
+  .section-container {
+    @apply max-w-[1400px] mx-auto px-5;
+  }
+
+  @media (min-width: 768px) {
+    .section-container {
+      @apply px-8;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .section-container {
+      @apply px-12;
+    }
+  }
+
+  /* Overline label style */
+  .overline-label {
+    @apply font-mono text-overline uppercase tracking-[0.15em] text-pearl;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #3b5eff, #f5f1ea);
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
