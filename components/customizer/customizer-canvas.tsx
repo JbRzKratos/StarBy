@@ -365,7 +365,7 @@ export function CustomizerCanvas({ productId, initialImage, selectedColor, selec
               }
               // Stepped cutouts (top and bottom)
               for (let i = 0; i < splitPanels; i++) {
-                 const hScale = heights[i];
+                 const hScale = heights[i]!;
                  const removedH = (paH - (paH * hScale)) / 2;
                  if (removedH > 0) {
                    const topBlock = new (fabric as any).Rect({

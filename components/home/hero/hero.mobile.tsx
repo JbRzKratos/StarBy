@@ -115,7 +115,7 @@ export function HeroMobile() {
         };
       }
     },
-    { scope: containerRef },
+    { scope: containerRef }
   );
 
   return (

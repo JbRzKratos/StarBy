@@ -2,6 +2,20 @@ import { deviceModels } from '@/data/devices';
 import { products } from '@/data/products';
 import { useCustomizerStore } from '@/store/customizer';
 
+// Type for the customization template passed to the preview generator
+interface CustomizationTemplate {
+  productId: string;
+  mockupImage: string;
+  printArea: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    rotation?: number;
+  };
+  blendMode?: GlobalCompositeOperation;
+}
+
 /**
  * Loads an image from a source URL or Data URL asynchronously.
  */
@@ -53,7 +67,7 @@ export async function generateCompositePreview(
       ctx.fillStyle = '#1A1A1E';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const deviceShape = deviceModels[0]; // Default iPhone 15 Pro
+      const deviceShape = (deviceModels[0])!;
       const maxH = canvas.height * 0.65;
       const paH = maxH;
       const paW = paH * deviceShape.aspectRatio;
@@ -119,7 +133,6 @@ export async function generateCompositePreview(
       // Logo Cutout
       if (deviceShape.logoCutout) {
         const lw = paW * deviceShape.logoCutout.width;
-        const lh = paH * deviceShape.logoCutout.height;
         const lx = paX + (paW * deviceShape.logoCutout.x);
         const ly = paY + (paH * deviceShape.logoCutout.y);
         
@@ -237,7 +250,7 @@ export async function generateCompositePreview(
           }
           
           for (let i = 0; i < splitPanels; i++) {
-            const hScale = heights[i];
+            const hScale = heights[i]!;
             const removedH = (paH - (paH * hScale)) / 2;
             if (removedH > 0) {
               ctx.fillRect(paX + (step * i), paY - 20, step, removedH + 20);
@@ -273,7 +286,6 @@ export async function generateCompositePreview(
       const paY = canvas.height * template.printArea.y;
       const paW = canvas.width * template.printArea.width;
       const paH = canvas.height * template.printArea.height;
-      const borderRadius = 0;
 
       // 5. Draw user image inside the print area
       ctx.save();

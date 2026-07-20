@@ -13,7 +13,7 @@ export function DeviceSelector({ selectedDeviceId, onSelectDevice }: DeviceSelec
   const [search, setSearch] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const selectedDevice = deviceModels.find((d) => d.id === selectedDeviceId) || deviceModels[0];
+  const selectedDevice = (deviceModels.find((d) => d.id === selectedDeviceId) ?? deviceModels[0])!;
 
   const filteredDevices = deviceModels.filter((d) =>
     d.name.toLowerCase().includes(search.toLowerCase())
