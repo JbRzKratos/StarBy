@@ -35,8 +35,8 @@ export function SplitPosterVisualizerMobile() {
   // Layout Engine
   const panelsData = useMemo(() => {
     const data = [];
-    const baseWidth = orientation === 'vertical' || layoutStyle !== 'classic' ? 800 : 450;
-    const baseHeight = orientation === 'vertical' || layoutStyle !== 'classic' ? 450 : 800;
+    const baseWidth = orientation === 'vertical' || layoutStyle !== 'classic' ? 280 : 160;
+    const baseHeight = orientation === 'vertical' || layoutStyle !== 'classic' ? 160 : 280;
 
     if (layoutStyle === 'classic') {
       const isV = orientation === 'vertical';
@@ -274,7 +274,7 @@ export function SplitPosterVisualizerMobile() {
       </div>
 
       {/* Visualizer Area */}
-      <div className="bg-graphite border border-smoke rounded-lg p-8 md:p-12 overflow-hidden flex flex-col items-center justify-center min-h-[600px] relative">
+      <div className="bg-graphite border border-smoke rounded-lg p-4 md:p-8 overflow-hidden flex flex-col items-center justify-center min-h-[400px] relative w-full">
         {/* Dynamic Container depending on layout */}
         <div
           ref={panelsRef}
