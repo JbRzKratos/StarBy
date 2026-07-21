@@ -141,14 +141,18 @@ export function CustomizerCanvas({
           if (filters && printStyle && printStyle !== 'standard') {
             if (printStyle === 'vintage') {
               if (filters.Sepia) userImg.filters.push(new filters.Sepia());
-              if (filters.Brightness) userImg.filters.push(new filters.Brightness({ brightness: -0.05 }));
+              if (filters.Brightness)
+                userImg.filters.push(new filters.Brightness({ brightness: -0.05 }));
               if (filters.Contrast) userImg.filters.push(new filters.Contrast({ contrast: 0.1 }));
             } else if (printStyle === 'metallic') {
-              if (filters.Saturation) userImg.filters.push(new filters.Saturation({ saturation: -1 }));
-              if (filters.Brightness) userImg.filters.push(new filters.Brightness({ brightness: 0.2 }));
+              if (filters.Saturation)
+                userImg.filters.push(new filters.Saturation({ saturation: -1 }));
+              if (filters.Brightness)
+                userImg.filters.push(new filters.Brightness({ brightness: 0.2 }));
               if (filters.Contrast) userImg.filters.push(new filters.Contrast({ contrast: 0.2 }));
             } else if (printStyle === 'embroidered') {
-              if (filters.Saturation) userImg.filters.push(new filters.Saturation({ saturation: -0.3 }));
+              if (filters.Saturation)
+                userImg.filters.push(new filters.Saturation({ saturation: -0.3 }));
               if (filters.Contrast) userImg.filters.push(new filters.Contrast({ contrast: 0.4 }));
             }
             userImg.applyFilters();
