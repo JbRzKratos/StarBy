@@ -28,7 +28,7 @@ export function CustomizerCanvas({
   const containerRef = useRef<HTMLDivElement>(null);
   const fabricRef = useRef<unknown>(null);
 
-  const { splitStyle, splitOrientation, splitPanels, splitGridCols, splitGridRows } =
+  const { splitStyle, splitOrientation, splitPanels, splitGridCols, splitGridRows, printStyle } =
     useCustomizerStore();
 
   useEffect(() => {
@@ -135,6 +135,24 @@ export function CustomizerCanvas({
             cornerSize: 12,
             transparentCorners: false,
           });
+
+          // Apply print style filters
+          const filters = (fabric as any).Image.filters;
+          if (filters && printStyle && printStyle !== 'standard') {
+            if (printStyle === 'vintage') {
+              if (filters.Sepia) userImg.filters.push(new filters.Sepia());
+              if (filters.Brightness) userImg.filters.push(new filters.Brightness({ brightness: -0.05 }));
+              if (filters.Contrast) userImg.filters.push(new filters.Contrast({ contrast: 0.1 }));
+            } else if (printStyle === 'metallic') {
+              if (filters.Saturation) userImg.filters.push(new filters.Saturation({ saturation: -1 }));
+              if (filters.Brightness) userImg.filters.push(new filters.Brightness({ brightness: 0.2 }));
+              if (filters.Contrast) userImg.filters.push(new filters.Contrast({ contrast: 0.2 }));
+            } else if (printStyle === 'embroidered') {
+              if (filters.Saturation) userImg.filters.push(new filters.Saturation({ saturation: -0.3 }));
+              if (filters.Contrast) userImg.filters.push(new filters.Contrast({ contrast: 0.4 }));
+            }
+            userImg.applyFilters();
+          }
 
           if (template.printArea.rotation) {
             userImg.rotate(template.printArea.rotation);
@@ -748,6 +766,7 @@ export function CustomizerCanvas({
     splitPanels,
     splitGridCols,
     splitGridRows,
+    printStyle,
   ]);
 
   return (

@@ -83,12 +83,25 @@ export function NavigationDesktop() {
         <div className="flex items-center gap-4">
           <button
             onClick={toggleCart}
-            className="relative font-mono text-caption uppercase tracking-widest text-pearl hover:text-cobalt transition-colors"
+            className="relative text-pearl hover:text-cobalt transition-colors flex items-center justify-center w-10 h-10"
             aria-label="Open cart"
           >
-            Cart
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
             {mounted && totalItems() > 0 && (
-              <span className="absolute -top-2 -right-4 w-4 h-4 bg-cobalt text-bone text-[10px] rounded-full flex items-center justify-center">
+              <span className="absolute top-1 right-0 w-4 h-4 bg-cobalt text-bone text-[10px] rounded-full flex items-center justify-center">
                 {totalItems()}
               </span>
             )}

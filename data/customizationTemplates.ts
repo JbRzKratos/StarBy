@@ -31,8 +31,8 @@ export const templates: Record<string, CustomizationTemplate> = {
     printArea: {
       x: 0.35,
       y: 0.28,
-      width: 0.30,
-      height: 0.30,
+      width: 0.3,
+      height: 0.3,
     },
     blendMode: 'source-over',
   },
@@ -71,9 +71,9 @@ export const templates: Record<string, CustomizationTemplate> = {
     mockupImage: '/images/hero/stationery.png', // Fallback to hero image
     printArea: {
       x: 0.38,
-      y: 0.30,
+      y: 0.3,
       width: 0.35,
-      height: 0.50,
+      height: 0.5,
       rotation: -26, // Steeper isometric angle to match the notebook cover
     },
   },

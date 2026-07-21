@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useCustomizerStore } from '@/store/customizer';
 import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { validateImage, fileToDataUrl } from '@/components/customizer-hub/CustomizerHub.shared';
 import { DeviceSelector } from './DeviceSelector';
+import { PrintStyleSelector } from './print-style-selector';
+import { copyShareUrl } from '@/lib/utils/share-config';
 
 // Dynamically import the canvas to avoid SSR issues
 const CustomizerCanvas = dynamic(
@@ -20,6 +22,7 @@ const CustomizerCanvas = dynamic(
 export function CustomizerDesktop({ productId }: { productId: string }) {
   const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } =
     useCustomizerStore();
+  const { printStyle, setPrintStyle } = useCustomizerStore();
   const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useCartStore((s) => s.setCartOpen);
@@ -27,6 +30,8 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>(product?.sizes?.[0] || 'M');
   const [selectedColor] = useState<string>('#0E0E0F');
+  const [shareCopied, setShareCopied] = useState(false);
+  const { loadFromShareHash } = useCustomizerStore();
   const {
     splitStyle,
     splitOrientation,
@@ -39,6 +44,26 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
     setSplitGrid,
   } = useCustomizerStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load config from URL hash if someone opened a shared link
+  useEffect(() => {
+    loadFromShareHash();
+  }, [loadFromShareHash]);
+
+  const handleShare = async () => {
+    const copied = await copyShareUrl({
+      splitStyle,
+      splitOrientation,
+      splitPanels,
+      splitGridCols,
+      splitGridRows,
+      printStyle,
+    });
+    if (copied) {
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2500);
+    }
+  };
 
   const handleInlineUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -70,7 +95,37 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
             {product?.name || 'Design Studio'}
           </h1>
         </div>
-        {product && <p className="font-mono text-pearl text-body-lg">From ₹{product.basePrice}</p>}
+        <div className="flex items-center gap-4">
+          {product && (
+            <p className="font-mono text-pearl text-body-lg">From ₹{product.basePrice}</p>
+          )}
+          <button
+            onClick={() => void handleShare()}
+            className={`flex items-center gap-2 px-4 py-2 border font-mono text-[10px] uppercase tracking-widest transition-colors rounded-sm ${
+              shareCopied
+                ? 'border-cobalt bg-cobalt/10 text-cobalt'
+                : 'border-smoke text-pearl hover:border-cobalt hover:text-cobalt'
+            }`}
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            {shareCopied ? 'Link Copied!' : 'Share Design'}
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -277,6 +332,9 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
               )}
             </div>
           )}
+
+          {/* Print Style Selector */}
+          {uploadedImage && <PrintStyleSelector value={printStyle} onChange={setPrintStyle} />}
 
           {/* Design Controls */}
           {uploadedImage && (

@@ -12,23 +12,52 @@ function MobileProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.categorySlug}/${product.slug || product.id}`}
-      className="group flex flex-col gap-3 col-span-1"
+      className="group flex flex-col gap-0 col-span-1"
+      style={{ perspective: '800px' }}
     >
-      <div className="relative aspect-[3/4] overflow-hidden bg-smoke/5 rounded-sm">
-        <Image
-          src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.png'}
-          alt={product.name}
-          fill
-          className="object-cover"
-          sizes="50vw"
-        />
-        {product.customizable && (
-          <div className="absolute top-2 left-2 bg-charcoal text-bone px-2 py-0.5 text-[8px] uppercase font-mono tracking-widest z-10">
-            Custom
-          </div>
-        )}
+      {/* 3D flip wrapper */}
+      <div
+        className="relative aspect-[3/4] overflow-visible [&:hover]:![transform:rotateY(180deg)] [&:active]:![transform:rotateY(180deg)]"
+        style={{
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.6s cubic-bezier(0.4,0,0.2,1)',
+        }}
+      >
+        {/* Front face */}
+        <div
+          className="absolute inset-0 overflow-hidden bg-smoke/5 rounded-sm"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <Image
+            src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.png'}
+            alt={product.name}
+            fill
+            className="object-cover"
+            sizes="50vw"
+          />
+          {product.customizable && (
+            <div className="absolute top-2 left-2 bg-charcoal text-bone px-2 py-0.5 text-[8px] uppercase font-mono tracking-widest z-[1]">
+              Custom
+            </div>
+          )}
+        </div>
+
+        {/* Back face */}
+        <div
+          className="absolute inset-0 bg-graphite border border-smoke/40 rounded-sm flex flex-col items-center justify-center gap-3 px-4"
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+        >
+          <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest text-center">
+            {product.name}
+          </h3>
+          <p className="font-display text-xl text-bone">₹{product.basePrice}</p>
+          <span className="w-full text-center bg-cobalt text-bone font-mono text-[9px] uppercase tracking-widest py-2.5">
+            {product.customizable ? 'Customize' : 'View'}
+          </span>
+        </div>
       </div>
-      <div className="flex flex-col gap-0.5">
+
+      <div className="flex flex-col gap-0.5 mt-3">
         <h3 className="font-mono text-[11px] text-bone uppercase tracking-widest truncate">
           {product.name}
         </h3>
@@ -91,7 +120,7 @@ export function ShopMobile({ category, products }: { category: string; products:
   return (
     <main className="min-h-screen bg-charcoal text-bone relative pb-24">
       {/* Sticky Header with Categories */}
-      <header className="sticky top-0 left-0 w-full z-40 bg-charcoal/95 backdrop-blur-md border-b border-smoke/20 pt-28">
+      <header className="sticky top-0 left-0 w-full z-10 bg-charcoal/95 backdrop-blur-md border-b border-smoke/20 pt-28">
         <div className="px-5 pb-4 flex items-center justify-between">
           <h1 className="font-display text-4xl tracking-tighter uppercase">
             {activeTab === 'all' ? 'Catalog' : activeTab}
@@ -127,7 +156,7 @@ export function ShopMobile({ category, products }: { category: string; products:
         </div>
 
         {/* Scrollable Category Tabs */}
-        <div className="px-5 pb-3 flex items-center gap-6 overflow-x-auto hide-scrollbar snap-x">
+        <div className="px-5 pb-3 flex items-center gap-6 overflow-x-auto hide-scrollbar snap-x scroll-px-5">
           {SHOP_CATEGORIES.map((tab) => (
             <button
               key={tab.id}
@@ -165,7 +194,7 @@ export function ShopMobile({ category, products }: { category: string; products:
             </p>
 
             {displayProducts.length > 0 ? (
-              <div className="grid grid-cols-2 gap-x-4 gap-y-10">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-6">
                 {displayProducts.map((product) => (
                   <MobileProductCard key={`prod-${product.id}`} product={product} />
                 ))}
@@ -208,13 +237,19 @@ export function ShopMobile({ category, products }: { category: string; products:
       />
       <div
         className={`fixed bottom-0 left-0 right-0 bg-graphite border-t border-smoke/20 z-50 rounded-t-3xl p-6 pb-12 transition-transform duration-400 ease-out ${
-          isFilterOpen ? 'translate-y-0' : 'translate-y-full'
+          isFilterOpen
+            ? 'translate-y-0 pointer-events-auto'
+            : 'translate-y-full pointer-events-none'
         }`}
       >
         <div className="w-12 h-1 bg-smoke/30 rounded-full mx-auto mb-8" />
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-display text-2xl">Filter & Sort</h2>
-          <button onClick={() => setIsFilterOpen(false)} className="p-2 text-ash hover:text-bone">
+          <button
+            onClick={() => setIsFilterOpen(false)}
+            className="w-8 h-8 rounded-full bg-smoke flex items-center justify-center text-bone hover:bg-ash transition-colors"
+            aria-label="Close filters"
+          >
             ✕
           </button>
         </div>

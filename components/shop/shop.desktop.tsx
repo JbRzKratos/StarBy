@@ -12,23 +12,53 @@ function DesktopProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.categorySlug}/${product.slug || product.id}`}
-      className="group flex flex-col gap-4"
+      className="group flex flex-col gap-0"
+      style={{ perspective: '1000px' }}
     >
-      <div className="relative aspect-[3/4] overflow-hidden bg-smoke/5 rounded-md">
-        <Image
-          src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.png'}
-          alt={product.name}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
-          sizes="(max-width: 1024px) 33vw, 25vw"
-        />
-        {product.customizable && (
-          <div className="absolute top-4 left-4 bg-charcoal text-bone px-3 py-1 text-[10px] uppercase font-mono tracking-widest z-10">
-            Customizable
-          </div>
-        )}
+      {/* 3D flip wrapper */}
+      <div
+        className="relative aspect-[3/4] overflow-visible [&:hover]:![transform:rotateY(180deg)]"
+        style={{
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.7s cubic-bezier(0.4,0,0.2,1)',
+        }}
+      >
+        {/* Front face */}
+        <div
+          className="absolute inset-0 overflow-hidden bg-smoke/5 rounded-md"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <Image
+            src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.png'}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 1024px) 33vw, 25vw"
+          />
+          {product.customizable && (
+            <div className="absolute top-4 left-4 bg-charcoal text-bone px-3 py-1 text-[10px] uppercase font-mono tracking-widest z-[1]">
+              Customizable
+            </div>
+          )}
+        </div>
+
+        {/* Back face */}
+        <div
+          className="absolute inset-0 bg-graphite border border-smoke/40 rounded-md flex flex-col items-center justify-center gap-4 px-6"
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+        >
+          <h3 className="font-mono text-sm text-bone uppercase tracking-widest text-center">
+            {product.name}
+          </h3>
+          <p className="font-display text-2xl text-bone">₹{product.basePrice}</p>
+          <span className="mt-2 w-full text-center bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest py-3">
+            {product.customizable ? 'Customize' : 'View Product'}
+          </span>
+        </div>
       </div>
-      <div className="flex flex-col gap-1">
+
+      {/* Name / price below card */}
+      <div className="flex flex-col gap-1 mt-4">
         <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-cobalt transition-colors">
           {product.name}
         </h3>

@@ -5,6 +5,7 @@ import { useRef, useState, useMemo } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { SplitPosterPanel } from '../split-poster-panel';
+import { ArRoomPreview } from '../ar-room-preview';
 
 type LayoutStyle = 'classic' | 'stepped' | 'grid';
 type Orientation = 'horizontal' | 'vertical';
@@ -30,6 +31,7 @@ export function SplitPosterVisualizerDesktop() {
     rows: 2,
   });
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [arOpen, setArOpen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<HTMLDivElement>(null);
@@ -334,10 +336,39 @@ export function SplitPosterVisualizerDesktop() {
           </div>
           <span className="font-mono text-caption text-cobalt uppercase">Browse →</span>
         </div>
+        <button
+          onClick={() => setArOpen(true)}
+          className="px-6 py-4 border border-smoke bg-graphite text-pearl font-mono text-caption uppercase tracking-widest hover:border-cobalt hover:text-cobalt transition-colors rounded-sm shrink-0 flex items-center gap-2"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+          View in Room
+        </button>
         <button className="px-10 py-4 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors rounded-sm shrink-0">
           Order Print — ₹{129 + (panelsData.length - 2) * 50}
         </button>
       </div>
+
+      <ArRoomPreview
+        panels={panelsData.map((p) => ({
+          ...p,
+          gradient: sampleGradient,
+          imageSrc: uploadedImage,
+        }))}
+        isOpen={arOpen}
+        onClose={() => setArOpen(false)}
+      />
     </div>
   );
 }
