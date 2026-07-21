@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { useCartStore } from '@/lib/stores/cart-store';
+import { usePrice } from '@/lib/hooks/usePrice';
 
 type Step = 'shipping' | 'payment' | 'review';
 
 export default function CheckoutPage() {
   const [step, setStep] = useState<Step>('shipping');
   const totalPrice = useCartStore((s) => s.totalPrice);
+  const { formatPrice } = usePrice();
 
   const steps: Step[] = ['shipping', 'payment', 'review'];
 
@@ -152,17 +154,25 @@ export default function CheckoutPage() {
           {/* Summary */}
           <div className="bg-graphite border border-smoke rounded-lg p-6 h-fit sticky top-24">
             <h2 className="font-display text-body-lg text-bone mb-4">Summary</h2>
-            <div className="flex justify-between mb-3">
-              <span className="font-mono text-caption text-pearl">Subtotal</span>
-              <span className="font-mono text-body-sm text-bone">₹{totalPrice()}</span>
+            <div className="flex justify-between items-center pb-4 border-b border-smoke/30">
+              <span className="font-mono text-caption uppercase tracking-widest text-ash">
+                Subtotal
+              </span>
+              <span className="font-mono text-body-sm text-bone">{formatPrice(totalPrice())}</span>
             </div>
-            <div className="flex justify-between mb-3">
-              <span className="font-mono text-caption text-pearl">Shipping</span>
-              <span className="font-mono text-body-sm text-bone">₹0</span>
+            <div className="flex justify-between items-center pb-4 border-b border-smoke/30">
+              <span className="font-mono text-caption uppercase tracking-widest text-ash">
+                Shipping
+              </span>
+              <span className="font-mono text-body-sm text-bone">{formatPrice(0)}</span>
             </div>
-            <div className="flex justify-between pt-4 border-t border-smoke">
-              <span className="font-display text-body-md text-bone">Total</span>
-              <span className="font-mono text-display-sm text-bone">₹{totalPrice()}</span>
+            <div className="flex justify-between items-center pt-2">
+              <span className="font-mono text-body-md uppercase tracking-widest text-bone">
+                Total
+              </span>
+              <span className="font-mono text-display-sm text-bone">
+                {formatPrice(totalPrice())}
+              </span>
             </div>
           </div>
         </div>

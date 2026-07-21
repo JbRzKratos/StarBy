@@ -67,6 +67,11 @@
   [role='button'] {
     cursor: none;
   }
+
+  body.ar-active,
+  body.ar-active * {
+    cursor: auto !important;
+  }
 }
 
 @layer components {

@@ -3,13 +3,16 @@
 import { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { OFFER_STRING } from './offer-banner.shared';
+import { getOfferString } from './offer-banner.shared';
 import { ScrollTriggerWrapper } from '@/components/animations/scroll-trigger-wrapper';
+import { usePrice } from '@/lib/hooks/usePrice';
 
 export function OfferBannerDesktop() {
   const container = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const [isDismissed, setIsDismissed] = useState(true); // Default true to prevent hydration mismatch
+  const { formatPrice } = usePrice();
+  const offerString = getOfferString(formatPrice);
 
   useEffect(() => {
     // Check session storage after mount
@@ -87,10 +90,10 @@ export function OfferBannerDesktop() {
           className="flex whitespace-nowrap font-mono text-[9px] uppercase tracking-widest"
         >
           {/* We duplicate the string twice to create a seamless loop */}
-          <span className="px-4">{OFFER_STRING}</span>
-          <span className="px-4">{OFFER_STRING}</span>
-          <span className="px-4">{OFFER_STRING}</span>
-          <span className="px-4">{OFFER_STRING}</span>
+          <span className="px-4">{offerString}</span>
+          <span className="px-4">{offerString}</span>
+          <span className="px-4">{offerString}</span>
+          <span className="px-4">{offerString}</span>
         </div>
 
         <button

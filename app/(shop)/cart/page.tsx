@@ -1,7 +1,9 @@
 'use client';
 
+import { useRef } from 'react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/stores/cart-store';
+import { usePrice } from '@/lib/hooks/usePrice';
 
 export default function CartPage() {
   const items = useCartStore((s) => s.items);
@@ -9,9 +11,11 @@ export default function CartPage() {
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const totalPrice = useCartStore((s) => s.totalPrice);
   const totalItems = useCartStore((s) => s.totalItems);
+  const { formatPrice } = usePrice();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <main className="pt-36 md:pt-40 pb-20">
+    <main className="pt-36 md:pt-40 pb-20" ref={containerRef}>
       <div className="section-container max-w-4xl">
         <div className="mb-10">
           <span className="overline-label block mb-3">Shopping</span>
@@ -73,9 +77,9 @@ export default function CartPage() {
                       </button>
                     </div>
                   </div>
-                  <span className="font-mono text-body-sm text-bone">
-                    ₹{item.price * item.quantity}
-                  </span>
+                  <div className="font-mono text-body-sm text-bone">
+                    {formatPrice(item.price * item.quantity)}
+                  </div>
                 </div>
               ))}
             </div>
@@ -84,18 +88,26 @@ export default function CartPage() {
             <div className="bg-graphite border border-smoke rounded-lg p-6 h-fit sticky top-24">
               <h2 className="font-display text-body-lg text-bone mb-6">Order Summary</h2>
               <div className="flex flex-col gap-3 mb-6 pb-6 border-b border-smoke">
-                <div className="flex justify-between">
-                  <span className="font-mono text-caption text-pearl">Subtotal</span>
-                  <span className="font-mono text-body-sm text-bone">₹{totalPrice()}</span>
+                <div className="flex justify-between items-center pb-4 border-b border-smoke/30">
+                  <span className="font-mono text-caption uppercase tracking-widest text-ash">
+                    Subtotal
+                  </span>
+                  <span className="font-mono text-body-sm text-bone">
+                    {formatPrice(totalPrice())}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-mono text-caption text-pearl">Shipping</span>
                   <span className="font-mono text-body-sm text-bone">Calculated at checkout</span>
                 </div>
               </div>
-              <div className="flex justify-between mb-6">
-                <span className="font-display text-body-md text-bone">Total</span>
-                <span className="font-mono text-display-sm text-bone">₹{totalPrice()}</span>
+              <div className="flex justify-between items-center pt-2 mb-6">
+                <span className="font-mono text-body-md uppercase tracking-widest text-bone">
+                  Total
+                </span>
+                <span className="font-mono text-display-sm text-bone">
+                  {formatPrice(totalPrice())}
+                </span>
               </div>
               <Link
                 href="/checkout"

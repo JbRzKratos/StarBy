@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 
 interface Panel {
   width: string;
@@ -17,7 +18,53 @@ interface ArRoomPreviewProps {
   onClose: () => void;
 }
 
-export function ArRoomPreview({ panels, isOpen, onClose }: ArRoomPreviewProps) {
+const WebXRPreview = dynamic(() => import('./webxr-preview').then((m) => m.WebXRPreview), {
+  ssr: false,
+});
+
+export function ArRoomPreview(props: ArRoomPreviewProps) {
+  const [xrSupported, setXrSupported] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (props.isOpen) {
+      document.body.classList.add('ar-active');
+    } else {
+      document.body.classList.remove('ar-active');
+    }
+
+    if (!props.isOpen) return;
+
+    if (navigator.xr && navigator.xr.isSessionSupported) {
+      navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+        setXrSupported(supported);
+      });
+    } else {
+      setXrSupported(false);
+    }
+
+    return () => {
+      document.body.classList.remove('ar-active');
+    };
+  }, [props.isOpen]);
+
+  if (!props.isOpen) return null;
+
+  if (xrSupported === null) {
+    return (
+      <div className="fixed inset-0 z-[200] bg-charcoal flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-smoke border-t-cobalt rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (xrSupported) {
+    return <WebXRPreview {...props} />;
+  }
+
+  return <FallbackARPreview {...props} />;
+}
+
+function FallbackARPreview({ panels, isOpen, onClose }: ArRoomPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const streamRef = useRef<MediaStream | null>(null);

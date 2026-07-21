@@ -7,6 +7,7 @@ import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { validateImage, fileToDataUrl } from '@/components/customizer-hub/CustomizerHub.shared';
 import { DeviceSelector } from './DeviceSelector';
+import { usePrice } from '@/lib/hooks/usePrice';
 import { PrintStyleSelector } from './print-style-selector';
 import { copyShareUrl } from '@/lib/utils/share-config';
 
@@ -26,6 +27,7 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
   const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useCartStore((s) => s.setCartOpen);
+  const { formatPrice } = usePrice();
 
   const [error, setError] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>(product?.sizes?.[0] || 'M');
@@ -97,7 +99,9 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
         </div>
         <div className="flex items-center gap-4">
           {product && (
-            <p className="font-mono text-pearl text-body-lg">From ₹{product.basePrice}</p>
+            <p className="font-mono text-pearl text-body-lg">
+              From {formatPrice(product.basePrice)}
+            </p>
           )}
           <button
             onClick={() => void handleShare()}
@@ -396,7 +400,7 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
               }`}
             >
               <span>Add to Cart</span>
-              <span>₹{product?.basePrice || 0}</span>
+              <span>{formatPrice(product?.basePrice || 0)}</span>
             </button>
           </div>
         </div>

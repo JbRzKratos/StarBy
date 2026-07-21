@@ -5,6 +5,9 @@ import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
 import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
+import { useWishlistStore } from '@/lib/stores/wishlist-store';
+import { useCurrencyStore, type CurrencyCode } from '@/lib/stores/currency-store';
+import { useSearchStore } from '@/lib/stores/search-store';
 
 import { OfferBannerMobile } from '@/components/home/offer-banner/offer-banner.mobile';
 
@@ -22,6 +25,12 @@ export function NavigationMobile() {
   const [isOpen, setIsOpen] = useState(false);
   const totalItems = useCartStore((s) => s.totalItems);
   const toggleCart = useCartStore((s) => s.toggleCart);
+
+  const setWishlistOpen = useWishlistStore((s) => s.setWishlistOpen);
+  const wishlistCount = useWishlistStore((s) => s.items.length);
+  const setSearchOpen = useSearchStore((s) => s.setSearchOpen);
+  const { currency, setCurrency } = useCurrencyStore();
+  const currencies: CurrencyCode[] = ['INR', 'USD', 'EUR', 'GBP'];
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -110,7 +119,45 @@ export function NavigationMobile() {
             StarBy
           </Link>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="text-pearl hover:text-cobalt transition-colors w-10 h-10 flex items-center justify-center"
+              aria-label="Search"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+            <button
+              onClick={() => setWishlistOpen(true)}
+              className="relative text-pearl hover:text-ember transition-colors flex items-center justify-center w-10 h-10 hidden xs:flex"
+              aria-label="Open wishlist"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              {mounted && wishlistCount > 0 && (
+                <span className="absolute top-1 right-0 w-4 h-4 bg-ember text-bone text-[10px] rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </button>
             <button
               onClick={toggleCart}
               className="relative text-pearl hover:text-cobalt transition-colors flex items-center justify-center w-10 h-10"
@@ -195,7 +242,37 @@ export function NavigationMobile() {
           </div>
 
           <div className="mt-auto">
-            <p className="font-mono text-caption text-pearl uppercase tracking-widest">
+            <div className="flex flex-col gap-4 mb-6 pt-6 border-t border-smoke/30">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-caption text-pearl uppercase">Currency</span>
+                <div className="flex gap-2">
+                  {currencies.map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => setCurrency(c)}
+                      className={`px-2 py-1 text-[10px] font-mono border rounded ${currency === c ? 'border-cobalt text-cobalt' : 'border-smoke/50 text-pearl'}`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button className="font-mono text-caption uppercase text-bone flex items-center gap-2 hover:text-cobalt transition-colors">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Log In / Register</span>
+              </button>
+            </div>
+            <p className="font-mono text-[10px] text-pearl/50 uppercase tracking-widest">
               Your story, engineered.
             </p>
           </div>

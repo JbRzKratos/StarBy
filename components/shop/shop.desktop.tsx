@@ -7,8 +7,10 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
 import { CustomizerPanelDesktop } from '../customizer-hub/CustomizerHub.desktop';
+import { usePrice } from '@/lib/hooks/usePrice';
 
 function DesktopProductCard({ product }: { product: Product }) {
+  const { formatPrice } = usePrice();
   return (
     <Link
       href={`/products/${product.categorySlug}/${product.slug || product.id}`}
@@ -50,7 +52,7 @@ function DesktopProductCard({ product }: { product: Product }) {
           <h3 className="font-mono text-sm text-bone uppercase tracking-widest text-center">
             {product.name}
           </h3>
-          <p className="font-display text-2xl text-bone">₹{product.basePrice}</p>
+          <p className="font-display text-2xl text-bone">{formatPrice(product.basePrice)}</p>
           <span className="mt-2 w-full text-center bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest py-3">
             {product.customizable ? 'Customize' : 'View Product'}
           </span>
@@ -63,7 +65,8 @@ function DesktopProductCard({ product }: { product: Product }) {
           {product.name}
         </h3>
         <p className="font-display text-lg text-pearl">
-          {product.customizable ? 'from ' : ''}₹{product.basePrice}
+          {product.customizable ? 'from ' : ''}
+          {formatPrice(product.basePrice)}
         </p>
       </div>
     </Link>

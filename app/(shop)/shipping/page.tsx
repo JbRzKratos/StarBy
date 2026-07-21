@@ -1,18 +1,42 @@
-import type { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Shipping',
-  description: 'StarBy shipping information, delivery times, and policies.',
-};
+import { usePrice } from '@/lib/hooks/usePrice';
 
-const shippingTiers = [
-  { region: 'Domestic (India)', standard: '3-5 days', express: '1-2 days', free: '₹999+' },
-  { region: 'Asia Pacific', standard: '7-10 days', express: '3-5 days', free: '₹2499+' },
-  { region: 'Europe & Americas', standard: '10-14 days', express: '5-7 days', free: '₹3999+' },
-  { region: 'Rest of World', standard: '12-18 days', express: '7-10 days', free: '₹4999+' },
-];
+// Metadata must be in a separate layout.tsx or a server component if using 'use client'
+// For this page, we will just use a generic title tag from the root layout,
+// or we could split this into a server layout and client page.
+// Given the simplicity, we'll just omit the export const metadata here for now since it's a client component.
 
 export default function ShippingPage() {
+  const { formatPrice } = usePrice();
+
+  const shippingTiers = [
+    {
+      region: 'Domestic (India)',
+      standard: '3-5 days',
+      express: '1-2 days',
+      free: `${formatPrice(999)}+`,
+    },
+    {
+      region: 'Asia Pacific',
+      standard: '7-10 days',
+      express: '3-5 days',
+      free: `${formatPrice(2499)}+`,
+    },
+    {
+      region: 'Europe & Americas',
+      standard: '10-14 days',
+      express: '5-7 days',
+      free: `${formatPrice(3999)}+`,
+    },
+    {
+      region: 'Rest of World',
+      standard: '12-18 days',
+      express: '7-10 days',
+      free: `${formatPrice(4999)}+`,
+    },
+  ];
+
   return (
     <main className="pt-36 md:pt-40 pb-20">
       <div className="section-container max-w-4xl">

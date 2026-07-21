@@ -6,6 +6,7 @@ import { useCustomizerStore } from '@/store/customizer';
 import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { validateImage, fileToDataUrl } from '@/components/customizer-hub/CustomizerHub.shared';
+import { usePrice } from '@/lib/hooks/usePrice';
 import { DeviceSelector } from './DeviceSelector';
 import { PrintStyleSelector } from './print-style-selector';
 import { copyShareUrl } from '@/lib/utils/share-config';
@@ -23,6 +24,7 @@ export function CustomizerMobile({ productId }: { productId: string }) {
   const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useCartStore((s) => s.setCartOpen);
+  const { formatPrice } = usePrice();
 
   const [error, setError] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>(product?.sizes?.[0] || 'M');
@@ -121,7 +123,7 @@ export function CustomizerMobile({ productId }: { productId: string }) {
         <div className="flex justify-between items-end">
           <h1 className="font-display text-3xl font-bold text-bone uppercase">{product?.name}</h1>
           <div className="flex items-center gap-3">
-            <p className="font-mono text-pearl">₹{product?.basePrice}</p>
+            <p className="font-mono text-pearl">{formatPrice(product?.basePrice || 0)}</p>
             <button
               onClick={() => void handleShare()}
               className={`flex items-center gap-1.5 px-3 py-1.5 border font-mono text-[9px] uppercase tracking-widest transition-colors rounded-sm ${

@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
+import { usePrice } from '@/lib/hooks/usePrice';
 import Link from 'next/link';
 import { products } from '@/data/products';
 
@@ -20,6 +21,7 @@ export function CartDrawer() {
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const totalPrice = useCartStore((s) => s.totalPrice);
   const totalItems = useCartStore((s) => s.totalItems());
+  const { formatPrice } = usePrice();
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -162,7 +164,7 @@ export function CartDrawer() {
           <div className="flex items-baseline gap-4 mb-8">
             <span className="font-mono text-body-lg text-pearl uppercase">Total</span>
             <span className="font-mono text-display-md text-bone tracking-normal">
-              ₹ {totalPrice()}
+              {formatPrice(totalPrice())}
             </span>
             <span className="font-mono text-caption text-ash uppercase ml-2">
               ({totalItems} items)
@@ -265,8 +267,8 @@ export function CartDrawer() {
                         <h3 className="font-display text-h4 text-bone truncate pr-4 capitalize">
                           {displayName}
                         </h3>
-                        <span className="font-mono text-body-sm text-bone shrink-0 tracking-normal">
-                          ₹ {item.price * item.quantity}
+                        <span className="font-mono text-body-sm text-pearl">
+                          {formatPrice(item.price * item.quantity)}
                         </span>
                       </div>
 

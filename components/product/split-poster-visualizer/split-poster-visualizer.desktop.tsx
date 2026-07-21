@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { SplitPosterPanel } from '../split-poster-panel';
 import { ArRoomPreview } from '../ar-room-preview';
+import { usePrice } from '@/lib/hooks/usePrice';
 
 type LayoutStyle = 'classic' | 'stepped' | 'grid';
 type Orientation = 'horizontal' | 'vertical';
@@ -36,6 +37,8 @@ export function SplitPosterVisualizerDesktop() {
   const containerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { formatPrice } = usePrice();
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -356,7 +359,7 @@ export function SplitPosterVisualizerDesktop() {
           View in Room
         </button>
         <button className="px-10 py-4 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors rounded-sm shrink-0">
-          Order Print — ₹{129 + (panelsData.length - 2) * 50}
+          Order Print — {formatPrice(129 + (panelsData.length - 2) * 50)}
         </button>
       </div>
 

@@ -3,7 +3,8 @@
 import { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { OFFER_STRING } from './offer-banner.shared';
+import { getOfferString } from './offer-banner.shared';
+import { usePrice } from '@/lib/hooks/usePrice';
 import { ScrollTriggerWrapper } from '@/components/animations/scroll-trigger-wrapper';
 
 export function OfferBannerMobile() {
@@ -11,6 +12,8 @@ export function OfferBannerMobile() {
   const marqueeRef = useRef<HTMLDivElement>(null);
   const [isDismissed, setIsDismissed] = useState(true);
   const prefersReducedMotion = useRef(false);
+  const { formatPrice } = usePrice();
+  const offerString = getOfferString(formatPrice);
 
   useEffect(() => {
     if (sessionStorage.getItem('starby-offer-dismissed')) {
@@ -55,7 +58,7 @@ export function OfferBannerMobile() {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
       };
     },
-    { scope: container, dependencies: [isDismissed] },
+    { scope: container, dependencies: [isDismissed, offerString] },
   );
 
   if (isDismissed) return null;
@@ -71,13 +74,13 @@ export function OfferBannerMobile() {
           className={`flex whitespace-nowrap font-mono text-[8px] uppercase tracking-widest ${prefersReducedMotion.current ? 'justify-center w-full' : ''}`}
         >
           {prefersReducedMotion.current ? (
-            <span className="px-4 truncate">{OFFER_STRING.split(' ✦ ')[0]}</span>
+            <span className="px-4 truncate">{offerString.split(' ✦ ')[0]}</span>
           ) : (
             <>
-              <span className="px-4">{OFFER_STRING}</span>
-              <span className="px-4">{OFFER_STRING}</span>
-              <span className="px-4">{OFFER_STRING}</span>
-              <span className="px-4">{OFFER_STRING}</span>
+              <span className="px-4">{offerString}</span>
+              <span className="px-4">{offerString}</span>
+              <span className="px-4">{offerString}</span>
+              <span className="px-4">{offerString}</span>
             </>
           )}
         </div>

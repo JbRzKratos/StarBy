@@ -7,8 +7,10 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
 import { CustomizerPanelMobile } from '../customizer-hub/CustomizerHub.mobile';
+import { usePrice } from '@/lib/hooks/usePrice';
 
 function MobileProductCard({ product }: { product: Product }) {
+  const { formatPrice } = usePrice();
   return (
     <Link
       href={`/products/${product.categorySlug}/${product.slug || product.id}`}
@@ -50,7 +52,7 @@ function MobileProductCard({ product }: { product: Product }) {
           <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest text-center">
             {product.name}
           </h3>
-          <p className="font-display text-xl text-bone">₹{product.basePrice}</p>
+          <p className="font-display text-xl text-bone">{formatPrice(product.basePrice)}</p>
           <span className="w-full text-center bg-cobalt text-bone font-mono text-[9px] uppercase tracking-widest py-2.5">
             {product.customizable ? 'Customize' : 'View'}
           </span>
@@ -62,7 +64,8 @@ function MobileProductCard({ product }: { product: Product }) {
           {product.name}
         </h3>
         <p className="font-display text-sm text-pearl">
-          {product.customizable ? 'from ' : ''}₹{product.basePrice}
+          {product.customizable ? 'from ' : ''}
+          {formatPrice(product.basePrice)}
         </p>
       </div>
     </Link>
