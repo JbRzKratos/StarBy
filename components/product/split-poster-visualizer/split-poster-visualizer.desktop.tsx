@@ -7,6 +7,7 @@ import { gsap } from '@/lib/gsap-config';
 import { SplitPosterPanel } from '../split-poster-panel';
 import { ArRoomPreview } from '../ar-room-preview';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { ErrorBoundary } from '@/components/error-boundary';
 
 type LayoutStyle = 'classic' | 'stepped' | 'grid';
 type Orientation = 'horizontal' | 'vertical';
@@ -363,15 +364,17 @@ export function SplitPosterVisualizerDesktop() {
         </button>
       </div>
 
-      <ArRoomPreview
-        panels={panelsData.map((p) => ({
-          ...p,
-          gradient: sampleGradient,
-          imageSrc: uploadedImage,
-        }))}
-        isOpen={arOpen}
-        onClose={() => setArOpen(false)}
-      />
+      <ErrorBoundary>
+        <ArRoomPreview
+          panels={panelsData.map((p) => ({
+            ...p,
+            gradient: sampleGradient,
+            imageSrc: uploadedImage,
+          }))}
+          isOpen={arOpen}
+          onClose={() => setArOpen(false)}
+        />
+      </ErrorBoundary>
     </div>
   );
 }
