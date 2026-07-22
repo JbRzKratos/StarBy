@@ -31,7 +31,7 @@ function DesktopProductCard({ product }: { product: Product }) {
           style={{ backfaceVisibility: 'hidden' }}
         >
           <Image
-            src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.png'}
+            src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.webp'}
             alt={product.name}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"

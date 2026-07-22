@@ -1,0 +1,135 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Category {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  description  String
+  tagline      String
+  productCount Int      @default(0)
+  featured     Boolean  @default(false)
+  gradient     String
+  image        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Product {
+  id           String           @id @default(cuid())
+  slug         String           @unique
+  name         String
+  tagline      String
+  description  String
+  categorySlug String
+  basePrice    Float
+  customizable Boolean          @default(false)
+  tags         String[]
+  featured     Boolean          @default(false)
+  sizes        String[]
+  variants     ProductVariant[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model ProductVariant {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String
+  color     String
+  colorHex  String
+  price     Float
+  images    String[]
+  inStock   Boolean  @default(true)
+}
+
+model DeviceSkinTemplate {
+  id           String   @id
+  name         String
+  brand        String
+  type         String
+  aspectRatio  Float
+  borderRadius Float
+  cameraModule Json?
+  logoCutout   Json?
+  sPenSilo     Boolean  @default(false)
+  confidence   String
+  notes        String?
+  createdAt    DateTime @default(now())
+}
+
+model CustomizationTemplate {
+  id          String @id @default(cuid())
+  productId   String @unique
+  mockupImage String
+  printArea   Json
+  blendMode   String @default("source-over")
+}
+
+model User {
+  id        String             @id
+  email     String             @unique
+  fullName  String?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  addresses Address[]
+  orders    Order[]
+  designs   CustomizerDesign[]
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  street    String
+  city      String
+  state     String
+  zip       String
+  country   String   @default("India")
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String?
+  user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  total           Float
+  status          String      @default("processing")
+  paymentStatus   String      @default("paid")
+  shippingAddress Json
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id            String  @id @default(cuid())
+  orderId       String
+  order         Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId     String
+  variantId     String
+  quantity      Int
+  price         Float
+  size          String?
+  customization Json?
+}
+
+model CustomizerDesign {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  productId   String
+  canvasState Json
+  previewUrl  String?
+  title       String?  @default("My Design")
+  createdAt   DateTime @default(now())
+}

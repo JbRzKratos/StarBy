@@ -16,7 +16,7 @@ export interface CustomizationTemplate {
 export const templates: Record<string, CustomizationTemplate> = {
   'eclipse-tee': {
     productId: 'prod_002',
-    mockupImage: '/images/products/eclipse-tee.png',
+    mockupImage: '/images/products/eclipse-tee.webp',
     printArea: {
       x: 0.34, // Perfectly centered (0.34 + 0.32/2 = 0.5)
       y: 0.26, // Pushed down to sit cleanly below the collar
@@ -27,7 +27,7 @@ export const templates: Record<string, CustomizationTemplate> = {
   },
   'orbit-hoodie': {
     productId: 'prod_007', // Orbit Hoodie
-    mockupImage: '/images/products/orbit-hoodie.png',
+    mockupImage: '/images/products/orbit-hoodie.webp',
     printArea: {
       x: 0.35,
       y: 0.28,
@@ -38,7 +38,7 @@ export const templates: Record<string, CustomizationTemplate> = {
   },
   'phantom-skin': {
     productId: 'prod_022', // Phantom Skin
-    mockupImage: '/images/products/phantom-skin.png',
+    mockupImage: '/images/products/phantom-skin.webp',
     printArea: {
       x: 0.2,
       y: 0.1,
@@ -48,7 +48,7 @@ export const templates: Record<string, CustomizationTemplate> = {
   },
   'monolith-poster': {
     productId: 'prod_013', // Monolith Poster
-    mockupImage: '/images/products/monolith-poster.png',
+    mockupImage: '/images/products/monolith-poster.webp',
     printArea: {
       x: 0.1,
       y: 0.1,
@@ -58,7 +58,7 @@ export const templates: Record<string, CustomizationTemplate> = {
   },
   'prism-split': {
     productId: 'prod_018', // Prism Split
-    mockupImage: '/images/hero/split_posters.png', // Fallback to hero image for split posters
+    mockupImage: '/images/hero/split_posters.webp', // Fallback to hero image for split posters
     printArea: {
       x: 0.2,
       y: 0.2,
@@ -68,7 +68,7 @@ export const templates: Record<string, CustomizationTemplate> = {
   },
   'chronicle-diary': {
     productId: 'prod_032', // Chronicle Diary
-    mockupImage: '/images/hero/stationery.png', // Fallback to hero image
+    mockupImage: '/images/hero/stationery.webp', // Fallback to hero image
     printArea: {
       x: 0.38,
       y: 0.3,

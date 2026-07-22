@@ -18,7 +18,7 @@ export const categories: Category[] = [
     productCount: 24,
     featured: true,
     gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-    image: '/images/hero/tees.png',
+    image: '/images/hero/tees.webp',
   },
   {
     slug: 'hoodies',
@@ -28,7 +28,7 @@ export const categories: Category[] = [
     productCount: 16,
     featured: true,
     gradient: 'linear-gradient(135deg, #2d1b69 0%, #11998e 100%)',
-    image: '/images/hero/hoodies.png',
+    image: '/images/hero/hoodies.webp',
   },
   {
     slug: 'skins',
@@ -38,7 +38,7 @@ export const categories: Category[] = [
     productCount: 32,
     featured: true,
     gradient: 'linear-gradient(135deg, #0E0E0F 0%, #3B5EFF 100%)',
-    image: '/images/hero/skins.png',
+    image: '/images/hero/skins.webp',
   },
   {
     slug: 'posters',
@@ -48,7 +48,7 @@ export const categories: Category[] = [
     productCount: 18,
     featured: true,
     gradient: 'linear-gradient(135deg, #434343 0%, #1a1a2e 100%)',
-    image: '/images/hero/posters.png',
+    image: '/images/hero/posters.webp',
   },
   {
     slug: 'split-posters',
@@ -58,7 +58,7 @@ export const categories: Category[] = [
     productCount: 8,
     featured: true,
     gradient: 'linear-gradient(135deg, #0E0E0F 0%, #C45D3E 100%)',
-    image: '/images/hero/split_posters.png',
+    image: '/images/hero/split_posters.webp',
   },
   {
     slug: 'stationery',
@@ -68,7 +68,7 @@ export const categories: Category[] = [
     productCount: 12,
     featured: true,
     gradient: 'linear-gradient(135deg, #2A2A2F 0%, #D8D0C8 100%)',
-    image: '/images/hero/stationery.png',
+    image: '/images/hero/stationery.webp',
   },
   {
     slug: 'accessories',

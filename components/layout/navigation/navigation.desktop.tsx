@@ -33,8 +33,20 @@ export function NavigationDesktop() {
   const currencies: CurrencyCode[] = ['INR', 'USD', 'EUR', 'GBP'];
 
   const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
   useEffect(() => {
     setMounted(true);
+    
+    // Check auth status
+    import('@/lib/supabase/client').then(({ createClient }) => {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data }) => setUser(data.user));
+      const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null);
+      });
+      return () => authListener.subscription.unsubscribe();
+    });
   }, []);
 
   useGSAP(
@@ -152,24 +164,33 @@ export function NavigationDesktop() {
             )}
           </button>
 
-          {/* Account Icon */}
-          <button
-            onClick={() => {}} // TODO: Auth Modal
-            className="text-pearl hover:text-bone transition-colors w-10 h-10 flex items-center justify-center hidden sm:flex"
-            aria-label="Account"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
+          {/* Account Icon / Sign In */}
+          {mounted && user ? (
+            <Link
+              href="/account"
+              className="text-pearl hover:text-bone transition-colors w-10 h-10 hidden sm:flex items-center justify-center"
+              aria-label="Account"
             >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </button>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </Link>
+          ) : mounted && !user ? (
+            <Link
+              href="/login"
+              className="hidden sm:block font-mono text-caption text-bone uppercase tracking-widest hover:text-cobalt transition-colors ml-2"
+            >
+              Sign In
+            </Link>
+          ) : null}
 
           {/* Cart Icon */}
           <button

@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
+import { getProductsFromDB } from '@/lib/services/db-service';
 
-export const runtime = 'edge';
-
-/**
- * GET /api/products
- * Returns all products. Stub — replace with database query.
- */
 export async function GET() {
-  return NextResponse.json({ products: [], message: 'Products API stub' });
+  try {
+    const products = await getProductsFromDB();
+    return NextResponse.json({ success: true, products });
+  } catch (error) {
+    console.error('Products API error:', error);
+    return NextResponse.json(
+      { success: false, message: 'Failed to fetch products' },
+      { status: 500 },
+    );
+  }
 }

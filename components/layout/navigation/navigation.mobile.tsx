@@ -16,6 +16,7 @@ const menuLinks = [
   { href: '/products/all', label: 'Shop All' },
   { href: '/split-poster', label: 'Split Posters' },
   { href: '/customize', label: 'Design DIY' },
+  { href: '/account', label: 'My Account' },
   { href: '/studio', label: 'Studio' },
   { href: '/faq', label: 'FAQ & Shipping' },
   { href: '/contact', label: 'Contact' },
@@ -33,8 +34,20 @@ export function NavigationMobile() {
   const currencies: CurrencyCode[] = ['INR', 'USD', 'EUR', 'GBP'];
 
   const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
   useEffect(() => {
     setMounted(true);
+    
+    // Check auth status
+    import('@/lib/supabase/client').then(({ createClient }) => {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data }) => setUser(data.user));
+      const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null);
+      });
+      return () => authListener.subscription.unsubscribe();
+    });
   }, []);
 
   const navRef = useRef<HTMLElement>(null);
@@ -257,7 +270,11 @@ export function NavigationMobile() {
                   ))}
                 </div>
               </div>
-              <button className="font-mono text-caption uppercase text-bone flex items-center gap-2 hover:text-cobalt transition-colors">
+              <Link 
+                href={user ? "/account" : "/login"}
+                onClick={onClose}
+                className="font-mono text-caption uppercase text-bone flex items-center gap-2 hover:text-cobalt transition-colors"
+              >
                 <svg
                   width="16"
                   height="16"
@@ -269,8 +286,8 @@ export function NavigationMobile() {
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                <span>Log In / Register</span>
-              </button>
+                <span>{user ? "My Account" : "Log In / Register"}</span>
+              </Link>
             </div>
             <p className="font-mono text-[10px] text-pearl/50 uppercase tracking-widest">
               Your story, engineered.
