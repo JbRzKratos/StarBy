@@ -106,7 +106,7 @@ export function FeaturedProducts() {
         <div className="mt-14 flex justify-center">
           <Link
             href="/products/all"
-            className="group inline-flex items-center gap-3 bg-cobalt hover:bg-cobalt/90 text-bone font-mono text-caption uppercase tracking-widest px-8 py-4 rounded-sm transition-all hover:scale-105 shadow-lg shadow-cobalt/20"
+            className="group inline-flex items-center gap-3 bg-cobalt hover:bg-cobalt/90 text-bone font-mono text-caption uppercase tracking-widest px-8 py-4 rounded-lg transition-all hover:scale-105 shadow-lg shadow-cobalt/20"
           >
             <span>Explore More Products</span>
             <span className="transition-transform group-hover:translate-x-1">→</span>

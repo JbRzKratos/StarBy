@@ -145,7 +145,7 @@ export function HeroDesktop() {
             <Link
               href="/products/all"
               ref={leftCTARef}
-              className="bg-bone text-charcoal font-mono text-xs uppercase tracking-widest px-8 py-4 transition-transform hover:scale-105"
+              className="bg-bone text-charcoal font-mono text-xs uppercase tracking-widest px-8 py-4 rounded-lg transition-transform hover:scale-105"
             >
               Shop Designs
             </Link>
@@ -196,7 +196,7 @@ export function HeroDesktop() {
             <Link
               href="/customize"
               ref={rightCTARef}
-              className="bg-cobalt text-bone font-mono text-xs uppercase tracking-widest px-8 py-4 transition-transform hover:scale-105"
+              className="bg-cobalt text-bone font-mono text-xs uppercase tracking-widest px-8 py-4 rounded-lg transition-transform hover:scale-105"
             >
               Customize Yours
             </Link>

@@ -120,7 +120,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full bg-graphite border border-smoke/30 rounded px-4 py-4 pl-12 text-bone font-mono text-body-sm focus:border-cobalt focus:ring-1 focus:ring-cobalt outline-none transition-all placeholder:text-smoke/50"
+                  className="w-full bg-graphite border border-smoke/30 rounded-lg px-4 py-4 pl-12 text-bone font-mono text-body-sm focus:border-cobalt focus:ring-1 focus:ring-cobalt outline-none transition-all placeholder:text-smoke/50"
                 />
                 <svg
                   className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl"
@@ -157,7 +157,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-graphite border border-smoke/30 rounded px-4 py-4 pl-12 text-bone font-mono text-body-sm focus:border-cobalt focus:ring-1 focus:ring-cobalt outline-none transition-all placeholder:text-smoke/50"
+                  className="w-full bg-graphite border border-smoke/30 rounded-lg px-4 py-4 pl-12 text-bone font-mono text-body-sm focus:border-cobalt focus:ring-1 focus:ring-cobalt outline-none transition-all placeholder:text-smoke/50"
                 />
                 <svg
                   className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl"
@@ -178,7 +178,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full bg-bone hover:bg-white text-charcoal font-mono text-caption uppercase tracking-widest py-4 mt-2 rounded transition-all hover:scale-[1.02] shadow-xl shadow-bone/10 disabled:opacity-50 disabled:hover:scale-100 overflow-hidden"
+              className="group relative w-full bg-bone hover:bg-white text-charcoal font-mono text-caption uppercase tracking-widest py-4 mt-2 rounded-lg transition-all hover:scale-[1.02] shadow-xl shadow-bone/10 disabled:opacity-50 disabled:hover:scale-100 overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-bone via-white to-bone opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <span className="relative z-10 flex items-center justify-center gap-2">

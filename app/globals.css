@@ -117,9 +117,14 @@
     }
   }
 
+  /* Page section spacing */
+  .page-section {
+    @apply py-16 md:py-28;
+  }
+
   /* Overline label style */
   .overline-label {
-    @apply font-mono text-overline uppercase tracking-[0.15em] text-pearl;
+    @apply font-mono text-overline uppercase tracking-[0.15em] text-cobalt font-semibold;
   }
 }
 

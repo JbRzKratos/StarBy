@@ -172,7 +172,7 @@ export function SplitPosterVisualizerDesktop() {
       <div className="flex flex-col xl:flex-row xl:items-center gap-6 mb-10 overflow-x-auto hide-scrollbar pb-2">
         <div className="flex items-center gap-3 shrink-0">
           <span className="font-mono text-caption text-ash uppercase tracking-wider">Style:</span>
-          <div className="flex border border-smoke rounded-sm overflow-hidden">
+          <div className="flex border border-smoke rounded-md overflow-hidden">
             {layoutStyles.map((s) => (
               <button
                 key={s}
@@ -195,7 +195,7 @@ export function SplitPosterVisualizerDesktop() {
               <span className="font-mono text-caption text-ash uppercase tracking-wider">
                 Split:
               </span>
-              <div className="flex border border-smoke rounded-sm overflow-hidden">
+              <div className="flex border border-smoke rounded-md overflow-hidden">
                 <button
                   onClick={() => setOrientation('vertical')}
                   className={`px-3 py-1.5 font-mono text-caption uppercase tracking-wider transition-colors border-r border-smoke ${
@@ -223,7 +223,7 @@ export function SplitPosterVisualizerDesktop() {
                   <button
                     key={n}
                     onClick={() => setPanelCount(n)}
-                    className={`w-8 h-8 border font-mono text-body-sm flex items-center justify-center transition-colors rounded-sm ${
+                    className={`w-8 h-8 border font-mono text-body-sm flex items-center justify-center transition-colors rounded-md ${
                       panelCount === n
                         ? 'border-cobalt text-cobalt bg-cobalt/10'
                         : 'border-smoke text-ash hover:text-pearl'
@@ -247,7 +247,7 @@ export function SplitPosterVisualizerDesktop() {
                 <button
                   key={n}
                   onClick={() => setPanelCount(n)}
-                  className={`w-8 h-8 border font-mono text-body-sm flex items-center justify-center transition-colors rounded-sm ${
+                  className={`w-8 h-8 border font-mono text-body-sm flex items-center justify-center transition-colors rounded-md ${
                     (panelCount === 5 ? 5 : 3) === n
                       ? 'border-cobalt text-cobalt bg-cobalt/10'
                       : 'border-smoke text-ash hover:text-pearl'
@@ -265,7 +265,7 @@ export function SplitPosterVisualizerDesktop() {
             <span className="font-mono text-caption text-ash uppercase tracking-wider">
               Format:
             </span>
-            <div className="flex border border-smoke rounded-sm overflow-hidden">
+            <div className="flex border border-smoke rounded-md overflow-hidden">
               {gridOptions.map((opt) => {
                 const isActive = gridConfig.cols === opt.cols && gridConfig.rows === opt.rows;
                 return (
@@ -342,7 +342,7 @@ export function SplitPosterVisualizerDesktop() {
         </div>
         <button
           onClick={() => setArOpen(true)}
-          className="px-6 py-4 border border-smoke bg-graphite text-pearl font-mono text-caption uppercase tracking-widest hover:border-cobalt hover:text-cobalt transition-colors rounded-sm shrink-0 flex items-center gap-2"
+          className="px-6 py-4 border border-smoke bg-graphite text-pearl font-mono text-caption uppercase tracking-widest hover:border-cobalt hover:text-cobalt transition-colors rounded-lg shrink-0 flex items-center gap-2"
         >
           <svg
             width="16"
@@ -359,7 +359,7 @@ export function SplitPosterVisualizerDesktop() {
           </svg>
           View in Room
         </button>
-        <button className="px-10 py-4 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors rounded-sm shrink-0">
+        <button className="px-10 py-4 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors rounded-lg shrink-0">
           Order Print — {formatPrice(129 + (panelsData.length - 2) * 50)}
         </button>
       </div>

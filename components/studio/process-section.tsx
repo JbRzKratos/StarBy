@@ -43,8 +43,11 @@ export function ProcessSection() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
         >
           {processSteps.map((step) => (
-            <div key={step.step} className="text-center md:text-left">
-              <span className="font-mono text-display-lg text-cobalt/20 font-bold block mb-4">
+            <div
+              key={step.step}
+              className="text-center md:text-left bg-charcoal/60 border border-smoke/50 rounded-xl p-6 md:p-8 hover:border-cobalt/50 transition-colors"
+            >
+              <span className="font-mono text-display-lg text-cobalt font-extrabold block mb-4">
                 {step.step}
               </span>
               <h3 className="font-display text-display-sm font-bold text-bone mb-2">

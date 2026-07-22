@@ -41,9 +41,9 @@ export function ValuesGrid() {
           {brandValues.map((value, i) => (
             <div
               key={value.title}
-              className="bg-graphite border border-smoke rounded-lg p-8 hover:border-cobalt/30 transition-colors"
+              className="bg-graphite border border-smoke/60 rounded-xl p-8 hover:border-cobalt/50 transition-colors"
             >
-              <span className="font-mono text-caption text-cobalt uppercase tracking-widest block mb-3">
+              <span className="font-mono text-caption text-cobalt font-bold uppercase tracking-widest block mb-3">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <h3 className="font-display text-display-sm font-bold text-bone mb-2">

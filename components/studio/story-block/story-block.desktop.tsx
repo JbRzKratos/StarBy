@@ -62,7 +62,7 @@ export function StoryBlockDesktop({ block, index }: StoryBlockProps) {
       >
         {/* Visual side */}
         <div
-          className={`aspect-square rounded-lg ${isReversed ? 'md:order-2' : ''}`}
+          className={`aspect-square rounded-xl ${isReversed ? 'md:order-2' : ''}`}
           style={{
             background: `linear-gradient(${135 + index * 45}deg, #3B5EFF22, #C45D3E22, #2d1b6922)`,
           }}

@@ -157,7 +157,7 @@ export function HeroMobile() {
             <Link
               href="/products/all"
               ref={leftCTARef}
-              className="bg-bone text-charcoal font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-sm w-fit mx-auto"
+              className="bg-bone text-charcoal font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg w-fit mx-auto"
             >
               Shop Designs
             </Link>
@@ -210,7 +210,7 @@ export function HeroMobile() {
             <Link
               href="/customize"
               ref={rightCTARef}
-              className="bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-sm w-fit mx-auto"
+              className="bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg w-fit mx-auto"
             >
               Customize Yours
             </Link>

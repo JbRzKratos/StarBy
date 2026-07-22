@@ -54,7 +54,7 @@ export function StoryBlockMobile({ block, index }: StoryBlockProps) {
       <div className="section-container flex flex-col gap-12 items-center">
         {/* Visual side */}
         <div
-          className="w-full aspect-square rounded-lg"
+          className="w-full aspect-square rounded-xl"
           style={{
             background: `linear-gradient(${135 + index * 45}deg, #3B5EFF22, #C45D3E22, #2d1b6922)`,
           }}

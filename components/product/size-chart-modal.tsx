@@ -88,7 +88,7 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
     >
       <div
         ref={contentRef}
-        className="w-full max-w-lg bg-graphite border border-smoke p-6 md:p-10 rounded-sm relative"
+        className="w-full max-w-lg bg-graphite border border-smoke p-6 md:p-10 rounded-xl relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button

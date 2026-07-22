@@ -161,7 +161,7 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
                     placeholder="e.g. 172"
                     min={100}
                     max={250}
-                    className="bg-smoke/20 border border-smoke/40 text-bone font-mono text-sm px-3 py-2.5 rounded-sm focus:outline-none focus:border-cobalt transition-colors placeholder:text-ash"
+                    className="bg-smoke/20 border border-smoke/40 text-bone font-mono text-sm px-3 py-2.5 rounded-md focus:outline-none focus:border-cobalt transition-colors placeholder:text-ash"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -175,7 +175,7 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
                     placeholder="e.g. 68"
                     min={30}
                     max={200}
-                    className="bg-smoke/20 border border-smoke/40 text-bone font-mono text-sm px-3 py-2.5 rounded-sm focus:outline-none focus:border-cobalt transition-colors placeholder:text-ash"
+                    className="bg-smoke/20 border border-smoke/40 text-bone font-mono text-sm px-3 py-2.5 rounded-md focus:outline-none focus:border-cobalt transition-colors placeholder:text-ash"
                   />
                 </div>
               </div>
@@ -185,7 +185,7 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
                 <label className="font-mono text-[10px] text-ash uppercase tracking-widest">
                   Preferred Fit
                 </label>
-                <div className="flex border border-smoke rounded-sm overflow-hidden">
+                <div className="flex border border-smoke rounded-md overflow-hidden">
                   {(['slim', 'regular', 'oversized'] as const).map((f) => (
                     <button
                       key={f}
@@ -203,14 +203,14 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
 
             <button
               onClick={handleFind}
-              className="w-full py-3 bg-bone text-charcoal font-mono text-caption uppercase tracking-widest hover:bg-cobalt hover:text-bone transition-colors rounded-sm mb-5"
+              className="w-full py-3 bg-bone text-charcoal font-mono text-caption uppercase tracking-widest hover:bg-cobalt hover:text-bone transition-colors rounded-md mb-5"
             >
               Calculate My Size →
             </button>
 
             {/* Result */}
             {result && (
-              <div className="border border-smoke/40 rounded-sm p-4 flex items-center justify-between gap-4">
+              <div className="border border-smoke/40 rounded-lg p-4 flex items-center justify-between gap-4">
                 <div>
                   <p className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-1">
                     Recommended
@@ -231,7 +231,7 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
                 </div>
                 <button
                   onClick={handleApply}
-                  className="px-5 py-3 bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest hover:bg-cobalt/80 transition-colors rounded-sm shrink-0"
+                  className="px-5 py-3 bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest hover:bg-cobalt/80 transition-colors rounded-md shrink-0"
                 >
                   Apply Size
                 </button>
