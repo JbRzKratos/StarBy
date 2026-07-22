@@ -4,7 +4,6 @@ import { products } from '@/data/products';
 import { notFound } from 'next/navigation';
 import { ShopPage } from '@/components/shop';
 
-
 interface CategoryPageProps {
   params: { category: string };
   searchParams: { [key: string]: string | string[] | undefined };

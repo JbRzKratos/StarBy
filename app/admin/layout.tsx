@@ -5,7 +5,6 @@ import { AdminTopbar } from '@/components/admin/topbar';
 
 export const metadata = { title: 'Admin — StarBy' };
 
-
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   // Server-side RBAC gate — CUSTOMER users are redirected to /
   const user = await requireStaff();

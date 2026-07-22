@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getProductBySlug, products } from '@/data/products';
 import { ProductDetailClient } from '@/components/product/product-detail-client';
 
-
 interface ProductPageProps {
   params: { category: string; slug: string };
 }

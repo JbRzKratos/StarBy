@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getProductsFromDB } from '@/lib/services/db-service';
 
-
-
 export async function GET() {
   try {
     const products = await getProductsFromDB();

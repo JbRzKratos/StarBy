@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-
-
 // Edge-compatible HMAC-SHA256 using the Web Crypto API (no Node.js crypto needed)
 async function verifyRazorpaySignature(
   razorpayOrderId: string,

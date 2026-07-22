@@ -6,8 +6,6 @@ const NewsletterSchema = z.object({
   email: z.string().email('Invalid email address'),
 });
 
-
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();

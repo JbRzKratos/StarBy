@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { CustomizerClient } from '@/components/customizer/Customizer.client';
 
-
 interface CustomizePageProps {
   params: { productId: string };
 }
