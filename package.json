@@ -15,8 +15,8 @@
   "dependencies": {
     "@gsap/react": "^2.1.1",
     "@prisma/client": "^6.19.3",
-    "@react-three/fiber": "^9.6.1",
-    "@react-three/xr": "^6.6.30",
+    "@react-three/fiber": "^8.18.0",
+    "@react-three/xr": "^5.7.1",
     "@supabase/ssr": "^0.12.3",
     "@supabase/supabase-js": "^2.110.8",
     "@types/three": "^0.185.1",

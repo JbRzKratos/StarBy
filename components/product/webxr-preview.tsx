@@ -1,9 +1,9 @@
 'use client';
 
-import { Suspense, useRef, useState, useMemo } from 'react';
+import { Suspense, useRef, useState, useMemo, useEffect } from 'react';
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
-import { XR, createXRStore, useXRHitTest } from '@react-three/xr';
+import { ARButton, XR, useHitTest, useXR } from '@react-three/xr';
 
 interface Panel {
   width: string;
@@ -21,8 +21,6 @@ interface WebXRPreviewProps {
 
 const CSS_TO_M = 0.003;
 const GAP = 0.015;
-
-const store = createXRStore();
 
 function PosterMesh({
   panel,
@@ -71,20 +69,14 @@ function HitTestPlacer({
 }) {
   const reticleRef = useRef<THREE.Mesh>(null);
   const [placedMatrix, setPlacedMatrix] = useState<THREE.Matrix4 | null>(null);
-  const matrixHelper = useMemo(() => new THREE.Matrix4(), []);
 
-  useXRHitTest((results, getWorldMatrix) => {
-    const firstResult = results[0];
-    if (isPlaced || !firstResult) {
-      if (reticleRef.current && !isPlaced) reticleRef.current.visible = false;
-      return;
-    }
-    getWorldMatrix(matrixHelper, firstResult);
-    if (reticleRef.current) {
+  useHitTest((hitMatrix) => {
+    if (isPlaced) return;
+    if (hitMatrix && reticleRef.current) {
       reticleRef.current.visible = true;
-      reticleRef.current.matrix.copy(matrixHelper);
+      reticleRef.current.matrix.copy(hitMatrix);
     }
-  }, 'viewer');
+  });
 
   const placePoster = () => {
     if (reticleRef.current && reticleRef.current.visible && !isPlaced) {
@@ -133,19 +125,18 @@ function HitTestPlacer({
   );
 }
 
+// A simple component to report when the XR session is active
+function XRStateReporter({ onStateChange }: { onStateChange: (isPresenting: boolean) => void }) {
+  const { isPresenting } = useXR();
+  useEffect(() => {
+    onStateChange(isPresenting);
+  }, [isPresenting, onStateChange]);
+  return null;
+}
+
 export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
   const [started, setStarted] = useState(false);
   const [isPlaced, setIsPlaced] = useState(false);
-
-  // We need a user gesture to enter AR. We provide a prominent button to launch it if not already started.
-  const handleStart = async () => {
-    try {
-      await store.enterAR();
-      setStarted(true);
-    } catch (e) {
-      console.error('AR session failed', e);
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-[200] bg-charcoal">
@@ -176,26 +167,34 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
 
       {!started && (
         <div className="absolute inset-0 z-[205] flex items-center justify-center bg-graphite/80 backdrop-blur-sm">
-          <button
-            onClick={handleStart}
+          <ARButton
+            sessionInit={{ requiredFeatures: ['hit-test'] }}
             className="px-8 py-4 rounded-full bg-cobalt text-pearl font-bold uppercase tracking-wider shadow-[0_0_40px_rgba(59,94,255,0.4)]"
+            style={{
+              position: 'absolute',
+              bottom: 'auto',
+              left: 'auto',
+              zIndex: 9999,
+              border: 'none',
+              cursor: 'pointer',
+            }}
           >
             Launch True AR
-          </button>
+          </ARButton>
         </div>
       )}
 
       {started && !isPlaced && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[210] text-center pointer-events-none">
-          <p className="bg-charcoal/80 text-bone px-4 py-2 rounded-full border border-smoke text-sm">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[210] text-center pointer-events-none w-[90%]">
+          <p className="bg-charcoal/80 text-bone px-4 py-2 rounded-full border border-smoke text-sm shadow-xl">
             Point camera at a wall or floor & tap to place
           </p>
         </div>
       )}
 
       {started && isPlaced && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[210] text-center pointer-events-none">
-          <p className="bg-charcoal/80 text-bone px-4 py-2 rounded-full border border-smoke text-sm">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[210] text-center pointer-events-none w-[90%]">
+          <p className="bg-charcoal/80 text-bone px-4 py-2 rounded-full border border-smoke text-sm shadow-xl">
             Walk around to view the poster!
           </p>
         </div>
@@ -203,7 +202,8 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
 
       <div className="w-full h-full absolute inset-0 z-[200]">
         <Canvas>
-          <XR store={store}>
+          <XR>
+            <XRStateReporter onStateChange={setStarted} />
             <ambientLight intensity={1} />
             <Suspense fallback={null}>
               <HitTestPlacer panels={panels} isPlaced={isPlaced} setIsPlaced={setIsPlaced} />
