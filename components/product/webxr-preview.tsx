@@ -67,22 +67,22 @@ function HitTestPlacer({
   isPlaced: boolean;
   setIsPlaced: (v: boolean) => void;
 }) {
-  const reticleRef = useRef<THREE.Mesh>(null);
+  const reticleGroupRef = useRef<THREE.Group>(null);
   const [placedMatrix, setPlacedMatrix] = useState<THREE.Matrix4 | null>(null);
 
   useHitTest((hitMatrix) => {
     if (isPlaced) return;
-    if (hitMatrix && reticleRef.current) {
-      reticleRef.current.visible = true;
-      reticleRef.current.matrix.copy(hitMatrix);
+    if (hitMatrix && reticleGroupRef.current) {
+      reticleGroupRef.current.visible = true;
+      reticleGroupRef.current.matrix.copy(hitMatrix);
     }
   });
 
   const placePoster = () => {
-    if (reticleRef.current && reticleRef.current.visible && !isPlaced) {
-      const newMat = new THREE.Matrix4().copy(reticleRef.current.matrix);
+    if (reticleGroupRef.current && reticleGroupRef.current.visible && !isPlaced) {
+      const newMat = new THREE.Matrix4().copy(reticleGroupRef.current.matrix);
       setPlacedMatrix(newMat);
-      reticleRef.current.visible = false;
+      reticleGroupRef.current.visible = false;
       setIsPlaced(true);
     }
   };
@@ -111,11 +111,15 @@ function HitTestPlacer({
         <meshBasicMaterial visible={false} side={THREE.BackSide} />
       </mesh>
 
-      <mesh ref={reticleRef} matrixAutoUpdate={false} visible={false}>
-        <ringGeometry args={[0.04, 0.05, 32]} />
-        <meshBasicMaterial color="#3B5EFF" opacity={0.8} transparent side={THREE.DoubleSide} />
-      </mesh>
+      {/* Reticle: Rotated -90 on X so it lies flat on the detected surface */}
+      <group ref={reticleGroupRef} matrixAutoUpdate={false} visible={false}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[0.04, 0.05, 32]} />
+          <meshBasicMaterial color="#3B5EFF" opacity={0.8} transparent side={THREE.DoubleSide} />
+        </mesh>
+      </group>
 
+      {/* Placed Poster: Rotated -90 on X to be flat against the wall/floor */}
       {placedMatrix && (
         <group matrixAutoUpdate={false} matrix={placedMatrix}>
           <group rotation={[-Math.PI / 2, 0, 0]}>{meshes}</group>
@@ -125,7 +129,6 @@ function HitTestPlacer({
   );
 }
 
-// A simple component to report when the XR session is active
 function XRStateReporter({ onStateChange }: { onStateChange: (isPresenting: boolean) => void }) {
   const { isPresenting } = useXR();
   useEffect(() => {
@@ -185,18 +188,48 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
       )}
 
       {started && !isPlaced && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[210] text-center pointer-events-none w-[90%]">
-          <p className="bg-charcoal/80 text-bone px-4 py-2 rounded-full border border-smoke text-sm shadow-xl">
-            Point camera at a wall or floor & tap to place
-          </p>
+        <div className="absolute inset-0 z-[210] pointer-events-none flex flex-col items-center justify-center">
+          <div className="bg-charcoal/90 text-bone px-8 py-6 rounded-2xl border border-cobalt/50 shadow-2xl max-w-sm text-center mx-4 pointer-events-auto">
+            <h3 className="text-xl font-display text-pearl mb-4">How to place on a wall</h3>
+            <ul className="text-sm text-left space-y-3 mb-6 font-mono text-ash">
+              <li className="flex items-start">
+                <span className="text-cobalt font-bold mr-2">1.</span>
+                <span>
+                  Stand back and point your camera at a <b>well-lit wall</b>.
+                </span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-cobalt font-bold mr-2">2.</span>
+                <span>
+                  <b>Slowly pan your phone</b> side-to-side to scan the surface.
+                </span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-cobalt font-bold mr-2">3.</span>
+                <span>
+                  When a <b>blue ring</b> appears flat on the wall, tap the screen to place!
+                </span>
+              </li>
+            </ul>
+            <p className="text-xs text-smoke/80 italic">
+              Note: Plain walls without any texture are hard for AR to detect. Try aiming near a
+              corner, poster, or furniture first.
+            </p>
+          </div>
         </div>
       )}
 
       {started && isPlaced && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[210] text-center pointer-events-none w-[90%]">
-          <p className="bg-charcoal/80 text-bone px-4 py-2 rounded-full border border-smoke text-sm shadow-xl">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[210] text-center pointer-events-auto w-[90%] flex flex-col items-center gap-4">
+          <p className="bg-charcoal/80 text-bone px-4 py-2 rounded-full border border-smoke text-sm shadow-xl pointer-events-none">
             Walk around to view the poster!
           </p>
+          <button
+            onClick={() => setIsPlaced(false)}
+            className="bg-cobalt text-pearl px-6 py-3 rounded-full font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(59,94,255,0.3)] border border-blue-400"
+          >
+            Reposition Poster
+          </button>
         </div>
       )}
 
