@@ -4,7 +4,6 @@ import { products } from '@/data/products';
 import { notFound } from 'next/navigation';
 import { ShopPage } from '@/components/shop';
 
-export const runtime = 'edge';
 
 interface CategoryPageProps {
   params: { category: string };

@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
 
-export const runtime = 'edge';
+
 
 export default async function AccountAddressesPage() {
   let addresses: Array<Record<string, unknown>> = [];

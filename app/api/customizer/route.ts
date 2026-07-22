@@ -4,7 +4,7 @@ import { rateLimit } from '@/lib/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 
-export const runtime = 'edge';
+
 
 export async function POST(request: Request) {
   try {

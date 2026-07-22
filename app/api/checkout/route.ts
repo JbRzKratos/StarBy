@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import { Prisma } from '@prisma/client';
 
-export const runtime = 'edge';
+
 
 // Create a Razorpay order using their REST API directly (no Node.js SDK needed)
 async function createRazorpayOrder(amountInPaise: number, receipt: string) {

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getProductsFromDB } from '@/lib/services/db-service';
 
-export const runtime = 'edge';
+
 
 export async function GET() {
   try {
