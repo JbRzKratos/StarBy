@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
 
+export const runtime = 'edge';
+
 export default async function AccountPage() {
   let user = null;
   let orderCount = 0;

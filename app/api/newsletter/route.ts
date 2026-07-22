@@ -6,6 +6,8 @@ const NewsletterSchema = z.object({
   email: z.string().email('Invalid email address'),
 });
 
+export const runtime = 'edge';
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { OrderManagerClient } from './OrderManagerClient';
 
+export const runtime = 'edge';
+
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
     include: {

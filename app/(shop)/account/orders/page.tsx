@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
 import type { Prisma } from '@prisma/client';
 
+export const runtime = 'edge';
+
 export default async function AccountOrdersPage() {
   let orders: Prisma.OrderGetPayload<{ include: { items: true } }>[] = [];
 

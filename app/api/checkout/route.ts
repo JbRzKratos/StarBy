@@ -5,6 +5,8 @@ import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import { razorpay } from '@/lib/razorpay';
 
+export const runtime = 'edge';
+
 export async function POST(request: Request) {
   try {
     // 1. Upstash Rate Limiting

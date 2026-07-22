@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma';
 
+export const runtime = 'edge';
+
 export default async function AdminDashboardPage() {
   const [totalOrders, totalRevenueData, outOfStockVariants] = await Promise.all([
     prisma.order.count(),
