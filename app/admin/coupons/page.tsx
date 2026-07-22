@@ -16,7 +16,7 @@ export default async function AdminCouponsPage() {
         code: c.code,
         discountType: c.discountType,
         discountValue: c.discountValue,
-        minOrderAmount: c.minOrderAmount,
+        minOrderValue: c.minOrderValue,
         maxUses: c.maxUses,
         usageCount: c.usageCount,
         isActive: c.isActive,

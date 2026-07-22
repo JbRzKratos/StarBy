@@ -7,13 +7,13 @@ import { createCoupon, updateCoupon, deleteCoupon } from '@/app/admin/lib/action
 
 interface CouponRow {
   id: string; code: string; discountType: string; discountValue: number;
-  minOrderAmount: number | null; maxUses: number | null; usageCount: number;
+  minOrderValue: number | null; maxUses: number | null; usageCount: number;
   isActive: boolean; expiresAt: string | null; createdAt: string;
 }
 
 const BLANK = {
   code: '', discountType: 'percentage', discountValue: 10,
-  minOrderAmount: null as number | null, maxUses: null as number | null,
+  minOrderValue: null as number | null, maxUses: null as number | null,
   isActive: true, expiresAt: ''
 };
 
@@ -107,7 +107,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
             </div>
             <div>
               <label className="text-xs font-medium text-gray-700 block mb-1">Min Order Amount (₹)</label>
-              <input type="number" placeholder="No limit" value={form.minOrderAmount || ''} onChange={(e) => setForm({ ...form, minOrderAmount: parseFloat(e.target.value) || null })} className={inputClass} />
+              <input type="number" placeholder="No limit" value={form.minOrderValue || ''} onChange={(e) => setForm({ ...form, minOrderValue: parseFloat(e.target.value) || null })} className={inputClass} />
             </div>
             <div>
               <label className="text-xs font-medium text-gray-700 block mb-1">Max Uses</label>
@@ -149,7 +149,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
                     {c.discountType === 'percentage' ? `${c.discountValue}% off` : `₹${c.discountValue} off`}
                   </td>
                   <td className="px-4 py-3 text-xs text-gray-500 space-y-0.5">
-                    {c.minOrderAmount ? <p>Min: ₹{c.minOrderAmount}</p> : <p>Min: None</p>}
+                    {c.minOrderValue ? <p>Min: ₹{c.minOrderValue}</p> : <p>Min: None</p>}
                     {c.expiresAt ? <p>Exp: {new Date(c.expiresAt).toLocaleDateString('en-IN')}</p> : <p>Exp: Never</p>}
                   </td>
                   <td className="px-4 py-3 text-center text-gray-700">
