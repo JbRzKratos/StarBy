@@ -40,7 +40,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
           <div className="mt-4 text-xs text-ash max-w-full overflow-auto">
             {this.state.error?.stack}
           </div>
-          <button 
+          <button
             onClick={() => this.setState({ hasError: false, error: null })}
             className="mt-6 px-4 py-2 bg-cobalt text-white rounded"
           >
