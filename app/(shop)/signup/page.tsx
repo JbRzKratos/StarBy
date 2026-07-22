@@ -84,11 +84,6 @@ export default function SignUpPage() {
 
       {/* Right side: Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-24 sm:px-12 lg:px-24 xl:px-32 relative">
-        {/* Mobile Logo */}
-        <Link href="/" className="absolute top-8 left-6 sm:left-12 lg:hidden">
-          <span className="font-display text-2xl font-bold tracking-tight text-bone">StarBy</span>
-        </Link>
-
         <div className="w-full max-w-md mt-12 lg:mt-0">
           <div className="mb-10">
             <span className="inline-block font-mono text-caption text-cobalt uppercase tracking-widest bg-cobalt/10 px-3 py-1 rounded-full mb-4">

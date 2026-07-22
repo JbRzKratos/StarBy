@@ -56,6 +56,29 @@ export function NavigationMobile() {
   const panelRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
 
+  // Hide Tawk.to chat widget & floating actions when mobile menu is open
+  useEffect(() => {
+    const win = window as unknown as {
+      Tawk_API?: { hideWidget?: () => void; showWidget?: () => void };
+    };
+
+    if (isOpen) {
+      document.body.classList.add('mobile-drawer-open');
+      try {
+        win.Tawk_API?.hideWidget?.();
+      } catch (e) {
+        console.warn('Tawk hide notice:', e);
+      }
+    } else {
+      document.body.classList.remove('mobile-drawer-open');
+      try {
+        win.Tawk_API?.showWidget?.();
+      } catch (e) {
+        console.warn('Tawk show notice:', e);
+      }
+    }
+  }, [isOpen]);
+
   // Sticky nav background animation
   useEffect(() => {
     if (!navRef.current) return;
@@ -216,7 +239,7 @@ export function NavigationMobile() {
       {/* Drawer */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-modal bg-charcoal/80 hidden opacity-0"
+        className="fixed inset-0 z-[99990] bg-charcoal/80 hidden opacity-0"
         onClick={onClose}
       >
         <div

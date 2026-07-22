@@ -85,14 +85,14 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-bold text-gray-900">Coupons</h1>
           <p className="text-sm text-gray-500">Manage discount codes</p>
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors w-full sm:w-auto"
         >
           <svg
             width="14"
@@ -112,7 +112,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
       {showCreate && (
         <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4 mb-4">
           <h2 className="text-sm font-semibold text-gray-900">New Coupon</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div>
               <label className="text-xs font-medium text-gray-700 block mb-1">Code</label>
               <input
@@ -198,7 +198,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-100">
             <tr>

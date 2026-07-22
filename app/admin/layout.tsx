@@ -17,8 +17,10 @@ export default async function AdminLayout({ children }: { children: ReactNode })
       {/* Fixed topbar (offset by sidebar width) */}
       <AdminTopbar isAdmin={user.isAdmin} role={user.role} />
 
-      {/* Main content — offset left by sidebar, top by topbar */}
-      <main className="ml-60 mt-[60px] min-h-[calc(100vh-60px)] p-6">{children}</main>
+      {/* Main content — offset left by sidebar on desktop, full width on mobile */}
+      <main className="md:ml-60 mt-[60px] min-h-[calc(100vh-60px)] p-4 sm:p-6 transition-[margin] duration-300">
+        {children}
+      </main>
     </div>
   );
 }

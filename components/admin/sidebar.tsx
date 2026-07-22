@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -201,7 +201,14 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleToggle = () => setMobileOpen((prev) => !prev);
+    window.addEventListener('admin-sidebar-toggle', handleToggle);
+    return () => window.removeEventListener('admin-sidebar-toggle', handleToggle);
+  }, []);
 
   const visibleItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin);
 
@@ -211,106 +218,119 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
   }
 
   return (
-    <aside
-      className={`fixed top-0 left-0 h-full bg-white border-r border-gray-200 flex flex-col z-50 transition-[width] duration-300 ${
-        collapsed ? 'w-16' : 'w-60'
-      }`}
-    >
-      {/* Logo + collapse button */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100 min-h-[60px]">
-        {!collapsed && (
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-[#3B5EFF] rounded-lg flex items-center justify-center flex-shrink-0">
+    <>
+      {/* Mobile backdrop */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-gray-900/50 z-40 md:hidden transition-opacity"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`fixed top-0 left-0 h-full bg-white border-r border-gray-200 flex flex-col z-50 transition-all duration-300 ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        } ${collapsed ? 'w-60 md:w-16' : 'w-60'}`}
+      >
+        {/* Logo + collapse button */}
+        <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100 min-h-[60px]">
+          {!collapsed && (
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 bg-[#3B5EFF] rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold text-xs">SB</span>
+              </div>
+              <span className="font-bold text-gray-900 text-sm tracking-tight">Admin</span>
+            </div>
+          )}
+          {collapsed && (
+            <div className="w-7 h-7 bg-[#3B5EFF] rounded-lg flex items-center justify-center mx-auto">
               <span className="text-white font-bold text-xs">SB</span>
             </div>
-            <span className="font-bold text-gray-900 text-sm tracking-tight">Admin</span>
-          </div>
-        )}
-        {collapsed && (
-          <div className="w-7 h-7 bg-[#3B5EFF] rounded-lg flex items-center justify-center mx-auto">
-            <span className="text-white font-bold text-xs">SB</span>
-          </div>
-        )}
-        {!collapsed && (
-          <button
-            onClick={() => setCollapsed(true)}
-            className="text-gray-400 hover:text-gray-600 transition-colors ml-2"
-            title="Collapse sidebar"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
+          )}
+          {!collapsed && (
+            <button
+              onClick={() => setCollapsed(true)}
+              className="text-gray-400 hover:text-gray-600 transition-colors ml-2"
+              title="Collapse sidebar"
             >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-        )}
-        {collapsed && (
-          <button
-            onClick={() => setCollapsed(false)}
-            className="text-gray-400 hover:text-gray-600 transition-colors absolute -right-3 top-6 bg-white border border-gray-200 rounded-full w-6 h-6 flex items-center justify-center shadow-sm"
-            title="Expand sidebar"
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
-        )}
-      </div>
-
-      {/* Nav */}
-      <nav className="flex-1 px-2 py-4 overflow-y-auto">
-        <div className="space-y-0.5">
-          {visibleItems.map((item) => {
-            const active = isActive(item);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                title={collapsed ? item.label : undefined}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  active
-                    ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                }`}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
               >
-                <span className={`flex-shrink-0 ${active ? 'text-[#3B5EFF]' : 'text-gray-400'}`}>
-                  {item.icon}
-                </span>
-                {!collapsed && <span className="truncate">{item.label}</span>}
-              </Link>
-            );
-          })}
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+          )}
+          {collapsed && (
+            <button
+              onClick={() => setCollapsed(false)}
+              className="text-gray-400 hover:text-gray-600 transition-colors absolute -right-3 top-6 bg-white border border-gray-200 rounded-full w-6 h-6 flex items-center justify-center shadow-sm"
+              title="Expand sidebar"
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          )}
         </div>
-      </nav>
 
-      {/* User footer */}
-      {!collapsed && (
-        <div className="px-3 py-3 border-t border-gray-100">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
-              <span className="text-gray-600 text-xs font-semibold uppercase">
-                {(userName || userEmail || 'A').charAt(0)}
-              </span>
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-gray-900 truncate">{userName || 'Admin'}</p>
-              <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+        {/* Nav */}
+        <nav className="flex-1 px-2 py-4 overflow-y-auto">
+          <div className="space-y-0.5">
+            {visibleItems.map((item) => {
+              const active = isActive(item);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  title={collapsed ? item.label : undefined}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    active
+                      ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <span className={`flex-shrink-0 ${active ? 'text-[#3B5EFF]' : 'text-gray-400'}`}>
+                    {item.icon}
+                  </span>
+                  {!collapsed && <span className="truncate">{item.label}</span>}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* User footer */}
+        {!collapsed && (
+          <div className="px-3 py-3 border-t border-gray-100">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                <span className="text-gray-600 text-xs font-semibold uppercase">
+                  {(userName || userEmail || 'A').charAt(0)}
+                </span>
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-gray-900 truncate">
+                  {userName || 'Admin'}
+                </p>
+                <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </aside>
+        )}
+      </aside>
+    </>
   );
 }

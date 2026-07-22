@@ -119,7 +119,7 @@ export function WishlistDrawer() {
     .filter(Boolean) as typeof products;
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-[150] hidden flex-col lg:flex-row">
+    <div ref={containerRef} className="fixed inset-0 z-[99990] hidden flex-col lg:flex-row">
       <div
         ref={bgRef}
         className="absolute inset-0 bg-charcoal/80 backdrop-blur-2xl -z-10"

@@ -80,6 +80,34 @@
   .admin-root [role='button'] {
     cursor: auto !important;
   }
+
+  /* Hide floating widgets (Tawk.to chat & WhatsApp) when any drawer or modal is open */
+  body[style*='overflow: hidden'] .fixed.bottom-6.left-6,
+  body[style*='overflow: hidden'] .fixed.bottom-24.right-6,
+  body[style*='overflow: hidden'] #tawk-default-container,
+  body[style*='overflow: hidden'] .tawk-min-container,
+  body[style*='overflow: hidden'] iframe[title*='chat' i],
+  body[style*='overflow: hidden'] iframe[title*='tawk' i],
+  body[style*='overflow: hidden'] div[class*='tawk'],
+  body.mobile-drawer-open .fixed.bottom-6.left-6,
+  body.mobile-drawer-open .fixed.bottom-24.right-6,
+  body.mobile-drawer-open #tawk-default-container,
+  body.mobile-drawer-open .tawk-min-container,
+  body.mobile-drawer-open iframe[title*='chat' i],
+  body.mobile-drawer-open iframe[title*='tawk' i],
+  body.mobile-drawer-open div[class*='tawk'],
+  .admin-root #tawk-default-container,
+  .admin-root .tawk-min-container,
+  .admin-root iframe[title*='chat' i],
+  .admin-root iframe[title*='tawk' i],
+  .admin-root div[class*='tawk'],
+  .admin-root .fixed.bottom-6.left-6,
+  .admin-root .fixed.bottom-24.right-6 {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 }
 
 @layer components {

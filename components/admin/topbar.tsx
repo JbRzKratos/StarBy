@@ -34,25 +34,49 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
   }
 
   return (
-    <header className="fixed top-0 right-0 left-60 h-[60px] bg-white border-b border-gray-200 flex items-center justify-between px-6 z-40 transition-[left] duration-300">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-sm">
-        {breadcrumbs.map((crumb, i) => (
-          <span key={crumb.href} className="flex items-center gap-1.5">
-            {i > 0 && <span className="text-gray-300">/</span>}
-            {i === breadcrumbs.length - 1 ? (
-              <span className="font-semibold text-gray-900">{crumb.label}</span>
-            ) : (
-              <Link
-                href={crumb.href}
-                className="text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                {crumb.label}
-              </Link>
-            )}
-          </span>
-        ))}
-      </nav>
+    <header className="fixed top-0 right-0 left-0 md:left-60 h-[60px] bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-40 transition-[left] duration-300">
+      <div className="flex items-center gap-3">
+        {/* Mobile menu toggle button */}
+        <button
+          onClick={() => window.dispatchEvent(new Event('admin-sidebar-toggle'))}
+          className="md:hidden p-1.5 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
+          aria-label="Toggle admin menu"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-1.5 text-xs sm:text-sm overflow-x-auto whitespace-nowrap py-1">
+          {breadcrumbs.map((crumb, i) => (
+            <span key={crumb.href} className="flex items-center gap-1.5">
+              {i > 0 && <span className="text-gray-300">/</span>}
+              {i === breadcrumbs.length - 1 ? (
+                <span className="font-semibold text-gray-900">{crumb.label}</span>
+              ) : (
+                <Link
+                  href={crumb.href}
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  {crumb.label}
+                </Link>
+              )}
+            </span>
+          ))}
+        </nav>
+      </div>
 
       {/* Right section */}
       <div className="flex items-center gap-4">

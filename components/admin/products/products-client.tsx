@@ -96,14 +96,14 @@ export function ProductsClient({
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-bold text-gray-900">Products</h1>
           <p className="text-sm text-gray-500">{products.length} products</p>
         </div>
         <Link
           href="/admin/products/new"
-          className="flex items-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors w-full sm:w-auto"
         >
           <svg
             width="14"

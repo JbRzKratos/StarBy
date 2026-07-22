@@ -152,7 +152,7 @@ export function DashboardClient({
   return (
     <div className="space-y-6">
       {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {statCards.map((card) => (
           <div key={card.label} className="bg-white rounded-xl border border-gray-200 p-4">
             <div className="flex items-start justify-between">
