@@ -69,6 +69,7 @@ export function Footer() {
                   type="email"
                   name="email"
                   placeholder="Enter your email"
+                  aria-label="Email address for newsletter"
                   required
                   className="flex-1 bg-charcoal border border-smoke px-4 py-3 text-bone font-mono text-body-sm rounded-lg focus:outline-none focus:border-cobalt transition-colors"
                 />

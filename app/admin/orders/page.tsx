@@ -1,10 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '../lib/auth';
 import { OrdersClient } from '@/components/admin/orders/orders-client';
 
 export default async function AdminOrdersPage() {
-  await requireStaff();
-
   const orders = await prisma.order.findMany({
     include: {
       user: { select: { fullName: true, email: true } },

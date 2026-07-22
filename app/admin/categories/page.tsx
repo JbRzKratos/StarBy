@@ -1,10 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '../lib/auth';
 import { CategoriesClient } from '@/components/admin/categories/categories-client';
 
 export default async function AdminCategoriesPage() {
-  await requireStaff();
-
   const categories = await prisma.category.findMany({
     orderBy: { name: 'asc' },
   });

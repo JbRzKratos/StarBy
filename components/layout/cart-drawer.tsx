@@ -26,6 +26,14 @@ export function CartDrawer() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && useCartStore.getState().isOpen) {
+        useCartStore.getState().setCartOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   useGSAP(
@@ -301,6 +309,7 @@ export function CartDrawer() {
                               item.size,
                             )
                           }
+                          aria-label="Decrease quantity"
                           className="w-11 h-11 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/20 transition-colors"
                         >
                           −
@@ -317,6 +326,7 @@ export function CartDrawer() {
                               item.size,
                             )
                           }
+                          aria-label="Increase quantity"
                           className="w-11 h-11 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/20 transition-colors"
                         >
                           +

@@ -75,8 +75,12 @@ export function SearchOverlay() {
             ref={inputRef}
             type="text"
             placeholder="Search products, styles, collections..."
+            aria-label="Search products, styles, and collections"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setSearchOpen(false);
+            }}
             className="w-full bg-transparent border-none text-display-sm md:text-display-md font-display text-bone focus:outline-none placeholder:text-smoke"
           />
           <button

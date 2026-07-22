@@ -24,6 +24,14 @@ export function WishlistDrawer() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && useWishlistStore.getState().isOpen) {
+        useWishlistStore.getState().setWishlistOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   useGSAP(

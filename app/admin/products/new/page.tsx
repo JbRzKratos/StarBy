@@ -1,9 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '../../lib/auth';
 import { ProductFormClient } from '@/components/admin/products/product-form-client';
 
 export default async function NewProductPage() {
-  await requireStaff();
   const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
 
   return (

@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '../../lib/auth';
 import { OrderDetailClient } from '@/components/admin/orders/order-detail-client';
 
 interface PageProps {
@@ -8,8 +7,6 @@ interface PageProps {
 }
 
 export default async function OrderDetailPage({ params }: PageProps) {
-  await requireStaff();
-
   const order = await prisma.order.findUnique({
     where: { id: params.id },
     include: {

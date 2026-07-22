@@ -1,10 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from './lib/auth';
 import { DashboardClient } from '@/components/admin/dashboard/dashboard-client';
 
 export default async function AdminDashboardPage() {
-  await requireStaff();
-
   const now = new Date();
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
@@ -21,7 +18,10 @@ export default async function AdminDashboardPage() {
     lowStockVariants,
   ] = await Promise.all([
     prisma.order.count(),
-    prisma.order.aggregate({ _sum: { total: true } }),
+    prisma.order.aggregate({
+      _sum: { total: true },
+      where: { paymentStatus: { in: ['paid', 'completed'] } },
+    }),
     prisma.order.count({ where: { createdAt: { gte: todayStart } } }),
     prisma.user.count({ where: { role: 'CUSTOMER' } }),
     prisma.order.findMany({
@@ -30,14 +30,22 @@ export default async function AdminDashboardPage() {
       include: { user: { select: { fullName: true, email: true } } },
     }),
     prisma.order.findMany({
-      where: { createdAt: { gte: ninetyDaysAgo } },
+      where: {
+        createdAt: { gte: ninetyDaysAgo },
+        paymentStatus: { in: ['paid', 'completed'] },
+      },
       select: { total: true, createdAt: true },
       orderBy: { createdAt: 'asc' },
     }),
     // Top selling by order items (last 30 days)
     prisma.orderItem.groupBy({
       by: ['productId'],
-      where: { order: { createdAt: { gte: thirtyDaysAgo } } },
+      where: {
+        order: {
+          createdAt: { gte: thirtyDaysAgo },
+          paymentStatus: { in: ['paid', 'completed'] },
+        },
+      },
       _sum: { quantity: true },
       orderBy: { _sum: { quantity: 'desc' } },
       take: 5,

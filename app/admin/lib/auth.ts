@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
@@ -10,7 +11,7 @@ export type AdminUser = User & { isAdmin: boolean; isStaff: boolean };
  * Returns the authenticated DB user if they have ADMIN or STAFF role.
  * Redirects otherwise.
  */
-export async function requireStaff(): Promise<AdminUser> {
+export const requireStaff = cache(async (): Promise<AdminUser> => {
   const supabase = createClient();
   const {
     data: { user },
@@ -29,7 +30,7 @@ export async function requireStaff(): Promise<AdminUser> {
     isAdmin: dbUser.role === 'ADMIN',
     isStaff: dbUser.role === 'STAFF',
   };
-}
+});
 
 /**
  * Call from ADMIN-only pages (analytics, staff, settings, coupons).

@@ -10,7 +10,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const user = await requireStaff();
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="admin-root min-h-screen bg-gray-50 font-sans">
       {/* Fixed sidebar */}
       <AdminSidebar isAdmin={user.isAdmin} userEmail={user.email} userName={user.fullName || ''} />
 

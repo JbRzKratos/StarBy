@@ -1,16 +1,16 @@
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '../lib/auth';
 import { AnalyticsClient } from '@/components/admin/analytics/analytics-client';
 
 export default async function AdminAnalyticsPage() {
-  await requireStaff();
-
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
   const [recentOrders, topProducts] = await Promise.all([
     prisma.order.findMany({
-      where: { createdAt: { gte: thirtyDaysAgo } },
+      where: {
+        createdAt: { gte: thirtyDaysAgo },
+        paymentStatus: { in: ['paid', 'completed'] },
+      },
       select: { total: true, createdAt: true, status: true },
       orderBy: { createdAt: 'asc' },
     }),

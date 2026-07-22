@@ -303,6 +303,7 @@ export default function CheckoutPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <input
                       placeholder="First name *"
+                      aria-label="First name"
                       value={shippingAddress.firstName}
                       onChange={(e) =>
                         setShippingAddress({ ...shippingAddress, firstName: e.target.value })
@@ -311,6 +312,7 @@ export default function CheckoutPage() {
                     />
                     <input
                       placeholder="Last name"
+                      aria-label="Last name"
                       value={shippingAddress.lastName}
                       onChange={(e) =>
                         setShippingAddress({ ...shippingAddress, lastName: e.target.value })
@@ -320,6 +322,7 @@ export default function CheckoutPage() {
                   </div>
                   <input
                     placeholder="Address line 1 *"
+                    aria-label="Address line 1"
                     value={shippingAddress.address1}
                     onChange={(e) =>
                       setShippingAddress({ ...shippingAddress, address1: e.target.value })
@@ -328,6 +331,7 @@ export default function CheckoutPage() {
                   />
                   <input
                     placeholder="Address line 2 (optional)"
+                    aria-label="Address line 2"
                     value={shippingAddress.address2}
                     onChange={(e) =>
                       setShippingAddress({ ...shippingAddress, address2: e.target.value })
@@ -337,6 +341,7 @@ export default function CheckoutPage() {
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <input
                       placeholder="City *"
+                      aria-label="City"
                       value={shippingAddress.city}
                       onChange={(e) =>
                         setShippingAddress({ ...shippingAddress, city: e.target.value })
@@ -345,6 +350,7 @@ export default function CheckoutPage() {
                     />
                     <input
                       placeholder="State *"
+                      aria-label="State"
                       value={shippingAddress.state}
                       onChange={(e) =>
                         setShippingAddress({ ...shippingAddress, state: e.target.value })
@@ -353,6 +359,7 @@ export default function CheckoutPage() {
                     />
                     <input
                       placeholder="PIN Code *"
+                      aria-label="PIN Code"
                       value={shippingAddress.pinCode}
                       onChange={(e) =>
                         setShippingAddress({ ...shippingAddress, pinCode: e.target.value })
@@ -362,6 +369,7 @@ export default function CheckoutPage() {
                   </div>
                   <input
                     placeholder="Phone number"
+                    aria-label="Phone number"
                     value={shippingAddress.phone}
                     onChange={(e) =>
                       setShippingAddress({ ...shippingAddress, phone: e.target.value })

@@ -17,11 +17,15 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     cursor: none;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   body {
     @apply bg-charcoal text-bone font-sans;
     min-height: 100dvh;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -69,7 +73,12 @@
   }
 
   body.ar-active,
-  body.ar-active * {
+  body.ar-active *,
+  .admin-root,
+  .admin-root *,
+  .admin-root a,
+  .admin-root button,
+  .admin-root [role='button'] {
     cursor: auto !important;
   }
 }

@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '../../../lib/auth';
 import { ProductFormClient } from '@/components/admin/products/product-form-client';
 
 interface PageProps {
@@ -8,8 +7,6 @@ interface PageProps {
 }
 
 export default async function EditProductPage({ params }: PageProps) {
-  await requireStaff();
-
   const [product, categories] = await Promise.all([
     prisma.product.findUnique({
       where: { id: params.id },

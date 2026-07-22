@@ -1,10 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '../lib/auth';
 import { ProductsClient } from '@/components/admin/products/products-client';
 
 export default async function AdminProductsPage() {
-  await requireStaff();
-
   const [products, categories] = await Promise.all([
     prisma.product.findMany({
       include: { variants: true },
