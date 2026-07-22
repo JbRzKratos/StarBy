@@ -3,9 +3,41 @@ import { CheckoutSchema } from '@/lib/validations/schemas';
 import { rateLimit } from '@/lib/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
-import { razorpay } from '@/lib/razorpay';
+import { Prisma } from '@prisma/client';
 
 export const runtime = 'edge';
+
+// Create a Razorpay order using their REST API directly (no Node.js SDK needed)
+async function createRazorpayOrder(amountInPaise: number, receipt: string) {
+  const keyId = process.env.RAZORPAY_KEY_ID;
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+  if (!keyId || !keySecret) {
+    throw new Error('Razorpay credentials not configured');
+  }
+
+  const credentials = btoa(`${keyId}:${keySecret}`);
+
+  const response = await fetch('https://api.razorpay.com/v1/orders', {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${credentials}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      amount: amountInPaise,
+      currency: 'INR',
+      receipt,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Razorpay API error ${response.status}: ${errorText}`);
+  }
+
+  return response.json() as Promise<{ id: string }>;
+}
 
 export async function POST(request: Request) {
   try {
@@ -100,11 +132,10 @@ export async function POST(request: Request) {
 
     if (!isCod) {
       try {
-        const rzpOrder = await razorpay.orders.create({
-          amount: Math.round(totalAmount * 100), // convert to paise
-          currency: 'INR',
-          receipt: `rcpt_${Date.now()}`,
-        });
+        const rzpOrder = await createRazorpayOrder(
+          Math.round(totalAmount * 100),
+          `rcpt_${Date.now()}`,
+        );
         razorpayOrderId = rzpOrder.id;
       } catch (err) {
         console.error('Razorpay order creation failed:', err);
@@ -123,7 +154,7 @@ export async function POST(request: Request) {
       total: totalAmount,
       status: isCod ? 'placed' : 'pending_payment',
       paymentStatus: isCod ? 'pending' : 'pending',
-      shippingAddress: address as any,
+      shippingAddress: address as unknown as Prisma.InputJsonValue,
       razorpayOrderId,
       couponCode: couponCode || null,
       discount: discountAmount,
@@ -135,7 +166,9 @@ export async function POST(request: Request) {
           quantity: item.quantity,
           price: item.price,
           size: item.size || null,
-          customization: (item.customization as any) || null,
+          customization: item.customization
+            ? (item.customization as Prisma.InputJsonValue)
+            : Prisma.JsonNull,
         })),
       },
     });
