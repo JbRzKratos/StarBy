@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 export default async function AccountOrdersPage() {
   let orders: Prisma.OrderGetPayload<{ include: { items: true } }>[] = [];
@@ -55,7 +55,9 @@ export default async function AccountOrdersPage() {
         {orders.length > 0 ? (
           <div className="flex flex-col gap-6">
             {orders.map((order) => {
-              const estDate = order.estimatedDeliveryDate ? new Date(order.estimatedDeliveryDate).toLocaleDateString() : 'TBD';
+              const estDate = order.estimatedDeliveryDate
+                ? new Date(order.estimatedDeliveryDate).toLocaleDateString()
+                : 'TBD';
               return (
                 <div
                   key={order.id}
@@ -64,9 +66,7 @@ export default async function AccountOrdersPage() {
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4 pb-6 border-b border-smoke/20">
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">Order ID</span>
-                      <p className="font-mono text-body-sm text-bone font-bold mt-1">
-                        {order.id}
-                      </p>
+                      <p className="font-mono text-body-sm text-bone font-bold mt-1">{order.id}</p>
                     </div>
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">Date</span>
@@ -75,10 +75,10 @@ export default async function AccountOrdersPage() {
                       </p>
                     </div>
                     <div>
-                      <span className="font-mono text-caption text-ash uppercase">Est. Delivery</span>
-                      <p className="font-mono text-body-sm text-emerald-400 mt-1">
-                        {estDate}
-                      </p>
+                      <span className="font-mono text-caption text-ash uppercase">
+                        Est. Delivery
+                      </span>
+                      <p className="font-mono text-body-sm text-emerald-400 mt-1">{estDate}</p>
                     </div>
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">Status</span>
@@ -106,12 +106,9 @@ export default async function AccountOrdersPage() {
                         className="flex items-center justify-between font-mono text-body-sm text-pearl"
                       >
                         <span>
-                          Product #{item.productId} (Variant {item.variantId}) ×{' '}
-                          {item.quantity}
+                          Product #{item.productId} (Variant {item.variantId}) × {item.quantity}
                         </span>
-                        <span className="text-bone">
-                          ₹{item.price * item.quantity}
-                        </span>
+                        <span className="text-bone">₹{item.price * item.quantity}</span>
                       </div>
                     ))}
                   </div>

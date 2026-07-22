@@ -21,10 +21,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, message: 'Successfully subscribed!' });
   } catch (error: any) {
     if (error.code === 'P2002') {
-      return NextResponse.json({ success: false, message: 'This email is already subscribed.' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: 'This email is already subscribed.' },
+        { status: 400 },
+      );
     }
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ success: false, message: error.issues?.[0]?.message || 'Validation failed.' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: error.issues?.[0]?.message || 'Validation failed.' },
+        { status: 400 },
+      );
     }
     return NextResponse.json({ success: false, message: 'Something went wrong.' }, { status: 500 });
   }

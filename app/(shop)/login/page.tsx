@@ -65,7 +65,8 @@ export default function LoginPage() {
             <span className="text-cobalt">Everyday</span> Devices
           </h2>
           <p className="font-mono text-body text-pearl leading-relaxed">
-            Log in to access your custom skin designs, manage your orders, and explore premium drops reserved for members.
+            Log in to access your custom skin designs, manage your orders, and explore premium drops
+            reserved for members.
           </p>
         </div>
       </div>
@@ -74,9 +75,7 @@ export default function LoginPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-24 sm:px-12 lg:px-24 xl:px-32 relative">
         {/* Mobile Logo */}
         <Link href="/" className="absolute top-8 left-6 sm:left-12 lg:hidden">
-          <span className="font-display text-2xl font-bold tracking-tight text-bone">
-            StarBy
-          </span>
+          <span className="font-display text-2xl font-bold tracking-tight text-bone">StarBy</span>
         </Link>
 
         <div className="w-full max-w-md mt-12 lg:mt-0">
@@ -92,8 +91,18 @@ export default function LoginPage() {
 
           {error && (
             <div className="mb-8 p-4 bg-ember/10 border border-ember/40 rounded text-ember font-mono text-caption flex items-start gap-3">
-              <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <svg
+                className="w-5 h-5 shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
               </svg>
               {error}
             </div>
@@ -113,8 +122,18 @@ export default function LoginPage() {
                   placeholder="you@example.com"
                   className="w-full bg-graphite border border-smoke/30 rounded px-4 py-4 pl-12 text-bone font-mono text-body-sm focus:border-cobalt focus:ring-1 focus:ring-cobalt outline-none transition-all placeholder:text-smoke/50"
                 />
-                <svg className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <svg
+                  className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
             </div>
@@ -124,7 +143,10 @@ export default function LoginPage() {
                 <label className="font-mono text-caption text-pearl uppercase tracking-widest">
                   Password
                 </label>
-                <Link href="#" className="font-mono text-[10px] text-pearl hover:text-bone underline transition-colors uppercase tracking-wider">
+                <Link
+                  href="#"
+                  className="font-mono text-[10px] text-pearl hover:text-bone underline transition-colors uppercase tracking-wider"
+                >
                   Forgot?
                 </Link>
               </div>
@@ -137,8 +159,18 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   className="w-full bg-graphite border border-smoke/30 rounded px-4 py-4 pl-12 text-bone font-mono text-body-sm focus:border-cobalt focus:ring-1 focus:ring-cobalt outline-none transition-all placeholder:text-smoke/50"
                 />
-                <svg className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <svg
+                  className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
                 </svg>
               </div>
             </div>
@@ -152,8 +184,18 @@ export default function LoginPage() {
               <span className="relative z-10 flex items-center justify-center gap-2">
                 {loading ? 'Signing In...' : 'Sign In'}
                 {!loading && (
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <svg
+                    className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
                   </svg>
                 )}
               </span>

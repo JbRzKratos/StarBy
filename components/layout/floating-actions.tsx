@@ -86,7 +86,11 @@ export function FloatingActions() {
       {/* WhatsApp Floating Button - Bottom Left */}
       <div className="fixed bottom-6 left-6 z-[90]">
         <Link
-          href={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ? `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}` : "https://wa.me/919876543210"}
+          href={
+            process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
+              ? `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`
+              : 'https://wa.me/919876543210'
+          }
           target="_blank"
           rel="noopener noreferrer"
           ref={waRef}

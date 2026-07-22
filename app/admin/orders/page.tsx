@@ -9,7 +9,7 @@ export default async function AdminOrdersPage() {
     },
     orderBy: {
       createdAt: 'desc',
-    }
+    },
   });
 
   return <OrderManagerClient orders={orders} />;

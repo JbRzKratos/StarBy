@@ -6,7 +6,9 @@ import { createClient } from '@/lib/supabase/server';
 
 async function checkAdmin() {
   const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error('Not authenticated');
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
@@ -39,7 +41,14 @@ export async function deleteProduct(productId: string) {
   revalidatePath('/admin/products');
 }
 
-export async function addProduct(data: { name: string; slug: string; categorySlug: string; basePrice: number; tagline: string; description: string }) {
+export async function addProduct(data: {
+  name: string;
+  slug: string;
+  categorySlug: string;
+  basePrice: number;
+  tagline: string;
+  description: string;
+}) {
   await checkAdmin();
   await prisma.product.create({
     data: {

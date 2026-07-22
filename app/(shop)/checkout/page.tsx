@@ -129,8 +129,11 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      const fullName = `${shippingAddress.firstName} ${shippingAddress.lastName}`.trim() || 'Valued Customer';
-      const fullStreet = `${shippingAddress.address1} ${shippingAddress.address2}`.trim() || shippingAddress.address1;
+      const fullName =
+        `${shippingAddress.firstName} ${shippingAddress.lastName}`.trim() || 'Valued Customer';
+      const fullStreet =
+        `${shippingAddress.address1} ${shippingAddress.address2}`.trim() ||
+        shippingAddress.address1;
 
       const payload = {
         items: cartItems.map((item) => ({
@@ -179,8 +182,11 @@ export default function CheckoutPage() {
         clearCart();
         router.push('/account/orders');
       } else {
-        const razorpayKey = data.razorpayKeyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TGZ1O4UGYD5ArS';
-        
+        const razorpayKey =
+          data.razorpayKeyId ||
+          process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
+          'rzp_test_TGZ1O4UGYD5ArS';
+
         const options = {
           key: razorpayKey,
           amount: Math.round(data.amount * 100),
@@ -223,7 +229,9 @@ export default function CheckoutPage() {
           });
           rzp.open();
         } else {
-          alert('Razorpay gateway script is still loading. Please click Place Order again in 2 seconds.');
+          alert(
+            'Razorpay gateway script is still loading. Please click Place Order again in 2 seconds.',
+          );
         }
         setLoading(false);
       }
@@ -273,7 +281,7 @@ export default function CheckoutPage() {
                 <h2 className="font-display text-display-sm font-bold text-bone mb-6">
                   Shipping Address
                 </h2>
-                
+
                 {shippingError && (
                   <div className="mb-6 p-4 bg-ember/10 border border-ember/40 rounded text-ember font-mono text-caption">
                     {shippingError}
@@ -285,52 +293,68 @@ export default function CheckoutPage() {
                     <input
                       placeholder="First name *"
                       value={shippingAddress.firstName}
-                      onChange={(e) => setShippingAddress({ ...shippingAddress, firstName: e.target.value })}
+                      onChange={(e) =>
+                        setShippingAddress({ ...shippingAddress, firstName: e.target.value })
+                      }
                       className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                     />
                     <input
                       placeholder="Last name"
                       value={shippingAddress.lastName}
-                      onChange={(e) => setShippingAddress({ ...shippingAddress, lastName: e.target.value })}
+                      onChange={(e) =>
+                        setShippingAddress({ ...shippingAddress, lastName: e.target.value })
+                      }
                       className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                     />
                   </div>
                   <input
                     placeholder="Address line 1 *"
                     value={shippingAddress.address1}
-                    onChange={(e) => setShippingAddress({ ...shippingAddress, address1: e.target.value })}
+                    onChange={(e) =>
+                      setShippingAddress({ ...shippingAddress, address1: e.target.value })
+                    }
                     className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                   />
                   <input
                     placeholder="Address line 2 (optional)"
                     value={shippingAddress.address2}
-                    onChange={(e) => setShippingAddress({ ...shippingAddress, address2: e.target.value })}
+                    onChange={(e) =>
+                      setShippingAddress({ ...shippingAddress, address2: e.target.value })
+                    }
                     className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                   />
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <input
                       placeholder="City *"
                       value={shippingAddress.city}
-                      onChange={(e) => setShippingAddress({ ...shippingAddress, city: e.target.value })}
+                      onChange={(e) =>
+                        setShippingAddress({ ...shippingAddress, city: e.target.value })
+                      }
                       className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                     />
                     <input
                       placeholder="State *"
                       value={shippingAddress.state}
-                      onChange={(e) => setShippingAddress({ ...shippingAddress, state: e.target.value })}
+                      onChange={(e) =>
+                        setShippingAddress({ ...shippingAddress, state: e.target.value })
+                      }
                       className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                     />
                     <input
                       placeholder="PIN Code *"
                       value={shippingAddress.pinCode}
-                      onChange={(e) => setShippingAddress({ ...shippingAddress, pinCode: e.target.value })}
+                      onChange={(e) =>
+                        setShippingAddress({ ...shippingAddress, pinCode: e.target.value })
+                      }
                       className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                     />
                   </div>
                   <input
                     placeholder="Phone number"
                     value={shippingAddress.phone}
-                    onChange={(e) => setShippingAddress({ ...shippingAddress, phone: e.target.value })}
+                    onChange={(e) =>
+                      setShippingAddress({ ...shippingAddress, phone: e.target.value })
+                    }
                     className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                   />
                   <button
@@ -351,24 +375,38 @@ export default function CheckoutPage() {
                 <div className="flex flex-col gap-4">
                   <label
                     className={`flex items-center gap-3 p-4 border rounded-sm cursor-pointer transition-colors ${
-                      paymentMethod === 'razorpay' ? 'border-cobalt bg-cobalt/5' : 'border-smoke hover:border-pearl'
+                      paymentMethod === 'razorpay'
+                        ? 'border-cobalt bg-cobalt/5'
+                        : 'border-smoke hover:border-pearl'
                     }`}
                     onClick={() => setPaymentMethod('razorpay')}
                   >
-                    <div className={`w-4 h-4 border rounded-full flex items-center justify-center ${paymentMethod === 'razorpay' ? 'border-cobalt' : 'border-pearl'}`}>
-                      {paymentMethod === 'razorpay' && <div className="w-2 h-2 bg-cobalt rounded-full" />}
+                    <div
+                      className={`w-4 h-4 border rounded-full flex items-center justify-center ${paymentMethod === 'razorpay' ? 'border-cobalt' : 'border-pearl'}`}
+                    >
+                      {paymentMethod === 'razorpay' && (
+                        <div className="w-2 h-2 bg-cobalt rounded-full" />
+                      )}
                     </div>
-                    <span className="font-mono text-body-sm text-bone">Online Payment (Cards, UPI, Netbanking) via Razorpay</span>
+                    <span className="font-mono text-body-sm text-bone">
+                      Online Payment (Cards, UPI, Netbanking) via Razorpay
+                    </span>
                   </label>
 
                   <label
                     className={`flex items-center gap-3 p-4 border rounded-sm cursor-pointer transition-colors ${
-                      paymentMethod === 'cod' ? 'border-cobalt bg-cobalt/5' : 'border-smoke hover:border-pearl'
+                      paymentMethod === 'cod'
+                        ? 'border-cobalt bg-cobalt/5'
+                        : 'border-smoke hover:border-pearl'
                     }`}
                     onClick={() => setPaymentMethod('cod')}
                   >
-                    <div className={`w-4 h-4 border rounded-full flex items-center justify-center ${paymentMethod === 'cod' ? 'border-cobalt' : 'border-pearl'}`}>
-                      {paymentMethod === 'cod' && <div className="w-2 h-2 bg-cobalt rounded-full" />}
+                    <div
+                      className={`w-4 h-4 border rounded-full flex items-center justify-center ${paymentMethod === 'cod' ? 'border-cobalt' : 'border-pearl'}`}
+                    >
+                      {paymentMethod === 'cod' && (
+                        <div className="w-2 h-2 bg-cobalt rounded-full" />
+                      )}
                     </div>
                     <span className="font-mono text-body-sm text-bone">Cash on Delivery (COD)</span>
                   </label>
@@ -397,9 +435,18 @@ export default function CheckoutPage() {
                   Review Order
                 </h2>
                 <div className="text-pearl text-body-sm mb-6 space-y-4">
-                  <p><strong>Shipping To:</strong> {shippingAddress.firstName} {shippingAddress.lastName}, {shippingAddress.address1}, {shippingAddress.city}, {shippingAddress.state} {shippingAddress.pinCode}</p>
-                  <p><strong>Payment Method:</strong> {paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment (Razorpay)'}</p>
-                  <p><strong>Items:</strong> {cartItems.length}</p>
+                  <p>
+                    <strong>Shipping To:</strong> {shippingAddress.firstName}{' '}
+                    {shippingAddress.lastName}, {shippingAddress.address1}, {shippingAddress.city},{' '}
+                    {shippingAddress.state} {shippingAddress.pinCode}
+                  </p>
+                  <p>
+                    <strong>Payment Method:</strong>{' '}
+                    {paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment (Razorpay)'}
+                  </p>
+                  <p>
+                    <strong>Items:</strong> {cartItems.length}
+                  </p>
                 </div>
                 <div className="flex gap-3 mt-4">
                   <button
@@ -409,7 +456,7 @@ export default function CheckoutPage() {
                   >
                     ← Back
                   </button>
-                  <button 
+                  <button
                     onClick={handlePlaceOrder}
                     disabled={loading}
                     className="px-8 py-3 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors disabled:opacity-50"
@@ -424,18 +471,20 @@ export default function CheckoutPage() {
           {/* Summary */}
           <div className="bg-graphite border border-smoke rounded-lg p-6 h-fit sticky top-24">
             <h2 className="font-display text-body-lg text-bone mb-4">Summary</h2>
-            
+
             <div className="mb-6 pb-6 border-b border-smoke/30">
-              <label className="font-mono text-caption uppercase tracking-widest text-ash block mb-2">Discount Code</label>
+              <label className="font-mono text-caption uppercase tracking-widest text-ash block mb-2">
+                Discount Code
+              </label>
               <div className="flex gap-2">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                  placeholder="Enter code" 
+                  placeholder="Enter code"
                   className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-3 py-2 w-full focus:outline-none focus:border-cobalt"
                 />
-                <button 
+                <button
                   onClick={handleApplyCoupon}
                   className="bg-smoke/30 hover:bg-smoke/50 text-bone px-4 font-mono text-caption uppercase"
                 >
@@ -443,7 +492,9 @@ export default function CheckoutPage() {
                 </button>
               </div>
               {couponMsg && (
-                <p className={`mt-2 font-mono text-caption ${isCouponError ? 'text-ember' : 'text-emerald-400'}`}>
+                <p
+                  className={`mt-2 font-mono text-caption ${isCouponError ? 'text-ember' : 'text-emerald-400'}`}
+                >
                   {couponMsg}
                 </p>
               )}
@@ -455,16 +506,18 @@ export default function CheckoutPage() {
               </span>
               <span className="font-mono text-body-sm text-bone">{formatPrice(totalPrice())}</span>
             </div>
-            
+
             {discountAmount > 0 && (
               <div className="flex justify-between items-center py-4 border-b border-smoke/30">
                 <span className="font-mono text-caption uppercase tracking-widest text-emerald-400">
                   Discount
                 </span>
-                <span className="font-mono text-body-sm text-emerald-400">-{formatPrice(discountAmount)}</span>
+                <span className="font-mono text-body-sm text-emerald-400">
+                  -{formatPrice(discountAmount)}
+                </span>
               </div>
             )}
-            
+
             <div className="flex justify-between items-center py-4 border-b border-smoke/30">
               <span className="font-mono text-caption uppercase tracking-widest text-ash">
                 Shipping
@@ -475,9 +528,7 @@ export default function CheckoutPage() {
               <span className="font-mono text-body-md uppercase tracking-widest text-bone">
                 Total
               </span>
-              <span className="font-mono text-display-sm text-bone">
-                {formatPrice(finalTotal)}
-              </span>
+              <span className="font-mono text-display-sm text-bone">{formatPrice(finalTotal)}</span>
             </div>
           </div>
         </div>

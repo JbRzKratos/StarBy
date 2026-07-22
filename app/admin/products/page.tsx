@@ -8,7 +8,7 @@ export default async function AdminProductsPage() {
     },
     orderBy: {
       createdAt: 'desc',
-    }
+    },
   });
 
   return <ProductManagerClient products={products} />;

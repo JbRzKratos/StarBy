@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       const coupon = await prisma.coupon.findUnique({
         where: { code: couponCode.toUpperCase() },
       });
-      
+
       if (coupon && coupon.isActive) {
         if (!coupon.expiresAt || new Date(coupon.expiresAt) > new Date()) {
           if (!coupon.maxUses || coupon.usageCount < coupon.maxUses) {
@@ -61,11 +61,14 @@ export async function POST(request: Request) {
     let userId: string | null = null;
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) {
         const userEmail = user.email || `${user.id}@guest.local`;
-        const userName = user.user_metadata?.name || user.user_metadata?.full_name || userEmail.split('@')[0];
-        
+        const userName =
+          user.user_metadata?.name || user.user_metadata?.full_name || userEmail.split('@')[0];
+
         const dbUser = await prisma.user.upsert({
           where: { id: user.id },
           update: {

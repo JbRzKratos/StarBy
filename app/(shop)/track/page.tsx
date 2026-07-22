@@ -90,35 +90,52 @@ export default function TrackOrderPage() {
 
         {result && (
           <div className="mt-8 bg-graphite border border-smoke/40 p-6 rounded-lg">
-            <h2 className="font-display text-2xl text-bone uppercase mb-6 border-b border-smoke/30 pb-4">Order Status</h2>
-            
+            <h2 className="font-display text-2xl text-bone uppercase mb-6 border-b border-smoke/30 pb-4">
+              Order Status
+            </h2>
+
             <div className="space-y-6">
               <div>
-                <span className="font-mono text-caption text-ash uppercase block mb-1">Current Status</span>
+                <span className="font-mono text-caption text-ash uppercase block mb-1">
+                  Current Status
+                </span>
                 <span className="inline-block bg-cobalt/10 text-cobalt px-3 py-1 font-mono text-caption uppercase tracking-widest border border-cobalt/30 rounded">
                   {result.status.replace('_', ' ')}
                 </span>
               </div>
 
               <div>
-                <span className="font-mono text-caption text-ash uppercase block mb-1">Estimated Delivery Date</span>
+                <span className="font-mono text-caption text-ash uppercase block mb-1">
+                  Estimated Delivery Date
+                </span>
                 <span className="font-mono text-body-md text-emerald-400">
-                  {result.estimatedDeliveryDate ? new Date(result.estimatedDeliveryDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'TBD'}
+                  {result.estimatedDeliveryDate
+                    ? new Date(result.estimatedDeliveryDate).toLocaleDateString(undefined, {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })
+                    : 'TBD'}
                 </span>
               </div>
 
               <div>
-                <span className="font-mono text-caption text-ash uppercase block mb-1">Payment Status</span>
-                <span className={`font-mono text-body-sm ${result.paymentStatus === 'paid' ? 'text-bone' : 'text-amber-400'}`}>
+                <span className="font-mono text-caption text-ash uppercase block mb-1">
+                  Payment Status
+                </span>
+                <span
+                  className={`font-mono text-body-sm ${result.paymentStatus === 'paid' ? 'text-bone' : 'text-amber-400'}`}
+                >
                   {result.paymentStatus.toUpperCase()}
                 </span>
               </div>
-              
+
               <div>
-                <span className="font-mono text-caption text-ash uppercase block mb-1">Total Amount</span>
-                <span className="font-display text-xl text-bone">
-                  ₹{result.total}
+                <span className="font-mono text-caption text-ash uppercase block mb-1">
+                  Total Amount
                 </span>
+                <span className="font-display text-xl text-bone">₹{result.total}</span>
               </div>
             </div>
           </div>

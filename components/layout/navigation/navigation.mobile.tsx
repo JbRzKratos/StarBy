@@ -38,7 +38,7 @@ export function NavigationMobile() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Check auth status
     import('@/lib/supabase/client').then(({ createClient }) => {
       const supabase = createClient();
@@ -270,8 +270,8 @@ export function NavigationMobile() {
                   ))}
                 </div>
               </div>
-              <Link 
-                href={user ? "/account" : "/login"}
+              <Link
+                href={user ? '/account' : '/login'}
                 onClick={onClose}
                 className="font-mono text-caption uppercase text-bone flex items-center gap-2 hover:text-cobalt transition-colors"
               >
@@ -286,7 +286,7 @@ export function NavigationMobile() {
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                <span>{user ? "My Account" : "Log In / Register"}</span>
+                <span>{user ? 'My Account' : 'Log In / Register'}</span>
               </Link>
             </div>
             <p className="font-mono text-[10px] text-pearl/50 uppercase tracking-widest">

@@ -37,7 +37,7 @@ export function NavigationDesktop() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Check auth status
     import('@/lib/supabase/client').then(({ createClient }) => {
       const supabase = createClient();

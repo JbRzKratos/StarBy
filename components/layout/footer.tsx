@@ -51,7 +51,7 @@ export function Footer() {
                     const res = await fetch('/api/newsletter', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ email })
+                      body: JSON.stringify({ email }),
                     });
                     const data = await res.json();
                     if (res.ok) {
@@ -60,7 +60,7 @@ export function Footer() {
                     } else {
                       alert(data.message || 'Something went wrong.');
                     }
-                  } catch (error) {
+                  } catch {
                     alert('Error subscribing.');
                   }
                 }}

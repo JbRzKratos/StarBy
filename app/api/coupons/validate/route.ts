@@ -26,7 +26,10 @@ export async function POST(request: Request) {
     }
 
     if (coupon.maxUses && coupon.usageCount >= coupon.maxUses) {
-      return NextResponse.json({ valid: false, message: 'Coupon usage limit reached' }, { status: 400 });
+      return NextResponse.json(
+        { valid: false, message: 'Coupon usage limit reached' },
+        { status: 400 },
+      );
     }
 
     return NextResponse.json({
