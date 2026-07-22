@@ -1,5 +1,20 @@
 interface BadgeProps {
-  variant: 'processing' | 'placed' | 'shipped' | 'delivered' | 'cancelled' | 'refunded' | 'low-stock' | 'out-of-stock' | 'active' | 'draft' | 'paid' | 'pending' | 'admin' | 'staff' | 'customer';
+  variant:
+    | 'processing'
+    | 'placed'
+    | 'shipped'
+    | 'delivered'
+    | 'cancelled'
+    | 'refunded'
+    | 'low-stock'
+    | 'out-of-stock'
+    | 'active'
+    | 'draft'
+    | 'paid'
+    | 'pending'
+    | 'admin'
+    | 'staff'
+    | 'customer';
   label?: string;
 }
 
@@ -24,7 +39,9 @@ const VARIANTS: Record<BadgeProps['variant'], string> = {
 export function AdminBadge({ variant, label }: BadgeProps) {
   const displayLabel = label || variant.replace('-', ' ');
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide ${VARIANTS[variant]}`}>
+    <span
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide ${VARIANTS[variant]}`}
+    >
       {displayLabel}
     </span>
   );

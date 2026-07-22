@@ -17,12 +17,10 @@ const BREADCRUMB_MAP: Record<string, string> = {
 
 interface AdminTopbarProps {
   isAdmin: boolean;
-  userEmail: string;
-  userName: string;
   role: string;
 }
 
-export function AdminTopbar({ isAdmin, userEmail, userName, role }: AdminTopbarProps) {
+export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
   const pathname = usePathname();
 
   // Build breadcrumb
@@ -45,7 +43,10 @@ export function AdminTopbar({ isAdmin, userEmail, userName, role }: AdminTopbarP
             {i === breadcrumbs.length - 1 ? (
               <span className="font-semibold text-gray-900">{crumb.label}</span>
             ) : (
-              <Link href={crumb.href} className="text-gray-500 hover:text-gray-700 transition-colors">
+              <Link
+                href={crumb.href}
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+              >
                 {crumb.label}
               </Link>
             )}
@@ -58,9 +59,7 @@ export function AdminTopbar({ isAdmin, userEmail, userName, role }: AdminTopbarP
         {/* Role badge */}
         <span
           className={`text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-            isAdmin
-              ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]'
-              : 'bg-amber-100 text-amber-700'
+            isAdmin ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]' : 'bg-amber-100 text-amber-700'
           }`}
         >
           {role}
@@ -71,7 +70,16 @@ export function AdminTopbar({ isAdmin, userEmail, userName, role }: AdminTopbarP
           href="/api/auth/signout"
           className="text-sm text-gray-500 hover:text-gray-800 transition-colors flex items-center gap-1.5"
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
             <polyline points="16 17 21 12 16 7" />
             <line x1="21" y1="12" x2="9" y2="12" />

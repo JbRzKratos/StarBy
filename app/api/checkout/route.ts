@@ -138,9 +138,16 @@ export async function POST(request: Request) {
         );
         razorpayOrderId = rzpOrder.id;
       } catch (err) {
-        console.error('Razorpay order creation failed:', err instanceof Error ? err.message : String(err));
+        console.error(
+          'Razorpay order creation failed:',
+          err instanceof Error ? err.message : String(err),
+        );
         return NextResponse.json(
-          { success: false, message: 'Payment gateway error (Check Cloudflare Environment Variables). Please try again.' },
+          {
+            success: false,
+            message:
+              'Payment gateway error (Check Cloudflare Environment Variables). Please try again.',
+          },
           { status: 500 },
         );
       }

@@ -171,10 +171,10 @@ export async function createCoupon(data: {
   discountType: string;
   discountValue: number;
   isActive: boolean;
-  expiresAt?: Date;
-  maxUses?: number;
-  perCustomerLimit?: number;
-  minOrderValue?: number;
+  expiresAt?: Date | null;
+  maxUses?: number | null;
+  perCustomerLimit?: number | null;
+  minOrderValue?: number | null;
 }) {
   await assertAdmin();
   await prisma.coupon.create({ data });
@@ -191,7 +191,7 @@ export async function updateCoupon(
     expiresAt?: Date | null;
     maxUses?: number | null;
     perCustomerLimit?: number | null;
-    minOrderValue?: number;
+    minOrderValue?: number | null;
   },
 ) {
   await assertAdmin();
@@ -269,16 +269,12 @@ export async function updateSettings(data: {
       id: 'singleton',
       storeName: data.storeName,
       contactEmail: data.contactEmail,
-      currency: data.currency,
       taxRate: data.taxRate,
-      maintenanceMode: data.maintenanceMode,
     },
     update: {
       storeName: data.storeName,
       contactEmail: data.contactEmail,
-      currency: data.currency,
       taxRate: data.taxRate,
-      maintenanceMode: data.maintenanceMode,
     },
   });
   revalidatePath('/admin/settings');

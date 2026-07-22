@@ -17,20 +17,19 @@ export interface OrderRow {
   total: number;
   itemCount: number;
   createdAt: string;
-  couponCode?: string;
+  couponCode: string | null;
   discount: number;
   shippingMethod: string;
 }
 
-const STATUS_OPTIONS: OrderStatus[] = ['placed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'];
-
-function statusVariant(status: string): Parameters<typeof AdminBadge>[0]['variant'] {
-  const map: Record<string, Parameters<typeof AdminBadge>[0]['variant']> = {
-    processing: 'processing', placed: 'placed', shipped: 'shipped',
-    delivered: 'delivered', cancelled: 'cancelled', refunded: 'refunded',
-  };
-  return map[status] || 'processing';
-}
+const STATUS_OPTIONS: OrderStatus[] = [
+  'placed',
+  'processing',
+  'shipped',
+  'delivered',
+  'cancelled',
+  'refunded',
+];
 
 export function OrdersClient({ orders }: { orders: OrderRow[] }) {
   const { toast, show, dismiss } = useToast();
@@ -46,10 +45,12 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
 
   const filtered = orders
     .filter((o) => filter === 'all' || o.status === filter)
-    .filter((o) =>
-      !search || o.id.toLowerCase().includes(search.toLowerCase()) ||
-      o.customerName.toLowerCase().includes(search.toLowerCase()) ||
-      o.customerEmail.toLowerCase().includes(search.toLowerCase())
+    .filter(
+      (o) =>
+        !search ||
+        o.id.toLowerCase().includes(search.toLowerCase()) ||
+        o.customerName.toLowerCase().includes(search.toLowerCase()) ||
+        o.customerEmail.toLowerCase().includes(search.toLowerCase()),
     )
     .sort((a, b) => {
       const diff = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
@@ -92,14 +93,26 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
         <div className="flex flex-wrap items-center gap-3">
           {/* Search */}
           <div className="relative flex-1 min-w-48">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <input
               type="text"
               placeholder="Search orders, customers…"
               value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
               className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
             />
           </div>
@@ -109,9 +122,14 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
             {['all', ...STATUS_OPTIONS].map((s) => (
               <button
                 key={s}
-                onClick={() => { setFilter(s); setPage(1); }}
+                onClick={() => {
+                  setFilter(s);
+                  setPage(1);
+                }}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
-                  filter === s ? 'bg-[#3B5EFF] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  filter === s
+                    ? 'bg-[#3B5EFF] text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
                 {s}
@@ -121,10 +139,17 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
 
           {/* Sort */}
           <button
-            onClick={() => setSortDir((d) => d === 'desc' ? 'asc' : 'desc')}
+            onClick={() => setSortDir((d) => (d === 'desc' ? 'asc' : 'desc'))}
             className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <line x1="12" y1="5" x2="12" y2="19" />
               <polyline points={sortDir === 'desc' ? '19 12 12 19 5 12' : '5 12 12 5 19 12'} />
             </svg>
@@ -139,13 +164,27 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Order ID</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Customer</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Payment</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Total</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Date</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Actions</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Order ID
+                </th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Customer
+                </th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Status
+                </th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Payment
+                </th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Total
+                </th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Date
+                </th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -159,7 +198,10 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
               {paginated.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3">
-                    <Link href={`/admin/orders/${order.id}`} className="font-mono text-xs text-[#3B5EFF] hover:underline">
+                    <Link
+                      href={`/admin/orders/${order.id}`}
+                      className="font-mono text-xs text-[#3B5EFF] hover:underline"
+                    >
                       {order.id.slice(0, 10)}…
                     </Link>
                   </td>
@@ -175,7 +217,9 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                       className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 disabled:opacity-50"
                     >
                       {STATUS_OPTIONS.map((s) => (
-                        <option key={s} value={s}>{s}</option>
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
                       ))}
                     </select>
                   </td>
@@ -186,7 +230,11 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                     ₹{order.total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                   </td>
                   <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
-                    {new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    {new Date(order.createdAt).toLocaleDateString('en-IN', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
                   </td>
                   <td className="px-4 py-3">
                     <Link
@@ -206,7 +254,8 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
         {totalPages > 1 && (
           <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100">
             <p className="text-xs text-gray-500">
-              Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length}
+              Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} of{' '}
+              {filtered.length}
             </p>
             <div className="flex gap-2">
               <button

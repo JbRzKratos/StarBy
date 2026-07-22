@@ -6,7 +6,11 @@ import { AdminBadge } from '../ui/badge';
 import { promoteToStaff, demoteToCustomer } from '@/app/admin/lib/actions';
 
 interface StaffRow {
-  id: string; email: string; name: string; role: string; createdAt: string;
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  createdAt: string;
 }
 
 export function StaffClient({ staff }: { staff: StaffRow[] }) {
@@ -51,8 +55,21 @@ export function StaffClient({ staff }: { staff: StaffRow[] }) {
           <h1 className="text-lg font-bold text-gray-900">Staff Access</h1>
           <p className="text-sm text-gray-500">Manage admin panel users</p>
         </div>
-        <button onClick={() => setShowAdd(true)} className="flex items-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+        <button
+          onClick={() => setShowAdd(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
           Add Staff
         </button>
       </div>
@@ -60,7 +77,9 @@ export function StaffClient({ staff }: { staff: StaffRow[] }) {
       {showAdd && (
         <div className="bg-white rounded-xl border border-gray-200 p-5 mb-4 flex items-end gap-3 max-w-xl">
           <div className="flex-1">
-            <label className="text-xs font-medium text-gray-700 block mb-1">User Email to Promote</label>
+            <label className="text-xs font-medium text-gray-700 block mb-1">
+              User Email to Promote
+            </label>
             <input
               type="email"
               value={addEmail}
@@ -69,10 +88,19 @@ export function StaffClient({ staff }: { staff: StaffRow[] }) {
               className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
             />
           </div>
-          <button onClick={handlePromote} disabled={isPending || !addEmail} className="px-4 py-2.5 bg-[#3B5EFF] text-white text-sm font-semibold rounded-lg hover:bg-[#2a4de8] disabled:opacity-50 transition-colors">
+          <button
+            onClick={handlePromote}
+            disabled={isPending || !addEmail}
+            className="px-4 py-2.5 bg-[#3B5EFF] text-white text-sm font-semibold rounded-lg hover:bg-[#2a4de8] disabled:opacity-50 transition-colors"
+          >
             {isPending ? 'Promoting…' : 'Promote'}
           </button>
-          <button onClick={() => setShowAdd(false)} className="px-4 py-2.5 text-sm text-gray-600 hover:text-gray-900">Cancel</button>
+          <button
+            onClick={() => setShowAdd(false)}
+            className="px-4 py-2.5 text-sm text-gray-600 hover:text-gray-900"
+          >
+            Cancel
+          </button>
         </div>
       )}
 
@@ -80,10 +108,18 @@ export function StaffClient({ staff }: { staff: StaffRow[] }) {
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-100">
             <tr>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Name / Email</th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Role</th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Joined</th>
-              <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Actions</th>
+              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Name / Email
+              </th>
+              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Role
+              </th>
+              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Joined
+              </th>
+              <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
@@ -101,7 +137,10 @@ export function StaffClient({ staff }: { staff: StaffRow[] }) {
                 </td>
                 <td className="px-4 py-3 text-right">
                   {u.role !== 'ADMIN' && (
-                    <button onClick={() => setDemoteId(u.id)} className="text-xs text-red-600 hover:underline font-medium">
+                    <button
+                      onClick={() => setDemoteId(u.id)}
+                      className="text-xs text-red-600 hover:underline font-medium"
+                    >
                       Remove Access
                     </button>
                   )}

@@ -24,7 +24,7 @@ export default async function AdminOrdersPage() {
         total: o.total,
         itemCount: o.items.reduce((sum, i) => sum + i.quantity, 0),
         createdAt: o.createdAt.toISOString(),
-        couponCode: o.couponCode || undefined,
+        couponCode: o.couponCode,
         discount: o.discount || 0,
         shippingMethod: o.shippingMethod || 'standard',
       }))}

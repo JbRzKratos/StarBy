@@ -30,7 +30,7 @@ export default async function AdminAnalyticsPage() {
     const dayKey = d.toISOString().split('T')[0] ?? '';
     dailyMap[dayKey] = 0;
   }
-  
+
   let totalRevenue30d = 0;
   let totalOrders30d = 0;
 
@@ -55,7 +55,7 @@ export default async function AdminAnalyticsPage() {
     where: { id: { in: topProducts.map((p) => p.productId) } },
     select: { id: true, name: true, categorySlug: true },
   });
-  
+
   const productMap = Object.fromEntries(productInfo.map((p) => [p.id, p]));
   const topSellers = topProducts.map((p) => ({
     id: p.productId,

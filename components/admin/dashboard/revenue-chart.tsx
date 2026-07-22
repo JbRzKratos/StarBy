@@ -44,20 +44,28 @@ export function RevenueChart({ data }: RevenueChartProps) {
     const now = new Date();
     const days = range === '7d' ? 7 : range === '30d' ? 30 : 90;
     const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-    const cutoffStr = cutoff.toISOString().split('T')[0];
+    const cutoffStr = cutoff.toISOString().split('T')[0] ?? '';
     const sliced = data.filter((d) => d.date >= cutoffStr);
     return aggregateByDay(sliced);
   }, [data, range]);
 
   const total = filtered.reduce((sum, d) => sum + d.revenue, 0);
 
-  const customTooltip = ({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) => {
+  const customTooltip = ({
+    active,
+    payload,
+    label,
+  }: {
+    active?: boolean;
+    payload?: readonly any[];
+    label?: string | number;
+  }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white border border-gray-200 rounded-lg shadow-lg px-3 py-2">
-          <p className="text-xs text-gray-500">{formatDateLabel(label || '')}</p>
+          <p className="text-xs text-gray-500">{formatDateLabel(String(label || ''))}</p>
           <p className="text-sm font-semibold text-gray-900">
-            ₹{payload[0].value.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            ₹{Number(payload[0]?.value || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
           </p>
         </div>
       );

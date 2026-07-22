@@ -21,8 +21,8 @@ export default async function OrderDetailPage({ params }: PageProps) {
   if (!order) notFound();
 
   // Fetch product + variant details for items
-  const productIds = [...new Set(order.items.map((i) => i.productId))];
-  const variantIds = [...new Set(order.items.map((i) => i.variantId))];
+  const productIds = Array.from(new Set(order.items.map((i) => i.productId)));
+  const variantIds = Array.from(new Set(order.items.map((i) => i.variantId)));
 
   const [products, variants] = await Promise.all([
     prisma.product.findMany({
@@ -78,7 +78,11 @@ export default async function OrderDetailPage({ params }: PageProps) {
         createdAt: order.createdAt.toISOString(),
         updatedAt: order.updatedAt.toISOString(),
         customer: order.user
-          ? { id: order.user.id, name: order.user.fullName || order.user.email, email: order.user.email }
+          ? {
+              id: order.user.id,
+              name: order.user.fullName || order.user.email,
+              email: order.user.email,
+            }
           : null,
         shippingAddress,
         items: enrichedItems,

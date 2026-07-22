@@ -12,27 +12,27 @@ export default async function AdminSettingsPage() {
 
   return (
     <SettingsClient
-      settings={settings ? {
-        id: settings.id,
-        storeName: settings.storeName,
-        contactEmail: settings.contactEmail,
-        currency: settings.currency,
-        taxRate: settings.taxRate,
-        maintenanceMode: settings.maintenanceMode,
-      } : {
-        id: 'new',
-        storeName: 'StarBy',
-        contactEmail: 'contact@starby.in',
-        currency: 'INR',
-        taxRate: 18,
-        maintenanceMode: false,
-      }}
+      settings={
+        settings
+          ? {
+              id: settings.id,
+              storeName: settings.storeName,
+              contactEmail: settings.contactEmail,
+              taxRate: settings.taxRate,
+            }
+          : {
+              id: 'new',
+              storeName: 'StarBy',
+              contactEmail: 'contact@starby.in',
+              taxRate: 18,
+            }
+      }
       shippingZones={shippingZones.map((z) => ({
         id: z.id,
         name: z.name,
-        countries: z.countries,
-        rate: z.rate,
-        freeShippingThreshold: z.freeShippingThreshold,
+        states: z.states,
+        rateType: z.rateType,
+        rateValue: z.rateValue,
       }))}
     />
   );

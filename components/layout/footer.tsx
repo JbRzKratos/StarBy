@@ -38,7 +38,9 @@ export function Footer() {
             </p>
 
             <div className="mt-8">
-              <h3 className="font-mono text-caption text-bone uppercase tracking-widest mb-4">Join the Collective</h3>
+              <h3 className="font-mono text-caption text-bone uppercase tracking-widest mb-4">
+                Join the Collective
+              </h3>
               <form
                 className="flex flex-col sm:flex-row gap-3"
                 onSubmit={async (e) => {

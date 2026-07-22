@@ -83,7 +83,7 @@ export default async function AdminDashboardPage() {
         itemCount: 0,
       }))}
       revenueData={allOrders90d.map((o) => ({
-        date: o.createdAt.toISOString().split('T')[0],
+        date: o.createdAt.toISOString().split('T')[0] ?? '',
         revenue: o.total,
       }))}
       topProducts={topProductsWithSales}
