@@ -99,11 +99,11 @@ function FallbackARPreview({ panels, isOpen, onClose }: ArRoomPreviewProps) {
       try {
         await tryCamera({ video: { facingMode: 'environment' } });
         setCameraReady(true);
-      } catch (err) {
+      } catch {
         try {
           await tryCamera({ video: true });
           setCameraReady(true);
-        } catch (err2) {
+        } catch {
           setCameraError('Camera access was denied or unavailable. Please check permissions.');
         }
       }
