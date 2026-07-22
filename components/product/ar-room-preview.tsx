@@ -34,10 +34,11 @@ export function ArRoomPreview(props: ArRoomPreviewProps) {
 
     if (!props.isOpen) return;
 
-    if (navigator.xr && navigator.xr.isSessionSupported) {
-      navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
-        setXrSupported(supported);
-      });
+    if (navigator?.xr?.isSessionSupported) {
+      navigator.xr
+        .isSessionSupported('immersive-ar')
+        .then((supported) => setXrSupported(supported))
+        .catch(() => setXrSupported(false));
     } else {
       setXrSupported(false);
     }
@@ -82,21 +83,33 @@ function FallbackARPreview({ panels, isOpen, onClose }: ArRoomPreviewProps) {
     setCameraError(null);
     setCameraReady(false);
 
-    const tryCamera = (constraints: MediaStreamConstraints) =>
-      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          return videoRef.current.play();
-        }
-      });
+    const tryCamera = async (constraints: MediaStreamConstraints) => {
+      if (!navigator?.mediaDevices?.getUserMedia) {
+        throw new Error('Camera API not available');
+      }
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play();
+      }
+    };
 
-    tryCamera({ video: { facingMode: 'environment' } })
-      .catch(() => tryCamera({ video: true }))
-      .then(() => setCameraReady(true))
-      .catch(() =>
-        setCameraError('Camera access was denied. Please allow camera access and try again.'),
-      );
+    const startCamera = async () => {
+      try {
+        await tryCamera({ video: { facingMode: 'environment' } });
+        setCameraReady(true);
+      } catch (err) {
+        try {
+          await tryCamera({ video: true });
+          setCameraReady(true);
+        } catch (err2) {
+          setCameraError('Camera access was denied or unavailable. Please check permissions.');
+        }
+      }
+    };
+
+    startCamera();
 
     return () => {
       streamRef.current?.getTracks().forEach((t) => t.stop());
