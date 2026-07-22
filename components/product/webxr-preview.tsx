@@ -69,6 +69,7 @@ function HitTestPlacer({
 }) {
   const reticleGroupRef = useRef<THREE.Group>(null);
   const [placedMatrix, setPlacedMatrix] = useState<THREE.Matrix4 | null>(null);
+  const { session } = useXR();
 
   useHitTest((hitMatrix) => {
     if (isPlaced) return;
@@ -78,14 +79,21 @@ function HitTestPlacer({
     }
   });
 
-  const placePoster = () => {
-    if (reticleGroupRef.current && reticleGroupRef.current.visible && !isPlaced) {
-      const newMat = new THREE.Matrix4().copy(reticleGroupRef.current.matrix);
-      setPlacedMatrix(newMat);
-      reticleGroupRef.current.visible = false;
-      setIsPlaced(true);
-    }
-  };
+  useEffect(() => {
+    if (!session) return;
+    const handleSelect = () => {
+      if (reticleGroupRef.current && reticleGroupRef.current.visible && !isPlaced) {
+        const newMat = new THREE.Matrix4().copy(reticleGroupRef.current.matrix);
+        setPlacedMatrix(newMat);
+        reticleGroupRef.current.visible = false;
+        setIsPlaced(true);
+      }
+    };
+    session.addEventListener('select', handleSelect);
+    return () => {
+      session.removeEventListener('select', handleSelect);
+    };
+  }, [session, isPlaced, setIsPlaced]);
 
   const meshes = useMemo(() => {
     const totalWidth =
@@ -105,12 +113,6 @@ function HitTestPlacer({
 
   return (
     <>
-      {/* Background mesh to catch pointer down everywhere in AR */}
-      <mesh onPointerDown={placePoster}>
-        <sphereGeometry args={[100, 32, 32]} />
-        <meshBasicMaterial visible={false} side={THREE.BackSide} />
-      </mesh>
-
       {/* Reticle: Rotated -90 on X so it lies flat on the detected surface */}
       <group ref={reticleGroupRef} matrixAutoUpdate={false} visible={false}>
         <mesh rotation={[-Math.PI / 2, 0, 0]}>
