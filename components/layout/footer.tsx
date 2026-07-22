@@ -43,13 +43,31 @@ export function Footer() {
               </h3>
               <form
                 className="flex flex-col sm:flex-row gap-3"
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  alert('Thanks for subscribing! Check your email.');
+                  const form = e.target as HTMLFormElement;
+                  const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+                  try {
+                    const res = await fetch('/api/newsletter', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ email })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                      alert('Thanks for subscribing!');
+                      form.reset();
+                    } else {
+                      alert(data.message || 'Something went wrong.');
+                    }
+                  } catch (error) {
+                    alert('Error subscribing.');
+                  }
                 }}
               >
                 <input
                   type="email"
+                  name="email"
                   placeholder="Enter your email"
                   required
                   className="flex-1 bg-charcoal border border-smoke px-4 py-3 text-bone font-mono text-body-sm focus:outline-none focus:border-cobalt transition-colors"

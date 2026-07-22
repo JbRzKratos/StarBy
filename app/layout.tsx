@@ -5,6 +5,7 @@ import { GsapProvider } from '@/components/animations/gsap-provider';
 import { CustomCursor } from '@/components/layout/custom-cursor';
 import { FloatingActions } from '@/components/layout/floating-actions';
 import { DeviceProvider } from '@/lib/providers/device-provider';
+import { TawkToWidget } from '@/components/layout/tawk-to-widget';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <GsapProvider>
             <CustomCursor />
             <FloatingActions />
+            <TawkToWidget />
             {children}
           </GsapProvider>
         </DeviceProvider>

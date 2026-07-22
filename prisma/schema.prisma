@@ -72,11 +72,16 @@ model CustomizationTemplate {
   printArea   Json
   blendMode   String @default("source-over")
 }
+enum Role {
+  CUSTOMER
+  ADMIN
+}
 
 model User {
   id        String             @id
   email     String             @unique
   fullName  String?
+  role      Role               @default(CUSTOMER)
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
   addresses Address[]
@@ -99,16 +104,23 @@ model Address {
 }
 
 model Order {
-  id              String      @id @default(cuid())
-  userId          String?
-  user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
-  total           Float
-  status          String      @default("processing")
-  paymentStatus   String      @default("paid")
-  shippingAddress Json
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  items           OrderItem[]
+  id                    String      @id @default(cuid())
+  userId                String?
+  user                  User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  total                 Float
+  status                String      @default("processing")
+  paymentStatus         String      @default("paid")
+  shippingAddress       Json
+  razorpayOrderId       String?
+  razorpayPaymentId     String?
+  razorpaySignature     String?
+  couponCode            String?
+  discount              Float?      @default(0)
+  estimatedDeliveryDate DateTime?
+  shippingMethod        String?     @default("standard")
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  items                 OrderItem[]
 }
 
 model OrderItem {
@@ -132,4 +144,23 @@ model CustomizerDesign {
   previewUrl  String?
   title       String?  @default("My Design")
   createdAt   DateTime @default(now())
+}
+
+model Coupon {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  discountType  String    // 'percentage' or 'flat'
+  discountValue Float
+  isActive      Boolean   @default(true)
+  expiresAt     DateTime?
+  maxUses       Int?
+  usageCount    Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
 }

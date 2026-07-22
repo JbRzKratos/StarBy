@@ -6,15 +6,32 @@ export default function TrackOrderPage() {
   const [orderId, setOrderId] = useState('');
   const [email, setEmail] = useState('');
   const [tracking, setTracking] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleTrack = (e: React.FormEvent) => {
+  const handleTrack = async (e: React.FormEvent) => {
     e.preventDefault();
     setTracking(true);
-    // Mock tracking
-    setTimeout(() => {
-      alert('Order tracking system will be integrated with backend API.');
+    setError(null);
+    setResult(null);
+
+    try {
+      const res = await fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, email }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setResult(data);
+      } else {
+        setError(data.message || 'Failed to track order');
+      }
+    } catch {
+      setError('An error occurred. Please try again later.');
+    } finally {
       setTracking(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -36,7 +53,7 @@ export default function TrackOrderPage() {
               required
               value={orderId}
               onChange={(e) => setOrderId(e.target.value)}
-              placeholder="e.g. SB-12345"
+              placeholder="e.g. ORD_..."
               className="w-full bg-graphite border border-smoke/50 px-4 py-3 text-bone font-mono text-body-sm focus:outline-none focus:border-cobalt transition-colors"
             />
           </div>
@@ -64,6 +81,48 @@ export default function TrackOrderPage() {
             {tracking ? 'Tracking...' : 'Track Package'}
           </button>
         </form>
+
+        {error && (
+          <div className="mt-8 p-4 bg-ember/10 border border-ember/40 rounded text-ember font-mono text-caption">
+            {error}
+          </div>
+        )}
+
+        {result && (
+          <div className="mt-8 bg-graphite border border-smoke/40 p-6 rounded-lg">
+            <h2 className="font-display text-2xl text-bone uppercase mb-6 border-b border-smoke/30 pb-4">Order Status</h2>
+            
+            <div className="space-y-6">
+              <div>
+                <span className="font-mono text-caption text-ash uppercase block mb-1">Current Status</span>
+                <span className="inline-block bg-cobalt/10 text-cobalt px-3 py-1 font-mono text-caption uppercase tracking-widest border border-cobalt/30 rounded">
+                  {result.status.replace('_', ' ')}
+                </span>
+              </div>
+
+              <div>
+                <span className="font-mono text-caption text-ash uppercase block mb-1">Estimated Delivery Date</span>
+                <span className="font-mono text-body-md text-emerald-400">
+                  {result.estimatedDeliveryDate ? new Date(result.estimatedDeliveryDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'TBD'}
+                </span>
+              </div>
+
+              <div>
+                <span className="font-mono text-caption text-ash uppercase block mb-1">Payment Status</span>
+                <span className={`font-mono text-body-sm ${result.paymentStatus === 'paid' ? 'text-bone' : 'text-amber-400'}`}>
+                  {result.paymentStatus.toUpperCase()}
+                </span>
+              </div>
+              
+              <div>
+                <span className="font-mono text-caption text-ash uppercase block mb-1">Total Amount</span>
+                <span className="font-display text-xl text-bone">
+                  ₹{result.total}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

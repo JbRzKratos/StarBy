@@ -3,10 +3,11 @@ import { CheckoutSchema } from '@/lib/validations/schemas';
 import { rateLimit } from '@/lib/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
+import { razorpay } from '@/lib/razorpay';
 
 export async function POST(request: Request) {
   try {
-    // 1. Upstash Rate Limiting (10 requests per minute)
+    // 1. Upstash Rate Limiting
     const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
     const rateCheck = await rateLimit(`checkout:${ip}`, 10, 60 * 1000);
 
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Parse & Validate Payload with Zod
+    // 2. Parse & Validate Payload
     const body = await request.json();
     const validation = CheckoutSchema.safeParse(body);
 
@@ -32,56 +33,137 @@ export async function POST(request: Request) {
       );
     }
 
-    const { items, address, paymentMethod } = validation.data;
-    const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const { items, address, paymentMethod, couponCode } = validation.data;
+    let totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    let discountAmount = 0;
 
-    // 3. Get Authenticated User (if logged in)
+    // Apply coupon if provided
+    if (couponCode) {
+      const coupon = await prisma.coupon.findUnique({
+        where: { code: couponCode.toUpperCase() },
+      });
+      
+      if (coupon && coupon.isActive) {
+        if (!coupon.expiresAt || new Date(coupon.expiresAt) > new Date()) {
+          if (!coupon.maxUses || coupon.usageCount < coupon.maxUses) {
+            if (coupon.discountType === 'percentage') {
+              discountAmount = totalAmount * (coupon.discountValue / 100);
+            } else if (coupon.discountType === 'flat') {
+              discountAmount = coupon.discountValue;
+            }
+            totalAmount = Math.max(0, totalAmount - discountAmount);
+          }
+        }
+      }
+    }
+
+    // 3. Get Authenticated User & Ensure User exists in DB
     let userId: string | null = null;
     try {
       const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) userId = user.id;
-    } catch {
-      // Guest checkout fallback
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const userEmail = user.email || `${user.id}@guest.local`;
+        const userName = user.user_metadata?.name || user.user_metadata?.full_name || userEmail.split('@')[0];
+        
+        const dbUser = await prisma.user.upsert({
+          where: { id: user.id },
+          update: {
+            email: userEmail,
+            fullName: userName,
+          },
+          create: {
+            id: user.id,
+            email: userEmail,
+            fullName: userName,
+          },
+        });
+        userId = dbUser.id;
+      }
+    } catch (authErr) {
+      console.warn('Auth user sync notice:', authErr);
+      userId = null;
     }
 
-    // 4. Save Order to Database via Prisma (if DB available)
+    // Calculate Estimated Delivery Date (5 days from now)
+    const estimatedDeliveryDate = new Date();
+    estimatedDeliveryDate.setDate(estimatedDeliveryDate.getDate() + 5);
+
+    // 4. Handle Razorpay vs COD
+    const isCod = paymentMethod === 'cod';
+    let razorpayOrderId: string | null = null;
+
+    if (!isCod) {
+      try {
+        const rzpOrder = await razorpay.orders.create({
+          amount: Math.round(totalAmount * 100), // convert to paise
+          currency: 'INR',
+          receipt: `rcpt_${Date.now()}`,
+        });
+        razorpayOrderId = rzpOrder.id;
+      } catch (err) {
+        console.error('Razorpay order creation failed:', err);
+        return NextResponse.json(
+          { success: false, message: 'Payment gateway error. Please try again.' },
+          { status: 500 },
+        );
+      }
+    }
+
+    // 5. Save Order
     let orderId = `ORD_${Date.now()}_${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+    const createOrderData = (targetUserId: string | null) => ({
+      userId: targetUserId,
+      total: totalAmount,
+      status: isCod ? 'placed' : 'pending_payment',
+      paymentStatus: isCod ? 'pending' : 'pending',
+      shippingAddress: address as any,
+      razorpayOrderId,
+      couponCode: couponCode || null,
+      discount: discountAmount,
+      estimatedDeliveryDate,
+      items: {
+        create: items.map((item) => ({
+          productId: item.productId,
+          variantId: item.variantId || 'default',
+          quantity: item.quantity,
+          price: item.price,
+          size: item.size || null,
+          customization: (item.customization as any) || null,
+        })),
+      },
+    });
 
     try {
       const newOrder = await prisma.order.create({
-        data: {
-          userId,
-          total: totalAmount,
-          status: 'processing',
-          paymentStatus: paymentMethod === 'cod' ? 'pending' : 'paid',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          shippingAddress: address as any,
-          items: {
-            create: items.map((item) => ({
-              productId: item.productId,
-              variantId: item.variantId,
-              quantity: item.quantity,
-              price: item.price,
-              size: item.size || null,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              customization: (item.customization as any) || null,
-            })),
-          },
-        },
+        data: createOrderData(userId),
       });
       orderId = newOrder.id;
     } catch (dbError) {
-      console.warn('DB order creation notice (will proceed with fallback ID):', dbError);
+      console.warn('DB order creation notice (retrying without userId constraint):', dbError);
+      try {
+        const fallbackOrder = await prisma.order.create({
+          data: createOrderData(null),
+        });
+        orderId = fallbackOrder.id;
+      } catch (fallbackError) {
+        console.error('Final DB order creation error:', fallbackError);
+        return NextResponse.json(
+          { success: false, message: 'Failed to create order in database.' },
+          { status: 500 },
+        );
+      }
     }
 
     return NextResponse.json({
       success: true,
-      message: 'Order created successfully!',
+      message: 'Order initiated',
       orderId,
-      total: totalAmount,
+      razorpayOrderId,
+      razorpayKeyId: process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      amount: totalAmount,
+      isCod,
     });
   } catch (error) {
     console.error('Checkout error:', error);

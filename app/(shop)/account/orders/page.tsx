@@ -2,9 +2,10 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
 export default async function AccountOrdersPage() {
-  let orders: Array<Record<string, unknown>> = [];
+  let orders: Prisma.OrderGetPayload<{ include: { items: true } }>[] = [];
 
   try {
     const supabase = createClient();
@@ -53,55 +54,63 @@ export default async function AccountOrdersPage() {
         {/* Orders List */}
         {orders.length > 0 ? (
           <div className="flex flex-col gap-6">
-            {orders.map((order, idx) => {
-              const ord = order as Record<string, unknown>;
-              const itemsList = (ord.items || []) as Array<Record<string, unknown>>;
+            {orders.map((order) => {
+              const estDate = order.estimatedDeliveryDate ? new Date(order.estimatedDeliveryDate).toLocaleDateString() : 'TBD';
               return (
                 <div
-                  key={(ord.id as string) || idx}
+                  key={order.id}
                   className="bg-graphite border border-smoke/40 p-6 md:p-8 rounded-lg flex flex-col gap-6"
                 >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-smoke/20">
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 pb-6 border-b border-smoke/20">
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">Order ID</span>
-                      <p className="font-mono text-body-sm text-bone font-bold">
-                        {String(ord.id || '')}
+                      <p className="font-mono text-body-sm text-bone font-bold mt-1">
+                        {order.id}
                       </p>
                     </div>
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">Date</span>
-                      <p className="font-mono text-body-sm text-bone">
-                        {ord.createdAt
-                          ? new Date(ord.createdAt as string).toLocaleDateString()
-                          : 'N/A'}
+                      <p className="font-mono text-body-sm text-bone mt-1">
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-mono text-caption text-ash uppercase">Est. Delivery</span>
+                      <p className="font-mono text-body-sm text-emerald-400 mt-1">
+                        {estDate}
                       </p>
                     </div>
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">Status</span>
-                      <p className="font-mono text-caption text-cobalt uppercase font-bold">
-                        {String(ord.status || 'processing')}
+                      <p className="font-mono text-caption text-cobalt uppercase font-bold mt-1 bg-cobalt/10 inline-block px-2 py-1 rounded">
+                        {order.status.replace('_', ' ')}
                       </p>
                     </div>
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">
                         Total Amount
                       </span>
-                      <p className="font-display text-xl text-bone">₹{Number(ord.total || 0)}</p>
+                      <p className="font-display text-xl text-bone mt-1">₹{order.total}</p>
+                      {order.discount ? (
+                        <p className="font-mono text-caption text-emerald-400">
+                          (Saved ₹{order.discount})
+                        </p>
+                      ) : null}
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    {itemsList.map((item, itemIdx) => (
+                    {order.items.map((item) => (
                       <div
-                        key={(item.id as string) || itemIdx}
+                        key={item.id}
                         className="flex items-center justify-between font-mono text-body-sm text-pearl"
                       >
                         <span>
-                          Product #{String(item.productId)} (Variant {String(item.variantId)}) ×{' '}
-                          {Number(item.quantity || 1)}
+                          Product #{item.productId} (Variant {item.variantId}) ×{' '}
+                          {item.quantity}
                         </span>
                         <span className="text-bone">
-                          ₹{Number(item.price || 0) * Number(item.quantity || 1)}
+                          ₹{item.price * item.quantity}
                         </span>
                       </div>
                     ))}
