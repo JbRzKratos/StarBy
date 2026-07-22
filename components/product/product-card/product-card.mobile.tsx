@@ -20,7 +20,7 @@ export function ProductCardMobile({ product }: ProductCardProps) {
     <div className="group block relative" data-cursor-hover>
       <Link href={href} className="block">
         {/* Image area */}
-        <div className="relative overflow-hidden rounded-lg mb-4 aspect-[3/4]">
+        <div className="relative overflow-hidden rounded-xl mb-4 aspect-[3/4]">
           <div
             className="w-full h-full relative"
             style={{
@@ -43,12 +43,12 @@ export function ProductCardMobile({ product }: ProductCardProps) {
           {/* Tags */}
           <div className="absolute top-3 left-3 flex gap-2">
             {product.customizable && (
-              <span className="px-2 py-1 bg-cobalt/90 text-bone font-mono text-[10px] uppercase tracking-wider">
+              <span className="px-2 py-1 bg-cobalt/90 text-bone font-mono text-[10px] uppercase tracking-wider rounded-md">
                 Customizable
               </span>
             )}
             {product.tags.includes('new') && (
-              <span className="px-2 py-1 bg-ember/90 text-bone font-mono text-[10px] uppercase tracking-wider">
+              <span className="px-2 py-1 bg-ember/90 text-bone font-mono text-[10px] uppercase tracking-wider rounded-md">
                 New
               </span>
             )}

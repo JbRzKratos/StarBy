@@ -27,7 +27,7 @@ function MobileProductCard({ product }: { product: Product }) {
       >
         {/* Front face */}
         <div
-          className="absolute inset-0 overflow-hidden bg-smoke/5 rounded-sm"
+          className="absolute inset-0 overflow-hidden bg-smoke/5 rounded-xl"
           style={{ backfaceVisibility: 'hidden' }}
         >
           <Image
@@ -38,7 +38,7 @@ function MobileProductCard({ product }: { product: Product }) {
             sizes="50vw"
           />
           {product.customizable && (
-            <div className="absolute top-2 left-2 bg-charcoal text-bone px-2 py-0.5 text-[8px] uppercase font-mono tracking-widest z-[1]">
+            <div className="absolute top-2 left-2 bg-charcoal text-bone px-2 py-0.5 text-[8px] uppercase font-mono tracking-widest z-[1] rounded-md">
               Custom
             </div>
           )}
@@ -46,14 +46,14 @@ function MobileProductCard({ product }: { product: Product }) {
 
         {/* Back face */}
         <div
-          className="absolute inset-0 bg-graphite border border-smoke/40 rounded-sm flex flex-col items-center justify-center gap-3 px-4"
+          className="absolute inset-0 bg-graphite border border-smoke/40 rounded-xl flex flex-col items-center justify-center gap-3 px-4"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest text-center">
             {product.name}
           </h3>
           <p className="font-display text-xl text-bone">{formatPrice(product.basePrice)}</p>
-          <span className="w-full text-center bg-cobalt text-bone font-mono text-[9px] uppercase tracking-widest py-2.5">
+          <span className="w-full text-center bg-cobalt text-bone font-mono text-[9px] uppercase tracking-widest py-2.5 rounded-lg">
             {product.customizable ? 'Customize' : 'View'}
           </span>
         </div>

@@ -54,7 +54,7 @@ export function StudioTeaser() {
           </p>
           <Link
             href="/studio"
-            className="inline-block px-10 py-4 border border-bone/20 text-bone font-mono text-caption uppercase tracking-widest hover:bg-bone/5 transition-colors"
+            className="inline-block px-10 py-4 border border-bone/20 text-bone font-mono text-caption uppercase tracking-widest rounded-lg hover:bg-bone/5 transition-colors"
           >
             Enter the Studio →
           </Link>

@@ -27,7 +27,7 @@ function DesktopProductCard({ product }: { product: Product }) {
       >
         {/* Front face */}
         <div
-          className="absolute inset-0 overflow-hidden bg-smoke/5 rounded-md"
+          className="absolute inset-0 overflow-hidden bg-smoke/5 rounded-xl"
           style={{ backfaceVisibility: 'hidden' }}
         >
           <Image
@@ -38,7 +38,7 @@ function DesktopProductCard({ product }: { product: Product }) {
             sizes="(max-width: 1024px) 33vw, 25vw"
           />
           {product.customizable && (
-            <div className="absolute top-4 left-4 bg-charcoal text-bone px-3 py-1 text-[10px] uppercase font-mono tracking-widest z-[1]">
+            <div className="absolute top-4 left-4 bg-charcoal text-bone px-3 py-1 text-[10px] uppercase font-mono tracking-widest z-[1] rounded-md">
               Customizable
             </div>
           )}
@@ -46,14 +46,14 @@ function DesktopProductCard({ product }: { product: Product }) {
 
         {/* Back face */}
         <div
-          className="absolute inset-0 bg-graphite border border-smoke/40 rounded-md flex flex-col items-center justify-center gap-4 px-6"
+          className="absolute inset-0 bg-graphite border border-smoke/40 rounded-xl flex flex-col items-center justify-center gap-4 px-6"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <h3 className="font-mono text-sm text-bone uppercase tracking-widest text-center">
             {product.name}
           </h3>
           <p className="font-display text-2xl text-bone">{formatPrice(product.basePrice)}</p>
-          <span className="mt-2 w-full text-center bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest py-3">
+          <span className="mt-2 w-full text-center bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest py-3 rounded-lg">
             {product.customizable ? 'Customize' : 'View Product'}
           </span>
         </div>

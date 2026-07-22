@@ -101,9 +101,9 @@ export function SplitPosterTeaser() {
                 <button
                   key={n}
                   onClick={() => setPanelCount(n)}
-                  className={`w-8 h-8 border font-mono text-caption flex items-center justify-center transition-colors ${
+                  className={`w-8 h-8 border rounded-md font-mono text-caption flex items-center justify-center transition-colors ${
                     panelCount === n
-                      ? 'border-cobalt text-cobalt'
+                      ? 'border-cobalt text-cobalt bg-cobalt/10'
                       : 'border-smoke text-ash hover:border-pearl'
                   }`}
                 >
@@ -114,7 +114,7 @@ export function SplitPosterTeaser() {
 
             <Link
               href="/split-poster"
-              className="inline-block px-8 py-3 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
+              className="inline-block px-8 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest rounded-lg hover:bg-cobalt/90 transition-colors shadow-md"
             >
               Try the Visualizer →
             </Link>

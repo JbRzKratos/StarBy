@@ -177,7 +177,7 @@ export function CartDrawer() {
               if (items.length === 0) e.preventDefault();
               else setCartOpen(false);
             }}
-            className={`group relative flex items-center justify-between w-full p-6 lg:p-8 overflow-hidden rounded-sm transition-colors duration-300 ${
+            className={`group relative flex items-center justify-between w-full p-6 lg:p-8 overflow-hidden rounded-lg transition-colors duration-300 ${
               items.length > 0
                 ? 'bg-bone hover:bg-cobalt text-charcoal hover:text-bone cursor-pointer'
                 : 'bg-smoke text-ash cursor-not-allowed'
@@ -240,10 +240,10 @@ export function CartDrawer() {
               return (
                 <div
                   key={`${item.productId}-${item.variantId}-${index}`}
-                  className="cart-item group relative flex flex-row gap-4 sm:gap-6 p-4 lg:p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-all duration-300 rounded-lg"
+                  className="cart-item group relative flex flex-row gap-4 sm:gap-6 p-4 lg:p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-all duration-300 rounded-xl"
                 >
                   {/* Image Placeholder / Visual */}
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 bg-charcoal rounded flex-shrink-0 relative overflow-hidden border border-smoke/30 flex items-center justify-center">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 bg-charcoal rounded-lg flex-shrink-0 relative overflow-hidden border border-smoke/30 flex items-center justify-center">
                     {displayImage ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -291,7 +291,7 @@ export function CartDrawer() {
 
                     {/* Controls */}
                     <div className="flex items-center justify-between mt-auto">
-                      <div className="flex items-center bg-charcoal border border-smoke/50 rounded-sm">
+                      <div className="flex items-center bg-charcoal border border-smoke/50 rounded-md">
                         <button
                           onClick={() =>
                             updateQuantity(

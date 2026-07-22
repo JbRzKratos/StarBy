@@ -49,7 +49,7 @@ export function BentoTile({ category, size }: BentoTileProps) {
     <Link
       ref={tileRef}
       href={`/products/${category.slug}`}
-      className={`${sizeClasses[size]} relative overflow-hidden rounded-lg group`}
+      className={`${sizeClasses[size]} relative overflow-hidden rounded-xl group`}
       style={{ background: category.gradient }}
     >
       {/* Background Image */}

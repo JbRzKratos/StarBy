@@ -105,9 +105,9 @@ export function TrustBadges() {
           {BADGES.map((badge, idx) => (
             <div
               key={idx}
-              className="flex items-start gap-4 p-4 rounded-sm bg-smoke/5 border border-smoke/10 hover:border-cobalt/40 transition-colors"
+              className="flex items-start gap-4 p-5 rounded-xl bg-smoke/5 border border-smoke/10 hover:border-cobalt/40 transition-colors"
             >
-              <div className="p-2.5 bg-cobalt/10 text-cobalt rounded-sm shrink-0">{badge.icon}</div>
+              <div className="p-3 bg-cobalt/10 text-cobalt rounded-lg shrink-0">{badge.icon}</div>
               <div>
                 <h3 className="font-mono text-caption text-bone uppercase tracking-widest font-semibold mb-1">
                   {badge.title}

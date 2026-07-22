@@ -83,35 +83,37 @@ export function Testimonials() {
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div
               key={`${t.id}-${idx}`}
-              className="flex-shrink-0 w-[320px] md:w-[380px] bg-graphite border border-smoke/60 rounded-lg p-6 md:p-8 hover:border-cobalt/40 transition-colors"
+              className="flex-shrink-0 w-[320px] md:w-[380px] h-[250px] md:h-[270px] flex flex-col justify-between bg-graphite border border-smoke/60 rounded-xl p-6 md:p-8 hover:border-cobalt/40 transition-colors"
             >
               {/* Header inside card */}
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between">
                 <div className="flex text-cobalt text-sm">
                   {Array.from({ length: t.rating }).map((_, i) => (
                     <span key={i}>★</span>
                   ))}
                 </div>
-                <span className="font-mono text-[10px] text-cobalt bg-cobalt/10 px-2 py-0.5 rounded uppercase tracking-wider font-semibold">
+                <span className="font-mono text-[10px] text-cobalt bg-cobalt/10 px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold">
                   ✓ Verified Buyer
                 </span>
               </div>
 
-              {/* Quote */}
-              <p className="font-display text-body-md text-bone mb-6 leading-relaxed">
-                &ldquo;{t.quote}&rdquo;
-              </p>
+              {/* Quote - Centered vertically */}
+              <div className="my-auto py-2">
+                <p className="font-display text-body-md text-bone leading-relaxed line-clamp-3">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+              </div>
 
-              {/* Author */}
-              <div className="flex items-center gap-3 pt-4 border-t border-smoke/40">
-                <div className="w-8 h-8 rounded-full bg-cobalt/20 text-cobalt flex items-center justify-center font-mono font-bold text-xs">
+              {/* Author - Always aligned at bottom */}
+              <div className="flex items-center gap-3 pt-4 border-t border-smoke/40 mt-auto">
+                <div className="w-8 h-8 rounded-full bg-cobalt/20 text-cobalt flex items-center justify-center font-mono font-bold text-xs shrink-0">
                   {t.name.charAt(0)}
                 </div>
-                <div>
-                  <p className="font-display text-body-sm text-bone">{t.name}</p>
-                  <p className="font-mono text-caption text-ash">{t.handle}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="font-display text-body-sm text-bone truncate">{t.name}</p>
+                  <p className="font-mono text-caption text-ash truncate">{t.handle}</p>
                 </div>
-                <span className="ml-auto font-mono text-caption text-pearl">{t.product}</span>
+                <span className="font-mono text-caption text-pearl shrink-0">{t.product}</span>
               </div>
             </div>
           ))}
