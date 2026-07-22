@@ -109,7 +109,7 @@ export function SearchOverlay() {
                   onClick={() => setSearchOpen(false)}
                   className="group flex flex-col gap-3"
                 >
-                  <div className="aspect-[4/5] relative rounded overflow-hidden bg-graphite border border-smoke/30">
+                  <div className="aspect-[4/5] relative rounded-xl overflow-hidden bg-graphite border border-smoke/30">
                     {product.variants[0]?.images[0] && (
                       <Image
                         src={product.variants[0].images[0]}

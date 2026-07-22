@@ -70,11 +70,11 @@ export function Footer() {
                   name="email"
                   placeholder="Enter your email"
                   required
-                  className="flex-1 bg-charcoal border border-smoke px-4 py-3 text-bone font-mono text-body-sm focus:outline-none focus:border-cobalt transition-colors"
+                  className="flex-1 bg-charcoal border border-smoke px-4 py-3 text-bone font-mono text-body-sm rounded-lg focus:outline-none focus:border-cobalt transition-colors"
                 />
                 <button
                   type="submit"
-                  className="bg-cobalt text-bone px-6 py-3 font-mono text-caption uppercase tracking-widest hover:bg-cobalt/80 transition-colors"
+                  className="bg-cobalt text-bone px-6 py-3 font-mono text-caption uppercase tracking-widest rounded-lg hover:bg-cobalt/80 transition-colors shadow-md"
                 >
                   Subscribe
                 </button>

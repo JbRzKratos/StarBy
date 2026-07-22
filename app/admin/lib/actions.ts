@@ -221,6 +221,20 @@ export async function setUserRole(userId: string, role: 'CUSTOMER' | 'STAFF' | '
   revalidatePath('/admin/staff');
 }
 
+export async function promoteToStaff(email: string) {
+  await assertAdmin();
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) throw new Error('User with this email not found');
+  await prisma.user.update({ where: { id: user.id }, data: { role: 'STAFF' } });
+  revalidatePath('/admin/staff');
+}
+
+export async function demoteToCustomer(userId: string) {
+  await assertAdmin();
+  await prisma.user.update({ where: { id: userId }, data: { role: 'CUSTOMER' } });
+  revalidatePath('/admin/staff');
+}
+
 // ═══════════════════════════════════════
 // SETTINGS (admin only)
 // ═══════════════════════════════════════
@@ -236,6 +250,36 @@ export async function upsertStoreSettings(data: {
     where: { id: 'singleton' },
     create: { id: 'singleton', ...data },
     update: data,
+  });
+  revalidatePath('/admin/settings');
+}
+
+export async function updateSettings(data: {
+  id?: string;
+  storeName: string;
+  contactEmail: string;
+  currency: string;
+  taxRate: number;
+  maintenanceMode: boolean;
+}) {
+  await assertAdmin();
+  await prisma.storeSettings.upsert({
+    where: { id: 'singleton' },
+    create: {
+      id: 'singleton',
+      storeName: data.storeName,
+      contactEmail: data.contactEmail,
+      currency: data.currency,
+      taxRate: data.taxRate,
+      maintenanceMode: data.maintenanceMode,
+    },
+    update: {
+      storeName: data.storeName,
+      contactEmail: data.contactEmail,
+      currency: data.currency,
+      taxRate: data.taxRate,
+      maintenanceMode: data.maintenanceMode,
+    },
   });
   revalidatePath('/admin/settings');
 }

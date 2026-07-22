@@ -27,7 +27,8 @@ export default async function AdminAnalyticsPage() {
   for (let i = 0; i < 30; i++) {
     const d = new Date(thirtyDaysAgo);
     d.setDate(d.getDate() + i);
-    dailyMap[d.toISOString().split('T')[0]] = 0;
+    const dayKey = d.toISOString().split('T')[0] ?? '';
+    dailyMap[dayKey] = 0;
   }
   
   let totalRevenue30d = 0;
@@ -35,7 +36,7 @@ export default async function AdminAnalyticsPage() {
 
   for (const o of recentOrders) {
     if (o.status !== 'cancelled' && o.status !== 'refunded') {
-      const day = o.createdAt.toISOString().split('T')[0];
+      const day = o.createdAt.toISOString().split('T')[0] ?? '';
       if (dailyMap[day] !== undefined) {
         dailyMap[day] += o.total;
       }
