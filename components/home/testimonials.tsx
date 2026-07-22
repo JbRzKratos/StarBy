@@ -38,6 +38,7 @@ export function Testimonials() {
                 ease: 'none',
                 duration: 40,
                 repeat: -1,
+                force3D: true,
               });
             },
           });
@@ -78,7 +79,7 @@ export function Testimonials() {
           ref={trackRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="flex gap-4 md:gap-6 px-4 md:px-8 w-max"
+          className="flex gap-4 md:gap-6 px-4 md:px-8 w-max [will-change:transform]"
         >
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div

@@ -72,10 +72,10 @@ export function CustomCursor() {
         gsap.to(cursor, { scale: isHovering ? 1.5 : 1, duration: 0.1 });
       };
 
-      window.addEventListener('mousemove', onMouseMove);
-      window.addEventListener('mouseover', onMouseHover);
-      window.addEventListener('mousedown', onMouseDown);
-      window.addEventListener('mouseup', onMouseUp);
+      window.addEventListener('mousemove', onMouseMove, { passive: true });
+      window.addEventListener('mouseover', onMouseHover, { passive: true });
+      window.addEventListener('mousedown', onMouseDown, { passive: true });
+      window.addEventListener('mouseup', onMouseUp, { passive: true });
 
       // Initial fade in
       gsap.to([cursor, dot], { opacity: 1, duration: 1, delay: 0.5 });
