@@ -1,100 +1,102 @@
 import { prisma } from '@/lib/prisma';
-
-export const runtime = 'edge';
+import { requireStaff } from './lib/auth';
+import { DashboardClient } from '@/components/admin/dashboard/dashboard-client';
 
 export default async function AdminDashboardPage() {
-  const [totalOrders, totalRevenueData, outOfStockVariants] = await Promise.all([
+  await requireStaff();
+
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+
+  const [
+    totalOrders,
+    totalRevenueData,
+    ordersToday,
+    totalCustomers,
+    recentOrders,
+    allOrders90d,
+    topVariants,
+    lowStockVariants,
+  ] = await Promise.all([
     prisma.order.count(),
-    prisma.order.aggregate({
-      _sum: {
-        total: true,
-      },
+    prisma.order.aggregate({ _sum: { total: true } }),
+    prisma.order.count({ where: { createdAt: { gte: todayStart } } }),
+    prisma.user.count({ where: { role: 'CUSTOMER' } }),
+    prisma.order.findMany({
+      take: 10,
+      orderBy: { createdAt: 'desc' },
+      include: { user: { select: { fullName: true, email: true } } },
+    }),
+    prisma.order.findMany({
+      where: { createdAt: { gte: ninetyDaysAgo } },
+      select: { total: true, createdAt: true },
+      orderBy: { createdAt: 'asc' },
+    }),
+    // Top selling by order items (last 30 days)
+    prisma.orderItem.groupBy({
+      by: ['productId'],
+      where: { order: { createdAt: { gte: thirtyDaysAgo } } },
+      _sum: { quantity: true },
+      orderBy: { _sum: { quantity: 'desc' } },
+      take: 5,
     }),
     prisma.productVariant.findMany({
-      where: {
-        inStock: false,
-      },
-      include: {
-        product: true,
-      },
+      where: { OR: [{ inStock: false }, { stockQuantity: { lte: 5 } }] },
+      include: { product: { select: { id: true, name: true, slug: true } } },
+      orderBy: { stockQuantity: 'asc' },
+      take: 10,
     }),
   ]);
 
+  // Fetch product names for top items
+  const topProductIds = topVariants.map((v) => v.productId);
+  const topProducts = await prisma.product.findMany({
+    where: { id: { in: topProductIds } },
+    select: { id: true, name: true },
+  });
+  const topProductsWithSales = topVariants.map((v) => {
+    const product = topProducts.find((p) => p.id === v.productId);
+    return { id: v.productId, name: product?.name || 'Unknown', unitsSold: v._sum.quantity || 0 };
+  });
+
   const totalRevenue = totalRevenueData._sum.total || 0;
+  const aov = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="font-display text-display-sm font-bold text-bone mb-2">Dashboard</h1>
-        <p className="font-mono text-body-sm text-pearl">Overview of your store's performance.</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-charcoal border border-smoke p-6 rounded-sm">
-          <h3 className="font-mono text-caption uppercase tracking-widest text-ash mb-2">
-            Total Revenue
-          </h3>
-          <p className="font-display text-display-sm text-emerald-400">
-            ₹{totalRevenue.toLocaleString()}
-          </p>
-        </div>
-
-        <div className="bg-charcoal border border-smoke p-6 rounded-sm">
-          <h3 className="font-mono text-caption uppercase tracking-widest text-ash mb-2">
-            Total Orders
-          </h3>
-          <p className="font-display text-display-sm text-cobalt">{totalOrders}</p>
-        </div>
-
-        <div className="bg-charcoal border border-smoke p-6 rounded-sm">
-          <h3 className="font-mono text-caption uppercase tracking-widest text-ash mb-2">
-            Out of Stock Variants
-          </h3>
-          <p className="font-display text-display-sm text-ember">{outOfStockVariants.length}</p>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="font-display text-body-lg font-bold text-bone mb-4 border-b border-smoke pb-2">
-          Low-Stock Alerts
-        </h2>
-        {outOfStockVariants.length === 0 ? (
-          <p className="font-mono text-body-sm text-pearl">All variants are currently in stock.</p>
-        ) : (
-          <div className="bg-charcoal border border-smoke rounded-sm overflow-hidden">
-            <table className="w-full text-left font-mono text-body-sm text-bone">
-              <thead className="bg-graphite border-b border-smoke">
-                <tr>
-                  <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
-                    Product
-                  </th>
-                  <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
-                    Variant
-                  </th>
-                  <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption text-right">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-smoke">
-                {outOfStockVariants.map((variant) => (
-                  <tr key={variant.id} className="hover:bg-smoke/10 transition-colors">
-                    <td className="px-6 py-4">{variant.product.name}</td>
-                    <td className="px-6 py-4">
-                      {variant.name} ({variant.color})
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <span className="bg-ember/20 text-ember px-3 py-1 rounded-full text-caption">
-                        Out of Stock
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-    </div>
+    <DashboardClient
+      stats={{
+        totalRevenue,
+        ordersToday,
+        totalCustomers,
+        totalOrders,
+        aov,
+      }}
+      recentOrders={recentOrders.map((o) => ({
+        id: o.id,
+        customerName: o.user?.fullName || o.user?.email || 'Guest',
+        status: o.status,
+        paymentStatus: o.paymentStatus,
+        total: o.total,
+        createdAt: o.createdAt.toISOString(),
+        itemCount: 0,
+      }))}
+      revenueData={allOrders90d.map((o) => ({
+        date: o.createdAt.toISOString().split('T')[0],
+        revenue: o.total,
+      }))}
+      topProducts={topProductsWithSales}
+      lowStockVariants={lowStockVariants.map((v) => ({
+        id: v.id,
+        name: v.name,
+        productId: v.product.id,
+        productName: v.product.name,
+        productSlug: v.product.slug,
+        stockQuantity: v.stockQuantity,
+        inStock: v.inStock,
+        reorderThreshold: v.reorderThreshold,
+      }))}
+    />
   );
 }

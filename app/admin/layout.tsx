@@ -1,55 +1,35 @@
 import type { ReactNode } from 'react';
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import { createClient } from '@/lib/supabase/server';
-import { prisma } from '@/lib/prisma';
+import { requireStaff } from './lib/auth';
+import { AdminSidebar } from '@/components/admin/sidebar';
+import { AdminTopbar } from '@/components/admin/topbar';
+
+export const metadata = { title: 'Admin — StarBy' };
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect('/login');
-  }
-
-  const dbUser = await prisma.user.findUnique({
-    where: { id: user.id },
-  });
-
-  if (!dbUser || dbUser.role !== 'ADMIN') {
-    redirect('/');
-  }
+  // Server-side RBAC gate — CUSTOMER users are redirected to /
+  const user = await requireStaff();
 
   return (
-    <div className="min-h-screen bg-graphite flex pt-20">
-      <aside className="w-64 bg-charcoal border-r border-smoke p-6 flex-shrink-0">
-        <h2 className="font-display text-body-lg font-bold text-bone mb-8 tracking-widest uppercase">
-          Admin Panel
-        </h2>
-        <nav className="flex flex-col gap-4">
-          <Link
-            href="/admin"
-            className="font-mono text-body-sm text-pearl hover:text-cobalt transition-colors"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/admin/products"
-            className="font-mono text-body-sm text-pearl hover:text-cobalt transition-colors"
-          >
-            Products Manager
-          </Link>
-          <Link
-            href="/admin/orders"
-            className="font-mono text-body-sm text-pearl hover:text-cobalt transition-colors"
-          >
-            Orders Manager
-          </Link>
-        </nav>
-      </aside>
-      <main className="flex-1 p-8 overflow-y-auto">{children}</main>
+    <div className="min-h-screen bg-gray-50 font-sans">
+      {/* Fixed sidebar */}
+      <AdminSidebar
+        isAdmin={user.isAdmin}
+        userEmail={user.email}
+        userName={user.fullName || ''}
+      />
+
+      {/* Fixed topbar (offset by sidebar width) */}
+      <AdminTopbar
+        isAdmin={user.isAdmin}
+        userEmail={user.email}
+        userName={user.fullName || ''}
+        role={user.role}
+      />
+
+      {/* Main content — offset left by sidebar, top by topbar */}
+      <main className="ml-60 mt-[60px] min-h-[calc(100vh-60px)] p-6">
+        {children}
+      </main>
     </div>
   );
 }

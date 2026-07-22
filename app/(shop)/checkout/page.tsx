@@ -422,16 +422,16 @@ export default function CheckoutPage() {
                     <span className="font-mono text-body-sm text-bone">Cash on Delivery (COD)</span>
                   </label>
 
-                  <div className="flex gap-3 mt-4">
+                  <div className="flex flex-col sm:flex-row gap-3 mt-4">
                     <button
                       onClick={() => setStep('shipping')}
-                      className="px-6 py-3 border border-smoke text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl transition-colors"
+                      className="w-full sm:w-auto px-6 py-3 border border-smoke text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl transition-colors"
                     >
                       ← Back
                     </button>
                     <button
                       onClick={() => setStep('review')}
-                      className="px-8 py-3 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
+                      className="w-full sm:w-auto px-8 py-3 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
                     >
                       Review Order →
                     </button>
@@ -459,18 +459,18 @@ export default function CheckoutPage() {
                     <strong>Items:</strong> {cartItems.length}
                   </p>
                 </div>
-                <div className="flex gap-3 mt-4">
+                <div className="flex flex-col sm:flex-row gap-3 mt-4">
                   <button
                     onClick={() => setStep('payment')}
                     disabled={loading}
-                    className="px-6 py-3 border border-smoke text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl transition-colors disabled:opacity-50"
+                    className="w-full sm:w-auto px-6 py-3 border border-smoke text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl transition-colors disabled:opacity-50"
                   >
                     ← Back
                   </button>
                   <button
                     onClick={handlePlaceOrder}
                     disabled={loading}
-                    className="px-8 py-3 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors disabled:opacity-50"
+                    className="w-full sm:w-auto px-8 py-3 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors disabled:opacity-50"
                   >
                     {loading ? 'Processing...' : 'Place Order →'}
                   </button>

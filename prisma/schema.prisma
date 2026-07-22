@@ -39,15 +39,17 @@ model Product {
 }
 
 model ProductVariant {
-  id        String   @id @default(cuid())
-  productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  name      String
-  color     String
-  colorHex  String
-  price     Float
-  images    String[]
-  inStock   Boolean  @default(true)
+  id               String   @id @default(cuid())
+  productId        String
+  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name             String
+  color            String
+  colorHex         String
+  price            Float
+  images           String[]
+  inStock          Boolean  @default(true)
+  stockQuantity    Int      @default(0)
+  reorderThreshold Int      @default(5)
 }
 
 model DeviceSkinTemplate {
@@ -74,6 +76,7 @@ model CustomizationTemplate {
 }
 enum Role {
   CUSTOMER
+  STAFF
   ADMIN
 }
 
@@ -82,6 +85,7 @@ model User {
   email     String             @unique
   fullName  String?
   role      Role               @default(CUSTOMER)
+  notes     String?            // staff-only CRM notes
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
   addresses Address[]
@@ -118,6 +122,7 @@ model Order {
   discount              Float?      @default(0)
   estimatedDeliveryDate DateTime?
   shippingMethod        String?     @default("standard")
+  internalNotes         String?     // staff-only, never shown to customer
   createdAt             DateTime    @default(now())
   updatedAt             DateTime    @updatedAt
   items                 OrderItem[]
@@ -147,16 +152,37 @@ model CustomizerDesign {
 }
 
 model Coupon {
-  id            String    @id @default(cuid())
-  code          String    @unique
-  discountType  String    // 'percentage' or 'flat'
-  discountValue Float
-  isActive      Boolean   @default(true)
-  expiresAt     DateTime?
-  maxUses       Int?
-  usageCount    Int       @default(0)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id               String    @id @default(cuid())
+  code             String    @unique
+  discountType     String    // 'percentage' or 'flat'
+  discountValue    Float
+  isActive         Boolean   @default(true)
+  expiresAt        DateTime?
+  maxUses          Int?
+  perCustomerLimit Int?
+  minOrderValue    Float?    @default(0)
+  usageCount       Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model StoreSettings {
+  id           String   @id @default("singleton")
+  storeName    String   @default("StarBy")
+  contactEmail String   @default("")
+  logoUrl      String?
+  taxRate      Float    @default(0)
+  newOrderEmail Boolean @default(true)
+  updatedAt    DateTime @updatedAt
+}
+
+model ShippingZone {
+  id        String   @id @default(cuid())
+  name      String
+  states    String[]
+  rateType  String   // 'flat' | 'per_item'
+  rateValue Float
+  createdAt DateTime @default(now())
 }
 
 model NewsletterSubscriber {
