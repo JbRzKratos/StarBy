@@ -87,7 +87,8 @@ export function AnalyticsClient({
                     border: '1px solid #E5E7EB',
                     boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                   }}
-                  formatter={(value: number | string) => [
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  formatter={(value: any) => [
                     `₹${Number(value || 0).toLocaleString('en-IN')}`,
                     'Revenue',
                   ]}
@@ -134,7 +135,8 @@ export function AnalyticsClient({
                   <Tooltip
                     contentStyle={{ borderRadius: '8px', border: '1px solid #E5E7EB' }}
                     cursor={{ fill: '#F3F4F6' }}
-                    formatter={(value: number | string) => [value, 'Units Sold']}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    formatter={(value: any) => [value, 'Units Sold']}
                   />
                   <Bar dataKey="unitsSold" fill="#3B5EFF" radius={[0, 4, 4, 0]} barSize={24} />
                 </BarChart>

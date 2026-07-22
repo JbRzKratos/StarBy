@@ -51,15 +51,9 @@ export function RevenueChart({ data }: RevenueChartProps) {
 
   const total = filtered.reduce((sum, d) => sum + d.revenue, 0);
 
-  const customTooltip = ({
-    active,
-    payload,
-    label,
-  }: {
-    active?: boolean;
-    payload?: readonly { value?: number | string }[];
-    label?: string | number;
-  }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const customTooltip = (props: any) => {
+    const { active, payload, label } = props || {};
     if (active && payload && payload.length) {
       return (
         <div className="bg-white border border-gray-200 rounded-lg shadow-lg px-3 py-2">
