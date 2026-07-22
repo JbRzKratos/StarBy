@@ -21,8 +21,9 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, message: 'Successfully subscribed!' });
-  } catch (error: any) {
-    if (error.code === 'P2002') {
+  } catch (error: unknown) {
+    const err = error as { code?: string };
+    if (err.code === 'P2002') {
       return NextResponse.json(
         { success: false, message: 'This email is already subscribed.' },
         { status: 400 },

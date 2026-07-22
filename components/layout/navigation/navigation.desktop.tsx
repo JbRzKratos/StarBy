@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import type { User } from '@supabase/supabase-js';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
@@ -33,7 +34,7 @@ export function NavigationDesktop() {
   const currencies: CurrencyCode[] = ['INR', 'USD', 'EUR', 'GBP'];
 
   const [mounted, setMounted] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     setMounted(true);

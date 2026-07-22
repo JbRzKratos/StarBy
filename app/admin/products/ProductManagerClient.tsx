@@ -3,8 +3,24 @@
 import { useState, useTransition } from 'react';
 import { toggleVariantStock, deleteProduct, addProduct } from '../actions';
 
+export interface ProductVariant {
+  id: string;
+  name: string;
+  color?: string;
+  colorHex?: string;
+  inStock: boolean;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  categorySlug: string;
+  basePrice: number | string;
+  variants: ProductVariant[];
+}
+
 type ProductManagerClientProps = {
-  products: any[];
+  products: Product[];
 };
 
 export function ProductManagerClient({ products: initialProducts }: ProductManagerClientProps) {
@@ -175,7 +191,7 @@ export function ProductManagerClient({ products: initialProducts }: ProductManag
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-smoke/30">
-                    {product.variants.map((v: any) => (
+                    {product.variants.map((v: ProductVariant) => (
                       <tr key={v.id} className="hover:bg-smoke/10">
                         <td className="py-3">{v.name}</td>
                         <td className="py-3">

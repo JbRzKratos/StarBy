@@ -3,8 +3,37 @@
 import React, { useTransition, useState } from 'react';
 import { updateOrderStatus } from '../actions';
 
+export interface OrderItem {
+  id: string;
+  productId: string;
+  quantity: number;
+  variantId: string;
+}
+
+export interface Order {
+  id: string;
+  createdAt: string | Date;
+  user?: { fullName?: string; email?: string };
+  total: number;
+  status: string;
+  shippingAddress?: {
+    name: string;
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+    phone?: string;
+  };
+  paymentStatus?: string;
+  shippingMethod?: string;
+  razorpayOrderId?: string;
+  couponCode?: string;
+  discount?: number;
+  items: OrderItem[];
+}
+
 type OrderManagerClientProps = {
-  orders: any[];
+  orders: Order[];
 };
 
 export function OrderManagerClient({ orders }: OrderManagerClientProps) {
@@ -163,7 +192,7 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                               Order Items
                             </h4>
                             <div className="space-y-4">
-                              {order.items.map((item: any) => (
+                              {order.items.map((item: OrderItem) => (
                                 <div
                                   key={item.id}
                                   className="flex justify-between items-start border-b border-smoke/30 pb-4"

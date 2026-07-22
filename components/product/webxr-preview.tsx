@@ -246,7 +246,7 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
   const [placedMatrix, setPlacedMatrix] = useState<THREE.Matrix4 | null>(null);
 
   return (
-    <div className="fixed inset-0 z-[200] bg-charcoal">
+    <div id="xr-overlay" className="fixed inset-0 z-[200] bg-charcoal">
       <div className="absolute top-0 left-0 right-0 z-[210] flex items-center justify-between px-5 py-4 bg-gradient-to-b from-charcoal/80 to-transparent pointer-events-none">
         <div>
           <p className="font-mono text-[10px] text-pearl uppercase tracking-widest">AR Preview</p>
@@ -275,7 +275,11 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
       {!started && (
         <div className="absolute inset-0 z-[205] flex items-center justify-center bg-graphite/80 backdrop-blur-sm">
           <ARButton
-            sessionInit={{ requiredFeatures: ['hit-test'] }}
+            sessionInit={{
+              requiredFeatures: ['hit-test'],
+              optionalFeatures: ['dom-overlay'],
+              domOverlay: { root: document.getElementById('xr-overlay') || document.body },
+            }}
             className="px-8 py-4 rounded-full bg-cobalt text-pearl font-bold uppercase tracking-wider shadow-[0_0_40px_rgba(59,94,255,0.4)]"
             style={{
               position: 'absolute',

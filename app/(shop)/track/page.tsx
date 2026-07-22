@@ -2,11 +2,18 @@
 
 import { useState } from 'react';
 
+interface TrackResult {
+  status: string;
+  estimatedDeliveryDate?: string;
+  paymentStatus: string;
+  total: number;
+}
+
 export default function TrackOrderPage() {
   const [orderId, setOrderId] = useState('');
   const [email, setEmail] = useState('');
   const [tracking, setTracking] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<TrackResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleTrack = async (e: React.FormEvent) => {

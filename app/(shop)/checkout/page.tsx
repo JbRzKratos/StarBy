@@ -194,7 +194,11 @@ export default function CheckoutPage() {
           name: 'StarBy',
           description: 'Premium Device Skins & Apparel',
           order_id: data.razorpayOrderId,
-          handler: async function (response: any) {
+          handler: async function (response: {
+            razorpay_order_id: string;
+            razorpay_payment_id: string;
+            razorpay_signature: string;
+          }) {
             const verifyRes = await fetch('/api/verify-payment', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -222,9 +226,16 @@ export default function CheckoutPage() {
           },
         };
 
-        if (typeof (window as any).Razorpay !== 'undefined') {
-          const rzp = new (window as any).Razorpay(options);
-          rzp.on('payment.failed', function (response: any) {
+        const win = window as unknown as {
+          Razorpay?: new (opts: unknown) => {
+            on: (event: string, cb: (res: { error?: { description?: string } }) => void) => void;
+            open: () => void;
+          };
+        };
+
+        if (typeof win.Razorpay !== 'undefined') {
+          const rzp = new win.Razorpay(options);
+          rzp.on('payment.failed', function (response: { error?: { description?: string } }) {
             alert('Payment Failed: ' + (response.error?.description || 'Transaction cancelled'));
           });
           rzp.open();
