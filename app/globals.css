@@ -80,6 +80,9 @@
     position: relative;
   }
   .grain-overlay::after {
+    /* SVG grain repeating is extremely expensive on some devices/browsers and causes scroll lag.
+       Disabled for performance. */
+    /*
     content: '';
     position: absolute;
     inset: 0;
@@ -88,8 +91,7 @@
     opacity: 0.25;
     pointer-events: none;
     z-index: 1;
-    /* mix-blend-mode removed: SVG grain + blend mode is expensive in Edge/Firefox.
-       Reduced opacity compensates visually. */
+    */
   }
 
   /* Desktop nav: scrolled state. GPU-composited via CSS — do NOT animate these

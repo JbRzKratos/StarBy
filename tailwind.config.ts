@@ -7,25 +7,24 @@ const config: Config = {
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      charcoal: '#0E0E0F',
-      bone: '#F5F1EA',
-      cobalt: '#3B5EFF',
-      graphite: '#1A1A1E',
-      smoke: '#2A2A2F',
-      ash: '#3A3A40',
-      pearl: '#D8D0C8',
-      ember: '#C45D3E',
-      white: '#ffffff',
-      black: '#000000',
-    },
     fontFamily: {
       display: ['var(--font-display)', 'serif'],
       mono: ['var(--font-mono)', 'monospace'],
       sans: ['var(--font-display)', 'system-ui', 'sans-serif'],
     },
+    extend: {
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        charcoal: '#0E0E0F',
+        bone: '#F5F1EA',
+        cobalt: '#3B5EFF',
+        graphite: '#1A1A1E',
+        smoke: '#2A2A2F',
+        ash: '#3A3A40',
+        pearl: '#D8D0C8',
+        ember: '#C45D3E',
+      },
     spacing: {
       0: '0px',
       px: '1px',
