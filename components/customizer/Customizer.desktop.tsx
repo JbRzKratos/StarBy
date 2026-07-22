@@ -20,6 +20,55 @@ const CustomizerCanvas = dynamic(
   },
 );
 
+const SIZE_DIMENSIONS: Record<string, string> = {
+  A6: '10.5 × 14.8 cm (4.1" × 5.8")',
+  A5: '14.8 × 21.0 cm (5.8" × 8.3")',
+  A4: '21.0 × 29.7 cm (8.3" × 11.7")',
+  A3: '29.7 × 42.0 cm (11.7" × 16.5")',
+  '13x19': '33.0 × 48.3 cm (13.0" × 19.0")',
+};
+
+const getUploadInstructions = (categorySlug?: string) => {
+  switch (categorySlug) {
+    case 'split-posters':
+      return {
+        title: 'Upload Landscape Image for Split Poster *',
+        note: 'Note: Upload only Landscape image for best split. Use the editing tool after upload to adjust.',
+        subtext:
+          '*For best results, upload a high-resolution horizontal (landscape) image. Low-quality images may affect print clarity.*',
+      };
+    case 'posters':
+      return {
+        title: 'Upload Image for Poster *',
+        note: 'Note: Upload an image matching your poster orientation for best results.',
+        subtext:
+          '*For best results, upload a high-resolution image. Low-quality images may affect print clarity.*',
+      };
+    case 'skins':
+      return {
+        title: 'Upload Image for Device Skin *',
+        note: 'Note: Ensure important subjects are centered. Edges may be cropped to fit the device shape.',
+        subtext:
+          '*For best results, upload a high-resolution image. Low-quality images may affect print clarity.*',
+      };
+    case 'hoodies':
+    case 'tees':
+      return {
+        title: 'Upload Design for Apparel *',
+        note: 'Note: For best results, use a high-resolution PNG with a transparent background.',
+        subtext:
+          '*For best results, upload a high-resolution image. Low-quality images may affect print clarity.*',
+      };
+    default:
+      return {
+        title: 'Upload Your Image *',
+        note: 'Note: Use the editing tool after upload to adjust your design.',
+        subtext:
+          '*For best results, upload a high-resolution image. Low-quality images may affect print clarity.*',
+      };
+  }
+};
+
 export function CustomizerDesktop({ productId }: { productId: string }) {
   const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } =
     useCustomizerStore();
@@ -135,21 +184,35 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Canvas Area (left) */}
         <div className="lg:col-span-8 bg-charcoal/50 rounded-xl overflow-hidden relative">
-          {!uploadedImage && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-graphite/90 backdrop-blur-sm border-2 border-dashed border-smoke m-4 rounded-lg">
-              <h3 className="font-display text-2xl text-bone mb-2">Start Designing</h3>
-              <p className="font-mono text-pearl mb-6">
-                Upload an image to place it on the {product?.name}
-              </p>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="bg-bone text-charcoal font-mono text-caption uppercase px-8 py-3 hover:bg-cobalt hover:text-bone transition-colors"
-              >
-                Upload Image
-              </button>
-              {error && <p className="text-red-400 mt-4 font-mono text-sm">{error}</p>}
-            </div>
-          )}
+          {!uploadedImage &&
+            (() => {
+              const instructions = getUploadInstructions(product?.categorySlug);
+              return (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-graphite/90 backdrop-blur-sm border-2 border-dashed border-smoke m-4 rounded-lg p-6 text-center">
+                  <h3 className="font-display text-2xl text-bone mb-2">Start Designing</h3>
+
+                  <div className="my-6 flex flex-col items-center max-w-md">
+                    <span className="text-[#FF4D4D] font-mono text-sm mb-4">
+                      {instructions.title}
+                    </span>
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="bg-bone text-charcoal font-mono text-caption uppercase px-8 py-3 hover:bg-cobalt hover:text-bone transition-colors mb-5 w-full max-w-[280px]"
+                    >
+                      Upload Your Image
+                    </button>
+                    <p className="font-mono text-[11px] text-pearl mb-3 leading-relaxed">
+                      {instructions.note}
+                    </p>
+                    <p className="font-mono text-[10px] text-ash italic leading-relaxed">
+                      {instructions.subtext}
+                    </p>
+                  </div>
+
+                  {error && <p className="text-[#FF4D4D] mt-2 font-mono text-sm">{error}</p>}
+                </div>
+              );
+            })()}
 
           <input
             type="file"
@@ -181,17 +244,29 @@ export function CustomizerDesktop({ productId }: { productId: string }) {
           {/* Sizing (if applicable) */}
           {product?.sizes && product.sizes.length > 0 && (
             <div className="bg-graphite border border-smoke/30 p-6 rounded-lg">
-              <h3 className="font-mono text-caption text-bone uppercase tracking-widest mb-4">
-                Size
+              <h3 className="font-mono text-caption text-bone uppercase tracking-widest mb-4 flex items-center justify-between flex-wrap gap-2">
+                <span>
+                  {product?.categorySlug === 'split-posters'
+                    ? 'Each Panel Size'
+                    : product?.categorySlug === 'posters'
+                      ? 'Poster Size'
+                      : 'Size'}{' '}
+                  — {selectedSize}
+                </span>
+                {SIZE_DIMENSIONS[selectedSize] && (
+                  <span className="text-xs text-pearl font-mono font-normal tracking-normal">
+                    {SIZE_DIMENSIONS[selectedSize]}
+                  </span>
+                )}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`w-12 h-12 flex items-center justify-center border font-mono text-sm transition-colors ${
+                    className={`min-w-[48px] px-3 py-2.5 h-11 flex items-center justify-center border font-mono text-sm transition-colors rounded-sm ${
                       selectedSize === size
-                        ? 'border-cobalt text-cobalt'
+                        ? 'border-cobalt text-cobalt bg-cobalt/10'
                         : 'border-smoke text-bone hover:border-cobalt hover:text-cobalt'
                     }`}
                   >

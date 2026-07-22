@@ -430,23 +430,28 @@ export function CustomizerCanvas({
         }
       } else if (category === 'posters' || category === 'split-posters') {
         // --- PROCEDURAL POSTER RENDERING ---
-        let maxH = 500;
-        let maxW = 350; // 5:7 portrait ratio
+        let maxW = 340;
+        let maxH = 480;
 
-        if (selectedSize === 'A2') {
-          maxH = 400;
-          maxW = 400 * (5 / 7);
+        if (selectedSize === 'A6') {
+          maxW = 280;
+          maxH = 395;
+        } else if (selectedSize === 'A5') {
+          maxW = 310;
+          maxH = 437;
+        } else if (selectedSize === 'A4') {
+          maxW = 340;
+          maxH = 480;
         } else if (selectedSize === 'A3') {
-          maxH = 300;
-          maxW = 300 * (5 / 7);
+          maxW = 360;
+          maxH = 509;
+        } else if (selectedSize === '13x19') {
+          maxW = 350;
+          maxH = 511;
         }
 
         if (category === 'split-posters') {
-          const isV = splitOrientation === 'vertical';
-          if (splitStyle === 'classic') {
-            maxW = isV ? 300 : 500;
-            maxH = isV ? 500 : 300;
-          } else if (splitStyle === 'stepped') {
+          if (splitStyle === 'stepped') {
             maxW = 500;
             maxH = 300;
           } else if (splitStyle === 'grid') {
@@ -545,7 +550,8 @@ export function CustomizerCanvas({
           canvas.add(innerShadow);
           if (category === 'split-posters') {
             // Draw gaps depending on split configuration
-            const gapSize = 10;
+            const gapSize = 6;
+            const bgFill = '#141415';
 
             if (splitStyle === 'classic') {
               const isV = splitOrientation === 'vertical';
@@ -558,7 +564,7 @@ export function CustomizerCanvas({
                     top: paY - 20,
                     width: gapSize,
                     height: paH + 40,
-                    fill: '#1A1A1A',
+                    fill: bgFill,
                     selectable: false,
                     evented: false,
                   });
@@ -571,7 +577,7 @@ export function CustomizerCanvas({
                     top: paY + step * i - gapSize / 2,
                     width: paW + 40,
                     height: gapSize,
-                    fill: '#1A1A1A',
+                    fill: bgFill,
                     selectable: false,
                     evented: false,
                   });
@@ -583,45 +589,49 @@ export function CustomizerCanvas({
               const pCount = splitPanels === 5 ? 5 : 3;
               const heights = pCount === 3 ? [0.8, 1, 0.8] : [0.6, 0.8, 1, 0.8, 0.6];
 
-              // Gaps
-              for (let i = 1; i < splitPanels; i++) {
-                const gap = new (fabric as any).Rect({
-                  left: paX + step * i - gapSize / 2,
-                  top: paY - 20,
-                  width: gapSize,
-                  height: paH + 40,
-                  fill: '#1A1A1A',
-                  selectable: false,
-                  evented: false,
-                });
-                canvas.add(gap);
-              }
-              // Stepped cutouts (top and bottom)
+              // 1. Stepped cutouts (top and bottom) - drawn FIRST
               for (let i = 0; i < splitPanels; i++) {
                 const hScale = heights[i] ?? 1;
                 const removedH = (paH - paH * hScale) / 2;
                 if (removedH > 0) {
+                  const leftPos = i === 0 ? paX - 25 : paX + step * i;
+                  const blockWidth = i === 0 || i === splitPanels - 1 ? step + 25 : step;
+
                   const topBlock = new (fabric as any).Rect({
-                    left: paX + step * i,
-                    top: paY - 20,
-                    width: step,
-                    height: removedH + 20,
-                    fill: '#1A1A1A',
+                    left: leftPos,
+                    top: paY - 25,
+                    width: blockWidth,
+                    height: removedH + 25,
+                    fill: bgFill,
                     selectable: false,
                     evented: false,
                   });
                   const bottomBlock = new (fabric as any).Rect({
-                    left: paX + step * i,
+                    left: leftPos,
                     top: paY + paH - removedH,
-                    width: step,
-                    height: removedH + 20,
-                    fill: '#1A1A1A',
+                    width: blockWidth,
+                    height: removedH + 25,
+                    fill: bgFill,
                     selectable: false,
                     evented: false,
                   });
                   canvas.add(topBlock);
                   canvas.add(bottomBlock);
                 }
+              }
+
+              // 2. Gaps - drawn AFTER cutouts so panel separation lines are crisp & clean
+              for (let i = 1; i < splitPanels; i++) {
+                const gap = new (fabric as any).Rect({
+                  left: paX + step * i - gapSize / 2,
+                  top: paY - 25,
+                  width: gapSize,
+                  height: paH + 50,
+                  fill: bgFill,
+                  selectable: false,
+                  evented: false,
+                });
+                canvas.add(gap);
               }
             } else if (splitStyle === 'grid') {
               const stepX = paW / splitGridCols;
@@ -632,7 +642,7 @@ export function CustomizerCanvas({
                   top: paY - 20,
                   width: gapSize,
                   height: paH + 40,
-                  fill: '#1A1A1A',
+                  fill: bgFill,
                   selectable: false,
                   evented: false,
                 });
@@ -644,7 +654,7 @@ export function CustomizerCanvas({
                   top: paY + stepY * i - gapSize / 2,
                   width: paW + 40,
                   height: gapSize,
-                  fill: '#1A1A1A',
+                  fill: bgFill,
                   selectable: false,
                   evented: false,
                 });

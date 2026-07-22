@@ -2,6 +2,7 @@ import { Navigation } from '@/components/layout/navigation';
 import { Footer } from '@/components/layout/footer';
 import { CartDrawer } from '@/components/layout/cart-drawer';
 import { Hero } from '@/components/home/hero';
+import { TrustBadges } from '@/components/home/trust-badges';
 import { BentoGrid } from '@/components/home/bento-grid';
 import { FeaturedProducts } from '@/components/home/featured-products';
 import { SplitPosterTeaser } from '@/components/home/split-poster-teaser';
@@ -16,8 +17,9 @@ export default function HomePage() {
       <main>
         <h1 className="sr-only">StarBy — Personalized Premium</h1>
         <Hero />
-        <BentoGrid />
+        <TrustBadges />
         <FeaturedProducts />
+        <BentoGrid />
         <SplitPosterTeaser />
         <StudioTeaser />
         <Testimonials />

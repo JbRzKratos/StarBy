@@ -323,7 +323,7 @@ export const products: Product[] = [
     customizable: true,
     tags: ['featured', 'bestseller'],
     featured: true,
-    sizes: ['A3', 'A2', 'A1'],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v13a',
@@ -347,7 +347,7 @@ export const products: Product[] = [
     customizable: true,
     tags: [],
     featured: false,
-    sizes: ['A3', 'A2', 'A1'],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v14a',
@@ -371,7 +371,7 @@ export const products: Product[] = [
     customizable: true,
     tags: [],
     featured: true,
-    sizes: ['A3', 'A2', 'A1'],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v15a',
@@ -395,7 +395,7 @@ export const products: Product[] = [
     customizable: true,
     tags: [],
     featured: false,
-    sizes: ['A3', 'A2', 'A1'],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v16a',
@@ -419,7 +419,7 @@ export const products: Product[] = [
     customizable: false,
     tags: [],
     featured: false,
-    sizes: ['A3', 'A2', 'A1'],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v17a',
@@ -443,7 +443,7 @@ export const products: Product[] = [
     customizable: true,
     tags: ['featured', 'bestseller'],
     featured: true,
-    sizes: [],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v18a',
@@ -467,7 +467,7 @@ export const products: Product[] = [
     customizable: false,
     tags: [],
     featured: false,
-    sizes: [],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v19a',
@@ -491,7 +491,7 @@ export const products: Product[] = [
     customizable: false,
     tags: [],
     featured: true,
-    sizes: [],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v20a',
@@ -515,7 +515,7 @@ export const products: Product[] = [
     customizable: true,
     tags: [],
     featured: false,
-    sizes: [],
+    sizes: ['A6', 'A5', 'A4', 'A3', '13x19'],
     variants: [
       {
         id: 'v21a',

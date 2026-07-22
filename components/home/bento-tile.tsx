@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import type { Category } from '@/data/categories';
@@ -53,11 +54,12 @@ export function BentoTile({ category, size }: BentoTileProps) {
     >
       {/* Background Image */}
       {category.image && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={category.image}
           alt={category.name}
-          className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700 ease-out mix-blend-luminosity"
+          fill
+          sizes="(max-width: 767px) 50vw, 25vw"
+          className="absolute inset-0 object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700 ease-out mix-blend-luminosity"
         />
       )}
 

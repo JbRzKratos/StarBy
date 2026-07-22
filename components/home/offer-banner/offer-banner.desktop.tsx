@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import gsap from 'gsap';
+import { gsap } from '@/lib/gsap-config';
 import { useGSAP } from '@gsap/react';
 import { getOfferString } from './offer-banner.shared';
 import { ScrollTriggerWrapper } from '@/components/animations/scroll-trigger-wrapper';

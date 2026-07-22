@@ -20,11 +20,8 @@ export function DeviceProvider({
 
     const mediaQuery = window.matchMedia('(min-width: 768px)');
 
-    // Initial sync
-    const currentDevice = mediaQuery.matches ? 'desktop' : 'mobile';
-    if (currentDevice !== device) {
-      setDevice(currentDevice);
-    }
+    // Sync immediately after mount (SSR always renders 'desktop').
+    setDevice(mediaQuery.matches ? 'desktop' : 'mobile');
 
     let timeoutId: NodeJS.Timeout;
 
@@ -41,7 +38,9 @@ export function DeviceProvider({
       clearTimeout(timeoutId);
       mediaQuery.removeEventListener('change', handleResize);
     };
-  }, [device]);
+    // Run once on mount — handleResize reads from the event, not the closure.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <DeviceContext.Provider value={device}>{children}</DeviceContext.Provider>;
 }

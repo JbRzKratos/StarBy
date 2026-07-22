@@ -12,11 +12,11 @@ import { useSearchStore } from '@/lib/stores/search-store';
 import { OfferBannerDesktop } from '@/components/home/offer-banner/offer-banner.desktop';
 
 const navLinks = [
-  { href: '/products/all', label: 'Shop' },
+  { href: '/products/all', label: 'Shop All' },
+  { href: '/split-poster', label: 'Split Posters' },
+  { href: '/customize', label: 'Design DIY' },
   { href: '/studio', label: 'Studio' },
-  { href: '/split-poster', label: 'Split Poster' },
   { href: '/faq', label: 'FAQ' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 export function NavigationDesktop() {
@@ -61,7 +61,7 @@ export function NavigationDesktop() {
   );
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-sticky flex flex-col pointer-events-none">
+    <div className="fixed top-0 left-0 right-0 z-[100] flex flex-col pointer-events-none">
       <div className="pointer-events-auto">
         <OfferBannerDesktop />
       </div>

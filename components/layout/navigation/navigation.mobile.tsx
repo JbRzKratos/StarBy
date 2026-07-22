@@ -13,11 +13,11 @@ import { OfferBannerMobile } from '@/components/home/offer-banner/offer-banner.m
 
 const menuLinks = [
   { href: '/', label: 'Home' },
-  { href: '/products/all', label: 'Shop' },
+  { href: '/products/all', label: 'Shop All' },
+  { href: '/split-poster', label: 'Split Posters' },
+  { href: '/customize', label: 'Design DIY' },
   { href: '/studio', label: 'Studio' },
-  { href: '/split-poster', label: 'Split Poster' },
-  { href: '/faq', label: 'FAQ' },
-  { href: '/shipping', label: 'Shipping' },
+  { href: '/faq', label: 'FAQ & Shipping' },
   { href: '/contact', label: 'Contact' },
 ];
 
@@ -104,7 +104,7 @@ export function NavigationMobile() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-sticky flex flex-col pointer-events-none">
+      <div className="fixed top-0 left-0 right-0 z-[100] flex flex-col pointer-events-none">
         <div className="pointer-events-auto">
           <OfferBannerMobile />
         </div>

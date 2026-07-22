@@ -40,6 +40,12 @@ export function ScrollTriggerWrapper({
     () => {
       if (!containerRef.current) return;
 
+      // Only create a ScrollTrigger-backed tween when there are actual
+      // animation properties to apply. Without this guard, passing no
+      // `animation` prop creates an orphaned ScrollTrigger that fires on
+      // every scroll tick but animates nothing — wasting resources.
+      if (!animation || Object.keys(animation).length === 0) return;
+
       gsap.to(containerRef.current, {
         ...animation,
         scrollTrigger: {

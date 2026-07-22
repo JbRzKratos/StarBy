@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
-import { gsap } from '@/lib/gsap-config';
+import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { testimonials } from '@/data/testimonials';
 
 export function Testimonials() {
@@ -13,27 +13,35 @@ export function Testimonials() {
     () => {
       if (!trackRef.current) return;
 
-      gsap.fromTo(
-        trackRef.current.children,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            once: true,
-          },
+      // Set items invisible initially so the reveal animation works correctly.
+      // overwrite: 'auto' lets the marquee co-exist without fighting over opacity.
+      gsap.set(trackRef.current.children, { y: 40, opacity: 0 });
+
+      // Reveal cards when the section scrolls into view.
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          if (!trackRef.current) return;
+          gsap.to(trackRef.current.children, {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power3.out',
+            overwrite: 'auto',
+            onComplete: () => {
+              // Start the endless marquee only after cards are revealed.
+              gsap.to(trackRef.current, {
+                xPercent: -50,
+                ease: 'none',
+                duration: 40,
+                repeat: -1,
+              });
+            },
+          });
         },
-      );
-      // Endless scroll marquee
-      gsap.to(trackRef.current, {
-        xPercent: -50,
-        ease: 'none',
-        duration: 40,
-        repeat: -1,
       });
     },
     { scope: sectionRef },
@@ -48,10 +56,21 @@ export function Testimonials() {
   };
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-32 overflow-hidden">
-      <div className="section-container mb-10">
-        <span className="overline-label block mb-3">Voices</span>
-        <h2 className="font-display text-display-md font-bold text-bone">What People Create</h2>
+    <section ref={sectionRef} className="py-20 md:py-32 overflow-hidden bg-charcoal">
+      <div className="section-container mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <span className="overline-label block mb-3 text-cobalt">Customer Reviews</span>
+          <h2 className="font-display text-display-md font-bold text-bone">
+            What People Create & Say
+          </h2>
+        </div>
+        <div className="flex items-center gap-3 bg-graphite px-4 py-2 rounded-full border border-smoke/40 w-fit">
+          <div className="flex text-cobalt text-sm">★★★★★</div>
+          <span className="font-mono text-caption text-bone">4.9/5</span>
+          <span className="font-mono text-caption text-pearl border-l border-smoke/50 pl-3">
+            10,000+ Verified Buyers
+          </span>
+        </div>
       </div>
 
       <div className="relative overflow-hidden group py-4">
@@ -64,15 +83,18 @@ export function Testimonials() {
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div
               key={`${t.id}-${idx}`}
-              className="flex-shrink-0 w-[320px] md:w-[380px] bg-graphite border border-smoke rounded-lg p-6 md:p-8"
+              className="flex-shrink-0 w-[320px] md:w-[380px] bg-graphite border border-smoke/60 rounded-lg p-6 md:p-8 hover:border-cobalt/40 transition-colors"
             >
-              {/* Rating */}
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <span key={i} className="text-cobalt text-sm">
-                    ★
-                  </span>
-                ))}
+              {/* Header inside card */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex text-cobalt text-sm">
+                  {Array.from({ length: t.rating }).map((_, i) => (
+                    <span key={i}>★</span>
+                  ))}
+                </div>
+                <span className="font-mono text-[10px] text-cobalt bg-cobalt/10 px-2 py-0.5 rounded uppercase tracking-wider font-semibold">
+                  ✓ Verified Buyer
+                </span>
               </div>
 
               {/* Quote */}
@@ -81,8 +103,10 @@ export function Testimonials() {
               </p>
 
               {/* Author */}
-              <div className="flex items-center gap-3 pt-4 border-t border-smoke">
-                <div className="w-8 h-8 rounded-full bg-smoke flex-shrink-0" />
+              <div className="flex items-center gap-3 pt-4 border-t border-smoke/40">
+                <div className="w-8 h-8 rounded-full bg-cobalt/20 text-cobalt flex items-center justify-center font-mono font-bold text-xs">
+                  {t.name.charAt(0)}
+                </div>
                 <div>
                   <p className="font-display text-body-sm text-bone">{t.name}</p>
                   <p className="font-mono text-caption text-ash">{t.handle}</p>

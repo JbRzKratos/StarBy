@@ -17,13 +17,20 @@ type SizeRow = {
   sleeve?: string;
 };
 
-const sizeData: { hoodies: SizeRow[]; default: SizeRow[] } = {
+const sizeData: { hoodies: SizeRow[]; posters: SizeRow[]; default: SizeRow[] } = {
   hoodies: [
     { size: 'S', chest: '40"', length: '28"', sleeve: '25"' },
     { size: 'M', chest: '44"', length: '29"', sleeve: '25.5"' },
     { size: 'L', chest: '48"', length: '30"', sleeve: '26"' },
     { size: 'XL', chest: '52"', length: '31"', sleeve: '26.5"' },
     { size: 'XXL', chest: '56"', length: '32"', sleeve: '27"' },
+  ],
+  posters: [
+    { size: 'A6', chest: '4.1" x 5.8"', length: '10.5 x 14.8 cm' },
+    { size: 'A5', chest: '5.8" x 8.3"', length: '14.8 x 21.0 cm' },
+    { size: 'A4', chest: '8.3" x 11.7"', length: '21.0 x 29.7 cm' },
+    { size: 'A3', chest: '11.7" x 16.5"', length: '29.7 x 42.0 cm' },
+    { size: '13x19', chest: '13.0" x 19.0"', length: '33.0 x 48.3 cm' },
   ],
   default: [
     { size: 'S', chest: '38"', length: '28"' },
@@ -67,7 +74,11 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
     { dependencies: [isOpen] },
   );
 
-  const data = category.toLowerCase().includes('hoodie') ? sizeData.hoodies : sizeData.default;
+  const catLower = category.toLowerCase();
+  const isPoster = catLower.includes('poster');
+  const isHoodie = catLower.includes('hoodie');
+
+  const data = isPoster ? sizeData.posters : isHoodie ? sizeData.hoodies : sizeData.default;
 
   return (
     <div
@@ -102,7 +113,9 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
 
         <h2 className="font-display text-h3 text-bone mb-2 capitalize">{category} Size Guide</h2>
         <p className="font-mono text-caption text-pearl mb-8">
-          Measurements are in inches. Standard fit.
+          {isPoster
+            ? 'Standard dimensions for single & split wall prints.'
+            : 'Measurements are in inches. Standard fit.'}
         </p>
 
         <div className="overflow-x-auto">
@@ -113,10 +126,10 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
                   Size
                 </th>
                 <th className="py-3 px-4 font-mono text-caption uppercase text-ash font-normal">
-                  Chest
+                  {isPoster ? 'Inches' : 'Chest'}
                 </th>
                 <th className="py-3 px-4 font-mono text-caption uppercase text-ash font-normal">
-                  Length
+                  {isPoster ? 'Centimeters' : 'Length'}
                 </th>
                 {data[0] && 'sleeve' in data[0] && (
                   <th className="py-3 px-4 font-mono text-caption uppercase text-ash font-normal">
@@ -145,11 +158,22 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
 
         <div className="mt-8 pt-6 border-t border-smoke/50">
           <p className="font-mono text-caption text-ash leading-relaxed">
-            <strong>How to measure:</strong>
-            <br />
-            Chest: Measure under your arms, around the fullest part of your chest.
-            <br />
-            Length: Measure from the high point of your shoulder down to the hem.
+            {isPoster ? (
+              <>
+                <strong>Poster Info:</strong>
+                <br />
+                Printed on 300 GSM ultra-thick matte paper with high-definition Giclée ink finish.
+                Non-adhesive (mount with double-sided tape or glue dots).
+              </>
+            ) : (
+              <>
+                <strong>How to measure:</strong>
+                <br />
+                Chest: Measure under your arms, around the fullest part of your chest.
+                <br />
+                Length: Measure from the high point of your shoulder down to the hem.
+              </>
+            )}
           </p>
         </div>
       </div>

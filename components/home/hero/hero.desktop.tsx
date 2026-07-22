@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import gsap from 'gsap';
+import { gsap } from '@/lib/gsap-config';
 import { useGSAP } from '@gsap/react';
 import { HERO_DESIGNS_IMAGES, HERO_PERSONALIZED_IMAGES } from './hero.shared';
 import { ScrollTriggerWrapper } from '@/components/animations/scroll-trigger-wrapper';
@@ -60,15 +60,15 @@ export function HeroDesktop() {
       const leftTl = gsap.timeline({ repeat: -1 });
 
       leftImgs.forEach((img, i) => {
-        if (i > 0) gsap.set(img, { opacity: 0 }); // Hide all except first
+        gsap.set(img, { opacity: i === 0 ? 1 : 0 });
       });
 
       leftImgs.forEach((img, i) => {
         const nextImg = leftImgs[(i + 1) % leftImgs.length] as HTMLImageElement;
         leftTl
-          .to({}, { duration: 3.5 }) // wait 3.5s
-          .to(img, { opacity: 0, duration: 1, ease: 'power2.inOut' }, 'crossfade')
-          .to(nextImg, { opacity: 1, duration: 1, ease: 'power2.inOut' }, 'crossfade');
+          .to({}, { duration: 3.5 })
+          .to(img, { opacity: 0, duration: 1.2, ease: 'power2.inOut' })
+          .to(nextImg, { opacity: 1, duration: 1.2, ease: 'power2.inOut' }, '<');
       });
 
       // 3. Crossfade Logic (Right Side)
@@ -78,16 +78,15 @@ export function HeroDesktop() {
       const rightTl = gsap.timeline({ repeat: -1 });
 
       rightImgs.forEach((img, i) => {
-        if (i > 0) gsap.set(img, { opacity: 0 });
+        gsap.set(img, { opacity: i === 0 ? 1 : 0 });
       });
 
-      // Right side uses a slightly different timing (4.2s) so they feel organic and un-synced
       rightImgs.forEach((img, i) => {
         const nextImg = rightImgs[(i + 1) % rightImgs.length] as HTMLImageElement;
         rightTl
-          .to({}, { duration: 4.2 })
-          .to(img, { opacity: 0, duration: 1.2, ease: 'power2.inOut' }, 'crossfadeRight')
-          .to(nextImg, { opacity: 1, duration: 1.2, ease: 'power2.inOut' }, 'crossfadeRight');
+          .to({}, { duration: 4.0 })
+          .to(img, { opacity: 0, duration: 1.2, ease: 'power2.inOut' })
+          .to(nextImg, { opacity: 1, duration: 1.2, ease: 'power2.inOut' }, '<');
       });
 
       // 4. Page Visibility Pause/Play
@@ -135,14 +134,14 @@ export function HeroDesktop() {
           </div>
 
           <div className="flex flex-col items-center mt-auto mb-16 gap-8">
-            <h1
+            <h2
               ref={leftHeadRef}
               className="font-display text-6xl xl:text-7xl 2xl:text-8xl text-bone uppercase tracking-tighter text-center"
             >
               Designed
               <br />
               By Us
-            </h1>
+            </h2>
             <Link
               href="/products/all"
               ref={leftCTARef}
@@ -186,14 +185,14 @@ export function HeroDesktop() {
           </div>
 
           <div className="flex flex-col items-center mt-auto mb-16 gap-8">
-            <h1
+            <h2
               ref={rightHeadRef}
               className="font-display text-6xl xl:text-7xl 2xl:text-8xl text-bone uppercase tracking-tighter text-center drop-shadow-md"
             >
               Personalized
               <br />
               By You
-            </h1>
+            </h2>
             <Link
               href="/customize"
               ref={rightCTARef}
