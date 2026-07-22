@@ -83,10 +83,10 @@ export function Testimonials() {
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div
               key={`${t.id}-${idx}`}
-              className="flex-shrink-0 w-[320px] md:w-[380px] h-[250px] md:h-[270px] flex flex-col justify-between bg-graphite border border-smoke/60 rounded-xl p-6 md:p-8 hover:border-cobalt/40 transition-colors"
+              className="flex-shrink-0 w-[320px] md:w-[380px] h-[250px] md:h-[270px] flex flex-col justify-between bg-graphite border border-smoke/60 rounded-2xl p-6 md:p-8 hover:border-cobalt/40 transition-colors"
             >
               {/* Header inside card */}
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between shrink-0">
                 <div className="flex text-cobalt text-sm">
                   {Array.from({ length: t.rating }).map((_, i) => (
                     <span key={i}>★</span>
@@ -97,9 +97,9 @@ export function Testimonials() {
                 </span>
               </div>
 
-              {/* Quote - Centered vertically */}
-              <div className="my-auto py-2">
-                <p className="font-display text-body-md text-bone leading-relaxed line-clamp-3">
+              {/* Quote - Top aligned for uniformity */}
+              <div className="flex-1 mt-6 mb-4">
+                <p className="font-display text-body-md text-bone leading-relaxed line-clamp-3 text-left">
                   &ldquo;{t.quote}&rdquo;
                 </p>
               </div>

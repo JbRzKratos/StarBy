@@ -61,7 +61,7 @@ export function ProductCardDesktop({ product }: ProductCardProps) {
       <Link href={href} className="block">
         {/* Image area */}
         <div
-          className="relative overflow-hidden rounded-xl mb-4 aspect-[3/4]"
+          className="relative overflow-hidden rounded-2xl mb-4 aspect-[3/4]"
           style={{ perspective: '600px' }}
         >
           <div

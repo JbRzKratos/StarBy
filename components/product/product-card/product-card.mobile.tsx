@@ -20,7 +20,7 @@ export function ProductCardMobile({ product }: ProductCardProps) {
     <div className="group block relative" data-cursor-hover>
       <Link href={href} className="block">
         {/* Image area */}
-        <div className="relative overflow-hidden rounded-xl mb-4 aspect-[3/4]">
+        <div className="relative overflow-hidden rounded-2xl mb-4 aspect-[3/4]">
           <div
             className="w-full h-full relative"
             style={{
