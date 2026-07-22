@@ -45,15 +45,15 @@ function PosterMesh({
 
       // Parse bgSize (e.g. "300% 100%")
       const bgSizeMatch = panel.bgSize.match(/([\d.]+)%\s+([\d.]+)%/);
-      const sizeX = bgSizeMatch ? parseFloat(bgSizeMatch[1]) / 100 : 1;
-      const sizeY = bgSizeMatch ? parseFloat(bgSizeMatch[2]) / 100 : 1;
+      const sizeX = bgSizeMatch ? parseFloat(bgSizeMatch[1] || '100') / 100 : 1;
+      const sizeY = bgSizeMatch ? parseFloat(bgSizeMatch[2] || '100') / 100 : 1;
 
       tex.repeat.set(1 / sizeX, 1 / sizeY);
 
       // Parse bgPosition (e.g. "50% 50%")
       const bgPosMatch = panel.bgPosition.match(/([\d.]+)%\s+([\d.]+)%/);
-      const posX = bgPosMatch ? parseFloat(bgPosMatch[1]) / 100 : 0.5;
-      const posY = bgPosMatch ? parseFloat(bgPosMatch[2]) / 100 : 0.5;
+      const posX = bgPosMatch ? parseFloat(bgPosMatch[1] || '50') / 100 : 0.5;
+      const posY = bgPosMatch ? parseFloat(bgPosMatch[2] || '50') / 100 : 0.5;
 
       // Calculate Offset (Three.js V axis is bottom-to-top, CSS is top-to-bottom)
       tex.offset.x = posX * (1 - tex.repeat.x);
@@ -149,10 +149,12 @@ function HitTestPlacer({
     let isVerticalStack = true;
     let isGrid = false;
 
-    if (panels.length > 0 && panels[0].gridCol !== undefined) {
+    const firstPanel = panels.length > 0 ? panels[0] : null;
+
+    if (firstPanel && firstPanel.gridCol !== undefined) {
       isGrid = true;
-    } else if (panels.length > 0) {
-      const firstX = panels[0].bgPosition.split(' ')[0];
+    } else if (firstPanel) {
+      const firstX = firstPanel.bgPosition.split(' ')[0];
       for (const p of panels) {
         if (p.bgPosition.split(' ')[0] !== firstX) {
           isVerticalStack = false;
@@ -160,12 +162,12 @@ function HitTestPlacer({
       }
     }
 
-    if (isGrid) {
+    if (isGrid && firstPanel) {
       const maxCol = Math.max(...panels.map((p) => p.gridCol || 1));
       const maxRow = Math.max(...panels.map((p) => p.gridRow || 1));
 
-      const pW = (parseInt(panels[0].width) || 60) * CSS_TO_M;
-      const pH = (parseInt(panels[0].height) || 90) * CSS_TO_M;
+      const pW = (parseInt(firstPanel.width) || 60) * CSS_TO_M;
+      const pH = (parseInt(firstPanel.height) || 90) * CSS_TO_M;
 
       const totalW = maxCol * pW + (maxCol - 1) * GAP;
       const totalH = maxRow * pH + (maxRow - 1) * GAP;
