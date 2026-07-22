@@ -76,22 +76,8 @@
 
 @layer components {
   /* Grain texture overlay — apply to any section */
-  .grain-overlay {
-    position: relative;
-  }
   .grain-overlay::after {
-    /* SVG grain repeating is extremely expensive on some devices/browsers and causes scroll lag.
-       Disabled for performance. */
-    /*
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('/textures/grain.svg');
-    background-repeat: repeat;
-    opacity: 0.25;
-    pointer-events: none;
-    z-index: 1;
-    */
+    display: none;
   }
 
   /* Desktop nav: scrolled state. GPU-composited via CSS — do NOT animate these

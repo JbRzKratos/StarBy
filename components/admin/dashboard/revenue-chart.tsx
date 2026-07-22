@@ -57,7 +57,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
     label,
   }: {
     active?: boolean;
-    payload?: readonly any[];
+    payload?: readonly { value?: number | string }[];
     label?: string | number;
   }) => {
     if (active && payload && payload.length) {
