@@ -85,10 +85,19 @@
     inset: 0;
     background-image: url('/textures/grain.svg');
     background-repeat: repeat;
-    opacity: 0.4;
+    opacity: 0.25;
     pointer-events: none;
     z-index: 1;
-    mix-blend-mode: overlay;
+    /* mix-blend-mode removed: SVG grain + blend mode is expensive in Edge/Firefox.
+       Reduced opacity compensates visually. */
+  }
+
+  /* Desktop nav: scrolled state. GPU-composited via CSS — do NOT animate these
+     properties with GSAP as that forces main-thread recalculation in Edge. */
+  .nav-scrolled {
+    background-color: rgba(14, 14, 15, 0.95) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   /* Section container */

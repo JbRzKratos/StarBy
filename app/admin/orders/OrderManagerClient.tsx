@@ -8,12 +8,14 @@ export interface OrderItem {
   productId: string;
   quantity: number;
   variantId: string;
+  size?: string | null;
+  price: number;
 }
 
 export interface Order {
   id: string;
   createdAt: string | Date;
-  user?: { fullName?: string; email?: string };
+  user?: { fullName?: string | null; email?: string | null } | null;
   total: number;
   status: string;
   shippingAddress?: {
@@ -23,12 +25,12 @@ export interface Order {
     state: string;
     zip: string;
     phone?: string;
-  };
-  paymentStatus?: string;
-  shippingMethod?: string;
-  razorpayOrderId?: string;
-  couponCode?: string;
-  discount?: number;
+  } | null;
+  paymentStatus?: string | null;
+  shippingMethod?: string | null;
+  razorpayOrderId?: string | null;
+  couponCode?: string | null;
+  discount?: number | null;
   items: OrderItem[];
 }
 

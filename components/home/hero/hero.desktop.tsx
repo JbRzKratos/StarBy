@@ -187,7 +187,7 @@ export function HeroDesktop() {
           <div className="flex flex-col items-center mt-auto mb-16 gap-8">
             <h2
               ref={rightHeadRef}
-              className="font-display text-6xl xl:text-7xl 2xl:text-8xl text-bone uppercase tracking-tighter text-center drop-shadow-md"
+              className="font-display text-6xl xl:text-7xl 2xl:text-8xl text-bone uppercase tracking-tighter text-center"
             >
               Personalized
               <br />

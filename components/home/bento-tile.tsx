@@ -59,7 +59,7 @@ export function BentoTile({ category, size }: BentoTileProps) {
           alt={category.name}
           fill
           sizes="(max-width: 767px) 50vw, 25vw"
-          className="absolute inset-0 object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700 ease-out mix-blend-luminosity"
+          className="absolute inset-0 object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-[opacity,transform] duration-700 ease-out mix-blend-luminosity"
         />
       )}
 

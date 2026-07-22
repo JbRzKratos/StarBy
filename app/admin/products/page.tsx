@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { ProductManagerClient } from './ProductManagerClient';
+import type { Product } from './ProductManagerClient';
 
 export const runtime = 'edge';
 
@@ -13,5 +14,5 @@ export default async function AdminProductsPage() {
     },
   });
 
-  return <ProductManagerClient products={products} />;
+  return <ProductManagerClient products={products as unknown as Product[]} />;
 }

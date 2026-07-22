@@ -60,17 +60,19 @@ export function NavigationMobile() {
   useEffect(() => {
     if (!navRef.current) return;
 
-    // Simple scroll listener instead of GSAP ScrollTrigger to save bundle size
+    // Track state to avoid writing to DOM on every scroll tick
+    let isScrolled = false;
+
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        if (navRef.current) {
-          navRef.current.style.backgroundColor = 'rgba(14,14,15,0.95)';
-          navRef.current.style.backdropFilter = 'blur(12px)';
-        }
-      } else {
-        if (navRef.current) {
-          navRef.current.style.backgroundColor = 'rgba(14,14,15,0)';
-          navRef.current.style.backdropFilter = 'none';
+      const shouldScroll = window.scrollY > 20;
+      if (shouldScroll === isScrolled) return; // No state change, skip DOM write
+      isScrolled = shouldScroll;
+
+      if (navRef.current) {
+        if (shouldScroll) {
+          navRef.current.classList.add('nav-scrolled');
+        } else {
+          navRef.current.classList.remove('nav-scrolled');
         }
       }
     };

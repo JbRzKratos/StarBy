@@ -96,11 +96,11 @@ export function CustomCursor() {
     <>
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-bone/40 pointer-events-none z-[9999] opacity-0 mix-blend-difference"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-bone/40 pointer-events-none z-[9999] opacity-0"
       />
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 w-1.5 h-1.5 bg-bone rounded-full pointer-events-none z-[9999] opacity-0 mix-blend-difference"
+        className="fixed top-0 left-0 w-1.5 h-1.5 bg-bone rounded-full pointer-events-none z-[9999] opacity-0"
       />
     </>
   );

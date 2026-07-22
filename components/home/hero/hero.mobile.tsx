@@ -201,7 +201,7 @@ export function HeroMobile() {
           <div className="flex flex-col items-center gap-4 px-6 w-full max-w-sm mt-auto mb-10">
             <h2
               ref={rightHeadRef}
-              className="font-display text-4xl text-bone uppercase tracking-tighter text-center drop-shadow-md"
+              className="font-display text-4xl text-bone uppercase tracking-tighter text-center"
             >
               Personalized
               <br />

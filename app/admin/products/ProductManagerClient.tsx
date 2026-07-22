@@ -6,8 +6,8 @@ import { toggleVariantStock, deleteProduct, addProduct } from '../actions';
 export interface ProductVariant {
   id: string;
   name: string;
-  color?: string;
-  colorHex?: string;
+  color?: string | null;
+  colorHex?: string | null;
   inStock: boolean;
 }
 
@@ -198,7 +198,7 @@ export function ProductManagerClient({ products: initialProducts }: ProductManag
                           <div className="flex items-center gap-2">
                             <div
                               className="w-3 h-3 rounded-full border border-smoke"
-                              style={{ backgroundColor: v.colorHex }}
+                              style={{ backgroundColor: v.colorHex || undefined }}
                             />
                             <span>{v.color}</span>
                           </div>

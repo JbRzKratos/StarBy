@@ -322,7 +322,7 @@ export function SplitPosterVisualizerDesktop() {
       </div>
 
       {/* Order Bar */}
-      <div className="mt-8 flex flex-col sm:flex-row gap-4">
+      <div className="mt-8 flex flex-col lg:flex-row gap-4">
         <input
           type="file"
           accept="image/png, image/jpeg"

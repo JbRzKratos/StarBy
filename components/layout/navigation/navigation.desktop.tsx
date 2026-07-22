@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { User } from '@supabase/supabase-js';
 import { useGSAP } from '@gsap/react';
-import { gsap } from '@/lib/gsap-config';
+import { ScrollTrigger } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { useCurrencyStore, type CurrencyCode } from '@/lib/stores/currency-store';
@@ -54,21 +54,14 @@ export function NavigationDesktop() {
     () => {
       if (!containerRef.current) return;
 
-      gsap.fromTo(
-        containerRef.current,
-        { backgroundColor: 'rgba(14,14,15,0)' },
-        {
-          backgroundColor: 'rgba(14,14,15,0.95)',
-          backdropFilter: 'blur(12px)',
-          duration: 0.3,
-          scrollTrigger: {
-            trigger: document.body,
-            start: 'top -80px',
-            end: 'top -81px',
-            toggleActions: 'play none none reverse',
-          },
-        },
-      );
+      // Use CSS class toggle via ScrollTrigger callbacks — avoids GSAP animating
+      // backdropFilter on the main thread (especially costly in Edge).
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: 'top -80px',
+        onEnter: () => containerRef.current?.classList.add('nav-scrolled'),
+        onLeaveBack: () => containerRef.current?.classList.remove('nav-scrolled'),
+      });
     },
     { scope: containerRef },
   );
@@ -80,7 +73,7 @@ export function NavigationDesktop() {
       </div>
       <nav
         ref={containerRef}
-        className="pointer-events-auto w-full px-5 md:px-8 py-4 flex items-center justify-between border-b border-transparent transition-colors"
+        className="pointer-events-auto w-full px-5 md:px-8 py-4 flex items-center justify-between border-b border-transparent transition-[background-color] duration-300"
       >
         {/* Logo */}
         <Link
