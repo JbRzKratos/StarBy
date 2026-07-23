@@ -37,14 +37,18 @@ export function ArRoomPreview(props: ArRoomPreviewProps) {
       if (typeof window !== 'undefined' && (window as any).Tawk_API) {
         try {
           (window as any).Tawk_API.hideWidget();
-        } catch (e) {}
+        } catch {
+          // Ignore
+        }
       }
     } else {
       document.body.classList.remove('ar-active');
       if (typeof window !== 'undefined' && (window as any).Tawk_API) {
         try {
           (window as any).Tawk_API.showWidget();
-        } catch (e) {}
+        } catch {
+          // Ignore
+        }
       }
     }
 
@@ -64,7 +68,9 @@ export function ArRoomPreview(props: ArRoomPreviewProps) {
       if (typeof window !== 'undefined' && (window as any).Tawk_API) {
         try {
           (window as any).Tawk_API.showWidget();
-        } catch (e) {}
+        } catch {
+          // Ignore
+        }
       }
     };
   }, [props.isOpen]);

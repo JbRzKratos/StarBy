@@ -18,6 +18,9 @@ export function CustomCursor() {
       const cursor = cursorRef.current;
       const dot = dotRef.current;
 
+      // Add class to body to indicate custom cursor is active
+      document.body.classList.add('has-custom-cursor');
+
       // Set initial GSAP state
       gsap.set(cursor, { xPercent: -50, yPercent: -50 });
       gsap.set(dot, { xPercent: -50, yPercent: -50 });
@@ -81,6 +84,7 @@ export function CustomCursor() {
       gsap.to([cursor, dot], { opacity: 1, duration: 1, delay: 0.5 });
 
       return () => {
+        document.body.classList.remove('has-custom-cursor');
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseover', onMouseHover);
         window.removeEventListener('mousedown', onMouseDown);
