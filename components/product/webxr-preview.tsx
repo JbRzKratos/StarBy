@@ -244,10 +244,12 @@ function XRStateReporter({ onStateChange }: { onStateChange: (isPresenting: bool
 export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
   const [started, setStarted] = useState(false);
   const [placedMatrix, setPlacedMatrix] = useState<THREE.Matrix4 | null>(null);
-  const [showInstructions, setShowInstructions] = useState(true);
 
   return (
-    <div id="xr-overlay" className="fixed inset-0 z-[200] bg-charcoal">
+    <div
+      id="xr-overlay"
+      className={`fixed inset-0 z-[200] ${started ? 'bg-transparent' : 'bg-charcoal'}`}
+    >
       <div className="absolute top-0 left-0 right-0 z-[210] flex items-center justify-between px-5 py-4 bg-gradient-to-b from-charcoal/80 to-transparent pointer-events-none">
         <div>
           <p className="font-mono text-[10px] text-pearl uppercase tracking-widest">AR Preview</p>
@@ -274,62 +276,51 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
       </div>
 
       {!started && (
-        <div className="absolute inset-0 z-[205] flex items-center justify-center bg-graphite/80 backdrop-blur-sm">
-          <ARButton
-            sessionInit={{
-              requiredFeatures: ['hit-test'],
-              optionalFeatures: ['dom-overlay'],
-              domOverlay: { root: document.getElementById('xr-overlay') || document.body },
-            }}
-            className="px-8 py-4 rounded-full bg-cobalt text-pearl font-bold uppercase tracking-wider shadow-[0_0_40px_rgba(59,94,255,0.4)]"
-            style={{
-              position: 'absolute',
-              bottom: 'auto',
-              left: 'auto',
-              zIndex: 9999,
-              border: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            Launch True AR
-          </ARButton>
+        <div className="absolute inset-0 z-[205] flex flex-col items-center justify-center bg-graphite/80 backdrop-blur-sm px-5">
+          <div className="flex flex-col items-center gap-8 max-w-sm w-full">
+            <ARButton
+              sessionInit={{
+                requiredFeatures: ['hit-test'],
+                optionalFeatures: ['dom-overlay'],
+                domOverlay: { root: document.getElementById('xr-overlay') || document.body },
+              }}
+              className="px-8 py-4 w-full rounded-full bg-cobalt text-pearl font-bold uppercase tracking-wider shadow-[0_0_40px_rgba(59,94,255,0.4)] transition-transform active:scale-95"
+              style={{
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              Launch True AR
+            </ARButton>
+
+            <div className="bg-charcoal/60 text-bone px-6 py-6 rounded-2xl border border-smoke w-full text-left shadow-xl">
+              <h3 className="text-lg font-bold text-pearl mb-4 text-center uppercase tracking-wider">
+                How it works
+              </h3>
+              <div className="space-y-3 font-mono text-sm">
+                <p>
+                  <span className="text-cobalt font-bold mr-2">1.</span> Point camera at a{' '}
+                  <b>well-lit wall</b>.
+                </p>
+                <p>
+                  <span className="text-cobalt font-bold mr-2">2.</span> Slowly move phone{' '}
+                  <b>side-to-side</b> to scan.
+                </p>
+                <p>
+                  <span className="text-cobalt font-bold mr-2">3.</span> When <b>blue ring</b>{' '}
+                  appears, <b>TAP SCREEN</b> to place!
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Explicit, high-visibility instructions overlaid across the bottom of the screen */}
-      {started && !placedMatrix && showInstructions && (
-        <div className="absolute bottom-12 left-0 right-0 z-[9999] pointer-events-none flex flex-col items-center justify-center px-4">
-          <div className="bg-charcoal/95 text-bone px-6 py-5 rounded-2xl border-2 border-cobalt shadow-[0_0_50px_rgba(0,0,0,0.8)] max-w-sm w-full text-left pointer-events-auto relative">
-            <button
-              onClick={() => setShowInstructions(false)}
-              className="absolute top-3 right-3 text-pearl/60 hover:text-bone text-xs font-mono px-2 py-1 bg-smoke/40 rounded"
-            >
-              ✕ Hide
-            </button>
-            <h3 className="text-lg font-bold text-pearl mb-3 text-center uppercase tracking-wider">
-              How to place
-            </h3>
-            <div className="space-y-2.5 font-mono text-xs sm:text-sm">
-              <p>
-                <span className="text-cobalt font-bold mr-2">1.</span> Point camera at a{' '}
-                <b>well-lit wall</b>.
-              </p>
-              <p>
-                <span className="text-cobalt font-bold mr-2">2.</span> Slowly move phone{' '}
-                <b>side-to-side</b> to scan.
-              </p>
-              <p>
-                <span className="text-cobalt font-bold mr-2">3.</span> When <b>blue ring</b>{' '}
-                appears, <b>TAP SCREEN</b> to place!
-              </p>
-            </div>
-            <button
-              onClick={() => setShowInstructions(false)}
-              className="mt-4 w-full py-2 bg-cobalt text-bone font-mono text-caption uppercase tracking-wider rounded-lg font-semibold"
-            >
-              Got it
-            </button>
-          </div>
+      {started && !placedMatrix && (
+        <div className="absolute bottom-0 left-0 right-0 px-5 py-8 bg-gradient-to-t from-charcoal/90 to-transparent flex flex-col items-center pointer-events-none z-[9999]">
+          <p className="font-mono text-[10px] text-pearl/90 uppercase tracking-widest text-center">
+            Scan wall · Tap blue ring to place
+          </p>
         </div>
       )}
 
