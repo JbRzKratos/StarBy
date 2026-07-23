@@ -81,7 +81,16 @@
     cursor: auto !important;
   }
 
-  /* Hide floating widgets (Tawk.to chat & WhatsApp) when any drawer or modal is open */
+  /* Hide underlying page content during AR camera preview so WebXR background doesn't bleed through */
+  body.ar-active main,
+  body.ar-active header:not(#xr-overlay header),
+  body.ar-active footer {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Hide floating widgets (Tawk.to chat & WhatsApp) when any drawer or modal or AR is open */
   body[style*='overflow: hidden'] .fixed.bottom-6.left-6,
   body[style*='overflow: hidden'] .fixed.bottom-24.right-6,
   body[style*='overflow: hidden'] #tawk-default-container,
@@ -96,6 +105,13 @@
   body.mobile-drawer-open iframe[title*='chat' i],
   body.mobile-drawer-open iframe[title*='tawk' i],
   body.mobile-drawer-open div[class*='tawk'],
+  body.ar-active .fixed.bottom-6.left-6,
+  body.ar-active .fixed.bottom-24.right-6,
+  body.ar-active #tawk-default-container,
+  body.ar-active .tawk-min-container,
+  body.ar-active iframe[title*='chat' i],
+  body.ar-active iframe[title*='tawk' i],
+  body.ar-active div[class*='tawk'],
   .admin-root #tawk-default-container,
   .admin-root .tawk-min-container,
   .admin-root iframe[title*='chat' i],

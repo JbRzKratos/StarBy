@@ -178,7 +178,7 @@ export function NavigationMobile() {
             </button>
             <button
               onClick={() => setWishlistOpen(true)}
-              className="relative text-pearl hover:text-ember transition-colors flex items-center justify-center w-10 h-10 hidden xs:flex"
+              className="relative text-pearl hover:text-ember transition-colors flex items-center justify-center w-10 h-10"
               aria-label="Open wishlist"
             >
               <svg

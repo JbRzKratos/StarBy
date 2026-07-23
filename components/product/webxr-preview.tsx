@@ -244,6 +244,7 @@ function XRStateReporter({ onStateChange }: { onStateChange: (isPresenting: bool
 export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
   const [started, setStarted] = useState(false);
   const [placedMatrix, setPlacedMatrix] = useState<THREE.Matrix4 | null>(null);
+  const [showInstructions, setShowInstructions] = useState(true);
 
   return (
     <div id="xr-overlay" className="fixed inset-0 z-[200] bg-charcoal">
@@ -296,13 +297,19 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
       )}
 
       {/* Explicit, high-visibility instructions overlaid across the bottom of the screen */}
-      {started && !placedMatrix && (
+      {started && !placedMatrix && showInstructions && (
         <div className="absolute bottom-12 left-0 right-0 z-[9999] pointer-events-none flex flex-col items-center justify-center px-4">
-          <div className="bg-charcoal/95 text-bone px-6 py-5 rounded-2xl border-2 border-cobalt shadow-[0_0_50px_rgba(0,0,0,0.8)] max-w-sm w-full text-left pointer-events-auto">
-            <h3 className="text-xl font-bold text-pearl mb-3 text-center uppercase tracking-wider">
+          <div className="bg-charcoal/95 text-bone px-6 py-5 rounded-2xl border-2 border-cobalt shadow-[0_0_50px_rgba(0,0,0,0.8)] max-w-sm w-full text-left pointer-events-auto relative">
+            <button
+              onClick={() => setShowInstructions(false)}
+              className="absolute top-3 right-3 text-pearl/60 hover:text-bone text-xs font-mono px-2 py-1 bg-smoke/40 rounded"
+            >
+              ✕ Hide
+            </button>
+            <h3 className="text-lg font-bold text-pearl mb-3 text-center uppercase tracking-wider">
               How to place
             </h3>
-            <div className="space-y-3 font-mono text-sm">
+            <div className="space-y-2.5 font-mono text-xs sm:text-sm">
               <p>
                 <span className="text-cobalt font-bold mr-2">1.</span> Point camera at a{' '}
                 <b>well-lit wall</b>.
@@ -316,6 +323,12 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
                 appears, <b>TAP SCREEN</b> to place!
               </p>
             </div>
+            <button
+              onClick={() => setShowInstructions(false)}
+              className="mt-4 w-full py-2 bg-cobalt text-bone font-mono text-caption uppercase tracking-wider rounded-lg font-semibold"
+            >
+              Got it
+            </button>
           </div>
         </div>
       )}

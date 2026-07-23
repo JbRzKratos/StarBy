@@ -99,20 +99,24 @@ export function TrustBadges() {
   );
 
   return (
-    <section className="py-12 bg-graphite border-y border-smoke/30">
-      <div className="section-container">
-        <div ref={containerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section className="py-8 sm:py-12 bg-graphite border-y border-smoke/30">
+      <div className="section-container px-4 sm:px-6">
+        <div ref={containerRef} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {BADGES.map((badge, idx) => (
             <div
               key={idx}
-              className="flex items-start gap-4 p-5 rounded-xl bg-smoke/5 border border-smoke/10 hover:border-cobalt/40 transition-colors"
+              className="flex flex-col sm:flex-row items-start gap-2.5 sm:gap-4 p-3.5 sm:p-5 rounded-xl bg-smoke/5 border border-smoke/10 hover:border-cobalt/40 transition-colors"
             >
-              <div className="p-3 bg-cobalt/10 text-cobalt rounded-lg shrink-0">{badge.icon}</div>
+              <div className="p-2 sm:p-3 bg-cobalt/10 text-cobalt rounded-lg shrink-0">
+                {badge.icon}
+              </div>
               <div>
-                <h3 className="font-mono text-caption text-bone uppercase tracking-widest font-semibold mb-1">
+                <h3 className="font-mono text-[11px] sm:text-caption text-bone uppercase tracking-wider sm:tracking-widest font-semibold mb-1">
                   {badge.title}
                 </h3>
-                <p className="font-sans text-xs text-pearl leading-relaxed">{badge.description}</p>
+                <p className="font-sans text-[11px] sm:text-xs text-pearl leading-relaxed">
+                  {badge.description}
+                </p>
               </div>
             </div>
           ))}
