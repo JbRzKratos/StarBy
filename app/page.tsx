@@ -1,6 +1,8 @@
 import { Navigation } from '@/components/layout/navigation';
 import { Footer } from '@/components/layout/footer';
 import { CartDrawer } from '@/components/layout/cart-drawer';
+import { WishlistDrawer } from '@/components/layout/wishlist-drawer';
+import { SearchOverlay } from '@/components/layout/search-overlay';
 import { Hero } from '@/components/home/hero';
 import { TrustBadges } from '@/components/home/trust-badges';
 import { BentoGrid } from '@/components/home/bento-grid';
@@ -14,6 +16,8 @@ export default function HomePage() {
     <>
       <Navigation />
       <CartDrawer />
+      <WishlistDrawer />
+      <SearchOverlay />
       <main>
         <h1 className="sr-only">StarBy — Personalized Premium</h1>
         <Hero />

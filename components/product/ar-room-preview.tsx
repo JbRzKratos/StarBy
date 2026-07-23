@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { createPortal } from 'react-dom';
 
 interface Panel {
   width: string;
@@ -24,6 +25,11 @@ const WebXRPreview = dynamic(() => import('./webxr-preview').then((m) => m.WebXR
 
 export function ArRoomPreview(props: ArRoomPreviewProps) {
   const [xrSupported, setXrSupported] = useState<boolean | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (props.isOpen) {
@@ -48,21 +54,24 @@ export function ArRoomPreview(props: ArRoomPreviewProps) {
     };
   }, [props.isOpen]);
 
-  if (!props.isOpen) return null;
+  if (!mounted || !props.isOpen) return null;
 
+  let content;
   if (xrSupported === null) {
-    return (
+    content = (
       <div className="fixed inset-0 z-[200] bg-charcoal flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-smoke border-t-cobalt rounded-full animate-spin" />
       </div>
     );
+  } else if (xrSupported) {
+    content = <WebXRPreview {...props} />;
+  } else {
+    content = <FallbackARPreview {...props} />;
   }
 
-  if (xrSupported) {
-    return <WebXRPreview {...props} />;
-  }
-
-  return <FallbackARPreview {...props} />;
+  // Render via portal so the AR view sits completely outside the <main> element.
+  // This prevents `body.ar-active main { visibility: hidden }` from hiding the AR UI!
+  return createPortal(content, document.body);
 }
 
 function FallbackARPreview({ panels, isOpen, onClose }: ArRoomPreviewProps) {
