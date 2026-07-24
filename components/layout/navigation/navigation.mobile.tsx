@@ -244,7 +244,7 @@ export function NavigationMobile() {
       >
         <div
           ref={panelRef}
-          className="ml-auto w-4/5 max-w-sm h-full bg-graphite border-l border-smoke flex flex-col p-8 pt-20"
+          className="ml-auto w-4/5 max-w-sm h-full bg-graphite border-l border-smoke flex flex-col p-8 pt-20 overflow-y-auto custom-scrollbar"
           onClick={(e) => e.stopPropagation()}
         >
           <button

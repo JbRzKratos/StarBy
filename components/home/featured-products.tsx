@@ -12,6 +12,7 @@ const CATEGORY_TABS = [
   { id: 'posters', label: 'Posters' },
   { id: 'split-posters', label: 'Split Posters' },
   { id: 'hoodies', label: 'Hoodies & Tees' },
+  { id: 'mugs-cups', label: 'Mugs & Cups' },
   { id: 'skins', label: 'Device Skins' },
 ];
 

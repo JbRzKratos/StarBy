@@ -1,6 +1,6 @@
 import { deviceModels } from '@/data/devices';
 import { products } from '@/data/products';
-import { useCustomizerStore } from '@/store/customizer';
+import { useCustomizerStore } from '@/store/customizer'; // getState() only — not a hook call
 
 // Type for the customization template passed to the preview generator
 interface CustomizationTemplate {

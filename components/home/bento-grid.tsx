@@ -9,11 +9,12 @@ import { BentoTile } from './bento-tile';
 /* Bento layout sizes: 'large' = 2×2, 'wide' = 2×1, 'tall' = 1×2, 'small' = 1×1 */
 const bentoSizes: Array<'large' | 'wide' | 'tall' | 'small'> = [
   'large',
-  'small',
+  'wide',
+  'tall',
   'tall',
   'wide',
-  'small',
-  'small',
+  'wide',
+  'wide',
 ];
 
 export function BentoGrid() {
@@ -54,7 +55,7 @@ export function BentoGrid() {
 
         <div
           ref={gridRef}
-          className="grid grid-cols-2 md:grid-cols-4 auto-rows-[200px] md:auto-rows-[240px] gap-3 md:gap-4"
+          className="grid grid-flow-row-dense grid-cols-2 md:grid-cols-4 auto-rows-[200px] md:auto-rows-[240px] gap-3 md:gap-4"
         >
           {categories.map((cat, i) => (
             <BentoTile

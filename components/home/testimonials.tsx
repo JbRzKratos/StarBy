@@ -81,9 +81,12 @@ export function Testimonials() {
           onMouseLeave={handleMouseLeave}
           className="flex gap-4 md:gap-6 px-4 md:px-8 w-max [will-change:transform]"
         >
-          {[...testimonials, ...testimonials].map((t, idx) => (
+          {[
+            ...testimonials.map((t) => ({ ...t, _key: `orig-${t.id}` })),
+            ...testimonials.map((t) => ({ ...t, _key: `copy-${t.id}` })),
+          ].map((t) => (
             <div
-              key={`${t.id}-${idx}`}
+              key={t._key}
               className="flex-shrink-0 w-[320px] md:w-[380px] h-[250px] md:h-[270px] flex flex-col justify-between bg-graphite border border-smoke/60 rounded-2xl p-6 md:p-8 hover:border-cobalt/40 transition-colors"
             >
               {/* Header inside card */}

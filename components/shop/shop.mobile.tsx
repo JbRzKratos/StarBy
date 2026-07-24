@@ -34,8 +34,9 @@ function MobileProductCard({ product }: { product: Product }) {
             src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.webp'}
             alt={product.name}
             fill
-            className="object-cover"
-            sizes="50vw"
+            priority={index < 4}
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 768px) 50vw, 33vw"
           />
           {product.customizable && (
             <div className="absolute top-2 left-2 bg-charcoal text-bone px-2 py-0.5 text-[8px] uppercase font-mono tracking-widest z-[1] rounded-md">
@@ -115,8 +116,8 @@ export function ShopMobile({ category, products }: { category: string; products:
   else if (filterType === 'original')
     filteredProducts = filteredProducts.filter((p) => !p.customizable);
 
-  if (sortMethod === 'price-asc') filteredProducts.sort((a, b) => a.basePrice - b.basePrice);
-  if (sortMethod === 'price-desc') filteredProducts.sort((a, b) => b.basePrice - a.basePrice);
+  if (sortMethod === 'price-asc') filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
+  if (sortMethod === 'price-desc') filteredProducts = [...filteredProducts].sort((a, b) => b.basePrice - a.basePrice);
 
   const displayProducts = filteredProducts.slice(0, visibleCount);
 

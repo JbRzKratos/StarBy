@@ -44,7 +44,7 @@ export function CustomizerPanelMobile() {
           const comp = await generateCompositePreview(dataUrl, template);
           setComposite(pid, comp);
         } catch {
-          console.error(`Failed to composite ${pid}`);
+          // Composite generation failed for this product — tile stays in loading state
         }
       }
     } catch {

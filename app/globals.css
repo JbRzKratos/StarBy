@@ -37,23 +37,32 @@
     }
   }
 
-  /* Only hide cursors when the custom cursor component successfully mounts and is active */
-  body.has-custom-cursor html,
+  /* Hide native cursor everywhere when custom cursor is active */
   body.has-custom-cursor,
-  body.has-custom-cursor a,
-  body.has-custom-cursor button,
-  body.has-custom-cursor [role='button'] {
-    cursor: none;
+  body.has-custom-cursor * {
+    cursor: none !important;
+  }
+
+  /* Restore text cursor (caret) inside text inputs so they remain usable */
+  body.has-custom-cursor input,
+  body.has-custom-cursor textarea {
+    cursor: text !important;
+  }
+
+  /* Restore pointer on elements that explicitly need it via Tailwind */
+  body.has-custom-cursor .cursor-pointer {
+    cursor: none !important;
   }
 
   /* Touch devices: restore default cursor on everything */
   @media (hover: none) {
-    body.has-custom-cursor html,
     body.has-custom-cursor,
-    body.has-custom-cursor a,
-    body.has-custom-cursor button,
-    body.has-custom-cursor [role='button'] {
-      cursor: auto;
+    body.has-custom-cursor * {
+      cursor: auto !important;
+    }
+    body.has-custom-cursor input,
+    body.has-custom-cursor textarea {
+      cursor: text !important;
     }
   }
 

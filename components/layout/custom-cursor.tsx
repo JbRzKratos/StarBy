@@ -50,8 +50,8 @@ export function CustomCursor() {
           isHovering = true;
           gsap.to(cursor, {
             scale: 1.5,
-            backgroundColor: 'rgba(245, 241, 234, 0.1)',
-            borderColor: 'rgba(245, 241, 234, 0)',
+            backgroundColor: '#ffffff', // Solid white, perfectly inverts background via difference blend
+            borderColor: 'transparent',
             duration: 0.3,
           });
           gsap.to(dot, { scale: 0, duration: 0.3 });
@@ -60,7 +60,7 @@ export function CustomCursor() {
           gsap.to(cursor, {
             scale: 1,
             backgroundColor: 'transparent',
-            borderColor: 'rgba(245, 241, 234, 0.4)',
+            borderColor: 'rgba(255, 255, 255, 0.5)', // Half white border
             duration: 0.3,
           });
           gsap.to(dot, { scale: 1, duration: 0.3 });
@@ -100,11 +100,11 @@ export function CustomCursor() {
     <>
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-bone/40 pointer-events-none z-[9999] opacity-0"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-white/50 pointer-events-none z-[999999] opacity-0 mix-blend-difference"
       />
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 w-1.5 h-1.5 bg-bone rounded-full pointer-events-none z-[9999] opacity-0"
+        className="fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full pointer-events-none z-[999999] opacity-0 mix-blend-difference"
       />
     </>
   );

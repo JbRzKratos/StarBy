@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import { templates } from '@/data/customizationTemplates';
+import { mugTemplates } from '@/data/mugTemplates';
 import { products } from '@/data/products';
 import { deviceModels } from '@/data/devices';
 import { useCustomizerStore } from '@/store/customizer';
@@ -28,8 +29,19 @@ export function CustomizerCanvas({
   const containerRef = useRef<HTMLDivElement>(null);
   const fabricRef = useRef<unknown>(null);
 
-  const { splitStyle, splitOrientation, splitPanels, splitGridCols, splitGridRows, printStyle } =
-    useCustomizerStore();
+  const {
+    splitStyle,
+    splitOrientation,
+    splitPanels,
+    splitGridCols,
+    splitGridRows,
+    printStyle,
+    customText,
+    customTextFont,
+    customTextColor,
+    mugLayout,
+    isMagicMugRevealed,
+  } = useCustomizerStore();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,7 +54,22 @@ export function CustomizerCanvas({
         new Promise<any>((resolve) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if ((window as any).fabric) return resolve((window as any).fabric);
+          // Check if a script tag is already in the DOM (prevents duplicate injection on re-renders)
+          const existingScript = document.getElementById('fabric-js-cdn');
+          if (existingScript) {
+            // Script is loading — poll until fabric is ready
+            const poll = setInterval(() => {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              if ((window as any).fabric) {
+                clearInterval(poll);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                resolve((window as any).fabric);
+              }
+            }, 50);
+            return;
+          }
           const script = document.createElement('script');
+          script.id = 'fabric-js-cdn';
           script.src = 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js';
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           script.onload = () => resolve((window as any).fabric);
@@ -64,15 +91,21 @@ export function CustomizerCanvas({
       const category = product ? product.categorySlug : 'tees';
 
       let template = Object.values(templates)[0];
-      if (category === 'tees') template = templates['eclipse-tee'];
+      let isMug = false;
+      let mTemplate = null;
+
+      if (category === 'mugs-cups') {
+        isMug = true;
+        mTemplate = mugTemplates[product?.slug || ''] || mugTemplates['classic-mug-11oz'];
+      } else if (category === 'tees') template = templates['eclipse-tee'];
       else if (category === 'hoodies') template = templates['orbit-hoodie'];
       else if (category === 'skins') template = templates['phantom-skin'];
       else if (category === 'posters') template = templates['monolith-poster'];
       else if (category === 'split-posters') template = templates['prism-split'];
       else if (category === 'stationery') template = templates['chronicle-diary'];
 
-      if (!template) {
-        console.error('No customization template found');
+      if (!isMug && !template) {
+        // No template for this category — exit silently
         return;
       }
 
@@ -87,11 +120,24 @@ export function CustomizerCanvas({
       activeFabricCanvas = canvas;
       fabricRef.current = canvas;
 
-      let paX = 600 * template.printArea.x;
-      let paY = 700 * template.printArea.y;
-      let paW = 600 * template.printArea.width;
-      let paH = 700 * template.printArea.height;
+      const currentTemplate = isMug ? mTemplate : template;
+      if (!currentTemplate) return;
+
+      let paX = 600 * currentTemplate.printArea.x;
+      let paY = 700 * currentTemplate.printArea.y;
+      let paW = 600 * currentTemplate.printArea.width;
+      let paH = 700 * currentTemplate.printArea.height;
       let borderRadius = 0;
+
+      if (
+        isMug &&
+        mugLayout === 'full-wrap' &&
+        'wrapType' in currentTemplate &&
+        currentTemplate.wrapType === 'full-wrap'
+      ) {
+        paX = 600 * 0.1; // Wider area
+        paW = 600 * 0.8;
+      }
 
       const deviceShape =
         category === 'skins' && selectedDeviceId
@@ -129,7 +175,7 @@ export function CustomizerCanvas({
             scaleX: userScale,
             scaleY: userScale,
             clipPath: clipPath,
-            globalCompositeOperation: template.blendMode || 'source-over',
+            globalCompositeOperation: currentTemplate.blendMode || 'source-over',
             cornerColor: '#3B5EFF',
             borderColor: '#3B5EFF',
             cornerSize: 12,
@@ -158,12 +204,33 @@ export function CustomizerCanvas({
             userImg.applyFilters();
           }
 
-          if (template.printArea.rotation) {
+          if (!isMug && template?.printArea?.rotation) {
             userImg.rotate(template.printArea.rotation);
           }
 
           canvas.add(userImg);
           canvas.setActiveObject(userImg);
+
+          // Draw text object if custom text exists
+          if (customText) {
+            const textObj = new (fabric as any).Text(customText, {
+              left: paX + paW / 2,
+              top: paY + paH / 2 + 50,
+              fontFamily: customTextFont || 'sans-serif',
+              fill: customTextColor || '#ffffff',
+              fontSize: 32,
+              originX: 'center',
+              originY: 'center',
+              clipPath: clipPath,
+              globalCompositeOperation: currentTemplate.blendMode || 'source-over',
+              cornerColor: '#3B5EFF',
+              borderColor: '#3B5EFF',
+              cornerSize: 12,
+              transparentCorners: false,
+            });
+            canvas.add(textObj);
+          }
+
           onRender();
         });
       };
@@ -687,16 +754,18 @@ export function CustomizerCanvas({
       } else {
         // --- NORMAL MOCKUP RENDERING (Apparel, Posters, etc) ---
 
-        // Scale the print area to simulate apparel sizing
-        // (An XL shirt makes the standard print area look smaller, an S makes it look larger)
+        // Scale the print area to simulate apparel sizing.
+        // A smaller garment (S) means the design zone is proportionally larger on the canvas.
+        // A larger garment (XL) means the design zone is proportionally smaller.
         if (['S', 'M', 'L', 'XL'].includes(selectedSize || '')) {
           const center_x = paX + paW / 2;
           const center_y = paY + paH / 2;
 
+          // M is baseline (1.0). S = zone is 15% larger on canvas. XL = zone is 12% smaller.
           let sizeModifier = 1.0;
           if (selectedSize === 'S') sizeModifier = 1.15;
-          else if (selectedSize === 'L') sizeModifier = 0.9;
-          else if (selectedSize === 'XL') sizeModifier = 0.8;
+          else if (selectedSize === 'L') sizeModifier = 0.95;
+          else if (selectedSize === 'XL') sizeModifier = 0.88;
 
           paW = paW * sizeModifier;
           paH = paH * sizeModifier;
@@ -704,7 +773,7 @@ export function CustomizerCanvas({
           paY = center_y - paH / 2;
         }
 
-        (fabric as any).Image.fromURL(template.mockupImage, (img: any) => {
+        (fabric as any).Image.fromURL(currentTemplate.mockupImage, (img: any) => {
           img.set({ originX: 'left', originY: 'top', selectable: false, evented: false });
           const scale = Math.min(600 / img.width, 700 / img.height);
           img.scale(scale);
@@ -713,6 +782,33 @@ export function CustomizerCanvas({
           img.set({ left: (600 - scaledW) / 2, top: (700 - scaledH) / 2 });
           canvas.add(img);
           canvas.sendToBack(img);
+
+          // Handle color changes for Magic Mugs
+          if (isMug && mTemplate?.isColorChanging && !isMagicMugRevealed) {
+            const magicOverlay = new (fabric as any).Rect({
+              left: (600 - scaledW) / 2,
+              top: (700 - scaledH) / 2,
+              width: scaledW,
+              height: scaledH,
+              fill: '#111111',
+              opacity: 0.95,
+              selectable: false,
+              evented: false,
+            });
+            canvas.add(magicOverlay);
+            // We need a clipping mask of the mug shape for a perfect overlay,
+            // but a simpler approach is putting a solid block over the print area.
+            const printAreaOverlay = new (fabric as any).Rect({
+              left: paX,
+              top: paY,
+              width: paW,
+              height: paH,
+              fill: '#151518',
+              selectable: false,
+              evented: false,
+            });
+            canvas.add(printAreaOverlay);
+          }
 
           const clipPath = new (fabric as any).Rect({
             left: paX,
@@ -724,7 +820,7 @@ export function CustomizerCanvas({
             absolutePositioned: true,
           });
 
-          if (template.printArea.rotation) {
+          if (!isMug && template?.printArea?.rotation) {
             clipPath.rotate(template.printArea.rotation);
           }
 
@@ -743,8 +839,51 @@ export function CustomizerCanvas({
               selectable: false,
               evented: false,
             });
-            if (template.printArea.rotation) printZone.rotate(template.printArea.rotation);
+            if (!isMug && template?.printArea?.rotation)
+              printZone.rotate(template.printArea.rotation);
             canvas.add(printZone);
+
+            // Draw handle exclusion zone for mugs — this is a visible warning + real visual boundary
+            if (isMug && mTemplate?.handlePosition !== 'hidden') {
+              const handleZoneW = paW * 0.12; // 12% of print width is reserved for handle side
+              const handleZoneX =
+                mTemplate?.handlePosition === 'left' ? paX - handleZoneW : paX + paW;
+
+              // Semi-transparent exclusion zone rectangle
+              const handleExclusionZone = new (fabric as any).Rect({
+                left: handleZoneX,
+                top: paY,
+                width: handleZoneW,
+                height: paH,
+                fill: 'rgba(255, 80, 80, 0.15)',
+                stroke: 'rgba(255, 80, 80, 0.5)',
+                strokeWidth: 1,
+                strokeDashArray: [4, 4],
+                selectable: false,
+                evented: false,
+              });
+              canvas.add(handleExclusionZone);
+
+              // Label inside the exclusion zone
+              const labelX =
+                mTemplate?.handlePosition === 'left'
+                  ? handleZoneX + handleZoneW / 2
+                  : handleZoneX + handleZoneW / 2;
+              const handleLabel = new (fabric as any).Text('HANDLE\nZONE', {
+                left: labelX,
+                top: paY + paH / 2,
+                fontSize: 9,
+                fontFamily: 'monospace',
+                fill: 'rgba(255, 120, 120, 0.8)',
+                textAlign: 'center',
+                originX: 'center',
+                originY: 'center',
+                selectable: false,
+                evented: false,
+              });
+              canvas.add(handleLabel);
+            }
+
             canvas.renderAll();
           };
 
@@ -781,6 +920,11 @@ export function CustomizerCanvas({
     splitGridCols,
     splitGridRows,
     printStyle,
+    customText,
+    customTextFont,
+    customTextColor,
+    mugLayout,
+    isMagicMugRevealed,
   ]);
 
   return (

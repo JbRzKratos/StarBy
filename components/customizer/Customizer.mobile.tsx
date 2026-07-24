@@ -5,16 +5,25 @@ import dynamic from 'next/dynamic';
 import { useCustomizerStore } from '@/store/customizer';
 import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
-import { validateImage, fileToDataUrl } from '@/components/customizer-hub/CustomizerHub.shared';
+import { validateImage, validateImageDimensions, fileToDataUrl, type DimensionRequirement } from '@/components/customizer-hub/CustomizerHub.shared';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { DeviceSelector } from './DeviceSelector';
 import { PrintStyleSelector } from './print-style-selector';
 import { copyShareUrl } from '@/lib/utils/share-config';
+import { mugTemplates } from '@/data/mugTemplates';
 
 // Dynamically import the canvas to avoid SSR issues
 const CustomizerCanvas = dynamic(
   () => import('./customizer-canvas').then((m) => m.CustomizerCanvas),
   { ssr: false, loading: () => <div className="w-full h-[60vh] bg-graphite animate-pulse" /> },
+);
+
+const Mug3DViewer = dynamic(
+  () => import('./Mug3DViewer').then((m) => m.Mug3DViewer),
+  {
+    ssr: false,
+    loading: () => <div className="w-full h-[60vh] bg-graphite animate-pulse flex items-center justify-center font-mono text-[10px] text-pearl">Loading 3D...</div>,
+  },
 );
 
 const SIZE_DIMENSIONS: Record<string, string> = {
@@ -31,37 +40,44 @@ const getUploadInstructions = (categorySlug?: string) => {
       return {
         title: 'Upload Landscape Image for Split Poster *',
         note: 'Note: Upload only Landscape image for best split. Use the editing tool after upload to adjust.',
-        subtext:
-          '*For best results, upload a high-resolution horizontal (landscape) image. Low-quality images may affect print clarity.*',
+        subtext: '*Requires minimum 3000x2000px landscape image for high-quality multi-panel printing.*',
+        req: { minWidth: 3000, minHeight: 2000, recommendedText: 'Please upload a landscape image at least 3000x2000px.' } as DimensionRequirement,
       };
     case 'posters':
       return {
         title: 'Upload Image for Poster *',
         note: 'Note: Upload an image matching your poster orientation for best results.',
-        subtext:
-          '*For best results, upload a high-resolution image. Low-quality images may affect print clarity.*',
+        subtext: '*Requires minimum 2000x3000px portrait image to prevent pixelation on large prints.*',
+        req: { minWidth: 2000, minHeight: 2000, recommendedText: 'Please upload an image at least 2000x2000px.' } as DimensionRequirement,
       };
     case 'skins':
       return {
         title: 'Upload Image for Device Skin *',
         note: 'Note: Ensure important subjects are centered. Edges may be cropped to fit the device shape.',
-        subtext:
-          '*For best results, upload a high-resolution image. Low-quality images may affect print clarity.*',
+        subtext: '*Requires minimum 1500x3000px portrait image to cover full phone dimensions clearly.*',
+        req: { minWidth: 1500, minHeight: 2500, recommendedText: 'Please upload a portrait image at least 1500x2500px.' } as DimensionRequirement,
       };
     case 'hoodies':
     case 'tees':
       return {
         title: 'Upload Design for Apparel *',
         note: 'Note: For best results, use a high-resolution PNG with a transparent background.',
-        subtext:
-          '*For best results, upload a high-resolution image. Low-quality images may affect print clarity.*',
+        subtext: '*Requires minimum 2000x2000px image for sharp fabric printing.*',
+        req: { minWidth: 2000, minHeight: 2000, recommendedText: 'Please upload a design at least 2000x2000px.' } as DimensionRequirement,
+      };
+    case 'mugs-cups':
+      return {
+        title: 'Upload Design for Mug *',
+        note: 'Note: Landscape/square images work best. They wrap around the mug cylinder.',
+        subtext: '*Requires minimum 1500x1500px image for crisp ceramic printing.*',
+        req: { minWidth: 1500, minHeight: 1500, recommendedText: 'Please upload a design at least 1500x1500px.' } as DimensionRequirement,
       };
     default:
       return {
         title: 'Upload Your Image *',
         note: 'Note: Use the editing tool after upload to adjust your design.',
-        subtext:
-          '*For best results, upload a high-resolution image. Low-quality images may affect print clarity.*',
+        subtext: '*Requires minimum 1000x1000px image for clarity.*',
+        req: { minWidth: 1000, minHeight: 1000, recommendedText: 'Please upload an image at least 1000x1000px.' } as DimensionRequirement,
       };
   }
 };
@@ -90,7 +106,20 @@ export function CustomizerMobile({ productId }: { productId: string }) {
     setSplitOrientation,
     setSplitPanels,
     setSplitGrid,
+    customText,
+    setCustomText,
+    customTextFont,
+    setCustomTextFont,
+    customTextColor,
+    setCustomTextColor,
+    mugLayout,
+    setMugLayout,
+    isMagicMugRevealed,
+    setIsMagicMugRevealed,
+    viewMode,
+    setViewMode,
   } = useCustomizerStore();
+  const mTemplate = product?.categorySlug === 'mugs-cups' ? mugTemplates[product.slug] : null;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -120,6 +149,17 @@ export function CustomizerMobile({ productId }: { productId: string }) {
     const validation = validateImage(file);
     if (!validation.valid) {
       setError(validation.error || 'Invalid file');
+      // Reset input so same file can be re-selected
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
+    const instructions = getUploadInstructions(product?.categorySlug);
+    const dimValidation = await validateImageDimensions(file, instructions.req);
+    if (!dimValidation.valid) {
+      setError(dimValidation.error || 'Image dimensions are too small.');
+      // Reset input so same file can be re-selected
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
@@ -173,17 +213,51 @@ export function CustomizerMobile({ productId }: { productId: string }) {
           onChange={handleInlineUpload}
         />
 
-        <CustomizerCanvas
-          productId={productId}
-          initialImage={uploadedImage}
-          selectedColor={selectedColor}
-          selectedDeviceId={selectedDeviceId}
-          selectedSize={selectedSize}
-        />
+        {viewMode === '3d' && product?.categorySlug === 'mugs-cups' ? (
+          <div className="w-full h-[60vh]">
+            <Mug3DViewer product={product} />
+          </div>
+        ) : (
+          <CustomizerCanvas
+            productId={productId}
+            initialImage={uploadedImage}
+            selectedColor={selectedColor}
+            selectedDeviceId={selectedDeviceId}
+            selectedSize={selectedSize}
+          />
+        )}
       </div>
 
       {/* Tools Area (Scrollable Bottom) */}
       <div className="flex-1 overflow-y-auto px-5 py-6 flex flex-col gap-8">
+        {/* View Mode (Mugs only) */}
+        {product?.categorySlug === 'mugs-cups' && mTemplate && (
+          <div className="bg-graphite border border-smoke/30 p-4 rounded-lg flex flex-col gap-4">
+            <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest">
+              Preview Mode
+            </h3>
+            <div className="flex border border-smoke rounded-sm overflow-hidden">
+              <button
+                onClick={() => setViewMode('2d')}
+                className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors border-r border-smoke ${
+                  viewMode === '2d'
+                    ? 'bg-cobalt text-bone'
+                    : 'bg-charcoal text-ash hover:text-pearl'
+                }`}
+              >
+                2D Editor
+              </button>
+              <button
+                onClick={() => setViewMode('3d')}
+                className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                  viewMode === '3d' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash hover:text-pearl'
+                }`}
+              >
+                360° 3D View
+              </button>
+            </div>
+          </div>
+        )}
         <div className="flex justify-between items-end">
           <h1 className="font-display text-3xl font-bold text-bone uppercase">{product?.name}</h1>
           <div className="flex items-center gap-3">
@@ -394,12 +468,125 @@ export function CustomizerMobile({ productId }: { productId: string }) {
           <DeviceSelector selectedDeviceId={selectedDeviceId} onSelectDevice={setSelectedDevice} />
         )}
 
-        {/* Instructions */}
+        {/* Instructions + error state after image replace */}
         {uploadedImage && (
-          <p className="font-mono text-[10px] text-pearl bg-graphite p-4 border border-smoke/30 rounded-sm">
-            Pinch to scale. Use two fingers to rotate. Drag to move.
-          </p>
+          <div className="flex flex-col gap-2">
+            <p className="font-mono text-[10px] text-pearl bg-graphite p-4 border border-smoke/30 rounded-sm">
+              Pinch to scale. Use two fingers to rotate. Drag to move.
+            </p>
+            {error && (
+              <p className="text-[#FF4D4D] font-mono text-[10px] mx-0 bg-red-950/30 px-3 py-2 rounded-sm border border-red-900/40">
+                {error}
+              </p>
+            )}
+          </div>
         )}
+
+        {/* Mug Options */}
+        {product?.categorySlug === 'mugs-cups' && mTemplate && (
+          <div className="bg-graphite border border-smoke/30 p-5 rounded-sm flex flex-col gap-4 mx-4">
+            <h3 className="font-mono text-[11px] text-bone uppercase tracking-widest">
+              Mug Options
+            </h3>
+
+            {mTemplate.wrapType === 'full-wrap' && (
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                  Layout
+                </span>
+                <div className="flex border border-smoke rounded-sm overflow-hidden">
+                  <button
+                    onClick={() => setMugLayout('single-panel')}
+                    className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors border-r border-smoke ${
+                      mugLayout === 'single-panel' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                    }`}
+                  >
+                    Single
+                  </button>
+                  <button
+                    onClick={() => setMugLayout('full-wrap')}
+                    className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
+                      mugLayout === 'full-wrap' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                    }`}
+                  >
+                    Full Wrap
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {mTemplate.isColorChanging && (
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                  Magic Reveal Toggle
+                </span>
+                <div className="flex border border-smoke rounded-sm overflow-hidden">
+                  <button
+                    onClick={() => setIsMagicMugRevealed(false)}
+                    className={`flex-1 px-2 py-2 font-mono text-[10px] uppercase tracking-wider transition-colors border-r border-smoke ${
+                      !isMagicMugRevealed ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                    }`}
+                  >
+                    Cold (Hidden)
+                  </button>
+                  <button
+                    onClick={() => setIsMagicMugRevealed(true)}
+                    className={`flex-1 px-2 py-2 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                      isMagicMugRevealed ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash'
+                    }`}
+                  >
+                    Hot (Revealed)
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Text Tool */}
+        <div className="bg-graphite border border-smoke/30 p-5 rounded-sm flex flex-col gap-4 mx-4">
+          <h3 className="font-mono text-[11px] text-bone uppercase tracking-widest">Add Text</h3>
+
+          <input
+            type="text"
+            placeholder="Enter your text here..."
+            value={customText}
+            onChange={(e) => setCustomText(e.target.value)}
+            className="w-full bg-charcoal border border-smoke text-bone p-3 font-mono text-xs placeholder:text-ash focus:outline-none focus:border-cobalt transition-colors"
+          />
+
+          {customText && (
+            <div className="flex gap-4">
+              <div className="flex-1 flex flex-col gap-2">
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                  Font
+                </span>
+                <select
+                  value={customTextFont}
+                  onChange={(e) => setCustomTextFont(e.target.value)}
+                  className="w-full bg-charcoal border border-smoke text-bone p-2 font-mono text-[10px] focus:outline-none focus:border-cobalt"
+                >
+                  <option value="Space Grotesk">Space Grotesk</option>
+                  <option value="JetBrains Mono">JetBrains Mono</option>
+                  <option value="Inter">Inter</option>
+                  <option value="Playfair Display">Playfair Display</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                  Color
+                </span>
+                <input
+                  type="color"
+                  value={customTextColor}
+                  onChange={(e) => setCustomTextColor(e.target.value)}
+                  className="w-10 h-10 bg-transparent border-0 cursor-pointer rounded-sm"
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Sticky Bottom CTA */}
@@ -415,16 +602,16 @@ export function CustomizerMobile({ productId }: { productId: string }) {
               ...(product.sizes && { size: selectedSize }),
               customization: {
                 color: 'charcoal',
-                text: '',
-                textFont: '',
-                imageUrl: uploadedImage,
+                text: customText,
+                textFont: customTextFont,
+                imageUrl: uploadedImage || '',
               },
             });
             setCartOpen(true);
           }}
-          disabled={!uploadedImage}
+          disabled={!uploadedImage && !customText}
           className={`w-full font-mono text-caption uppercase py-4 tracking-widest ${
-            uploadedImage
+            uploadedImage || customText
               ? 'bg-cobalt text-bone active:bg-cobalt/90'
               : 'bg-smoke/20 text-bone/50 cursor-not-allowed'
           }`}

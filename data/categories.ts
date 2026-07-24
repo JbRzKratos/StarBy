@@ -71,6 +71,16 @@ export const categories: Category[] = [
     image: '/images/hero/stationery.webp',
   },
   {
+    slug: 'mugs-cups',
+    name: 'Mugs & Cups',
+    tagline: 'Your morning ritual.',
+    description: 'Custom ceramic, magic mugs, and tumblers.',
+    productCount: 8,
+    featured: true,
+    gradient: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
+    image: '/images/products/classic_mug_11oz.png',
+  },
+  {
     slug: 'accessories',
     name: 'Accessories',
     tagline: 'Details that define.',

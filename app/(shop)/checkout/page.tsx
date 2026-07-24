@@ -219,7 +219,7 @@ export default function CheckoutPage() {
           },
           prefill: {
             name: fullName,
-            contact: shippingAddress.phone,
+            contact: shippingAddress.phone || '9999999999',
           },
           theme: {
             color: '#1a1a1a',

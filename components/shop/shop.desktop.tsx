@@ -34,6 +34,7 @@ function DesktopProductCard({ product }: { product: Product }) {
             src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.webp'}
             alt={product.name}
             fill
+            priority={index < 4}
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 1024px) 33vw, 25vw"
           />
@@ -114,8 +115,8 @@ export function ShopDesktop({ category, products }: { category: string; products
   else if (filterType === 'original')
     filteredProducts = filteredProducts.filter((p) => !p.customizable);
 
-  if (sortMethod === 'price-asc') filteredProducts.sort((a, b) => a.basePrice - b.basePrice);
-  if (sortMethod === 'price-desc') filteredProducts.sort((a, b) => b.basePrice - a.basePrice);
+  if (sortMethod === 'price-asc') filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
+  if (sortMethod === 'price-desc') filteredProducts = [...filteredProducts].sort((a, b) => b.basePrice - a.basePrice);
 
   const displayProducts = filteredProducts.slice(0, visibleCount);
 

@@ -23,6 +23,21 @@ interface CustomizerState {
   setPrintStyle: (style: PrintStyle) => void;
   clearUploadedImage: () => void;
   loadFromShareHash: () => void;
+
+  // Mugs & Cups specific state
+  customText: string;
+  customTextFont: string;
+  customTextColor: string;
+  mugLayout: 'single-panel' | 'full-wrap' | 'collage';
+  isMagicMugRevealed: boolean;
+  viewMode: '2d' | '3d';
+
+  setCustomText: (text: string) => void;
+  setCustomTextFont: (font: string) => void;
+  setCustomTextColor: (color: string) => void;
+  setMugLayout: (layout: 'single-panel' | 'full-wrap' | 'collage') => void;
+  setIsMagicMugRevealed: (revealed: boolean) => void;
+  setViewMode: (mode: '2d' | '3d') => void;
 }
 
 export const useCustomizerStore = create<CustomizerState>((set) => ({
@@ -35,6 +50,12 @@ export const useCustomizerStore = create<CustomizerState>((set) => ({
   splitGridCols: 3,
   splitGridRows: 2,
   printStyle: 'standard',
+  customText: '',
+  customTextFont: 'Space Grotesk',
+  customTextColor: '#ffffff',
+  mugLayout: 'single-panel',
+  isMagicMugRevealed: false,
+  viewMode: '2d',
 
   setUploadedImage: (image) =>
     set(() => ({
@@ -58,7 +79,14 @@ export const useCustomizerStore = create<CustomizerState>((set) => ({
   setSplitGrid: (cols, rows) => set(() => ({ splitGridCols: cols, splitGridRows: rows })),
   setPrintStyle: (style) => set(() => ({ printStyle: style })),
 
-  clearUploadedImage: () => set(() => ({ uploadedImage: null, composites: {} })),
+  clearUploadedImage: () => set(() => ({ uploadedImage: null, composites: {}, customText: '' })),
+
+  setCustomText: (text) => set(() => ({ customText: text })),
+  setCustomTextFont: (font) => set(() => ({ customTextFont: font })),
+  setCustomTextColor: (color) => set(() => ({ customTextColor: color })),
+  setMugLayout: (layout) => set(() => ({ mugLayout: layout })),
+  setIsMagicMugRevealed: (revealed) => set(() => ({ isMagicMugRevealed: revealed })),
+  setViewMode: (mode) => set(() => ({ viewMode: mode })),
 
   loadFromShareHash: () => {
     if (typeof window === 'undefined') return;
@@ -74,6 +102,11 @@ export const useCustomizerStore = create<CustomizerState>((set) => ({
         splitGridCols: decoded.splitGridCols ?? state.splitGridCols,
         splitGridRows: decoded.splitGridRows ?? state.splitGridRows,
         printStyle: decoded.printStyle ?? state.printStyle,
+        customText: decoded.customText ?? state.customText,
+        customTextFont: decoded.customTextFont ?? state.customTextFont,
+        customTextColor: decoded.customTextColor ?? state.customTextColor,
+        mugLayout: decoded.mugLayout ?? state.mugLayout,
+        isMagicMugRevealed: decoded.isMagicMugRevealed ?? state.isMagicMugRevealed,
       }));
     } catch {
       // Ignore malformed hash

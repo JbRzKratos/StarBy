@@ -6,6 +6,7 @@ const footerLinks = {
   shop: [
     { href: '/products/all', label: 'Shop All' },
     { href: '/products/hoodies', label: 'Hoodies' },
+    { href: '/products/mugs-cups', label: 'Mugs & Cups' },
     { href: '/products/skins', label: 'Device Skins' },
     { href: '/products/posters', label: 'Posters' },
     { href: '/split-poster', label: 'Split Posters' },
