@@ -5,7 +5,12 @@ import dynamic from 'next/dynamic';
 import { useCustomizerStore } from '@/store/customizer';
 import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
-import { validateImage, validateImageDimensions, fileToDataUrl, type DimensionRequirement } from '@/components/customizer-hub/CustomizerHub.shared';
+import {
+  validateImage,
+  validateImageDimensions,
+  fileToDataUrl,
+  type DimensionRequirement,
+} from '@/components/customizer-hub/CustomizerHub.shared';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { DeviceSelector } from './DeviceSelector';
 import { PrintStyleSelector } from './print-style-selector';
@@ -18,13 +23,14 @@ const CustomizerCanvas = dynamic(
   { ssr: false, loading: () => <div className="w-full h-[60vh] bg-graphite animate-pulse" /> },
 );
 
-const Mug3DViewer = dynamic(
-  () => import('./Mug3DViewer').then((m) => m.Mug3DViewer),
-  {
-    ssr: false,
-    loading: () => <div className="w-full h-[60vh] bg-graphite animate-pulse flex items-center justify-center font-mono text-[10px] text-pearl">Loading 3D...</div>,
-  },
-);
+const Mug3DViewer = dynamic(() => import('./Mug3DViewer').then((m) => m.Mug3DViewer), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[60vh] bg-graphite animate-pulse flex items-center justify-center font-mono text-[10px] text-pearl">
+      Loading 3D...
+    </div>
+  ),
+});
 
 const SIZE_DIMENSIONS: Record<string, string> = {
   A6: '10.5 × 14.8 cm (4.1" × 5.8")',
@@ -40,22 +46,37 @@ const getUploadInstructions = (categorySlug?: string) => {
       return {
         title: 'Upload Landscape Image for Split Poster *',
         note: 'Note: Upload only Landscape image for best split. Use the editing tool after upload to adjust.',
-        subtext: '*Requires minimum 3000x2000px landscape image for high-quality multi-panel printing.*',
-        req: { minWidth: 3000, minHeight: 2000, recommendedText: 'Please upload a landscape image at least 3000x2000px.' } as DimensionRequirement,
+        subtext:
+          '*Requires minimum 3000x2000px landscape image for high-quality multi-panel printing.*',
+        req: {
+          minWidth: 3000,
+          minHeight: 2000,
+          recommendedText: 'Please upload a landscape image at least 3000x2000px.',
+        } as DimensionRequirement,
       };
     case 'posters':
       return {
         title: 'Upload Image for Poster *',
         note: 'Note: Upload an image matching your poster orientation for best results.',
-        subtext: '*Requires minimum 2000x3000px portrait image to prevent pixelation on large prints.*',
-        req: { minWidth: 2000, minHeight: 2000, recommendedText: 'Please upload an image at least 2000x2000px.' } as DimensionRequirement,
+        subtext:
+          '*Requires minimum 2000x3000px portrait image to prevent pixelation on large prints.*',
+        req: {
+          minWidth: 2000,
+          minHeight: 2000,
+          recommendedText: 'Please upload an image at least 2000x2000px.',
+        } as DimensionRequirement,
       };
     case 'skins':
       return {
         title: 'Upload Image for Device Skin *',
         note: 'Note: Ensure important subjects are centered. Edges may be cropped to fit the device shape.',
-        subtext: '*Requires minimum 1500x3000px portrait image to cover full phone dimensions clearly.*',
-        req: { minWidth: 1500, minHeight: 2500, recommendedText: 'Please upload a portrait image at least 1500x2500px.' } as DimensionRequirement,
+        subtext:
+          '*Requires minimum 1500x3000px portrait image to cover full phone dimensions clearly.*',
+        req: {
+          minWidth: 1500,
+          minHeight: 2500,
+          recommendedText: 'Please upload a portrait image at least 1500x2500px.',
+        } as DimensionRequirement,
       };
     case 'hoodies':
     case 'tees':
@@ -63,21 +84,33 @@ const getUploadInstructions = (categorySlug?: string) => {
         title: 'Upload Design for Apparel *',
         note: 'Note: For best results, use a high-resolution PNG with a transparent background.',
         subtext: '*Requires minimum 2000x2000px image for sharp fabric printing.*',
-        req: { minWidth: 2000, minHeight: 2000, recommendedText: 'Please upload a design at least 2000x2000px.' } as DimensionRequirement,
+        req: {
+          minWidth: 2000,
+          minHeight: 2000,
+          recommendedText: 'Please upload a design at least 2000x2000px.',
+        } as DimensionRequirement,
       };
     case 'mugs-cups':
       return {
         title: 'Upload Design for Mug *',
         note: 'Note: Landscape/square images work best. They wrap around the mug cylinder.',
         subtext: '*Requires minimum 1500x1500px image for crisp ceramic printing.*',
-        req: { minWidth: 1500, minHeight: 1500, recommendedText: 'Please upload a design at least 1500x1500px.' } as DimensionRequirement,
+        req: {
+          minWidth: 1500,
+          minHeight: 1500,
+          recommendedText: 'Please upload a design at least 1500x1500px.',
+        } as DimensionRequirement,
       };
     default:
       return {
         title: 'Upload Your Image *',
         note: 'Note: Use the editing tool after upload to adjust your design.',
         subtext: '*Requires minimum 1000x1000px image for clarity.*',
-        req: { minWidth: 1000, minHeight: 1000, recommendedText: 'Please upload an image at least 1000x1000px.' } as DimensionRequirement,
+        req: {
+          minWidth: 1000,
+          minHeight: 1000,
+          recommendedText: 'Please upload an image at least 1000x1000px.',
+        } as DimensionRequirement,
       };
   }
 };
@@ -250,7 +283,9 @@ export function CustomizerMobile({ productId }: { productId: string }) {
               <button
                 onClick={() => setViewMode('3d')}
                 className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
-                  viewMode === '3d' ? 'bg-cobalt text-bone' : 'bg-charcoal text-ash hover:text-pearl'
+                  viewMode === '3d'
+                    ? 'bg-cobalt text-bone'
+                    : 'bg-charcoal text-ash hover:text-pearl'
                 }`}
               >
                 360° 3D View

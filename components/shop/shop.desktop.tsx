@@ -9,7 +9,7 @@ import { SHOP_CATEGORIES } from './shop.shared';
 import { CustomizerPanelDesktop } from '../customizer-hub/CustomizerHub.desktop';
 import { usePrice } from '@/lib/hooks/usePrice';
 
-function DesktopProductCard({ product }: { product: Product }) {
+function DesktopProductCard({ product, index }: { product: Product; index: number }) {
   const { formatPrice } = usePrice();
   return (
     <Link
@@ -115,8 +115,10 @@ export function ShopDesktop({ category, products }: { category: string; products
   else if (filterType === 'original')
     filteredProducts = filteredProducts.filter((p) => !p.customizable);
 
-  if (sortMethod === 'price-asc') filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
-  if (sortMethod === 'price-desc') filteredProducts = [...filteredProducts].sort((a, b) => b.basePrice - a.basePrice);
+  if (sortMethod === 'price-asc')
+    filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
+  if (sortMethod === 'price-desc')
+    filteredProducts = [...filteredProducts].sort((a, b) => b.basePrice - a.basePrice);
 
   const displayProducts = filteredProducts.slice(0, visibleCount);
 
@@ -257,8 +259,12 @@ export function ShopDesktop({ category, products }: { category: string; products
 
               {displayProducts.length > 0 ? (
                 <div className="grid grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-16">
-                  {displayProducts.map((product) => (
-                    <DesktopProductCard key={`prod-${product.id}`} product={product} />
+                  {displayProducts.map((product, index) => (
+                    <DesktopProductCard
+                      key={`prod-${product.id}`}
+                      product={product}
+                      index={index}
+                    />
                   ))}
                 </div>
               ) : (

@@ -25,7 +25,10 @@ export interface DimensionRequirement {
   recommendedText: string;
 }
 
-export function validateImageDimensions(file: File, req: DimensionRequirement): Promise<ValidationResult> {
+export function validateImageDimensions(
+  file: File,
+  req: DimensionRequirement,
+): Promise<ValidationResult> {
   return new Promise((resolve) => {
     const img = new Image();
     const objectUrl = URL.createObjectURL(file);
