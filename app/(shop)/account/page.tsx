@@ -99,7 +99,7 @@ export default async function AccountPage() {
           </Link>
 
           <Link
-            href="/customize"
+            href="/account/designs"
             className="group bg-graphite border border-smoke/40 hover:border-cobalt p-8 rounded-lg transition-all duration-300 flex flex-col justify-between h-48"
           >
             <div>
@@ -113,7 +113,7 @@ export default async function AccountPage() {
             <div className="flex items-center justify-between pt-4 border-t border-smoke/20">
               <span className="font-mono text-2xl font-bold text-bone">{designCount}</span>
               <span className="font-mono text-caption text-pearl group-hover:translate-x-1 transition-transform">
-                Create Design →
+                View Designs →
               </span>
             </div>
           </Link>

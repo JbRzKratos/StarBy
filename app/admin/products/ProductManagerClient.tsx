@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { toggleVariantStock, deleteProduct, addProduct } from '../actions';
+import { toggleVariantStock, deleteProduct, createProduct } from '@/app/admin/lib/actions';
 
 export interface ProductVariant {
   id: string;
@@ -52,13 +52,17 @@ export function ProductManagerClient({ products: initialProducts }: ProductManag
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
     startTransition(async () => {
-      await addProduct({
+      await createProduct({
         name: formData.name,
         slug: formData.slug,
         categorySlug: formData.categorySlug,
         basePrice: parseFloat(formData.basePrice),
         tagline: formData.tagline,
         description: formData.description,
+        customizable: false,
+        featured: false,
+        tags: [],
+        sizes: [],
       });
       setShowAddForm(false);
       setFormData({

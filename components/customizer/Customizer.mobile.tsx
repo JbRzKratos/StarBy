@@ -205,7 +205,7 @@ export function CustomizerMobile({ productId }: { productId: string }) {
   };
 
   return (
-    <div className="flex flex-col min-h-[100dvh] bg-charcoal pb-24 pt-20">
+    <div className="flex flex-col min-h-[100dvh] bg-charcoal pb-24 pt-24 sm:pt-28">
       {/* Canvas Area (Top) — height must match CustomizerCanvas h-[60vh] */}
       <div className="relative w-full h-[60vh] bg-graphite shrink-0">
         {!uploadedImage &&

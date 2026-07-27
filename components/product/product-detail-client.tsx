@@ -11,6 +11,7 @@ import { VariantSelector } from './variant-selector';
 import { SizeSelector } from './size-selector';
 import { SizeFinderModal } from './size-finder-modal';
 import { SizeChartModal } from './size-chart-modal';
+import { ProductReviews } from './product-reviews';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 
@@ -180,6 +181,10 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
           </div>
         </div>
       </main>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 md:mt-24">
+        <ProductReviews productId={product.id} />
+      </div>
 
       <SizeFinderModal
         isOpen={sizeFinder}

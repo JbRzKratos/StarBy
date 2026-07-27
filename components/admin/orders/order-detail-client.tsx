@@ -4,7 +4,11 @@ import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { AdminBadge } from '../ui/badge';
 import { AdminToast, useToast } from '../ui/confirm-dialog';
-import { updateOrderStatus, updateOrderInternalNotes } from '@/app/admin/lib/actions';
+import {
+  updateOrderStatus,
+  updateOrderInternalNotes,
+  updateOrderTracking,
+} from '@/app/admin/lib/actions';
 
 type OrderStatus = 'placed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
 
@@ -22,6 +26,9 @@ interface OrderDetailProps {
     estimatedDeliveryDate: string | null;
     razorpayOrderId: string | null;
     razorpayPaymentId: string | null;
+    carrier: string | null;
+    trackingNumber: string | null;
+    trackingUrl: string | null;
     internalNotes: string;
     createdAt: string;
     updatedAt: string;
@@ -63,6 +70,12 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
   const [isPending, startTransition] = useTransition();
   const [notes, setNotes] = useState(order.internalNotes || '');
   const [notesSaved, setNotesSaved] = useState(false);
+  const [tracking, setTracking] = useState({
+    carrier: order.carrier || '',
+    trackingNumber: order.trackingNumber || '',
+    trackingUrl: order.trackingUrl || '',
+  });
+  const [trackingSaved, setTrackingSaved] = useState(false);
 
   function handleStatusChange(status: string) {
     startTransition(async () => {
@@ -83,6 +96,18 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
         setTimeout(() => setNotesSaved(false), 2000);
       } catch {
         show('Failed to save notes', 'error');
+      }
+    });
+  }
+
+  function handleSaveTracking() {
+    startTransition(async () => {
+      try {
+        await updateOrderTracking(order.id, tracking);
+        setTrackingSaved(true);
+        setTimeout(() => setTrackingSaved(false), 2000);
+      } catch {
+        show('Failed to save tracking info', 'error');
       }
     });
   }
@@ -355,6 +380,55 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                   </span>
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Tracking info */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Tracking Information</h2>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-medium text-gray-700 mb-1 block">Carrier Name</label>
+                <input
+                  type="text"
+                  value={tracking.carrier}
+                  onChange={(e) => setTracking((t) => ({ ...t, carrier: e.target.value }))}
+                  placeholder="e.g. BlueDart, FedEx"
+                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-700 mb-1 block">
+                  Tracking Number
+                </label>
+                <input
+                  type="text"
+                  value={tracking.trackingNumber}
+                  onChange={(e) => setTracking((t) => ({ ...t, trackingNumber: e.target.value }))}
+                  placeholder="Tracking ID"
+                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-700 mb-1 block">Tracking URL</label>
+                <input
+                  type="url"
+                  value={tracking.trackingUrl}
+                  onChange={(e) => setTracking((t) => ({ ...t, trackingUrl: e.target.value }))}
+                  placeholder="https://..."
+                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+                />
+              </div>
+              <div className="flex items-center justify-end pt-2 gap-2">
+                {trackingSaved && <span className="text-xs text-green-600">Saved ✓</span>}
+                <button
+                  onClick={handleSaveTracking}
+                  disabled={isPending}
+                  className="px-3 py-1.5 text-xs font-medium bg-[#3B5EFF] text-white rounded-lg hover:bg-[#2a4de8] transition-colors disabled:opacity-50"
+                >
+                  Save Tracking
+                </button>
+              </div>
             </div>
           </div>
         </div>

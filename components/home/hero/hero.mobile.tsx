@@ -122,7 +122,7 @@ export function HeroMobile() {
     <ScrollTriggerWrapper>
       <section
         ref={containerRef}
-        className="relative w-full h-[calc(100vh-80px)] flex flex-col overflow-hidden bg-charcoal pt-16"
+        className="relative w-full min-h-[calc(100dvh-2rem)] flex flex-col justify-between overflow-hidden bg-charcoal pt-24 sm:pt-28 pb-6"
       >
         {/* TOP BLOCK (OUR DESIGNS) */}
         <div className="flex-1 w-full relative flex flex-col items-center justify-end pb-8 z-10">

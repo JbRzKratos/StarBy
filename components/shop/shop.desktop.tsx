@@ -82,6 +82,9 @@ export function ShopDesktop({ category, products }: { category: string; products
   const [activeTab, setActiveTab] = useState(category || 'all');
   const [filterType, setFilterType] = useState(searchParams.get('type') || 'all');
   const [sortMethod, setSortMethod] = useState(searchParams.get('sort') || 'featured');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [minPrice, setMinPrice] = useState(searchParams.get('min') || '');
+  const [maxPrice, setMaxPrice] = useState(searchParams.get('max') || '');
   const [visibleCount, setVisibleCount] = useState(16);
 
   const handleTabClick = (tabId: string) => {
@@ -115,6 +118,21 @@ export function ShopDesktop({ category, products }: { category: string; products
   else if (filterType === 'original')
     filteredProducts = filteredProducts.filter((p) => !p.customizable);
 
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    filteredProducts = filteredProducts.filter(
+      (p) => p.name.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q),
+    );
+  }
+  if (minPrice) {
+    filteredProducts = filteredProducts.filter((p) => p.basePrice >= Number(minPrice));
+  }
+  if (maxPrice) {
+    filteredProducts = filteredProducts.filter((p) => p.basePrice <= Number(maxPrice));
+  }
+
+  if (sortMethod === 'new')
+    filteredProducts = [...filteredProducts].sort((a, b) => (b.tags.includes('new') ? 1 : 0) - (a.tags.includes('new') ? 1 : 0));
   if (sortMethod === 'price-asc')
     filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
   if (sortMethod === 'price-desc')
@@ -170,6 +188,62 @@ export function ShopDesktop({ category, products }: { category: string; products
             {/* Sidebar Filters */}
             <aside className="w-64 flex-shrink-0 sticky top-32">
               <div className="flex flex-col gap-10">
+                {/* Search */}
+                <div>
+                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                    Search
+                  </h4>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      const params = new URLSearchParams(searchParams.toString());
+                      if (e.target.value) params.set('q', e.target.value);
+                      else params.delete('q');
+                      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                    }}
+                    placeholder="Search products..."
+                    className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke"
+                  />
+                </div>
+
+                {/* Price Range */}
+                <div>
+                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                    Price Range
+                  </h4>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      value={minPrice}
+                      onChange={(e) => {
+                        setMinPrice(e.target.value);
+                        const params = new URLSearchParams(searchParams.toString());
+                        if (e.target.value) params.set('min', e.target.value);
+                        else params.delete('min');
+                        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                      }}
+                      placeholder="Min"
+                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
+                    />
+                    <span className="text-pearl">-</span>
+                    <input
+                      type="number"
+                      value={maxPrice}
+                      onChange={(e) => {
+                        setMaxPrice(e.target.value);
+                        const params = new URLSearchParams(searchParams.toString());
+                        if (e.target.value) params.set('max', e.target.value);
+                        else params.delete('max');
+                        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                      }}
+                      placeholder="Max"
+                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
                     Identity
@@ -277,6 +351,10 @@ export function ShopDesktop({ category, products }: { category: string; products
                     onClick={() => {
                       setFilterType('all');
                       setSortMethod('featured');
+                      setSearchQuery('');
+                      setMinPrice('');
+                      setMaxPrice('');
+                      router.replace(pathname, { scroll: false });
                     }}
                     className="bg-bone text-charcoal font-mono text-[11px] uppercase tracking-widest px-8 py-4 transition-transform hover:scale-105"
                   >

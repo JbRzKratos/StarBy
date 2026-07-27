@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
 import type { Prisma } from '@prisma/client';
+import { products } from '@/data/products';
 
 export default async function AccountOrdersPage() {
   let orders: Prisma.OrderGetPayload<{ include: { items: true } }>[] = [];
@@ -100,17 +101,62 @@ export default async function AccountOrdersPage() {
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    {order.items.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between font-mono text-body-sm text-pearl"
-                      >
-                        <span>
-                          Product #{item.productId} (Variant {item.variantId}) × {item.quantity}
+                    {order.items.map((item) => {
+                      const product = products.find((p) => p.id === item.productId);
+                      const variant = product?.variants.find((v) => v.id === item.variantId);
+                      const displayName = product?.name ?? `Product ${item.productId}`;
+                      const displayVariant = variant?.name ?? item.variantId;
+                      return (
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between font-mono text-body-sm text-pearl"
+                        >
+                          <span>
+                            {displayName}{variant ? ` — ${displayVariant}` : ''}{item.size ? ` (${item.size})` : ''} × {item.quantity}
+                          </span>
+                          <span className="text-bone">₹{item.price * item.quantity}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-smoke/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    {order.trackingNumber ? (
+                      <div className="flex-1 bg-graphite/50 p-3 border border-smoke/20 rounded">
+                        <span className="font-mono text-[10px] text-ash uppercase tracking-widest block mb-1">
+                          Tracking Information
                         </span>
-                        <span className="text-bone">₹{item.price * item.quantity}</span>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                          <p className="font-mono text-body-sm text-bone">
+                            {order.carrier} —{' '}
+                            <span className="font-bold text-cobalt">{order.trackingNumber}</span>
+                          </p>
+                          {order.trackingUrl && (
+                            <a
+                              href={order.trackingUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-[#3B5EFF] text-xs hover:underline uppercase tracking-wider font-mono font-bold"
+                            >
+                              Track Package ↗
+                            </a>
+                          )}
+                        </div>
                       </div>
-                    ))}
+                    ) : (
+                      <div className="flex-1">
+                        <span className="font-mono text-caption text-ash italic">
+                          Tracking info will appear here once shipped.
+                        </span>
+                      </div>
+                    )}
+                    <Link
+                      href={`/account/orders/${order.id}/invoice`}
+                      target="_blank"
+                      className="bg-bone text-charcoal hover:bg-pearl px-4 py-2 font-mono text-[10px] uppercase tracking-widest rounded transition-colors whitespace-nowrap self-start sm:self-center"
+                    >
+                      Print Invoice
+                    </Link>
                   </div>
                 </div>
               );

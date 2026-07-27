@@ -81,6 +81,9 @@ export function ShopMobile({ category, products }: { category: string; products:
   const [activeTab, setActiveTab] = useState(category || 'all');
   const [filterType, setFilterType] = useState(searchParams.get('type') || 'all');
   const [sortMethod, setSortMethod] = useState(searchParams.get('sort') || 'featured');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [minPrice, setMinPrice] = useState(searchParams.get('min') || '');
+  const [maxPrice, setMaxPrice] = useState(searchParams.get('max') || '');
   const [visibleCount, setVisibleCount] = useState(12);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -116,6 +119,21 @@ export function ShopMobile({ category, products }: { category: string; products:
   else if (filterType === 'original')
     filteredProducts = filteredProducts.filter((p) => !p.customizable);
 
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    filteredProducts = filteredProducts.filter(
+      (p) => p.name.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q),
+    );
+  }
+  if (minPrice) {
+    filteredProducts = filteredProducts.filter((p) => p.basePrice >= Number(minPrice));
+  }
+  if (maxPrice) {
+    filteredProducts = filteredProducts.filter((p) => p.basePrice <= Number(maxPrice));
+  }
+
+  if (sortMethod === 'new')
+    filteredProducts = [...filteredProducts].sort((a, b) => (b.tags.includes('new') ? 1 : 0) - (a.tags.includes('new') ? 1 : 0));
   if (sortMethod === 'price-asc')
     filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
   if (sortMethod === 'price-desc')
@@ -212,6 +230,10 @@ export function ShopMobile({ category, products }: { category: string; products:
                   onClick={() => {
                     setFilterType('all');
                     setSortMethod('featured');
+                    setSearchQuery('');
+                    setMinPrice('');
+                    setMaxPrice('');
+                    router.replace(pathname, { scroll: false });
                   }}
                   className="bg-bone text-charcoal font-mono text-[9px] uppercase tracking-widest px-6 py-3"
                 >
@@ -242,13 +264,13 @@ export function ShopMobile({ category, products }: { category: string; products:
         onClick={() => setIsFilterOpen(false)}
       />
       <div
-        className={`fixed bottom-0 left-0 right-0 bg-graphite border-t border-smoke/20 z-50 rounded-t-3xl p-6 pb-12 transition-transform duration-400 ease-out ${
+        className={`fixed bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto hide-scrollbar bg-graphite border-t border-smoke/20 z-50 rounded-t-3xl p-6 pb-12 transition-transform duration-400 ease-out ${
           isFilterOpen
             ? 'translate-y-0 pointer-events-auto'
             : 'translate-y-full pointer-events-none'
         }`}
       >
-        <div className="w-12 h-1 bg-smoke/30 rounded-full mx-auto mb-8" />
+        <div className="w-12 h-1 bg-smoke/30 rounded-full mx-auto mb-8 sticky top-0" />
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-display text-2xl">Filter & Sort</h2>
           <button
@@ -258,6 +280,56 @@ export function ShopMobile({ category, products }: { category: string; products:
           >
             ✕
           </button>
+        </div>
+
+        {/* Search */}
+        <h3 className="font-mono text-[9px] text-pearl uppercase tracking-widest mb-4">Search</h3>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            const params = new URLSearchParams(searchParams.toString());
+            if (e.target.value) params.set('q', e.target.value);
+            else params.delete('q');
+            router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+          }}
+          placeholder="Search products..."
+          className="w-full bg-smoke/10 border border-smoke/20 text-bone font-mono text-[11px] p-4 rounded-md mb-8 outline-none focus:border-bone placeholder-smoke"
+        />
+
+        {/* Price Range */}
+        <h3 className="font-mono text-[9px] text-pearl uppercase tracking-widest mb-4">
+          Price Range
+        </h3>
+        <div className="flex items-center gap-3 mb-8">
+          <input
+            type="number"
+            value={minPrice}
+            onChange={(e) => {
+              setMinPrice(e.target.value);
+              const params = new URLSearchParams(searchParams.toString());
+              if (e.target.value) params.set('min', e.target.value);
+              else params.delete('min');
+              router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+            }}
+            placeholder="Min"
+            className="w-full bg-smoke/10 border border-smoke/20 text-bone font-mono text-[11px] p-4 rounded-md outline-none focus:border-bone placeholder-smoke text-center"
+          />
+          <span className="text-pearl">-</span>
+          <input
+            type="number"
+            value={maxPrice}
+            onChange={(e) => {
+              setMaxPrice(e.target.value);
+              const params = new URLSearchParams(searchParams.toString());
+              if (e.target.value) params.set('max', e.target.value);
+              else params.delete('max');
+              router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+            }}
+            placeholder="Max"
+            className="w-full bg-smoke/10 border border-smoke/20 text-bone font-mono text-[11px] p-4 rounded-md outline-none focus:border-bone placeholder-smoke text-center"
+          />
         </div>
 
         <h3 className="font-mono text-[9px] text-pearl uppercase tracking-widest mb-4">Identity</h3>

@@ -34,6 +34,8 @@ model Product {
   featured     Boolean          @default(false)
   sizes        String[]
   variants     ProductVariant[]
+  reviews      Review[]
+  wishlistItems WishlistItem[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 }
@@ -91,6 +93,8 @@ model User {
   addresses Address[]
   orders    Order[]
   designs   CustomizerDesign[]
+  reviews   Review[]
+  wishlistItems WishlistItem[]
 }
 
 model Address {
@@ -122,6 +126,9 @@ model Order {
   discount              Float?      @default(0)
   estimatedDeliveryDate DateTime?
   shippingMethod        String?     @default("standard")
+  trackingNumber        String?
+  trackingUrl           String?
+  carrier               String?
   internalNotes         String?     // staff-only, never shown to customer
   createdAt             DateTime    @default(now())
   updatedAt             DateTime    @updatedAt
@@ -189,4 +196,28 @@ model NewsletterSubscriber {
   id        String   @id @default(cuid())
   email     String   @unique
   createdAt DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  title     String?
+  text      String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }

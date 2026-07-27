@@ -21,6 +21,22 @@ export async function updateOrderInternalNotes(orderId: string, notes: string) {
   revalidatePath(`/admin/orders/${orderId}`);
 }
 
+export async function updateOrderTracking(
+  orderId: string,
+  tracking: { carrier: string; trackingNumber: string; trackingUrl: string },
+) {
+  await assertStaff();
+  await prisma.order.update({
+    where: { id: orderId },
+    data: {
+      carrier: tracking.carrier,
+      trackingNumber: tracking.trackingNumber,
+      trackingUrl: tracking.trackingUrl,
+    },
+  });
+  revalidatePath(`/admin/orders/${orderId}`);
+}
+
 // ═══════════════════════════════════════
 // PRODUCTS
 // ═══════════════════════════════════════

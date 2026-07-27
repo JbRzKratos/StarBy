@@ -4,6 +4,7 @@ import { rateLimit } from '@/lib/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import { Prisma } from '@prisma/client';
+import { sendOrderConfirmationEmail } from '@/lib/email';
 
 // Create a Razorpay order using their REST API directly (no Node.js SDK needed)
 async function createRazorpayOrder(amountInPaise: number, receipt: string) {
@@ -195,6 +196,36 @@ export async function POST(request: Request) {
         return NextResponse.json(
           { success: false, message: 'Failed to create order in database.' },
           { status: 500 },
+        );
+      }
+    }
+
+    if (isCod) {
+      // 6. Post-order side effects for COD (Stock & Coupon)
+      for (const item of items) {
+        if (item.variantId && item.variantId !== 'default') {
+          await prisma.productVariant.updateMany({
+            where: { id: item.variantId },
+            data: { stockQuantity: { decrement: item.quantity } },
+          });
+        }
+      }
+
+      if (couponCode) {
+        await prisma.coupon.update({
+          where: { code: couponCode },
+          data: { usageCount: { increment: 1 } },
+        });
+      }
+
+      // Send confirmation email for COD orders
+      const orderAddress = address as any;
+      if (orderAddress && orderAddress.email) {
+        await sendOrderConfirmationEmail(
+          orderAddress.email,
+          orderId,
+          orderAddress.firstName || 'Customer',
+          totalAmount,
         );
       }
     }

@@ -2,8 +2,10 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { products } from '@/data/products';
 
 export default function CartPage() {
   const items = useCartStore((s) => s.items);
@@ -28,7 +30,7 @@ export default function CartPage() {
           <div className="text-center py-20 bg-graphite border border-smoke rounded-lg">
             <p className="font-display text-body-lg text-pearl mb-4">Your cart is empty</p>
             <Link
-              href="/products/tees"
+              href="/products/all"
               className="font-mono text-caption text-cobalt uppercase tracking-widest hover:underline"
             >
               Start Shopping →
@@ -38,50 +40,68 @@ export default function CartPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Items */}
             <div className="lg:col-span-2 flex flex-col gap-4">
-              {items.map((item) => (
-                <div
-                  key={`${item.productId}-${item.variantId}`}
-                  className="flex gap-4 bg-graphite border border-smoke rounded-lg p-4"
-                >
-                  <div className="w-24 h-24 bg-smoke rounded flex-shrink-0" />
-                  <div className="flex-1">
-                    <p className="font-display text-body-md text-bone">{item.productId}</p>
-                    <p className="font-mono text-caption text-ash">{item.variantId}</p>
-                    <div className="flex items-center gap-3 mt-3">
-                      <button
-                        onClick={() =>
-                          updateQuantity(
-                            item.productId,
-                            item.variantId,
-                            Math.max(1, item.quantity - 1),
-                          )
-                        }
-                        className="w-7 h-7 border border-smoke text-pearl flex items-center justify-center hover:border-cobalt"
-                      >
-                        −
-                      </button>
-                      <span className="font-mono text-body-sm text-bone">{item.quantity}</span>
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.productId, item.variantId, item.quantity + 1)
-                        }
-                        className="w-7 h-7 border border-smoke text-pearl flex items-center justify-center hover:border-cobalt"
-                      >
-                        +
-                      </button>
-                      <button
-                        onClick={() => removeItem(item.productId, item.variantId)}
-                        className="ml-auto font-mono text-caption text-ember hover:underline"
-                      >
-                        Remove
-                      </button>
+              {items.map((item) => {
+                const product = products.find((p) => p.id === item.productId);
+                const variant = product?.variants.find((v) => v.id === item.variantId);
+                const displayName = product?.name ?? item.productId.replace(/-/g, ' ');
+                const displayVariant = variant?.name ?? item.variantId.replace(/-/g, ' ');
+                const displayImage = item.customization?.imageUrl ?? variant?.images[0] ?? product?.variants[0]?.images[0];
+                return (
+                  <div
+                    key={`${item.productId}-${item.variantId}-${item.size ?? ''}`}
+                    className="flex gap-4 bg-graphite border border-smoke rounded-lg p-4"
+                  >
+                    <div className="w-24 h-24 bg-smoke rounded flex-shrink-0 relative overflow-hidden">
+                      {displayImage ? (
+                        <Image src={displayImage} alt={displayName} fill className="object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center font-mono text-caption text-ash">—</div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-display text-body-md text-bone capitalize">{displayName}</p>
+                      <p className="font-mono text-caption text-ash capitalize">
+                        {displayVariant}{item.size ? ` · Size: ${item.size}` : ''}
+                      </p>
+                      <div className="flex items-center gap-3 mt-3">
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.productId,
+                              item.variantId,
+                              Math.max(1, item.quantity - 1),
+                              item.size,
+                            )
+                          }
+                          aria-label="Decrease quantity"
+                          className="w-7 h-7 border border-smoke text-pearl flex items-center justify-center hover:border-cobalt"
+                        >
+                          −
+                        </button>
+                        <span className="font-mono text-body-sm text-bone">{item.quantity}</span>
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.productId, item.variantId, item.quantity + 1, item.size)
+                          }
+                          aria-label="Increase quantity"
+                          className="w-7 h-7 border border-smoke text-pearl flex items-center justify-center hover:border-cobalt"
+                        >
+                          +
+                        </button>
+                        <button
+                          onClick={() => removeItem(item.productId, item.variantId, item.size)}
+                          className="ml-auto font-mono text-caption text-ember hover:underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                    <div className="font-mono text-body-sm text-bone whitespace-nowrap">
+                      {formatPrice(item.price * item.quantity)}
                     </div>
                   </div>
-                  <div className="font-mono text-body-sm text-bone">
-                    {formatPrice(item.price * item.quantity)}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Summary */}

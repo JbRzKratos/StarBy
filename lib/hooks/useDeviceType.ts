@@ -39,7 +39,7 @@ export function useDeviceType(initialDevice: 'mobile' | 'desktop') {
       clearTimeout(timeoutId);
       mediaQuery.removeEventListener('change', handleResize);
     };
-  }, [device]);
+  }, []);  // Run once on mount only — handleResize reads from the event, not the closure.
 
   return device;
 }

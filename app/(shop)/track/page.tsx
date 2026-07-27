@@ -7,6 +7,9 @@ interface TrackResult {
   estimatedDeliveryDate?: string;
   paymentStatus: string;
   total: number;
+  carrier?: string | null;
+  trackingNumber?: string | null;
+  trackingUrl?: string | null;
 }
 
 export default function TrackOrderPage() {
@@ -137,6 +140,29 @@ export default function TrackOrderPage() {
                   {result.paymentStatus.toUpperCase()}
                 </span>
               </div>
+
+              {result.trackingNumber && (
+                <div>
+                  <span className="font-mono text-caption text-ash uppercase block mb-1">
+                    Tracking
+                  </span>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <span className="font-mono text-body-sm text-bone">
+                      {result.carrier} &mdash; <span className="font-bold text-cobalt">{result.trackingNumber}</span>
+                    </span>
+                    {result.trackingUrl && (
+                      <a
+                        href={result.trackingUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-mono text-caption text-cobalt hover:underline uppercase tracking-widest"
+                      >
+                        Track Package ↗
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
 
               <div>
                 <span className="font-mono text-caption text-ash uppercase block mb-1">

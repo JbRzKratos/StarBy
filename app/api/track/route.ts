@@ -56,6 +56,9 @@ export async function POST(request: Request) {
       estimatedDeliveryDate: order.estimatedDeliveryDate,
       total: order.total,
       paymentStatus: order.paymentStatus,
+      carrier: order.carrier || null,
+      trackingNumber: order.trackingNumber || null,
+      trackingUrl: order.trackingUrl || null,
     });
   } catch (error) {
     console.error('Tracking API error:', error);

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { products } from '@/data/products';
 
 type Step = 'shipping' | 'payment' | 'review';
 
@@ -464,8 +465,19 @@ export default function CheckoutPage() {
                     {paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment (Razorpay)'}
                   </p>
                   <p>
-                    <strong>Items:</strong> {cartItems.length}
+                    <strong>Items ({cartItems.length}):</strong>
                   </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    {cartItems.map((item, i) => {
+                      const product = products.find((p) => p.id === item.productId);
+                      const variant = product?.variants.find((v) => v.id === item.variantId);
+                      return (
+                        <li key={i} className="font-mono text-caption text-pearl">
+                          {product?.name ?? item.productId}{variant ? ` — ${variant.name}` : ''}{item.size ? ` (${item.size})` : ''} × {item.quantity}
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 mt-4">
                   <button

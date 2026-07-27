@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useTransition, useState } from 'react';
-import { updateOrderStatus } from '../actions';
+import { updateOrderStatus } from '@/app/admin/lib/actions';
 
 export interface OrderItem {
   id: string;

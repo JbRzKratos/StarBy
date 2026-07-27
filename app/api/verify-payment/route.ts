@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { sendOrderConfirmationEmail } from '@/lib/email';
 
 // Edge-compatible HMAC-SHA256 using the Web Crypto API (no Node.js crypto needed)
 async function verifyRazorpaySignature(
@@ -63,7 +64,18 @@ export async function POST(request: Request) {
         razorpayPaymentId: razorpay_payment_id,
         razorpaySignature: razorpay_signature,
       },
+      include: { items: true },
     });
+
+    // Decrement inventory
+    for (const item of order.items) {
+      if (item.variantId && item.variantId !== 'default') {
+        await prisma.productVariant.updateMany({
+          where: { id: item.variantId },
+          data: { stockQuantity: { decrement: item.quantity } },
+        });
+      }
+    }
 
     // Increment coupon usage if one was applied
     if (order.couponCode) {
@@ -71,6 +83,17 @@ export async function POST(request: Request) {
         where: { code: order.couponCode },
         data: { usageCount: { increment: 1 } },
       });
+    }
+
+    // Send confirmation email
+    const address = order.shippingAddress as any;
+    if (address && address.email) {
+      await sendOrderConfirmationEmail(
+        address.email,
+        order.id,
+        address.firstName || 'Customer',
+        order.total,
+      );
     }
 
     return NextResponse.json({ success: true, message: 'Payment verified successfully' });

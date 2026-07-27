@@ -75,7 +75,7 @@ export function CustomizerPanelMobile() {
     <div className="w-full flex flex-col">
       {/* Header */}
       <div className="mb-12">
-        <h1 className="font-display text-[3.5rem] text-bone leading-[0.9] uppercase tracking-tight mb-4">
+        <h1 className="font-display text-3xl sm:text-[3rem] text-bone leading-[1.05] uppercase tracking-tight mb-4 break-words text-balance">
           Drop your photo. <br /> <span className="text-pearl/60">See it everywhere.</span>
         </h1>
         <p className="font-mono text-caption text-pearl">

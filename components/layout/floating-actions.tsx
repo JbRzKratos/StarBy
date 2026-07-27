@@ -59,13 +59,13 @@ export function FloatingActions() {
   return (
     <>
       {/* Scroll to Top - Bottom Right */}
-      <div className="fixed bottom-24 right-6 z-[90] flex flex-col gap-4">
+      <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-[90] flex flex-col gap-4">
         <button
           ref={scrollTopRef}
           onClick={scrollToTop}
           onMouseEnter={() => handleHoverEnter(scrollTopRef.current)}
           onMouseLeave={() => handleHoverLeave(scrollTopRef.current)}
-          className="w-12 h-12 bg-graphite border border-smoke rounded-full flex items-center justify-center text-pearl hover:text-bone hover:border-cobalt transition-colors shadow-lg opacity-0 pointer-events-auto"
+          className="w-10 h-10 sm:w-12 sm:h-12 bg-graphite border border-smoke rounded-full flex items-center justify-center text-pearl hover:text-bone hover:border-cobalt transition-colors shadow-lg opacity-0 pointer-events-auto"
           aria-label="Scroll to top"
         >
           <svg
@@ -84,7 +84,7 @@ export function FloatingActions() {
       </div>
 
       {/* WhatsApp Floating Button - Bottom Left */}
-      <div className="fixed bottom-6 left-6 z-[90]">
+      <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-[90]">
         <Link
           href={
             process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
@@ -96,7 +96,7 @@ export function FloatingActions() {
           ref={waRef}
           onMouseEnter={() => handleHoverEnter(waRef.current)}
           onMouseLeave={() => handleHoverLeave(waRef.current)}
-          className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-xl pointer-events-auto hover:bg-[#20bd5a] transition-transform hover:scale-105"
+          className="w-11 h-11 sm:w-14 sm:h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-xl pointer-events-auto hover:bg-[#20bd5a] transition-transform hover:scale-105"
           aria-label="Chat on WhatsApp"
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
