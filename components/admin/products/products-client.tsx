@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, Fragment } from 'react';
 import Link from 'next/link';
 import { AdminBadge } from '../ui/badge';
 import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
@@ -146,7 +146,7 @@ export function ProductsClient({
         <select
           value={catFilter}
           onChange={(e) => setCatFilter(e.target.value)}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20"
+          className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 min-w-[140px] flex-1 sm:flex-none"
         >
           <option value="all">All Categories</option>
           {categories.map((c) => (
@@ -158,7 +158,7 @@ export function ProductsClient({
         <select
           value={stockFilter}
           onChange={(e) => setStockFilter(e.target.value)}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20"
+          className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 min-w-[140px] flex-1 sm:flex-none"
         >
           <option value="all">All Stock</option>
           <option value="instock">In Stock</option>
@@ -170,7 +170,7 @@ export function ProductsClient({
       {/* Table */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm whitespace-nowrap">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
@@ -223,9 +223,8 @@ export function ProductsClient({
                 const isExpanded = expandedId === product.id;
 
                 return (
-                  <>
+                  <Fragment key={product.id}>
                     <tr
-                      key={product.id}
                       className={`hover:bg-gray-50 transition-colors cursor-pointer ${isExpanded ? 'bg-blue-50/30' : ''}`}
                       onClick={() => setExpandedId(isExpanded ? null : product.id)}
                     >
@@ -311,7 +310,7 @@ export function ProductsClient({
                         </td>
                       </tr>
                     )}
-                  </>
+                  </Fragment>
                 );
               })}
             </tbody>

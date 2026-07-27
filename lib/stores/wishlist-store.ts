@@ -71,7 +71,7 @@ export const useWishlistStore = create<WishlistState & WishlistActions>()(
               const ids = (
                 data.items as { productId?: string; product?: { id: string }; id?: string }[]
               ).map((i) => i.productId || i.product?.id || i.id);
-              set({ items: ids.filter(Boolean) });
+              set({ items: ids.filter(Boolean) as string[] });
             }
           } catch (e) {
             console.error('Wishlist sync failed', e);
