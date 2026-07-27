@@ -68,9 +68,9 @@ export const useWishlistStore = create<WishlistState & WishlistActions>()(
             const res = await fetch('/api/wishlist');
             const data = await res.json();
             if (res.ok && data.success && Array.isArray(data.items)) {
-              const ids = (data.items as { productId?: string; product?: { id: string }; id?: string }[]).map(
-                (i) => i.productId || i.product?.id || i.id
-              );
+              const ids = (
+                data.items as { productId?: string; product?: { id: string }; id?: string }[]
+              ).map((i) => i.productId || i.product?.id || i.id);
               set({ items: ids.filter(Boolean) });
             }
           } catch (e) {

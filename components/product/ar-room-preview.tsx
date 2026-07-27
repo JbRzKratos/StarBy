@@ -32,23 +32,24 @@ export function ArRoomPreview(props: ArRoomPreviewProps) {
   }, []);
 
   useEffect(() => {
+    const win =
+      typeof window !== 'undefined'
+        ? (window as unknown as { Tawk_API?: { hideWidget?: () => void; showWidget?: () => void } })
+        : null;
+
     if (props.isOpen) {
       document.body.classList.add('ar-active');
-      if (typeof window !== 'undefined' && (window as any).Tawk_API) {
-        try {
-          (window as any).Tawk_API.hideWidget();
-        } catch {
-          // Ignore
-        }
+      try {
+        win?.Tawk_API?.hideWidget?.();
+      } catch {
+        // Ignore
       }
     } else {
       document.body.classList.remove('ar-active');
-      if (typeof window !== 'undefined' && (window as any).Tawk_API) {
-        try {
-          (window as any).Tawk_API.showWidget();
-        } catch {
-          // Ignore
-        }
+      try {
+        win?.Tawk_API?.showWidget?.();
+      } catch {
+        // Ignore
       }
     }
 
@@ -65,12 +66,10 @@ export function ArRoomPreview(props: ArRoomPreviewProps) {
 
     return () => {
       document.body.classList.remove('ar-active');
-      if (typeof window !== 'undefined' && (window as any).Tawk_API) {
-        try {
-          (window as any).Tawk_API.showWidget();
-        } catch {
-          // Ignore
-        }
+      try {
+        win?.Tawk_API?.showWidget?.();
+      } catch {
+        // Ignore
       }
     };
   }, [props.isOpen]);

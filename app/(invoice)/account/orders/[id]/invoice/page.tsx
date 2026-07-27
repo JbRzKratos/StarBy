@@ -27,7 +27,7 @@ export default async function InvoicePage({ params }: { params: { id: string } }
     return notFound();
   }
 
-  const address = (order.shippingAddress as Record<string, any>) || {};
+  const address = (order.shippingAddress as Record<string, string | undefined>) || {};
   const subtotal = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (

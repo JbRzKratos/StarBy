@@ -39,7 +39,8 @@ export function useDeviceType(initialDevice: 'mobile' | 'desktop') {
       clearTimeout(timeoutId);
       mediaQuery.removeEventListener('change', handleResize);
     };
-  }, []);  // Run once on mount only — handleResize reads from the event, not the closure.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount only — handleResize reads from the event, not the closure.
 
   return device;
 }

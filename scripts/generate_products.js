@@ -120,7 +120,7 @@ const generateProducts = async () => {
         'Enamel Camping Mug',
         'Heart Handle Mug',
         'Travel Tumbler',
-        'Glass Coffee Cup'
+        'Glass Coffee Cup',
       ],
       filenames: [
         'classic_mug_11oz.png',
@@ -130,11 +130,11 @@ const generateProducts = async () => {
         'enamel_mug.png',
         'heart_mug.png',
         'tumbler.png',
-        'glass_mug.png'
+        'glass_mug.png',
       ],
       price: 25,
       sizes: [],
-    }
+    },
   ];
 
   for (const group of categories) {
@@ -147,7 +147,7 @@ const generateProducts = async () => {
     for (let i = 0; i < group.count; i++) {
       const slug = group.names[i].toLowerCase().replace(/ /g, '-');
       let filename;
-      
+
       if (group.type === 'mug') {
         filename = group.filenames[i];
       } else {

@@ -112,7 +112,9 @@ export default async function AccountOrdersPage() {
                           className="flex items-center justify-between font-mono text-body-sm text-pearl"
                         >
                           <span>
-                            {displayName}{variant ? ` — ${displayVariant}` : ''}{item.size ? ` (${item.size})` : ''} × {item.quantity}
+                            {displayName}
+                            {variant ? ` — ${displayVariant}` : ''}
+                            {item.size ? ` (${item.size})` : ''} × {item.quantity}
                           </span>
                           <span className="text-bone">₹{item.price * item.quantity}</span>
                         </div>

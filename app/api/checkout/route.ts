@@ -219,7 +219,7 @@ export async function POST(request: Request) {
       }
 
       // Send confirmation email for COD orders
-      const orderAddress = address as any;
+      const orderAddress = address as Record<string, string> | null;
       if (orderAddress && orderAddress.email) {
         await sendOrderConfirmationEmail(
           orderAddress.email,

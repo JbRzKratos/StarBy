@@ -473,7 +473,9 @@ export default function CheckoutPage() {
                       const variant = product?.variants.find((v) => v.id === item.variantId);
                       return (
                         <li key={i} className="font-mono text-caption text-pearl">
-                          {product?.name ?? item.productId}{variant ? ` — ${variant.name}` : ''}{item.size ? ` (${item.size})` : ''} × {item.quantity}
+                          {product?.name ?? item.productId}
+                          {variant ? ` — ${variant.name}` : ''}
+                          {item.size ? ` (${item.size})` : ''} × {item.quantity}
                         </li>
                       );
                     })}

@@ -45,7 +45,10 @@ export default function CartPage() {
                 const variant = product?.variants.find((v) => v.id === item.variantId);
                 const displayName = product?.name ?? item.productId.replace(/-/g, ' ');
                 const displayVariant = variant?.name ?? item.variantId.replace(/-/g, ' ');
-                const displayImage = item.customization?.imageUrl ?? variant?.images[0] ?? product?.variants[0]?.images[0];
+                const displayImage =
+                  item.customization?.imageUrl ??
+                  variant?.images[0] ??
+                  product?.variants[0]?.images[0];
                 return (
                   <div
                     key={`${item.productId}-${item.variantId}-${item.size ?? ''}`}
@@ -55,13 +58,18 @@ export default function CartPage() {
                       {displayImage ? (
                         <Image src={displayImage} alt={displayName} fill className="object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center font-mono text-caption text-ash">—</div>
+                        <div className="w-full h-full flex items-center justify-center font-mono text-caption text-ash">
+                          —
+                        </div>
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="font-display text-body-md text-bone capitalize">{displayName}</p>
+                      <p className="font-display text-body-md text-bone capitalize">
+                        {displayName}
+                      </p>
                       <p className="font-mono text-caption text-ash capitalize">
-                        {displayVariant}{item.size ? ` · Size: ${item.size}` : ''}
+                        {displayVariant}
+                        {item.size ? ` · Size: ${item.size}` : ''}
                       </p>
                       <div className="flex items-center gap-3 mt-3">
                         <button
@@ -81,7 +89,12 @@ export default function CartPage() {
                         <span className="font-mono text-body-sm text-bone">{item.quantity}</span>
                         <button
                           onClick={() =>
-                            updateQuantity(item.productId, item.variantId, item.quantity + 1, item.size)
+                            updateQuantity(
+                              item.productId,
+                              item.variantId,
+                              item.quantity + 1,
+                              item.size,
+                            )
                           }
                           aria-label="Increase quantity"
                           className="w-7 h-7 border border-smoke text-pearl flex items-center justify-center hover:border-cobalt"

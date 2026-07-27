@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     }
 
     // Send confirmation email
-    const address = order.shippingAddress as any;
+    const address = order.shippingAddress as Record<string, string> | null;
     if (address && address.email) {
       await sendOrderConfirmationEmail(
         address.email,

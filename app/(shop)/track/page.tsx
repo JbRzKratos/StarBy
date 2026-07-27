@@ -148,7 +148,8 @@ export default function TrackOrderPage() {
                   </span>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                     <span className="font-mono text-body-sm text-bone">
-                      {result.carrier} &mdash; <span className="font-bold text-cobalt">{result.trackingNumber}</span>
+                      {result.carrier} &mdash;{' '}
+                      <span className="font-bold text-cobalt">{result.trackingNumber}</span>
                     </span>
                     {result.trackingUrl && (
                       <a

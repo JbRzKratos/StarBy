@@ -133,7 +133,9 @@ export function ShopMobile({ category, products }: { category: string; products:
   }
 
   if (sortMethod === 'new')
-    filteredProducts = [...filteredProducts].sort((a, b) => (b.tags.includes('new') ? 1 : 0) - (a.tags.includes('new') ? 1 : 0));
+    filteredProducts = [...filteredProducts].sort(
+      (a, b) => (b.tags.includes('new') ? 1 : 0) - (a.tags.includes('new') ? 1 : 0),
+    );
   if (sortMethod === 'price-asc')
     filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
   if (sortMethod === 'price-desc')
