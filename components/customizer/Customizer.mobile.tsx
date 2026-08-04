@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useCustomizerStore } from '@/store/customizer';
+import { ApparelCustomizerMobile } from './apparel/ApparelCustomizer.mobile';
 import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
 import {
@@ -115,7 +116,22 @@ const getUploadInstructions = (categorySlug?: string) => {
   }
 };
 
+const APPAREL_SLUGS = new Set(['tees', 'hoodies', 'oversized-tees']);
+
+/**
+ * Thin router: dispatches apparel products to the new 2D customizer,
+ * all others to the legacy canvas customizer. No hooks called here,
+ * so no react-hooks/rules-of-hooks violation is possible.
+ */
 export function CustomizerMobile({ productId }: { productId: string }) {
+  const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
+  if (product && APPAREL_SLUGS.has(product.categorySlug)) {
+    return <ApparelCustomizerMobile productId={productId} />;
+  }
+  return <CustomizerMobileInner productId={productId} />;
+}
+
+function CustomizerMobileInner({ productId }: { productId: string }) {
   const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } =
     useCustomizerStore();
   const { printStyle, setPrintStyle } = useCustomizerStore();

@@ -45,33 +45,35 @@
     }
   }
 
-  /* Hide native cursor everywhere when custom cursor is active */
-  body.has-custom-cursor,
-  body.has-custom-cursor * {
+  /*
+   * Custom cursor — class gate.
+   *
+   * `cursor: none` ONLY fires when <html> has class `cursor-ready`.
+   * That class is added by custom-cursor.tsx ONLY after:
+   *   - pointer: fine confirmed via matchMedia (real mouse/trackpad)
+   *   - no ontouchstart (not touch-only/hybrid)
+   *   - GSAP quickTo instances created without throwing
+   *   - mousemove listener successfully attached
+   *
+   * Without cursor-ready, native cursor is visible everywhere — this is the safe default.
+   * Touch devices never get cursor-ready (JS checks before adding), so this block
+   * never fires on them, making the @media (hover: none) override redundant.
+   */
+  html.cursor-ready,
+  html.cursor-ready * {
     cursor: none !important;
   }
 
-  /* Restore text cursor (caret) inside text inputs so they remain usable */
-  body.has-custom-cursor input,
-  body.has-custom-cursor textarea {
+  /* Restore text caret inside text inputs even when custom cursor is active */
+  html.cursor-ready input,
+  html.cursor-ready textarea {
     cursor: text !important;
   }
 
-  /* Restore pointer on elements that explicitly need it via Tailwind */
-  body.has-custom-cursor .cursor-pointer {
-    cursor: none !important;
-  }
-
-  /* Touch devices: restore default cursor on everything */
-  @media (hover: none) {
-    body.has-custom-cursor,
-    body.has-custom-cursor * {
-      cursor: auto !important;
-    }
-    body.has-custom-cursor input,
-    body.has-custom-cursor textarea {
-      cursor: text !important;
-    }
+  /* Admin, AR camera, and reduced-motion: always restore native cursor */
+  html.cursor-ready body.ar-active,
+  html.cursor-ready body.ar-active * {
+    cursor: auto !important;
   }
 
   ::selection {

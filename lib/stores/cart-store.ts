@@ -8,6 +8,12 @@ export interface CartCustomization {
   text: string;
   textFont: string;
   imageUrl: string | null;
+  // Apparel customizer fields
+  thumbnail?: string | undefined;
+  garment?: string | undefined;
+  view?: string | undefined;
+  designFront?: string | undefined;
+  designBack?: string | undefined;
 }
 
 export interface CartItem {
@@ -16,6 +22,9 @@ export interface CartItem {
   quantity: number;
   price: number;
   size?: string;
+  name?: string;
+  variant?: string;
+  image?: string;
   customization: CartCustomization | null;
 }
 

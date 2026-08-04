@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useCustomizerStore } from '@/store/customizer';
+import { ApparelCustomizerDesktop } from './apparel/ApparelCustomizer.desktop';
 import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
 import {
@@ -118,7 +119,22 @@ const getUploadInstructions = (categorySlug?: string) => {
   }
 };
 
+const APPAREL_SLUGS = new Set(['tees', 'hoodies', 'oversized-tees']);
+
+/**
+ * Thin router: decides whether this product goes to the 2D apparel customizer
+ * or the legacy canvas customizer. Keeps all hooks in their respective leaf components,
+ * avoiding any react-hooks/rules-of-hooks conditional-hooks violation.
+ */
 export function CustomizerDesktop({ productId }: { productId: string }) {
+  const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
+  if (product && APPAREL_SLUGS.has(product.categorySlug)) {
+    return <ApparelCustomizerDesktop productId={productId} />;
+  }
+  return <CustomizerDesktopInner productId={productId} />;
+}
+
+function CustomizerDesktopInner({ productId }: { productId: string }) {
   const { uploadedImage, setUploadedImage, selectedDeviceId, setSelectedDevice } =
     useCustomizerStore();
   const { printStyle, setPrintStyle } = useCustomizerStore();

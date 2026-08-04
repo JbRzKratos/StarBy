@@ -21,6 +21,16 @@ export const categories: Category[] = [
     image: '/images/hero/tees.webp',
   },
   {
+    slug: 'oversized-tees',
+    name: 'Oversized Tees',
+    tagline: 'Big canvas, bigger statement.',
+    description: 'Drop-shoulder boxy fit tees built for oversized prints.',
+    productCount: 0,
+    featured: false,
+    gradient: 'linear-gradient(135deg, #1a1a2e 0%, #4a1942 100%)',
+    image: '/images/mockups/oversized-tee-black-front.png',
+  },
+  {
     slug: 'hoodies',
     name: 'Hoodies',
     tagline: 'Structured warmth.',
