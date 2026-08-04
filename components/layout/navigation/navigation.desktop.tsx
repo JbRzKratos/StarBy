@@ -3,8 +3,6 @@
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { User } from '@supabase/supabase-js';
-import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { useCurrencyStore, type CurrencyCode } from '@/lib/stores/currency-store';
@@ -35,11 +33,11 @@ export function NavigationDesktop() {
 
   const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     setMounted(true);
 
-    // Check auth status
     import('@/lib/supabase/client').then(({ createClient }) => {
       const supabase = createClient();
       supabase.auth.getUser().then(({ data }) => setUser(data.user));
@@ -48,23 +46,18 @@ export function NavigationDesktop() {
       });
       return () => authListener.subscription.unsubscribe();
     });
+
+    const handleScroll = () => {
+      if (window.scrollY > 60) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useGSAP(
-    () => {
-      if (!containerRef.current) return;
-
-      // Use CSS class toggle via ScrollTrigger callbacks — avoids GSAP animating
-      // backdropFilter on the main thread (especially costly in Edge).
-      ScrollTrigger.create({
-        trigger: document.body,
-        start: 'top -80px',
-        onEnter: () => containerRef.current?.classList.add('nav-scrolled'),
-        onLeaveBack: () => containerRef.current?.classList.remove('nav-scrolled'),
-      });
-    },
-    { scope: containerRef },
-  );
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] flex flex-col pointer-events-none">
@@ -73,42 +66,71 @@ export function NavigationDesktop() {
       </div>
       <nav
         ref={containerRef}
-        className="pointer-events-auto w-full px-5 md:px-8 py-4 flex items-center justify-between border-b border-transparent transition-[background-color] duration-300"
+        className={`pointer-events-auto w-full px-6 md:px-12 py-3.5 flex items-center justify-between transition-all duration-300 backdrop-blur-md ${
+          isScrolled
+            ? 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl'
+            : 'bg-[#F5F1EA]/90 text-[#0A0A0A] border-b border-[#0A0A0A]/10'
+        }`}
       >
         {/* Logo */}
         <Link
           href="/"
-          className="font-display text-display-sm md:text-display-md font-bold tracking-tight text-bone"
+          className={`font-display text-2xl md:text-3xl font-bold tracking-tight flex items-center group transition-colors ${
+            isScrolled ? 'text-[#F5F1EA]' : 'text-[#0A0A0A]'
+          }`}
         >
-          StarBy
+          <span>Star</span>
+          <span className="relative">
+            B
+            <svg
+              className="absolute -top-1 -right-1 w-2.5 h-2.5 text-[#ED9518] animate-pulse"
+              viewBox="0 0 100 100"
+              fill="currentColor"
+            >
+              <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
+            </svg>
+          </span>
+          <span>y</span>
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Nav Links */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-mono text-caption uppercase tracking-widest text-pearl hover:text-cobalt transition-colors"
+              className={`font-mono text-caption uppercase tracking-widest font-bold transition-colors ${
+                isScrolled
+                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              }`}
             >
               {link.label}
             </Link>
           ))}
         </div>
 
-        {/* Right side */}
+        {/* Right side icons & actions */}
         <div className="flex items-center gap-4">
           {/* Currency Dropdown */}
           <div className="relative group cursor-pointer hidden lg:block">
-            <span className="font-mono text-caption text-pearl group-hover:text-cobalt transition-colors uppercase flex items-center gap-1">
+            <span
+              className={`font-mono text-caption font-bold uppercase tracking-widest flex items-center gap-1 transition-colors ${
+                isScrolled
+                  ? 'text-[#F5F1EA] group-hover:text-[#ED9518]'
+                  : 'text-[#0A0A0A] group-hover:text-[#ED9518]'
+              }`}
+            >
               {currency} ▾
             </span>
-            <div className="absolute top-full right-0 mt-2 w-24 bg-charcoal border border-smoke/50 rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            <div className="absolute top-full right-0 mt-2 w-24 bg-[#0A0A0A] border border-[#F5F1EA]/20 rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
               {currencies.map((c) => (
                 <button
                   key={c}
                   onClick={() => setCurrency(c)}
-                  className={`w-full text-left px-4 py-2 font-mono text-caption hover:bg-smoke/20 hover:text-bone ${currency === c ? 'text-bone' : 'text-pearl'}`}
+                  className={`w-full text-left px-4 py-2 font-mono text-caption hover:bg-white/10 ${
+                    currency === c ? 'text-[#ED9518]' : 'text-[#F5F1EA]'
+                  }`}
                 >
                   {c}
                 </button>
@@ -119,7 +141,11 @@ export function NavigationDesktop() {
           {/* Search Icon */}
           <button
             onClick={() => setSearchOpen(true)}
-            className="text-pearl hover:text-cobalt transition-colors w-10 h-10 flex items-center justify-center"
+            className={`transition-colors w-10 h-10 flex items-center justify-center ${
+              isScrolled
+                ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                : 'text-[#0A0A0A] hover:text-[#ED9518]'
+            }`}
             aria-label="Search"
           >
             <svg
@@ -128,7 +154,7 @@ export function NavigationDesktop() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="2"
             >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -138,7 +164,11 @@ export function NavigationDesktop() {
           {/* Wishlist Icon */}
           <button
             onClick={() => setWishlistOpen(true)}
-            className="relative text-pearl hover:text-ember transition-colors flex items-center justify-center w-10 h-10"
+            className={`relative transition-colors flex items-center justify-center w-10 h-10 ${
+              isScrolled
+                ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                : 'text-[#0A0A0A] hover:text-[#ED9518]'
+            }`}
             aria-label="Open wishlist"
           >
             <svg
@@ -147,12 +177,12 @@ export function NavigationDesktop() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="2"
             >
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
             {mounted && wishlistCount > 0 && (
-              <span className="absolute top-1 right-0 w-4 h-4 bg-ember text-bone text-[10px] rounded-full flex items-center justify-center">
+              <span className="absolute top-1 right-0 w-4 h-4 bg-[#ED9518] text-[#0A0A0A] font-bold text-[10px] rounded-full flex items-center justify-center">
                 {wishlistCount}
               </span>
             )}
@@ -162,7 +192,11 @@ export function NavigationDesktop() {
           {mounted && user ? (
             <Link
               href="/account"
-              className="text-pearl hover:text-bone transition-colors w-10 h-10 hidden sm:flex items-center justify-center"
+              className={`transition-colors w-10 h-10 hidden sm:flex items-center justify-center ${
+                isScrolled
+                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              }`}
               aria-label="Account"
             >
               <svg
@@ -171,7 +205,7 @@ export function NavigationDesktop() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="2"
               >
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
@@ -180,7 +214,11 @@ export function NavigationDesktop() {
           ) : mounted && !user ? (
             <Link
               href="/login"
-              className="hidden sm:block font-mono text-caption text-bone uppercase tracking-widest hover:text-cobalt transition-colors ml-2"
+              className={`hidden sm:block font-mono text-caption font-bold uppercase tracking-widest transition-colors ml-2 ${
+                isScrolled
+                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              }`}
             >
               Sign In
             </Link>
@@ -189,7 +227,11 @@ export function NavigationDesktop() {
           {/* Cart Icon */}
           <button
             onClick={toggleCart}
-            className="relative text-pearl hover:text-cobalt transition-colors flex items-center justify-center w-10 h-10"
+            className={`relative transition-colors flex items-center justify-center w-10 h-10 ${
+              isScrolled
+                ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                : 'text-[#0A0A0A] hover:text-[#ED9518]'
+            }`}
             aria-label="Open cart"
           >
             <svg
@@ -198,7 +240,7 @@ export function NavigationDesktop() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -207,7 +249,7 @@ export function NavigationDesktop() {
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
             {mounted && totalItems() > 0 && (
-              <span className="absolute top-1 right-0 w-4 h-4 bg-cobalt text-bone text-[10px] rounded-full flex items-center justify-center">
+              <span className="absolute top-1 right-0 w-4 h-4 bg-[#ED9518] text-[#0A0A0A] font-bold text-[10px] rounded-full flex items-center justify-center">
                 {totalItems()}
               </span>
             )}

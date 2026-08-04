@@ -1,222 +1,80 @@
 'use client';
 
-import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { gsap } from '@/lib/gsap-config';
-import { useGSAP } from '@gsap/react';
-import { HERO_DESIGNS_IMAGES, HERO_PERSONALIZED_IMAGES } from './hero.shared';
-import { ScrollTriggerWrapper } from '@/components/animations/scroll-trigger-wrapper';
 
 export function HeroMobile() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const leftHeadRef = useRef<HTMLHeadingElement>(null);
-  const rightHeadRef = useRef<HTMLHeadingElement>(null);
-  const leftCTARef = useRef<HTMLAnchorElement>(null);
-  const rightCTARef = useRef<HTMLAnchorElement>(null);
-  const dividerRef = useRef<HTMLDivElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
-
-  const leftImagesRef = useRef<HTMLDivElement>(null);
-  const rightImagesRef = useRef<HTMLDivElement>(null);
-
-  // We slice to 3 images to save memory/processing on mobile
-  const designsImages = HERO_DESIGNS_IMAGES.slice(0, 3);
-  const personalizedImages = HERO_PERSONALIZED_IMAGES.slice(0, 3);
-
-  useGSAP(
-    () => {
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // 1. Initial Staggered Entry
-      const tl = gsap.timeline();
-
-      tl.fromTo(
-        leftHeadRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
-      )
-        .fromTo(
-          dividerRef.current,
-          { scaleX: 0 },
-          { scaleX: 1, duration: 0.6, ease: 'power2.inOut' },
-          '-=0.4',
-        )
-        .fromTo(
-          badgeRef.current,
-          { scale: 0, opacity: 0, rotation: -45 },
-          { scale: 1, opacity: 1, rotation: 0, duration: 0.5, ease: 'back.out(1.5)' },
-          '-=0.2',
-        )
-        .fromTo(
-          rightHeadRef.current,
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
-          '-=0.6',
-        )
-        .fromTo(
-          [leftCTARef.current, rightCTARef.current],
-          { y: 10, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out', stagger: 0.15 },
-          '-=0.4',
-        );
-
-      if (!prefersReducedMotion) {
-        // 2. Crossfade Logic (Top Block)
-        const leftImgs = gsap.utils.toArray<HTMLImageElement>(
-          leftImagesRef.current?.children || [],
-        );
-        const leftTl = gsap.timeline({ repeat: -1 });
-
-        leftImgs.forEach((img, i) => {
-          gsap.set(img, { opacity: i === 0 ? 1 : 0 });
-        });
-
-        leftImgs.forEach((img, i) => {
-          const nextImg = leftImgs[(i + 1) % leftImgs.length] as HTMLImageElement;
-          leftTl
-            .to({}, { duration: 3.5 })
-            .to(img, { opacity: 0, duration: 1.2, ease: 'power2.inOut' })
-            .to(nextImg, { opacity: 1, duration: 1.2, ease: 'power2.inOut' }, '<');
-        });
-
-        // 3. Crossfade Logic (Bottom Block)
-        const rightImgs = gsap.utils.toArray<HTMLImageElement>(
-          rightImagesRef.current?.children || [],
-        );
-        const rightTl = gsap.timeline({ repeat: -1 });
-
-        rightImgs.forEach((img, i) => {
-          gsap.set(img, { opacity: i === 0 ? 1 : 0 });
-        });
-
-        rightImgs.forEach((img, i) => {
-          const nextImg = rightImgs[(i + 1) % rightImgs.length] as HTMLImageElement;
-          rightTl
-            .to({}, { duration: 4.0 })
-            .to(img, { opacity: 0, duration: 1.2, ease: 'power2.inOut' })
-            .to(nextImg, { opacity: 1, duration: 1.2, ease: 'power2.inOut' }, '<');
-        });
-
-        // 4. Page Visibility
-        const handleVisibilityChange = () => {
-          if (document.hidden) {
-            leftTl.pause();
-            rightTl.pause();
-          } else {
-            leftTl.play();
-            rightTl.play();
-          }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        return () => {
-          document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-      }
-    },
-    { scope: containerRef },
-  );
-
   return (
-    <ScrollTriggerWrapper>
-      <section
-        ref={containerRef}
-        className="relative w-full min-h-[calc(100dvh-2rem)] flex flex-col justify-between overflow-hidden bg-charcoal pt-24 sm:pt-28 pb-6"
-      >
-        {/* TOP BLOCK (OUR DESIGNS) */}
-        <div className="flex-1 w-full relative flex flex-col items-center justify-end pb-8 z-10">
-          <div
-            ref={leftImagesRef}
-            className="absolute inset-0 w-full h-full -z-10 opacity-60 mix-blend-screen pointer-events-none"
-          >
-            {designsImages.map((src, idx) => (
-              <Image
-                key={src}
-                src={src}
-                alt={`StarBy Original Design ${idx + 1}`}
-                fill
-                priority={idx === 0}
-                className="object-cover"
-                sizes="100vw"
-              />
-            ))}
-          </div>
+    <section className="relative w-full min-h-[90vh] bg-[#F5F1EA] text-[#0A0A0A] overflow-hidden flex flex-col justify-between pt-28 pb-8 px-5 select-none">
+      {/* ── 1. Kicker text (top) ── */}
+      <div className="relative z-20">
+        <p className="font-mono text-xs font-black tracking-[0.2em] uppercase leading-relaxed text-[#0A0A0A]">
+          DESIGNED BY US.
+          <br />
+          MADE FOR YOU.
+        </p>
+        <div className="w-10 h-[2px] bg-[#ED9518] mt-2.5" />
+      </div>
 
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent -z-10 pointer-events-none" />
+      {/* ── 2. Giant official StarBy wordmark & 3. Official Gold Star ── */}
+      <div className="relative my-auto py-6 flex items-center justify-center">
+        <h1 className="font-display text-[26vw] font-bold uppercase leading-none tracking-tighter text-[#0A0A0A] text-center select-none flex items-baseline">
+          <span>Star</span>
+          <span className="relative">
+            B{/* Official Curved 4-Point Gold Star Icon at top-right of 'B' */}
+            <svg
+              className="absolute -top-[14%] -right-[8%] w-[5vw] h-[5vw] text-[#ED9518] animate-pulse drop-shadow-[0_0_12px_rgba(237,149,24,0.6)]"
+              viewBox="0 0 100 100"
+              fill="currentColor"
+            >
+              <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
+            </svg>
+          </span>
+          <span>y</span>
+        </h1>
 
-          <div className="flex flex-col items-center gap-4 px-6 w-full max-w-sm">
-            <h2
-              ref={leftHeadRef}
-              className="font-display text-4xl text-bone uppercase tracking-tighter text-center"
-            >
-              Designed
-              <br />
-              By Us
-            </h2>
-            <Link
-              href="/products/all"
-              ref={leftCTARef}
-              className="bg-bone text-charcoal font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg w-fit mx-auto"
-            >
-              Shop Designs
-            </Link>
+        {/* ── 4. Centered Massive Model Photograph ── */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <div className="relative h-[380px] w-[320px]">
+            <Image
+              src="/images/hero-model-transparent.png"
+              alt="StarBy Editorial Streetwear Model"
+              fill
+              sizes="320px"
+              priority
+              className="object-contain object-center drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)]"
+            />
           </div>
         </div>
+      </div>
 
-        {/* HORIZONTAL DIVIDER */}
-        <div className="relative w-full h-[1px] z-20 flex items-center justify-center my-4">
-          <div ref={dividerRef} className="absolute inset-0 bg-smoke/20 origin-left" />
-          <div
-            ref={badgeRef}
-            className="w-10 h-10 rounded-full bg-cobalt flex items-center justify-center relative shadow-lg shadow-cobalt/20 z-30"
+      {/* ── 5. CTA Row & 6. Collection Label ── */}
+      <div className="relative z-20 flex flex-col gap-5 pt-4">
+        {/* Stacked CTA buttons */}
+        <div className="flex flex-col gap-3">
+          <Link
+            href="/products/all"
+            className="w-full text-center bg-[#0A0A0A] text-[#F5F1EA] py-3.5 px-6 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] active:bg-[#ED9518] active:text-[#0A0A0A]"
           >
-            <span className="font-display text-bone text-sm uppercase tracking-tighter absolute mt-[2px]">
-              SB
-            </span>
-          </div>
+            SHOP NOW
+          </Link>
+
+          <Link
+            href="/customize"
+            className="w-full text-center font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#0A0A0A] border-b-2 border-[#0A0A0A] pb-1 hover:text-[#ED9518] hover:border-[#ED9518] transition-colors"
+          >
+            EXPLORE THE DROP
+          </Link>
         </div>
 
-        {/* BOTTOM BLOCK (YOUR DESIGN) */}
-        <div className="flex-1 w-full relative flex flex-col items-center justify-start pt-8 z-10 bg-cobalt/5">
-          <div
-            ref={rightImagesRef}
-            className="absolute inset-0 w-full h-full -z-10 opacity-60 mix-blend-screen pointer-events-none"
-          >
-            {personalizedImages.map((src, idx) => (
-              <Image
-                key={src}
-                src={src}
-                alt={`Personalized Example ${idx + 1}`}
-                fill
-                priority={idx === 0}
-                className="object-cover"
-                sizes="100vw"
-              />
-            ))}
-          </div>
-
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent -z-10 pointer-events-none" />
-
-          <div className="flex flex-col items-center gap-4 px-6 w-full max-w-sm mt-auto mb-10">
-            <h2
-              ref={rightHeadRef}
-              className="font-display text-4xl text-bone uppercase tracking-tighter text-center"
-            >
-              Personalized
-              <br />
-              By You
-            </h2>
-            <Link
-              href="/customize"
-              ref={rightCTARef}
-              className="bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg w-fit mx-auto"
-            >
-              Customize Yours
-            </Link>
-          </div>
+        {/* Collection Label below CTA */}
+        <div className="flex justify-between items-center font-mono text-[10px] uppercase tracking-[0.2em] text-[#0A0A0A] pt-2 border-t border-[#0A0A0A]/20">
+          <span className="font-bold border-b-2 border-[#ED9518] pb-0.5 text-[#0A0A0A]">
+            NEW DROP
+          </span>
+          <span className="font-bold text-[#0A0A0A]">2026</span>
         </div>
-      </section>
-    </ScrollTriggerWrapper>
+      </div>
+    </section>
   );
 }

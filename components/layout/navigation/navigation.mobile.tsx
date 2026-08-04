@@ -83,26 +83,16 @@ export function NavigationMobile() {
   useEffect(() => {
     if (!navRef.current) return;
 
-    // Track state to avoid writing to DOM on every scroll tick
-    let isScrolled = false;
-
     const handleScroll = () => {
-      const shouldScroll = window.scrollY > 20;
-      if (shouldScroll === isScrolled) return; // No state change, skip DOM write
-      isScrolled = shouldScroll;
-
-      if (navRef.current) {
-        if (shouldScroll) {
-          navRef.current.classList.add('nav-scrolled');
-        } else {
-          navRef.current.classList.remove('nav-scrolled');
-        }
-      }
+      const shouldScroll = window.scrollY > 60;
+      setIsScrolledState(shouldScroll);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const [isScrolledState, setIsScrolledState] = useState(false);
 
   // Menu Drawer Animation
   useGSAP(
@@ -149,28 +139,49 @@ export function NavigationMobile() {
         </div>
         <nav
           ref={navRef}
-          className="pointer-events-auto w-full px-5 py-4 flex items-center justify-between border-b border-transparent transition-all duration-300"
+          className={`pointer-events-auto w-full px-5 py-3 flex items-center justify-between transition-all duration-300 backdrop-blur-md ${
+            isScrolledState
+              ? 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl'
+              : 'bg-[#F5F1EA]/90 text-[#0A0A0A] border-b border-[#0A0A0A]/10'
+          }`}
         >
           <Link
             href="/"
-            className="font-display text-display-sm font-bold tracking-tight text-bone"
+            className={`font-display text-2xl font-bold tracking-tight flex items-center group transition-colors ${
+              isScrolledState ? 'text-[#F5F1EA]' : 'text-[#0A0A0A]'
+            }`}
           >
-            StarBy
+            <span>Star</span>
+            <span className="relative">
+              B
+              <svg
+                className="absolute -top-1 -right-1 w-2.5 h-2.5 text-[#ED9518] animate-pulse"
+                viewBox="0 0 100 100"
+                fill="currentColor"
+              >
+                <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
+              </svg>
+            </span>
+            <span>y</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setSearchOpen(true)}
-              className="text-pearl hover:text-cobalt transition-colors w-10 h-10 flex items-center justify-center"
+              className={`transition-colors w-9 h-9 flex items-center justify-center ${
+                isScrolledState
+                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              }`}
               aria-label="Search"
             >
               <svg
-                width="20"
-                height="20"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="2"
               >
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -178,46 +189,52 @@ export function NavigationMobile() {
             </button>
             <button
               onClick={() => setWishlistOpen(true)}
-              className="relative text-pearl hover:text-ember transition-colors flex items-center justify-center w-10 h-10"
+              className={`relative transition-colors flex items-center justify-center w-9 h-9 ${
+                isScrolledState
+                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              }`}
               aria-label="Open wishlist"
             >
               <svg
-                width="20"
-                height="20"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="2"
               >
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
               {mounted && wishlistCount > 0 && (
-                <span className="absolute top-1 right-0 w-4 h-4 bg-ember text-bone text-[10px] rounded-full flex items-center justify-center">
+                <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-[#ED9518] text-[#0A0A0A] text-[9px] font-bold rounded-full flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
             </button>
             <button
               onClick={toggleCart}
-              className="relative text-pearl hover:text-cobalt transition-colors flex items-center justify-center w-10 h-10"
+              className={`relative transition-colors flex items-center justify-center w-9 h-9 ${
+                isScrolledState
+                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
+                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              }`}
               aria-label="Open cart"
             >
               <svg
-                width="20"
-                height="20"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                strokeWidth="2"
               >
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
                 <path d="M16 10a4 4 0 0 1-8 0"></path>
               </svg>
               {mounted && totalItems() > 0 && (
-                <span className="absolute top-1 right-0 w-4 h-4 bg-cobalt text-bone text-[10px] rounded-full flex items-center justify-center">
+                <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-[#ED9518] text-[#0A0A0A] text-[9px] font-bold rounded-full flex items-center justify-center">
                   {totalItems()}
                 </span>
               )}
@@ -225,12 +242,20 @@ export function NavigationMobile() {
 
             <button
               onClick={() => setIsOpen(true)}
-              className="flex flex-col gap-1.5 w-11 h-11 items-center justify-center"
+              className="flex flex-col gap-1 w-9 h-9 items-center justify-center"
               aria-label="Open menu"
               aria-expanded={isOpen}
             >
-              <span className="block w-6 h-px bg-bone" />
-              <span className="block w-4 h-px bg-bone ml-auto" />
+              <span
+                className={`w-5 h-0.5 rounded-full transition-colors ${
+                  isScrolledState ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
+                }`}
+              />
+              <span
+                className={`w-5 h-0.5 rounded-full transition-colors ${
+                  isScrolledState ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
+                }`}
+              />
             </button>
           </div>
         </nav>
