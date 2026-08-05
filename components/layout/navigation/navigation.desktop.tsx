@@ -56,7 +56,8 @@ export function NavigationDesktop() {
     }
   } else {
     // Other pages: Always dark background, light text (regardless of scroll)
-    navClasses = 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
+    navClasses =
+      'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
     textIsDark = false;
   }
 

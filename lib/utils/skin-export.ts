@@ -9,6 +9,30 @@ const DPI = 300;
 const MM_TO_INCH = 25.4;
 const PIXELS_PER_MM = DPI / MM_TO_INCH;
 
+/** Minimal Fabric.js canvas/object interface for CDN-loaded fabric */
+interface FabricObject {
+  getBoundingRect(): { width: number; height: number };
+  set(opts: Record<string, unknown>): void;
+}
+interface FabricCanvas {
+  clipPath: FabricObject | null;
+  add(obj: FabricObject): void;
+  renderAll(): void;
+  toDataURL(opts: { format: string; quality: number; multiplier: number }): string;
+  dispose(): void;
+}
+interface FabricStatic {
+  Canvas: new (el: HTMLCanvasElement, opts: Record<string, unknown>) => FabricCanvas;
+  Path: new (data: string, opts: Record<string, unknown>) => FabricObject;
+  Image: {
+    fromURL(
+      url: string,
+      callback: (img: FabricObject | null) => void,
+      opts: Record<string, unknown>,
+    ): void;
+  };
+}
+
 /**
  * Generate a high-resolution, print-ready export of the customizer design.
  * This function creates a hidden, off-screen Fabric.js canvas, scales it to the exact
@@ -31,7 +55,7 @@ export async function exportPrintReadySkin(
     canvasEl.width = pixelWidth;
     canvasEl.height = pixelHeight;
 
-    const fabric = (window as any).fabric;
+    const fabric = (window as Window & { fabric?: FabricStatic }).fabric;
     if (!fabric) {
       return reject(new Error('Fabric.js is not loaded.'));
     }
@@ -73,7 +97,7 @@ export async function exportPrintReadySkin(
 
     fabric.Image.fromURL(
       designImageUrl,
-      (img: any) => {
+      (img: FabricObject | null) => {
         if (!img) {
           offscreenCanvas.dispose();
           return reject(new Error('Failed to load design image for export.'));
@@ -87,20 +111,13 @@ export async function exportPrintReadySkin(
         // coordinates (e.g. 0 to 1 relative to the clip path) so it's resolution-independent.
         // For this v1, we scale the absolute UI transforms up by the ratio.
 
-        // We also need to account for the offset of the clipPath in the UI vs the offscreen canvas.
-        // Since we don't pass the exact UI clipPath left/top here, we'll center it relative to the new clip path.
-        // (A more precise approach would pass the raw `img.left`, `img.top` and the UI `clipPath.left`, `clipPath.top` to calculate relative offsets).
-
         img.set({
-          // Simplified transform mapping: just re-apply cover fit and user angle for now,
-          // a full math mapping would be needed for exact X/Y drag offsets.
           scaleX: transform.scaleX * exportToUiRatio,
           scaleY: transform.scaleY * exportToUiRatio,
           angle: transform.angle,
           opacity: transform.opacity,
           originX: 'center',
           originY: 'center',
-          // Assuming the UI centered it, we center it on the export canvas too
           left: pixelWidth / 2,
           top: pixelHeight / 2,
         });

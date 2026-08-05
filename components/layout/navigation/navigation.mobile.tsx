@@ -95,6 +95,7 @@ export function NavigationMobile() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const pathname = usePathname();
   const [isScrolledState, setIsScrolledState] = useState(false);
 
   const isHomePage = pathname === '/';
@@ -116,7 +117,8 @@ export function NavigationMobile() {
     }
   } else {
     // Other pages: Always dark background, light text (regardless of scroll)
-    navClasses = 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
+    navClasses =
+      'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
     textIsDark = false;
   }
 
@@ -268,12 +270,7 @@ export function NavigationMobile() {
             >
               <span
                 className={`w-5 h-0.5 rounded-full transition-colors ${
-                  navIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
-                }`}
-              />
-              <span
-                className={`w-5 h-0.5 rounded-full transition-colors ${
-                  navIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
+                  !textIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
                 }`}
               />
             </button>
