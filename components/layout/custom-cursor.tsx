@@ -55,7 +55,17 @@ export function CustomCursor() {
     let yToDot: ((val: number) => void) | null = null;
     let isHovering = false;
 
+    let hasMoved = false;
+
     const onMouseMove = (e: MouseEvent) => {
+      if (!hasMoved) {
+        hasMoved = true;
+        // ── Step 4: Only NOW add cursor-ready to <html> ───────────────────────
+        // We do this on the FIRST mouse move to ensure the custom cursor is
+        // actually tracking correctly before we hide the native cursor.
+        document.documentElement.classList.add('cursor-ready');
+        gsap.to([cursor, dot], { opacity: 1, duration: 0.3 });
+      }
       xToCursor?.(e.clientX);
       yToCursor?.(e.clientY);
       xToDot?.(e.clientX);
@@ -106,13 +116,8 @@ export function CustomCursor() {
       window.addEventListener('mousedown', onMouseDown, { passive: true });
       window.addEventListener('mouseup', onMouseUp, { passive: true });
 
-      // ── Step 4: Only NOW add cursor-ready to <html> ───────────────────────
-      // This is the single gate that triggers `html.cursor-ready { cursor: none }`.
-      // It only fires after every piece above succeeded without throwing.
-      document.documentElement.classList.add('cursor-ready');
-
-      // Fade in the custom cursor elements
-      gsap.to([cursor, dot], { opacity: 1, duration: 0.6, delay: 0.3 });
+      // Listeners are attached. The cursor-ready class and fade-in are now
+      // handled inside onMouseMove so we only hide native cursor if it works.
     } catch (err) {
       // Init failed — log it but DO NOT add cursor-ready.
       // Native cursor remains visible — this is safe/correct behaviour.

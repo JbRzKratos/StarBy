@@ -15,6 +15,8 @@ export function FloatingActions() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initialize state on mount
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
