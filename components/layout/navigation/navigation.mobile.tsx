@@ -273,6 +273,11 @@ export function NavigationMobile() {
                   !textIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
                 }`}
               />
+              <span
+                className={`w-5 h-0.5 rounded-full transition-colors ${
+                  !textIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
+                }`}
+              />
             </button>
           </div>
         </nav>
