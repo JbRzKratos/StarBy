@@ -97,12 +97,28 @@ export function NavigationMobile() {
 
   const [isScrolledState, setIsScrolledState] = useState(false);
 
-  const pathname = usePathname();
-  // On non-home pages the body background is dark. The transparent nav with
-  // dark text would be invisible. Force dark/scrolled nav style on all
-  // non-home pages so text is always readable.
   const isHomePage = pathname === '/';
-  const navIsDark = isScrolledState || !isHomePage;
+
+  // Determine styles based on page and scroll
+  let navClasses = '';
+  let textIsDark = false;
+
+  if (isHomePage) {
+    if (isScrolledState) {
+      // Home scrolled: Dark background, light text
+      navClasses =
+        'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
+      textIsDark = false;
+    } else {
+      // Home top: Transparent background, dark text
+      navClasses = 'bg-transparent text-[#0A0A0A] border-b border-transparent';
+      textIsDark = true;
+    }
+  } else {
+    // Other pages: Always dark background, light text (regardless of scroll)
+    navClasses = 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
+    textIsDark = false;
+  }
 
   // Menu Drawer Animation
   useGSAP(
@@ -149,22 +165,18 @@ export function NavigationMobile() {
         </div>
         <nav
           ref={navRef}
-          className={`pointer-events-auto w-full px-5 py-3 flex items-center justify-between transition-all duration-300 ${
-            navIsDark
-              ? 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md'
-              : 'bg-transparent text-[#0A0A0A] border-b border-transparent'
-          }`}
+          className={`pointer-events-auto w-full px-5 py-3.5 flex items-center justify-between transition-all duration-300 ${navClasses}`}
         >
           <Link
             href="/"
             className={`font-display text-2xl font-bold tracking-tight flex items-center group transition-colors ${
-              navIsDark ? 'text-[#F5F1EA]' : 'text-[#0A0A0A]'
+              textIsDark ? 'text-[#0A0A0A]' : 'text-[#F5F1EA]'
             }`}
           >
             <span className="flex items-start">
               <span className="leading-none">StarBy</span>
               <svg
-                className="w-3.5 h-3.5 text-[#ED9518] animate-pulse ml-[1px]"
+                className="w-3.5 h-3.5 text-ember animate-pulse ml-[1px]"
                 viewBox="0 0 100 100"
                 fill="currentColor"
               >
@@ -176,10 +188,10 @@ export function NavigationMobile() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSearchOpen(true)}
-              className={`transition-colors w-11 h-11 flex items-center justify-center ${
-                navIsDark
-                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              className={`transition-colors w-10 h-10 flex items-center justify-center ${
+                textIsDark
+                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Search"
             >
@@ -198,9 +210,9 @@ export function NavigationMobile() {
             <button
               onClick={() => setWishlistOpen(true)}
               className={`relative transition-colors flex items-center justify-center w-11 h-11 ${
-                navIsDark
-                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+                textIsDark
+                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Open wishlist"
             >
@@ -223,9 +235,9 @@ export function NavigationMobile() {
             <button
               onClick={toggleCart}
               className={`relative transition-colors flex items-center justify-center w-11 h-11 ${
-                navIsDark
-                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+                textIsDark
+                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Open cart"
             >

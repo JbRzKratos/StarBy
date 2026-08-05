@@ -37,12 +37,28 @@ export function NavigationDesktop() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const pathname = usePathname();
-  // On non-home pages the body background is dark (charcoal). The transparent
-  // nav with dark text (#0A0A0A) would be invisible there. Force the nav into
-  // its dark/scrolled style on every page except the home page.
   const isHomePage = pathname === '/';
-  // Effective scrolled state: true when user has scrolled OR we're not on home
-  const navIsDark = isScrolled || !isHomePage;
+
+  // Determine styles based on page and scroll
+  let navClasses = '';
+  let textIsDark = false;
+
+  if (isHomePage) {
+    if (isScrolled) {
+      // Home scrolled: Dark background, light text
+      navClasses =
+        'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
+      textIsDark = false;
+    } else {
+      // Home top: Transparent background, dark text
+      navClasses = 'bg-transparent text-[#0A0A0A] border-b border-transparent';
+      textIsDark = true;
+    }
+  } else {
+    // Other pages: Always dark background, light text (regardless of scroll)
+    navClasses = 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
+    textIsDark = false;
+  }
 
   useEffect(() => {
     setMounted(true);
@@ -77,17 +93,13 @@ export function NavigationDesktop() {
       </div>
       <nav
         ref={containerRef}
-        className={`pointer-events-auto w-full px-6 md:px-12 py-3.5 flex items-center justify-between transition-all duration-300 ${
-          navIsDark
-            ? 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md'
-            : 'bg-transparent text-[#0A0A0A] border-b border-transparent'
-        }`}
+        className={`pointer-events-auto w-full px-6 md:px-12 py-3.5 flex items-center justify-between transition-all duration-300 ${navClasses}`}
       >
         {/* Logo */}
         <Link
           href="/"
           className={`font-display text-2xl md:text-3xl font-bold tracking-tight flex items-center group transition-colors ${
-            navIsDark ? 'text-[#F5F1EA]' : 'text-[#0A0A0A]'
+            textIsDark ? 'text-[#0A0A0A]' : 'text-[#F5F1EA]'
           }`}
         >
           <span className="flex items-start">
@@ -109,9 +121,9 @@ export function NavigationDesktop() {
               key={link.href}
               href={link.href}
               className={`font-mono text-caption uppercase tracking-widest font-bold transition-colors ${
-                navIsDark
-                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+                textIsDark
+                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
             >
               {link.label}
@@ -125,9 +137,9 @@ export function NavigationDesktop() {
           <div className="relative group cursor-pointer hidden lg:block">
             <span
               className={`font-mono text-caption font-bold uppercase tracking-widest flex items-center gap-1 transition-colors ${
-                navIsDark
-                  ? 'text-[#F5F1EA] group-hover:text-[#ED9518]'
-                  : 'text-[#0A0A0A] group-hover:text-[#ED9518]'
+                textIsDark
+                  ? 'text-[#0A0A0A] group-hover:text-[#ED9518]'
+                  : 'text-[#F5F1EA] group-hover:text-[#ED9518]'
               }`}
             >
               {currency} ▾
@@ -151,9 +163,9 @@ export function NavigationDesktop() {
           <button
             onClick={() => setSearchOpen(true)}
             className={`transition-colors w-10 h-10 flex items-center justify-center ${
-              navIsDark
-                ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              textIsDark
+                ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                : 'text-[#F5F1EA] hover:text-[#ED9518]'
             }`}
             aria-label="Search"
           >
@@ -174,9 +186,9 @@ export function NavigationDesktop() {
           <button
             onClick={() => setWishlistOpen(true)}
             className={`relative transition-colors flex items-center justify-center w-10 h-10 ${
-              navIsDark
-                ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              textIsDark
+                ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                : 'text-[#F5F1EA] hover:text-[#ED9518]'
             }`}
             aria-label="Open wishlist"
           >
@@ -201,10 +213,10 @@ export function NavigationDesktop() {
           {mounted && user ? (
             <Link
               href="/account"
-              className={`transition-colors w-10 h-10 hidden sm:flex items-center justify-center ${
-                navIsDark
-                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              className={`transition-colors flex items-center justify-center w-10 h-10 hidden sm:flex ${
+                textIsDark
+                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Account"
             >
@@ -224,9 +236,9 @@ export function NavigationDesktop() {
             <Link
               href="/login"
               className={`hidden sm:block font-mono text-caption font-bold uppercase tracking-widest transition-colors ml-2 ${
-                navIsDark
-                  ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                  : 'text-[#0A0A0A] hover:text-[#ED9518]'
+                textIsDark
+                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
             >
               Sign In
@@ -237,9 +249,9 @@ export function NavigationDesktop() {
           <button
             onClick={toggleCart}
             className={`relative transition-colors flex items-center justify-center w-10 h-10 ${
-              navIsDark
-                ? 'text-[#F5F1EA] hover:text-[#ED9518]'
-                : 'text-[#0A0A0A] hover:text-[#ED9518]'
+              textIsDark
+                ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                : 'text-[#F5F1EA] hover:text-[#ED9518]'
             }`}
             aria-label="Open cart"
           >
