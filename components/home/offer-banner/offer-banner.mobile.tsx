@@ -10,7 +10,7 @@ import { ScrollTriggerWrapper } from '@/components/animations/scroll-trigger-wra
 export function OfferBannerMobile() {
   const container = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
-  const [isDismissed, setIsDismissed] = useState(true);
+  const [isDismissed, setIsDismissed] = useState(false); // Default false: visible on SSR for first-time visitors
   const prefersReducedMotion = useRef(false);
   const { formatPrice } = usePrice();
   const offerString = getOfferString(formatPrice);
@@ -61,13 +61,15 @@ export function OfferBannerMobile() {
     { scope: container, dependencies: [isDismissed, offerString] },
   );
 
-  if (isDismissed) return null;
-
   return (
     <ScrollTriggerWrapper>
+      {/* Height always reserved to prevent CLS */}
       <div
         ref={container}
         className="w-full bg-cobalt text-bone py-2 relative overflow-hidden flex items-center z-50 h-8"
+        style={{ display: isDismissed ? 'none' : 'flex' }}
+        aria-hidden={isDismissed}
+        suppressHydrationWarning
       >
         <div
           ref={marqueeRef}

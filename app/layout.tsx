@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { fontDisplay, fontMono } from '@/lib/fonts';
 import { GsapProvider } from '@/components/animations/gsap-provider';
@@ -13,11 +13,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://starby.in';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'StarBy — Personalized Premium',
+    default: 'StarBy — Personalized Premium Streetwear & Wall Art',
     template: '%s | StarBy',
   },
   description:
-    'Design what defines you. StarBy is a premium customizable eCommerce brand where every product is uniquely yours.',
+    'Design what defines you. StarBy delivers premium customizable streetwear, wall art, split posters, device skins & more — crafted on demand, shipped across India.',
   keywords: [
     'custom apparel',
     'personalized fashion',
@@ -58,6 +58,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteUrl,
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  minimumScale: 1,
+  themeColor: '#0E0E0F',
 };
 
 const jsonLd = {

@@ -19,7 +19,7 @@ export default function HomePage() {
       <WishlistDrawer />
       <SearchOverlay />
       <main>
-        <h1 className="sr-only">StarBy — Personalized Premium</h1>
+        <p className="sr-only">StarBy — Personalized Premium Streetwear &amp; Wall Art</p>
         <Hero />
         <TrustBadges />
         <FeaturedProducts />

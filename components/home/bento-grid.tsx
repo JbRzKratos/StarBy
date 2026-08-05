@@ -62,6 +62,7 @@ export function BentoGrid() {
               key={cat.slug}
               category={cat}
               size={bentoSizes[i % bentoSizes.length] ?? 'small'}
+              priority={i < 2}
             />
           ))}
         </div>

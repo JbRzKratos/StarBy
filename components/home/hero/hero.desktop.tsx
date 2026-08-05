@@ -16,37 +16,37 @@ export function HeroDesktop() {
         <div className="w-14 h-[2.5px] bg-[#ED9518] mt-3" />
       </div>
 
-      {/* ── 2. Giant Official StarBy Wordmark & Star ── */}
+      {/* ── 2. Giant Official StarBy Wordmark & Star (Title Case StarBy✦ on one unbroken line) ── */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
-        <div className="relative w-full text-center px-4 flex items-center justify-center">
-          <h1 className="font-display text-[25vw] lg:text-[22vw] font-bold tracking-tighter text-[#0A0A0A] leading-none select-none flex items-baseline">
-            <span>Star</span>
-            <span className="relative">
-              B
-              {/* Official Curved 4-Point Gold Star Icon tucked precisely above top-right of 'B' */}
+        <div className="relative w-full text-center px-2 flex items-center justify-center">
+          <h1
+            className="font-display font-bold tracking-tighter text-[#0A0A0A] leading-none select-none flex items-center justify-center whitespace-nowrap"
+            style={{ fontSize: 'clamp(3.5rem, 16vw, 22rem)' }}
+          >
+            <span className="inline-flex items-start whitespace-nowrap">
+              <span className="leading-none pt-1">StarBy</span>
               <svg
-                className="absolute -top-[14%] -right-[8%] w-[3.8vw] h-[3.8vw] text-[#ED9518] animate-pulse drop-shadow-[0_0_15px_rgba(237,149,24,0.5)]"
+                className="w-[3.5vw] h-[3.5vw] min-w-[1.4rem] min-h-[1.4rem] text-[#ED9518] animate-pulse drop-shadow-[0_0_15px_rgba(237,149,24,0.5)] mt-[0.5vw] ml-[0.3vw]"
                 viewBox="0 0 100 100"
                 fill="currentColor"
               >
                 <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
               </svg>
             </span>
-            <span>y</span>
           </h1>
         </div>
       </div>
 
-      {/* ── 3. Centered Massive Model Cutout Photograph (Dead Center Middle over Wordmark) ── */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <div className="relative h-[84vh] lg:h-[92vh] w-[500px] lg:w-[680px]">
+      {/* ── 3. Centered Full Model Cutout Photograph (Positioned so head is 100% visible below header nav) ── */}
+      <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-10 pt-28 pb-8">
+        <div className="relative h-[78vh] lg:h-[82vh] w-[450px] lg:w-[600px] max-w-full">
           <Image
             src="/images/hero-model-transparent.png"
             alt="StarBy Editorial Streetwear Model"
             fill
-            sizes="(max-width: 1024px) 500px, 680px"
+            sizes="(max-width: 1024px) 450px, 600px"
             priority
-            className="object-contain object-center drop-shadow-[0_30px_45px_rgba(0,0,0,0.3)]"
+            className="object-contain object-bottom drop-shadow-[0_20px_35px_rgba(0,0,0,0.3)]"
           />
         </div>
       </div>
@@ -59,23 +59,24 @@ export function HeroDesktop() {
             href="/products/all"
             className="group relative inline-flex items-center justify-center bg-[#0A0A0A] text-[#F5F1EA] px-9 py-4 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] transition-all duration-300 hover:bg-[#ED9518] hover:border-[#ED9518] hover:text-[#0A0A0A] hover:shadow-[0_0_25px_rgba(237,149,24,0.4)]"
           >
-            <span>SHOP NOW</span>
+            <span className="relative z-10">SHOP NOW</span>
           </Link>
 
           <Link
             href="/customize"
-            className="group font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#0A0A0A] border-b-2 border-[#0A0A0A] pb-1 hover:border-[#ED9518] hover:text-[#ED9518] transition-all duration-300"
+            className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#0A0A0A] border-b-2 border-[#0A0A0A] pb-1 hover:text-[#ED9518] hover:border-[#ED9518] transition-colors"
           >
             EXPLORE THE DROP
           </Link>
         </div>
 
-        {/* Collection Label */}
-        <div className="text-left md:text-right font-mono text-xs uppercase tracking-[0.22em] text-[#0A0A0A]">
-          <p className="font-bold inline-block border-b-2 border-[#ED9518] pb-0.5 text-[#0A0A0A]">
+        {/* Collection Label (bottom-right) */}
+        <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-[#0A0A0A]">
+          <span className="font-bold border-b-2 border-[#ED9518] pb-0.5 text-[#0A0A0A]">
             NEW DROP
-          </p>
-          <p className="font-bold text-[#0A0A0A] mt-1">2026</p>
+          </span>
+          <span className="text-[#0A0A0A]/40">•</span>
+          <span className="font-bold text-[#0A0A0A]">2026</span>
         </div>
       </div>
     </section>

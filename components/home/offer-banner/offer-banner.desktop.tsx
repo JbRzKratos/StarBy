@@ -10,7 +10,7 @@ import { usePrice } from '@/lib/hooks/usePrice';
 export function OfferBannerDesktop() {
   const container = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
-  const [isDismissed, setIsDismissed] = useState(true); // Default true to prevent hydration mismatch
+  const [isDismissed, setIsDismissed] = useState(false); // Default false: banner visible on SSR (correct for first-time visitors)
   const { formatPrice } = usePrice();
   const offerString = getOfferString(formatPrice);
 
@@ -77,13 +77,15 @@ export function OfferBannerDesktop() {
     { scope: container, dependencies: [isDismissed] },
   );
 
-  if (isDismissed) return null;
-
   return (
     <ScrollTriggerWrapper>
+      {/* Height is always reserved to prevent CLS. Content is hidden when dismissed. */}
       <div
         ref={container}
         className="w-full bg-cobalt text-bone py-2 relative overflow-hidden flex items-center z-50 h-8"
+        style={{ display: isDismissed ? 'none' : 'flex' }}
+        aria-hidden={isDismissed}
+        suppressHydrationWarning
       >
         <div
           ref={marqueeRef}

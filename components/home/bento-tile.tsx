@@ -10,6 +10,7 @@ import type { Category } from '@/data/categories';
 interface BentoTileProps {
   category: Category;
   size: 'large' | 'wide' | 'tall' | 'small';
+  priority?: boolean;
 }
 
 const sizeClasses = {
@@ -19,7 +20,7 @@ const sizeClasses = {
   small: 'col-span-1 row-span-1',
 };
 
-export function BentoTile({ category, size }: BentoTileProps) {
+export function BentoTile({ category, size, priority = false }: BentoTileProps) {
   const tileRef = useRef<HTMLAnchorElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -59,6 +60,7 @@ export function BentoTile({ category, size }: BentoTileProps) {
           alt={category.name}
           fill
           sizes="(max-width: 767px) 50vw, 25vw"
+          priority={priority}
           className="absolute inset-0 object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-[opacity,transform] duration-700 ease-out mix-blend-luminosity"
         />
       )}

@@ -16,35 +16,36 @@ export function HeroMobile() {
         <div className="w-10 h-[2px] bg-[#ED9518] mt-2.5" />
       </div>
 
-      {/* ── 2. Giant official StarBy wordmark & 3. Official Gold Star ── */}
+      {/* ── 2. Giant official StarBy wordmark & 3. Official Gold Star (Title Case StarBy✦) ── */}
       <div className="relative my-auto py-6 flex items-center justify-center">
-        <h1 className="font-display text-[26vw] font-bold uppercase leading-none tracking-tighter text-[#0A0A0A] text-center select-none flex items-baseline">
-          <span>Star</span>
-          <span className="relative">
-            B{/* Official Curved 4-Point Gold Star Icon at top-right of 'B' */}
+        <h1
+          className="font-display font-bold tracking-tighter text-[#0A0A0A] text-center select-none flex items-center justify-center whitespace-nowrap"
+          style={{ fontSize: 'clamp(3rem, 19vw, 7rem)' }}
+        >
+          <span className="inline-flex items-start whitespace-nowrap">
+            <span className="leading-none pt-0.5">StarBy</span>
             <svg
-              className="absolute -top-[14%] -right-[8%] w-[5vw] h-[5vw] text-[#ED9518] animate-pulse drop-shadow-[0_0_12px_rgba(237,149,24,0.6)]"
+              className="w-[4vw] h-[4vw] min-w-[1.2rem] min-h-[1.2rem] text-[#ED9518] animate-pulse drop-shadow-[0_0_12px_rgba(237,149,24,0.6)] mt-[0.5vw] ml-[0.3vw]"
               viewBox="0 0 100 100"
               fill="currentColor"
             >
               <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
             </svg>
           </span>
-          <span>y</span>
         </h1>
+      </div>
 
-        {/* ── 4. Centered Massive Model Photograph ── */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <div className="relative h-[380px] w-[320px]">
-            <Image
-              src="/images/hero-model-transparent.png"
-              alt="StarBy Editorial Streetwear Model"
-              fill
-              sizes="320px"
-              priority
-              className="object-contain object-center drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)]"
-            />
-          </div>
+      {/* ── 4. Centered Full Model Cutout (Positioned cleanly between nav header and bottom CTAs) ── */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 pt-20 pb-52">
+        <div className="relative h-[60vh] w-[320px] max-w-full">
+          <Image
+            src="/images/hero-model-transparent.png"
+            alt="StarBy Editorial Streetwear Model"
+            fill
+            sizes="320px"
+            priority
+            className="object-contain object-center drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)]"
+          />
         </div>
       </div>
 
@@ -61,7 +62,7 @@ export function HeroMobile() {
 
           <Link
             href="/customize"
-            className="w-full text-center font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#0A0A0A] border-b-2 border-[#0A0A0A] pb-1 hover:text-[#ED9518] hover:border-[#ED9518] transition-colors"
+            className="w-full text-center bg-[#F5F1EA] text-[#0A0A0A] py-3.5 px-6 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] active:bg-[#ED9518] active:text-[#0A0A0A] transition-colors"
           >
             EXPLORE THE DROP
           </Link>

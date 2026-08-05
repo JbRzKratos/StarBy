@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
 import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
@@ -94,6 +95,13 @@ export function NavigationMobile() {
 
   const [isScrolledState, setIsScrolledState] = useState(false);
 
+  const pathname = usePathname();
+  // On non-home pages the body background is dark. The transparent nav with
+  // dark text would be invisible. Force dark/scrolled nav style on all
+  // non-home pages so text is always readable.
+  const isHomePage = pathname === '/';
+  const navIsDark = isScrolledState || !isHomePage;
+
   // Menu Drawer Animation
   useGSAP(
     () => {
@@ -139,37 +147,35 @@ export function NavigationMobile() {
         </div>
         <nav
           ref={navRef}
-          className={`pointer-events-auto w-full px-5 py-3 flex items-center justify-between transition-all duration-300 backdrop-blur-md ${
-            isScrolledState
-              ? 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl'
-              : 'bg-[#F5F1EA]/90 text-[#0A0A0A] border-b border-[#0A0A0A]/10'
+          className={`pointer-events-auto w-full px-5 py-3 flex items-center justify-between transition-all duration-300 ${
+            navIsDark
+              ? 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md'
+              : 'bg-transparent text-[#0A0A0A] border-b border-transparent'
           }`}
         >
           <Link
             href="/"
             className={`font-display text-2xl font-bold tracking-tight flex items-center group transition-colors ${
-              isScrolledState ? 'text-[#F5F1EA]' : 'text-[#0A0A0A]'
+              navIsDark ? 'text-[#F5F1EA]' : 'text-[#0A0A0A]'
             }`}
           >
-            <span>Star</span>
-            <span className="relative">
-              B
+            <span className="flex items-start">
+              <span className="leading-none">StarBy</span>
               <svg
-                className="absolute -top-1 -right-1 w-2.5 h-2.5 text-[#ED9518] animate-pulse"
+                className="w-3.5 h-3.5 text-[#ED9518] animate-pulse ml-[1px]"
                 viewBox="0 0 100 100"
                 fill="currentColor"
               >
                 <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
               </svg>
             </span>
-            <span>y</span>
           </Link>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSearchOpen(true)}
-              className={`transition-colors w-9 h-9 flex items-center justify-center ${
-                isScrolledState
+              className={`transition-colors w-11 h-11 flex items-center justify-center ${
+                navIsDark
                   ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                   : 'text-[#0A0A0A] hover:text-[#ED9518]'
               }`}
@@ -189,8 +195,8 @@ export function NavigationMobile() {
             </button>
             <button
               onClick={() => setWishlistOpen(true)}
-              className={`relative transition-colors flex items-center justify-center w-9 h-9 ${
-                isScrolledState
+              className={`relative transition-colors flex items-center justify-center w-11 h-11 ${
+                navIsDark
                   ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                   : 'text-[#0A0A0A] hover:text-[#ED9518]'
               }`}
@@ -214,8 +220,8 @@ export function NavigationMobile() {
             </button>
             <button
               onClick={toggleCart}
-              className={`relative transition-colors flex items-center justify-center w-9 h-9 ${
-                isScrolledState
+              className={`relative transition-colors flex items-center justify-center w-11 h-11 ${
+                navIsDark
                   ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                   : 'text-[#0A0A0A] hover:text-[#ED9518]'
               }`}
@@ -242,18 +248,18 @@ export function NavigationMobile() {
 
             <button
               onClick={() => setIsOpen(true)}
-              className="flex flex-col gap-1 w-9 h-9 items-center justify-center"
+              className="flex flex-col gap-1 w-11 h-11 items-center justify-center"
               aria-label="Open menu"
               aria-expanded={isOpen}
             >
               <span
                 className={`w-5 h-0.5 rounded-full transition-colors ${
-                  isScrolledState ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
+                  navIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
                 }`}
               />
               <span
                 className={`w-5 h-0.5 rounded-full transition-colors ${
-                  isScrolledState ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
+                  navIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
                 }`}
               />
             </button>

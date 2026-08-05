@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
@@ -35,6 +36,14 @@ export function NavigationDesktop() {
   const [user, setUser] = useState<User | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const pathname = usePathname();
+  // On non-home pages the body background is dark (charcoal). The transparent
+  // nav with dark text (#0A0A0A) would be invisible there. Force the nav into
+  // its dark/scrolled style on every page except the home page.
+  const isHomePage = pathname === '/';
+  // Effective scrolled state: true when user has scrolled OR we're not on home
+  const navIsDark = isScrolled || !isHomePage;
+
   useEffect(() => {
     setMounted(true);
 
@@ -66,31 +75,29 @@ export function NavigationDesktop() {
       </div>
       <nav
         ref={containerRef}
-        className={`pointer-events-auto w-full px-6 md:px-12 py-3.5 flex items-center justify-between transition-all duration-300 backdrop-blur-md ${
-          isScrolled
-            ? 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl'
-            : 'bg-[#F5F1EA]/90 text-[#0A0A0A] border-b border-[#0A0A0A]/10'
+        className={`pointer-events-auto w-full px-6 md:px-12 py-3.5 flex items-center justify-between transition-all duration-300 ${
+          navIsDark
+            ? 'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md'
+            : 'bg-transparent text-[#0A0A0A] border-b border-transparent'
         }`}
       >
         {/* Logo */}
         <Link
           href="/"
           className={`font-display text-2xl md:text-3xl font-bold tracking-tight flex items-center group transition-colors ${
-            isScrolled ? 'text-[#F5F1EA]' : 'text-[#0A0A0A]'
+            navIsDark ? 'text-[#F5F1EA]' : 'text-[#0A0A0A]'
           }`}
         >
-          <span>Star</span>
-          <span className="relative">
-            B
+          <span className="flex items-start">
+            <span className="leading-none">StarBy</span>
             <svg
-              className="absolute -top-1 -right-1 w-2.5 h-2.5 text-[#ED9518] animate-pulse"
+              className="w-3.5 h-3.5 text-[#ED9518] animate-pulse ml-[1px]"
               viewBox="0 0 100 100"
               fill="currentColor"
             >
               <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
             </svg>
           </span>
-          <span>y</span>
         </Link>
 
         {/* Desktop Nav Links */}
@@ -100,7 +107,7 @@ export function NavigationDesktop() {
               key={link.href}
               href={link.href}
               className={`font-mono text-caption uppercase tracking-widest font-bold transition-colors ${
-                isScrolled
+                navIsDark
                   ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                   : 'text-[#0A0A0A] hover:text-[#ED9518]'
               }`}
@@ -116,7 +123,7 @@ export function NavigationDesktop() {
           <div className="relative group cursor-pointer hidden lg:block">
             <span
               className={`font-mono text-caption font-bold uppercase tracking-widest flex items-center gap-1 transition-colors ${
-                isScrolled
+                navIsDark
                   ? 'text-[#F5F1EA] group-hover:text-[#ED9518]'
                   : 'text-[#0A0A0A] group-hover:text-[#ED9518]'
               }`}
@@ -142,7 +149,7 @@ export function NavigationDesktop() {
           <button
             onClick={() => setSearchOpen(true)}
             className={`transition-colors w-10 h-10 flex items-center justify-center ${
-              isScrolled
+              navIsDark
                 ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                 : 'text-[#0A0A0A] hover:text-[#ED9518]'
             }`}
@@ -165,7 +172,7 @@ export function NavigationDesktop() {
           <button
             onClick={() => setWishlistOpen(true)}
             className={`relative transition-colors flex items-center justify-center w-10 h-10 ${
-              isScrolled
+              navIsDark
                 ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                 : 'text-[#0A0A0A] hover:text-[#ED9518]'
             }`}
@@ -193,7 +200,7 @@ export function NavigationDesktop() {
             <Link
               href="/account"
               className={`transition-colors w-10 h-10 hidden sm:flex items-center justify-center ${
-                isScrolled
+                navIsDark
                   ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                   : 'text-[#0A0A0A] hover:text-[#ED9518]'
               }`}
@@ -215,7 +222,7 @@ export function NavigationDesktop() {
             <Link
               href="/login"
               className={`hidden sm:block font-mono text-caption font-bold uppercase tracking-widest transition-colors ml-2 ${
-                isScrolled
+                navIsDark
                   ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                   : 'text-[#0A0A0A] hover:text-[#ED9518]'
               }`}
@@ -228,7 +235,7 @@ export function NavigationDesktop() {
           <button
             onClick={toggleCart}
             className={`relative transition-colors flex items-center justify-center w-10 h-10 ${
-              isScrolled
+              navIsDark
                 ? 'text-[#F5F1EA] hover:text-[#ED9518]'
                 : 'text-[#0A0A0A] hover:text-[#ED9518]'
             }`}
