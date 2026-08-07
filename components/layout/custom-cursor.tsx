@@ -36,9 +36,10 @@ export function CustomCursor() {
       typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches;
 
     const isTouchOnly = 'ontouchstart' in window;
+    const isMobileWidth = window.innerWidth < 768;
 
-    if (!isPointerFine || isTouchOnly) {
-      // Touch or coarse-pointer device: leave native cursor intact, do nothing.
+    if (!isPointerFine || isTouchOnly || isMobileWidth) {
+      // Touch, coarse-pointer, or mobile device: leave native cursor intact, do nothing.
       return;
     }
 
@@ -58,11 +59,12 @@ export function CustomCursor() {
     let hasMoved = false;
 
     const onMouseMove = (e: MouseEvent) => {
+      if (window.innerWidth < 768) {
+        document.documentElement.classList.remove('cursor-ready');
+        return;
+      }
       if (!hasMoved) {
         hasMoved = true;
-        // ── Step 4: Only NOW add cursor-ready to <html> ───────────────────────
-        // We do this on the FIRST mouse move to ensure the custom cursor is
-        // actually tracking correctly before we hide the native cursor.
         document.documentElement.classList.add('cursor-ready');
         gsap.to([cursor, dot], { opacity: 1, duration: 0.3 });
       }
@@ -72,7 +74,15 @@ export function CustomCursor() {
       yToDot?.(e.clientY);
     };
 
+    const onResize = () => {
+      if (window.innerWidth < 768) {
+        document.documentElement.classList.remove('cursor-ready');
+        gsap.set([cursor, dot], { opacity: 0 });
+      }
+    };
+
     const onMouseOver = (e: MouseEvent) => {
+      if (window.innerWidth < 768) return;
       const target = e.target as HTMLElement;
       const isInteractive = !!target.closest('a, button, input, select, textarea, [role="button"]');
       if (isInteractive && !isHovering) {
@@ -96,8 +106,16 @@ export function CustomCursor() {
       }
     };
 
-    const onMouseDown = () => gsap.to(cursor, { scale: 0.8, duration: 0.1 });
-    const onMouseUp = () => gsap.to(cursor, { scale: isHovering ? 1.5 : 1, duration: 0.1 });
+    const onMouseDown = () => {
+      if (window.innerWidth >= 768) {
+        gsap.to(cursor, { scale: 0.8, duration: 0.1 });
+      }
+    };
+    const onMouseUp = () => {
+      if (window.innerWidth >= 768) {
+        gsap.to(cursor, { scale: isHovering ? 1.5 : 1, duration: 0.1 });
+      }
+    };
 
     try {
       // Set initial position off-screen
@@ -112,40 +130,33 @@ export function CustomCursor() {
 
       // Attach listeners
       window.addEventListener('mousemove', onMouseMove, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
       window.addEventListener('mouseover', onMouseOver, { passive: true });
       window.addEventListener('mousedown', onMouseDown, { passive: true });
       window.addEventListener('mouseup', onMouseUp, { passive: true });
-
-      // Listeners are attached. The cursor-ready class and fade-in are now
-      // handled inside onMouseMove so we only hide native cursor if it works.
     } catch (err) {
-      // Init failed — log it but DO NOT add cursor-ready.
-      // Native cursor remains visible — this is safe/correct behaviour.
       console.error('[CustomCursor] Failed to initialize:', err);
-      // Do NOT add cursor-ready class
       return;
     }
 
     // ── Cleanup ──────────────────────────────────────────────────────────────
     return () => {
-      // Remove the gate class so native cursor comes back immediately
       document.documentElement.classList.remove('cursor-ready');
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', onResize);
       window.removeEventListener('mouseover', onMouseOver);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
       gsap.killTweensOf([cursor, dot]);
     };
-  }, []); // Empty deps: runs once on mount, cleans up on unmount
+  }, []);
 
-  // Always render the DOM elements — they are invisible (opacity-0) until
-  // the cursor-ready class and fade-in succeed. They use pointer-events:none
-  // so they never interfere with interaction regardless of state.
   return (
     <>
-      {/* Outer ring cursor */}
+      {/* Outer ring cursor (hidden on mobile) */}
       <div
         ref={cursorRef}
+        className="hidden md:block"
         style={{
           position: 'fixed',
           top: 0,
@@ -162,9 +173,10 @@ export function CustomCursor() {
         }}
         aria-hidden="true"
       />
-      {/* Center dot cursor */}
+      {/* Center dot cursor (hidden on mobile) */}
       <div
         ref={dotRef}
+        className="hidden md:block"
         style={{
           position: 'fixed',
           top: 0,

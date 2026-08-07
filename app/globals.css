@@ -46,34 +46,28 @@
   }
 
   /*
-   * Custom cursor — class gate.
+   * Custom cursor — desktop-only class gate (>= 768px).
    *
-   * `cursor: none` ONLY fires when <html> has class `cursor-ready`.
-   * That class is added by custom-cursor.tsx ONLY after:
-   *   - pointer: fine confirmed via matchMedia (real mouse/trackpad)
-   *   - no ontouchstart (not touch-only/hybrid)
-   *   - GSAP quickTo instances created without throwing
-   *   - mousemove listener successfully attached
-   *
-   * Without cursor-ready, native cursor is visible everywhere — this is the safe default.
-   * Touch devices never get cursor-ready (JS checks before adding), so this block
-   * never fires on them, making the @media (hover: none) override redundant.
+   * `cursor: none` ONLY fires when <html> has class `cursor-ready` on screens >= 768px.
+   * On mobile screens (< 768px), the native browser cursor is ALWAYS preserved.
    */
-  html.cursor-ready,
-  html.cursor-ready * {
-    cursor: none !important;
-  }
+  @media (min-width: 768px) {
+    html.cursor-ready,
+    html.cursor-ready * {
+      cursor: none !important;
+    }
 
-  /* Restore text caret inside text inputs even when custom cursor is active */
-  html.cursor-ready input,
-  html.cursor-ready textarea {
-    cursor: text !important;
-  }
+    /* Restore text caret inside text inputs even when custom cursor is active */
+    html.cursor-ready input,
+    html.cursor-ready textarea {
+      cursor: text !important;
+    }
 
-  /* Admin, AR camera, and reduced-motion: always restore native cursor */
-  html.cursor-ready body.ar-active,
-  html.cursor-ready body.ar-active * {
-    cursor: auto !important;
+    /* Admin, AR camera, and reduced-motion: always restore native cursor */
+    html.cursor-ready body.ar-active,
+    html.cursor-ready body.ar-active * {
+      cursor: auto !important;
+    }
   }
 
   ::selection {
