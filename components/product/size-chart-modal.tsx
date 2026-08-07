@@ -10,35 +10,35 @@ interface SizeChartModalProps {
   category: string; // 'hoodies', 't-shirts', etc.
 }
 
-type SizeRow = {
-  size: string;
-  chest: string;
-  length: string;
-  sleeve?: string;
-};
+type SizeRow = { size: string; chest: string; length: string; sleeve?: string };
+type MugRow = { size: string; capacity: string; height: string; diameter: string };
 
-const sizeData: { hoodies: SizeRow[]; posters: SizeRow[]; default: SizeRow[] } = {
+const sizeData = {
   hoodies: [
-    { size: 'S', chest: '40"', length: '28"', sleeve: '25"' },
-    { size: 'M', chest: '44"', length: '29"', sleeve: '25.5"' },
-    { size: 'L', chest: '48"', length: '30"', sleeve: '26"' },
-    { size: 'XL', chest: '52"', length: '31"', sleeve: '26.5"' },
-    { size: 'XXL', chest: '56"', length: '32"', sleeve: '27"' },
-  ],
+    { size: 'S', chest: '36–38"', length: '27"', sleeve: '24.5"' },
+    { size: 'M', chest: '38–40"', length: '28"', sleeve: '25"' },
+    { size: 'L', chest: '40–42"', length: '29"', sleeve: '25.5"' },
+    { size: 'XL', chest: '42–44"', length: '30"', sleeve: '26"' },
+    { size: 'XXL', chest: '44–46"', length: '31"', sleeve: '26.5"' },
+  ] as SizeRow[],
+  tees: [
+    { size: 'S', chest: '36–38"', length: '27"' },
+    { size: 'M', chest: '38–40"', length: '28"' },
+    { size: 'L', chest: '40–42"', length: '29"' },
+    { size: 'XL', chest: '42–44"', length: '30"' },
+    { size: 'XXL', chest: '44–46"', length: '31"' },
+  ] as SizeRow[],
   posters: [
-    { size: 'A6', chest: '4.1" x 5.8"', length: '10.5 x 14.8 cm' },
-    { size: 'A5', chest: '5.8" x 8.3"', length: '14.8 x 21.0 cm' },
-    { size: 'A4', chest: '8.3" x 11.7"', length: '21.0 x 29.7 cm' },
-    { size: 'A3', chest: '11.7" x 16.5"', length: '29.7 x 42.0 cm' },
-    { size: '13x19', chest: '13.0" x 19.0"', length: '33.0 x 48.3 cm' },
-  ],
-  default: [
-    { size: 'S', chest: '38"', length: '28"' },
-    { size: 'M', chest: '40"', length: '29"' },
-    { size: 'L', chest: '42"', length: '30"' },
-    { size: 'XL', chest: '44"', length: '31"' },
-    { size: 'XXL', chest: '46"', length: '32"' },
-  ],
+    { size: 'A6', chest: '4.1" × 5.8"', length: '10.5 × 14.8 cm' },
+    { size: 'A5', chest: '5.8" × 8.3"', length: '14.8 × 21.0 cm' },
+    { size: 'A4', chest: '8.3" × 11.7"', length: '21.0 × 29.7 cm' },
+    { size: 'A3', chest: '11.7" × 16.5"', length: '29.7 × 42.0 cm' },
+    { size: '13×19"', chest: '13.0" × 19.0"', length: '33.0 × 48.3 cm' },
+  ] as SizeRow[],
+  mugs: [
+    { size: '11 oz', capacity: '325 ml', height: '9.5 cm', diameter: '8.2 cm' },
+    { size: '15 oz', capacity: '444 ml', height: '11.0 cm', diameter: '8.5 cm' },
+  ] as MugRow[],
 };
 
 export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProps) {
@@ -77,8 +77,14 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
   const catLower = category.toLowerCase();
   const isPoster = catLower.includes('poster');
   const isHoodie = catLower.includes('hoodie');
+  const isMug = catLower.includes('mug');
+  const isSkin = catLower.includes('skin');
 
-  const data = isPoster ? sizeData.posters : isHoodie ? sizeData.hoodies : sizeData.default;
+  // Skins use device-model picker, not a size guide
+  if (isSkin) return null;
+
+  const apparelData = isHoodie ? sizeData.hoodies : sizeData.tees;
+  const data: SizeRow[] = isPoster ? sizeData.posters : isMug ? [] : apparelData;
 
   return (
     <div
@@ -115,8 +121,35 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
         <p className="font-mono text-caption text-pearl mb-8">
           {isPoster
             ? 'Standard dimensions for single & split wall prints.'
-            : 'Measurements are in inches. Standard fit.'}
+            : isMug
+            ? 'Capacity and physical dimensions for our mugs.'
+            : 'Measurements in inches. Indian/Asian standard fit — check against your own garment.'}
         </p>
+
+        {/* Mug table */}
+        {isMug && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-smoke">
+                  {['Size', 'Capacity', 'Height', 'Diameter'].map((h) => (
+                    <th key={h} className="py-3 px-4 font-mono text-caption uppercase text-ash font-normal">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {sizeData.mugs.map((row, idx) => (
+                  <tr key={idx} className="border-b border-smoke/30 hover:bg-smoke/10 transition-colors">
+                    <td className="py-4 px-4 font-display text-bone text-lg">{row.size}</td>
+                    <td className="py-4 px-4 font-mono text-pearl">{row.capacity}</td>
+                    <td className="py-4 px-4 font-mono text-pearl">{row.height}</td>
+                    <td className="py-4 px-4 font-mono text-pearl">{row.diameter}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">

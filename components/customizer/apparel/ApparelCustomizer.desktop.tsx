@@ -15,6 +15,7 @@ import {
   type GarmentType,
   type DesignTransform,
 } from '@/lib/stores/apparel-customizer-store';
+import { useApparelHistoryStore } from '@/lib/stores/apparel-history-store';
 import { GARMENT_COLORS, type GarmentView, type GarmentColor } from '@/data/printAreaConfig';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
@@ -80,6 +81,34 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<ApparelCanvasHandle>(null);
+
+  // ── Undo / Redo ──────────────────────────────────────────────────────────
+  const { undo, redo, canUndo, canRedo } = useApparelHistoryStore();
+
+  const handleUndo = useCallback(async () => {
+    const snapshot = undo();
+    if (snapshot) await canvasRef.current?.loadFromSnapshot(snapshot);
+  }, [undo]);
+
+  const handleRedo = useCallback(async () => {
+    const snapshot = redo();
+    if (snapshot) await canvasRef.current?.loadFromSnapshot(snapshot);
+  }, [redo]);
+
+  // Keyboard shortcuts: Ctrl+Z / Ctrl+Shift+Z
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+        e.preventDefault();
+        if (e.shiftKey) { void handleRedo(); } else { void handleUndo(); }
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+        e.preventDefault();
+        void handleRedo();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [handleUndo, handleRedo]);
 
   const currentDesign = designsByView[view];
   const colorOptions: GarmentColor[] = useMemo(
@@ -691,6 +720,32 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
               </div>
             </div>
           )}
+
+          {/* Undo / Redo */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => void handleUndo()}
+              disabled={!canUndo()}
+              title="Undo (Ctrl+Z)"
+              className="flex-1 py-2 border border-smoke rounded-sm font-mono text-xs text-pearl flex items-center justify-center gap-1.5 hover:border-[#ED9518] hover:text-[#ED9518] transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-smoke disabled:hover:text-pearl"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 7v6h6" /><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+              </svg>
+              Undo
+            </button>
+            <button
+              onClick={() => void handleRedo()}
+              disabled={!canRedo()}
+              title="Redo (Ctrl+Shift+Z)"
+              className="flex-1 py-2 border border-smoke rounded-sm font-mono text-xs text-pearl flex items-center justify-center gap-1.5 hover:border-[#ED9518] hover:text-[#ED9518] transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-smoke disabled:hover:text-pearl"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 7v6h-6" /><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
+              </svg>
+              Redo
+            </button>
+          </div>
 
           {/* Add to cart */}
           <button

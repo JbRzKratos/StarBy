@@ -21,18 +21,18 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-gray-900">Customers</h1>
-          <p className="text-sm text-gray-500">{customers.length} registered customers</p>
+          <h1 className="font-display text-display-sm font-bold text-bone mb-2">Customers</h1>
+          <p className="font-mono text-body-sm text-pearl">{customers.length} registered customers</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
+      <div className="bg-charcoal rounded-sm border border-smoke p-4">
         <div className="relative max-w-sm">
           <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ash"
             width="14"
             height="14"
             viewBox="0 0 24 24"
@@ -48,43 +48,43 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
             placeholder="Search customer name or email…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+            className="w-full pl-9 pr-3 py-2 text-sm font-mono border border-smoke bg-graphite text-bone rounded-sm focus:outline-none focus:border-cobalt"
           />
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-100">
+      <div className="bg-charcoal rounded-sm border border-smoke overflow-x-auto">
+        <table className="w-full text-left font-mono text-body-sm text-bone">
+          <thead className="bg-graphite border-b border-smoke">
             <tr>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Customer
               </th>
-              <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption text-center">
                 Orders
               </th>
-              <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption text-right">
                 Total Spent
               </th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Joined
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-smoke">
             {filtered.map((c) => (
-              <tr key={c.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3">
-                  <p className="font-medium text-gray-900">{c.name}</p>
-                  <p className="text-xs text-gray-500">{c.email}</p>
+              <tr key={c.id} className="hover:bg-smoke/10">
+                <td className="px-6 py-4">
+                  <p className="font-medium text-bone">{c.name}</p>
+                  <p className="text-caption text-ash mt-1">{c.email}</p>
                 </td>
-                <td className="px-4 py-3 text-center font-semibold text-gray-700">
+                <td className="px-6 py-4 text-center">
                   {c.orderCount}
                 </td>
-                <td className="px-4 py-3 text-right font-semibold text-gray-900">
+                <td className="px-6 py-4 text-right">
                   ₹{c.totalSpent.toLocaleString('en-IN')}
                 </td>
-                <td className="px-4 py-3 text-gray-600 text-sm">
+                <td className="px-6 py-4 text-pearl">
                   {new Date(c.createdAt).toLocaleDateString('en-IN', {
                     day: 'numeric',
                     month: 'short',
@@ -95,7 +95,7 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-10 text-center text-sm text-gray-400">
+                <td colSpan={4} className="px-6 py-8 text-center text-ash">
                   No customers found
                 </td>
               </tr>

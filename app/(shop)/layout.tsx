@@ -8,7 +8,7 @@ import { SearchOverlay } from '@/components/layout/search-overlay';
 export default function ShopLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <Navigation />
+      <Navigation variant="solid" />
       <CartDrawer />
       <WishlistDrawer />
       <SearchOverlay />

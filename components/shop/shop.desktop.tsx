@@ -132,9 +132,12 @@ export function ShopDesktop({ category, products }: { category: string; products
   }
 
   if (sortMethod === 'new')
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => (b.tags.includes('new') ? 1 : 0) - (a.tags.includes('new') ? 1 : 0),
-    );
+    filteredProducts = [...filteredProducts].sort((a, b) => {
+      // Products with 'new' tag surface first; within each group, preserve original order
+      const aIsNew = a.tags.includes('new') ? 1 : 0;
+      const bIsNew = b.tags.includes('new') ? 1 : 0;
+      return bIsNew - aIsNew;
+    });
   if (sortMethod === 'price-asc')
     filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
   if (sortMethod === 'price-desc')

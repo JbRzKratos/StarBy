@@ -91,7 +91,7 @@ export function FloatingActions() {
           href={
             process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
               ? `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`
-              : 'https://wa.me/919876543210'
+              : 'https://wa.me/918680991921'
           }
           target="_blank"
           rel="noopener noreferrer"

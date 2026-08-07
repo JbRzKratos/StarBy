@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
-import { AdminBadge } from '../ui/badge';
+import { StatusBadge } from '@/components/admin/status-badge';
 import { createCoupon, updateCoupon, deleteCoupon } from '@/app/admin/lib/actions';
 
 interface CouponRow {
@@ -81,18 +81,18 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
   }
 
   const inputClass =
-    'w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]';
+    'w-full text-sm font-mono bg-graphite border border-smoke text-bone rounded-sm px-3 py-2 focus:outline-none focus:border-cobalt';
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-bold text-gray-900">Coupons</h1>
-          <p className="text-sm text-gray-500">Manage discount codes</p>
+          <h1 className="font-display text-display-sm font-bold text-bone mb-2">Coupons Manager</h1>
+          <p className="font-mono text-body-sm text-pearl">Manage discount codes</p>
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-cobalt text-bone text-caption font-mono uppercase tracking-widest hover:bg-cobalt/90 transition-colors w-full sm:w-auto"
         >
           <svg
             width="14"
@@ -110,11 +110,11 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
       </div>
 
       {showCreate && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4 mb-4">
-          <h2 className="text-sm font-semibold text-gray-900">New Coupon</h2>
+        <div className="bg-charcoal rounded-sm border border-smoke p-5 space-y-4 mb-4">
+          <h2 className="text-body-lg font-display text-bone border-b border-smoke pb-2">New Coupon</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <label className="text-xs font-medium text-gray-700 block mb-1">Code</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Code</label>
               <input
                 value={form.code}
                 onChange={(e) =>
@@ -125,7 +125,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-700 block mb-1">Type</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Type</label>
               <select
                 value={form.discountType}
                 onChange={(e) => setForm({ ...form, discountType: e.target.value })}
@@ -136,7 +136,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               </select>
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-700 block mb-1">Value</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Value</label>
               <input
                 type="number"
                 value={form.discountValue}
@@ -147,7 +147,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-700 block mb-1">Expiry Date</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Expiry Date</label>
               <input
                 type="date"
                 value={form.expiresAt}
@@ -156,7 +156,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-700 block mb-1">
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
                 Min Order Amount (₹)
               </label>
               <input
@@ -170,7 +170,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-700 block mb-1">Max Uses</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Max Uses</label>
               <input
                 type="number"
                 placeholder="Unlimited"
@@ -184,13 +184,13 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
             <button
               onClick={handleSave}
               disabled={isPending || !form.code || form.discountValue <= 0}
-              className="px-4 py-2 bg-[#3B5EFF] text-white text-sm font-semibold rounded-lg hover:bg-[#2a4de8] disabled:opacity-50 transition-colors"
+              className="px-6 py-3 bg-cobalt text-bone text-caption font-mono uppercase tracking-widest hover:bg-cobalt/90 disabled:opacity-50 transition-colors"
             >
               {isPending ? 'Saving…' : 'Create Coupon'}
             </button>
             <button
               onClick={() => setShowCreate(false)}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+              className="px-6 py-3 text-caption font-mono uppercase tracking-widest text-ash hover:text-bone"
             >
               Cancel
             </button>
@@ -198,56 +198,49 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-100">
+      <div className="bg-charcoal rounded-sm border border-smoke overflow-x-auto">
+        <table className="w-full text-left font-mono text-body-sm text-bone">
+          <thead className="bg-graphite border-b border-smoke">
             <tr>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Code
               </th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Discount
               </th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Limits
               </th>
-              <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption text-center">
                 Uses
               </th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Status
               </th>
-              <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption text-right">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-smoke">
             {coupons.map((c) => {
               const isExpired = c.expiresAt && new Date(c.expiresAt) < new Date();
               const isMaxedOut = c.maxUses && c.usageCount >= c.maxUses;
               const statusVariant = !c.isActive
-                ? 'cancelled'
+                ? 'inactive'
                 : isExpired || isMaxedOut
-                  ? 'refunded'
+                  ? 'inactive'
                   : 'active';
-              const statusLabel = !c.isActive
-                ? 'Inactive'
-                : isExpired
-                  ? 'Expired'
-                  : isMaxedOut
-                    ? 'Depleted'
-                    : 'Active';
 
               return (
-                <tr key={c.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-mono font-bold text-gray-900">{c.code}</td>
-                  <td className="px-4 py-3 text-gray-700">
+                <tr key={c.id} className="hover:bg-smoke/10">
+                  <td className="px-6 py-4 font-bold text-bone">{c.code}</td>
+                  <td className="px-6 py-4 text-pearl">
                     {c.discountType === 'percentage'
                       ? `${c.discountValue}% off`
                       : `₹${c.discountValue} off`}
                   </td>
-                  <td className="px-4 py-3 text-xs text-gray-500 space-y-0.5">
+                  <td className="px-6 py-4 text-ash space-y-1">
                     {c.minOrderValue ? <p>Min: ₹{c.minOrderValue}</p> : <p>Min: None</p>}
                     {c.expiresAt ? (
                       <p>Exp: {new Date(c.expiresAt).toLocaleDateString('en-IN')}</p>
@@ -255,23 +248,23 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
                       <p>Exp: Never</p>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-center text-gray-700">
+                  <td className="px-6 py-4 text-center text-pearl">
                     {c.usageCount} {c.maxUses ? `/ ${c.maxUses}` : ''}
                   </td>
-                  <td className="px-4 py-3">
-                    <AdminBadge variant={statusVariant} label={statusLabel} />
+                  <td className="px-6 py-4">
+                    <StatusBadge status={statusVariant} />
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex items-center justify-end gap-3">
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-4">
                       <button
                         onClick={() => handleToggleActive(c.id, c.isActive)}
-                        className="text-xs text-gray-600 hover:text-gray-900 font-medium"
+                        className="text-cobalt uppercase text-caption hover:underline"
                       >
                         {c.isActive ? 'Disable' : 'Enable'}
                       </button>
                       <button
                         onClick={() => setDeleteId(c.id)}
-                        className="text-xs text-red-600 hover:underline font-medium"
+                        className="text-ember uppercase text-caption hover:underline"
                       >
                         Delete
                       </button>
@@ -282,7 +275,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
             })}
             {coupons.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-10 text-center text-sm text-gray-400">
+                <td colSpan={6} className="px-6 py-8 text-center text-ash">
                   No coupons created yet
                 </td>
               </tr>

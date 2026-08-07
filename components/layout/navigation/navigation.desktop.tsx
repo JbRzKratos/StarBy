@@ -19,9 +19,14 @@ const navLinks = [
   { href: '/faq', label: 'FAQ' },
 ];
 
-export function NavigationDesktop() {
+export interface NavigationDesktopProps {
+  variant?: 'hero' | 'solid';
+}
+
+export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDesktopProps) {
+  const pathname = usePathname();
   const containerRef = useRef<HTMLElement>(null);
-  const totalItems = useCartStore((s) => s.totalItems);
+  const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
   const toggleCart = useCartStore((s) => s.toggleCart);
 
   const setWishlistOpen = useWishlistStore((s) => s.setWishlistOpen);
@@ -36,30 +41,13 @@ export function NavigationDesktop() {
   const [user, setUser] = useState<User | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const pathname = usePathname();
-  const isHomePage = pathname === '/';
+  // Dark text on transparent background ONLY applies at scroll 0 on the landing page ('/')
+  const isLandingPage = pathname === '/';
+  const textIsDark = isLandingPage && !isScrolled;
 
-  // Determine styles based on page and scroll
-  let navClasses = '';
-  let textIsDark = false;
-
-  if (isHomePage) {
-    if (isScrolled) {
-      // Home scrolled: Dark background, light text
-      navClasses =
-        'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
-      textIsDark = false;
-    } else {
-      // Home top: Transparent background, dark text
-      navClasses = 'bg-transparent text-[#0A0A0A] border-b border-transparent';
-      textIsDark = true;
-    }
-  } else {
-    // Other pages: Always dark background, light text (regardless of scroll)
-    navClasses =
-      'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
-    textIsDark = false;
-  }
+  const navClasses = textIsDark
+    ? 'bg-transparent text-[#0A0A0A] border-b border-transparent'
+    : 'bg-[#0E0E10]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl backdrop-blur-md';
 
   useEffect(() => {
     setMounted(true);
@@ -72,17 +60,15 @@ export function NavigationDesktop() {
       });
       return () => authListener.subscription.unsubscribe();
     });
+  }, []);
 
+  // Scroll listener for sticky header background transition
+  useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 60) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 60);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initialize state on mount
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -270,9 +256,9 @@ export function NavigationDesktop() {
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
-            {mounted && totalItems() > 0 && (
+            {mounted && totalItems > 0 && (
               <span className="absolute top-1 right-0 w-4 h-4 bg-[#ED9518] text-[#0A0A0A] font-bold text-[10px] rounded-full flex items-center justify-center">
-                {totalItems()}
+                {totalItems}
               </span>
             )}
           </button>

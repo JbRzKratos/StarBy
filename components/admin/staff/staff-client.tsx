@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
-import { AdminBadge } from '../ui/badge';
+import { StatusBadge } from '@/components/admin/status-badge';
 import { promoteToStaff, demoteToCustomer } from '@/app/admin/lib/actions';
 
 interface StaffRow {
@@ -49,15 +49,15 @@ export function StaffClient({ staff }: { staff: StaffRow[] }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-gray-900">Staff Access</h1>
-          <p className="text-sm text-gray-500">Manage admin panel users</p>
+          <h1 className="font-display text-display-sm font-bold text-bone mb-2">Staff Access</h1>
+          <p className="font-mono text-body-sm text-pearl">Manage admin panel users</p>
         </div>
         <button
           onClick={() => setShowAdd(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors"
+          className="flex items-center gap-2 px-6 py-3 bg-cobalt text-bone text-caption font-mono uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
         >
           <svg
             width="14"
@@ -75,9 +75,9 @@ export function StaffClient({ staff }: { staff: StaffRow[] }) {
       </div>
 
       {showAdd && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5 mb-4 flex items-end gap-3 max-w-xl">
-          <div className="flex-1">
-            <label className="text-xs font-medium text-gray-700 block mb-1">
+        <div className="bg-charcoal rounded-sm border border-smoke p-5 mb-4 flex flex-col sm:flex-row items-start sm:items-end gap-4 max-w-2xl">
+          <div className="flex-1 w-full">
+            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
               User Email to Promote
             </label>
             <input
@@ -85,67 +85,69 @@ export function StaffClient({ staff }: { staff: StaffRow[] }) {
               value={addEmail}
               onChange={(e) => setAddEmail(e.target.value)}
               placeholder="user@example.com"
-              className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+              className="w-full text-sm font-mono border border-smoke bg-graphite text-bone rounded-sm px-3 py-2.5 focus:outline-none focus:border-cobalt"
             />
           </div>
-          <button
-            onClick={handlePromote}
-            disabled={isPending || !addEmail}
-            className="px-4 py-2.5 bg-[#3B5EFF] text-white text-sm font-semibold rounded-lg hover:bg-[#2a4de8] disabled:opacity-50 transition-colors"
-          >
-            {isPending ? 'Promoting…' : 'Promote'}
-          </button>
-          <button
-            onClick={() => setShowAdd(false)}
-            className="px-4 py-2.5 text-sm text-gray-600 hover:text-gray-900"
-          >
-            Cancel
-          </button>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <button
+              onClick={handlePromote}
+              disabled={isPending || !addEmail}
+              className="px-6 py-2.5 bg-cobalt text-bone text-caption font-mono uppercase tracking-widest hover:bg-cobalt/90 disabled:opacity-50 transition-colors w-full sm:w-auto"
+            >
+              {isPending ? 'Promoting…' : 'Promote'}
+            </button>
+            <button
+              onClick={() => setShowAdd(false)}
+              className="px-6 py-2.5 text-caption font-mono uppercase tracking-widest text-ash hover:text-bone w-full sm:w-auto"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-100">
+      <div className="bg-charcoal rounded-sm border border-smoke overflow-x-auto">
+        <table className="w-full text-left font-mono text-body-sm text-bone">
+          <thead className="bg-graphite border-b border-smoke">
             <tr>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Name / Email
               </th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Role
               </th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Joined
               </th>
-              <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption text-right">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-smoke">
             {staff.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3">
-                  <p className="font-medium text-gray-900">{u.name}</p>
-                  <p className="text-xs text-gray-500">{u.email}</p>
+              <tr key={u.id} className="hover:bg-smoke/10">
+                <td className="px-6 py-4">
+                  <p className="font-medium text-bone">{u.name}</p>
+                  <p className="text-caption text-ash mt-1">{u.email}</p>
                 </td>
-                <td className="px-4 py-3">
-                  <AdminBadge variant={u.role === 'ADMIN' ? 'paid' : 'staff'} label={u.role} />
+                <td className="px-6 py-4">
+                  <StatusBadge status={u.role} variant={u.role === 'ADMIN' ? 'success' : 'info'} />
                 </td>
-                <td className="px-4 py-3 text-gray-600 text-sm">
+                <td className="px-6 py-4 text-pearl">
                   {new Date(u.createdAt).toLocaleDateString('en-IN')}
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-6 py-4 text-right">
                   {u.role !== 'ADMIN' && (
                     <button
                       onClick={() => setDemoteId(u.id)}
-                      className="text-xs text-red-600 hover:underline font-medium"
+                      className="text-ember uppercase text-caption hover:underline"
                     >
                       Remove Access
                     </button>
                   )}
                   {u.role === 'ADMIN' && (
-                    <span className="text-xs text-gray-400 italic">Superadmin</span>
+                    <span className="text-caption text-ash italic">Superadmin</span>
                   )}
                 </td>
               </tr>

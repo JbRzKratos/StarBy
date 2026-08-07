@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
 import { createCategory, updateCategory, deleteCategory } from '@/app/admin/lib/actions';
 
@@ -87,16 +87,16 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
   }
 
   const inputClass =
-    'w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]';
+    'w-full text-sm border border-smoke bg-graphite text-bone rounded-sm px-3 py-2.5 focus:outline-none focus:border-cobalt font-mono';
 
   const FormPanel = (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
-      <h2 className="text-sm font-semibold text-gray-900">
+    <div className="bg-charcoal rounded-sm border border-smoke p-5 space-y-3">
+      <h2 className="text-body-lg font-display text-bone">
         {editId ? 'Edit Category' : 'New Category'}
       </h2>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-xs font-medium text-gray-700 block mb-1">Name</label>
+          <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Name</label>
           <input
             value={form.name}
             onChange={(e) =>
@@ -114,7 +114,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
           />
         </div>
         <div>
-          <label className="text-xs font-medium text-gray-700 block mb-1">Slug</label>
+          <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Slug</label>
           <input
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
@@ -125,7 +125,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         </div>
       </div>
       <div>
-        <label className="text-xs font-medium text-gray-700 block mb-1">Tagline</label>
+        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Tagline</label>
         <input
           value={form.tagline}
           onChange={(e) => setForm({ ...form, tagline: e.target.value })}
@@ -134,7 +134,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         />
       </div>
       <div>
-        <label className="text-xs font-medium text-gray-700 block mb-1">Description</label>
+        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Description</label>
         <textarea
           rows={2}
           value={form.description}
@@ -144,7 +144,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         />
       </div>
       <div>
-        <label className="text-xs font-medium text-gray-700 block mb-1">Gradient CSS classes</label>
+        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Gradient CSS classes</label>
         <input
           value={form.gradient}
           onChange={(e) => setForm({ ...form, gradient: e.target.value })}
@@ -156,7 +156,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         <button
           onClick={handleSave}
           disabled={isPending || !form.name}
-          className="px-4 py-2 bg-[#3B5EFF] text-white text-sm font-semibold rounded-lg hover:bg-[#2a4de8] disabled:opacity-50 transition-colors"
+          className="px-6 py-3 bg-cobalt text-bone text-caption font-mono uppercase tracking-widest hover:bg-cobalt/90 disabled:opacity-50 transition-colors"
         >
           {isPending ? 'Saving…' : 'Save'}
         </button>
@@ -165,7 +165,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
             setEditId(null);
             setShowCreate(false);
           }}
-          className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+          className="px-6 py-3 text-caption font-mono uppercase tracking-widest text-ash hover:text-bone"
         >
           Cancel
         </button>
@@ -174,15 +174,15 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-gray-900">Categories</h1>
-          <p className="text-sm text-gray-500">{categories.length} categories</p>
+          <h1 className="font-display text-display-sm font-bold text-bone mb-2">Categories Manager</h1>
+          <p className="font-mono text-body-sm text-pearl">{categories.length} categories</p>
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors"
+          className="flex items-center gap-2 px-6 py-3 bg-cobalt text-bone text-caption font-mono uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
         >
           <svg
             width="14"
@@ -201,47 +201,47 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
 
       {showCreate && FormPanel}
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-100">
+      <div className="bg-charcoal rounded-sm border border-smoke overflow-hidden">
+        <table className="w-full text-left font-mono text-body-sm text-bone">
+          <thead className="bg-graphite border-b border-smoke">
             <tr>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Name
               </th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Tagline
               </th>
-              <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption text-center">
                 Products
               </th>
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-caption">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-smoke">
             {categories.map((cat) => (
-              <>
-                <tr key={cat.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <p className="font-medium text-gray-900">{cat.name}</p>
-                    <p className="text-xs text-gray-500 font-mono">{cat.slug}</p>
+              <React.Fragment key={cat.id}>
+                <tr className="hover:bg-smoke/10">
+                  <td className="px-6 py-4">
+                    <p className="font-medium text-bone">{cat.name}</p>
+                    <p className="text-caption text-ash mt-1">{cat.slug}</p>
                   </td>
-                  <td className="px-4 py-3 text-gray-600 text-sm">{cat.tagline}</td>
-                  <td className="px-4 py-3 text-center font-semibold text-gray-700">
+                  <td className="px-6 py-4 text-pearl">{cat.tagline}</td>
+                  <td className="px-6 py-4 text-center">
                     {cat.productCount}
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex gap-3">
+                  <td className="px-6 py-4">
+                    <div className="flex gap-4">
                       <button
                         onClick={() => openEdit(cat)}
-                        className="text-xs text-[#3B5EFF] hover:underline font-medium"
+                        className="text-cobalt uppercase text-caption hover:underline"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => setDeleteId(cat.id)}
-                        className="text-xs text-red-600 hover:underline font-medium"
+                        className="text-ember uppercase text-caption hover:underline"
                       >
                         Delete
                       </button>
@@ -250,16 +250,16 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
                 </tr>
                 {editId === cat.id && (
                   <tr key={`${cat.id}-edit`}>
-                    <td colSpan={4} className="px-4 pb-4 bg-blue-50/20">
+                    <td colSpan={4} className="px-6 py-6 bg-graphite/50 border-t border-smoke/30">
                       {FormPanel}
                     </td>
                   </tr>
                 )}
-              </>
+              </React.Fragment>
             ))}
             {categories.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-10 text-center text-sm text-gray-400">
+                <td colSpan={4} className="px-6 py-8 text-center text-ash">
                   No categories yet
                 </td>
               </tr>

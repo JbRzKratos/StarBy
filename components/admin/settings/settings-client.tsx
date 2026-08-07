@@ -48,22 +48,22 @@ export function SettingsClient({
   }
 
   const inputClass =
-    'w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]';
+    'w-full text-sm font-mono bg-graphite border border-smoke text-bone rounded-sm px-3 py-2.5 focus:outline-none focus:border-cobalt';
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-8 max-w-4xl">
       <div>
-        <h1 className="text-lg font-bold text-gray-900">Store Settings</h1>
-        <p className="text-sm text-gray-500">Global configurations for StarBy</p>
+        <h1 className="font-display text-display-sm font-bold text-bone mb-2">Store Settings</h1>
+        <p className="font-mono text-body-sm text-pearl">Global configurations for StarBy</p>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-        <h2 className="text-sm font-semibold text-gray-900 border-b border-gray-100 pb-3">
+      <div className="bg-charcoal rounded-sm border border-smoke p-6 space-y-6">
+        <h2 className="font-mono text-caption uppercase tracking-widest text-bone border-b border-smoke pb-3">
           General Information
         </h2>
         <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="text-xs font-medium text-gray-700 block mb-1">Store Name</label>
+            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Store Name</label>
             <input
               value={form.storeName}
               onChange={(e) => setForm({ ...form, storeName: e.target.value })}
@@ -71,7 +71,7 @@ export function SettingsClient({
             />
           </div>
           <div>
-            <label className="text-xs font-medium text-gray-700 block mb-1">Contact Email</label>
+            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Contact Email</label>
             <input
               value={form.contactEmail}
               onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
@@ -81,13 +81,13 @@ export function SettingsClient({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-        <h2 className="text-sm font-semibold text-gray-900 border-b border-gray-100 pb-3">
+      <div className="bg-charcoal rounded-sm border border-smoke p-6 space-y-6">
+        <h2 className="font-mono text-caption uppercase tracking-widest text-bone border-b border-smoke pb-3">
           Finance & Tax
         </h2>
         <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="text-xs font-medium text-gray-700 block mb-1">Tax Rate (%)</label>
+            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Tax Rate (%)</label>
             <input
               type="number"
               value={form.taxRate}
@@ -98,39 +98,39 @@ export function SettingsClient({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-          <h2 className="text-sm font-semibold text-gray-900">Shipping Zones</h2>
-          <span className="text-xs text-gray-500 italic">Database management only for now</span>
+      <div className="bg-charcoal rounded-sm border border-smoke p-6 space-y-6">
+        <div className="flex items-center justify-between border-b border-smoke pb-3">
+          <h2 className="font-mono text-caption uppercase tracking-widest text-bone">Shipping Zones</h2>
+          <span className="text-caption font-mono text-ash italic">Database management only for now</span>
         </div>
         <div className="space-y-3">
           {shippingZones.map((z) => (
             <div
               key={z.id}
-              className="flex justify-between items-center p-3 border border-gray-100 rounded-lg bg-gray-50"
+              className="flex justify-between items-center p-4 border border-smoke rounded-sm bg-smoke/10"
             >
               <div>
-                <p className="text-sm font-medium text-gray-900">{z.name}</p>
-                <p className="text-xs text-gray-500">{z.states.join(', ')}</p>
+                <p className="font-mono text-body-sm text-bone font-medium">{z.name}</p>
+                <p className="text-caption text-ash mt-1">{z.states.join(', ')}</p>
               </div>
               <div className="text-right">
-                <p className="text-sm font-semibold text-gray-900">
+                <p className="font-mono text-body-sm font-semibold text-bone">
                   {z.rateType === 'percentage' ? `${z.rateValue}%` : `₹${z.rateValue}`}
                 </p>
               </div>
             </div>
           ))}
           {shippingZones.length === 0 && (
-            <p className="text-sm text-gray-500">No shipping zones configured in database.</p>
+            <p className="text-sm font-mono text-ash">No shipping zones configured in database.</p>
           )}
         </div>
       </div>
 
-      <div className="flex gap-3 pt-2">
+      <div className="flex gap-3 pt-4">
         <button
           onClick={handleSave}
           disabled={isPending}
-          className="px-6 py-2.5 bg-[#3B5EFF] text-white text-sm font-semibold rounded-lg hover:bg-[#2a4de8] disabled:opacity-50 transition-colors"
+          className="px-6 py-3 bg-cobalt text-bone text-caption font-mono uppercase tracking-widest hover:bg-cobalt/90 disabled:opacity-50 transition-colors"
         >
           {isPending ? 'Saving…' : 'Save Settings'}
         </button>

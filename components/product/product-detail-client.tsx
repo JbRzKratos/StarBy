@@ -19,9 +19,12 @@ interface ProductDetailClientProps {
   product: Product;
 }
 
+// Only apparel products get the body-measurement size finder
+const APPAREL_CATEGORIES = ['tees', 'hoodies', 'oversized-tees'];
+
 export function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [selectedVariant, setSelectedVariant] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(product.sizes?.[1] ?? 'M');
+  const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] ?? 'M');
   const [sizeFinder, setSizeFinder] = useState(false);
   const [sizeChart, setSizeChart] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -140,12 +143,14 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                     >
                       Size Guide
                     </button>
-                    <button
-                      onClick={() => setSizeFinder(true)}
-                      className="font-mono text-[10px] text-cobalt uppercase tracking-widest underline underline-offset-4 hover:text-bone transition-colors"
-                    >
-                      Find My Size →
-                    </button>
+                    {APPAREL_CATEGORIES.includes(product.categorySlug) && (
+                      <button
+                        onClick={() => setSizeFinder(true)}
+                        className="font-mono text-[10px] text-cobalt uppercase tracking-widest underline underline-offset-4 hover:text-bone transition-colors"
+                      >
+                        Find My Size →
+                      </button>
+                    )}
                   </div>
                 </div>
                 <SizeSelector
@@ -186,11 +191,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         <ProductReviews productId={product.id} />
       </div>
 
-      <SizeFinderModal
-        isOpen={sizeFinder}
-        onClose={() => setSizeFinder(false)}
-        onSizeSelect={(size) => setSelectedSize(size)}
-      />
+      {APPAREL_CATEGORIES.includes(product.categorySlug) && (
+        <SizeFinderModal
+          isOpen={sizeFinder}
+          onClose={() => setSizeFinder(false)}
+          onSizeSelect={(size) => setSelectedSize(size)}
+        />
+      )}
       <SizeChartModal
         isOpen={sizeChart}
         onClose={() => setSizeChart(false)}

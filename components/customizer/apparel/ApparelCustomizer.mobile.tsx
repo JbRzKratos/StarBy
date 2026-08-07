@@ -18,6 +18,7 @@ import {
   type GarmentType,
   type DesignTransform,
 } from '@/lib/stores/apparel-customizer-store';
+import { useApparelHistoryStore } from '@/lib/stores/apparel-history-store';
 import { GARMENT_COLORS, type GarmentView, type GarmentColor } from '@/data/printAreaConfig';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
@@ -82,6 +83,19 @@ export function ApparelCustomizerMobile({ productId }: Props) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<ApparelCanvasHandle>(null);
+
+  // ── Undo / Redo ──────────────────────────────────────────────────────────
+  const { undo, redo, canUndo, canRedo } = useApparelHistoryStore();
+
+  const handleUndo = useCallback(async () => {
+    const snapshot = undo();
+    if (snapshot) await canvasRef.current?.loadFromSnapshot(snapshot);
+  }, [undo]);
+
+  const handleRedo = useCallback(async () => {
+    const snapshot = redo();
+    if (snapshot) await canvasRef.current?.loadFromSnapshot(snapshot);
+  }, [redo]);
 
   const currentDesign = designsByView[view];
   const colorOptions: GarmentColor[] = useMemo(
@@ -668,7 +682,31 @@ export function ApparelCustomizerMobile({ productId }: Props) {
         </div>
       </div>
 
-      {/* ── Add to cart (sticky bottom) ─────────────────────────────────────── */}
+      {/* ── Undo / Redo ─────────────────────────────────────────────── */}
+      <div className="px-4 mt-3 flex gap-2">
+        <button
+          onClick={() => void handleUndo()}
+          disabled={!canUndo()}
+          className="flex-1 py-3 border border-smoke rounded-sm font-mono text-xs text-pearl flex items-center justify-center gap-1.5 hover:border-[#ED9518] hover:text-[#ED9518] transition-colors active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 7v6h6" /><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+          </svg>
+          Undo
+        </button>
+        <button
+          onClick={() => void handleRedo()}
+          disabled={!canRedo()}
+          className="flex-1 py-3 border border-smoke rounded-sm font-mono text-xs text-pearl flex items-center justify-center gap-1.5 hover:border-[#ED9518] hover:text-[#ED9518] transition-colors active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 7v6h-6" /><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
+          </svg>
+          Redo
+        </button>
+      </div>
+
+      {/* ── Add to cart (sticky bottom) ─────────────────────────────────── */}
       <div className="px-4 mt-4">
         <button
           onClick={() => void handleAddToCart()}

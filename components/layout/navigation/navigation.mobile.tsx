@@ -24,9 +24,14 @@ const menuLinks = [
   { href: '/contact', label: 'Contact' },
 ];
 
-export function NavigationMobile() {
+export interface NavigationMobileProps {
+  variant?: 'hero' | 'solid';
+}
+
+export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobileProps) {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const totalItems = useCartStore((s) => s.totalItems);
+  const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
   const toggleCart = useCartStore((s) => s.toggleCart);
 
   const setWishlistOpen = useWishlistStore((s) => s.setWishlistOpen);
@@ -37,6 +42,9 @@ export function NavigationMobile() {
 
   const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isScrolledState, setIsScrolledState] = useState(false);
+
+  const isLandingPage = pathname === '/';
 
   useEffect(() => {
     setMounted(true);
@@ -82,45 +90,21 @@ export function NavigationMobile() {
 
   // Sticky nav background animation
   useEffect(() => {
-    if (!navRef.current) return;
-
     const handleScroll = () => {
       const shouldScroll = window.scrollY > 60;
       setIsScrolledState(shouldScroll);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initialize state on mount
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const pathname = usePathname();
-  const [isScrolledState, setIsScrolledState] = useState(false);
-
-  const isHomePage = pathname === '/';
-
-  // Determine styles based on page and scroll
-  let navClasses = '';
-  let textIsDark = false;
-
-  if (isHomePage) {
-    if (isScrolledState) {
-      // Home scrolled: Dark background, light text
-      navClasses =
-        'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
-      textIsDark = false;
-    } else {
-      // Home top: Transparent background, dark text
-      navClasses = 'bg-transparent text-[#0A0A0A] border-b border-transparent';
-      textIsDark = true;
-    }
-  } else {
-    // Other pages: Always dark background, light text (regardless of scroll)
-    navClasses =
-      'bg-[#0A0A0A]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/10 shadow-2xl backdrop-blur-md';
-    textIsDark = false;
-  }
+  // Determine styles based on route and scroll
+  const textIsDark = isLandingPage && !isScrolledState;
+  const navClasses = textIsDark
+    ? 'bg-transparent text-[#0A0A0A] border-b border-transparent'
+    : 'bg-[#0E0E10]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl backdrop-blur-md';
 
   // Menu Drawer Animation
   useGSAP(
@@ -255,116 +239,107 @@ export function NavigationMobile() {
                 <line x1="3" y1="6" x2="21" y2="6"></line>
                 <path d="M16 10a4 4 0 0 1-8 0"></path>
               </svg>
-              {mounted && totalItems() > 0 && (
+              {mounted && totalItems > 0 && (
                 <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-[#ED9518] text-[#0A0A0A] text-[9px] font-bold rounded-full flex items-center justify-center">
-                  {totalItems()}
+                  {totalItems}
                 </span>
               )}
             </button>
 
             <button
               onClick={() => setIsOpen(true)}
-              className="flex flex-col gap-1 w-11 h-11 items-center justify-center"
+              className={`relative transition-colors flex items-center justify-center w-11 h-11 ${
+                textIsDark
+                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  : 'text-[#F5F1EA] hover:text-[#ED9518]'
+              }`}
               aria-label="Open menu"
-              aria-expanded={isOpen}
             >
-              <span
-                className={`w-5 h-0.5 rounded-full transition-colors ${
-                  !textIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
-                }`}
-              />
-              <span
-                className={`w-5 h-0.5 rounded-full transition-colors ${
-                  !textIsDark ? 'bg-[#F5F1EA]' : 'bg-[#0A0A0A]'
-                }`}
-              />
+              <div className="w-5 h-4 flex flex-col justify-between items-end">
+                <span className="w-5 h-0.5 bg-current transition-all" />
+                <span className="w-3.5 h-0.5 bg-current transition-all" />
+                <span className="w-4 h-0.5 bg-current transition-all" />
+              </div>
             </button>
           </div>
         </nav>
       </div>
 
-      {/* Drawer */}
+      {/* Drawer Overlay */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[99990] bg-charcoal/80 hidden opacity-0"
+        className="fixed inset-0 z-[110] bg-[#0A0A0A]/80 backdrop-blur-md flex justify-end opacity-0 hidden transition-opacity"
         onClick={onClose}
       >
         <div
           ref={panelRef}
-          className="ml-auto w-4/5 max-w-sm h-full bg-graphite border-l border-smoke flex flex-col p-8 pt-20 overflow-y-auto custom-scrollbar"
+          className="w-full max-w-sm h-full bg-[#0A0A0A] border-l border-[#F5F1EA]/10 p-6 flex flex-col justify-between overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            onClick={onClose}
-            className="absolute top-6 right-6 text-pearl hover:text-cobalt w-10 h-10 flex items-center justify-center transition-colors"
-            aria-label="Close menu"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-
-          <div ref={linksRef} className="flex flex-col gap-6 mt-8">
-            {menuLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
+          <div>
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#F5F1EA]/10">
+              <span className="font-display text-xl font-bold text-[#F5F1EA]">Menu</span>
+              <button
                 onClick={onClose}
-                className="font-display text-display-sm text-bone hover:text-cobalt transition-colors"
+                className="w-8 h-8 flex items-center justify-center text-[#F5F1EA] hover:text-[#ED9518]"
+                aria-label="Close menu"
               >
-                {link.label}
-              </Link>
-            ))}
+                ✕
+              </button>
+            </div>
+
+            <div ref={linksRef} className="flex flex-col gap-4">
+              {menuLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={onClose}
+                  className="font-display text-2xl font-bold text-[#F5F1EA] hover:text-[#ED9518] transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-auto">
-            <div className="flex flex-col gap-4 mb-6 pt-6 border-t border-smoke/30">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-caption text-pearl uppercase">Currency</span>
-                <div className="flex gap-2">
-                  {currencies.map((c) => (
-                    <button
-                      key={c}
-                      onClick={() => setCurrency(c)}
-                      className={`px-2 py-1 text-[10px] font-mono border rounded ${currency === c ? 'border-cobalt text-cobalt' : 'border-smoke/50 text-pearl'}`}
-                    >
-                      {c}
-                    </button>
-                  ))}
-                </div>
-              </div>
+          <div className="pt-6 border-t border-[#F5F1EA]/10 flex flex-col gap-4">
+            {user ? (
               <Link
-                href={user ? '/account' : '/login'}
+                href="/account"
                 onClick={onClose}
-                className="font-mono text-caption uppercase text-bone flex items-center gap-2 hover:text-cobalt transition-colors"
+                className="font-mono text-caption text-[#ED9518] uppercase tracking-widest"
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <span>{user ? 'My Account' : 'Log In / Register'}</span>
+                My Account ({user.email})
               </Link>
+            ) : (
+              <Link
+                href="/login"
+                onClick={onClose}
+                className="font-mono text-caption text-[#F5F1EA] hover:text-[#ED9518] uppercase tracking-widest"
+              >
+                Sign In / Register
+              </Link>
+            )}
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-caption text-[#F5F1EA]/50 uppercase">
+                Currency:
+              </span>
+              <div className="flex gap-2">
+                {currencies.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setCurrency(c)}
+                    className={`font-mono text-caption font-bold px-2 py-1 rounded ${
+                      currency === c
+                        ? 'bg-[#ED9518] text-[#0A0A0A]'
+                        : 'text-[#F5F1EA] hover:bg-white/10'
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
             </div>
-            <p className="font-mono text-[10px] text-pearl/50 uppercase tracking-widest">
-              Your story, engineered.
-            </p>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import Link from 'next/link';
+import Image from 'next/image';
 import { products } from '@/data/products';
 
 export function CartDrawer() {
@@ -19,8 +20,8 @@ export function CartDrawer() {
   const setCartOpen = useCartStore((s) => s.setCartOpen);
   const removeItem = useCartStore((s) => s.removeItem);
   const updateQuantity = useCartStore((s) => s.updateQuantity);
-  const totalPrice = useCartStore((s) => s.totalPrice);
-  const totalItems = useCartStore((s) => s.totalItems());
+  const totalPrice = useCartStore((s) => s.items.reduce((sum, i) => sum + i.price * i.quantity, 0));
+  const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
   const { formatPrice } = usePrice();
 
   const [mounted, setMounted] = useState(false);
@@ -172,7 +173,7 @@ export function CartDrawer() {
           <div className="flex items-baseline gap-4 mb-8">
             <span className="font-mono text-body-lg text-pearl uppercase">Total</span>
             <span className="font-mono text-display-md text-bone tracking-normal">
-              {formatPrice(totalPrice())}
+              {formatPrice(totalPrice)}
             </span>
             <span className="font-mono text-caption text-ash uppercase ml-2">
               ({totalItems} items)
@@ -253,11 +254,12 @@ export function CartDrawer() {
                   {/* Image Placeholder / Visual */}
                   <div className="w-24 h-24 sm:w-32 sm:h-32 bg-charcoal rounded-lg flex-shrink-0 relative overflow-hidden border border-smoke/30 flex items-center justify-center">
                     {displayImage ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={displayImage}
                         alt={displayName}
-                        className="w-full h-full object-cover opacity-80"
+                        fill
+                        className="object-cover opacity-80"
+                        sizes="(max-width: 640px) 96px, 128px"
                       />
                     ) : (
                       <span className="font-mono text-caption text-smoke uppercase rotate-45">

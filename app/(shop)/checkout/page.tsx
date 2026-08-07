@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { products } from '@/data/products';
+import { createClient } from '@/lib/supabase/client';
 
 type Step = 'shipping' | 'payment' | 'review';
 
@@ -13,12 +14,15 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<Step>('shipping');
   const cartItems = useCartStore((s) => s.items);
   const clearCart = useCartStore((s) => s.clearCart);
-  const totalPrice = useCartStore((s) => s.totalPrice);
+  const totalPrice = useCartStore((s) => s.items.reduce((sum, i) => sum + i.price * i.quantity, 0));
   const { formatPrice } = usePrice();
+  // Guard against duplicate order submissions (e.g. Razorpay modal open but button re-enabled)
+  const submittingRef = useRef(false);
 
   const [shippingAddress, setShippingAddress] = useState({
     firstName: '',
     lastName: '',
+    email: '',
     address1: '',
     address2: '',
     city: '',
@@ -30,6 +34,8 @@ export default function CheckoutPage() {
   const [shippingError, setShippingError] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
   const [loading, setLoading] = useState(false);
+  // Inline error state — replaces all alert() calls in checkout (BUG-018)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
@@ -38,7 +44,7 @@ export default function CheckoutPage() {
   const [isCouponError, setIsCouponError] = useState(false);
 
   const steps: Step[] = ['shipping', 'payment', 'review'];
-  const finalTotal = Math.max(0, totalPrice() - discountAmount);
+  const finalTotal = Math.max(0, totalPrice - discountAmount);
 
   useEffect(() => {
     // Dynamically load Razorpay script
@@ -53,9 +59,24 @@ export default function CheckoutPage() {
     };
   }, []);
 
+  // Pre-fill email from authenticated user session
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user?.email) {
+        setShippingAddress((prev) => (prev.email ? prev : { ...prev, email: data.user!.email! }));
+      }
+    });
+  }, []);
+
   const validateShipping = () => {
     if (!shippingAddress.firstName.trim()) {
       setShippingError('Please enter your first name.');
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!shippingAddress.email.trim() || !emailRegex.test(shippingAddress.email)) {
+      setShippingError('Please enter a valid email address for your order confirmation.');
       return false;
     }
     if (!shippingAddress.address1.trim()) {
@@ -72,6 +93,15 @@ export default function CheckoutPage() {
     }
     if (!shippingAddress.pinCode.trim()) {
       setShippingError('Please enter your PIN / Postal code.');
+      return false;
+    }
+    const pinRegex = /^\d{5,10}$/;
+    if (!pinRegex.test(shippingAddress.pinCode.trim())) {
+      setShippingError('Please enter a valid PIN / Postal code (5-10 digits).');
+      return false;
+    }
+    if (shippingAddress.phone && !/^[\d\s\-+()]{7,15}$/.test(shippingAddress.phone)) {
+      setShippingError('Please enter a valid phone number.');
       return false;
     }
     setShippingError('');
@@ -100,7 +130,7 @@ export default function CheckoutPage() {
         setCouponMsg(data.message);
         setIsCouponError(false);
         if (data.discountType === 'percentage') {
-          setDiscountAmount(totalPrice() * (data.discountValue / 100));
+          setDiscountAmount(totalPrice * (data.discountValue / 100));
         } else {
           setDiscountAmount(data.discountValue);
         }
@@ -117,13 +147,19 @@ export default function CheckoutPage() {
   };
 
   const handlePlaceOrder = async () => {
+    // Prevent duplicate submissions (e.g. rapid double-click, or re-click while Razorpay modal open)
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+
     if (cartItems.length === 0) {
-      alert('Your cart is empty!');
+      setCheckoutError('Your cart is empty. Please add items before checking out.');
+      submittingRef.current = false;
       return;
     }
 
     if (!validateShipping()) {
       setStep('shipping');
+      submittingRef.current = false;
       return;
     }
 
@@ -147,6 +183,7 @@ export default function CheckoutPage() {
         })),
         address: {
           name: fullName,
+          email: shippingAddress.email,
           street: fullStreet,
           city: shippingAddress.city,
           state: shippingAddress.state,
@@ -154,7 +191,7 @@ export default function CheckoutPage() {
           country: 'India',
           phone: shippingAddress.phone || undefined,
         },
-        paymentMethod: paymentMethod === 'cod' ? 'cod' : 'upi',
+        paymentMethod: paymentMethod === 'cod' ? 'cod' : 'razorpay',
         couponCode: appliedCoupon || undefined,
       };
 
@@ -174,8 +211,9 @@ export default function CheckoutPage() {
             .join('\n');
           errStr += `:\n${detail}`;
         }
-        alert(errStr);
+        setCheckoutError(errStr);
         setLoading(false);
+        submittingRef.current = false;
         return;
       }
 
@@ -183,10 +221,15 @@ export default function CheckoutPage() {
         clearCart();
         router.push('/account/orders');
       } else {
-        const razorpayKey =
-          data.razorpayKeyId ||
-          process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-          'rzp_test_TGZ1O4UGYD5ArS';
+        // BUG-002 fix: Never use a hardcoded key fallback. Fail loudly if key is missing.
+        const razorpayKey = data.razorpayKeyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+        if (!razorpayKey) {
+          setCheckoutError('Payment gateway is not configured. Please contact support.');
+          setLoading(false);
+          submittingRef.current = false;
+          return;
+        }
 
         const options = {
           key: razorpayKey,
@@ -215,12 +258,22 @@ export default function CheckoutPage() {
               clearCart();
               router.push('/account/orders');
             } else {
-              alert('Payment verification failed: ' + (verifyData.message || 'Unknown error'));
+              setCheckoutError('Payment verification failed: ' + (verifyData.message || 'Unknown error'));
+              setLoading(false);
+              submittingRef.current = false;
             }
+          },
+          modal: {
+            ondismiss: function () {
+              setLoading(false);
+              submittingRef.current = false;
+              setCheckoutError('Payment modal was closed. You can click Place Order to try again.');
+            },
           },
           prefill: {
             name: fullName,
-            contact: shippingAddress.phone || '9999999999',
+            email: shippingAddress.email,
+            contact: shippingAddress.phone || '',
           },
           theme: {
             color: '#1a1a1a',
@@ -237,20 +290,23 @@ export default function CheckoutPage() {
         if (typeof win.Razorpay !== 'undefined') {
           const rzp = new win.Razorpay(options);
           rzp.on('payment.failed', function (response: { error?: { description?: string } }) {
-            alert('Payment Failed: ' + (response.error?.description || 'Transaction cancelled'));
+            setCheckoutError('Payment failed: ' + (response.error?.description || 'Transaction cancelled'));
+            setLoading(false);
+            submittingRef.current = false;
           });
           rzp.open();
+          // Keep loading=true while Razorpay modal is open; handler/fail callbacks reset it
         } else {
-          alert(
-            'Razorpay gateway script is still loading. Please click Place Order again in 2 seconds.',
-          );
+          setCheckoutError('Payment gateway is still loading. Please wait 2 seconds and try again.');
+          setLoading(false);
+          submittingRef.current = false;
         }
-        setLoading(false);
       }
     } catch (err) {
       console.error(err);
-      alert('An unexpected error occurred during checkout.');
+      setCheckoutError('An unexpected error occurred. Please try again.');
       setLoading(false);
+      submittingRef.current = false;
     }
   };
 
@@ -265,7 +321,10 @@ export default function CheckoutPage() {
             <button
               key={s}
               onClick={() => {
-                if (s === 'shipping' || validateShipping()) {
+                // Always require valid shipping before proceeding beyond the shipping step
+                if (s === 'shipping') {
+                  setStep(s);
+                } else if (validateShipping()) {
                   setStep(s);
                 }
               }}
@@ -288,6 +347,22 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Form area */}
           <div className="lg:col-span-2">
+            {/* Global checkout error banner (replaces alert() dialogs) */}
+            {checkoutError && (
+              <div className="mb-6 p-4 bg-ember/10 border border-ember/50 rounded-lg flex items-start gap-3">
+                <span className="text-ember text-lg leading-none mt-0.5">⚠</span>
+                <div className="flex-1">
+                  <p className="font-mono text-caption text-ember whitespace-pre-line">{checkoutError}</p>
+                </div>
+                <button
+                  onClick={() => setCheckoutError(null)}
+                  aria-label="Dismiss error"
+                  className="text-ember/60 hover:text-ember font-mono text-caption leading-none ml-2"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
             {step === 'shipping' && (
               <div className="bg-graphite border border-smoke rounded-lg p-6 md:p-8">
                 <h2 className="font-display text-display-sm font-bold text-bone mb-6">
@@ -321,6 +396,17 @@ export default function CheckoutPage() {
                       className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
                     />
                   </div>
+                  <input
+                    type="email"
+                    placeholder="Email address * (for order confirmation)"
+                    aria-label="Email address"
+                    autoComplete="email"
+                    value={shippingAddress.email}
+                    onChange={(e) =>
+                      setShippingAddress({ ...shippingAddress, email: e.target.value })
+                    }
+                    className="bg-charcoal border border-smoke text-bone font-mono text-body-sm px-4 py-3 rounded-sm focus:outline-none focus:border-cobalt placeholder:text-ash"
+                  />
                   <input
                     placeholder="Address line 1 *"
                     aria-label="Address line 1"
@@ -537,7 +623,7 @@ export default function CheckoutPage() {
               <span className="font-mono text-caption uppercase tracking-widest text-ash">
                 Subtotal
               </span>
-              <span className="font-mono text-body-sm text-bone">{formatPrice(totalPrice())}</span>
+              <span className="font-mono text-body-sm text-bone">{formatPrice(totalPrice)}</span>
             </div>
 
             {discountAmount > 0 && (

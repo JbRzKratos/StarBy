@@ -37,11 +37,12 @@
  *     accumulates during drag, Zustand flushed once on 'modified' (mouse-up).
  */
 
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { getPrintAreaConfig } from '@/data/printAreaConfig';
 import type { GarmentType, GarmentView, GarmentColor } from '@/data/printAreaConfig';
 import { useApparelCustomizerStore } from '@/lib/stores/apparel-customizer-store';
 import type { DesignTransform } from '@/lib/stores/apparel-customizer-store';
+import { useApparelHistoryStore } from '@/lib/stores/apparel-history-store';
 
 export const CANVAS_REF_WIDTH = 1000;
 export const CANVAS_REF_HEIGHT = 1200;
@@ -50,6 +51,8 @@ export interface ApparelCanvasHandle {
   getCanvas: () => any;
   getDesignObject: () => any;
   exportThumbnail: () => string;
+  /** Restore canvas from a JSON snapshot (used by undo/redo) */
+  loadFromSnapshot: (json: string) => Promise<void>;
 }
 
 export interface ApparelCanvasProps {
@@ -256,6 +259,7 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
     const designObjRef = useRef<any>(null);
     const guideRectRef = useRef<any>(null);
     const localTransformRef = useRef<DesignTransform | null>(null);
+    const [isReady, setIsReady] = useState(false);
 
     const updateTransform = useApparelCustomizerStore((s) => s.updateTransform);
 
@@ -314,6 +318,12 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
         fc.renderAll();
         return url;
       },
+      loadFromSnapshot: async (json: string) => {
+        const fc = fabricRef.current;
+        if (!fc) return;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        await new Promise<void>((resolve) => fc.loadFromJSON(json, () => { fc.renderAll(); resolve(); }));
+      },
     }));
 
     // ── Canvas initialisation ────────────────────────────────────────────────
@@ -347,82 +357,6 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
           backgroundColor: 'transparent',
         });
         fabricRef.current = fc;
-
-        // ── Garment mockup image ─────────────────────────────────────────────
-        // Choose mockup source:
-        //  - real per-color asset if available
-        //  - white base if no real asset (enables CSS multiply tinting)
-        const mockupSrc = color.mockupImage ?? WHITE_BASE_MOCKUP[garment][view];
-
-        fabric.Image.fromURL(
-          mockupSrc,
-          (img: any) => {
-            if (destroyed || !img) return;
-            const gScale = Math.max(
-              containerW / Math.max(img.width || 1, 1),
-              containerH / Math.max(img.height || 1, 1),
-            );
-
-            // ── In-canvas colour tinting ────────────────────────────────────
-            // For colours without a real flat-shot asset, we:
-            //  1. Add a solid tint rect BELOW the garment image inside fabric
-            //  2. Set the garment image to multiply blend
-            // This confines tinting to the garment photo area only.
-            // CSS mix-blend-mode on the canvas container is NOT used because
-            // it tints the entire canvas wrapper including the dark background.
-            if (!color.mockupImage) {
-              const tr = new fabric.Rect({
-                left: 0,
-                top: 0,
-                width: containerW,
-                height: containerH,
-                fill: color.hex,
-                selectable: false,
-                evented: false,
-              });
-              fc.add(tr);
-              fc.sendToBack(tr);
-              tintRectRef.current = tr;
-              // Garment image blends with tint rect via multiply
-              img.set({ globalCompositeOperation: 'multiply' });
-            }
-
-            img.set({
-              left: containerW / 2,
-              top: containerH / 2,
-              originX: 'center',
-              originY: 'center',
-              scaleX: gScale,
-              scaleY: gScale,
-              selectable: false,
-              evented: false,
-            });
-            fc.add(img);
-            // Ensure garment image is above tint rect but below design/guide
-            fc.sendToBack(img);
-            if (tintRectRef.current) fc.sendToBack(tintRectRef.current);
-            fc.renderAll();
-
-            // If design image was already set before canvas mounted — load now
-            if (designImageUrl) {
-              placeDesignImage({
-                fabric,
-                fc,
-                garment,
-                view,
-                designImageUrl,
-                containerW,
-                designObjRef,
-                guideRectRef,
-                containerRef,
-                onLocalSync,
-                onFlushStore,
-                destroyed,
-              });
-            }
-          },
-          imgOptions(mockupSrc),
-        );
 
         // ── Print-area dashed guide rect ─────────────────────────────────────
         const config = getPrintAreaConfig(garment, view);
@@ -462,13 +396,29 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
           guide.set({ visible: false });
           fc.renderAll();
         });
+
+        // ── History snapshot on user actions ────────────────────────────────
+        let snapshotTimer: ReturnType<typeof setTimeout> | null = null;
+        const pushSnapshot = () => {
+          if (snapshotTimer) clearTimeout(snapshotTimer);
+          snapshotTimer = setTimeout(() => {
+            const json: string = JSON.stringify(fc.toJSON());
+            useApparelHistoryStore.getState().pushSnapshot(json);
+          }, 300);
+        };
+        fc.on('object:modified', pushSnapshot);
+        fc.on('object:added', pushSnapshot);
+        fc.on('object:removed', pushSnapshot);
+
         fc.renderAll();
+        setIsReady(true);
       };
 
       void init();
 
       return () => {
         destroyed = true;
+        setIsReady(false);
         if (fc) fc.dispose();
         fabricRef.current = null;
         designObjRef.current = null;
@@ -480,23 +430,25 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
 
     // ── Effect: colour change → swap garment image + update tint rect ──────────
     useEffect(() => {
+      let isCancelled = false;
+
+      if (!isReady) return;
+
       const fc = fabricRef.current;
       if (!fc) return;
 
       const fabric = (window as any).fabric;
       if (!fabric) return;
 
-      const objects: any[] = fc.getObjects();
-
-      // Remove old tint rect (if any) and old garment image
+      // Remove ALL old tint rects and background mockup images before adding the new color mockup
       if (tintRectRef.current) {
         fc.remove(tintRectRef.current);
         tintRectRef.current = null;
       }
-      const bgImg = objects.find(
-        (o: any) => !o.selectable && !o.evented && o !== guideRectRef.current,
-      );
-      if (bgImg) fc.remove(bgImg);
+      const existingBgObjects = fc
+        .getObjects()
+        .filter((o: any) => o !== designObjRef.current && o !== guideRectRef.current);
+      existingBgObjects.forEach((o: any) => fc.remove(o));
 
       const mockupSrc = color.mockupImage ?? WHITE_BASE_MOCKUP[garment][view];
       const containerW = containerRef.current?.clientWidth ?? 480;
@@ -505,7 +457,7 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
       fabric.Image.fromURL(
         mockupSrc,
         (img: any) => {
-          if (!img || !fabricRef.current) return;
+          if (isCancelled || !img || !fabricRef.current) return;
           const gScale = Math.max(
             containerW / Math.max(img.width || 1, 1),
             containerH / Math.max(img.height || 1, 1),
@@ -545,10 +497,16 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
         },
         imgOptions(mockupSrc),
       );
-    }, [color, garment, view]);
+
+      return () => {
+        isCancelled = true;
+      };
+    }, [isReady, color, garment, view]);
 
     // ── Effect: design image change (upload / clear) ──────────────────────────
     useEffect(() => {
+      if (!isReady) return;
+
       const fc = fabricRef.current;
 
       if (!designImageUrl) {
@@ -587,7 +545,7 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
       // Intentionally exclude onLocalSync/onFlushStore from deps — stored in refs above.
       // The effect must only re-run on actual data changes (url, garment, view).
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [designImageUrl, garment, view]);
+    }, [isReady, designImageUrl, garment, view]);
 
     // ── Render ────────────────────────────────────────────────────────────────
     // The canvas container is a simple absolutely-positioned div.

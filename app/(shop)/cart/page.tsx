@@ -11,8 +11,8 @@ export default function CartPage() {
   const items = useCartStore((s) => s.items);
   const removeItem = useCartStore((s) => s.removeItem);
   const updateQuantity = useCartStore((s) => s.updateQuantity);
-  const totalPrice = useCartStore((s) => s.totalPrice);
-  const totalItems = useCartStore((s) => s.totalItems);
+  const totalPrice = useCartStore((s) => s.items.reduce((sum, i) => sum + i.price * i.quantity, 0));
+  const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
   const { formatPrice } = usePrice();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -22,7 +22,7 @@ export default function CartPage() {
         <div className="mb-10">
           <span className="overline-label block mb-3">Shopping</span>
           <h1 className="font-display text-display-lg font-bold text-bone">
-            Your Cart ({totalItems()})
+            Your Cart ({totalItems})
           </h1>
         </div>
 
@@ -82,7 +82,13 @@ export default function CartPage() {
                             )
                           }
                           aria-label="Decrease quantity"
-                          className="w-7 h-7 border border-smoke text-pearl flex items-center justify-center hover:border-cobalt"
+                          aria-disabled={item.quantity <= 1}
+                          title={item.quantity <= 1 ? 'Minimum quantity reached' : 'Decrease quantity'}
+                          className={`w-7 h-7 border border-smoke text-pearl flex items-center justify-center transition-opacity ${
+                            item.quantity <= 1
+                              ? 'opacity-30 cursor-not-allowed'
+                              : 'hover:border-cobalt cursor-pointer'
+                          }`}
                         >
                           −
                         </button>
@@ -126,7 +132,7 @@ export default function CartPage() {
                     Subtotal
                   </span>
                   <span className="font-mono text-body-sm text-bone">
-                    {formatPrice(totalPrice())}
+                    {formatPrice(totalPrice)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -139,7 +145,7 @@ export default function CartPage() {
                   Total
                 </span>
                 <span className="font-mono text-display-sm text-bone">
-                  {formatPrice(totalPrice())}
+                  {formatPrice(totalPrice)}
                 </span>
               </div>
               <Link

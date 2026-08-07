@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { toggleVariantStock, deleteProduct, createProduct } from '@/app/admin/lib/actions';
+import { StatusBadge } from '@/components/admin/status-badge';
 
 export interface ProductVariant {
   id: string;
@@ -208,11 +209,7 @@ export function ProductManagerClient({ products: initialProducts }: ProductManag
                           </div>
                         </td>
                         <td className="py-3">
-                          {v.inStock ? (
-                            <span className="text-emerald-400">In Stock</span>
-                          ) : (
-                            <span className="text-ember">Out of Stock</span>
-                          )}
+                          <StatusBadge status={v.inStock ? 'in_stock' : 'out_of_stock'} />
                         </td>
                         <td className="py-3 text-right">
                           <button

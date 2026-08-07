@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useTransition, useState } from 'react';
-import { updateOrderStatus } from '@/app/admin/lib/actions';
+import { updateOrderStatus, updateOrderTracking } from '@/app/admin/lib/actions';
+import { StatusBadge } from '@/components/admin/status-badge';
 
 export interface OrderItem {
   id: string;
@@ -31,6 +32,9 @@ export interface Order {
   razorpayOrderId?: string | null;
   couponCode?: string | null;
   discount?: number | null;
+  carrier?: string | null;
+  trackingNumber?: string | null;
+  trackingUrl?: string | null;
   items: OrderItem[];
 }
 
@@ -41,26 +45,33 @@ type OrderManagerClientProps = {
 export function OrderManagerClient({ orders }: OrderManagerClientProps) {
   const [isPending, startTransition] = useTransition();
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+  const [trackingModalOrder, setTrackingModalOrder] = useState<string | null>(null);
+  const [trackingForm, setTrackingForm] = useState({ carrier: '', trackingNumber: '', trackingUrl: '' });
 
   const handleStatusChange = (orderId: string, newStatus: string) => {
+    if (newStatus === 'shipped') {
+      const order = orders.find((o) => o.id === orderId);
+      setTrackingForm({
+        carrier: order?.carrier || '',
+        trackingNumber: order?.trackingNumber || '',
+        trackingUrl: order?.trackingUrl || '',
+      });
+      setTrackingModalOrder(orderId);
+      return;
+    }
+    
     startTransition(async () => {
       await updateOrderStatus(orderId, newStatus);
     });
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'processing':
-        return 'bg-cobalt/20 text-cobalt';
-      case 'shipped':
-        return 'bg-emerald-400/20 text-emerald-400';
-      case 'delivered':
-        return 'bg-emerald-600/20 text-emerald-600';
-      case 'cancelled':
-        return 'bg-ember/20 text-ember';
-      default:
-        return 'bg-smoke/20 text-ash';
-    }
+  const handleTrackingSubmit = () => {
+    if (!trackingModalOrder) return;
+    startTransition(async () => {
+      await updateOrderTracking(trackingModalOrder, trackingForm);
+      await updateOrderStatus(trackingModalOrder, 'shipped');
+      setTrackingModalOrder(null);
+    });
   };
 
   return (
@@ -119,11 +130,7 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                     </td>
                     <td className="px-6 py-4">₹{order.total}</td>
                     <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-caption uppercase ${getStatusColor(order.status)}`}
-                      >
-                        {order.status.replace('_', ' ')}
-                      </span>
+                      <StatusBadge status={order.status} />
                     </td>
                     <td className="px-6 py-4 text-right">
                       <select
@@ -186,6 +193,20 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                                   {order.discount})
                                 </p>
                               )}
+                              {(order.carrier || order.trackingNumber) && (
+                                <div className="mt-4 p-3 bg-graphite/50 border border-smoke/30 rounded-sm">
+                                  <p className="text-bone font-medium mb-1">Tracking Info</p>
+                                  <p><strong>Carrier:</strong> {order.carrier}</p>
+                                  <p><strong>Tracking Number:</strong> {order.trackingNumber}</p>
+                                  {order.trackingUrl && (
+                                    <p className="mt-2">
+                                      <a href={order.trackingUrl} target="_blank" rel="noreferrer" className="text-cobalt hover:underline">
+                                        Track Package
+                                      </a>
+                                    </p>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           </div>
 
@@ -230,6 +251,61 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
           </tbody>
         </table>
       </div>
+
+      {trackingModalOrder && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-charcoal border border-smoke rounded-sm w-full max-w-md p-6">
+            <h3 className="font-display text-body-lg text-bone mb-4">Add Tracking Details</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Carrier Name</label>
+                <input
+                  type="text"
+                  value={trackingForm.carrier}
+                  onChange={(e) => setTrackingForm({ ...trackingForm, carrier: e.target.value })}
+                  className="w-full text-sm font-mono bg-graphite border border-smoke text-bone rounded-sm px-3 py-2 focus:outline-none focus:border-cobalt"
+                  placeholder="e.g. Delhivery, Bluedart"
+                />
+              </div>
+              <div>
+                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Tracking Number</label>
+                <input
+                  type="text"
+                  value={trackingForm.trackingNumber}
+                  onChange={(e) => setTrackingForm({ ...trackingForm, trackingNumber: e.target.value })}
+                  className="w-full text-sm font-mono bg-graphite border border-smoke text-bone rounded-sm px-3 py-2 focus:outline-none focus:border-cobalt"
+                  placeholder="e.g. 123456789"
+                />
+              </div>
+              <div>
+                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Tracking URL</label>
+                <input
+                  type="url"
+                  value={trackingForm.trackingUrl}
+                  onChange={(e) => setTrackingForm({ ...trackingForm, trackingUrl: e.target.value })}
+                  className="w-full text-sm font-mono bg-graphite border border-smoke text-bone rounded-sm px-3 py-2 focus:outline-none focus:border-cobalt"
+                  placeholder="https://..."
+                />
+              </div>
+              <div className="flex justify-end gap-3 pt-4">
+                <button
+                  onClick={() => setTrackingModalOrder(null)}
+                  className="px-4 py-2 text-caption font-mono uppercase tracking-widest text-ash hover:text-bone transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleTrackingSubmit}
+                  disabled={isPending}
+                  className="px-4 py-2 bg-cobalt text-bone text-caption font-mono uppercase tracking-widest hover:bg-cobalt/90 disabled:opacity-50 transition-colors"
+                >
+                  {isPending ? 'Saving...' : 'Save & Mark Shipped'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

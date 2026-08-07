@@ -113,10 +113,12 @@ function HitTestPlacer({
   panels,
   placedMatrix,
   setPlacedMatrix,
+  onSurfaceFound,
 }: {
   panels: Panel[];
   placedMatrix: THREE.Matrix4 | null;
   setPlacedMatrix: (v: THREE.Matrix4 | null) => void;
+  onSurfaceFound: () => void;
 }) {
   const reticleRef = useRef<THREE.Mesh>(null);
   const { session } = useXR();
@@ -124,6 +126,7 @@ function HitTestPlacer({
   useHitTest((hitMatrix) => {
     if (placedMatrix) return;
     if (hitMatrix && reticleRef.current) {
+      if (!reticleRef.current.visible) onSurfaceFound(); // first hit
       reticleRef.current.visible = true;
       const alignedMat = getAlignedMatrix(hitMatrix);
       reticleRef.current.matrix.copy(alignedMat);
@@ -163,8 +166,9 @@ function HitTestPlacer({
     }
 
     if (isGrid && firstPanel) {
-      const maxCol = Math.max(...panels.map((p) => p.gridCol || 1));
-      const maxRow = Math.max(...panels.map((p) => p.gridRow || 1));
+      // gridCol / gridRow are 0-indexed (from split-poster-visualizer)
+      const maxCol = Math.max(...panels.map((p) => (p.gridCol ?? 0))) + 1;
+      const maxRow = Math.max(...panels.map((p) => (p.gridRow ?? 0))) + 1;
 
       const pW = (parseInt(firstPanel.width) || 60) * CSS_TO_M;
       const pH = (parseInt(firstPanel.height) || 90) * CSS_TO_M;
@@ -173,10 +177,10 @@ function HitTestPlacer({
       const totalH = maxRow * pH + (maxRow - 1) * GAP;
 
       return panels.map((panel, idx) => {
-        const col = panel.gridCol || 1;
-        const row = panel.gridRow || 1;
-        const x = -totalW / 2 + (col - 1) * (pW + GAP) + pW / 2;
-        const y = totalH / 2 - (row - 1) * (pH + GAP) - pH / 2;
+        const col = panel.gridCol ?? 0;  // 0-indexed
+        const row = panel.gridRow ?? 0;  // 0-indexed
+        const x = -totalW / 2 + col * (pW + GAP) + pW / 2;
+        const y = totalH / 2 - row * (pH + GAP) - pH / 2;
         return (
           <PosterMesh key={idx} panel={panel} position={[x, y, 0]} url={panel.imageSrc || null} />
         );
@@ -244,6 +248,15 @@ function XRStateReporter({ onStateChange }: { onStateChange: (isPresenting: bool
 export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
   const [started, setStarted] = useState(false);
   const [placedMatrix, setPlacedMatrix] = useState<THREE.Matrix4 | null>(null);
+  const [surfaceFound, setSurfaceFound] = useState(false);
+  const [surfaceTimeout, setSurfaceTimeout] = useState(false);
+
+  // Surface-detection timeout: 15 seconds after AR starts without a hit
+  useEffect(() => {
+    if (!started || surfaceFound || surfaceTimeout) return;
+    const timer = setTimeout(() => setSurfaceTimeout(true), 15_000);
+    return () => clearTimeout(timer);
+  }, [started, surfaceFound, surfaceTimeout]);
 
   return (
     <div
@@ -318,9 +331,19 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
 
       {started && !placedMatrix && (
         <div className="absolute bottom-0 left-0 right-0 px-5 py-8 bg-gradient-to-t from-charcoal/90 to-transparent flex flex-col items-center pointer-events-none z-[9999]">
-          <p className="font-mono text-[10px] text-pearl/90 uppercase tracking-widest text-center">
-            Scan wall · Tap blue ring to place
-          </p>
+          {surfaceTimeout ? (
+            <div className="bg-ember/20 border border-ember/50 rounded-xl px-5 py-4 text-center">
+              <p className="font-mono text-sm text-ember font-bold mb-1">Surface not found</p>
+              <p className="font-mono text-[11px] text-pearl">Try a flat wall with more texture or better lighting.</p>
+            </div>
+          ) : (
+            <>
+              <div className="w-6 h-6 border-2 border-cobalt border-t-transparent rounded-full animate-spin mb-3" />
+              <p className="font-mono text-[10px] text-pearl/90 uppercase tracking-widest text-center">
+                Slowly pan your phone across a wall…
+              </p>
+            </>
+          )}
         </div>
       )}
 
@@ -348,6 +371,7 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
                 panels={panels}
                 placedMatrix={placedMatrix}
                 setPlacedMatrix={setPlacedMatrix}
+                onSurfaceFound={() => setSurfaceFound(true)}
               />
             </Suspense>
           </XR>

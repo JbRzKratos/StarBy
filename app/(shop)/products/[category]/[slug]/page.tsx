@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import { getProductBySlug, products } from '@/data/products';
+import { getProductBySlug } from '@/data/products';
 import { ProductDetailClient } from '@/components/product/product-detail-client';
 import { prisma } from '@/lib/prisma';
+import { notFound } from 'next/navigation';
 
 interface ProductPageProps {
   params: { category: string; slug: string };
@@ -16,8 +17,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const product = getProductBySlug(params.slug) ?? products[0];
-  if (!product) return <div className="pt-32 section-container text-pearl">Product not found.</div>;
+  const product = getProductBySlug(params.slug);
+  if (!product) return notFound();
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const productUrl = `${baseUrl}/products/${params.category}/${params.slug}`;
@@ -42,6 +43,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     console.error('Failed to fetch aggregate rating for SEO', error);
   }
 
+  // Compute real stock status: in stock if at least one variant has inStock: true
+  const isInStock = product.variants.some((v) => v.inStock !== false);
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -53,7 +57,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
       url: productUrl,
       priceCurrency: 'INR',
       price: product.basePrice,
-      availability: 'https://schema.org/InStock',
+      availability: isInStock
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
     },
     ...(aggregateRating && { aggregateRating }),
   };

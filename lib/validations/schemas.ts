@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const AddressSchema = z.object({
   name: z.string().min(1, 'Full name is required'),
+  email: z.string().email('A valid email is required'),
   street: z.string().min(1, 'Street address is required'),
   city: z.string().min(1, 'City is required'),
   state: z.string().min(1, 'State is required'),
@@ -26,7 +27,7 @@ export const CartItemSchema = z
 export const CheckoutSchema = z.object({
   items: z.array(CartItemSchema).min(1, 'Cart cannot be empty'),
   address: AddressSchema,
-  paymentMethod: z.enum(['upi', 'card', 'netbanking', 'cod']).default('upi'),
+  paymentMethod: z.enum(['upi', 'card', 'netbanking', 'razorpay', 'cod']).default('razorpay'),
   couponCode: z.string().optional(),
 });
 

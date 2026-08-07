@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 
 const footerLinks = {
@@ -26,6 +27,9 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const [newsletterMsg, setNewsletterMsg] = useState<{ text: string; ok: boolean } | null>(null);
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+
   return (
     <footer className="border-t border-smoke bg-graphite">
       <div className="section-container py-16 md:py-20">
@@ -48,6 +52,8 @@ export function Footer() {
                   e.preventDefault();
                   const form = e.target as HTMLFormElement;
                   const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+                  setNewsletterLoading(true);
+                  setNewsletterMsg(null);
                   try {
                     const res = await fetch('/api/newsletter', {
                       method: 'POST',
@@ -56,13 +62,15 @@ export function Footer() {
                     });
                     const data = await res.json();
                     if (res.ok) {
-                      alert('Thanks for subscribing!');
+                      setNewsletterMsg({ text: 'Thanks for subscribing! 🎉', ok: true });
                       form.reset();
                     } else {
-                      alert(data.message || 'Something went wrong.');
+                      setNewsletterMsg({ text: data.message || 'Something went wrong.', ok: false });
                     }
                   } catch {
-                    alert('Error subscribing.');
+                    setNewsletterMsg({ text: 'Error subscribing. Please try again.', ok: false });
+                  } finally {
+                    setNewsletterLoading(false);
                   }
                 }}
               >
@@ -76,11 +84,21 @@ export function Footer() {
                 />
                 <button
                   type="submit"
-                  className="bg-cobalt text-bone px-6 py-3 font-mono text-caption uppercase tracking-widest rounded-lg hover:bg-cobalt/80 transition-colors shadow-md"
+                  disabled={newsletterLoading}
+                  className="bg-cobalt text-bone px-6 py-3 font-mono text-caption uppercase tracking-widest rounded-lg hover:bg-cobalt/80 transition-colors shadow-md disabled:opacity-60"
                 >
-                  Subscribe
+                  {newsletterLoading ? '...' : 'Subscribe'}
                 </button>
               </form>
+              {newsletterMsg && (
+                <p
+                  className={`mt-3 font-mono text-caption ${
+                    newsletterMsg.ok ? 'text-emerald-400' : 'text-ember'
+                  }`}
+                >
+                  {newsletterMsg.text}
+                </p>
+              )}
             </div>
           </div>
 

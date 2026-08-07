@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { assertAdmin, assertStaff } from './auth';
+import { sendOrderShippedEmail, sendOrderDeliveredEmail } from '@/lib/email';
 
 // ═══════════════════════════════════════
 // ORDERS
@@ -10,7 +11,23 @@ import { assertAdmin, assertStaff } from './auth';
 
 export async function updateOrderStatus(orderId: string, status: string) {
   await assertStaff();
-  await prisma.order.update({ where: { id: orderId }, data: { status } });
+  const order = await prisma.order.update({ 
+    where: { id: orderId }, 
+    data: { status },
+    include: { user: true }
+  });
+
+  const emailTo = order.user?.email || (order.shippingAddress as Record<string, string>)?.email;
+  const name = order.user?.fullName || (order.shippingAddress as Record<string, string>)?.firstName || 'Customer';
+
+  if (emailTo) {
+    if (status === 'shipped') {
+      await sendOrderShippedEmail(emailTo, order.id, name, order.trackingUrl || undefined, order.trackingNumber || undefined, order.carrier || undefined);
+    } else if (status === 'delivered') {
+      await sendOrderDeliveredEmail(emailTo, order.id, name);
+    }
+  }
+
   revalidatePath('/admin/orders');
   revalidatePath(`/admin/orders/${orderId}`);
 }

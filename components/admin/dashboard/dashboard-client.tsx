@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { AdminBadge } from '../ui/badge';
+import { StatusBadge } from '@/components/admin/status-badge';
 import { RevenueChart } from './revenue-chart';
 
 interface DashboardStats {
@@ -128,17 +128,6 @@ const STAT_CARDS = (stats: DashboardStats) => [
   },
 ];
 
-function getOrderStatusVariant(status: string): Parameters<typeof AdminBadge>[0]['variant'] {
-  const map: Record<string, Parameters<typeof AdminBadge>[0]['variant']> = {
-    processing: 'processing',
-    placed: 'placed',
-    shipped: 'shipped',
-    delivered: 'delivered',
-    cancelled: 'cancelled',
-    refunded: 'refunded',
-  };
-  return map[status] || 'processing';
-}
 
 export function DashboardClient({
   stats,
@@ -154,13 +143,13 @@ export function DashboardClient({
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {statCards.map((card) => (
-          <div key={card.label} className="bg-white rounded-xl border border-gray-200 p-4">
+          <div key={card.label} className="bg-charcoal rounded-sm border border-smoke p-4 font-mono">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+                <p className="text-caption text-ash uppercase tracking-widest mb-1">
                   {card.label}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{card.value}</p>
+                <p className="text-2xl font-bold text-bone mt-1">{card.value}</p>
               </div>
               <div
                 className={`w-10 h-10 ${card.bg} rounded-xl flex items-center justify-center flex-shrink-0`}
@@ -173,36 +162,36 @@ export function DashboardClient({
       </div>
 
       {/* Revenue chart */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-sm font-semibold text-gray-900 mb-4">Revenue (last 90 days)</h2>
+      <div className="bg-charcoal rounded-sm border border-smoke p-6">
+        <h2 className="font-mono text-caption uppercase tracking-widest text-pearl mb-4">Revenue (last 90 days)</h2>
         <RevenueChart data={revenueData} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Recent orders */}
-        <div className="bg-white rounded-xl border border-gray-200">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-            <h2 className="text-sm font-semibold text-gray-900">Recent Orders</h2>
+        <div className="bg-charcoal rounded-sm border border-smoke">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-smoke">
+            <h2 className="font-mono text-caption uppercase tracking-widest text-pearl">Recent Orders</h2>
             <Link
               href="/admin/orders"
-              className="text-xs text-[#3B5EFF] hover:underline font-medium"
+              className="text-caption font-mono uppercase tracking-widest text-cobalt hover:underline"
             >
               View all
             </Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-smoke font-mono">
             {recentOrders.length === 0 && (
-              <p className="text-sm text-gray-500 px-5 py-4">No orders yet</p>
+              <p className="text-sm text-ash px-5 py-4">No orders yet</p>
             )}
             {recentOrders.slice(0, 6).map((order) => (
-              <div key={order.id} className="flex items-center justify-between px-5 py-3">
+              <div key={order.id} className="flex items-center justify-between px-5 py-3 hover:bg-smoke/10">
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">{order.customerName}</p>
+                  <p className="text-sm font-medium text-bone truncate">{order.customerName}</p>
                   <p className="text-xs text-gray-500">{order.id.slice(0, 12)}…</p>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <AdminBadge variant={getOrderStatusVariant(order.status)} />
-                  <span className="text-sm font-semibold text-gray-900">
+                  <StatusBadge status={order.status} />
+                  <span className="text-sm font-semibold text-bone">
                     ₹{order.total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                   </span>
                 </div>
@@ -214,25 +203,25 @@ export function DashboardClient({
         {/* Right column: top products + low stock */}
         <div className="space-y-4">
           {/* Top products */}
-          <div className="bg-white rounded-xl border border-gray-200">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-              <h2 className="text-sm font-semibold text-gray-900">Top Products (30d)</h2>
+          <div className="bg-charcoal rounded-sm border border-smoke">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-smoke">
+              <h2 className="font-mono text-caption uppercase tracking-widest text-pearl">Top Products (30d)</h2>
               <Link
                 href="/admin/products"
-                className="text-xs text-[#3B5EFF] hover:underline font-medium"
+                className="text-caption font-mono uppercase tracking-widest text-cobalt hover:underline"
               >
                 Manage
               </Link>
             </div>
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-smoke font-mono">
               {topProducts.length === 0 && (
-                <p className="text-sm text-gray-500 px-5 py-4">No sales data yet</p>
+                <p className="text-sm text-ash px-5 py-4">No sales data yet</p>
               )}
               {topProducts.slice(0, 4).map((product, i) => (
-                <div key={product.id} className="flex items-center gap-3 px-5 py-2.5">
-                  <span className="text-xs text-gray-400 w-4">{i + 1}</span>
-                  <p className="text-sm text-gray-800 flex-1 truncate">{product.name}</p>
-                  <span className="text-xs font-semibold text-gray-600">
+                <div key={product.id} className="flex items-center gap-3 px-5 py-3 hover:bg-smoke/10">
+                  <span className="text-xs text-ash w-4">{i + 1}</span>
+                  <p className="text-sm text-bone flex-1 truncate">{product.name}</p>
+                  <span className="text-xs font-semibold text-pearl">
                     {product.unitsSold} units
                   </span>
                 </div>
@@ -241,9 +230,9 @@ export function DashboardClient({
           </div>
 
           {/* Low stock alerts */}
-          <div className="bg-white rounded-xl border border-orange-200">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-orange-100">
-              <h2 className="text-sm font-semibold text-orange-900 flex items-center gap-2">
+          <div className="bg-charcoal rounded-sm border border-amber-500/20">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-amber-500/10">
+              <h2 className="font-mono text-caption uppercase tracking-widest text-amber-500 flex items-center gap-2">
                 <svg
                   width="15"
                   height="15"
@@ -258,23 +247,22 @@ export function DashboardClient({
                 </svg>
                 Low Stock Alerts
               </h2>
-              <span className="text-xs bg-orange-100 text-orange-700 font-semibold px-2 py-0.5 rounded-full">
+              <span className="text-[10px] bg-amber-500/10 text-amber-500 font-mono tracking-widest px-2 py-0.5 rounded-sm border border-amber-500/20">
                 {lowStockVariants.length}
               </span>
             </div>
-            <div className="divide-y divide-orange-50 max-h-40 overflow-y-auto">
+            <div className="divide-y divide-smoke max-h-40 overflow-y-auto font-mono">
               {lowStockVariants.length === 0 && (
-                <p className="text-sm text-gray-500 px-5 py-4">All variants well-stocked ✓</p>
+                <p className="text-sm text-ash px-5 py-4">All variants well-stocked ✓</p>
               )}
               {lowStockVariants.map((v) => (
-                <div key={v.id} className="flex items-center justify-between px-5 py-2.5">
+                <div key={v.id} className="flex items-center justify-between px-5 py-3 hover:bg-smoke/10">
                   <div className="min-w-0">
-                    <p className="text-xs font-medium text-gray-800 truncate">{v.productName}</p>
-                    <p className="text-xs text-gray-500">{v.name}</p>
+                    <p className="text-xs font-medium text-bone truncate">{v.productName}</p>
+                    <p className="text-xs text-ash">{v.name}</p>
                   </div>
-                  <AdminBadge
-                    variant={v.inStock ? 'low-stock' : 'out-of-stock'}
-                    label={v.inStock ? `${v.stockQuantity} left` : 'Out'}
+                  <StatusBadge
+                    status={v.inStock ? 'low_stock' : 'out_of_stock'}
                   />
                 </div>
               ))}

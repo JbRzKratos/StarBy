@@ -100,7 +100,11 @@ export const useCartStore = create<CartState & CartActions>()(
         totalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
         totalPrice: () => get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
       }),
-      { name: 'starby-cart' },
+      {
+        name: 'starby-cart',
+        // Only persist the cart items, not the drawer open state
+        partialize: (state) => ({ items: state.items }),
+      },
     ),
     { name: 'CartStore' },
   ),

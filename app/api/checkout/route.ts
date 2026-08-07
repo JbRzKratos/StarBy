@@ -4,7 +4,7 @@ import { rateLimit } from '@/lib/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import { Prisma } from '@prisma/client';
-import { sendOrderConfirmationEmail } from '@/lib/email';
+import { sendOrderConfirmationEmail, sendAdminNewOrderEmail } from '@/lib/email';
 
 // Create a Razorpay order using their REST API directly (no Node.js SDK needed)
 async function createRazorpayOrder(amountInPaise: number, receipt: string) {
@@ -228,6 +228,9 @@ export async function POST(request: Request) {
           totalAmount,
         );
       }
+      
+      // Notify admin
+      await sendAdminNewOrderEmail(orderId, totalAmount);
     }
 
     return NextResponse.json({

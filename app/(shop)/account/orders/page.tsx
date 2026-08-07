@@ -5,6 +5,10 @@ import { prisma } from '@/lib/prisma';
 import type { Prisma } from '@prisma/client';
 import { products } from '@/data/products';
 
+/** Format a number as Indian Rupees — used here because this is a server component */
+const formatINR = (amount: number) =>
+  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
+
 export default async function AccountOrdersPage() {
   let orders: Prisma.OrderGetPayload<{ include: { items: true } }>[] = [];
 
@@ -91,10 +95,10 @@ export default async function AccountOrdersPage() {
                       <span className="font-mono text-caption text-ash uppercase">
                         Total Amount
                       </span>
-                      <p className="font-display text-xl text-bone mt-1">₹{order.total}</p>
+                      <p className="font-display text-xl text-bone mt-1">{formatINR(order.total)}</p>
                       {order.discount ? (
                         <p className="font-mono text-caption text-emerald-400">
-                          (Saved ₹{order.discount})
+                          (Saved {formatINR(order.discount)})
                         </p>
                       ) : null}
                     </div>
@@ -116,7 +120,7 @@ export default async function AccountOrdersPage() {
                             {variant ? ` — ${displayVariant}` : ''}
                             {item.size ? ` (${item.size})` : ''} × {item.quantity}
                           </span>
-                          <span className="text-bone">₹{item.price * item.quantity}</span>
+                          <span className="text-bone">{formatINR(item.price * item.quantity)}</span>
                         </div>
                       );
                     })}
@@ -152,13 +156,22 @@ export default async function AccountOrdersPage() {
                         </span>
                       </div>
                     )}
-                    <Link
-                      href={`/account/orders/${order.id}/invoice`}
-                      target="_blank"
-                      className="bg-bone text-charcoal hover:bg-pearl px-4 py-2 font-mono text-[10px] uppercase tracking-widest rounded transition-colors whitespace-nowrap self-start sm:self-center"
-                    >
-                      Print Invoice
-                    </Link>
+                    )}
+                    <div className="flex flex-col sm:flex-row gap-2 self-start sm:self-center">
+                      <Link
+                        href={`/account/orders/${order.id}/track`}
+                        className="bg-charcoal border border-smoke text-bone hover:bg-smoke/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest rounded transition-colors whitespace-nowrap text-center"
+                      >
+                        Track Timeline
+                      </Link>
+                      <Link
+                        href={`/api/orders/${order.id}/invoice`}
+                        target="_blank"
+                        className="bg-bone text-charcoal hover:bg-pearl px-4 py-2 font-mono text-[10px] uppercase tracking-widest rounded transition-colors whitespace-nowrap text-center"
+                      >
+                        Print Invoice
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );

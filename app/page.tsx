@@ -14,7 +14,7 @@ import { Testimonials } from '@/components/home/testimonials';
 export default function HomePage() {
   return (
     <>
-      <Navigation />
+      <Navigation variant="hero" />
       <CartDrawer />
       <WishlistDrawer />
       <SearchOverlay />

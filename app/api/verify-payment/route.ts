@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { sendOrderConfirmationEmail } from '@/lib/email';
+import { sendOrderConfirmationEmail, sendAdminNewOrderEmail } from '@/lib/email';
 
 // Edge-compatible HMAC-SHA256 using the Web Crypto API (no Node.js crypto needed)
 async function verifyRazorpaySignature(
@@ -95,6 +95,8 @@ export async function POST(request: Request) {
         order.total,
       );
     }
+    
+    await sendAdminNewOrderEmail(order.id, order.total);
 
     return NextResponse.json({ success: true, message: 'Payment verified successfully' });
   } catch (error) {

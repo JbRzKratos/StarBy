@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function StudioPage() {
   return (
     <>
-      <Navigation />
+      <Navigation variant="solid" />
       <CartDrawer />
       <WishlistDrawer />
       <SearchOverlay />
