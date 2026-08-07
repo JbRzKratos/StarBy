@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
@@ -17,44 +17,25 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
       className="group flex flex-col gap-0"
       style={{ perspective: '1000px' }}
     >
-      {/* 3D flip wrapper */}
-      <div
-        className="relative aspect-[3/4] overflow-visible [&:hover]:![transform:rotateY(180deg)]"
-        style={{
-          transformStyle: 'preserve-3d',
-          transition: 'transform 0.7s cubic-bezier(0.4,0,0.2,1)',
-        }}
-      >
-        {/* Front face */}
-        <div
-          className="absolute inset-0 overflow-hidden bg-smoke/5 rounded-xl"
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          <Image
-            src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.webp'}
-            alt={product.name}
-            fill
-            priority={index < 4}
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 1024px) 33vw, 25vw"
-          />
-          {product.customizable && (
-            <div className="absolute top-4 left-4 bg-charcoal text-bone px-3 py-1 text-[10px] uppercase font-mono tracking-widest z-[1] rounded-md">
-              Customizable
-            </div>
-          )}
-        </div>
+      {/* Standard Hover Image wrapper */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-smoke/5 rounded-xl border border-transparent group-hover:border-smoke/40 transition-colors duration-300">
+        <Image
+          src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.webp'}
+          alt={product.name}
+          fill
+          priority={index < 4}
+          className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-105"
+          sizes="(max-width: 1024px) 33vw, 25vw"
+        />
+        {product.customizable && (
+          <div className="absolute top-4 left-4 bg-charcoal text-bone px-3 py-1 text-[10px] uppercase font-mono tracking-widest z-[1] rounded-md shadow-lg">
+            Customizable
+          </div>
+        )}
 
-        {/* Back face */}
-        <div
-          className="absolute inset-0 bg-graphite border border-smoke/40 rounded-xl flex flex-col items-center justify-center gap-4 px-6"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-        >
-          <h3 className="font-mono text-sm text-bone uppercase tracking-widest text-center">
-            {product.name}
-          </h3>
-          <p className="font-display text-2xl text-bone">{formatPrice(product.basePrice)}</p>
-          <span className="mt-2 w-full text-center bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest py-3 rounded-lg">
+        {/* Hover overlay with button */}
+        <div className="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+          <span className="bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg shadow-xl translate-y-4 group-hover:translate-y-0 transition-all duration-300">
             {product.customizable ? 'Customize' : 'View Product'}
           </span>
         </div>
@@ -80,12 +61,20 @@ export function ShopDesktop({ category, products }: { category: string; products
   const searchParams = useSearchParams();
 
   const [activeTab, setActiveTab] = useState(category || 'all');
-  const [filterType, setFilterType] = useState(searchParams.get('type') || 'all');
-  const [sortMethod, setSortMethod] = useState(searchParams.get('sort') || 'featured');
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
-  const [minPrice, setMinPrice] = useState(searchParams.get('min') || '');
-  const [maxPrice, setMaxPrice] = useState(searchParams.get('max') || '');
+  const [filterType, setFilterType] = useState('all');
+  const [sortMethod, setSortMethod] = useState('featured');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const [visibleCount, setVisibleCount] = useState(16);
+
+  useEffect(() => {
+    setFilterType(searchParams.get('type') || 'all');
+    setSortMethod(searchParams.get('sort') || 'featured');
+    setSearchQuery(searchParams.get('q') || '');
+    setMinPrice(searchParams.get('min') || '');
+    setMaxPrice(searchParams.get('max') || '');
+  }, [searchParams]);
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);

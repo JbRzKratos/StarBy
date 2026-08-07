@@ -64,7 +64,9 @@ export default function CheckoutPage() {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
       if (data.user?.email) {
-        setShippingAddress((prev) => (prev.email ? prev : { ...prev, email: data.user!.email! }));
+        setShippingAddress((prev) =>
+          prev.email ? prev : { ...prev, email: data.user?.email ?? '' },
+        );
       }
     });
   }, []);

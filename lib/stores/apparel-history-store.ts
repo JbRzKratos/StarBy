@@ -33,8 +33,8 @@ export const useApparelHistoryStore = create<ApparelHistoryState & ApparelHistor
       const { undoStack, redoStack } = get();
       if (undoStack.length < 2) return null; // need at least 2: current + previous
 
-      const current = undoStack[undoStack.length - 1]!;
-      const previous = undoStack[undoStack.length - 2]!;
+      const current = undoStack[undoStack.length - 1] ?? '';
+      const previous = undoStack[undoStack.length - 2] ?? '';
       const newUndo = undoStack.slice(0, -1);
       const newRedo = [...redoStack, current];
       if (newRedo.length > MAX_HISTORY) newRedo.shift();
@@ -47,7 +47,7 @@ export const useApparelHistoryStore = create<ApparelHistoryState & ApparelHistor
       const { undoStack, redoStack } = get();
       if (redoStack.length === 0) return null;
 
-      const next = redoStack[redoStack.length - 1]!;
+      const next = redoStack[redoStack.length - 1] ?? '';
       const newRedo = redoStack.slice(0, -1);
       const newUndo = [...undoStack, next];
       if (newUndo.length > MAX_HISTORY) newUndo.shift();

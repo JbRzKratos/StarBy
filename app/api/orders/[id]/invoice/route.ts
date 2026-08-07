@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { generateInvoicePdf } from '@/lib/invoice';
 import { createClient } from '@/lib/supabase/server';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(_request: Request, { params }: { params: { id: string } }) {
   try {
     const supabase = createClient();
     const {
@@ -14,9 +14,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
       where: { id: params.id },
       include: {
         user: true,
-        items: {
-          include: { product: true },
-        },
+        items: true,
       },
     });
 
@@ -39,7 +37,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
     const pdfBuffer = await generateInvoicePdf(order);
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',

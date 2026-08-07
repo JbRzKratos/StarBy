@@ -107,7 +107,7 @@ async function main() {
         cameraModule: d.cameraModule ? (d.cameraModule as any) : undefined,
         logoCutout: d.logoCutout ? (d.logoCutout as any) : undefined,
         sPenSilo: d.sPenSilo || false,
-        confidence: d.confidence,
+        confidence: d.confidence || 'verified',
         notes: d.notes || null,
       },
       create: {
@@ -120,7 +120,7 @@ async function main() {
         cameraModule: d.cameraModule ? (d.cameraModule as any) : undefined,
         logoCutout: d.logoCutout ? (d.logoCutout as any) : undefined,
         sPenSilo: d.sPenSilo || false,
-        confidence: d.confidence,
+        confidence: d.confidence || 'verified',
         notes: d.notes || null,
       },
     });

@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react';
 import { templates } from '@/data/customizationTemplates';
 import { mugTemplates } from '@/data/mugTemplates';
 import { products } from '@/data/products';
-import { deviceModels } from '@/data/devices';
+import { devices } from '@/data/devices';
 import { useCustomizerStore } from '@/store/customizer';
 
 interface CustomizerCanvasProps {
@@ -141,12 +141,12 @@ export function CustomizerCanvas({
 
       const deviceShape =
         category === 'skins' && selectedDeviceId
-          ? deviceModels.find((d) => d.id === selectedDeviceId)
+          ? devices.find((d) => d.id === selectedDeviceId)
           : null;
 
       if (deviceShape) {
-        const maxH = 450;
-        const maxW = 450;
+        const maxH = 560;
+        const maxW = 480;
 
         if (deviceShape.type === 'mobile') {
           paH = maxH;
@@ -294,14 +294,10 @@ export function CustomizerCanvas({
           // Compute module bounding box in absolute canvas coordinates
           let mX: number, mY: number, mW: number, mH: number;
           if (mod.shape === 'circle') {
-            // For circles: x/y = center, w = radius (fraction of device WIDTH)
-            const cx = paX + paW * mod.x;
-            const cy = paY + paH * mod.y;
-            const r = paW * mod.w;
-            mX = cx - r;
-            mY = cy - r;
-            mW = r * 2;
-            mH = r * 2;
+            mX = paX + paW * mod.x;
+            mY = paY + paH * mod.y;
+            mW = paW * mod.w;
+            mH = mW;
           } else {
             mX = paX + paW * mod.x;
             mY = paY + paH * mod.y;

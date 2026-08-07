@@ -102,9 +102,11 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
 
   // Determine styles based on route and scroll
   const textIsDark = isLandingPage && !isScrolledState;
-  const navClasses = textIsDark
-    ? 'bg-transparent text-[#0A0A0A] border-b border-transparent'
-    : 'bg-[#0E0E10]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl backdrop-blur-md';
+
+  // Background is transparent at scroll 0 on ALL pages. When scrolled (>60px), solid black on all pages.
+  const navClasses = isScrolledState
+    ? 'bg-[#0E0E10] text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl'
+    : 'bg-transparent border-b border-transparent';
 
   // Menu Drawer Animation
   useGSAP(
@@ -151,7 +153,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
         </div>
         <nav
           ref={navRef}
-          className={`pointer-events-auto w-full px-5 py-3.5 flex items-center justify-between transition-all duration-300 ${navClasses}`}
+          className={`pointer-events-auto w-full px-5 py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
         >
           <Link
             href="/"

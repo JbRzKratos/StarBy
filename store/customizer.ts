@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export type PrintStyle = 'standard' | 'vintage' | 'metallic' | 'embroidered';
 
@@ -40,76 +41,93 @@ interface CustomizerState {
   setViewMode: (mode: '2d' | '3d') => void;
 }
 
-export const useCustomizerStore = create<CustomizerState>((set) => ({
-  uploadedImage: null,
-  composites: {},
-  selectedDeviceId: 'iphone-16-pro-max', // Default — first entry in devices.ts
-  splitStyle: 'classic',
-  splitOrientation: 'horizontal',
-  splitPanels: 3,
-  splitGridCols: 3,
-  splitGridRows: 2,
-  printStyle: 'standard',
-  customText: '',
-  customTextFont: 'Space Grotesk',
-  customTextColor: '#ffffff',
-  mugLayout: 'single-panel',
-  isMagicMugRevealed: false,
-  viewMode: '2d',
+export const useCustomizerStore = create<CustomizerState>()(
+  persist(
+    (set) => ({
+      uploadedImage: null,
+      composites: {},
+      selectedDeviceId: 'iphone-16-pro-max',
+      splitStyle: 'classic',
+      splitOrientation: 'horizontal',
+      splitPanels: 3,
+      splitGridCols: 3,
+      splitGridRows: 2,
+      printStyle: 'standard',
+      customText: '',
+      customTextFont: 'Space Grotesk',
+      customTextColor: '#ffffff',
+      mugLayout: 'single-panel',
+      isMagicMugRevealed: false,
+      viewMode: '2d',
 
-  setUploadedImage: (image) =>
-    set(() => ({
-      uploadedImage: image,
-      composites: {}, // Clear composites when a new image is uploaded
-    })),
+      setUploadedImage: (image) =>
+        set(() => ({
+          uploadedImage: image,
+          composites: {},
+        })),
 
-  setComposite: (productId, composite) =>
-    set((state) => ({
-      composites: { ...state.composites, [productId]: composite },
-    })),
+      setComposite: (productId, composite) =>
+        set((state) => ({
+          composites: { ...state.composites, [productId]: composite },
+        })),
 
-  setSelectedDevice: (deviceId) =>
-    set(() => ({
-      selectedDeviceId: deviceId,
-    })),
+      setSelectedDevice: (deviceId) =>
+        set(() => ({
+          selectedDeviceId: deviceId,
+        })),
 
-  setSplitStyle: (style) => set(() => ({ splitStyle: style })),
-  setSplitOrientation: (orientation) => set(() => ({ splitOrientation: orientation })),
-  setSplitPanels: (panels) => set(() => ({ splitPanels: panels })),
-  setSplitGrid: (cols, rows) => set(() => ({ splitGridCols: cols, splitGridRows: rows })),
-  setPrintStyle: (style) => set(() => ({ printStyle: style })),
+      setSplitStyle: (style) => set(() => ({ splitStyle: style })),
+      setSplitOrientation: (orientation) => set(() => ({ splitOrientation: orientation })),
+      setSplitPanels: (panels) => set(() => ({ splitPanels: panels })),
+      setSplitGrid: (cols, rows) => set(() => ({ splitGridCols: cols, splitGridRows: rows })),
+      setPrintStyle: (style) => set(() => ({ printStyle: style })),
 
-  clearUploadedImage: () => set(() => ({ uploadedImage: null, composites: {}, customText: '' })),
+      clearUploadedImage: () => set(() => ({ uploadedImage: null, composites: {}, customText: '' })),
 
-  setCustomText: (text) => set(() => ({ customText: text })),
-  setCustomTextFont: (font) => set(() => ({ customTextFont: font })),
-  setCustomTextColor: (color) => set(() => ({ customTextColor: color })),
-  setMugLayout: (layout) => set(() => ({ mugLayout: layout })),
-  setIsMagicMugRevealed: (revealed) => set(() => ({ isMagicMugRevealed: revealed })),
-  setViewMode: (mode) => set(() => ({ viewMode: mode })),
+      setCustomText: (text) => set(() => ({ customText: text })),
+      setCustomTextFont: (font) => set(() => ({ customTextFont: font })),
+      setCustomTextColor: (color) => set(() => ({ customTextColor: color })),
+      setMugLayout: (layout) => set(() => ({ mugLayout: layout })),
+      setIsMagicMugRevealed: (revealed) => set(() => ({ isMagicMugRevealed: revealed })),
+      setViewMode: (mode) => set(() => ({ viewMode: mode })),
 
-  loadFromShareHash: () => {
-    if (typeof window === 'undefined') return;
-    const hash = window.location.hash.slice(1);
-    if (!hash) return;
-    try {
-      const decoded = JSON.parse(atob(hash)) as Partial<CustomizerState>;
-      set((state) => ({
-        ...state,
-        splitStyle: decoded.splitStyle ?? state.splitStyle,
-        splitOrientation: decoded.splitOrientation ?? state.splitOrientation,
-        splitPanels: decoded.splitPanels ?? state.splitPanels,
-        splitGridCols: decoded.splitGridCols ?? state.splitGridCols,
-        splitGridRows: decoded.splitGridRows ?? state.splitGridRows,
-        printStyle: decoded.printStyle ?? state.printStyle,
-        customText: decoded.customText ?? state.customText,
-        customTextFont: decoded.customTextFont ?? state.customTextFont,
-        customTextColor: decoded.customTextColor ?? state.customTextColor,
-        mugLayout: decoded.mugLayout ?? state.mugLayout,
-        isMagicMugRevealed: decoded.isMagicMugRevealed ?? state.isMagicMugRevealed,
-      }));
-    } catch {
-      // Ignore malformed hash
+      loadFromShareHash: () => {
+        if (typeof window === 'undefined') return;
+        const hash = window.location.hash.slice(1);
+        if (!hash) return;
+        try {
+          const decoded = JSON.parse(atob(hash)) as Partial<CustomizerState>;
+          set((state) => ({
+            ...state,
+            splitStyle: decoded.splitStyle ?? state.splitStyle,
+            splitOrientation: decoded.splitOrientation ?? state.splitOrientation,
+            splitPanels: decoded.splitPanels ?? state.splitPanels,
+            splitGridCols: decoded.splitGridCols ?? state.splitGridCols,
+            splitGridRows: decoded.splitGridRows ?? state.splitGridRows,
+            printStyle: decoded.printStyle ?? state.printStyle,
+            customText: decoded.customText ?? state.customText,
+            customTextFont: decoded.customTextFont ?? state.customTextFont,
+            customTextColor: decoded.customTextColor ?? state.customTextColor,
+            mugLayout: decoded.mugLayout ?? state.mugLayout,
+            isMagicMugRevealed: decoded.isMagicMugRevealed ?? state.isMagicMugRevealed,
+          }));
+        } catch {
+          // Ignore malformed hash
+        }
+      },
+    }),
+    {
+      name: 'starby-customizer-store',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        uploadedImage: state.uploadedImage,
+        selectedDeviceId: state.selectedDeviceId,
+        printStyle: state.printStyle,
+        customText: state.customText,
+        customTextFont: state.customTextFont,
+        customTextColor: state.customTextColor,
+        mugLayout: state.mugLayout,
+      }),
     }
-  },
-}));
+  )
+);

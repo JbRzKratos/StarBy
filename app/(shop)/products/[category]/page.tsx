@@ -3,6 +3,7 @@ import { getCategoryBySlug } from '@/data/categories';
 import { products } from '@/data/products';
 import { notFound } from 'next/navigation';
 import { ShopPage } from '@/components/shop';
+import { Suspense } from 'react';
 
 interface CategoryPageProps {
   params: { category: string };
@@ -25,5 +26,9 @@ export default function CategoryPage({ params, searchParams: _searchParams }: Ca
   }
 
   // We pass ALL products to ShopPage to allow instant client-side tab switching without RSC delays.
-  return <ShopPage category={params.category} products={products} />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-charcoal" />}>
+      <ShopPage category={params.category} products={products} />
+    </Suspense>
+  );
 }

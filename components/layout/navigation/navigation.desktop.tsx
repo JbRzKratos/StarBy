@@ -41,13 +41,14 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
   const [user, setUser] = useState<User | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Dark text on transparent background ONLY applies at scroll 0 on the landing page ('/')
   const isLandingPage = pathname === '/';
+  // Text is dark ONLY at scroll 0 on the landing page (which has a cream background)
   const textIsDark = isLandingPage && !isScrolled;
 
-  const navClasses = textIsDark
-    ? 'bg-transparent text-[#0A0A0A] border-b border-transparent'
-    : 'bg-[#0E0E10]/95 text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl backdrop-blur-md';
+  // Background is transparent at scroll 0 on ALL pages. When scrolled (>60px), solid black on all pages.
+  const navClasses = isScrolled
+    ? 'bg-[#0E0E10] text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl'
+    : 'bg-transparent border-b border-transparent';
 
   useEffect(() => {
     setMounted(true);
@@ -80,7 +81,7 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
       </div>
       <nav
         ref={containerRef}
-        className={`pointer-events-auto w-full px-6 md:px-12 py-3.5 flex items-center justify-between transition-all duration-300 ${navClasses}`}
+        className={`pointer-events-auto w-full px-6 md:px-12 py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
       >
         {/* Logo */}
         <Link

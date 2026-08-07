@@ -1,7 +1,35 @@
 import PDFDocument from 'pdfkit';
-import { Prisma } from '@prisma/client';
 
-export async function generateInvoicePdf(order: any): Promise<Buffer> {
+interface InvoiceItem {
+  productId: string;
+  quantity: number;
+  price: number;
+  product?: { name?: string };
+}
+
+interface InvoiceAddress {
+  firstName: string;
+  lastName: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  pincode: string;
+  phone: string;
+}
+
+interface InvoiceOrder {
+  id: string;
+  createdAt: string | Date;
+  shippingAddress?: unknown;
+  user?: { fullName?: string | null; email?: string | null } | null;
+  items: InvoiceItem[];
+  discount?: number | null;
+  couponCode?: string | null;
+  total: number;
+}
+
+export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({ margin: 50 });
@@ -25,8 +53,8 @@ export async function generateInvoicePdf(order: any): Promise<Buffer> {
       doc.fontSize(12).text('Billed To:');
       doc.fontSize(10);
 
-      const address = order.shippingAddress as any;
-      if (address) {
+      const address = order.shippingAddress as InvoiceAddress | null | undefined;
+      if (address && typeof address === 'object' && 'firstName' in address) {
         doc.text(`${address.firstName} ${address.lastName}`);
         doc.text(address.addressLine1);
         if (address.addressLine2) doc.text(address.addressLine2);
@@ -52,7 +80,7 @@ export async function generateInvoicePdf(order: any): Promise<Buffer> {
       doc.font('Helvetica');
 
       // Table Rows
-      order.items.forEach((item: any) => {
+      order.items.forEach((item: InvoiceItem) => {
         doc.text(item.product?.name || `Product ID: ${item.productId}`, 60, y);
         doc.text(item.quantity.toString(), 350, y);
         doc.text(`Rs. ${item.price.toFixed(2)}`, 400, y);
@@ -67,7 +95,7 @@ export async function generateInvoicePdf(order: any): Promise<Buffer> {
       doc.font('Helvetica-Bold');
       doc.text('Subtotal:', 350, y);
       const subtotal = order.items.reduce(
-        (sum: number, item: any) => sum + item.price * item.quantity,
+        (sum: number, item: InvoiceItem) => sum + item.price * item.quantity,
         0,
       );
       doc.text(`Rs. ${subtotal.toFixed(2)}`, 480, y);

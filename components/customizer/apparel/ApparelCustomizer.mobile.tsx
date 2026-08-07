@@ -21,6 +21,7 @@ import {
 import { useApparelHistoryStore } from '@/lib/stores/apparel-history-store';
 import { GARMENT_COLORS, type GarmentView, type GarmentColor } from '@/data/printAreaConfig';
 import { useCartStore } from '@/lib/stores/cart-store';
+import { useCustomizerStore } from '@/store/customizer';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { products } from '@/data/products';
 import { validateImage, fileToDataUrl } from '@/components/customizer-hub/CustomizerHub.shared';
@@ -69,10 +70,19 @@ export function ApparelCustomizerMobile({ productId }: Props) {
   const setCartOpen = useCartStore((s) => s.setCartOpen);
   const { formatPrice } = usePrice();
 
+  const studioImage = useCustomizerStore((s) => s.uploadedImage);
+
   useEffect(() => {
     setGarment(garmentFromCategory);
+    if (studioImage && !designsByView.front?.imageUrl) {
+      const img = new Image();
+      img.src = studioImage;
+      img.onload = () => {
+        setDesignImage('front', studioImage, img.width, img.height);
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [garmentFromCategory]);
+  }, [garmentFromCategory, studioImage]);
 
   const [selectedSize, setSelectedSize] = useState<string>(product?.sizes?.[0] ?? 'M');
   const [uploadError, setUploadError] = useState<string | null>(null);

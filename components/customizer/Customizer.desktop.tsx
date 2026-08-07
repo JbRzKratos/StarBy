@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useCustomizerStore } from '@/store/customizer';
 import { ApparelCustomizerDesktop } from './apparel/ApparelCustomizer.desktop';
 import { getProductBySlug, products } from '@/data/products';
+import { SkinEditor } from '@/components/skin-editor/SkinEditor';
 import { useCartStore } from '@/lib/stores/cart-store';
 import {
   validateImage,
@@ -74,12 +75,11 @@ const getUploadInstructions = (categorySlug?: string) => {
       return {
         title: 'Upload Image for Device Skin *',
         note: 'Note: Ensure important subjects are centered. Edges may be cropped to fit the device shape.',
-        subtext:
-          '*Requires minimum 1500x3000px portrait image to cover full phone dimensions clearly.*',
+        subtext: '*Upload any image. 1000px+ recommended for best print clarity.*',
         req: {
-          minWidth: 1500,
-          minHeight: 2500,
-          recommendedText: 'Please upload a portrait image at least 1500x2500px.',
+          minWidth: 300,
+          minHeight: 300,
+          recommendedText: 'Please upload an image at least 300x300px.',
         } as DimensionRequirement,
       };
     case 'hoodies':
@@ -139,6 +139,12 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
     useCustomizerStore();
   const { printStyle, setPrintStyle } = useCustomizerStore();
   const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
+  const isSkinProduct =
+    product?.categorySlug === 'skins' ||
+    productId === 'phantom-skin' ||
+    productId === 'prod_022' ||
+    (product?.name && product.name.toLowerCase().includes('skin')) ||
+    productId.toLowerCase().includes('skin');
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useCartStore((s) => s.setCartOpen);
   const { formatPrice } = usePrice();
@@ -169,13 +175,14 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
     isMagicMugRevealed,
     setIsMagicMugRevealed,
     viewMode,
-    setViewMode,
+    setViewMode: _setViewMode,
   } = useCustomizerStore();
+  const [mounted, setMounted] = useState(false);
   const mTemplate = product?.categorySlug === 'mugs-cups' ? mugTemplates[product.slug] : null;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load config from URL hash if someone opened a shared link
   useEffect(() => {
+    setMounted(true);
     loadFromShareHash();
   }, [loadFromShareHash]);
 
@@ -207,22 +214,36 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
       return;
     }
 
-    const instructions = getUploadInstructions(product?.categorySlug);
-    const dimValidation = await validateImageDimensions(file, instructions.req);
-    if (!dimValidation.valid) {
-      setError(dimValidation.error || 'Image dimensions are too small.');
-      // Reset input so same file can be re-selected
-      if (fileInputRef.current) fileInputRef.current.value = '';
-      return;
+    // For skins, skip dimension checks so ANY image size is accepted instantly
+    if (!isSkinProduct) {
+      const instructions = getUploadInstructions(product?.categorySlug);
+      const dimValidation = await validateImageDimensions(file, instructions.req);
+      if (!dimValidation.valid) {
+        setError(dimValidation.error || 'Image dimensions are too small.');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
     }
 
     try {
       const dataUrl = await fileToDataUrl(file);
       setUploadedImage(dataUrl);
-    } catch {
-      setError('Failed to upload. Try again.');
+      setError(null);
+    } catch (err) {
+      console.error('[UploadError]', err);
+      setError('Failed to process image file. Please try another image.');
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
+
+  if (!mounted) {
+    return (
+      <div className="section-container min-h-screen pt-36 md:pt-40 pb-20 flex items-center justify-center">
+        <div className="w-full h-[600px] bg-charcoal/50 animate-pulse rounded-xl" />
+      </div>
+    );
+  }
 
   return (
     <div className="pt-36 md:pt-40 pb-20 section-container">
@@ -273,93 +294,100 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Canvas Area (left) */}
         <div className="lg:col-span-8 bg-charcoal/50 rounded-xl overflow-hidden relative">
-          {!uploadedImage &&
-            (() => {
-              const instructions = getUploadInstructions(product?.categorySlug);
-              return (
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-graphite/90 backdrop-blur-sm border-2 border-dashed border-smoke m-4 rounded-lg p-6 text-center">
-                  <h3 className="font-display text-2xl text-bone mb-2">Start Designing</h3>
+          {/* ── SKIN EDITOR: SVG-native per-device preview ── */}
+          {isSkinProduct ? (
+            <div className="p-6 flex flex-col gap-4">
+              {/* Hidden file input shared by upload button and replace button */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/jpeg, image/png, image/webp"
+                onChange={handleInlineUpload}
+              />
 
-                  <div className="my-6 flex flex-col items-center max-w-md">
-                    <span className="text-[#FF4D4D] font-mono text-sm mb-4">
-                      {instructions.title}
-                    </span>
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="bg-bone text-charcoal font-mono text-caption uppercase px-8 py-3 hover:bg-cobalt hover:text-bone transition-colors mb-5 w-full max-w-[280px]"
-                    >
-                      Upload Your Image
-                    </button>
-                    <p className="font-mono text-[11px] text-pearl mb-3 leading-relaxed">
-                      {instructions.note}
-                    </p>
-                    <p className="font-mono text-[10px] text-ash italic leading-relaxed">
-                      {instructions.subtext}
-                    </p>
-                  </div>
+              {/* SVG Skin Editor */}
+              <SkinEditor
+                deviceId={selectedDeviceId ?? 'iphone-16-pro-max'}
+                imageUrl={uploadedImage}
+                onUploadClick={() => fileInputRef.current?.click()}
+              />
 
-                  {error && <p className="text-[#FF4D4D] mt-2 font-mono text-sm">{error}</p>}
-                </div>
-              );
-            })()}
-
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            accept="image/jpeg, image/png, image/webp"
-            onChange={handleInlineUpload}
-          />
-
-          {viewMode === '3d' && product?.categorySlug === 'mugs-cups' ? (
-            <div className="w-full h-[700px]">
-              <Mug3DViewer product={product} />
+              {/* Replace image button (visible after upload) */}
+              {uploadedImage && (
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="self-center flex items-center gap-2 border border-smoke text-pearl py-2 px-5 font-mono text-xs uppercase hover:bg-smoke/20 transition-colors rounded-sm"
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  Replace Image
+                </button>
+              )}
+              {error && <p className="text-[#FF4D4D] font-mono text-xs text-center">{error}</p>}
             </div>
           ) : (
-            <CustomizerCanvas
-              productId={productId}
-              initialImage={uploadedImage}
-              selectedColor={selectedColor}
-              selectedDeviceId={selectedDeviceId}
-              selectedSize={selectedSize}
-            />
+            <>
+              {/* ── OTHER CATEGORIES: existing canvas ── */}
+              {!uploadedImage &&
+                (() => {
+                  const instructions = getUploadInstructions(product?.categorySlug);
+                  return (
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-graphite/90 backdrop-blur-sm border-2 border-dashed border-smoke m-4 rounded-lg p-6 text-center">
+                      <h3 className="font-display text-2xl text-bone mb-2">Start Designing</h3>
+                      <div className="my-6 flex flex-col items-center max-w-md">
+                        <span className="text-[#FF4D4D] font-mono text-sm mb-4">
+                          {instructions.title}
+                        </span>
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="bg-bone text-charcoal font-mono text-caption uppercase px-8 py-3 hover:bg-cobalt hover:text-bone transition-colors mb-5 w-full max-w-[280px]"
+                        >
+                          Upload Your Image
+                        </button>
+                        <p className="font-mono text-[11px] text-pearl mb-3 leading-relaxed">
+                          {instructions.note}
+                        </p>
+                        <p className="font-mono text-[10px] text-ash italic leading-relaxed">
+                          {instructions.subtext}
+                        </p>
+                      </div>
+                      {error && <p className="text-[#FF4D4D] mt-2 font-mono text-sm">{error}</p>}
+                    </div>
+                  );
+                })()}
+
+              {viewMode === '3d' && product?.categorySlug === 'mugs-cups' ? (
+                <div className="w-full h-[700px]">
+                  <Mug3DViewer product={product} />
+                </div>
+              ) : (
+                <CustomizerCanvas
+                  productId={productId}
+                  initialImage={uploadedImage}
+                  selectedColor={selectedColor}
+                  selectedDeviceId={selectedDeviceId}
+                  selectedSize={selectedSize}
+                />
+              )}
+            </>
           )}
         </div>
 
         {/* Tools Area (right) */}
         <div className="lg:col-span-4 flex flex-col gap-8">
-          {/* View Mode (Mugs only) */}
-          {product?.categorySlug === 'mugs-cups' && mTemplate && (
-            <div className="bg-graphite border border-smoke/30 p-6 rounded-lg flex flex-col gap-5">
-              <h3 className="font-mono text-caption text-bone uppercase tracking-widest">
-                Preview Mode
-              </h3>
-              <div className="flex border border-smoke rounded-sm overflow-hidden">
-                <button
-                  onClick={() => setViewMode('2d')}
-                  className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors border-r border-smoke ${
-                    viewMode === '2d'
-                      ? 'bg-cobalt text-bone'
-                      : 'bg-charcoal text-ash hover:text-pearl'
-                  }`}
-                >
-                  2D Editor
-                </button>
-                <button
-                  onClick={() => setViewMode('3d')}
-                  className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
-                    viewMode === '3d'
-                      ? 'bg-cobalt text-bone'
-                      : 'bg-charcoal text-ash hover:text-pearl'
-                  }`}
-                >
-                  360° 3D View
-                </button>
-              </div>
-            </div>
-          )}
           {/* Device Selector (Skins Only) */}
-          {product?.categorySlug === 'skins' && (
+          {isSkinProduct && (
             <DeviceSelector
               selectedDeviceId={selectedDeviceId}
               onSelectDevice={setSelectedDevice}

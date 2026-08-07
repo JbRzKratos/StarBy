@@ -171,21 +171,6 @@ export function Mug3DViewer({ product }: Mug3DViewerProps) {
           autoRotateSpeed={1.5}
         />
       </Canvas>
-      <div className="absolute bottom-4 right-4 bg-charcoal/80 backdrop-blur text-bone font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full z-10 flex items-center gap-2">
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M2 12a10 10 0 1 0 20 0 10 10 0 1 0-20 0"></path>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          <path d="M2 12h20"></path>
-        </svg>
-        Drag to rotate
-      </div>
     </div>
   );
 }

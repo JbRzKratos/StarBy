@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useCustomizerStore } from '@/store/customizer';
+import { SkinEditor } from '@/components/skin-editor/SkinEditor';
 import { ApparelCustomizerMobile } from './apparel/ApparelCustomizer.mobile';
 import { getProductBySlug, products } from '@/data/products';
 import { useCartStore } from '@/lib/stores/cart-store';
@@ -71,12 +72,11 @@ const getUploadInstructions = (categorySlug?: string) => {
       return {
         title: 'Upload Image for Device Skin *',
         note: 'Note: Ensure important subjects are centered. Edges may be cropped to fit the device shape.',
-        subtext:
-          '*Requires minimum 1500x3000px portrait image to cover full phone dimensions clearly.*',
+        subtext: '*Upload any image. 1000px+ recommended for best print clarity.*',
         req: {
-          minWidth: 1500,
-          minHeight: 2500,
-          recommendedText: 'Please upload a portrait image at least 1500x2500px.',
+          minWidth: 300,
+          minHeight: 300,
+          recommendedText: 'Please upload an image at least 300x300px.',
         } as DimensionRequirement,
       };
     case 'hoodies':
@@ -136,6 +136,12 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
     useCustomizerStore();
   const { printStyle, setPrintStyle } = useCustomizerStore();
   const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
+  const isSkinProduct =
+    product?.categorySlug === 'skins' ||
+    productId === 'phantom-skin' ||
+    productId === 'prod_022' ||
+    (product?.name && product.name.toLowerCase().includes('skin')) ||
+    productId.toLowerCase().includes('skin');
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useCartStore((s) => s.setCartOpen);
   const { formatPrice } = usePrice();
@@ -166,12 +172,14 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
     isMagicMugRevealed,
     setIsMagicMugRevealed,
     viewMode,
-    setViewMode,
+    setViewMode: _setViewMode,
   } = useCustomizerStore();
+  const [mounted, setMounted] = useState(false);
   const mTemplate = product?.categorySlug === 'mugs-cups' ? mugTemplates[product.slug] : null;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    setMounted(true);
     loadFromShareHash();
   }, [loadFromShareHash]);
 
@@ -203,57 +211,40 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
       return;
     }
 
-    const instructions = getUploadInstructions(product?.categorySlug);
-    const dimValidation = await validateImageDimensions(file, instructions.req);
-    if (!dimValidation.valid) {
-      setError(dimValidation.error || 'Image dimensions are too small.');
-      // Reset input so same file can be re-selected
-      if (fileInputRef.current) fileInputRef.current.value = '';
-      return;
+    if (!isSkinProduct) {
+      const instructions = getUploadInstructions(product?.categorySlug);
+      const dimValidation = await validateImageDimensions(file, instructions.req);
+      if (!dimValidation.valid) {
+        setError(dimValidation.error || 'Image dimensions are too small.');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
     }
 
     try {
       const dataUrl = await fileToDataUrl(file);
       setUploadedImage(dataUrl);
-    } catch {
-      setError('Failed to upload. Try again.');
+      setError(null);
+    } catch (err) {
+      console.error('[UploadError]', err);
+      setError('Failed to process image file. Please try another image.');
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
+  if (!mounted) {
+    return (
+      <div className="section-container min-h-[100dvh] pt-24 pb-20 flex items-center justify-center">
+        <div className="w-full h-[500px] bg-charcoal/50 animate-pulse rounded-xl" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-[100dvh] bg-charcoal pb-24 pt-24 sm:pt-28">
-      {/* Canvas Area (Top) — height must match CustomizerCanvas h-[60vh] */}
-      <div className="relative w-full h-[60vh] bg-graphite shrink-0">
-        {!uploadedImage &&
-          (() => {
-            const instructions = getUploadInstructions(product?.categorySlug);
-            return (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-graphite/90 backdrop-blur-sm border-2 border-dashed border-smoke m-4 rounded-lg p-4 text-center">
-                <h3 className="font-display text-xl text-bone mb-2">Start Designing</h3>
-
-                <div className="my-4 flex flex-col items-center max-w-sm">
-                  <span className="text-[#FF4D4D] font-mono text-[11px] mb-3">
-                    {instructions.title}
-                  </span>
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="bg-bone text-charcoal font-mono text-[10px] uppercase px-6 py-2.5 rounded-sm active:scale-95 transition-transform mb-4 w-full max-w-[200px]"
-                  >
-                    Upload Your Image
-                  </button>
-                  <p className="font-mono text-[9px] text-pearl mb-2 leading-relaxed">
-                    {instructions.note}
-                  </p>
-                  <p className="font-mono text-[8px] text-ash italic leading-relaxed">
-                    {instructions.subtext}
-                  </p>
-                </div>
-
-                {error && <p className="text-[#FF4D4D] mt-2 font-mono text-[10px]">{error}</p>}
-              </div>
-            );
-          })()}
-
+      {/* Canvas Area (Top) */}
+      <div className="relative w-full bg-graphite shrink-0">
         <input
           type="file"
           ref={fileInputRef}
@@ -262,53 +253,72 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
           onChange={handleInlineUpload}
         />
 
-        {viewMode === '3d' && product?.categorySlug === 'mugs-cups' ? (
-          <div className="w-full h-[60vh]">
-            <Mug3DViewer product={product} />
+        {/* ── SKIN EDITOR: SVG-native per-device preview ── */}
+        {isSkinProduct ? (
+          <div className="p-4 flex flex-col gap-4 min-h-[55vw]">
+            <SkinEditor
+              deviceId={selectedDeviceId ?? 'iphone-16-pro-max'}
+              imageUrl={uploadedImage}
+              onUploadClick={() => fileInputRef.current?.click()}
+            />
+            {uploadedImage && (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="self-center flex items-center gap-2 border border-smoke text-pearl py-2 px-4 font-mono text-[10px] uppercase rounded-sm active:scale-95 transition-transform"
+              >
+                Replace Image
+              </button>
+            )}
           </div>
         ) : (
-          <CustomizerCanvas
-            productId={productId}
-            initialImage={uploadedImage}
-            selectedColor={selectedColor}
-            selectedDeviceId={selectedDeviceId}
-            selectedSize={selectedSize}
-          />
+          // ── OTHER CATEGORIES: existing canvas ──
+          <div className="relative w-full h-[60vh]">
+            {!uploadedImage &&
+              (() => {
+                const instructions = getUploadInstructions(product?.categorySlug);
+                return (
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-graphite/90 backdrop-blur-sm border-2 border-dashed border-smoke m-4 rounded-lg p-4 text-center">
+                    <h3 className="font-display text-xl text-bone mb-2">Start Designing</h3>
+                    <div className="my-4 flex flex-col items-center max-w-sm">
+                      <span className="text-[#FF4D4D] font-mono text-[11px] mb-3">
+                        {instructions.title}
+                      </span>
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="bg-bone text-charcoal font-mono text-[10px] uppercase px-6 py-2.5 rounded-sm active:scale-95 transition-transform mb-4 w-full max-w-[200px]"
+                      >
+                        Upload Your Image
+                      </button>
+                      <p className="font-mono text-[9px] text-pearl mb-2 leading-relaxed">
+                        {instructions.note}
+                      </p>
+                      <p className="font-mono text-[8px] text-ash italic leading-relaxed">
+                        {instructions.subtext}
+                      </p>
+                    </div>
+                    {error && <p className="text-[#FF4D4D] mt-2 font-mono text-[10px]">{error}</p>}
+                  </div>
+                );
+              })()}
+            {viewMode === '3d' && product?.categorySlug === 'mugs-cups' ? (
+              <div className="w-full h-[60vh]">
+                <Mug3DViewer product={product} />
+              </div>
+            ) : (
+              <CustomizerCanvas
+                productId={productId}
+                initialImage={uploadedImage}
+                selectedColor={selectedColor}
+                selectedDeviceId={selectedDeviceId}
+                selectedSize={selectedSize}
+              />
+            )}
+          </div>
         )}
       </div>
 
       {/* Tools Area (Scrollable Bottom) */}
       <div className="flex-1 overflow-y-auto px-5 py-6 flex flex-col gap-8">
-        {/* View Mode (Mugs only) */}
-        {product?.categorySlug === 'mugs-cups' && mTemplate && (
-          <div className="bg-graphite border border-smoke/30 p-4 rounded-lg flex flex-col gap-4">
-            <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest">
-              Preview Mode
-            </h3>
-            <div className="flex border border-smoke rounded-sm overflow-hidden">
-              <button
-                onClick={() => setViewMode('2d')}
-                className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors border-r border-smoke ${
-                  viewMode === '2d'
-                    ? 'bg-cobalt text-bone'
-                    : 'bg-charcoal text-ash hover:text-pearl'
-                }`}
-              >
-                2D Editor
-              </button>
-              <button
-                onClick={() => setViewMode('3d')}
-                className={`flex-1 px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-colors ${
-                  viewMode === '3d'
-                    ? 'bg-cobalt text-bone'
-                    : 'bg-charcoal text-ash hover:text-pearl'
-                }`}
-              >
-                360° 3D View
-              </button>
-            </div>
-          </div>
-        )}
         <div className="flex justify-between items-end">
           <h1 className="font-display text-3xl font-bold text-bone uppercase">{product?.name}</h1>
           <div className="flex items-center gap-3">

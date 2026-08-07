@@ -24,7 +24,7 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
 
   const order = await prisma.order.findUnique({
     where: { id: params.id },
-    include: { items: { include: { product: true } } },
+    include: { items: true },
   });
 
   if (!order || order.userId !== user.id) {
@@ -34,13 +34,6 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
   const currentIndex = getStatusIndex(order.status);
   const isCancelled =
     order.status.toLowerCase() === 'cancelled' || order.status.toLowerCase() === 'failed';
-
-  const steps = [
-    { label: 'Order Placed', index: 1 },
-    { label: 'Processing', index: 1 }, // Map placed/processing to step 2 visually
-    { label: 'Shipped', index: 2 },
-    { label: 'Delivered', index: 3 },
-  ];
 
   // We'll simplify to 4 main visual steps
   const visualSteps = ['Order Placed', 'Processing', 'Shipped', 'Delivered'];

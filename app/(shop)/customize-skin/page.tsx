@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SkinCustomizerClient } from '@/components/skin-customizer/SkinCustomizer.client';
+import { CustomizerClient } from '@/components/customizer/Customizer.client';
 
 export const metadata: Metadata = {
   title: 'Skin Customizer — StarBy',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function CustomizeSkinPage() {
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
-      <SkinCustomizerClient />
+      <CustomizerClient productId="phantom-skin" />
     </main>
   );
 }

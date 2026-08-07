@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
@@ -15,49 +15,22 @@ function MobileProductCard({ product, index }: { product: Product; index: number
     <Link
       href={`/products/${product.categorySlug}/${product.slug || product.id}`}
       className="group flex flex-col gap-0 col-span-1"
-      style={{ perspective: '800px' }}
     >
-      {/* 3D flip wrapper */}
-      <div
-        className="relative aspect-[3/4] overflow-visible [&:hover]:![transform:rotateY(180deg)] [&:active]:![transform:rotateY(180deg)]"
-        style={{
-          transformStyle: 'preserve-3d',
-          transition: 'transform 0.6s cubic-bezier(0.4,0,0.2,1)',
-        }}
-      >
-        {/* Front face */}
-        <div
-          className="absolute inset-0 overflow-hidden bg-smoke/5 rounded-xl"
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          <Image
-            src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.webp'}
-            alt={product.name}
-            fill
-            priority={index < 4}
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 768px) 50vw, 33vw"
-          />
-          {product.customizable && (
-            <div className="absolute top-2 left-2 bg-charcoal text-bone px-2 py-0.5 text-[8px] uppercase font-mono tracking-widest z-[1] rounded-md">
-              Custom
-            </div>
-          )}
-        </div>
-
-        {/* Back face */}
-        <div
-          className="absolute inset-0 bg-graphite border border-smoke/40 rounded-xl flex flex-col items-center justify-center gap-3 px-4"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-        >
-          <h3 className="font-mono text-[10px] text-bone uppercase tracking-widest text-center">
-            {product.name}
-          </h3>
-          <p className="font-display text-xl text-bone">{formatPrice(product.basePrice)}</p>
-          <span className="w-full text-center bg-cobalt text-bone font-mono text-[9px] uppercase tracking-widest py-2.5 rounded-lg">
-            {product.customizable ? 'Customize' : 'View'}
-          </span>
-        </div>
+      {/* Standard Hover Image wrapper */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-smoke/5 rounded-xl border border-transparent active:border-smoke/40 transition-colors">
+        <Image
+          src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.webp'}
+          alt={product.name}
+          fill
+          priority={index < 4}
+          className="object-cover transition-transform duration-700 active:scale-105"
+          sizes="(max-width: 768px) 50vw"
+        />
+        {product.customizable && (
+          <div className="absolute top-2 left-2 bg-charcoal text-bone px-2 py-1 text-[8px] uppercase font-mono tracking-widest z-[1] rounded shadow-lg">
+            Custom
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-0.5 mt-3">
@@ -79,12 +52,20 @@ export function ShopMobile({ category, products }: { category: string; products:
   const searchParams = useSearchParams();
 
   const [activeTab, setActiveTab] = useState(category || 'all');
-  const [filterType, setFilterType] = useState(searchParams.get('type') || 'all');
-  const [sortMethod, setSortMethod] = useState(searchParams.get('sort') || 'featured');
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
-  const [minPrice, setMinPrice] = useState(searchParams.get('min') || '');
-  const [maxPrice, setMaxPrice] = useState(searchParams.get('max') || '');
+  const [filterType, setFilterType] = useState('all');
+  const [sortMethod, setSortMethod] = useState('featured');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const [visibleCount, setVisibleCount] = useState(12);
+
+  useEffect(() => {
+    setFilterType(searchParams.get('type') || 'all');
+    setSortMethod(searchParams.get('sort') || 'featured');
+    setSearchQuery(searchParams.get('q') || '');
+    setMinPrice(searchParams.get('min') || '');
+    setMaxPrice(searchParams.get('max') || '');
+  }, [searchParams]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const handleTabClick = (tabId: string) => {

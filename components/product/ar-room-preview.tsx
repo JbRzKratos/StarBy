@@ -138,11 +138,18 @@ function FallbackARPreview({ panels, isOpen, onClose }: ArRoomPreviewProps) {
       }
     };
 
+    const vid = videoRef.current;
     startCamera();
 
     return () => {
-      streamRef.current?.getTracks().forEach((t) => t.stop());
-      streamRef.current = null;
+      if (vid) {
+        vid.pause();
+        vid.srcObject = null;
+      }
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+        streamRef.current = null;
+      }
       setCameraReady(false);
     };
   }, [isOpen]);
