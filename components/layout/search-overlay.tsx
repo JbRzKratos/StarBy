@@ -119,8 +119,15 @@ export function SearchOverlay() {
       <div className="w-full max-w-4xl mx-auto p-6 md:p-12 flex flex-col h-full">
         {/* Search input row */}
         <div className="flex items-center gap-4 mb-6 md:mb-8">
-          <svg className="w-6 h-6 text-pearl shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+          <svg
+            className="w-6 h-6 text-pearl shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
           </svg>
           <input
             ref={inputRef}
@@ -140,7 +147,14 @@ export function SearchOverlay() {
             aria-label="Close search"
             className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full border border-smoke text-pearl hover:text-bone hover:border-bone transition-colors"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -164,7 +178,11 @@ export function SearchOverlay() {
           ))}
           {hasFilters && (
             <button
-              onClick={() => { setQuery(''); setDebouncedQuery(''); setSelectedCategory(null); }}
+              onClick={() => {
+                setQuery('');
+                setDebouncedQuery('');
+                setSelectedCategory(null);
+              }}
               className="px-3 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-widest border border-ember/50 text-ember hover:bg-ember/10 transition-all"
             >
               ✕ Clear all
@@ -175,18 +193,28 @@ export function SearchOverlay() {
         <div className="flex-1 overflow-y-auto pr-2">
           {isEmpty ? (
             <div className="flex flex-col items-center py-20 gap-4 text-center">
-              <svg className="w-10 h-10 text-smoke" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+              <svg
+                className="w-10 h-10 text-smoke"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
               </svg>
               <p className="font-mono text-body-md text-ash">
                 No results for <span className="text-bone">&ldquo;{debouncedQuery}&rdquo;</span>
               </p>
-              <p className="font-mono text-caption text-smoke">Try different keywords or remove filters</p>
+              <p className="font-mono text-caption text-smoke">
+                Try different keywords or remove filters
+              </p>
             </div>
           ) : !debouncedQuery && !selectedCategory ? (
             // Default state: show category browse
             <div>
-              <p className="font-mono text-caption text-ash uppercase tracking-widest mb-4">Browse Categories</p>
+              <p className="font-mono text-caption text-ash uppercase tracking-widest mb-4">
+                Browse Categories
+              </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {ALL_CATEGORIES.map((cat) => (
                   <button
@@ -208,7 +236,9 @@ export function SearchOverlay() {
             <div>
               <p className="font-mono text-caption text-ash uppercase tracking-widest mb-4">
                 {displayResults.length} result{displayResults.length !== 1 ? 's' : ''}
-                {selectedCategory ? ` in ${CATEGORY_LABELS[selectedCategory] ?? selectedCategory}` : ''}
+                {selectedCategory
+                  ? ` in ${CATEGORY_LABELS[selectedCategory] ?? selectedCategory}`
+                  : ''}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {displayResults.map((product) => (
@@ -228,7 +258,9 @@ export function SearchOverlay() {
                         />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="font-display text-2xl text-smoke font-bold">{product.name[0]}</span>
+                          <span className="font-display text-2xl text-smoke font-bold">
+                            {product.name[0]}
+                          </span>
                         </div>
                       )}
                     </div>

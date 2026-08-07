@@ -169,8 +169,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Phone (1)',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 159.2, widthMm: 75.8, thicknessMm: 8.3, sources: [{ url: 'https://www.gsmarena.com/nothing_phone_(1)-11461.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 65 0 Q 75 0 75 10 L 75 149 Q 75 159 65 159 L 10 159 Q 0 159 0 149 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 75.8, height: 159.2 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 159.2,
+      widthMm: 75.8,
+      thicknessMm: 8.3,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/nothing_phone_(1)-11461.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 65 0 Q 75 0 75 10 L 75 149 Q 75 159 65 159 L 10 159 Q 0 159 0 149 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 75.8, height: 159.2 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'nothing-phone-2',
@@ -179,8 +197,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Phone (2)',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 162.1, widthMm: 76.4, thicknessMm: 8.1, sources: [{ url: 'https://www.gsmarena.com/nothing_phone_(2)-12061.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 66 0 Q 76 0 76 10 L 76 152 Q 76 162 66 162 L 10 162 Q 0 162 0 152 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 76.4, height: 162.1 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 162.1,
+      widthMm: 76.4,
+      thicknessMm: 8.1,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/nothing_phone_(2)-12061.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 66 0 Q 76 0 76 10 L 76 152 Q 76 162 66 162 L 10 162 Q 0 162 0 152 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 76.4, height: 162.1 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'nothing-phone-2a',
@@ -189,8 +225,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Phone (2a)',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 161.7, widthMm: 76.3, thicknessMm: 8.55, sources: [{ url: 'https://www.gsmarena.com/nothing_phone_(2a)-12305.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 66 0 Q 76 0 76 10 L 76 151 Q 76 161 66 161 L 10 161 Q 0 161 0 151 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 76.3, height: 161.7 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 161.7,
+      widthMm: 76.3,
+      thicknessMm: 8.55,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/nothing_phone_(2a)-12305.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 66 0 Q 76 0 76 10 L 76 151 Q 76 161 66 161 L 10 161 Q 0 161 0 151 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 76.3, height: 161.7 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'nothing-phone-2a-plus',
@@ -199,8 +253,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Phone (2a) Plus',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 161.74, widthMm: 76.32, thicknessMm: 8.55, sources: [{ url: 'https://www.gsmarena.com/nothing_phone_(2a)_plus-12490.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 66 0 Q 76 0 76 10 L 76 151 Q 76 161 66 161 L 10 161 Q 0 161 0 151 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 76.32, height: 161.74 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 161.74,
+      widthMm: 76.32,
+      thicknessMm: 8.55,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/nothing_phone_(2a)_plus-12490.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 66 0 Q 76 0 76 10 L 76 151 Q 76 161 66 161 L 10 161 Q 0 161 0 151 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 76.32, height: 161.74 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'nothing-phone-3a',
@@ -209,8 +281,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Phone (3a)',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 163.5, widthMm: 77.5, thicknessMm: 8.4, sources: [{ url: 'https://www.gsmarena.com/nothing_phone_(3a)-12774.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 67 0 Q 77 0 77 10 L 77 153 Q 77 163 67 163 L 10 163 Q 0 163 0 153 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 77.5, height: 163.5 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 163.5,
+      widthMm: 77.5,
+      thicknessMm: 8.4,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/nothing_phone_(3a)-12774.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 67 0 Q 77 0 77 10 L 77 153 Q 77 163 67 163 L 10 163 Q 0 163 0 153 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 77.5, height: 163.5 },
+        cutouts: [],
+      },
+    ],
   },
 
   // ── Redmi ─────────────────────────────────────────────────────────────────
@@ -221,8 +311,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Note 13',
     variant: '4G',
     sourceVerified: false,
-    dimensions: { heightMm: 162.3, widthMm: 75.6, thicknessMm: 8.0, sources: [{ url: 'https://www.gsmarena.com/xiaomi_redmi_note_13-12247.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 65 0 Q 75 0 75 10 L 75 152 Q 75 162 65 162 L 10 162 Q 0 162 0 152 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 75.6, height: 162.3 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 162.3,
+      widthMm: 75.6,
+      thicknessMm: 8.0,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/xiaomi_redmi_note_13-12247.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 65 0 Q 75 0 75 10 L 75 152 Q 75 162 65 162 L 10 162 Q 0 162 0 152 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 75.6, height: 162.3 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'redmi-note-13-pro-5g',
@@ -231,8 +339,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Note 13 Pro 5G',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 161.2, widthMm: 74.2, thicknessMm: 8.0, sources: [{ url: 'https://www.gsmarena.com/xiaomi_redmi_note_13_pro+-12248.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 64 0 Q 74 0 74 10 L 74 151 Q 74 161 64 161 L 10 161 Q 0 161 0 151 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 74.2, height: 161.2 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 161.2,
+      widthMm: 74.2,
+      thicknessMm: 8.0,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/xiaomi_redmi_note_13_pro+-12248.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 64 0 Q 74 0 74 10 L 74 151 Q 74 161 64 161 L 10 161 Q 0 161 0 151 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 74.2, height: 161.2 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'redmi-13c',
@@ -241,8 +367,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: '13C',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 168.0, widthMm: 78.0, thicknessMm: 8.09, sources: [{ url: 'https://www.gsmarena.com/xiaomi_redmi_13c-12215.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 68 0 Q 78 0 78 10 L 78 158 Q 78 168 68 168 L 10 168 Q 0 168 0 158 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 78.0, height: 168.0 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 168.0,
+      widthMm: 78.0,
+      thicknessMm: 8.09,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/xiaomi_redmi_13c-12215.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 68 0 Q 78 0 78 10 L 78 158 Q 78 168 68 168 L 10 168 Q 0 168 0 158 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 78.0, height: 168.0 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'redmi-note-14-5g',
@@ -251,8 +395,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Note 14 5G',
     variant: 'India',
     sourceVerified: false,
-    dimensions: { heightMm: 162.4, widthMm: 75.7, thicknessMm: 8.0, sources: [{ url: 'https://www.gsmarena.com/xiaomi_redmi_note_14-12596.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 65 0 Q 75 0 75 10 L 75 152 Q 75 162 65 162 L 10 162 Q 0 162 0 152 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 75.7, height: 162.4 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 162.4,
+      widthMm: 75.7,
+      thicknessMm: 8.0,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/xiaomi_redmi_note_14-12596.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 65 0 Q 75 0 75 10 L 75 152 Q 75 162 65 162 L 10 162 Q 0 162 0 152 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 75.7, height: 162.4 },
+        cutouts: [],
+      },
+    ],
   },
 
   // ── Vivo ──────────────────────────────────────────────────────────────────
@@ -263,8 +425,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'V40',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 164.2, widthMm: 75.0, thicknessMm: 7.6, sources: [{ url: 'https://www.gsmarena.com/vivo_v40-12462.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 65 0 Q 75 0 75 10 L 75 154 Q 75 164 65 164 L 10 164 Q 0 164 0 154 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 75.0, height: 164.2 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 164.2,
+      widthMm: 75.0,
+      thicknessMm: 7.6,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/vivo_v40-12462.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 65 0 Q 75 0 75 10 L 75 154 Q 75 164 65 164 L 10 164 Q 0 164 0 154 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 75.0, height: 164.2 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'vivo-v40e',
@@ -273,8 +453,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'V40e',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 163.7, widthMm: 75.0, thicknessMm: 7.5, sources: [{ url: 'https://www.gsmarena.com/vivo_v40e-12566.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 65 0 Q 75 0 75 10 L 75 153 Q 75 163 65 163 L 10 163 Q 0 163 0 153 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 75.0, height: 163.7 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 163.7,
+      widthMm: 75.0,
+      thicknessMm: 7.5,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/vivo_v40e-12566.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 65 0 Q 75 0 75 10 L 75 153 Q 75 163 65 163 L 10 163 Q 0 163 0 153 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 75.0, height: 163.7 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'vivo-v50',
@@ -283,8 +481,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'V50',
     variant: 'Standard',
     sourceVerified: false,
-    dimensions: { heightMm: 163.29, widthMm: 76.72, thicknessMm: 7.39, sources: [{ url: 'https://www.gsmarena.com/vivo_v50-12697.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 66 0 Q 76 0 76 10 L 76 153 Q 76 163 66 163 L 10 163 Q 0 163 0 153 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 76.72, height: 163.29 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 163.29,
+      widthMm: 76.72,
+      thicknessMm: 7.39,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/vivo_v50-12697.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 66 0 Q 76 0 76 10 L 76 153 Q 76 163 66 163 L 10 163 Q 0 163 0 153 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 76.72, height: 163.29 },
+        cutouts: [],
+      },
+    ],
   },
 
   // ── Oppo ──────────────────────────────────────────────────────────────────
@@ -295,8 +511,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Reno 13',
     variant: 'India / Global',
     sourceVerified: false,
-    dimensions: { heightMm: 157.9, widthMm: 74.7, thicknessMm: 7.2, sources: [{ url: 'https://www.gsmarena.com/oppo_reno13-12625.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 64 0 Q 74 0 74 10 L 74 147 Q 74 157 64 157 L 10 157 Q 0 157 0 147 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 74.7, height: 157.9 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 157.9,
+      widthMm: 74.7,
+      thicknessMm: 7.2,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/oppo_reno13-12625.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 64 0 Q 74 0 74 10 L 74 147 Q 74 157 64 157 L 10 157 Q 0 157 0 147 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 74.7, height: 157.9 },
+        cutouts: [],
+      },
+    ],
   },
   {
     id: 'oppo-reno3-5g',
@@ -305,8 +539,26 @@ export const deviceTemplates: DeviceTemplate[] = [
     model: 'Reno 3 5G',
     variant: 'Legacy',
     sourceVerified: false,
-    dimensions: { heightMm: 160.3, widthMm: 74.3, thicknessMm: 8.0, sources: [{ url: 'https://www.gsmarena.com/oppo_reno3_5g-9957.php', retrievedDate: '2026-08-07T00:00:00Z' }] },
-    panels: [{ panelId: 'phone-back', outlinePath: 'M 10 0 L 64 0 Q 74 0 74 10 L 74 150 Q 74 160 64 160 L 10 160 Q 0 160 0 150 L 0 10 Q 0 0 10 0 Z', printAreaBounds: { width: 74.3, height: 160.3 }, cutouts: [] }],
+    dimensions: {
+      heightMm: 160.3,
+      widthMm: 74.3,
+      thicknessMm: 8.0,
+      sources: [
+        {
+          url: 'https://www.gsmarena.com/oppo_reno3_5g-9957.php',
+          retrievedDate: '2026-08-07T00:00:00Z',
+        },
+      ],
+    },
+    panels: [
+      {
+        panelId: 'phone-back',
+        outlinePath:
+          'M 10 0 L 64 0 Q 74 0 74 10 L 74 150 Q 74 160 64 160 L 10 160 Q 0 160 0 150 L 0 10 Q 0 0 10 0 Z',
+        printAreaBounds: { width: 74.3, height: 160.3 },
+        cutouts: [],
+      },
+    ],
   },
 ];
 

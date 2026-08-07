@@ -322,7 +322,12 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
         const fc = fabricRef.current;
         if (!fc) return;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        await new Promise<void>((resolve) => fc.loadFromJSON(json, () => { fc.renderAll(); resolve(); }));
+        await new Promise<void>((resolve) =>
+          fc.loadFromJSON(json, () => {
+            fc.renderAll();
+            resolve();
+          }),
+        );
       },
     }));
 

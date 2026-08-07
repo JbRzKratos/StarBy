@@ -95,7 +95,7 @@ export async function POST(request: Request) {
         order.total,
       );
     }
-    
+
     await sendAdminNewOrderEmail(order.id, order.total);
 
     return NextResponse.json({ success: true, message: 'Payment verified successfully' });

@@ -7,7 +7,11 @@ import { products } from '@/data/products';
 
 /** Format a number as Indian Rupees — used here because this is a server component */
 const formatINR = (amount: number) =>
-  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  }).format(amount);
 
 export default async function AccountOrdersPage() {
   let orders: Prisma.OrderGetPayload<{ include: { items: true } }>[] = [];
@@ -95,7 +99,9 @@ export default async function AccountOrdersPage() {
                       <span className="font-mono text-caption text-ash uppercase">
                         Total Amount
                       </span>
-                      <p className="font-display text-xl text-bone mt-1">{formatINR(order.total)}</p>
+                      <p className="font-display text-xl text-bone mt-1">
+                        {formatINR(order.total)}
+                      </p>
                       {order.discount ? (
                         <p className="font-mono text-caption text-emerald-400">
                           (Saved {formatINR(order.discount)})
@@ -155,7 +161,6 @@ export default async function AccountOrdersPage() {
                           Tracking info will appear here once shipped.
                         </span>
                       </div>
-                    )}
                     )}
                     <div className="flex flex-col sm:flex-row gap-2 self-start sm:self-center">
                       <Link

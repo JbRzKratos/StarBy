@@ -6,16 +6,18 @@ import { createClient } from '@/lib/supabase/server';
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const order = await prisma.order.findUnique({
       where: { id: params.id },
       include: {
         user: true,
         items: {
-          include: { product: true }
-        }
-      }
+          include: { product: true },
+        },
+      },
     });
 
     if (!order) {
@@ -25,7 +27,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     // Auth check: Must be admin or the owner of the order
     const isOwner = user?.id === order.userId;
     let isAdmin = false;
-    
+
     if (user) {
       const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
       isAdmin = dbUser?.role === 'ADMIN' || dbUser?.role === 'STAFF';

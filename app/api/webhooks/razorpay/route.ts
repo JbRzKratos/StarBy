@@ -10,7 +10,10 @@ export async function POST(req: Request) {
     const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
     if (!signature || !secret) {
-      return NextResponse.json({ success: false, message: 'Missing signature or secret' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: 'Missing signature or secret' },
+        { status: 400 },
+      );
     }
 
     const expectedSignature = crypto.createHmac('sha256', secret).update(body).digest('hex');
@@ -37,9 +40,9 @@ export async function POST(req: Request) {
         if (order && order.paymentStatus !== 'paid' && order.paymentStatus !== 'completed') {
           await prisma.order.update({
             where: { id: order.id },
-            data: { 
+            data: {
               paymentStatus: 'paid',
-              status: 'placed' // transition from pending_payment to placed
+              status: 'placed', // transition from pending_payment to placed
             },
           });
 
@@ -74,6 +77,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Webhook error:', error);
-    return NextResponse.json({ success: false, message: 'Webhook processing failed' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: 'Webhook processing failed' },
+      { status: 500 },
+    );
   }
 }

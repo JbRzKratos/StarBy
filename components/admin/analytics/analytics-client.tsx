@@ -37,17 +37,19 @@ export function AnalyticsClient({
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono">
         <div className="bg-charcoal rounded-sm border border-smoke p-5">
-          <p className="text-caption uppercase tracking-widest text-ash mb-2">Total Revenue (30d)</p>
-          <p className="text-2xl font-bold text-bone">
-            ₹{totalRevenue30d.toLocaleString('en-IN')}
+          <p className="text-caption uppercase tracking-widest text-ash mb-2">
+            Total Revenue (30d)
           </p>
+          <p className="text-2xl font-bold text-bone">₹{totalRevenue30d.toLocaleString('en-IN')}</p>
         </div>
         <div className="bg-charcoal rounded-sm border border-smoke p-5">
           <p className="text-caption uppercase tracking-widest text-ash mb-2">Total Orders (30d)</p>
           <p className="text-2xl font-bold text-bone">{totalOrders30d}</p>
         </div>
         <div className="bg-charcoal rounded-sm border border-smoke p-5">
-          <p className="text-caption uppercase tracking-widest text-ash mb-2">Average Order Value</p>
+          <p className="text-caption uppercase tracking-widest text-ash mb-2">
+            Average Order Value
+          </p>
           <p className="text-2xl font-bold text-bone">
             ₹{Math.round(avgOrderValue).toLocaleString('en-IN')}
           </p>
@@ -57,7 +59,9 @@ export function AnalyticsClient({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
         <div className="lg:col-span-2 bg-charcoal rounded-sm border border-smoke p-5">
-          <h2 className="font-mono text-caption uppercase tracking-widest text-pearl mb-6">Revenue Trend (30 Days)</h2>
+          <h2 className="font-mono text-caption uppercase tracking-widest text-pearl mb-6">
+            Revenue Trend (30 Days)
+          </h2>
           <div className="h-72 w-full font-mono">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
@@ -111,7 +115,9 @@ export function AnalyticsClient({
 
         {/* Top Products */}
         <div className="bg-charcoal rounded-sm border border-smoke p-5">
-          <h2 className="font-mono text-caption uppercase tracking-widest text-pearl mb-6">Top Selling Products</h2>
+          <h2 className="font-mono text-caption uppercase tracking-widest text-pearl mb-6">
+            Top Selling Products
+          </h2>
           <div className="h-72 w-full font-mono">
             {topSellers.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -136,7 +142,12 @@ export function AnalyticsClient({
                     width={120}
                   />
                   <Tooltip
-                    contentStyle={{ borderRadius: '2px', border: '1px solid #333333', backgroundColor: '#1C1C1C', color: '#F5F1EA' }}
+                    contentStyle={{
+                      borderRadius: '2px',
+                      border: '1px solid #333333',
+                      backgroundColor: '#1C1C1C',
+                      color: '#F5F1EA',
+                    }}
                     itemStyle={{ color: '#F5F1EA' }}
                     cursor={{ fill: '#222222' }}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any

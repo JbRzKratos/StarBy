@@ -111,10 +111,14 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
 
       {showCreate && (
         <div className="bg-charcoal rounded-sm border border-smoke p-5 space-y-4 mb-4">
-          <h2 className="text-body-lg font-display text-bone border-b border-smoke pb-2">New Coupon</h2>
+          <h2 className="text-body-lg font-display text-bone border-b border-smoke pb-2">
+            New Coupon
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Code</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+                Code
+              </label>
               <input
                 value={form.code}
                 onChange={(e) =>
@@ -125,7 +129,9 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               />
             </div>
             <div>
-              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Type</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+                Type
+              </label>
               <select
                 value={form.discountType}
                 onChange={(e) => setForm({ ...form, discountType: e.target.value })}
@@ -136,7 +142,9 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               </select>
             </div>
             <div>
-              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Value</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+                Value
+              </label>
               <input
                 type="number"
                 value={form.discountValue}
@@ -147,7 +155,9 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               />
             </div>
             <div>
-              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Expiry Date</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+                Expiry Date
+              </label>
               <input
                 type="date"
                 value={form.expiresAt}
@@ -170,7 +180,9 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               />
             </div>
             <div>
-              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Max Uses</label>
+              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+                Max Uses
+              </label>
               <input
                 type="number"
                 placeholder="Unlimited"

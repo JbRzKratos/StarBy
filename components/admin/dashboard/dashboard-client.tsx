@@ -128,7 +128,6 @@ const STAT_CARDS = (stats: DashboardStats) => [
   },
 ];
 
-
 export function DashboardClient({
   stats,
   recentOrders,
@@ -143,12 +142,13 @@ export function DashboardClient({
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {statCards.map((card) => (
-          <div key={card.label} className="bg-charcoal rounded-sm border border-smoke p-4 font-mono">
+          <div
+            key={card.label}
+            className="bg-charcoal rounded-sm border border-smoke p-4 font-mono"
+          >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-caption text-ash uppercase tracking-widest mb-1">
-                  {card.label}
-                </p>
+                <p className="text-caption text-ash uppercase tracking-widest mb-1">{card.label}</p>
                 <p className="text-2xl font-bold text-bone mt-1">{card.value}</p>
               </div>
               <div
@@ -163,7 +163,9 @@ export function DashboardClient({
 
       {/* Revenue chart */}
       <div className="bg-charcoal rounded-sm border border-smoke p-6">
-        <h2 className="font-mono text-caption uppercase tracking-widest text-pearl mb-4">Revenue (last 90 days)</h2>
+        <h2 className="font-mono text-caption uppercase tracking-widest text-pearl mb-4">
+          Revenue (last 90 days)
+        </h2>
         <RevenueChart data={revenueData} />
       </div>
 
@@ -171,7 +173,9 @@ export function DashboardClient({
         {/* Recent orders */}
         <div className="bg-charcoal rounded-sm border border-smoke">
           <div className="flex items-center justify-between px-5 py-4 border-b border-smoke">
-            <h2 className="font-mono text-caption uppercase tracking-widest text-pearl">Recent Orders</h2>
+            <h2 className="font-mono text-caption uppercase tracking-widest text-pearl">
+              Recent Orders
+            </h2>
             <Link
               href="/admin/orders"
               className="text-caption font-mono uppercase tracking-widest text-cobalt hover:underline"
@@ -184,7 +188,10 @@ export function DashboardClient({
               <p className="text-sm text-ash px-5 py-4">No orders yet</p>
             )}
             {recentOrders.slice(0, 6).map((order) => (
-              <div key={order.id} className="flex items-center justify-between px-5 py-3 hover:bg-smoke/10">
+              <div
+                key={order.id}
+                className="flex items-center justify-between px-5 py-3 hover:bg-smoke/10"
+              >
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-bone truncate">{order.customerName}</p>
                   <p className="text-xs text-gray-500">{order.id.slice(0, 12)}…</p>
@@ -205,7 +212,9 @@ export function DashboardClient({
           {/* Top products */}
           <div className="bg-charcoal rounded-sm border border-smoke">
             <div className="flex items-center justify-between px-5 py-4 border-b border-smoke">
-              <h2 className="font-mono text-caption uppercase tracking-widest text-pearl">Top Products (30d)</h2>
+              <h2 className="font-mono text-caption uppercase tracking-widest text-pearl">
+                Top Products (30d)
+              </h2>
               <Link
                 href="/admin/products"
                 className="text-caption font-mono uppercase tracking-widest text-cobalt hover:underline"
@@ -218,7 +227,10 @@ export function DashboardClient({
                 <p className="text-sm text-ash px-5 py-4">No sales data yet</p>
               )}
               {topProducts.slice(0, 4).map((product, i) => (
-                <div key={product.id} className="flex items-center gap-3 px-5 py-3 hover:bg-smoke/10">
+                <div
+                  key={product.id}
+                  className="flex items-center gap-3 px-5 py-3 hover:bg-smoke/10"
+                >
                   <span className="text-xs text-ash w-4">{i + 1}</span>
                   <p className="text-sm text-bone flex-1 truncate">{product.name}</p>
                   <span className="text-xs font-semibold text-pearl">
@@ -256,14 +268,15 @@ export function DashboardClient({
                 <p className="text-sm text-ash px-5 py-4">All variants well-stocked ✓</p>
               )}
               {lowStockVariants.map((v) => (
-                <div key={v.id} className="flex items-center justify-between px-5 py-3 hover:bg-smoke/10">
+                <div
+                  key={v.id}
+                  className="flex items-center justify-between px-5 py-3 hover:bg-smoke/10"
+                >
                   <div className="min-w-0">
                     <p className="text-xs font-medium text-bone truncate">{v.productName}</p>
                     <p className="text-xs text-ash">{v.name}</p>
                   </div>
-                  <StatusBadge
-                    status={v.inStock ? 'low_stock' : 'out_of_stock'}
-                  />
+                  <StatusBadge status={v.inStock ? 'low_stock' : 'out_of_stock'} />
                 </div>
               ))}
             </div>

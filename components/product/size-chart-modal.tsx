@@ -122,8 +122,8 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
           {isPoster
             ? 'Standard dimensions for single & split wall prints.'
             : isMug
-            ? 'Capacity and physical dimensions for our mugs.'
-            : 'Measurements in inches. Indian/Asian standard fit — check against your own garment.'}
+              ? 'Capacity and physical dimensions for our mugs.'
+              : 'Measurements in inches. Indian/Asian standard fit — check against your own garment.'}
         </p>
 
         {/* Mug table */}
@@ -133,13 +133,21 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
               <thead>
                 <tr className="border-b border-smoke">
                   {['Size', 'Capacity', 'Height', 'Diameter'].map((h) => (
-                    <th key={h} className="py-3 px-4 font-mono text-caption uppercase text-ash font-normal">{h}</th>
+                    <th
+                      key={h}
+                      className="py-3 px-4 font-mono text-caption uppercase text-ash font-normal"
+                    >
+                      {h}
+                    </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {sizeData.mugs.map((row, idx) => (
-                  <tr key={idx} className="border-b border-smoke/30 hover:bg-smoke/10 transition-colors">
+                  <tr
+                    key={idx}
+                    className="border-b border-smoke/30 hover:bg-smoke/10 transition-colors"
+                  >
                     <td className="py-4 px-4 font-display text-bone text-lg">{row.size}</td>
                     <td className="py-4 px-4 font-mono text-pearl">{row.capacity}</td>
                     <td className="py-4 px-4 font-mono text-pearl">{row.height}</td>

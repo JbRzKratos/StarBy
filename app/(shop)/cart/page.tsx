@@ -83,7 +83,9 @@ export default function CartPage() {
                           }
                           aria-label="Decrease quantity"
                           aria-disabled={item.quantity <= 1}
-                          title={item.quantity <= 1 ? 'Minimum quantity reached' : 'Decrease quantity'}
+                          title={
+                            item.quantity <= 1 ? 'Minimum quantity reached' : 'Decrease quantity'
+                          }
                           className={`w-7 h-7 border border-smoke text-pearl flex items-center justify-center transition-opacity ${
                             item.quantity <= 1
                               ? 'opacity-30 cursor-not-allowed'

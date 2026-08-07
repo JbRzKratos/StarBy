@@ -46,7 +46,14 @@ export function ContactForm() {
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
       {/* Honeypot field — hidden from humans, filled by bots */}
-      <input type="text" name="website" aria-hidden="true" tabIndex={-1} autoComplete="off" style={{ display: 'none' }} />
+      <input
+        type="text"
+        name="website"
+        aria-hidden="true"
+        tabIndex={-1}
+        autoComplete="off"
+        style={{ display: 'none' }}
+      />
       {status === 'success' && (
         <div className="bg-green-500/10 border border-green-500 text-green-500 p-4 rounded-sm font-mono text-sm">
           Thank you for reaching out! Your message has been sent successfully. We will get back to

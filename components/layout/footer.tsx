@@ -65,7 +65,10 @@ export function Footer() {
                       setNewsletterMsg({ text: 'Thanks for subscribing! 🎉', ok: true });
                       form.reset();
                     } else {
-                      setNewsletterMsg({ text: data.message || 'Something went wrong.', ok: false });
+                      setNewsletterMsg({
+                        text: data.message || 'Something went wrong.',
+                        ok: false,
+                      });
                     }
                   } catch {
                     setNewsletterMsg({ text: 'Error subscribing. Please try again.', ok: false });

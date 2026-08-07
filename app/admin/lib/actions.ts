@@ -11,18 +11,28 @@ import { sendOrderShippedEmail, sendOrderDeliveredEmail } from '@/lib/email';
 
 export async function updateOrderStatus(orderId: string, status: string) {
   await assertStaff();
-  const order = await prisma.order.update({ 
-    where: { id: orderId }, 
+  const order = await prisma.order.update({
+    where: { id: orderId },
     data: { status },
-    include: { user: true }
+    include: { user: true },
   });
 
   const emailTo = order.user?.email || (order.shippingAddress as Record<string, string>)?.email;
-  const name = order.user?.fullName || (order.shippingAddress as Record<string, string>)?.firstName || 'Customer';
+  const name =
+    order.user?.fullName ||
+    (order.shippingAddress as Record<string, string>)?.firstName ||
+    'Customer';
 
   if (emailTo) {
     if (status === 'shipped') {
-      await sendOrderShippedEmail(emailTo, order.id, name, order.trackingUrl || undefined, order.trackingNumber || undefined, order.carrier || undefined);
+      await sendOrderShippedEmail(
+        emailTo,
+        order.id,
+        name,
+        order.trackingUrl || undefined,
+        order.trackingNumber || undefined,
+        order.carrier || undefined,
+      );
     } else if (status === 'delivered') {
       await sendOrderDeliveredEmail(emailTo, order.id, name);
     }

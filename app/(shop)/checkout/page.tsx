@@ -258,7 +258,9 @@ export default function CheckoutPage() {
               clearCart();
               router.push('/account/orders');
             } else {
-              setCheckoutError('Payment verification failed: ' + (verifyData.message || 'Unknown error'));
+              setCheckoutError(
+                'Payment verification failed: ' + (verifyData.message || 'Unknown error'),
+              );
               setLoading(false);
               submittingRef.current = false;
             }
@@ -290,14 +292,18 @@ export default function CheckoutPage() {
         if (typeof win.Razorpay !== 'undefined') {
           const rzp = new win.Razorpay(options);
           rzp.on('payment.failed', function (response: { error?: { description?: string } }) {
-            setCheckoutError('Payment failed: ' + (response.error?.description || 'Transaction cancelled'));
+            setCheckoutError(
+              'Payment failed: ' + (response.error?.description || 'Transaction cancelled'),
+            );
             setLoading(false);
             submittingRef.current = false;
           });
           rzp.open();
           // Keep loading=true while Razorpay modal is open; handler/fail callbacks reset it
         } else {
-          setCheckoutError('Payment gateway is still loading. Please wait 2 seconds and try again.');
+          setCheckoutError(
+            'Payment gateway is still loading. Please wait 2 seconds and try again.',
+          );
           setLoading(false);
           submittingRef.current = false;
         }
@@ -352,7 +358,9 @@ export default function CheckoutPage() {
               <div className="mb-6 p-4 bg-ember/10 border border-ember/50 rounded-lg flex items-start gap-3">
                 <span className="text-ember text-lg leading-none mt-0.5">⚠</span>
                 <div className="flex-1">
-                  <p className="font-mono text-caption text-ember whitespace-pre-line">{checkoutError}</p>
+                  <p className="font-mono text-caption text-ember whitespace-pre-line">
+                    {checkoutError}
+                  </p>
                 </div>
                 <button
                   onClick={() => setCheckoutError(null)}

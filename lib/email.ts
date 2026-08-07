@@ -108,7 +108,7 @@ export async function sendContactAutoReply(toEmail: string, name: string) {
     await resend.emails.send({
       from: 'StarBy Support <support@starby.in>',
       to: [toEmail],
-      subject: "We got your message — StarBy Support",
+      subject: 'We got your message — StarBy Support',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
           <h2 style="color: #000;">Hey ${safeName}, we received your message!</h2>
@@ -152,7 +152,14 @@ export async function sendAdminNewOrderEmail(orderId: string, total: number) {
   }
 }
 
-export async function sendOrderShippedEmail(toEmail: string, orderId: string, customerName: string, trackingUrl?: string, trackingNumber?: string, carrier?: string) {
+export async function sendOrderShippedEmail(
+  toEmail: string,
+  orderId: string,
+  customerName: string,
+  trackingUrl?: string,
+  trackingNumber?: string,
+  carrier?: string,
+) {
   if (!process.env.RESEND_API_KEY) return false;
   const safeName = escapeHtml(customerName);
 
@@ -166,14 +173,18 @@ export async function sendOrderShippedEmail(toEmail: string, orderId: string, cu
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
           <h2 style="color: #000;">Great news, ${safeName}!</h2>
           <p>Your order <strong>${orderId}</strong> has been shipped and is on its way to you.</p>
-          ${trackingUrl || trackingNumber ? `
+          ${
+            trackingUrl || trackingNumber
+              ? `
             <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="margin-top: 0;">Tracking Details</h3>
               ${carrier ? `<p style="margin: 0;"><strong>Carrier:</strong> ${escapeHtml(carrier)}</p>` : ''}
               ${trackingNumber ? `<p style="margin: 0;"><strong>Tracking Number:</strong> ${escapeHtml(trackingNumber)}</p>` : ''}
               ${trackingUrl ? `<p style="margin-top: 10px;"><a href="${escapeHtml(trackingUrl)}" style="background-color: #3B5EFF; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">Track Your Order</a></p>` : ''}
             </div>
-          ` : ''}
+          `
+              : ''
+          }
           <p>Thank you for shopping with us!</p>
           <br />
           <p>Best regards,<br/>The StarBy Team</p>
@@ -187,7 +198,11 @@ export async function sendOrderShippedEmail(toEmail: string, orderId: string, cu
   }
 }
 
-export async function sendOrderDeliveredEmail(toEmail: string, orderId: string, customerName: string) {
+export async function sendOrderDeliveredEmail(
+  toEmail: string,
+  orderId: string,
+  customerName: string,
+) {
   if (!process.env.RESEND_API_KEY) return false;
   const safeName = escapeHtml(customerName);
 

@@ -63,7 +63,9 @@ export function SettingsClient({
         </h2>
         <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Store Name</label>
+            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+              Store Name
+            </label>
             <input
               value={form.storeName}
               onChange={(e) => setForm({ ...form, storeName: e.target.value })}
@@ -71,7 +73,9 @@ export function SettingsClient({
             />
           </div>
           <div>
-            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Contact Email</label>
+            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+              Contact Email
+            </label>
             <input
               value={form.contactEmail}
               onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
@@ -87,7 +91,9 @@ export function SettingsClient({
         </h2>
         <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Tax Rate (%)</label>
+            <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+              Tax Rate (%)
+            </label>
             <input
               type="number"
               value={form.taxRate}
@@ -100,8 +106,12 @@ export function SettingsClient({
 
       <div className="bg-charcoal rounded-sm border border-smoke p-6 space-y-6">
         <div className="flex items-center justify-between border-b border-smoke pb-3">
-          <h2 className="font-mono text-caption uppercase tracking-widest text-bone">Shipping Zones</h2>
-          <span className="text-caption font-mono text-ash italic">Database management only for now</span>
+          <h2 className="font-mono text-caption uppercase tracking-widest text-bone">
+            Shipping Zones
+          </h2>
+          <span className="text-caption font-mono text-ash italic">
+            Database management only for now
+          </span>
         </div>
         <div className="space-y-3">
           {shippingZones.map((z) => (

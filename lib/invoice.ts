@@ -15,14 +15,16 @@ export async function generateInvoicePdf(order: any): Promise<Buffer> {
       doc.fontSize(20).text('StarBy', 50, 45);
       doc.fontSize(10).text('INVOICE', 450, 45, { align: 'right' });
       doc.text(`Order ID: ${order.id}`, { align: 'right' });
-      doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-IN')}`, { align: 'right' });
+      doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-IN')}`, {
+        align: 'right',
+      });
 
       doc.moveDown(2);
 
       // Customer Info
       doc.fontSize(12).text('Billed To:');
       doc.fontSize(10);
-      
+
       const address = order.shippingAddress as any;
       if (address) {
         doc.text(`${address.firstName} ${address.lastName}`);
@@ -45,7 +47,7 @@ export async function generateInvoicePdf(order: any): Promise<Buffer> {
       doc.text('Qty', 350, y + 5);
       doc.text('Price', 400, y + 5);
       doc.text('Total', 480, y + 5);
-      
+
       y += 25;
       doc.font('Helvetica');
 
@@ -64,7 +66,10 @@ export async function generateInvoicePdf(order: any): Promise<Buffer> {
       // Summary
       doc.font('Helvetica-Bold');
       doc.text('Subtotal:', 350, y);
-      const subtotal = order.items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+      const subtotal = order.items.reduce(
+        (sum: number, item: any) => sum + item.price * item.quantity,
+        0,
+      );
       doc.text(`Rs. ${subtotal.toFixed(2)}`, 480, y);
 
       y += 20;

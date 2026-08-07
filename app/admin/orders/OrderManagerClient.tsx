@@ -46,7 +46,11 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
   const [isPending, startTransition] = useTransition();
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [trackingModalOrder, setTrackingModalOrder] = useState<string | null>(null);
-  const [trackingForm, setTrackingForm] = useState({ carrier: '', trackingNumber: '', trackingUrl: '' });
+  const [trackingForm, setTrackingForm] = useState({
+    carrier: '',
+    trackingNumber: '',
+    trackingUrl: '',
+  });
 
   const handleStatusChange = (orderId: string, newStatus: string) => {
     if (newStatus === 'shipped') {
@@ -59,7 +63,7 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
       setTrackingModalOrder(orderId);
       return;
     }
-    
+
     startTransition(async () => {
       await updateOrderStatus(orderId, newStatus);
     });
@@ -196,11 +200,20 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                               {(order.carrier || order.trackingNumber) && (
                                 <div className="mt-4 p-3 bg-graphite/50 border border-smoke/30 rounded-sm">
                                   <p className="text-bone font-medium mb-1">Tracking Info</p>
-                                  <p><strong>Carrier:</strong> {order.carrier}</p>
-                                  <p><strong>Tracking Number:</strong> {order.trackingNumber}</p>
+                                  <p>
+                                    <strong>Carrier:</strong> {order.carrier}
+                                  </p>
+                                  <p>
+                                    <strong>Tracking Number:</strong> {order.trackingNumber}
+                                  </p>
                                   {order.trackingUrl && (
                                     <p className="mt-2">
-                                      <a href={order.trackingUrl} target="_blank" rel="noreferrer" className="text-cobalt hover:underline">
+                                      <a
+                                        href={order.trackingUrl}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-cobalt hover:underline"
+                                      >
                                         Track Package
                                       </a>
                                     </p>
@@ -258,7 +271,9 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
             <h3 className="font-display text-body-lg text-bone mb-4">Add Tracking Details</h3>
             <div className="space-y-4">
               <div>
-                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Carrier Name</label>
+                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+                  Carrier Name
+                </label>
                 <input
                   type="text"
                   value={trackingForm.carrier}
@@ -268,21 +283,29 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                 />
               </div>
               <div>
-                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Tracking Number</label>
+                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+                  Tracking Number
+                </label>
                 <input
                   type="text"
                   value={trackingForm.trackingNumber}
-                  onChange={(e) => setTrackingForm({ ...trackingForm, trackingNumber: e.target.value })}
+                  onChange={(e) =>
+                    setTrackingForm({ ...trackingForm, trackingNumber: e.target.value })
+                  }
                   className="w-full text-sm font-mono bg-graphite border border-smoke text-bone rounded-sm px-3 py-2 focus:outline-none focus:border-cobalt"
                   placeholder="e.g. 123456789"
                 />
               </div>
               <div>
-                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Tracking URL</label>
+                <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+                  Tracking URL
+                </label>
                 <input
                   type="url"
                   value={trackingForm.trackingUrl}
-                  onChange={(e) => setTrackingForm({ ...trackingForm, trackingUrl: e.target.value })}
+                  onChange={(e) =>
+                    setTrackingForm({ ...trackingForm, trackingUrl: e.target.value })
+                  }
                   className="w-full text-sm font-mono bg-graphite border border-smoke text-bone rounded-sm px-3 py-2 focus:outline-none focus:border-cobalt"
                   placeholder="https://..."
                 />

@@ -8,9 +8,11 @@ import Image from 'next/image';
 
 // Map Supabase error messages to user-friendly text
 function getFriendlyError(msg: string): string {
-  if (msg.includes('Invalid login credentials')) return 'Incorrect email or password. Please try again.';
+  if (msg.includes('Invalid login credentials'))
+    return 'Incorrect email or password. Please try again.';
   if (msg.includes('Email not confirmed')) return 'Please verify your email before signing in.';
-  if (msg.includes('Too many requests')) return 'Too many attempts. Please wait a moment and try again.';
+  if (msg.includes('Too many requests'))
+    return 'Too many attempts. Please wait a moment and try again.';
   if (msg.includes('User not found')) return 'No account found with that email address.';
   return msg;
 }
@@ -30,14 +32,23 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   const validateEmail = (val: string) => {
-    if (!val) { setEmailError('Email is required'); return false; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { setEmailError('Please enter a valid email address'); return false; }
+    if (!val) {
+      setEmailError('Email is required');
+      return false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      setEmailError('Please enter a valid email address');
+      return false;
+    }
     setEmailError(null);
     return true;
   };
 
   const validatePassword = (val: string) => {
-    if (!val) { setPasswordError('Password is required'); return false; }
+    if (!val) {
+      setPasswordError('Password is required');
+      return false;
+    }
     setPasswordError(null);
     return true;
   };
@@ -132,8 +143,18 @@ export default function LoginPage() {
 
           {authError && (
             <div className="mb-8 p-4 bg-ember/10 border border-ember/40 rounded text-ember font-mono text-caption flex items-start gap-3">
-              <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <svg
+                className="w-5 h-5 shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
               </svg>
               {authError}
             </div>
@@ -142,7 +163,10 @@ export default function LoginPage() {
           <form onSubmit={handleLogin} className="flex flex-col gap-6" noValidate>
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block font-mono text-caption text-pearl uppercase tracking-widest mb-2">
+              <label
+                htmlFor="email"
+                className="block font-mono text-caption text-pearl uppercase tracking-widest mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -162,20 +186,38 @@ export default function LoginPage() {
                       : 'border-smoke/30 focus:border-cobalt focus:ring-cobalt'
                   }`}
                 />
-                <svg className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <svg
+                  className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
-              {emailError && <p className="mt-1.5 font-mono text-[11px] text-ember">{emailError}</p>}
+              {emailError && (
+                <p className="mt-1.5 font-mono text-[11px] text-ember">{emailError}</p>
+              )}
             </div>
 
             {/* Password */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label htmlFor="password" className="font-mono text-caption text-pearl uppercase tracking-widest">
+                <label
+                  htmlFor="password"
+                  className="font-mono text-caption text-pearl uppercase tracking-widest"
+                >
                   Password
                 </label>
-                <Link href="/forgot-password" className="font-mono text-[10px] text-pearl hover:text-bone underline transition-colors uppercase tracking-wider">
+                <Link
+                  href="/forgot-password"
+                  className="font-mono text-[10px] text-pearl hover:text-bone underline transition-colors uppercase tracking-wider"
+                >
                   Forgot?
                 </Link>
               </div>
@@ -197,8 +239,18 @@ export default function LoginPage() {
                   }`}
                 />
                 {/* Lock icon */}
-                <svg className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <svg
+                  className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-pearl"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
                 </svg>
                 {/* Show/hide toggle */}
                 <button
@@ -209,17 +261,34 @@ export default function LoginPage() {
                 >
                   {showPassword ? (
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                      />
                     </svg>
                   ) : (
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
                     </svg>
                   )}
                 </button>
               </div>
-              {passwordError && <p className="mt-1.5 font-mono text-[11px] text-ember">{passwordError}</p>}
+              {passwordError && (
+                <p className="mt-1.5 font-mono text-[11px] text-ember">{passwordError}</p>
+              )}
             </div>
 
             {/* Remember me */}
@@ -248,16 +317,37 @@ export default function LoginPage() {
                 {loading ? (
                   <>
                     <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                      />
                     </svg>
                     Signing In…
                   </>
                 ) : (
                   <>
                     Sign In
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    <svg
+                      className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
                     </svg>
                   </>
                 )}
@@ -268,7 +358,10 @@ export default function LoginPage() {
           <div className="mt-10 pt-8 border-t border-smoke/10 text-center">
             <p className="font-mono text-caption text-pearl">
               Don&apos;t have an account?{' '}
-              <Link href="/signup" className="text-cobalt hover:text-cobalt/80 font-bold transition-colors ml-1">
+              <Link
+                href="/signup"
+                className="text-cobalt hover:text-cobalt/80 font-bold transition-colors ml-1"
+              >
                 Create One
               </Link>
             </p>

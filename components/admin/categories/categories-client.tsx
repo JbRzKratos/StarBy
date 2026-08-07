@@ -96,7 +96,9 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
       </h2>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Name</label>
+          <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+            Name
+          </label>
           <input
             value={form.name}
             onChange={(e) =>
@@ -114,7 +116,9 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
           />
         </div>
         <div>
-          <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Slug</label>
+          <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+            Slug
+          </label>
           <input
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
@@ -125,7 +129,9 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         </div>
       </div>
       <div>
-        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Tagline</label>
+        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+          Tagline
+        </label>
         <input
           value={form.tagline}
           onChange={(e) => setForm({ ...form, tagline: e.target.value })}
@@ -134,7 +140,9 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         />
       </div>
       <div>
-        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Description</label>
+        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+          Description
+        </label>
         <textarea
           rows={2}
           value={form.description}
@@ -144,7 +152,9 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         />
       </div>
       <div>
-        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">Gradient CSS classes</label>
+        <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
+          Gradient CSS classes
+        </label>
         <input
           value={form.gradient}
           onChange={(e) => setForm({ ...form, gradient: e.target.value })}
@@ -177,7 +187,9 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-display-sm font-bold text-bone mb-2">Categories Manager</h1>
+          <h1 className="font-display text-display-sm font-bold text-bone mb-2">
+            Categories Manager
+          </h1>
           <p className="font-mono text-body-sm text-pearl">{categories.length} categories</p>
         </div>
         <button
@@ -228,9 +240,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
                     <p className="text-caption text-ash mt-1">{cat.slug}</p>
                   </td>
                   <td className="px-6 py-4 text-pearl">{cat.tagline}</td>
-                  <td className="px-6 py-4 text-center">
-                    {cat.productCount}
-                  </td>
+                  <td className="px-6 py-4 text-center">{cat.productCount}</td>
                   <td className="px-6 py-4">
                     <div className="flex gap-4">
                       <button

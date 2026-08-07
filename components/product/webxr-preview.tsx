@@ -167,8 +167,8 @@ function HitTestPlacer({
 
     if (isGrid && firstPanel) {
       // gridCol / gridRow are 0-indexed (from split-poster-visualizer)
-      const maxCol = Math.max(...panels.map((p) => (p.gridCol ?? 0))) + 1;
-      const maxRow = Math.max(...panels.map((p) => (p.gridRow ?? 0))) + 1;
+      const maxCol = Math.max(...panels.map((p) => p.gridCol ?? 0)) + 1;
+      const maxRow = Math.max(...panels.map((p) => p.gridRow ?? 0)) + 1;
 
       const pW = (parseInt(firstPanel.width) || 60) * CSS_TO_M;
       const pH = (parseInt(firstPanel.height) || 90) * CSS_TO_M;
@@ -177,8 +177,8 @@ function HitTestPlacer({
       const totalH = maxRow * pH + (maxRow - 1) * GAP;
 
       return panels.map((panel, idx) => {
-        const col = panel.gridCol ?? 0;  // 0-indexed
-        const row = panel.gridRow ?? 0;  // 0-indexed
+        const col = panel.gridCol ?? 0; // 0-indexed
+        const row = panel.gridRow ?? 0; // 0-indexed
         const x = -totalW / 2 + col * (pW + GAP) + pW / 2;
         const y = totalH / 2 - row * (pH + GAP) - pH / 2;
         return (
@@ -334,7 +334,9 @@ export function WebXRPreview({ panels, onClose }: WebXRPreviewProps) {
           {surfaceTimeout ? (
             <div className="bg-ember/20 border border-ember/50 rounded-xl px-5 py-4 text-center">
               <p className="font-mono text-sm text-ember font-bold mb-1">Surface not found</p>
-              <p className="font-mono text-[11px] text-pearl">Try a flat wall with more texture or better lighting.</p>
+              <p className="font-mono text-[11px] text-pearl">
+                Try a flat wall with more texture or better lighting.
+              </p>
             </div>
           ) : (
             <>

@@ -73,19 +73,22 @@ export function ImageGallery({ colorHex, productName, images }: ImageGalleryProp
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   }, []);
 
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
-    if (!isMouseDownRef.current) return;
-    const now = Date.now();
-    const dt = Math.max(1, now - lastTimeRef.current);
-    const dx = e.clientX - lastXRef.current;
-    // ~350px drag = 70° of rotation
-    const deltaDeg = (dx / 350) * 70;
-    velocityRef.current = deltaDeg / dt * 16; // normalize to ~60fps
-    applyRotation(rotationRef.current + deltaDeg);
-    lastXRef.current = e.clientX;
-    lastTimeRef.current = now;
-    setIsDragging(true);
-  }, [applyRotation]);
+  const onPointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      if (!isMouseDownRef.current) return;
+      const now = Date.now();
+      const dt = Math.max(1, now - lastTimeRef.current);
+      const dx = e.clientX - lastXRef.current;
+      // ~350px drag = 70° of rotation
+      const deltaDeg = (dx / 350) * 70;
+      velocityRef.current = (deltaDeg / dt) * 16; // normalize to ~60fps
+      applyRotation(rotationRef.current + deltaDeg);
+      lastXRef.current = e.clientX;
+      lastTimeRef.current = now;
+      setIsDragging(true);
+    },
+    [applyRotation],
+  );
 
   const onPointerUp = useCallback(() => {
     if (!isMouseDownRef.current) return;
@@ -98,7 +101,7 @@ export function ImageGallery({ colorHex, productName, images }: ImageGalleryProp
   // Auto-hint rotation on hover (one slow idle pass)
   const hintTween = useRef<gsap.core.Tween | null>(null);
   const onMouseEnter = useCallback(() => {
-    if (isMouseDownRef.current || (rafRef.current !== null)) return;
+    if (isMouseDownRef.current || rafRef.current !== null) return;
     if (!mainRef.current) return;
     hintTween.current = gsap.to(mainRef.current, {
       rotateY: 15,

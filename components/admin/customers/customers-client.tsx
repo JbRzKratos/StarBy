@@ -25,7 +25,9 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-display-sm font-bold text-bone mb-2">Customers</h1>
-          <p className="font-mono text-body-sm text-pearl">{customers.length} registered customers</p>
+          <p className="font-mono text-body-sm text-pearl">
+            {customers.length} registered customers
+          </p>
         </div>
       </div>
 
@@ -78,12 +80,8 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
                   <p className="font-medium text-bone">{c.name}</p>
                   <p className="text-caption text-ash mt-1">{c.email}</p>
                 </td>
-                <td className="px-6 py-4 text-center">
-                  {c.orderCount}
-                </td>
-                <td className="px-6 py-4 text-right">
-                  ₹{c.totalSpent.toLocaleString('en-IN')}
-                </td>
+                <td className="px-6 py-4 text-center">{c.orderCount}</td>
+                <td className="px-6 py-4 text-right">₹{c.totalSpent.toLocaleString('en-IN')}</td>
                 <td className="px-6 py-4 text-pearl">
                   {new Date(c.createdAt).toLocaleDateString('en-IN', {
                     day: 'numeric',

@@ -57,9 +57,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       url: productUrl,
       priceCurrency: 'INR',
       price: product.basePrice,
-      availability: isInStock
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
+      availability: isInStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
     },
     ...(aggregateRating && { aggregateRating }),
   };

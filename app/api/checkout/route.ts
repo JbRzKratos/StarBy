@@ -228,7 +228,7 @@ export async function POST(request: Request) {
           totalAmount,
         );
       }
-      
+
       // Notify admin
       await sendAdminNewOrderEmail(orderId, totalAmount);
     }

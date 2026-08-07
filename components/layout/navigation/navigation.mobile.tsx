@@ -321,9 +321,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
               </Link>
             )}
             <div className="flex items-center gap-2">
-              <span className="font-mono text-caption text-[#F5F1EA]/50 uppercase">
-                Currency:
-              </span>
+              <span className="font-mono text-caption text-[#F5F1EA]/50 uppercase">Currency:</span>
               <div className="flex gap-2">
                 {currencies.map((c) => (
                   <button
