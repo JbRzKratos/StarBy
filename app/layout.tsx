@@ -13,22 +13,23 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://starby.in';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'StarBy — Personalized Premium Streetwear & Wall Art',
-    template: '%s | StarBy',
+    default: 'Fregoro Studios — Engineered Streetwear & Design Objects',
+    template: '%s | Fregoro Studios',
   },
   description:
-    'Design what defines you. StarBy delivers premium customizable streetwear, wall art, split posters, device skins & more — crafted on demand, shipped across India.',
+    'Design what defines you. Fregoro Studios delivers premium customizable streetwear, wall art, split posters, device skins & more — crafted on demand, shipped across India.',
   keywords: [
+    'Fregoro Studios',
+    'Fregoro',
     'custom apparel',
     'personalized fashion',
     'premium streetwear',
-    'StarBy',
     'custom device skins',
     'split posters',
   ],
-  authors: [{ name: 'StarBy Team' }],
-  creator: 'StarBy',
-  publisher: 'StarBy',
+  authors: [{ name: 'Fregoro Studios' }],
+  creator: 'Fregoro Studios',
+  publisher: 'Fregoro Studios',
   robots: {
     index: true,
     follow: true,
@@ -44,16 +45,16 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: siteUrl,
-    siteName: 'StarBy',
-    title: 'StarBy — Personalized Premium',
+    siteName: 'Fregoro Studios',
+    title: 'Fregoro Studios — Engineered Streetwear & Design Objects',
     description:
-      'Design what defines you. StarBy is a premium customizable eCommerce brand where every product is uniquely yours.',
+      'Design what defines you. Fregoro Studios is a premium customizable eCommerce brand where every product is uniquely yours.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'StarBy — Personalized Premium',
+    title: 'Fregoro Studios — Engineered Streetwear & Design Objects',
     description:
-      'Design what defines you. StarBy is a premium customizable eCommerce brand where every product is uniquely yours.',
+      'Design what defines you. Fregoro Studios is a premium customizable eCommerce brand where every product is uniquely yours.',
   },
   alternates: {
     canonical: siteUrl,
@@ -70,11 +71,11 @@ export const viewport: Viewport = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'StarBy',
+  name: 'Fregoro Studios',
   url: siteUrl,
-  logo: `${siteUrl}/logo.png`,
+  logo: `${siteUrl}/images/fregoro-logo.png`,
   description:
-    'Design what defines you. StarBy is a premium customizable eCommerce brand where every product is uniquely yours.',
+    'Design what defines you. Fregoro Studios is a premium customizable eCommerce brand where every product is uniquely yours.',
   sameAs: [],
 };
 

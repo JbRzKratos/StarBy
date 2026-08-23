@@ -46,7 +46,8 @@ export default function ShippingPage() {
             Shipping & Delivery
           </h1>
           <p className="text-pearl text-body-lg max-w-2xl">
-            Every StarBy product is made on demand, packed with care, and shipped to your door.
+            Every Fregoro Studios product is made on demand, packed with care, and shipped to your
+            door.
           </p>
         </div>
 

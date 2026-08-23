@@ -290,7 +290,7 @@ export async function POST(request: Request) {
             return_url: `${getSiteUrl(request)}/payment/status?order_id=${cfOrderId}`,
             notify_url: `${getSiteUrl(request)}/api/webhooks/cashfree`,
           },
-          order_note: `StarBy Order ${publicOrderId}`,
+          order_note: `Fregoro Studios Order ${publicOrderId}`,
         });
 
         paymentGatewayOrderId = cfOrder.cf_order_id.toString();

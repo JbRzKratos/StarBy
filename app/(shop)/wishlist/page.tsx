@@ -3,7 +3,7 @@ import { getProductsFromDB } from '@/lib/services/db-service';
 import { WishlistClient } from '@/components/wishlist-client';
 
 export const metadata: Metadata = {
-  title: 'My Wishlist | StarBy',
+  title: 'My Wishlist | Fregoro Studios',
   description: 'View your saved products.',
 };
 

@@ -80,10 +80,12 @@ export default async function InvoicePage({ params }: { params: { id: string } }
             </p>
           </div>
           <div className="text-right">
-            <h2 className="text-2xl font-bold text-slate-950 mb-1 font-display">StarBy</h2>
-            <p className="text-xs text-slate-700 leading-relaxed">Premium Streetwear & Wall Art</p>
+            <h2 className="text-2xl font-bold text-slate-950 mb-1 font-display">Fregoro Studios</h2>
+            <p className="text-xs text-slate-700 leading-relaxed">
+              Engineered Streetwear & Design Objects
+            </p>
             <p className="text-xs text-slate-700 leading-relaxed">Bengaluru, Karnataka, India</p>
-            <p className="text-xs text-slate-700 leading-relaxed">support@starby.in</p>
+            <p className="text-xs text-slate-700 leading-relaxed">support@fregorostudios.com</p>
           </div>
         </div>
 
@@ -213,7 +215,7 @@ export default async function InvoicePage({ params }: { params: { id: string } }
 
         {/* Invoice Footer */}
         <div className="mt-12 text-center text-xs text-slate-600 border-t border-slate-200 pt-6">
-          <p className="font-medium text-slate-800">Thank you for shopping with StarBy!</p>
+          <p className="font-medium text-slate-800">Thank you for shopping with Fregoro Studios!</p>
           <p className="mt-1">
             This is a computer-generated invoice and does not require a physical signature.
           </p>

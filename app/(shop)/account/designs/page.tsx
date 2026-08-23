@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { SavedDesigns } from '@/components/account/saved-designs';
 
 export const metadata: Metadata = {
-  title: 'My Designs | StarBy',
+  title: 'My Designs | Fregoro Studios',
   description: 'View your saved custom designs.',
 };
 

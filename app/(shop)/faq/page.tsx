@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import { AccordionItem } from '@/components/ui/accordion';
 
 export const metadata: Metadata = {
-  title: 'FAQ',
-  description: 'Frequently asked questions about StarBy products, customization, and shipping.',
+  title: 'FAQ — Fregoro Studios',
+  description:
+    'Frequently asked questions about Fregoro Studios products, customization, and shipping.',
 };
 
 const faqs = [
@@ -50,7 +51,9 @@ export default function FaqPage() {
           <h1 className="font-display text-display-lg md:text-display-xl font-bold text-bone mb-4">
             Frequently Asked Questions
           </h1>
-          <p className="text-pearl text-body-lg">Everything you need to know about StarBy.</p>
+          <p className="text-pearl text-body-lg">
+            Everything you need to know about Fregoro Studios.
+          </p>
         </div>
 
         <div>

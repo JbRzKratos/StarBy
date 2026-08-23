@@ -1,15 +1,18 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { useDevice } from '@/lib/providers/device-provider';
+import { ShopDesktop } from './shop.desktop';
+import { ShopMobile } from './shop.mobile';
 import type { Product } from '@/data/products';
 
-const Desktop = dynamic(() => import('./shop.desktop').then((m) => m.ShopDesktop));
-const Mobile = dynamic(() => import('./shop.mobile').then((m) => m.ShopMobile));
-
 export function ShopClient({ category, products }: { category: string; products: Product[] }) {
-  const device = useDevice();
-
-  if (device === 'mobile') return <Mobile category={category} products={products} />;
-  return <Desktop category={category} products={products} />;
+  return (
+    <>
+      <div className="hidden md:block">
+        <ShopDesktop category={category} products={products} />
+      </div>
+      <div className="block md:hidden">
+        <ShopMobile category={category} products={products} />
+      </div>
+    </>
+  );
 }

@@ -16,21 +16,14 @@ export function HeroMobile() {
         <div className="w-10 h-[2px] bg-[#ED9518] mt-2.5" />
       </div>
 
-      {/* ── 2. Giant official StarBy wordmark & 3. Official Gold Star (Title Case StarBy✦) ── */}
+      {/* ── 2. Giant Official FREGORO Wordmark Behind Model ── */}
       <div className="relative my-auto py-6 flex items-center justify-center">
         <h1
-          className="font-display font-bold tracking-tighter text-[#0A0A0A] text-center select-none flex items-center justify-center whitespace-nowrap"
-          style={{ fontSize: 'clamp(3rem, 19vw, 7rem)' }}
+          className="font-display font-black tracking-tighter text-[#0A0A0A] text-center select-none flex items-center justify-center whitespace-nowrap uppercase"
+          style={{ fontSize: 'clamp(2.8rem, 17vw, 6.5rem)' }}
         >
-          <span className="inline-flex items-start whitespace-nowrap">
-            <span className="leading-none pt-0.5">StarBy</span>
-            <svg
-              className="w-[4vw] h-[4vw] min-w-[1.2rem] min-h-[1.2rem] text-[#ED9518] animate-pulse drop-shadow-[0_0_12px_rgba(237,149,24,0.6)] mt-[0.5vw] ml-[0.3vw]"
-              viewBox="0 0 100 100"
-              fill="currentColor"
-            >
-              <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
-            </svg>
+          <span className="inline-flex items-center whitespace-nowrap">
+            <span className="leading-none">FREGORO</span>
           </span>
         </h1>
       </div>
@@ -40,7 +33,7 @@ export function HeroMobile() {
         <div className="relative h-[60vh] w-[320px] max-w-full">
           <Image
             src="/images/hero-model-transparent.png"
-            alt="StarBy Editorial Streetwear Model"
+            alt="Fregoro Studios Editorial Streetwear Model"
             fill
             sizes="320px"
             priority

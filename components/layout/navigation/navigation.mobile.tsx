@@ -12,6 +12,7 @@ import { useCurrencyStore, type CurrencyCode } from '@/lib/stores/currency-store
 import { useSearchStore } from '@/lib/stores/search-store';
 
 import { OfferBannerMobile } from '@/components/home/offer-banner/offer-banner.mobile';
+import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const menuLinks = [
   { href: '/', label: 'Home' },
@@ -155,23 +156,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
           ref={navRef}
           className={`pointer-events-auto w-full px-5 py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
         >
-          <Link
-            href="/"
-            className={`font-display text-2xl font-bold tracking-tight flex items-center group transition-colors ${
-              textIsDark ? 'text-[#0A0A0A]' : 'text-[#F5F1EA]'
-            }`}
-          >
-            <span className="flex items-start">
-              <span className="leading-none">StarBy</span>
-              <svg
-                className="w-3.5 h-3.5 text-ember animate-pulse ml-[1px]"
-                viewBox="0 0 100 100"
-                fill="currentColor"
-              >
-                <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
-              </svg>
-            </span>
-          </Link>
+          <FregoroLogo textIsDark={textIsDark} size="sm" />
 
           <div className="flex items-center gap-2">
             <button

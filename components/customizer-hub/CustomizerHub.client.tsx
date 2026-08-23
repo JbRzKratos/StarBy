@@ -1,27 +1,17 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { useDevice } from '@/lib/providers/device-provider';
-
-const Desktop = dynamic(() =>
-  import('./CustomizerHub.desktop').then((m) => m.CustomizerPanelDesktop),
-);
-const Mobile = dynamic(() => import('./CustomizerHub.mobile').then((m) => m.CustomizerPanelMobile));
+import { CustomizerPanelDesktop } from './CustomizerHub.desktop';
+import { CustomizerPanelMobile } from './CustomizerHub.mobile';
 
 export function CustomizerHubClient() {
-  const device = useDevice();
-
-  if (device === 'mobile') {
-    return (
-      <div className="w-full px-5 pt-40 pb-24 min-h-screen flex flex-col">
-        <Mobile />
-      </div>
-    );
-  }
-
   return (
-    <div className="w-full max-w-7xl mx-auto px-8 pt-40 pb-24">
-      <Desktop />
-    </div>
+    <>
+      <div className="hidden md:block w-full max-w-7xl mx-auto px-8 pt-40 pb-24">
+        <CustomizerPanelDesktop />
+      </div>
+      <div className="block md:hidden w-full px-5 pt-40 pb-24 min-h-screen flex flex-col">
+        <CustomizerPanelMobile />
+      </div>
+    </>
   );
 }

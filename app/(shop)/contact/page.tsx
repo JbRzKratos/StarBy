@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { ContactForm } from '@/components/contact-form';
 
 export const metadata: Metadata = {
-  title: 'Contact',
-  description: 'Get in touch with StarBy. Questions, collaborations, or feedback.',
+  title: 'Contact — Fregoro Studios',
+  description: 'Get in touch with Fregoro Studios. Questions, collaborations, or feedback.',
 };
 
 export default function ContactPage() {

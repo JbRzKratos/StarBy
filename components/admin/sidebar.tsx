@@ -236,15 +236,15 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
         <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100 min-h-[60px]">
           {!collapsed && (
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-[#3B5EFF] rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold text-xs">SB</span>
+              <div className="w-7 h-7 bg-[#0A0A0A] rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold text-xs">FS</span>
               </div>
-              <span className="font-bold text-gray-900 text-sm tracking-tight">Admin</span>
+              <span className="font-bold text-gray-900 text-sm tracking-tight">Fregoro Admin</span>
             </div>
           )}
           {collapsed && (
-            <div className="w-7 h-7 bg-[#3B5EFF] rounded-lg flex items-center justify-center mx-auto">
-              <span className="text-white font-bold text-xs">SB</span>
+            <div className="w-7 h-7 bg-[#0A0A0A] rounded-lg flex items-center justify-center mx-auto">
+              <span className="text-white font-bold text-xs">FS</span>
             </div>
           )}
           {!collapsed && (

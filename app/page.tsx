@@ -19,7 +19,7 @@ export default function HomePage() {
       <WishlistDrawer />
       <SearchOverlay />
       <main>
-        <p className="sr-only">StarBy — Personalized Premium Streetwear &amp; Wall Art</p>
+        <p className="sr-only">Fregoro Studios — Engineered Streetwear &amp; Design Objects</p>
         <Hero />
         <TrustBadges />
         <FeaturedProducts />

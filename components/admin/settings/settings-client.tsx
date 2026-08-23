@@ -54,7 +54,9 @@ export function SettingsClient({
     <div className="space-y-8 max-w-4xl">
       <div>
         <h1 className="font-display text-display-sm font-bold text-bone mb-2">Store Settings</h1>
-        <p className="font-mono text-body-sm text-pearl">Global configurations for StarBy</p>
+        <p className="font-mono text-body-sm text-pearl">
+          Global configurations for Fregoro Studios
+        </p>
       </div>
 
       <div className="bg-charcoal rounded-sm border border-smoke p-6 space-y-6">

@@ -11,8 +11,8 @@ import { ValuesGrid } from '@/components/studio/values-grid';
 import { storyBlocks } from '@/data/studio';
 
 export const metadata: Metadata = {
-  title: 'Studio',
-  description: "The StarBy story. We don't sell products — we sell self-expression.",
+  title: 'Studio — Fregoro Studios',
+  description: "The Fregoro Studios story. We don't sell products — we sell self-expression.",
 };
 
 export default function StudioPage() {

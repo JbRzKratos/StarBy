@@ -49,8 +49,8 @@ export function StudioTeaser() {
             <span className="text-gradient">We Sell Self-Expression.</span>
           </h2>
           <p className="text-pearl text-body-lg max-w-lg mx-auto mb-10 leading-relaxed">
-            Go behind the scenes. Discover how every StarBy product is engineered to carry your
-            story — from concept to your doorstep.
+            Go behind the scenes. Discover how every Fregoro Studios product is engineered to carry
+            your story — from concept to your doorstep.
           </p>
           <Link
             href="/studio"

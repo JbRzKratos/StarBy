@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const product = getProductBySlug(params.slug);
   return {
     title: product?.name ?? 'Product',
-    description: product?.description ?? 'StarBy premium product.',
+    description: product?.description ?? 'Fregoro Studios premium product.',
   };
 }
 

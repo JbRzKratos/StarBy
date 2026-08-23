@@ -47,7 +47,7 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
       doc.on('error', (err) => reject(err));
 
       // Header
-      doc.fontSize(20).text('StarBy', 50, 45);
+      doc.fontSize(20).text('Fregoro Studios', 50, 45);
       doc.fontSize(10).text('INVOICE', 450, 45, { align: 'right' });
       doc.text(`Order ID: ${order.id}`, { align: 'right' });
       doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-IN')}`, {
@@ -140,7 +140,7 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
       // Footer
       doc.moveDown(4);
       doc.font('Helvetica').fontSize(10).text('Thank you for your business!', { align: 'center' });
-      doc.text('starby.in', { align: 'center' });
+      doc.text('fregorostudios.com', { align: 'center' });
 
       doc.end();
     } catch (error) {

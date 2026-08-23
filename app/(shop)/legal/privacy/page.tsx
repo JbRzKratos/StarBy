@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Privacy Policy',
-  description: 'StarBy Privacy Policy',
+  title: 'Privacy Policy — Fregoro Studios',
+  description: 'Fregoro Studios Privacy Policy',
 };
 
 export default function PrivacyPage() {

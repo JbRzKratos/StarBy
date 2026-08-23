@@ -27,7 +27,7 @@ export async function sendOrderConfirmationEmail(
   const safeOrderId = escapeHtml(orderId);
 
   try {
-    const fromAddress = process.env.EMAIL_FROM || 'StarBy Orders <orders@starby.in>';
+    const fromAddress = process.env.EMAIL_FROM || 'Fregoro Studios <orders@fregorostudios.com>';
     await resend.emails.send({
       from: fromAddress,
       to: [toEmail],
@@ -43,7 +43,7 @@ export async function sendOrderConfirmationEmail(
           </div>
           <p>You can track the status of your order on our website or by logging into your account.</p>
           <br />
-          <p>Best regards,<br/>The StarBy Team</p>
+          <p>Best regards,<br/>The Fregoro Studios Team</p>
         </div>
       `,
     });
@@ -72,8 +72,8 @@ export async function sendContactEmail(
 
   try {
     await resend.emails.send({
-      from: 'StarBy Contact <contact@starby.in>',
-      to: ['admin@starby.in'],
+      from: 'Fregoro Studios Contact <contact@fregorostudios.com>',
+      to: ['admin@fregorostudios.com'],
       replyTo: email,
       subject: `New Contact: ${safeSubject}`,
       html: `
@@ -106,17 +106,17 @@ export async function sendContactAutoReply(toEmail: string, name: string) {
 
   try {
     await resend.emails.send({
-      from: 'StarBy Support <support@starby.in>',
+      from: 'Fregoro Studios Support <support@fregorostudios.com>',
       to: [toEmail],
-      subject: 'We got your message — StarBy Support',
+      subject: 'We got your message — Fregoro Studios Support',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
           <h2 style="color: #000;">Hey ${safeName}, we received your message!</h2>
-          <p>Thanks for reaching out to StarBy. Our team will get back to you within 24–48 hours.</p>
-          <p>In the meantime, you can browse our collection or check your order status at <a href="https://starby.in" style="color: #0057FF;">starby.in</a>.</p>
+          <p>Thanks for reaching out to Fregoro Studios. Our team will get back to you within 24–48 hours.</p>
+          <p>In the meantime, you can browse our collection or check your order status at <a href="https://starby.in" style="color: #0057FF;">fregorostudios.com</a>.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
           <p style="color: #888; font-size: 13px;">If you didn't submit this form, you can ignore this email.</p>
-          <p>– The StarBy Team</p>
+          <p>– The Fregoro Studios Team</p>
         </div>
       `,
     });
@@ -131,8 +131,9 @@ export async function sendAdminNewOrderEmail(orderId: string, total: number) {
   if (!process.env.RESEND_API_KEY) return false;
 
   try {
-    const fromAddress = process.env.EMAIL_FROM || 'StarBy Orders <orders@starby.in>';
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@starby.in';
+    const fromAddress =
+      process.env.EMAIL_FROM || 'Fregoro Studios Orders <orders@fregorostudios.com>';
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@fregorostudios.com';
     await resend.emails.send({
       from: fromAddress,
       to: [adminEmail],
@@ -141,7 +142,7 @@ export async function sendAdminNewOrderEmail(orderId: string, total: number) {
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
           <h2 style="color: #000;">New Order Alert 🚨</h2>
           <p>You have received a new order <strong>${orderId}</strong> for ₹${total.toFixed(2)}.</p>
-          <p>Log in to the <a href="https://starby.in/admin/orders">Admin Panel</a> to process it.</p>
+          <p>Log in to the <a href="/admin/orders">Admin Panel</a> to process it.</p>
         </div>
       `,
     });
@@ -164,7 +165,8 @@ export async function sendOrderShippedEmail(
   const safeName = escapeHtml(customerName);
 
   try {
-    const fromAddress = process.env.EMAIL_FROM || 'StarBy Updates <updates@starby.in>';
+    const fromAddress =
+      process.env.EMAIL_FROM || 'Fregoro Studios Updates <updates@fregorostudios.com>';
     await resend.emails.send({
       from: fromAddress,
       to: [toEmail],
@@ -187,7 +189,7 @@ export async function sendOrderShippedEmail(
           }
           <p>Thank you for shopping with us!</p>
           <br />
-          <p>Best regards,<br/>The StarBy Team</p>
+          <p>Best regards,<br/>The Fregoro Studios Team</p>
         </div>
       `,
     });
@@ -207,7 +209,8 @@ export async function sendOrderDeliveredEmail(
   const safeName = escapeHtml(customerName);
 
   try {
-    const fromAddress = process.env.EMAIL_FROM || 'StarBy Updates <updates@starby.in>';
+    const fromAddress =
+      process.env.EMAIL_FROM || 'Fregoro Studios Updates <updates@fregorostudios.com>';
     await resend.emails.send({
       from: fromAddress,
       to: [toEmail],
@@ -218,7 +221,7 @@ export async function sendOrderDeliveredEmail(
           <p>Your order <strong>${orderId}</strong> has been marked as delivered.</p>
           <p>We hope you love your purchase! If you have any questions or concerns, please contact our support team.</p>
           <br />
-          <p>Best regards,<br/>The StarBy Team</p>
+          <p>Best regards,<br/>The Fregoro Studios Team</p>
         </div>
       `,
     });

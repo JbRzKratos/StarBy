@@ -9,13 +9,13 @@ export const storyBlocks: StoryBlock[] = [
   {
     id: 'origin',
     heading: 'Born from a Blank Canvas',
-    body: "StarBy started with a simple belief: every object you own should tell your story. Not a brand's story. Yours. We build the tools; you create the meaning.",
+    body: "Fregoro Studios started with a simple belief: every object you own should tell your story. Not a brand's story. Yours. We build the tools; you create the meaning.",
     accent: "We don't sell products. We sell self-expression.",
   },
   {
     id: 'craft',
     heading: 'Engineered, Not Printed',
-    body: 'Every StarBy product undergoes a multi-step quality process. From 280gsm heavyweight cotton to giclée fine-art printing, we treat every piece like it belongs in a gallery.',
+    body: 'Every Fregoro Studios product undergoes a multi-step quality process. From 280gsm heavyweight cotton to giclée fine-art printing, we treat every piece like it belongs in a gallery.',
     accent: "Premium is not a price point. It's a standard.",
   },
   {

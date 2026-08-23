@@ -113,8 +113,8 @@ function LoginContent() {
         </div>
         <div className="relative z-10 p-16 max-w-lg">
           <Link href="/" className="inline-block mb-12">
-            <span className="font-display text-4xl font-bold tracking-tight text-bone hover:text-cobalt transition-colors">
-              StarBy
+            <span className="font-display text-3xl font-black tracking-tight text-bone uppercase hover:text-cobalt transition-colors">
+              Fregoro Studios
             </span>
           </Link>
           <h2 className="font-display text-5xl text-bone uppercase tracking-tighter leading-[1.1] mb-6">

@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Return Policy',
-  description: 'StarBy Return Policy',
+  title: 'Return Policy — Fregoro Studios',
+  description: 'Fregoro Studios Return Policy',
 };
 
 export default function ReturnsPage() {

@@ -1,18 +1,17 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { useDevice } from '@/lib/providers/device-provider';
-
-const Desktop = dynamic(() =>
-  import('./split-poster-visualizer.desktop').then((m) => m.SplitPosterVisualizerDesktop),
-);
-const Mobile = dynamic(() =>
-  import('./split-poster-visualizer.mobile').then((m) => m.SplitPosterVisualizerMobile),
-);
+import { SplitPosterVisualizerDesktop } from './split-poster-visualizer.desktop';
+import { SplitPosterVisualizerMobile } from './split-poster-visualizer.mobile';
 
 export function SplitPosterVisualizerClient() {
-  const device = useDevice();
-
-  if (device === 'mobile') return <Mobile />;
-  return <Desktop />;
+  return (
+    <>
+      <div className="hidden md:block">
+        <SplitPosterVisualizerDesktop />
+      </div>
+      <div className="block md:hidden">
+        <SplitPosterVisualizerMobile />
+      </div>
+    </>
+  );
 }

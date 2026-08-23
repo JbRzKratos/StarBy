@@ -1,14 +1,17 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { useDevice } from '@/lib/providers/device-provider';
-
-const Desktop = dynamic(() => import('./hero.desktop').then((m) => m.HeroDesktop));
-const Mobile = dynamic(() => import('./hero.mobile').then((m) => m.HeroMobile));
+import { HeroDesktop } from './hero.desktop';
+import { HeroMobile } from './hero.mobile';
 
 export function HeroClient() {
-  const device = useDevice();
-
-  if (device === 'mobile') return <Mobile />;
-  return <Desktop />;
+  return (
+    <>
+      <div className="hidden md:block">
+        <HeroDesktop />
+      </div>
+      <div className="block md:hidden">
+        <HeroMobile />
+      </div>
+    </>
+  );
 }

@@ -24,8 +24,8 @@ export default async function AdminSettingsPage() {
             }
           : {
               id: 'new',
-              storeName: 'StarBy',
-              contactEmail: 'contact@starby.in',
+              storeName: 'Fregoro Studios',
+              contactEmail: 'contact@fregorostudios.com',
               taxRate: 18,
             }
       }

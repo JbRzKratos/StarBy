@@ -49,8 +49,8 @@ export function StoryHero() {
           ref={subRef}
           className="text-pearl text-body-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
         >
-          StarBy is a design studio that happens to sell products. Every item is a blank canvas
-          waiting for your story.
+          Fregoro Studios is a design studio that happens to sell products. Every item is a blank
+          canvas waiting for your story.
         </p>
       </div>
 

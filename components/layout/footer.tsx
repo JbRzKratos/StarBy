@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const footerLinks = {
   shop: [
@@ -36,7 +37,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 md:gap-8">
           {/* Brand & Newsletter */}
           <div className="lg:col-span-5 pr-0 lg:pr-12">
-            <h2 className="font-display text-display-md font-bold text-bone mb-4">StarBy</h2>
+            <div className="mb-4">
+              <FregoroLogo size="lg" />
+            </div>
             <p className="text-pearl text-body-sm max-w-sm leading-relaxed mb-8">
               Your story, engineered into design objects. Premium customizable products for people
               who refuse to be generic.
@@ -160,7 +163,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 pt-8 border-t border-smoke flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-mono text-caption text-ash">
-            © {new Date().getFullYear()} StarBy. All rights reserved.
+            © {new Date().getFullYear()} Fregoro Studios. All rights reserved.
           </p>
           <div className="flex gap-4">
             <p className="font-mono text-caption text-ash">

@@ -1,11 +1,8 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { useDevice } from '@/lib/providers/device-provider';
+import { StoryBlockDesktop } from './story-block.desktop';
+import { StoryBlockMobile } from './story-block.mobile';
 import type { StoryBlock as StoryBlockType } from '@/data/studio';
-
-const Desktop = dynamic(() => import('./story-block.desktop').then((m) => m.StoryBlockDesktop));
-const Mobile = dynamic(() => import('./story-block.mobile').then((m) => m.StoryBlockMobile));
 
 interface StoryBlockProps {
   block: StoryBlockType;
@@ -13,8 +10,14 @@ interface StoryBlockProps {
 }
 
 export function StoryBlockClient({ block, index }: StoryBlockProps) {
-  const device = useDevice();
-
-  if (device === 'mobile') return <Mobile block={block} index={index} />;
-  return <Desktop block={block} index={index} />;
+  return (
+    <>
+      <div className="hidden md:block">
+        <StoryBlockDesktop block={block} index={index} />
+      </div>
+      <div className="block md:hidden">
+        <StoryBlockMobile block={block} index={index} />
+      </div>
+    </>
+  );
 }

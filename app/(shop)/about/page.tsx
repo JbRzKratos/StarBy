@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'About Us',
-  description: 'Learn about StarBy and our vision for customized apparel.',
+  title: 'About Us — Fregoro Studios',
+  description: 'Learn about Fregoro Studios and our vision for customized apparel.',
 };
 
 export default function AboutPage() {
@@ -12,7 +12,7 @@ export default function AboutPage() {
         </h1>
         <div className="font-mono text-body-md text-pearl space-y-6">
           <p>
-            StarBy was born from a simple belief: you shouldn't have to fit into a brand's
+            Fregoro Studios was born from a simple belief: you shouldn't have to fit into a brand's
             narrative. The brand should fit into yours.
           </p>
           <p>

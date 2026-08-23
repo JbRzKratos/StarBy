@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Terms of Service',
-  description: 'StarBy Terms of Service',
+  title: 'Terms of Service — Fregoro Studios',
+  description: 'Fregoro Studios Terms of Service',
 };
 
 export default function TermsPage() {
@@ -12,8 +12,9 @@ export default function TermsPage() {
           <section>
             <h2 className="text-bone uppercase tracking-widest mb-4">1. Introduction</h2>
             <p className="leading-relaxed">
-              Welcome to StarBy. By accessing our website, you agree to these terms of service.
-              These terms apply to all visitors, users, and others who access or use the Service.
+              Welcome to Fregoro Studios. By accessing our website, you agree to these terms of
+              service. These terms apply to all visitors, users, and others who access or use the
+              Service.
             </p>
           </section>
 

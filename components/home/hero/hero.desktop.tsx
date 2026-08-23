@@ -16,22 +16,15 @@ export function HeroDesktop() {
         <div className="w-14 h-[2.5px] bg-[#ED9518] mt-3" />
       </div>
 
-      {/* ── 2. Giant Official StarBy Wordmark & Star (Title Case StarBy✦ on one unbroken line) ── */}
+      {/* ── 2. Giant Official FREGORO Wordmark Behind Model ── */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
         <div className="relative w-full text-center px-2 flex items-center justify-center">
           <h1
-            className="font-display font-bold tracking-tighter text-[#0A0A0A] leading-none select-none flex items-center justify-center whitespace-nowrap"
-            style={{ fontSize: 'clamp(3.5rem, 16vw, 22rem)' }}
+            className="font-display font-black tracking-tighter text-[#0A0A0A] leading-none select-none flex items-center justify-center whitespace-nowrap uppercase"
+            style={{ fontSize: 'clamp(3.5rem, 15vw, 21rem)' }}
           >
-            <span className="inline-flex items-start whitespace-nowrap">
-              <span className="leading-none pt-1">StarBy</span>
-              <svg
-                className="w-[3.5vw] h-[3.5vw] min-w-[1.4rem] min-h-[1.4rem] text-[#ED9518] animate-pulse drop-shadow-[0_0_15px_rgba(237,149,24,0.5)] mt-[0.5vw] ml-[0.3vw]"
-                viewBox="0 0 100 100"
-                fill="currentColor"
-              >
-                <path d="M50 0 C50 35, 65 50, 100 50 C65 50, 50 65, 50 100 C50 65, 35 50, 0 50 C35 50, 50 35, 50 0 Z" />
-              </svg>
+            <span className="inline-flex items-center whitespace-nowrap">
+              <span className="leading-none">FREGORO</span>
             </span>
           </h1>
         </div>
@@ -42,7 +35,7 @@ export function HeroDesktop() {
         <div className="relative h-[78vh] lg:h-[82vh] w-[450px] lg:w-[600px] max-w-full">
           <Image
             src="/images/hero-model-transparent.png"
-            alt="StarBy Editorial Streetwear Model"
+            alt="Fregoro Studios Editorial Streetwear Model"
             fill
             sizes="(max-width: 1024px) 450px, 600px"
             priority

@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const cat = getCategoryBySlug(params.category);
   return {
     title: cat?.name ?? 'Products',
-    description: cat?.description ?? 'Browse StarBy products.',
+    description: cat?.description ?? 'Browse Fregoro Studios products.',
   };
 }
 
