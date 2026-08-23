@@ -43,38 +43,38 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
   const isCancelled =
     order.status.toLowerCase() === 'cancelled' || order.status.toLowerCase() === 'failed';
 
-  const visualSteps = [
-    'Order Created',
-    'Confirmed',
-    'Processing & Crafting',
-    'Shipped',
-    'Delivered',
-  ];
+  const visualSteps = ['Order Placed', 'Confirmed', 'Crafting & QC', 'Dispatched', 'Delivered'];
 
   const orderRef = order.publicOrderId || order.id;
 
   return (
-    <main className="min-h-screen bg-charcoal text-bone pt-36 pb-24">
-      <div className="section-container max-w-4xl mx-auto px-4">
-        <div className="mb-8">
+    <main className="min-h-screen bg-[#0A0A0A] text-[#F5F1EA] pt-36 md:pt-44 pb-24">
+      <div className="section-container max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="mb-8 flex items-center justify-between">
           <Link
             href="/account/orders"
-            className="text-cobalt hover:underline text-caption font-mono uppercase tracking-widest"
+            className="text-[#F5F1EA]/70 hover:text-[#ED9518] text-xs font-mono uppercase tracking-widest transition-colors"
           >
             ← Back to All Orders
           </Link>
+          <Link
+            href={`/account/orders/${order.id}/invoice`}
+            className="text-[#0057FF] hover:underline text-xs font-mono uppercase tracking-widest font-bold"
+          >
+            View Tax Invoice ↗
+          </Link>
         </div>
 
-        <div className="bg-graphite border border-smoke/40 rounded-xl p-6 sm:p-10">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-smoke/20 pb-6 mb-8">
+        <div className="bg-[#121214] border border-[#F5F1EA]/10 rounded-2xl p-6 sm:p-10 shadow-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#F5F1EA]/10 pb-6 mb-8">
             <div>
-              <span className="font-mono text-caption text-cobalt uppercase tracking-widest block mb-1">
-                Fulfillment Status
+              <span className="font-mono text-xs text-[#ED9518] uppercase tracking-[0.25em] font-bold block mb-1">
+                Fulfillment Status · Fregoro Studios
               </span>
-              <h1 className="font-display text-3xl font-bold uppercase tracking-tight">
-                Track Order: {orderRef}
+              <h1 className="font-display text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#F5F1EA]">
+                Tracking: {orderRef}
               </h1>
-              <p className="font-mono text-body-sm text-pearl mt-1">
+              <p className="font-mono text-xs text-[#F5F1EA]/60 mt-1">
                 Placed on{' '}
                 {new Date(order.createdAt).toLocaleDateString('en-IN', {
                   year: 'numeric',
@@ -83,21 +83,23 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
                 })}
               </p>
             </div>
-            <div className="text-right sm:text-right">
-              <span className="font-mono text-caption text-ash uppercase block">Status</span>
-              <span className="font-mono text-caption font-bold text-cobalt bg-cobalt/10 px-3 py-1 rounded inline-block mt-1 uppercase">
-                {order.status.replace('_', ' ')}
+            <div className="text-left sm:text-right">
+              <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase tracking-widest block">
+                Current State
+              </span>
+              <span className="font-mono text-xs font-bold text-[#0057FF] bg-[#0057FF]/10 border border-[#0057FF]/30 px-3 py-1 rounded inline-block mt-1 uppercase">
+                {order.status.replace(/_/g, ' ')}
               </span>
             </div>
           </div>
 
           {isCancelled ? (
-            <div className="bg-rose-500/10 border border-rose-500/30 rounded-lg p-6 text-center">
-              <h3 className="text-rose-400 font-display text-xl font-bold uppercase mb-2">
+            <div className="bg-rose-500/10 border border-rose-500/30 rounded-xl p-8 text-center space-y-2">
+              <h2 className="text-rose-400 font-display text-xl font-bold uppercase">
                 Order Cancelled
-              </h3>
-              <p className="text-pearl font-mono text-body-sm">
-                This order was cancelled or payment was not completed.
+              </h2>
+              <p className="text-[#F5F1EA]/70 font-mono text-xs">
+                This order was cancelled or payment could not be processed.
               </p>
             </div>
           ) : (
@@ -114,11 +116,11 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
                     >
                       <div
                         className={`
-                        flex items-center justify-center w-9 h-9 rounded-full z-10 shrink-0 font-mono text-caption
+                        flex items-center justify-center w-10 h-10 rounded-full z-10 shrink-0 font-mono text-xs font-bold
                         ${
                           isActive
-                            ? 'bg-cobalt text-bone shadow-lg shadow-cobalt/30 border-2 border-cobalt'
-                            : 'bg-charcoal text-ash border-2 border-smoke'
+                            ? 'bg-[#0057FF] text-[#F5F1EA] shadow-lg shadow-[#0057FF]/30 border-2 border-[#0057FF]'
+                            : 'bg-[#1A1A1E] text-[#F5F1EA]/40 border-2 border-[#F5F1EA]/10'
                         }
                       `}
                       >
@@ -142,16 +144,16 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
                       </div>
 
                       <div className="ml-4 sm:ml-0 sm:mt-3 sm:text-center">
-                        <h4
-                          className={`font-mono text-caption uppercase tracking-wider font-bold ${
-                            isActive ? 'text-bone' : 'text-ash'
+                        <h3
+                          className={`font-mono text-xs uppercase tracking-wider font-bold ${
+                            isActive ? 'text-[#F5F1EA]' : 'text-[#F5F1EA]/40'
                           }`}
                         >
                           {step}
-                        </h4>
+                        </h3>
                         {isCurrent && (
-                          <p className="font-mono text-[10px] text-cobalt mt-0.5 uppercase tracking-widest font-semibold">
-                            Current
+                          <p className="font-mono text-[10px] text-[#ED9518] mt-0.5 uppercase tracking-widest font-bold">
+                            Active Stage
                           </p>
                         )}
                       </div>
@@ -161,9 +163,9 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
               </div>
 
               {/* Progress track for desktop */}
-              <div className="hidden sm:block absolute top-10 left-10 right-10 h-0.5 bg-smoke/40 -z-0"></div>
+              <div className="hidden sm:block absolute top-11 left-10 right-10 h-0.5 bg-[#F5F1EA]/10 -z-0"></div>
               <div
-                className="hidden sm:block absolute top-10 left-10 h-0.5 bg-cobalt -z-0 transition-all duration-500"
+                className="hidden sm:block absolute top-11 left-10 h-0.5 bg-[#0057FF] -z-0 transition-all duration-500"
                 style={{ width: `${Math.min(100, Math.max(0, (currentIndex / 4) * 85))}%` }}
               ></div>
             </div>
@@ -171,25 +173,23 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
 
           {/* Tracking Details Card */}
           {order.carrier || order.trackingNumber ? (
-            <div className="mt-8 bg-charcoal/80 border border-smoke/30 rounded-xl p-6">
-              <h3 className="font-display text-lg font-bold uppercase text-bone mb-4">
-                Courier & Tracking Details
+            <div className="mt-8 bg-[#1A1A1E] border border-[#F5F1EA]/10 rounded-xl p-6">
+              <h3 className="font-display text-lg font-bold uppercase text-[#F5F1EA] mb-4">
+                Courier & Logistics Details
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
                 <div>
-                  <p className="text-caption text-ash uppercase tracking-wider mb-1">
-                    Courier Partner
-                  </p>
-                  <p className="text-body-sm font-bold text-bone">
-                    {order.carrier || 'Standard Shipping'}
+                  <p className="text-[#F5F1EA]/50 uppercase tracking-wider mb-1">Courier Partner</p>
+                  <p className="font-bold text-[#F5F1EA] text-sm">
+                    {order.carrier || 'Express Courier'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-caption text-ash uppercase tracking-wider mb-1">
-                    Waybill / Tracking No.
+                  <p className="text-[#F5F1EA]/50 uppercase tracking-wider mb-1">
+                    AWB / Waybill Tracking No.
                   </p>
-                  <p className="text-body-sm font-bold text-cobalt">
-                    {order.trackingNumber || 'N/A'}
+                  <p className="font-bold text-[#0057FF] text-sm tracking-wider">
+                    {order.trackingNumber || 'Pending AWB Generation'}
                   </p>
                 </div>
               </div>
@@ -200,35 +200,35 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
                     href={order.trackingUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center px-6 py-3 bg-cobalt hover:bg-cobalt/90 text-bone font-mono text-caption uppercase tracking-widest rounded transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3.5 bg-[#0057FF] hover:bg-[#0046CC] text-[#F5F1EA] font-mono text-xs font-bold uppercase tracking-[0.2em] rounded-lg transition-colors shadow-lg shadow-[#0057FF]/20"
                   >
-                    Track on Courier Website ↗
+                    Track on Courier Portal ↗
                   </a>
                 </div>
               )}
             </div>
           ) : (
-            <div className="mt-8 bg-charcoal/40 border border-dashed border-smoke/30 rounded-lg p-6 text-center font-mono text-caption text-ash">
-              Your order is being prepared. Tracking details will be updated here as soon as the
-              courier scans your package.
+            <div className="mt-8 bg-[#1A1A1E]/50 border border-dashed border-[#F5F1EA]/10 rounded-xl p-6 text-center font-mono text-xs text-[#F5F1EA]/50">
+              Your customized order is currently in production. Real-time carrier tracking will
+              appear here once the parcel is handed to our shipping partner.
             </div>
           )}
 
-          {/* Activity Log / Status History */}
+          {/* Activity Log */}
           {order.statusHistory && order.statusHistory.length > 0 && (
-            <div className="mt-10 border-t border-smoke/20 pt-6">
-              <h3 className="font-display text-lg font-bold uppercase text-bone mb-4">
-                Activity Timeline
+            <div className="mt-10 border-t border-[#F5F1EA]/10 pt-6">
+              <h3 className="font-display text-lg font-bold uppercase text-[#F5F1EA] mb-4">
+                Milestone Activity Log
               </h3>
-              <div className="space-y-3 font-mono text-caption">
+              <div className="space-y-3 font-mono text-xs">
                 {order.statusHistory.map((item) => (
-                  <div key={item.id} className="flex items-start gap-3 text-pearl">
-                    <span className="text-cobalt font-bold">•</span>
+                  <div key={item.id} className="flex items-start gap-3 text-[#F5F1EA]/70">
+                    <span className="text-[#ED9518] font-bold">•</span>
                     <div className="flex-1">
-                      <p className="text-bone font-medium">
+                      <p className="text-[#F5F1EA] font-medium">
                         {item.note || `Status updated to ${item.newStatus}`}
                       </p>
-                      <span className="text-ash text-[10px]">
+                      <span className="text-[#F5F1EA]/40 text-[10px]">
                         {new Date(item.createdAt).toLocaleString('en-IN')}
                       </span>
                     </div>

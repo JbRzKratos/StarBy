@@ -296,12 +296,10 @@ export async function POST(request: Request) {
         paymentGatewayOrderId = cfOrder.cf_order_id.toString();
         paymentSessionId = cfOrder.payment_session_id;
       } catch (err) {
-        console.error(
-          'Cashfree order creation failed:',
-          err instanceof Error ? err.message : String(err),
-        );
+        const rawErrMsg = err instanceof Error ? err.message : String(err);
+        console.error('Cashfree order creation failed:', rawErrMsg);
 
-        let errorMsg = 'Payment gateway error. Please try again or contact support.';
+        let errorMsg = rawErrMsg || 'Payment gateway error. Please try again or contact support.';
         if (err instanceof Error && err.message) {
           try {
             const jsonStart = err.message.indexOf('{');

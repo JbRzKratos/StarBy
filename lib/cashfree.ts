@@ -12,13 +12,24 @@
 const CASHFREE_API_VERSION = '2025-01-01';
 
 function getCashfreeConfig() {
-  const appId = process.env.CASHFREE_APP_ID;
-  const secretKey = process.env.CASHFREE_SECRET_KEY;
-  const environment = process.env.CASHFREE_ENVIRONMENT || 'sandbox';
+  const appId = process.env.CASHFREE_APP_ID?.trim();
+  const secretKey = process.env.CASHFREE_SECRET_KEY?.trim();
+  const rawEnv = process.env.CASHFREE_ENVIRONMENT?.trim().toLowerCase();
 
   if (!appId || !secretKey) {
-    throw new Error('Cashfree credentials not configured (CASHFREE_APP_ID, CASHFREE_SECRET_KEY)');
+    throw new Error(
+      'Cashfree credentials missing in environment variables. Please configure CASHFREE_APP_ID and CASHFREE_SECRET_KEY in your Vercel Project Settings.',
+    );
   }
+
+  // If credentials start with TEST, force sandbox regardless of typos in CASHFREE_ENVIRONMENT
+  const isTestKey = appId.startsWith('TEST');
+  const environment: 'sandbox' | 'production' =
+    isTestKey || rawEnv === 'sandbox'
+      ? 'sandbox'
+      : rawEnv === 'production'
+        ? 'production'
+        : 'sandbox';
 
   const baseUrl =
     environment === 'production'

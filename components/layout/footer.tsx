@@ -32,25 +32,25 @@ export function Footer() {
   const [newsletterLoading, setNewsletterLoading] = useState(false);
 
   return (
-    <footer className="border-t border-smoke bg-graphite">
-      <div className="section-container py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 md:gap-8">
+    <footer className="border-t border-[#F5F1EA]/10 bg-[#0E0E10] text-[#F5F1EA]">
+      <div className="section-container max-w-7xl mx-auto px-6 sm:px-8 py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Brand & Newsletter */}
           <div className="lg:col-span-5 pr-0 lg:pr-12">
-            <div className="mb-4">
+            <div className="mb-5">
               <FregoroLogo size="lg" />
             </div>
-            <p className="text-pearl text-body-sm max-w-sm leading-relaxed mb-8">
-              Your story, engineered into design objects. Premium customizable products for people
-              who refuse to be generic.
+            <p className="text-[#F5F1EA]/70 font-mono text-xs sm:text-sm max-w-sm leading-relaxed mb-8">
+              Your story, engineered into design objects. Premium customizable streetwear and
+              lifestyle essentials for people who refuse to be generic.
             </p>
 
             <div className="mt-8">
-              <h3 className="font-mono text-caption text-bone uppercase tracking-widest mb-4">
+              <h3 className="font-mono text-xs text-[#ED9518] font-bold uppercase tracking-[0.2em] mb-3">
                 Join the Collective
               </h3>
               <form
-                className="flex flex-col sm:flex-row gap-3"
+                className="flex flex-col sm:flex-row gap-3 max-w-md"
                 onSubmit={async (e) => {
                   e.preventDefault();
                   const form = e.target as HTMLFormElement;
@@ -86,20 +86,20 @@ export function Footer() {
                   placeholder="Enter your email"
                   aria-label="Email address for newsletter"
                   required
-                  className="flex-1 bg-charcoal border border-smoke px-4 py-3 text-bone font-mono text-body-sm rounded-lg focus:outline-none focus:border-cobalt transition-colors"
+                  className="flex-1 bg-[#1A1A1E] border border-[#F5F1EA]/15 px-4 py-3 text-[#F5F1EA] font-mono text-xs rounded-lg focus:outline-none focus:border-[#0057FF] transition-colors"
                 />
                 <button
                   type="submit"
                   disabled={newsletterLoading}
-                  className="bg-cobalt text-bone px-6 py-3 font-mono text-caption uppercase tracking-widest rounded-lg hover:bg-cobalt/80 transition-colors shadow-md disabled:opacity-60"
+                  className="bg-[#0057FF] text-[#F5F1EA] px-6 py-3 font-mono text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-[#0046CC] transition-colors shadow-md disabled:opacity-60"
                 >
                   {newsletterLoading ? '...' : 'Subscribe'}
                 </button>
               </form>
               {newsletterMsg && (
                 <p
-                  className={`mt-3 font-mono text-caption ${
-                    newsletterMsg.ok ? 'text-emerald-400' : 'text-ember'
+                  className={`mt-3 font-mono text-xs ${
+                    newsletterMsg.ok ? 'text-emerald-400' : 'text-rose-400'
                   }`}
                 >
                   {newsletterMsg.text}
@@ -110,13 +110,15 @@ export function Footer() {
 
           {/* Shop links */}
           <div className="lg:col-span-2">
-            <h3 className="overline-label mb-4">Shop</h3>
-            <ul className="flex flex-col gap-3">
+            <h3 className="font-mono text-xs text-[#ED9518] uppercase tracking-[0.2em] font-bold mb-4">
+              Shop
+            </h3>
+            <ul className="flex flex-col gap-3 font-mono text-xs">
               {footerLinks.shop.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-pearl text-body-sm hover:text-cobalt transition-colors"
+                    className="text-[#F5F1EA]/70 hover:text-[#0057FF] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -127,13 +129,15 @@ export function Footer() {
 
           {/* Company links */}
           <div className="lg:col-span-2">
-            <h3 className="overline-label mb-4">Company</h3>
-            <ul className="flex flex-col gap-3">
+            <h3 className="font-mono text-xs text-[#ED9518] uppercase tracking-[0.2em] font-bold mb-4">
+              Company
+            </h3>
+            <ul className="flex flex-col gap-3 font-mono text-xs">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-pearl text-body-sm hover:text-cobalt transition-colors"
+                    className="text-[#F5F1EA]/70 hover:text-[#0057FF] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -144,13 +148,15 @@ export function Footer() {
 
           {/* Legal links */}
           <div className="lg:col-span-3">
-            <h3 className="overline-label mb-4">Legal</h3>
-            <ul className="flex flex-col gap-3">
+            <h3 className="font-mono text-xs text-[#ED9518] uppercase tracking-[0.2em] font-bold mb-4">
+              Legal
+            </h3>
+            <ul className="flex flex-col gap-3 font-mono text-xs">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-pearl text-body-sm hover:text-cobalt transition-colors"
+                    className="text-[#F5F1EA]/70 hover:text-[#0057FF] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -161,15 +167,9 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-16 pt-8 border-t border-smoke flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-mono text-caption text-ash">
-            © {new Date().getFullYear()} Fregoro Studios. All rights reserved.
-          </p>
-          <div className="flex gap-4">
-            <p className="font-mono text-caption text-ash">
-              Designed with intention. Made on demand.
-            </p>
-          </div>
+        <div className="mt-16 pt-8 border-t border-[#F5F1EA]/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#F5F1EA]/50">
+          <p>© {new Date().getFullYear()} Fregoro Studios. All rights reserved.</p>
+          <p>Designed with intention. Made on demand.</p>
         </div>
       </div>
     </footer>

@@ -57,25 +57,33 @@ export default async function AccountOrdersPage() {
   }
 
   return (
-    <main className="min-h-screen bg-charcoal text-bone pt-36 pb-24">
-      <div className="section-container">
+    <main className="min-h-screen bg-[#0A0A0A] text-[#F5F1EA] pt-36 md:pt-44 pb-24">
+      <div className="section-container max-w-5xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-6">
           <Link
             href="/account"
-            className="font-mono text-caption text-pearl hover:text-bone transition-colors"
+            className="font-mono text-xs text-[#F5F1EA]/70 hover:text-[#ED9518] uppercase tracking-widest transition-colors"
           >
             ← Account Dashboard
           </Link>
         </div>
 
-        <div className="mb-12 pb-6 border-b border-smoke/20">
-          <span className="font-mono text-caption text-cobalt uppercase tracking-widest block mb-2">
-            History
-          </span>
-          <h1 className="font-display text-4xl md:text-5xl uppercase tracking-tighter">
-            Your Orders
-          </h1>
+        <div className="mb-10 pb-6 border-b border-[#F5F1EA]/10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <span className="font-mono text-xs text-[#ED9518] uppercase tracking-[0.25em] font-bold block mb-2">
+              Purchase History · Fregoro Studios
+            </span>
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#F5F1EA]">
+              Your Orders ({orders.length})
+            </h1>
+          </div>
+          <Link
+            href="/products/all"
+            className="font-mono text-xs uppercase tracking-widest text-[#0057FF] hover:underline font-bold"
+          >
+            Browse Products →
+          </Link>
         </div>
 
         {/* Orders List */}
@@ -88,25 +96,29 @@ export default async function AccountOrdersPage() {
                     month: 'short',
                     year: 'numeric',
                   })
-                : 'TBD';
+                : 'Pending';
 
               const orderNumber = order.publicOrderId || order.id;
 
               return (
                 <div
                   key={order.id}
-                  className="bg-graphite border border-smoke/40 p-6 md:p-8 rounded-lg flex flex-col gap-6"
+                  className="bg-[#121214] border border-[#F5F1EA]/10 p-6 sm:p-8 rounded-2xl flex flex-col gap-6 shadow-xl"
                 >
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 pb-6 border-b border-smoke/20">
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 pb-6 border-b border-[#F5F1EA]/10">
                     <div>
-                      <span className="font-mono text-caption text-ash uppercase">Order ID</span>
-                      <p className="font-mono text-body-sm text-bone font-bold mt-1 tracking-wider">
+                      <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase tracking-wider block">
+                        Order ID
+                      </span>
+                      <p className="font-mono text-sm text-[#F5F1EA] font-bold mt-1 tracking-wider">
                         {orderNumber}
                       </p>
                     </div>
                     <div>
-                      <span className="font-mono text-caption text-ash uppercase">Date</span>
-                      <p className="font-mono text-body-sm text-bone mt-1">
+                      <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase tracking-wider block">
+                        Date Placed
+                      </span>
+                      <p className="font-mono text-sm text-[#F5F1EA] mt-1">
                         {new Date(order.createdAt).toLocaleDateString('en-IN', {
                           day: 'numeric',
                           month: 'short',
@@ -115,26 +127,30 @@ export default async function AccountOrdersPage() {
                       </p>
                     </div>
                     <div>
-                      <span className="font-mono text-caption text-ash uppercase">
+                      <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase tracking-wider block">
                         Est. Delivery
                       </span>
-                      <p className="font-mono text-body-sm text-emerald-400 mt-1">{estDate}</p>
-                    </div>
-                    <div>
-                      <span className="font-mono text-caption text-ash uppercase">Status</span>
-                      <p className="font-mono text-caption text-cobalt uppercase font-bold mt-1 bg-cobalt/10 inline-block px-2 py-1 rounded">
-                        {order.status.replace('_', ' ')}
+                      <p className="font-mono text-sm text-emerald-400 font-semibold mt-1">
+                        {estDate}
                       </p>
                     </div>
                     <div>
-                      <span className="font-mono text-caption text-ash uppercase">
+                      <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase tracking-wider block">
+                        Status
+                      </span>
+                      <p className="font-mono text-xs text-[#0057FF] uppercase font-bold mt-1 bg-[#0057FF]/10 border border-[#0057FF]/30 inline-block px-2.5 py-1 rounded">
+                        {order.status.replace(/_/g, ' ')}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase tracking-wider block">
                         Total Amount
                       </span>
-                      <p className="font-display text-xl text-bone mt-1">
+                      <p className="font-display text-xl font-bold text-[#ED9518] mt-1">
                         {formatINR(order.total)}
                       </p>
                       {order.discount ? (
-                        <p className="font-mono text-caption text-emerald-400">
+                        <p className="font-mono text-[10px] text-emerald-400">
                           (Saved {formatINR(order.discount)})
                         </p>
                       ) : null}
@@ -154,24 +170,24 @@ export default async function AccountOrdersPage() {
                       return (
                         <div
                           key={item.id}
-                          className="flex flex-col sm:flex-row sm:items-center justify-between font-mono text-body-sm text-pearl border-b border-smoke/10 pb-2 last:border-none"
+                          className="flex flex-col sm:flex-row sm:items-center justify-between font-mono text-xs text-[#F5F1EA]/80 border-b border-[#F5F1EA]/5 pb-3 last:border-none"
                         >
                           <div>
-                            <span className="text-bone font-medium">
+                            <span className="text-[#F5F1EA] font-semibold">
                               {displayName}
                               {displayVariant && displayVariant !== 'default'
                                 ? ` — ${displayVariant}`
                                 : ''}
                               {item.size ? ` (${item.size})` : ''}
                             </span>
-                            <span className="text-ash ml-2">× {item.quantity}</span>
+                            <span className="text-[#F5F1EA]/50 ml-2">× {item.quantity}</span>
                             {item.orderCustomization?.designFileName && (
-                              <span className="block text-caption text-cobalt mt-0.5">
-                                Custom Artwork: {item.orderCustomization.designFileName}
+                              <span className="block text-[11px] text-[#0057FF] mt-0.5 font-bold">
+                                Customized Artwork: {item.orderCustomization.designFileName}
                               </span>
                             )}
                           </div>
-                          <span className="text-bone font-bold mt-1 sm:mt-0">
+                          <span className="text-[#F5F1EA] font-bold mt-1 sm:mt-0">
                             {formatINR(itemPrice * item.quantity)}
                           </span>
                         </div>
@@ -179,49 +195,50 @@ export default async function AccountOrdersPage() {
                     })}
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-smoke/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="mt-2 pt-4 border-t border-[#F5F1EA]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     {order.trackingNumber ? (
-                      <div className="flex-1 bg-graphite/50 p-3 border border-smoke/20 rounded">
-                        <span className="font-mono text-[10px] text-ash uppercase tracking-widest block mb-1">
+                      <div className="flex-1 bg-[#1A1A1E] p-3.5 border border-[#F5F1EA]/10 rounded-lg">
+                        <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase tracking-widest block mb-1">
                           Tracking Information
                         </span>
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                          <p className="font-mono text-body-sm text-bone">
+                          <p className="font-mono text-xs text-[#F5F1EA]">
                             {order.carrier} —{' '}
-                            <span className="font-bold text-cobalt">{order.trackingNumber}</span>
+                            <span className="font-bold text-[#0057FF]">{order.trackingNumber}</span>
                           </p>
                           {order.trackingUrl && (
                             <a
                               href={order.trackingUrl}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-[#3B5EFF] text-xs hover:underline uppercase tracking-wider font-mono font-bold"
+                              className="text-[#0057FF] text-xs hover:underline uppercase tracking-wider font-mono font-bold"
                             >
-                              Track Package ↗
+                              Track Live ↗
                             </a>
                           )}
                         </div>
                       </div>
                     ) : (
                       <div className="flex-1">
-                        <span className="font-mono text-caption text-ash italic">
-                          Fulfillment in progress. Tracking info will appear here once dispatched.
+                        <span className="font-mono text-xs text-[#F5F1EA]/50 italic">
+                          Order received. Tracking details will update once dispatched by Fregoro
+                          Studios.
                         </span>
                       </div>
                     )}
                     <div className="flex flex-col sm:flex-row gap-2 self-start sm:self-center">
                       <Link
                         href={`/account/orders/${order.id}/track`}
-                        className="bg-charcoal border border-smoke text-bone hover:bg-smoke/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest rounded transition-colors whitespace-nowrap text-center"
+                        className="bg-[#1A1A1E] border border-[#F5F1EA]/10 text-[#F5F1EA] hover:bg-[#222228] px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider rounded-lg transition-colors whitespace-nowrap text-center"
                       >
-                        Track Timeline
+                        Track Status
                       </Link>
                       <Link
                         href={`/account/orders/${order.id}/invoice`}
                         target="_blank"
-                        className="bg-bone text-charcoal hover:bg-pearl px-4 py-2 font-mono text-[10px] uppercase tracking-widest rounded transition-colors whitespace-nowrap text-center"
+                        className="bg-[#0057FF] hover:bg-[#0046CC] text-[#F5F1EA] px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider rounded-lg transition-colors whitespace-nowrap text-center"
                       >
-                        View Invoice
+                        View Tax Invoice
                       </Link>
                     </div>
                   </div>
@@ -230,14 +247,17 @@ export default async function AccountOrdersPage() {
             })}
           </div>
         ) : (
-          <div className="py-24 text-center border border-dashed border-smoke/30 rounded-lg p-12">
-            <h3 className="font-display text-3xl text-bone mb-3">No orders found yet</h3>
-            <p className="font-mono text-caption text-pearl mb-8">
-              When you place an order, it will appear right here with live status updates.
+          <div className="py-24 text-center border border-dashed border-[#F5F1EA]/10 rounded-2xl p-12 bg-[#121214] max-w-xl mx-auto space-y-4">
+            <h2 className="font-display text-2xl font-bold uppercase text-[#F5F1EA]">
+              No Orders Found Yet
+            </h2>
+            <p className="font-mono text-xs text-[#F5F1EA]/60 leading-relaxed">
+              When you place an order, it will appear here with live tracking, custom artwork files,
+              and printable tax invoices.
             </p>
             <Link
               href="/products/all"
-              className="inline-block bg-cobalt hover:bg-cobalt/90 text-bone font-mono text-caption uppercase tracking-widest px-8 py-4 rounded transition-all hover:scale-105"
+              className="inline-block bg-[#ED9518] text-[#0A0A0A] hover:bg-[#F5F1EA] font-mono text-xs font-bold uppercase tracking-[0.2em] px-8 py-4 rounded-lg transition-all"
             >
               Explore Catalog →
             </Link>

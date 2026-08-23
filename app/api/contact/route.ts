@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 
     const { name, email, subject, message } = result.data;
 
-    // Send message to StarBy inbox
+    // Send message to Fregoro Studios inbox
     const sent = await sendContactEmail(name, email, subject, message);
 
     if (!sent) {
