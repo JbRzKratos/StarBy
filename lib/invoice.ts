@@ -3,23 +3,30 @@ import PDFDocument from 'pdfkit';
 interface InvoiceItem {
   productId: string;
   quantity: number;
-  price: number;
+  price?: number | null;
+  unitPrice?: number;
+  totalPrice?: number;
+  productNameSnapshot?: string | null;
   product?: { name?: string };
 }
 
 interface InvoiceAddress {
-  firstName: string;
-  lastName: string;
-  addressLine1: string;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+  addressLine1?: string;
   addressLine2?: string;
-  city: string;
-  state: string;
-  pincode: string;
-  phone: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  pincode?: string;
+  phone?: string;
 }
 
 interface InvoiceOrder {
   id: string;
+  publicOrderId?: string | null;
   createdAt: string | Date;
   shippingAddress?: unknown;
   user?: { fullName?: string | null; email?: string | null } | null;
@@ -54,12 +61,21 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
       doc.fontSize(10);
 
       const address = order.shippingAddress as InvoiceAddress | null | undefined;
-      if (address && typeof address === 'object' && 'firstName' in address) {
-        doc.text(`${address.firstName} ${address.lastName}`);
-        doc.text(address.addressLine1);
+      if (address && typeof address === 'object') {
+        const name =
+          address.name ||
+          `${address.firstName || ''} ${address.lastName || ''}`.trim() ||
+          order.user?.fullName ||
+          'Customer';
+        doc.text(name);
+        const street = address.street || address.addressLine1 || '';
+        if (street) doc.text(street);
         if (address.addressLine2) doc.text(address.addressLine2);
-        doc.text(`${address.city}, ${address.state} ${address.pincode}`);
-        doc.text(`Phone: ${address.phone}`);
+        const cityLine = [address.city, address.state, address.zip || address.pincode]
+          .filter(Boolean)
+          .join(', ');
+        if (cityLine) doc.text(cityLine);
+        if (address.phone) doc.text(`Phone: ${address.phone}`);
       } else {
         doc.text(order.user?.fullName || 'Customer');
         if (order.user?.email) doc.text(order.user.email);
@@ -81,10 +97,16 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
 
       // Table Rows
       order.items.forEach((item: InvoiceItem) => {
-        doc.text(item.product?.name || `Product ID: ${item.productId}`, 60, y);
+        const itemPrice =
+          item.unitPrice ?? item.price ?? (item.totalPrice ? item.totalPrice / item.quantity : 0);
+        doc.text(
+          item.productNameSnapshot || item.product?.name || `Product ID: ${item.productId}`,
+          60,
+          y,
+        );
         doc.text(item.quantity.toString(), 350, y);
-        doc.text(`Rs. ${item.price.toFixed(2)}`, 400, y);
-        doc.text(`Rs. ${(item.price * item.quantity).toFixed(2)}`, 480, y);
+        doc.text(`Rs. ${itemPrice.toFixed(2)}`, 400, y);
+        doc.text(`Rs. ${(itemPrice * item.quantity).toFixed(2)}`, 480, y);
         y += 20;
       });
 
@@ -95,7 +117,12 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
       doc.font('Helvetica-Bold');
       doc.text('Subtotal:', 350, y);
       const subtotal = order.items.reduce(
-        (sum: number, item: InvoiceItem) => sum + item.price * item.quantity,
+        (sum: number, item: InvoiceItem) =>
+          sum +
+          (item.unitPrice ??
+            item.price ??
+            (item.totalPrice ? item.totalPrice / item.quantity : 0)) *
+            item.quantity,
         0,
       );
       doc.text(`Rs. ${subtotal.toFixed(2)}`, 480, y);

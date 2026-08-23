@@ -28,7 +28,12 @@ export default async function InvoicePage({ params }: { params: { id: string } }
   }
 
   const address = (order.shippingAddress as Record<string, string | undefined>) || {};
-  const subtotal = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal =
+    order.subtotal ||
+    order.items.reduce(
+      (acc, item) => acc + (item.unitPrice ?? item.totalPrice / item.quantity) * item.quantity,
+      0,
+    );
 
   return (
     <div
@@ -41,10 +46,10 @@ export default async function InvoicePage({ params }: { params: { id: string } }
       {/* Top Controls Bar (Hidden during printing) */}
       <div className="max-w-4xl mx-auto mb-6 print:hidden flex justify-between items-center bg-white border border-slate-200 p-4 rounded-lg shadow-sm">
         <Link
-          href={`/account/orders/${order.id}`}
+          href={`/account/orders`}
           className="text-slate-700 hover:text-black font-medium text-sm flex items-center gap-2 transition-colors"
         >
-          &larr; Back to Order
+          &larr; Back to Orders
         </Link>
         <PrintInvoiceButton />
       </div>
@@ -58,7 +63,10 @@ export default async function InvoicePage({ params }: { params: { id: string } }
               TAX INVOICE
             </h1>
             <p className="text-sm font-semibold text-slate-700">
-              Order ID: <span className="font-mono text-slate-900">{order.id}</span>
+              Invoice / Order Ref:{' '}
+              <span className="font-mono text-slate-900 font-bold">
+                {order.publicOrderId || order.id}
+              </span>
             </p>
             <p className="text-sm text-slate-700">
               Date:{' '}
@@ -70,9 +78,9 @@ export default async function InvoicePage({ params }: { params: { id: string } }
             </p>
           </div>
           <div className="text-right">
-            <h2 className="text-2xl font-bold text-slate-950 mb-1">StarBy</h2>
-            <p className="text-xs text-slate-700 leading-relaxed">123 Commerce Avenue</p>
-            <p className="text-xs text-slate-700 leading-relaxed">Bangalore, Karnataka 560001</p>
+            <h2 className="text-2xl font-bold text-slate-950 mb-1 font-display">StarBy</h2>
+            <p className="text-xs text-slate-700 leading-relaxed">Premium Streetwear & Wall Art</p>
+            <p className="text-xs text-slate-700 leading-relaxed">Bengaluru, Karnataka, India</p>
             <p className="text-xs text-slate-700 leading-relaxed">support@starby.in</p>
           </div>
         </div>
@@ -84,7 +92,9 @@ export default async function InvoicePage({ params }: { params: { id: string } }
               Billed To / Shipped To:
             </h3>
             <p className="font-semibold text-slate-900 text-base">
-              {address.firstName || ''} {address.lastName || ''}
+              {address.name ||
+                `${address.firstName || ''} ${address.lastName || ''}`.trim() ||
+                'Customer'}
             </p>
             {address.street && <p className="text-sm text-slate-700 mt-1">{address.street}</p>}
             {(address.city || address.state || address.zip) && (
@@ -101,25 +111,33 @@ export default async function InvoicePage({ params }: { params: { id: string } }
 
           <div className="sm:text-right">
             <h3 className="font-bold text-slate-950 text-xs uppercase tracking-wider mb-3">
-              Payment Details:
+              Payment & Fulfillment:
             </h3>
             <p className="text-sm text-slate-700">
               Payment Method:{' '}
               <span className="font-semibold text-slate-900 capitalize">
-                {order.paymentStatus === 'paid' ? 'Prepaid (Razorpay)' : 'Cash on Delivery'}
+                {order.paymentProvider === 'cod'
+                  ? 'Cash on Delivery (COD)'
+                  : `Online Payment (${order.paymentProvider || 'Cashfree'})`}
               </span>
             </p>
-            {order.razorpayPaymentId && (
+            <p className="text-sm text-slate-700 mt-1">
+              Payment Status:{' '}
+              <span className="font-semibold text-slate-900 uppercase">{order.paymentStatus}</span>
+            </p>
+            {order.paymentGatewayPaymentId && (
               <p className="text-sm text-slate-700 mt-1">
-                Transaction ID:{' '}
+                Transaction Ref:{' '}
                 <span className="font-mono font-medium text-slate-900 text-xs">
-                  {order.razorpayPaymentId}
+                  {order.paymentGatewayPaymentId}
                 </span>
               </p>
             )}
             <p className="text-sm text-slate-700 mt-1">
               Order Status:{' '}
-              <span className="font-semibold text-slate-900 capitalize">{order.status}</span>
+              <span className="font-semibold text-slate-900 uppercase">
+                {order.status.replace('_', ' ')}
+              </span>
             </p>
           </div>
         </div>
@@ -136,23 +154,31 @@ export default async function InvoicePage({ params }: { params: { id: string } }
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 text-sm">
-              {order.items.map((item) => (
-                <tr key={item.id}>
-                  <td className="py-4 px-1">
-                    <p className="font-semibold text-slate-900">Product #{item.productId}</p>
-                    {item.size && (
-                      <p className="text-xs text-slate-600 mt-0.5">Size: {item.size}</p>
-                    )}
-                  </td>
-                  <td className="py-4 px-1 text-center text-slate-800 font-medium">
-                    {item.quantity}
-                  </td>
-                  <td className="py-4 px-1 text-right text-slate-800">₹{item.price.toFixed(2)}</td>
-                  <td className="py-4 px-1 text-right font-semibold text-slate-900">
-                    ₹{(item.price * item.quantity).toFixed(2)}
-                  </td>
-                </tr>
-              ))}
+              {order.items.map((item) => {
+                const itemPrice = item.unitPrice ?? item.totalPrice / item.quantity;
+                return (
+                  <tr key={item.id}>
+                    <td className="py-4 px-1">
+                      <p className="font-semibold text-slate-900">
+                        {item.productNameSnapshot || `Product #${item.productId}`}
+                      </p>
+                      <p className="text-xs text-slate-600 mt-0.5">
+                        Variant: {item.variantId}
+                        {item.size && ` · Size: ${item.size}`}
+                      </p>
+                    </td>
+                    <td className="py-4 px-1 text-center text-slate-800 font-medium">
+                      {item.quantity}
+                    </td>
+                    <td className="py-4 px-1 text-right text-slate-800 font-mono">
+                      ₹{itemPrice.toFixed(2)}
+                    </td>
+                    <td className="py-4 px-1 text-right font-semibold text-slate-900 font-mono">
+                      ₹{(itemPrice * item.quantity).toFixed(2)}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -162,21 +188,23 @@ export default async function InvoicePage({ params }: { params: { id: string } }
           <div className="w-full sm:w-72 space-y-2 text-sm">
             <div className="flex justify-between text-slate-700">
               <span>Subtotal</span>
-              <span className="font-medium text-slate-900">₹{subtotal.toFixed(2)}</span>
+              <span className="font-medium text-slate-900 font-mono">₹{subtotal.toFixed(2)}</span>
             </div>
             {order.discount && order.discount > 0 ? (
               <div className="flex justify-between text-red-600">
                 <span>Discount {order.couponCode ? `(${order.couponCode})` : ''}</span>
-                <span className="font-medium">-₹{order.discount.toFixed(2)}</span>
+                <span className="font-medium font-mono">-₹{order.discount.toFixed(2)}</span>
               </div>
             ) : null}
             <div className="flex justify-between text-slate-700">
               <span>Shipping</span>
-              <span className="font-medium text-emerald-700">Free</span>
+              <span className="font-medium text-emerald-700">
+                {order.shippingFee > 0 ? `₹${order.shippingFee.toFixed(2)}` : 'Free'}
+              </span>
             </div>
             <div className="flex justify-between pt-3 border-t-2 border-slate-900 font-bold text-lg text-slate-950">
-              <span>Total</span>
-              <span>₹{order.total.toFixed(2)}</span>
+              <span>Total Amount</span>
+              <span className="font-mono">₹{order.total.toFixed(2)}</span>
             </div>
           </div>
         </div>

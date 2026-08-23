@@ -82,7 +82,8 @@ export const useCustomizerStore = create<CustomizerState>()(
       setSplitGrid: (cols, rows) => set(() => ({ splitGridCols: cols, splitGridRows: rows })),
       setPrintStyle: (style) => set(() => ({ printStyle: style })),
 
-      clearUploadedImage: () => set(() => ({ uploadedImage: null, composites: {}, customText: '' })),
+      clearUploadedImage: () =>
+        set(() => ({ uploadedImage: null, composites: {}, customText: '' })),
 
       setCustomText: (text) => set(() => ({ customText: text })),
       setCustomTextFont: (font) => set(() => ({ customTextFont: font })),
@@ -128,6 +129,6 @@ export const useCustomizerStore = create<CustomizerState>()(
         customTextColor: state.customTextColor,
         mugLayout: state.mugLayout,
       }),
-    }
-  )
+    },
+  ),
 );

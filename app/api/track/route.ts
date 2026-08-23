@@ -12,46 +12,40 @@ export async function POST(request: Request) {
       );
     }
 
-    const order = await prisma.order.findUnique({
-      where: { id: orderId },
-      include: { user: true },
+    // Search by internal ID or public Order ID (STB-YYYY-XXXXX)
+    const order = await prisma.order.findFirst({
+      where: {
+        OR: [{ id: orderId }, { publicOrderId: orderId }],
+      },
+      include: {
+        user: true,
+        items: true,
+      },
     });
 
     if (!order) {
       return NextResponse.json({ success: false, message: 'Order not found' }, { status: 404 });
     }
 
-    // Verify email matches either registered user email or shipping address email
-    // Since shippingAddress is a JSON object, we need to handle it safely
-    let isValidEmail = false;
+    // Verify email against user or shippingAddress email
+    const shipping = (order.shippingAddress as Record<string, string>) || {};
+    const inputEmail = email.trim().toLowerCase();
+    const userEmail = order.user?.email?.toLowerCase();
+    const shippingEmail = shipping.email?.toLowerCase();
 
-    if (order.user?.email && order.user.email.toLowerCase() === email.toLowerCase()) {
-      isValidEmail = true;
-    } else {
-      // Depending on the Address schema, check if there's an email in shipping,
-      // or if they just want tracking by ID + logged in email.
-      // Usually, guest checkouts might not have user.email but shipping might have it, or we just trust the ID.
-      // But let's check user email or we bypass email for now if it's a guest and shipping has no email.
-      if (!order.userId) {
-        // Guest order
-        // Since our checkout schema doesn't collect email explicitly in address if not logged in,
-        // wait, does it? AddressSchema doesn't have email. So guest users might not be trackable by email?
-        // Let's assume the email is just a layer of validation, we'll return the order anyway for demo,
-        // or we validate against shippingAddress.name loosely.
-        // Let's just allow it for now if they have the right order ID.
-        isValidEmail = true;
-      }
-    }
+    const matches =
+      (userEmail && userEmail === inputEmail) || (shippingEmail && shippingEmail === inputEmail);
 
-    if (!isValidEmail && order.userId) {
+    if (!matches && (userEmail || shippingEmail)) {
       return NextResponse.json(
-        { success: false, message: 'Unauthorized: Email does not match' },
+        { success: false, message: 'Email address does not match order record' },
         { status: 403 },
       );
     }
 
     return NextResponse.json({
       success: true,
+      orderId: order.publicOrderId || order.id,
       status: order.status,
       estimatedDeliveryDate: order.estimatedDeliveryDate,
       total: order.total,
@@ -59,6 +53,7 @@ export async function POST(request: Request) {
       carrier: order.carrier || null,
       trackingNumber: order.trackingNumber || null,
       trackingUrl: order.trackingUrl || null,
+      itemsCount: order.items.length,
     });
   } catch (error) {
     console.error('Tracking API error:', error);

@@ -86,6 +86,7 @@ model User {
   id        String             @id
   email     String             @unique
   fullName  String?
+  phone     String?
   role      Role               @default(CUSTOMER)
   notes     String?            // staff-only CRM notes
   createdAt DateTime           @default(now())
@@ -95,6 +96,7 @@ model User {
   designs   CustomizerDesign[]
   reviews   Review[]
   wishlistItems WishlistItem[]
+  files     StoredFile[]
 }
 
 model Address {
@@ -102,6 +104,7 @@ model Address {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   name      String
+  phone     String?
   street    String
   city      String
   state     String
@@ -109,42 +112,100 @@ model Address {
   country   String   @default("India")
   isDefault Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Order {
-  id                    String      @id @default(cuid())
-  userId                String?
-  user                  User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
-  total                 Float
-  status                String      @default("processing")
-  paymentStatus         String      @default("paid")
-  shippingAddress       Json
-  razorpayOrderId       String?
-  razorpayPaymentId     String?
-  razorpaySignature     String?
-  couponCode            String?
-  discount              Float?      @default(0)
-  estimatedDeliveryDate DateTime?
-  shippingMethod        String?     @default("standard")
-  trackingNumber        String?
-  trackingUrl           String?
-  carrier               String?
-  internalNotes         String?     // staff-only, never shown to customer
-  createdAt             DateTime    @default(now())
-  updatedAt             DateTime    @updatedAt
-  items                 OrderItem[]
+  id                      String              @id @default(cuid())
+  publicOrderId           String?             @unique  // e.g. STB-2026-00001
+  userId                  String?
+  user                    User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  subtotal                Float               @default(0)
+  discount                Float?              @default(0)
+  shippingFee             Float               @default(0)
+  tax                     Float               @default(0)
+  total                   Float
+  currency                String              @default("INR")
+  status                  String              @default("pending_payment")
+  paymentStatus           String              @default("pending")
+  paymentProvider         String?             // 'cashfree' | 'razorpay' | 'cod'
+  paymentGatewayOrderId   String?             // Cashfree cf_order_id or Razorpay order_id
+  paymentGatewayPaymentId String?             // Cashfree cf_payment_id or Razorpay payment_id
+  shippingAddress         Json                // immutable snapshot
+  couponCode              String?
+  estimatedDeliveryDate   DateTime?
+  shippingMethod          String?             @default("standard")
+  trackingNumber          String?
+  trackingUrl             String?
+  carrier                 String?
+  internalNotes           String?             // staff-only, never shown to customer
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  items                   OrderItem[]
+  statusHistory           OrderStatusHistory[]
+  files                   StoredFile[]
 }
 
 model OrderItem {
-  id            String  @id @default(cuid())
-  orderId       String
-  order         Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId     String
-  variantId     String
-  quantity      Int
-  price         Float
-  size          String?
-  customization Json?
+  id                  String              @id @default(cuid())
+  orderId             String
+  order               Order               @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId           String
+  variantId           String
+  productNameSnapshot String?             // frozen product name at time of order
+  skuSnapshot         String?             // frozen SKU at time of order
+  quantity            Int
+  price               Float?              @default(0) // legacy price field
+  unitPrice           Float               @default(0) // price per unit at time of order
+  totalPrice          Float               @default(0) // unitPrice * quantity
+  size                String?
+  customization       Json?               // legacy canvas customization data
+  orderCustomization  OrderCustomization? // production-grade customization
+  createdAt           DateTime            @default(now())
+}
+
+// ─── Production-grade customization for order items with file uploads ───
+model OrderCustomization {
+  id                String   @id @default(cuid())
+  orderItemId       String   @unique
+  orderItem         OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  designFileUrl     String?  // R2 signed URL (temporary) or relative key
+  designFileKey     String?  // R2 object key for retrieval
+  designFileName    String?  // original filename
+  designFileType    String?  // MIME type e.g. image/png
+  designFileSize    Int?     // bytes
+  printPosition     String?  // e.g. 'front', 'back', 'full-wrap'
+  printInstructions String?  // e.g. 'Centered chest print'
+  customerNotes     String?
+  previewFileUrl    String?  // preview image URL
+  productionStatus  String   @default("pending") // pending | design_received | review | approved | printing | completed
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
+}
+
+// ─── Order status audit trail ───
+model OrderStatusHistory {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  oldStatus String?
+  newStatus String
+  changedBy String?  // userId or 'system' or 'webhook'
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+// ─── Webhook idempotency ───
+model WebhookEvent {
+  id              String   @id @default(cuid())
+  provider        String   // 'cashfree' | 'razorpay'
+  eventId         String   // provider-specific event identifier
+  eventType       String   // e.g. 'PAYMENT_SUCCESS', 'PAYMENT_FAILED'
+  orderId         String?  // internal order id
+  payload         Json?    // raw webhook payload for debugging
+  processedAt     DateTime @default(now())
+
+  @@unique([provider, eventId])
 }
 
 model CustomizerDesign {
@@ -221,3 +282,29 @@ model WishlistItem {
 
   @@unique([userId, productId])
 }
+
+// ─── Generic File Metadata (Cloudflare R2) ───
+model StoredFile {
+  id               String   @id @default(cuid())
+  ownerUserId      String?
+  user             User?    @relation(fields: [ownerUserId], references: [id], onDelete: SetNull)
+  orderId          String?
+  order            Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderItemId      String?
+  fileType         String   // 'product_image' | 'customer_design' | 'production_artwork' | 'invoice' | 'proof'
+  storageProvider  String   @default("cloudflare_r2")
+  bucket           String
+  objectKey        String   @unique
+  originalFilename String
+  mimeType         String
+  fileSize         Int      @default(0)
+  isPrivate        Boolean  @default(true)
+  metadata         Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([ownerUserId])
+  @@index([orderId])
+  @@index([fileType])
+}
+

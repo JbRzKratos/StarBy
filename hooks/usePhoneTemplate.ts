@@ -19,7 +19,11 @@ import {
   type DevicePreviewDimensions,
   type Rect,
 } from '@/lib/skin-engine/geometry';
-import { buildCameraSubtractionPath, resolveCameraGeometry, type CameraGeometry } from '@/lib/skin-engine/svgPath';
+import {
+  buildCameraSubtractionPath,
+  resolveCameraGeometry,
+  type CameraGeometry,
+} from '@/lib/skin-engine/svgPath';
 import { buildBodyClipPath } from '@/lib/skin-engine/maskEngine';
 
 export interface PhoneTemplate {
@@ -40,12 +44,14 @@ const CONTAINER_HEIGHT_DEFAULT = 560;
 
 export function usePhoneTemplate(
   deviceId: string,
-  containerHeightPx: number = CONTAINER_HEIGHT_DEFAULT
+  containerHeightPx: number = CONTAINER_HEIGHT_DEFAULT,
 ): PhoneTemplate | null {
   const device = useMemo(() => {
-    return deviceModels.find((d) => d.id === deviceId) ??
+    return (
+      deviceModels.find((d) => d.id === deviceId) ??
       deviceModels.find((d) => d.id === FALLBACK_DEVICE_ID) ??
-      deviceModels[0];
+      deviceModels[0]
+    );
   }, [deviceId]);
 
   return useMemo(() => {
@@ -55,9 +61,7 @@ export function usePhoneTemplate(
     const { clipId, bodyPath } = buildBodyClipPath(device, dims, 'editor');
     const cornerRadiusPx = getCornerRadiusPx(device, dims);
 
-    const cameraGeo = device.cameraModule
-      ? resolveCameraGeometry(device.cameraModule, dims)
-      : null;
+    const cameraGeo = device.cameraModule ? resolveCameraGeometry(device.cameraModule, dims) : null;
 
     const cameraSubtractionPath = device.cameraModule
       ? buildCameraSubtractionPath(device.cameraModule, dims)
@@ -87,7 +91,7 @@ export function usePhoneTemplate(
  */
 export function useResizeObservedHeight(
   ref: React.RefObject<HTMLElement | null>,
-  fallback: number = CONTAINER_HEIGHT_DEFAULT
+  fallback: number = CONTAINER_HEIGHT_DEFAULT,
 ): number {
   const [height, setHeight] = useState<number>(fallback);
 

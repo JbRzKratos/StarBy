@@ -17,15 +17,20 @@ const STATUS_STEPS: OrderStatus[] = ['placed', 'processing', 'shipped', 'deliver
 interface OrderDetailProps {
   order: {
     id: string;
+    publicOrderId: string | null;
     status: string;
     paymentStatus: string;
+    paymentProvider: string;
+    paymentGatewayOrderId: string | null;
+    paymentGatewayPaymentId: string | null;
+    subtotal: number;
     total: number;
     discount: number;
+    shippingFee: number;
+    tax: number;
     couponCode: string | null;
     shippingMethod: string;
     estimatedDeliveryDate: string | null;
-    razorpayOrderId: string | null;
-    razorpayPaymentId: string | null;
     carrier: string | null;
     trackingNumber: string | null;
     trackingUrl: string | null;
@@ -35,11 +40,15 @@ interface OrderDetailProps {
     customer: { id: string; name: string; email: string } | null;
     shippingAddress: {
       name?: string;
+      firstName?: string;
+      lastName?: string;
       street?: string;
       city?: string;
       state?: string;
       zip?: string;
       country?: string;
+      phone?: string;
+      email?: string;
     };
     items: {
       id: string;
@@ -52,6 +61,22 @@ interface OrderDetailProps {
       quantity: number;
       price: number;
       size: string | null;
+      orderCustomization: {
+        designFileUrl?: string | null;
+        designFileName?: string | null;
+        printPosition?: string | null;
+        printInstructions?: string | null;
+        customerNotes?: string | null;
+        productionStatus?: string | null;
+      } | null;
+    }[];
+    statusHistory?: {
+      id: string;
+      oldStatus: string | null;
+      newStatus: string;
+      changedBy: string | null;
+      note: string | null;
+      createdAt: string;
     }[];
   };
 }
@@ -115,12 +140,18 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
   const stepIndex = STATUS_STEPS.indexOf(order.status as OrderStatus);
   const isCancelled = order.status === 'cancelled' || order.status === 'refunded';
 
+  const customerFullName =
+    order.shippingAddress.name ||
+    `${order.shippingAddress.firstName || ''} ${order.shippingAddress.lastName || ''}`.trim() ||
+    order.customer?.name ||
+    'Customer';
+
   return (
     <div className="space-y-5 max-w-5xl">
       {/* Back */}
       <Link
         href="/admin/orders"
-        className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors w-fit"
+        className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors w-fit font-mono"
       >
         <svg
           width="14"
@@ -132,14 +163,23 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
         >
           <path d="M15 18l-6-6 6-6" />
         </svg>
-        All Orders
+        ← All Orders
       </Link>
 
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div>
-          <h1 className="text-lg font-bold text-gray-900 font-mono">#{order.id}</h1>
-          <p className="text-sm text-gray-500">
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-bold text-gray-900 font-mono">
+              {order.publicOrderId || order.id}
+            </h1>
+            {order.publicOrderId && (
+              <span className="text-xs font-mono bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                DB ID: {order.id.slice(0, 8)}…
+              </span>
+            )}
+          </div>
+          <p className="text-sm text-gray-500 font-mono mt-1">
             Placed{' '}
             {new Date(order.createdAt).toLocaleDateString('en-IN', {
               day: 'numeric',
@@ -156,11 +196,11 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
             value={order.status}
             onChange={(e) => handleStatusChange(e.target.value)}
             disabled={isPending}
-            className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 disabled:opacity-50"
+            className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 disabled:opacity-50 font-mono"
           >
             {ALL_STATUSES.map((s) => (
               <option key={s} value={s}>
-                {s}
+                {s.replace('_', ' ').toUpperCase()}
               </option>
             ))}
           </select>
@@ -219,61 +259,104 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
         {/* Items — left 2 cols */}
         <div className="lg:col-span-2 space-y-4">
           <div className="bg-white rounded-xl border border-gray-200">
-            <div className="px-5 py-4 border-b border-gray-100">
+            <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-900">
                 Order Items ({order.items.length})
               </h2>
             </div>
             <div className="divide-y divide-gray-50">
               {order.items.map((item) => (
-                <div key={item.id} className="flex items-center gap-4 px-5 py-4">
-                  <div
-                    className="w-12 h-12 rounded-lg flex-shrink-0 border border-gray-100 overflow-hidden"
-                    style={{ background: item.variantColorHex + '22' }}
-                  >
-                    {item.variantImage && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={item.variantImage}
-                        alt={item.variantName}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900">{item.productName}</p>
-                    <p className="text-xs text-gray-500">
-                      {item.variantName}
-                      {item.size && ` · ${item.size}`}
-                      {' · '}
-                      <span className="inline-flex items-center gap-1">
-                        <span
-                          className="w-3 h-3 rounded-full border border-gray-200 inline-block"
-                          style={{ background: item.variantColorHex }}
+                <div key={item.id} className="p-5 flex flex-col gap-3">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-14 h-14 rounded-lg flex-shrink-0 border border-gray-100 overflow-hidden"
+                      style={{ background: item.variantColorHex + '22' }}
+                    >
+                      {item.variantImage && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.variantImage}
+                          alt={item.variantName}
+                          className="w-full h-full object-cover"
                         />
-                        {item.variantColor}
-                      </span>
-                    </p>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900">{item.productName}</p>
+                      <p className="text-xs text-gray-500">
+                        {item.variantName}
+                        {item.size && ` · Size: ${item.size}`}
+                        {' · '}
+                        <span className="inline-flex items-center gap-1">
+                          <span
+                            className="w-3 h-3 rounded-full border border-gray-200 inline-block"
+                            style={{ background: item.variantColorHex }}
+                          />
+                          {item.variantColor}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-sm font-semibold text-gray-900 font-mono">
+                        ₹{item.price.toLocaleString('en-IN')}
+                      </p>
+                      <p className="text-xs text-gray-500 font-mono">×{item.quantity}</p>
+                    </div>
                   </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-semibold text-gray-900">
-                      ₹{item.price.toLocaleString('en-IN')}
-                    </p>
-                    <p className="text-xs text-gray-500">×{item.quantity}</p>
-                  </div>
+
+                  {/* Artwork / Customization info */}
+                  {item.orderCustomization && (
+                    <div className="bg-gray-50 border border-gray-100 rounded-lg p-3 text-xs space-y-1 mt-1">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-gray-700 uppercase tracking-wider text-[10px]">
+                          Custom Artwork
+                        </span>
+                        <span className="px-2 py-0.5 bg-blue-50 text-[#3B5EFF] rounded text-[10px] font-mono uppercase">
+                          {item.orderCustomization.productionStatus || 'Pending'}
+                        </span>
+                      </div>
+                      {item.orderCustomization.designFileUrl && (
+                        <p>
+                          <a
+                            href={item.orderCustomization.designFileUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-[#3B5EFF] hover:underline font-mono"
+                          >
+                            Download Artwork: {item.orderCustomization.designFileName || 'File'} ↗
+                          </a>
+                        </p>
+                      )}
+                      {item.orderCustomization.printInstructions && (
+                        <p className="text-gray-600">
+                          <strong>Print Note:</strong> {item.orderCustomization.printInstructions}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
             {/* Totals */}
-            <div className="px-5 py-4 border-t border-gray-100 space-y-2">
-              {order.couponCode && (
-                <div className="flex justify-between text-sm text-green-700">
-                  <span>Discount ({order.couponCode})</span>
+            <div className="px-5 py-4 border-t border-gray-100 space-y-2 font-mono">
+              <div className="flex justify-between text-xs text-gray-500">
+                <span>Subtotal</span>
+                <span>₹{(order.subtotal || order.total).toLocaleString('en-IN')}</span>
+              </div>
+              {order.discount > 0 && (
+                <div className="flex justify-between text-xs text-green-700">
+                  <span>Discount {order.couponCode && `(${order.couponCode})`}</span>
                   <span>−₹{order.discount.toLocaleString('en-IN')}</span>
                 </div>
               )}
-              <div className="flex justify-between text-sm font-bold text-gray-900">
-                <span>Total</span>
+              {order.shippingFee > 0 && (
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Shipping</span>
+                  <span>+₹{order.shippingFee.toLocaleString('en-IN')}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-sm font-bold text-gray-900 pt-2 border-t border-gray-100">
+                <span>Grand Total</span>
                 <span>₹{order.total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
               </div>
             </div>
@@ -282,7 +365,7 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
           {/* Internal notes */}
           <div className="bg-white rounded-xl border border-gray-200">
             <div className="px-5 py-4 border-b border-gray-100">
-              <h2 className="text-sm font-semibold text-gray-900">Internal Notes (staff-only)</h2>
+              <h2 className="text-sm font-semibold text-gray-900">Internal Notes (Staff Only)</h2>
             </div>
             <div className="p-5">
               <textarea
@@ -290,7 +373,7 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Add internal notes about this order…"
-                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 resize-none focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 resize-none focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF] font-mono"
               />
               <div className="flex items-center justify-end mt-2 gap-2">
                 {notesSaved && <span className="text-xs text-green-600">Saved ✓</span>}
@@ -311,29 +394,30 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
           {/* Customer */}
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-3">Customer</h2>
-            {order.customer ? (
-              <div>
-                <p className="text-sm font-medium text-gray-900">{order.customer.name}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{order.customer.email}</p>
+            <div>
+              <p className="text-sm font-medium text-gray-900">{customerFullName}</p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {order.shippingAddress.email || order.customer?.email || 'No email provided'}
+              </p>
+              {order.shippingAddress.phone && (
+                <p className="text-xs text-gray-500 mt-0.5">Tel: {order.shippingAddress.phone}</p>
+              )}
+              {order.customer && (
                 <Link
                   href={`/admin/customers/${order.customer.id}`}
-                  className="text-xs text-[#3B5EFF] hover:underline mt-2 block"
+                  className="text-xs text-[#3B5EFF] hover:underline mt-2 block font-mono"
                 >
-                  View customer →
+                  View customer profile →
                 </Link>
-              </div>
-            ) : (
-              <p className="text-sm text-gray-500">Guest order</p>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Shipping address */}
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-3">Shipping Address</h2>
             <address className="text-sm text-gray-700 not-italic space-y-0.5">
-              {order.shippingAddress.name && (
-                <p className="font-medium">{order.shippingAddress.name}</p>
-              )}
+              <p className="font-medium">{customerFullName}</p>
               {order.shippingAddress.street && <p>{order.shippingAddress.street}</p>}
               {(order.shippingAddress.city || order.shippingAddress.state) && (
                 <p>
@@ -348,36 +432,35 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
               )}
               {order.shippingAddress.country && <p>{order.shippingAddress.country}</p>}
             </address>
-            <p className="text-xs text-gray-500 mt-2 capitalize">
-              Shipping: {order.shippingMethod}
+            <p className="text-xs text-gray-500 mt-2 capitalize font-mono">
+              Method: {order.shippingMethod}
             </p>
           </div>
 
           {/* Payment info */}
           <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h2 className="text-sm font-semibold text-gray-900 mb-3">Payment</h2>
-            <div className="space-y-1.5 text-sm">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Payment Info</h2>
+            <div className="space-y-2 text-sm font-mono">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Gateway</span>
+                <span className="text-xs font-bold uppercase text-[#3B5EFF]">
+                  {order.paymentProvider || 'Cashfree'}
+                </span>
+              </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Status</span>
                 <AdminBadge variant={order.paymentStatus === 'paid' ? 'paid' : 'pending'} />
               </div>
-              {order.razorpayPaymentId && (
+              {order.paymentGatewayOrderId && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Payment ID</span>
-                  <span className="font-mono text-xs text-gray-700">
-                    {order.razorpayPaymentId.slice(0, 16)}…
-                  </span>
+                  <span className="text-gray-500">CF Order ID</span>
+                  <span className="text-xs text-gray-700">{order.paymentGatewayOrderId}</span>
                 </div>
               )}
-              {order.estimatedDeliveryDate && (
+              {order.paymentGatewayPaymentId && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Est. delivery</span>
-                  <span className="text-gray-700">
-                    {new Date(order.estimatedDeliveryDate).toLocaleDateString('en-IN', {
-                      day: 'numeric',
-                      month: 'short',
-                    })}
-                  </span>
+                  <span className="text-gray-500">Payment ID</span>
+                  <span className="text-xs text-gray-700">{order.paymentGatewayPaymentId}</span>
                 </div>
               )}
             </div>
@@ -385,38 +468,36 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
 
           {/* Tracking info */}
           <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h2 className="text-sm font-semibold text-gray-900 mb-3">Tracking Information</h2>
-            <div className="space-y-3">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">Fulfillment & Tracking</h2>
+            <div className="space-y-3 font-mono text-xs">
               <div>
-                <label className="text-xs font-medium text-gray-700 mb-1 block">Carrier Name</label>
+                <label className="text-gray-700 mb-1 block">Carrier</label>
                 <input
                   type="text"
                   value={tracking.carrier}
                   onChange={(e) => setTracking((t) => ({ ...t, carrier: e.target.value }))}
-                  placeholder="e.g. BlueDart, FedEx"
-                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+                  placeholder="e.g. BlueDart, Delhivery"
+                  className="w-full border border-gray-200 rounded px-2.5 py-1.5 outline-none focus:border-[#3B5EFF]"
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-gray-700 mb-1 block">
-                  Tracking Number
-                </label>
+                <label className="text-gray-700 mb-1 block">Tracking Number</label>
                 <input
                   type="text"
                   value={tracking.trackingNumber}
                   onChange={(e) => setTracking((t) => ({ ...t, trackingNumber: e.target.value }))}
-                  placeholder="Tracking ID"
-                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+                  placeholder="Tracking Number"
+                  className="w-full border border-gray-200 rounded px-2.5 py-1.5 outline-none focus:border-[#3B5EFF]"
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-gray-700 mb-1 block">Tracking URL</label>
+                <label className="text-gray-700 mb-1 block">Tracking URL</label>
                 <input
                   type="url"
                   value={tracking.trackingUrl}
                   onChange={(e) => setTracking((t) => ({ ...t, trackingUrl: e.target.value }))}
                   placeholder="https://..."
-                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+                  className="w-full border border-gray-200 rounded px-2.5 py-1.5 outline-none focus:border-[#3B5EFF]"
                 />
               </div>
               <div className="flex items-center justify-end pt-2 gap-2">
@@ -424,7 +505,7 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                 <button
                   onClick={handleSaveTracking}
                   disabled={isPending}
-                  className="px-3 py-1.5 text-xs font-medium bg-[#3B5EFF] text-white rounded-lg hover:bg-[#2a4de8] transition-colors disabled:opacity-50"
+                  className="px-3 py-1.5 text-xs font-medium bg-[#3B5EFF] text-white rounded hover:bg-[#2a4de8] transition-colors disabled:opacity-50"
                 >
                   Save Tracking
                 </button>

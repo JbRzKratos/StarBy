@@ -76,7 +76,7 @@ export function useArtworkTransform(printableRect: Rect | null): UseArtworkTrans
         return updater(prev);
       });
     },
-    [pushUndo]
+    [pushUndo],
   );
 
   // ─── Init ─────────────────────────────────────────────────────────────────
@@ -90,23 +90,19 @@ export function useArtworkTransform(printableRect: Rect | null): UseArtworkTrans
       undoStack.current = [];
       redoStack.current = [];
     },
-    [printableRect]
+    [printableRect],
   );
 
   // ─── Fit modes ────────────────────────────────────────────────────────────
 
   const fitCover = useCallback(() => {
     if (!artNaturalSize || !printableRect) return;
-    applyTransform(() =>
-      fitCoverTransform(artNaturalSize.w, artNaturalSize.h, printableRect)
-    );
+    applyTransform(() => fitCoverTransform(artNaturalSize.w, artNaturalSize.h, printableRect));
   }, [artNaturalSize, printableRect, applyTransform]);
 
   const fitContain = useCallback(() => {
     if (!artNaturalSize || !printableRect) return;
-    applyTransform(() =>
-      fitContainTransform(artNaturalSize.w, artNaturalSize.h, printableRect)
-    );
+    applyTransform(() => fitContainTransform(artNaturalSize.w, artNaturalSize.h, printableRect));
   }, [artNaturalSize, printableRect, applyTransform]);
 
   // ─── Drag ─────────────────────────────────────────────────────────────────
@@ -142,7 +138,7 @@ export function useArtworkTransform(printableRect: Rect | null): UseArtworkTrans
           artNaturalSize.w,
           artNaturalSize.h,
           prev.scale,
-          printableRect
+          printableRect,
         );
         return { ...prev, tx: clamped.tx, ty: clamped.ty };
       });
@@ -153,10 +149,7 @@ export function useArtworkTransform(printableRect: Rect | null): UseArtworkTrans
       isDragging.current = false;
       // Push drag start snapshot to undo
       if (dragSnapshot.current) {
-        undoStack.current = [
-          ...undoStack.current.slice(-UNDO_LIMIT + 1),
-          dragSnapshot.current,
-        ];
+        undoStack.current = [...undoStack.current.slice(-UNDO_LIMIT + 1), dragSnapshot.current];
         redoStack.current = [];
         dragSnapshot.current = null;
       }
@@ -181,11 +174,18 @@ export function useArtworkTransform(printableRect: Rect | null): UseArtworkTrans
 
       applyTransform(
         (prev) =>
-          applyWheelZoom(prev, e.deltaY, artNaturalSize.w, artNaturalSize.h, printableRect, minScale),
-        true
+          applyWheelZoom(
+            prev,
+            e.deltaY,
+            artNaturalSize.w,
+            artNaturalSize.h,
+            printableRect,
+            minScale,
+          ),
+        true,
       );
     },
-    [artNaturalSize, printableRect, applyTransform]
+    [artNaturalSize, printableRect, applyTransform],
   );
 
   // ─── Rotate ───────────────────────────────────────────────────────────────
@@ -194,7 +194,7 @@ export function useArtworkTransform(printableRect: Rect | null): UseArtworkTrans
     (deg: number) => {
       applyTransform((prev) => ({ ...prev, rotation: (prev.rotation + deg) % 360 }));
     },
-    [applyTransform]
+    [applyTransform],
   );
 
   // ─── Flip ─────────────────────────────────────────────────────────────────
@@ -217,11 +217,19 @@ export function useArtworkTransform(printableRect: Rect | null): UseArtworkTrans
       let dx = 0;
       let dy = 0;
 
-      if (e.key === 'ArrowLeft') { dx = -step; e.preventDefault(); }
-      else if (e.key === 'ArrowRight') { dx = step; e.preventDefault(); }
-      else if (e.key === 'ArrowUp') { dy = -step; e.preventDefault(); }
-      else if (e.key === 'ArrowDown') { dy = step; e.preventDefault(); }
-      else if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+      if (e.key === 'ArrowLeft') {
+        dx = -step;
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight') {
+        dx = step;
+        e.preventDefault();
+      } else if (e.key === 'ArrowUp') {
+        dy = -step;
+        e.preventDefault();
+      } else if (e.key === 'ArrowDown') {
+        dy = step;
+        e.preventDefault();
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
         e.preventDefault();
         if (e.shiftKey) {
           // Redo
@@ -253,7 +261,7 @@ export function useArtworkTransform(printableRect: Rect | null): UseArtworkTrans
             artNaturalSize.w,
             artNaturalSize.h,
             prev.scale,
-            printableRect
+            printableRect,
           );
           return { ...prev, tx: clamped.tx, ty: clamped.ty };
         }, false); // don't track nudge in undo for smoothness

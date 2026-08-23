@@ -30,7 +30,7 @@ export interface UseSkinExportReturn {
 
 export function useSkinExport(
   device: DeviceModel | null,
-  dims: DevicePreviewDimensions | null
+  dims: DevicePreviewDimensions | null,
 ): UseSkinExportReturn {
   const [isExporting, setIsExporting] = useState(false);
 
@@ -49,9 +49,7 @@ export function useSkinExport(
         const clone = svgEl.cloneNode(true) as SVGSVGElement;
 
         // Remove interactive-only elements from export
-        clone.querySelectorAll('[data-interactive-only="true"]').forEach((el) =>
-          el.remove()
-        );
+        clone.querySelectorAll('[data-interactive-only="true"]').forEach((el) => el.remove());
         clone.querySelectorAll('[data-export-hide="true"]').forEach((el) => el.remove());
 
         clone.setAttribute('width', String(exportW));
@@ -73,14 +71,20 @@ export function useSkinExport(
             canvas.width = exportW;
             canvas.height = exportH;
             const ctx = canvas.getContext('2d');
-            if (!ctx) { reject(new Error('Canvas context unavailable')); return; }
+            if (!ctx) {
+              reject(new Error('Canvas context unavailable'));
+              return;
+            }
 
             ctx.drawImage(img, 0, 0, exportW, exportH);
             URL.revokeObjectURL(url);
 
             canvas.toBlob(
               (blob) => {
-                if (!blob) { reject(new Error('toBlob failed')); return; }
+                if (!blob) {
+                  reject(new Error('toBlob failed'));
+                  return;
+                }
                 const a = document.createElement('a');
                 a.href = URL.createObjectURL(blob);
                 a.download = `${device.id}-skin-${dpi}dpi.png`;
@@ -89,7 +93,7 @@ export function useSkinExport(
                 resolve();
               },
               'image/png',
-              1.0
+              1.0,
             );
           };
           img.onerror = reject;
@@ -101,7 +105,7 @@ export function useSkinExport(
         setIsExporting(false);
       }
     },
-    [device, dims, isExporting]
+    [device, dims, isExporting],
   );
 
   const exportSVG = useCallback(
@@ -126,7 +130,7 @@ export function useSkinExport(
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
     },
-    [device, dims]
+    [device, dims],
   );
 
   return { isExporting, exportPNG, exportSVG };

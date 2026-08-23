@@ -3,43 +3,64 @@
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { assertAdmin, assertStaff } from './auth';
-import { sendOrderShippedEmail, sendOrderDeliveredEmail } from '@/lib/email';
+import { dispatchNotification } from '@/lib/notifications';
 
 // ═══════════════════════════════════════
 // ORDERS
 // ═══════════════════════════════════════
 
-export async function updateOrderStatus(orderId: string, status: string) {
-  await assertStaff();
+export async function updateOrderStatus(orderId: string, status: string, note?: string) {
+  const staff = await assertStaff();
+
+  const existingOrder = await prisma.order.findUnique({
+    where: { id: orderId },
+    select: { status: true },
+  });
+
   const order = await prisma.order.update({
     where: { id: orderId },
-    data: { status },
+    data: {
+      status,
+      statusHistory: {
+        create: {
+          oldStatus: existingOrder?.status || null,
+          newStatus: status,
+          changedBy: staff?.id || 'staff',
+          note: note || `Order status updated to ${status} by admin/staff`,
+        },
+      },
+    },
     include: { user: true },
   });
 
   const emailTo = order.user?.email || (order.shippingAddress as Record<string, string>)?.email;
   const name =
-    order.user?.fullName ||
-    (order.shippingAddress as Record<string, string>)?.firstName ||
-    'Customer';
+    order.user?.fullName || (order.shippingAddress as Record<string, string>)?.name || 'Customer';
 
   if (emailTo) {
     if (status === 'shipped') {
-      await sendOrderShippedEmail(
-        emailTo,
-        order.id,
-        name,
-        order.trackingUrl || undefined,
-        order.trackingNumber || undefined,
-        order.carrier || undefined,
-      );
+      await dispatchNotification('ORDER_SHIPPED', {
+        orderId: order.id,
+        publicOrderId: order.publicOrderId || undefined,
+        customerName: name,
+        customerEmail: emailTo,
+        trackingUrl: order.trackingUrl || undefined,
+        trackingNumber: order.trackingNumber || undefined,
+        carrier: order.carrier || undefined,
+      });
     } else if (status === 'delivered') {
-      await sendOrderDeliveredEmail(emailTo, order.id, name);
+      await dispatchNotification('ORDER_DELIVERED', {
+        orderId: order.id,
+        publicOrderId: order.publicOrderId || undefined,
+        customerName: name,
+        customerEmail: emailTo,
+      });
     }
   }
 
   revalidatePath('/admin/orders');
   revalidatePath(`/admin/orders/${orderId}`);
+  revalidatePath(`/account/orders/${orderId}/track`);
 }
 
 export async function updateOrderInternalNotes(orderId: string, notes: string) {
@@ -52,16 +73,30 @@ export async function updateOrderTracking(
   orderId: string,
   tracking: { carrier: string; trackingNumber: string; trackingUrl: string },
 ) {
-  await assertStaff();
+  const staff = await assertStaff();
+  const existingOrder = await prisma.order.findUnique({
+    where: { id: orderId },
+    select: { status: true },
+  });
+
   await prisma.order.update({
     where: { id: orderId },
     data: {
       carrier: tracking.carrier,
       trackingNumber: tracking.trackingNumber,
       trackingUrl: tracking.trackingUrl,
+      statusHistory: {
+        create: {
+          oldStatus: existingOrder?.status || null,
+          newStatus: existingOrder?.status || 'shipped',
+          changedBy: staff?.id || 'staff',
+          note: `Tracking added: ${tracking.carrier || 'Courier'} - ${tracking.trackingNumber}`,
+        },
+      },
     },
   });
   revalidatePath(`/admin/orders/${orderId}`);
+  revalidatePath(`/account/orders/${orderId}/track`);
 }
 
 // ═══════════════════════════════════════

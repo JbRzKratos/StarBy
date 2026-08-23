@@ -3,6 +3,7 @@
 import React, { useTransition, useState } from 'react';
 import { updateOrderStatus, updateOrderTracking } from '@/app/admin/lib/actions';
 import { StatusBadge } from '@/components/admin/status-badge';
+import Link from 'next/link';
 
 export interface OrderItem {
   id: string;
@@ -10,28 +11,45 @@ export interface OrderItem {
   quantity: number;
   variantId: string;
   size?: string | null;
-  price: number;
+  unitPrice?: number;
+  totalPrice?: number;
+  price?: number;
+  productNameSnapshot?: string | null;
+  customization?: Record<string, unknown> | null;
+  orderCustomization?: {
+    designFileUrl?: string | null;
+    designFileName?: string | null;
+    productionStatus?: string;
+  } | null;
 }
 
 export interface Order {
   id: string;
+  publicOrderId?: string | null;
   createdAt: string | Date;
   user?: { fullName?: string | null; email?: string | null } | null;
+  subtotal?: number;
+  discount?: number | null;
+  shippingFee?: number;
+  tax?: number;
   total: number;
   status: string;
   shippingAddress?: {
-    name: string;
-    street: string;
-    city: string;
-    state: string;
-    zip: string;
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
     phone?: string;
   } | null;
   paymentStatus?: string | null;
+  paymentProvider?: string | null;
+  paymentGatewayOrderId?: string | null;
+  paymentGatewayPaymentId?: string | null;
   shippingMethod?: string | null;
-  razorpayOrderId?: string | null;
   couponCode?: string | null;
-  discount?: number | null;
   carrier?: string | null;
   trackingNumber?: string | null;
   trackingUrl?: string | null;
@@ -80,11 +98,13 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="font-display text-display-sm font-bold text-bone mb-2">Orders Manager</h1>
-        <p className="font-mono text-body-sm text-pearl">
-          View and manage customer orders and fulfillment statuses.
-        </p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-display text-display-sm font-bold text-bone mb-2">Orders Manager</h1>
+          <p className="font-mono text-body-sm text-pearl">
+            View and manage customer orders, Cashfree payments, and fulfillment workflows.
+          </p>
+        </div>
       </div>
 
       <div className="bg-charcoal border border-smoke rounded-sm overflow-hidden">
@@ -127,7 +147,9 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                       setExpandedOrderId(expandedOrderId === order.id ? null : order.id)
                     }
                   >
-                    <td className="px-6 py-4">{order.id}</td>
+                    <td className="px-6 py-4 font-bold text-bone">
+                      {order.publicOrderId || order.id}
+                    </td>
                     <td className="px-6 py-4">{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td className="px-6 py-4">
                       {order.user ? order.user.fullName || order.user.email : 'Guest'}
@@ -156,15 +178,17 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                   {expandedOrderId === order.id && (
                     <tr className="bg-graphite/50 border-t border-smoke/30">
                       <td colSpan={6} className="px-6 py-6">
-                        <div className="grid grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                           <div>
                             <h4 className="font-display text-body-lg text-bone mb-4">
-                              Shipping Details
+                              Shipping & Payment Details
                             </h4>
                             {order.shippingAddress ? (
                               <div className="text-pearl text-body-sm space-y-1">
                                 <p>
-                                  <strong>Name:</strong> {order.shippingAddress.name}
+                                  <strong>Name:</strong>{' '}
+                                  {order.shippingAddress.name ||
+                                    `${order.shippingAddress.firstName || ''} ${order.shippingAddress.lastName || ''}`}
                                 </p>
                                 <p>
                                   <strong>Address:</strong> {order.shippingAddress.street}
@@ -181,14 +205,24 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                               <p className="text-ash">No shipping details provided.</p>
                             )}
 
-                            <div className="mt-6 text-pearl text-body-sm">
+                            <div className="mt-6 text-pearl text-body-sm space-y-1">
                               <p>
-                                <strong>Payment Method:</strong> {order.paymentStatus} /{' '}
-                                {order.shippingMethod}
+                                <strong>Payment Provider:</strong>{' '}
+                                <span className="uppercase font-bold text-cobalt">
+                                  {order.paymentProvider ||
+                                    (order.paymentStatus === 'paid' ? 'Online' : 'COD')}
+                                </span>{' '}
+                                ({order.paymentStatus})
                               </p>
-                              {order.razorpayOrderId && (
+                              {order.paymentGatewayOrderId && (
                                 <p>
-                                  <strong>Gateway ID:</strong> {order.razorpayOrderId}
+                                  <strong>Gateway Order ID:</strong> {order.paymentGatewayOrderId}
+                                </p>
+                              )}
+                              {order.paymentGatewayPaymentId && (
+                                <p>
+                                  <strong>Gateway Payment ID:</strong>{' '}
+                                  {order.paymentGatewayPaymentId}
                                 </p>
                               )}
                               {order.couponCode && (
@@ -214,44 +248,69 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                                         rel="noreferrer"
                                         className="text-cobalt hover:underline"
                                       >
-                                        Track Package
+                                        Track Package ↗
                                       </a>
                                     </p>
                                   )}
                                 </div>
                               )}
                             </div>
+
+                            <div className="mt-6">
+                              <Link
+                                href={`/admin/orders/${order.id}`}
+                                className="inline-block bg-cobalt hover:bg-cobalt/90 text-bone px-4 py-2 text-caption font-mono uppercase tracking-widest rounded-sm transition-colors"
+                              >
+                                Open Full Order Details →
+                              </Link>
+                            </div>
                           </div>
 
                           <div>
                             <h4 className="font-display text-body-lg text-bone mb-4">
-                              Order Items
+                              Order Items ({order.items.length})
                             </h4>
                             <div className="space-y-4">
-                              {order.items.map((item: OrderItem) => (
-                                <div
-                                  key={item.id}
-                                  className="flex justify-between items-start border-b border-smoke/30 pb-4"
-                                >
-                                  <div>
-                                    <p className="text-bone font-bold">
-                                      {item.productId}{' '}
-                                      <span className="text-ash font-normal">
-                                        x {item.quantity}
-                                      </span>
+                              {order.items.map((item: OrderItem) => {
+                                const itemPrice = item.unitPrice ?? item.price ?? 0;
+                                return (
+                                  <div
+                                    key={item.id}
+                                    className="flex justify-between items-start border-b border-smoke/30 pb-4"
+                                  >
+                                    <div>
+                                      <p className="text-bone font-bold">
+                                        {item.productNameSnapshot || item.productId}{' '}
+                                        <span className="text-ash font-normal">
+                                          × {item.quantity}
+                                        </span>
+                                      </p>
+                                      <p className="text-pearl text-caption mt-1">
+                                        Variant: {item.variantId}
+                                      </p>
+                                      {item.size && (
+                                        <p className="text-pearl text-caption">Size: {item.size}</p>
+                                      )}
+                                      {item.orderCustomization?.designFileUrl && (
+                                        <p className="mt-1">
+                                          <a
+                                            href={item.orderCustomization.designFileUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="text-cobalt text-caption underline"
+                                          >
+                                            View Artwork (
+                                            {item.orderCustomization.designFileName || 'File'})
+                                          </a>
+                                        </p>
+                                      )}
+                                    </div>
+                                    <p className="text-bone text-body-sm font-bold">
+                                      ₹{itemPrice * item.quantity}
                                     </p>
-                                    <p className="text-pearl text-caption mt-1">
-                                      Variant: {item.variantId}
-                                    </p>
-                                    {item.size && (
-                                      <p className="text-pearl text-caption">Size: {item.size}</p>
-                                    )}
                                   </div>
-                                  <p className="text-bone text-body-sm">
-                                    ₹{item.price * item.quantity}
-                                  </p>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           </div>
                         </div>

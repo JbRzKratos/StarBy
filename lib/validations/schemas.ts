@@ -27,7 +27,7 @@ export const CartItemSchema = z
 export const CheckoutSchema = z.object({
   items: z.array(CartItemSchema).min(1, 'Cart cannot be empty'),
   address: AddressSchema,
-  paymentMethod: z.enum(['upi', 'card', 'netbanking', 'razorpay', 'cod']).default('razorpay'),
+  paymentMethod: z.enum(['upi', 'card', 'netbanking', 'cashfree', 'cod']).default('cashfree'),
   couponCode: z.string().optional(),
 });
 

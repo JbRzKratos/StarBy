@@ -6,6 +6,7 @@ import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { products } from '@/data/products';
 import { createClient } from '@/lib/supabase/client';
+import { load as loadCashfree } from '@cashfreepayments/cashfree-js';
 
 type Step = 'shipping' | 'payment' | 'review';
 
@@ -16,7 +17,7 @@ export default function CheckoutPage() {
   const clearCart = useCartStore((s) => s.clearCart);
   const totalPrice = useCartStore((s) => s.items.reduce((sum, i) => sum + i.price * i.quantity, 0));
   const { formatPrice } = usePrice();
-  // Guard against duplicate order submissions (e.g. Razorpay modal open but button re-enabled)
+  // Guard against duplicate order submissions
   const submittingRef = useRef(false);
 
   const [shippingAddress, setShippingAddress] = useState({
@@ -32,9 +33,8 @@ export default function CheckoutPage() {
   });
 
   const [shippingError, setShippingError] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
+  const [paymentMethod, setPaymentMethod] = useState<'cashfree' | 'cod'>('cashfree');
   const [loading, setLoading] = useState(false);
-  // Inline error state — replaces all alert() calls in checkout (BUG-018)
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const [couponCode, setCouponCode] = useState('');
@@ -45,19 +45,6 @@ export default function CheckoutPage() {
 
   const steps: Step[] = ['shipping', 'payment', 'review'];
   const finalTotal = Math.max(0, totalPrice - discountAmount);
-
-  useEffect(() => {
-    // Dynamically load Razorpay script
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
 
   // Pre-fill email from authenticated user session
   useEffect(() => {
@@ -102,9 +89,12 @@ export default function CheckoutPage() {
       setShippingError('Please enter a valid PIN / Postal code (5-10 digits).');
       return false;
     }
-    if (shippingAddress.phone && !/^[\d\s\-+()]{7,15}$/.test(shippingAddress.phone)) {
-      setShippingError('Please enter a valid phone number.');
-      return false;
+    if (shippingAddress.phone) {
+      const cleanDigits = shippingAddress.phone.replace(/[^0-9]/g, '');
+      if (cleanDigits.length < 10 || cleanDigits.length > 13) {
+        setShippingError('Please enter a valid 10-digit phone number (e.g. 9876543210).');
+        return false;
+      }
     }
     setShippingError('');
     return true;
@@ -149,7 +139,6 @@ export default function CheckoutPage() {
   };
 
   const handlePlaceOrder = async () => {
-    // Prevent duplicate submissions (e.g. rapid double-click, or re-click while Razorpay modal open)
     if (submittingRef.current) return;
     submittingRef.current = true;
 
@@ -166,6 +155,7 @@ export default function CheckoutPage() {
     }
 
     setLoading(true);
+    setCheckoutError(null);
 
     try {
       const fullName =
@@ -193,7 +183,7 @@ export default function CheckoutPage() {
           country: 'India',
           phone: shippingAddress.phone || undefined,
         },
-        paymentMethod: paymentMethod === 'cod' ? 'cod' : 'razorpay',
+        paymentMethod: paymentMethod === 'cod' ? 'cod' : 'cashfree',
         couponCode: appliedCoupon || undefined,
       };
 
@@ -221,98 +211,29 @@ export default function CheckoutPage() {
 
       if (data.isCod) {
         clearCart();
-        router.push('/account/orders');
+        router.push(`/payment/status?order_id=${data.cashfreeOrderId || data.orderId}`);
       } else {
-        // BUG-002 fix: Never use a hardcoded key fallback. Fail loudly if key is missing.
-        const razorpayKey = data.razorpayKeyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
-
-        if (!razorpayKey) {
-          setCheckoutError('Payment gateway is not configured. Please contact support.');
+        if (!data.paymentSessionId) {
+          setCheckoutError('Payment session could not be initialized. Please try again.');
           setLoading(false);
           submittingRef.current = false;
           return;
         }
 
-        const options = {
-          key: razorpayKey,
-          amount: Math.round(data.amount * 100),
-          currency: 'INR',
-          name: 'StarBy',
-          description: 'Premium Device Skins & Apparel',
-          order_id: data.razorpayOrderId,
-          handler: async function (response: {
-            razorpay_order_id: string;
-            razorpay_payment_id: string;
-            razorpay_signature: string;
-          }) {
-            const verifyRes = await fetch('/api/verify-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                orderId: data.orderId,
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              }),
-            });
-            const verifyData = await verifyRes.json();
-            if (verifyData.success) {
-              clearCart();
-              router.push('/account/orders');
-            } else {
-              setCheckoutError(
-                'Payment verification failed: ' + (verifyData.message || 'Unknown error'),
-              );
-              setLoading(false);
-              submittingRef.current = false;
-            }
-          },
-          modal: {
-            ondismiss: function () {
-              setLoading(false);
-              submittingRef.current = false;
-              setCheckoutError('Payment modal was closed. You can click Place Order to try again.');
-            },
-          },
-          prefill: {
-            name: fullName,
-            email: shippingAddress.email,
-            contact: shippingAddress.phone || '',
-          },
-          theme: {
-            color: '#1a1a1a',
-          },
-        };
+        // Initialize Cashfree JS SDK
+        const cashfree = await loadCashfree({
+          mode: data.cashfreeEnvironment === 'production' ? 'production' : 'sandbox',
+        });
 
-        const win = window as unknown as {
-          Razorpay?: new (opts: unknown) => {
-            on: (event: string, cb: (res: { error?: { description?: string } }) => void) => void;
-            open: () => void;
-          };
-        };
-
-        if (typeof win.Razorpay !== 'undefined') {
-          const rzp = new win.Razorpay(options);
-          rzp.on('payment.failed', function (response: { error?: { description?: string } }) {
-            setCheckoutError(
-              'Payment failed: ' + (response.error?.description || 'Transaction cancelled'),
-            );
-            setLoading(false);
-            submittingRef.current = false;
-          });
-          rzp.open();
-          // Keep loading=true while Razorpay modal is open; handler/fail callbacks reset it
-        } else {
-          setCheckoutError(
-            'Payment gateway is still loading. Please wait 2 seconds and try again.',
-          );
-          setLoading(false);
-          submittingRef.current = false;
-        }
+        // Trigger Cashfree checkout redirect
+        await cashfree.checkout({
+          paymentSessionId: data.paymentSessionId,
+          redirectTarget: '_self',
+        });
       }
     } catch (err) {
-      console.error(err);
-      setCheckoutError('An unexpected error occurred. Please try again.');
+      console.error('Checkout execution error:', err);
+      setCheckoutError('An unexpected error occurred during checkout. Please try again.');
       setLoading(false);
       submittingRef.current = false;
     }
@@ -329,7 +250,6 @@ export default function CheckoutPage() {
             <button
               key={s}
               onClick={() => {
-                // Always require valid shipping before proceeding beyond the shipping step
                 if (s === 'shipping') {
                   setStep(s);
                 } else if (validateShipping()) {
@@ -355,7 +275,6 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Form area */}
           <div className="lg:col-span-2">
-            {/* Global checkout error banner (replaces alert() dialogs) */}
             {checkoutError && (
               <div className="mb-6 p-4 bg-ember/10 border border-ember/50 rounded-lg flex items-start gap-3">
                 <span className="text-ember text-lg leading-none mt-0.5">⚠</span>
@@ -491,22 +410,27 @@ export default function CheckoutPage() {
                 <div className="flex flex-col gap-4">
                   <label
                     className={`flex items-center gap-3 p-4 border rounded-sm cursor-pointer transition-colors ${
-                      paymentMethod === 'razorpay'
+                      paymentMethod === 'cashfree'
                         ? 'border-cobalt bg-cobalt/5'
                         : 'border-smoke hover:border-pearl'
                     }`}
-                    onClick={() => setPaymentMethod('razorpay')}
+                    onClick={() => setPaymentMethod('cashfree')}
                   >
                     <div
-                      className={`w-4 h-4 border rounded-full flex items-center justify-center ${paymentMethod === 'razorpay' ? 'border-cobalt' : 'border-pearl'}`}
+                      className={`w-4 h-4 border rounded-full flex items-center justify-center ${paymentMethod === 'cashfree' ? 'border-cobalt' : 'border-pearl'}`}
                     >
-                      {paymentMethod === 'razorpay' && (
+                      {paymentMethod === 'cashfree' && (
                         <div className="w-2 h-2 bg-cobalt rounded-full" />
                       )}
                     </div>
-                    <span className="font-mono text-body-sm text-bone">
-                      Online Payment (Cards, UPI, Netbanking) via Razorpay
-                    </span>
+                    <div>
+                      <span className="font-mono text-body-sm text-bone block font-bold">
+                        Online Payment (UPI, Credit/Debit Cards, Netbanking, Wallets)
+                      </span>
+                      <span className="font-mono text-caption text-pearl block mt-0.5">
+                        Secured via Cashfree Payments
+                      </span>
+                    </div>
                   </label>
 
                   <label
@@ -524,7 +448,14 @@ export default function CheckoutPage() {
                         <div className="w-2 h-2 bg-cobalt rounded-full" />
                       )}
                     </div>
-                    <span className="font-mono text-body-sm text-bone">Cash on Delivery (COD)</span>
+                    <div>
+                      <span className="font-mono text-body-sm text-bone block font-bold">
+                        Cash on Delivery (COD)
+                      </span>
+                      <span className="font-mono text-caption text-pearl block mt-0.5">
+                        Pay upon physical delivery at your doorstep
+                      </span>
+                    </div>
                   </label>
 
                   <div className="flex flex-col sm:flex-row gap-3 mt-4">
@@ -558,7 +489,7 @@ export default function CheckoutPage() {
                   </p>
                   <p>
                     <strong>Payment Method:</strong>{' '}
-                    {paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment (Razorpay)'}
+                    {paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment (Cashfree)'}
                   </p>
                   <p>
                     <strong>Items ({cartItems.length}):</strong>
@@ -588,9 +519,12 @@ export default function CheckoutPage() {
                   <button
                     onClick={handlePlaceOrder}
                     disabled={loading}
-                    className="w-full sm:w-auto px-8 py-3 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors disabled:opacity-50"
+                    className="w-full sm:w-auto px-8 py-3 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                   >
-                    {loading ? 'Processing...' : 'Place Order →'}
+                    {loading && (
+                      <div className="w-4 h-4 border-2 border-bone border-t-transparent rounded-full animate-spin" />
+                    )}
+                    <span>{loading ? 'Initiating Payment...' : 'Place Order →'}</span>
                   </button>
                 </div>
               </div>

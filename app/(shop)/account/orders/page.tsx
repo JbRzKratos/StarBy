@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 import type { Prisma } from '@prisma/client';
 import { products } from '@/data/products';
 
-/** Format a number as Indian Rupees — used here because this is a server component */
+/** Format a number as Indian Rupees */
 const formatINR = (amount: number) =>
   new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -14,7 +14,16 @@ const formatINR = (amount: number) =>
   }).format(amount);
 
 export default async function AccountOrdersPage() {
-  let orders: Prisma.OrderGetPayload<{ include: { items: true } }>[] = [];
+  let orders: Prisma.OrderGetPayload<{
+    include: {
+      items: {
+        include: {
+          orderCustomization: true;
+        };
+      };
+      statusHistory: true;
+    };
+  }>[] = [];
 
   try {
     const supabase = createClient();
@@ -30,12 +39,19 @@ export default async function AccountOrdersPage() {
     orders = await prisma.order.findMany({
       where: { userId: user.id },
       include: {
-        items: true,
+        items: {
+          include: {
+            orderCustomization: true,
+          },
+        },
+        statusHistory: {
+          orderBy: { createdAt: 'desc' },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
-  } catch {
-    // Fallback if DB not configured yet
+  } catch (err) {
+    console.error('Error fetching account orders:', err);
   }
 
   return (
@@ -65,8 +81,15 @@ export default async function AccountOrdersPage() {
           <div className="flex flex-col gap-6">
             {orders.map((order) => {
               const estDate = order.estimatedDeliveryDate
-                ? new Date(order.estimatedDeliveryDate).toLocaleDateString()
+                ? new Date(order.estimatedDeliveryDate).toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })
                 : 'TBD';
+
+              const orderNumber = order.publicOrderId || order.id;
+
               return (
                 <div
                   key={order.id}
@@ -75,12 +98,18 @@ export default async function AccountOrdersPage() {
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4 pb-6 border-b border-smoke/20">
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">Order ID</span>
-                      <p className="font-mono text-body-sm text-bone font-bold mt-1">{order.id}</p>
+                      <p className="font-mono text-body-sm text-bone font-bold mt-1 tracking-wider">
+                        {orderNumber}
+                      </p>
                     </div>
                     <div>
                       <span className="font-mono text-caption text-ash uppercase">Date</span>
                       <p className="font-mono text-body-sm text-bone mt-1">
-                        {new Date(order.createdAt).toLocaleDateString()}
+                        {new Date(order.createdAt).toLocaleDateString('en-IN', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
                       </p>
                     </div>
                     <div>
@@ -110,23 +139,39 @@ export default async function AccountOrdersPage() {
                     </div>
                   </div>
 
+                  {/* Order Items */}
                   <div className="flex flex-col gap-3">
                     {order.items.map((item) => {
                       const product = products.find((p) => p.id === item.productId);
                       const variant = product?.variants.find((v) => v.id === item.variantId);
-                      const displayName = product?.name ?? `Product ${item.productId}`;
-                      const displayVariant = variant?.name ?? item.variantId;
+                      const displayName =
+                        item.productNameSnapshot || product?.name || `Product ${item.productId}`;
+                      const displayVariant = variant?.name || item.variantId;
+                      const itemPrice = item.unitPrice ?? item.totalPrice / item.quantity;
+
                       return (
                         <div
                           key={item.id}
-                          className="flex items-center justify-between font-mono text-body-sm text-pearl"
+                          className="flex flex-col sm:flex-row sm:items-center justify-between font-mono text-body-sm text-pearl border-b border-smoke/10 pb-2 last:border-none"
                         >
-                          <span>
-                            {displayName}
-                            {variant ? ` — ${displayVariant}` : ''}
-                            {item.size ? ` (${item.size})` : ''} × {item.quantity}
+                          <div>
+                            <span className="text-bone font-medium">
+                              {displayName}
+                              {displayVariant && displayVariant !== 'default'
+                                ? ` — ${displayVariant}`
+                                : ''}
+                              {item.size ? ` (${item.size})` : ''}
+                            </span>
+                            <span className="text-ash ml-2">× {item.quantity}</span>
+                            {item.orderCustomization?.designFileName && (
+                              <span className="block text-caption text-cobalt mt-0.5">
+                                Custom Artwork: {item.orderCustomization.designFileName}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-bone font-bold mt-1 sm:mt-0">
+                            {formatINR(itemPrice * item.quantity)}
                           </span>
-                          <span className="text-bone">{formatINR(item.price * item.quantity)}</span>
                         </div>
                       );
                     })}
@@ -158,7 +203,7 @@ export default async function AccountOrdersPage() {
                     ) : (
                       <div className="flex-1">
                         <span className="font-mono text-caption text-ash italic">
-                          Tracking info will appear here once shipped.
+                          Fulfillment in progress. Tracking info will appear here once dispatched.
                         </span>
                       </div>
                     )}
@@ -170,11 +215,11 @@ export default async function AccountOrdersPage() {
                         Track Timeline
                       </Link>
                       <Link
-                        href={`/api/orders/${order.id}/invoice`}
+                        href={`/account/orders/${order.id}/invoice`}
                         target="_blank"
                         className="bg-bone text-charcoal hover:bg-pearl px-4 py-2 font-mono text-[10px] uppercase tracking-widest rounded transition-colors whitespace-nowrap text-center"
                       >
-                        Print Invoice
+                        View Invoice
                       </Link>
                     </div>
                   </div>
