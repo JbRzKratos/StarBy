@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '../lib/auth';
 import { SettingsClient } from '@/components/admin/settings/settings-client';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminSettingsPage() {
   await requireAdmin(); // Settings should be admin-only
 

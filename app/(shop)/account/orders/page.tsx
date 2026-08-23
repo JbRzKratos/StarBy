@@ -5,6 +5,8 @@ import { prisma } from '@/lib/prisma';
 import type { Prisma } from '@prisma/client';
 import { products } from '@/data/products';
 
+export const dynamic = 'force-dynamic';
+
 /** Format a number as Indian Rupees */
 const formatINR = (amount: number) =>
   new Intl.NumberFormat('en-IN', {

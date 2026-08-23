@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { PrintInvoiceButton } from '@/components/print-invoice-button';
 
+export const dynamic = 'force-dynamic';
+
 export default async function InvoicePage({ params }: { params: { id: string } }) {
   const supabase = createClient();
   const {

@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 function getStatusIndex(status: string) {
   const s = status.toLowerCase();
   if (['pending_payment'].includes(s)) return 0;

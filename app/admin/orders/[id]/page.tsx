@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { OrderDetailClient } from '@/components/admin/orders/order-detail-client';
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: { id: string };
 }

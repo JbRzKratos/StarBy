@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { AnalyticsClient } from '@/components/admin/analytics/analytics-client';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminAnalyticsPage() {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);

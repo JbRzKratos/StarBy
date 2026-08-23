@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { DashboardClient } from '@/components/admin/dashboard/dashboard-client';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboardPage() {
   const now = new Date();
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());

@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '../lib/auth';
 import { StaffClient } from '@/components/admin/staff/staff-client';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminStaffPage() {
   await requireAdmin(); // Only ADMIN can manage staff
 
