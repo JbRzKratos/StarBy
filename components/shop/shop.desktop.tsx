@@ -76,6 +76,10 @@ export function ShopDesktop({ category, products }: { category: string; products
   const [visibleCount, setVisibleCount] = useState(16);
 
   useEffect(() => {
+    setActiveTab(category || 'all');
+  }, [category]);
+
+  useEffect(() => {
     setFilterType(searchParams.get('type') || 'all');
     setSortMethod(searchParams.get('sort') || 'featured');
     setSearchQuery(searchParams.get('q') || '');

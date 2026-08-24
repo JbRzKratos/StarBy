@@ -17,6 +17,7 @@ import { FregoroLogo } from '@/components/ui/fregoro-logo';
 const menuLinks = [
   { href: '/', label: 'Home' },
   { href: '/products/all', label: 'Shop All' },
+  { href: '/magazine', label: 'Magazine Studio' },
   { href: '/split-poster', label: 'Split Posters' },
   { href: '/customize', label: 'Design DIY' },
   { href: '/account', label: 'My Account' },

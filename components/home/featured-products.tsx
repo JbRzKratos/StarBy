@@ -130,10 +130,16 @@ export function FeaturedProducts() {
         </div>
 
         {/* Category Tabs */}
-        <div className="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-6 mb-8 border-b border-smoke/30">
+        <div
+          role="tablist"
+          aria-label="Product categories"
+          className="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-6 mb-8 border-b border-smoke/30"
+        >
           {CATEGORY_TABS.map((tab) => (
             <button
               key={tab.id}
+              role="tab"
+              aria-selected={activeTab === tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`font-mono text-caption uppercase tracking-widest px-4 py-2.5 rounded-full whitespace-nowrap transition-all ${
                 activeTab === tab.id

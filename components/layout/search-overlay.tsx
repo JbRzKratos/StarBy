@@ -114,6 +114,9 @@ export function SearchOverlay() {
   return (
     <div
       ref={containerRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Search products"
       className="fixed inset-0 z-[160] hidden flex-col bg-charcoal/97 backdrop-blur-xl"
     >
       <div className="w-full max-w-4xl mx-auto p-6 md:p-12 flex flex-col h-full">
@@ -254,6 +257,7 @@ export function SearchOverlay() {
                           src={product.variants[0].images[0]}
                           alt={product.name}
                           fill
+                          sizes="(max-width: 424px) 100vw, (max-width: 1023px) 50vw, 33vw"
                           className="object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
                         />
                       ) : (

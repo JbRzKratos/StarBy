@@ -7,6 +7,7 @@ import { FregoroLogo } from '@/components/ui/fregoro-logo';
 const footerLinks = {
   shop: [
     { href: '/products/all', label: 'Shop All' },
+    { href: '/magazine', label: 'Magazine Studio' },
     { href: '/products/hoodies', label: 'Hoodies' },
     { href: '/products/mugs-cups', label: 'Cups & Mugs' },
     { href: '/products/skins', label: 'Device Skins' },

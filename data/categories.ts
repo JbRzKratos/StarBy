@@ -109,6 +109,18 @@ export const categories: Category[] = [
     featured: false,
     gradient: 'linear-gradient(135deg, #F5F1EA 0%, #D8D0C8 100%)',
   },
+  {
+    slug: 'magazine',
+    name: 'Magazine Studio',
+    tagline: 'Design & print your own editorial publication.',
+    description:
+      'Custom magazine design platform with professional templates, preflight check, and high-spec print delivery.',
+    productCount: 12,
+    featured: true,
+    gradient: 'linear-gradient(135deg, #0D0D0E 0%, #1A1A24 50%, #0057FF 100%)',
+    image:
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+  },
 ];
 
 export function getCategoryBySlug(slug: string): Category | undefined {

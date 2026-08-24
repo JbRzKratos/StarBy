@@ -120,7 +120,13 @@ export function CartDrawer() {
   if (!mounted) return null;
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-[99990] hidden flex-col lg:flex-row">
+    <div
+      ref={containerRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Shopping cart"
+      className="fixed inset-0 z-[99990] hidden flex-col lg:flex-row"
+    >
       {/* Background Overlay */}
       <div
         ref={bgRef}

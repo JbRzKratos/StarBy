@@ -117,8 +117,7 @@ export async function dispatchNotification(
       }
 
       default:
-        // Other events (PRINTING, PACKED) logged for audit
-        console.log(`[Notification Service] Event "${event}" recorded for order ${displayOrderId}`);
+        // Other events (PRINTING, PACKED) — no customer notification needed
         break;
     }
   } catch (err) {

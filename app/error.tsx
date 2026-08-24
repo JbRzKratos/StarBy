@@ -29,6 +29,13 @@ export default function GlobalError({
           An unexpected error occurred. You can try refreshing the page or return to the main store.
         </p>
 
+        {error?.message && (
+          <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-lg text-left max-w-full overflow-auto text-xs font-mono text-rose-300">
+            <div className="font-bold mb-1">Error: {error.message}</div>
+            {error.digest && <div className="text-[10px] opacity-70">Digest: {error.digest}</div>}
+          </div>
+        )}
+
         <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full">
           <button
             onClick={() => reset()}

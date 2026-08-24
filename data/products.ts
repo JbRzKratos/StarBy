@@ -1296,6 +1296,55 @@ export const products: Product[] = [
       },
     ],
   },
+  {
+    id: 'prod_mag_01',
+    slug: 'fregoro-custom-magazine',
+    name: 'FREGORO Editorial Magazine',
+    tagline: 'Print-ready custom editorial publication.',
+    description:
+      'Professional print magazine crafted with heavy silk cover, premium interior paper, and precision saddle-stitched or perfect binding.',
+    categorySlug: 'magazine',
+    basePrice: 499,
+    customizable: true,
+    tags: ['featured', 'new', 'editorial', 'bestseller'],
+    featured: true,
+    sizes: ['A4 Portrait', 'A4 Landscape', 'A5 Portrait', 'A5 Landscape'],
+    variants: [
+      {
+        id: 'v_mag_12p',
+        name: '12 Pages · 170gsm Silk',
+        color: 'standard',
+        colorHex: '#0D0D0E',
+        price: 499,
+        images: [
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+        ],
+        inStock: true,
+      },
+      {
+        id: 'v_mag_16p',
+        name: '16 Pages · 170gsm Silk',
+        color: 'standard',
+        colorHex: '#0D0D0E',
+        price: 649,
+        images: [
+          'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80',
+        ],
+        inStock: true,
+      },
+      {
+        id: 'v_mag_24p',
+        name: '24 Pages · 170gsm Silk',
+        color: 'standard',
+        colorHex: '#0D0D0E',
+        price: 899,
+        images: [
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+        ],
+        inStock: true,
+      },
+    ],
+  },
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {

@@ -67,6 +67,10 @@ export function ShopMobile({ category, products }: { category: string; products:
   const [visibleCount, setVisibleCount] = useState(12);
 
   useEffect(() => {
+    setActiveTab(category || 'all');
+  }, [category]);
+
+  useEffect(() => {
     setFilterType(searchParams.get('type') || 'all');
     setSortMethod(searchParams.get('sort') || 'featured');
     setSearchQuery(searchParams.get('q') || '');

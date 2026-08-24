@@ -4,16 +4,27 @@ import { devtools, persist } from 'zustand/middleware';
 /* ── Types ── */
 
 export interface CartCustomization {
-  color: string;
-  text: string;
-  textFont: string;
-  imageUrl: string | null;
+  color?: string;
+  text?: string;
+  textFont?: string;
+  imageUrl?: string | null;
   // Apparel customizer fields
   thumbnail?: string | undefined;
   garment?: string | undefined;
   view?: string | undefined;
   designFront?: string | undefined;
   designBack?: string | undefined;
+  // Magazine customizer fields
+  magazineId?: string | undefined;
+  magazineTitle?: string | undefined;
+  pageCount?: number | undefined;
+  coverFinish?: string | undefined;
+  paperWeight?: string | undefined;
+  bindingType?: string | undefined;
+  pdfType?: string | undefined;
+  fileName?: string | undefined;
+  fileSizeMb?: number | undefined;
+  binding?: string | undefined;
 }
 
 export interface CartItem {
