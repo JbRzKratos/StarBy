@@ -25,7 +25,7 @@ export default async function InvoicePage({ params }: { params: { id: string } }
   if (!order) return notFound();
 
   // Restrict to admin or the owner
-  if (user?.id !== order.userId && user?.email !== 'admin@starby.in') {
+  if (user?.id !== order.userId && user?.email !== 'admin@fregorostudios.com') {
     return notFound();
   }
 

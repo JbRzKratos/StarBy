@@ -19,8 +19,11 @@ export function ProductCardDesktop({ product }: ProductCardProps) {
   const isWishlisted = useWishlistStore((state) => state.hasItem(product.id));
   const { formatPrice } = usePrice();
 
+  const isComingSoon = product.categorySlug === 'mugs-cups';
   const variant = product.variants[0];
-  const href = `/products/${product.categorySlug}/${product.slug}`;
+  const href = isComingSoon
+    ? '/products/mugs-cups'
+    : `/products/${product.categorySlug}/${product.slug}`;
 
   return (
     <div ref={cardRef} className="group block relative" data-cursor-hover>
@@ -41,15 +44,23 @@ export function ProductCardDesktop({ product }: ProductCardProps) {
 
           {/* Tags */}
           <div className="absolute top-3 left-3 flex gap-2">
-            {product.customizable && (
-              <span className="px-2 py-1 bg-cobalt/90 text-bone font-mono text-[10px] uppercase tracking-wider rounded-md">
-                Customizable
+            {isComingSoon ? (
+              <span className="px-2.5 py-1 bg-[#1A1A1E] border border-[#ED9518]/50 text-[#ED9518] font-mono text-[10px] uppercase tracking-wider rounded-md font-bold shadow-lg">
+                Coming Soon
               </span>
-            )}
-            {product.tags.includes('new') && (
-              <span className="px-2 py-1 bg-ember/90 text-bone font-mono text-[10px] uppercase tracking-wider rounded-md">
-                New
-              </span>
+            ) : (
+              <>
+                {product.customizable && (
+                  <span className="px-2 py-1 bg-cobalt/90 text-bone font-mono text-[10px] uppercase tracking-wider rounded-md">
+                    Customizable
+                  </span>
+                )}
+                {product.tags.includes('new') && (
+                  <span className="px-2 py-1 bg-ember/90 text-bone font-mono text-[10px] uppercase tracking-wider rounded-md">
+                    New
+                  </span>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -63,7 +74,13 @@ export function ProductCardDesktop({ product }: ProductCardProps) {
             <p className="font-display text-body-sm text-pearl mt-0.5">{product.tagline}</p>
           </div>
           <span className="font-mono text-caption text-bone whitespace-nowrap mt-0.5">
-            {formatPrice(product.basePrice)}
+            {isComingSoon ? (
+              <span className="text-[#ED9518] font-mono text-xs uppercase tracking-wider font-bold">
+                Coming Soon
+              </span>
+            ) : (
+              formatPrice(product.basePrice)
+            )}
           </span>
         </div>
       </Link>

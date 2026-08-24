@@ -16,7 +16,7 @@ export function OfferBannerMobile() {
   const offerString = getOfferString(formatPrice);
 
   useEffect(() => {
-    if (sessionStorage.getItem('starby-offer-dismissed')) {
+    if (sessionStorage.getItem('fregoro-offer-dismissed')) {
       setIsDismissed(true);
     } else {
       setIsDismissed(false);
@@ -28,7 +28,7 @@ export function OfferBannerMobile() {
 
   const handleDismiss = () => {
     setIsDismissed(true);
-    sessionStorage.setItem('starby-offer-dismissed', 'true');
+    sessionStorage.setItem('fregoro-offer-dismissed', 'true');
   };
 
   useGSAP(

@@ -51,8 +51,42 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   const variant = product.variants[selectedVariant];
 
+  const isComingSoon = product.categorySlug === 'mugs-cups';
+
+  const [notifyEmail, setNotifyEmail] = useState('');
+  const [notifySubmitted, setNotifySubmitted] = useState(false);
+  const [notifyLoading, setNotifyLoading] = useState(false);
+  const [notifyError, setNotifyError] = useState('');
+
+  const handleNotifySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!notifyEmail || !notifyEmail.includes('@')) {
+      setNotifyError('Please enter a valid email address.');
+      return;
+    }
+    setNotifyLoading(true);
+    setNotifyError('');
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: notifyEmail }),
+      });
+      if (res.ok) {
+        setNotifySubmitted(true);
+        setNotifyEmail('');
+      } else {
+        setNotifyError('Unable to join waitlist. Please try again.');
+      }
+    } catch {
+      setNotifyError('Network error. Please try again.');
+    } finally {
+      setNotifyLoading(false);
+    }
+  };
+
   const handleAddToCart = () => {
-    if (!variant) return;
+    if (!variant || isComingSoon) return;
     addItem({
       productId: product.id,
       variantId: variant.id,
@@ -112,13 +146,21 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </button>
             </div>
 
-            {/* Price */}
-            <div className="flex items-baseline gap-3">
-              <span className="font-mono text-display-sm text-bone">
-                {formatPrice(variant?.price ?? product.basePrice)}
-              </span>
-              <span className="font-mono text-caption text-ash">Incl. taxes</span>
-            </div>
+            {/* Price or Coming Soon Banner */}
+            {isComingSoon ? (
+              <div className="flex items-center gap-3">
+                <span className="px-3.5 py-1.5 rounded-full bg-[#1A1A1E] border border-[#ED9518]/40 text-[#ED9518] font-mono text-xs font-bold uppercase tracking-[0.2em] shadow-inner">
+                  ✦ COMING SOON · 2026 ROADMAP
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-baseline gap-3">
+                <span className="font-mono text-display-sm text-bone">
+                  {formatPrice(variant?.price ?? product.basePrice)}
+                </span>
+                <span className="font-mono text-caption text-ash">Incl. taxes</span>
+              </div>
+            )}
 
             {/* Variants */}
             {product.variants.length > 1 && (
@@ -130,7 +172,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             )}
 
             {/* Sizes */}
-            {product.sizes && (
+            {!isComingSoon && product.sizes && (
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-caption text-ash uppercase tracking-widest">
@@ -166,30 +208,88 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               {product.description}
             </p>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-2">
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
-              >
-                Add to Cart
-              </button>
-              {product.customizable && (
-                <Link
-                  href={`/customize/${product.id}`}
-                  className="flex-1 py-3.5 border border-bone/20 text-bone font-mono text-caption uppercase tracking-widest text-center hover:bg-bone/5 transition-colors"
+            {/* Actions or Coming Soon Notification */}
+            {isComingSoon ? (
+              <div className="bg-[#121214] border border-[#F5F1EA]/15 rounded-xl p-5 sm:p-6 space-y-4 mt-2 shadow-xl">
+                <div className="flex items-center gap-2 text-[#ED9518] font-mono text-xs uppercase tracking-widest font-bold">
+                  <span className="w-2 h-2 rounded-full bg-[#ED9518] animate-pulse" />
+                  <span>In Active Development</span>
+                </div>
+                <p className="font-mono text-xs text-[#F5F1EA]/75 leading-relaxed">
+                  This item is part of the upcoming{' '}
+                  <strong className="text-[#F5F1EA]">FREGORO</strong> Cups & Mugs collection. Custom
+                  ceramic printing and production tooling are currently in progress.
+                </p>
+                {notifySubmitted ? (
+                  <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg font-mono text-xs text-emerald-400">
+                    ✓ You&apos;re on the launch list! We&apos;ll email you when this piece drops.
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={handleNotifySubmit}
+                    className="flex flex-col sm:flex-row gap-2 pt-1"
+                  >
+                    <input
+                      type="email"
+                      value={notifyEmail}
+                      onChange={(e) => setNotifyEmail(e.target.value)}
+                      placeholder="Enter your email for drop alert..."
+                      aria-label="Email for drop alert"
+                      required
+                      className="flex-1 bg-[#1A1A1E] border border-[#F5F1EA]/15 focus:border-[#0057FF] px-4 py-3 rounded-lg text-xs font-mono text-[#F5F1EA] placeholder-[#F5F1EA]/40 outline-none transition-colors"
+                    />
+                    <button
+                      type="submit"
+                      disabled={notifyLoading}
+                      className="px-5 py-3 bg-[#0057FF] hover:bg-[#0046CC] disabled:opacity-50 text-[#F5F1EA] font-mono text-xs font-bold uppercase tracking-wider rounded-lg transition-colors whitespace-nowrap shadow-lg shadow-[#0057FF]/20"
+                    >
+                      {notifyLoading ? 'Joining...' : 'Notify Me →'}
+                    </button>
+                  </form>
+                )}
+                {notifyError && <p className="font-mono text-xs text-rose-400">{notifyError}</p>}
+                <div className="pt-2 border-t border-[#F5F1EA]/10 flex justify-between items-center text-xs font-mono">
+                  <Link
+                    href="/products/mugs-cups"
+                    className="text-[#ED9518] hover:underline uppercase tracking-wider font-semibold"
+                  >
+                    ← Full Cups & Mugs Roadmap
+                  </Link>
+                  <Link
+                    href="/products/all"
+                    className="text-[#F5F1EA]/60 hover:text-[#0057FF] uppercase tracking-wider"
+                  >
+                    Browse Active Drops →
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-3 mt-2">
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
                 >
-                  Customize This →
-                </Link>
-              )}
-            </div>
+                  Add to Cart
+                </button>
+                {product.customizable && (
+                  <Link
+                    href={`/customize/${product.id}`}
+                    className="flex-1 py-3.5 border border-bone/20 text-bone font-mono text-caption uppercase tracking-widest text-center hover:bg-bone/5 transition-colors"
+                  >
+                    Customize This →
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </main>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 md:mt-24">
-        <ProductReviews productId={product.id} />
-      </div>
+      {!isComingSoon && (
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 md:mt-24">
+          <ProductReviews productId={product.id} />
+        </div>
+      )}
 
       {APPAREL_CATEGORIES.includes(product.categorySlug) && (
         <SizeFinderModal

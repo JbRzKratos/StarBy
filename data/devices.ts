@@ -1,5 +1,5 @@
 /**
- * Master Device skin template database for StarBy Customizer.
+ * Master Device skin template database for Fregoro Customizer.
  * Contains 160+ verified and estimated mobile phone & laptop device models.
  */
 

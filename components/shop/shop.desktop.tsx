@@ -7,13 +7,20 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
 import { CustomizerPanelDesktop } from '../customizer-hub/CustomizerHub.desktop';
+import { CupsMugsComingSoon } from './cups-mugs-coming-soon';
 import { usePrice } from '@/lib/hooks/usePrice';
 
 function DesktopProductCard({ product, index }: { product: Product; index: number }) {
   const { formatPrice } = usePrice();
+  const isComingSoon = product.categorySlug === 'mugs-cups';
+
   return (
     <Link
-      href={`/products/${product.categorySlug}/${product.slug || product.id}`}
+      href={
+        isComingSoon
+          ? '/products/mugs-cups'
+          : `/products/${product.categorySlug}/${product.slug || product.id}`
+      }
       className="group flex flex-col gap-0"
       style={{ perspective: '1000px' }}
     >
@@ -151,7 +158,11 @@ export function ShopDesktop({ category, products }: { category: string; products
           {/* Header & Categories */}
           <div className="flex flex-col gap-12 mb-16">
             <h1 className="font-display text-7xl uppercase tracking-tighter">
-              {activeTab === 'all' ? 'The Catalog' : activeTab}
+              {activeTab === 'all'
+                ? 'The Catalog'
+                : activeTab === 'mugs-cups'
+                  ? 'Cups & Mugs'
+                  : activeTab}
             </h1>
 
             <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar pb-4 border-b border-smoke/20">
@@ -177,198 +188,202 @@ export function ShopDesktop({ category, products }: { category: string; products
             </div>
           </div>
 
-          {/* Filters & Grid */}
-          <div className="flex items-start gap-12">
-            {/* Sidebar Filters */}
-            <aside className="w-64 flex-shrink-0 sticky top-32">
-              <div className="flex flex-col gap-10">
-                {/* Search */}
-                <div>
-                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                    Search
-                  </h4>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      const params = new URLSearchParams(searchParams.toString());
-                      if (e.target.value) params.set('q', e.target.value);
-                      else params.delete('q');
-                      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-                    }}
-                    placeholder="Search products..."
-                    className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke"
-                  />
-                </div>
-
-                {/* Price Range */}
-                <div>
-                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                    Price Range
-                  </h4>
-                  <div className="flex items-center gap-2">
+          {activeTab === 'mugs-cups' ? (
+            <CupsMugsComingSoon />
+          ) : (
+            /* Filters & Grid */
+            <div className="flex items-start gap-12">
+              {/* Sidebar Filters */}
+              <aside className="w-64 flex-shrink-0 sticky top-32">
+                <div className="flex flex-col gap-10">
+                  {/* Search */}
+                  <div>
+                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                      Search
+                    </h4>
                     <input
-                      type="number"
-                      value={minPrice}
+                      type="text"
+                      value={searchQuery}
                       onChange={(e) => {
-                        setMinPrice(e.target.value);
+                        setSearchQuery(e.target.value);
                         const params = new URLSearchParams(searchParams.toString());
-                        if (e.target.value) params.set('min', e.target.value);
-                        else params.delete('min');
+                        if (e.target.value) params.set('q', e.target.value);
+                        else params.delete('q');
                         router.replace(`${pathname}?${params.toString()}`, { scroll: false });
                       }}
-                      placeholder="Min"
-                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
+                      placeholder="Search products..."
+                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke"
                     />
-                    <span className="text-pearl">-</span>
-                    <input
-                      type="number"
-                      value={maxPrice}
-                      onChange={(e) => {
-                        setMaxPrice(e.target.value);
-                        const params = new URLSearchParams(searchParams.toString());
-                        if (e.target.value) params.set('max', e.target.value);
-                        else params.delete('max');
-                        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                  </div>
+
+                  {/* Price Range */}
+                  <div>
+                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                      Price Range
+                    </h4>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        value={minPrice}
+                        onChange={(e) => {
+                          setMinPrice(e.target.value);
+                          const params = new URLSearchParams(searchParams.toString());
+                          if (e.target.value) params.set('min', e.target.value);
+                          else params.delete('min');
+                          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                        }}
+                        placeholder="Min"
+                        className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
+                      />
+                      <span className="text-pearl">-</span>
+                      <input
+                        type="number"
+                        value={maxPrice}
+                        onChange={(e) => {
+                          setMaxPrice(e.target.value);
+                          const params = new URLSearchParams(searchParams.toString());
+                          if (e.target.value) params.set('max', e.target.value);
+                          else params.delete('max');
+                          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                        }}
+                        placeholder="Max"
+                        className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                      Identity
+                    </h4>
+                    <div className="flex flex-col gap-3">
+                      <label className="flex items-center gap-3 cursor-pointer group">
+                        <input
+                          type="radio"
+                          name="filterType"
+                          value="all"
+                          checked={filterType === 'all'}
+                          onChange={handleFilterChange}
+                          className="accent-bone"
+                        />
+                        <span
+                          className={`font-mono text-xs uppercase tracking-widest ${filterType === 'all' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
+                        >
+                          All Products
+                        </span>
+                      </label>
+                      <label className="flex items-center gap-3 cursor-pointer group">
+                        <input
+                          type="radio"
+                          name="filterType"
+                          value="original"
+                          checked={filterType === 'original'}
+                          onChange={handleFilterChange}
+                          className="accent-bone"
+                        />
+                        <span
+                          className={`font-mono text-xs uppercase tracking-widest ${filterType === 'original' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
+                        >
+                          Designed by Us
+                        </span>
+                      </label>
+                      <label className="flex items-center gap-3 cursor-pointer group">
+                        <input
+                          type="radio"
+                          name="filterType"
+                          value="customizable"
+                          checked={filterType === 'customizable'}
+                          onChange={handleFilterChange}
+                          className="accent-bone"
+                        />
+                        <span
+                          className={`font-mono text-xs uppercase tracking-widest ${filterType === 'customizable' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
+                        >
+                          Made to be Yours
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                      Sort By
+                    </h4>
+                    <select
+                      value={sortMethod}
+                      onChange={handleSortChange}
+                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs uppercase tracking-widest pb-2 outline-none cursor-pointer"
+                    >
+                      <option value="featured" className="bg-charcoal">
+                        Featured
+                      </option>
+                      <option value="new" className="bg-charcoal">
+                        New Arrivals
+                      </option>
+                      <option value="price-asc" className="bg-charcoal">
+                        Price: Low to High
+                      </option>
+                      <option value="price-desc" className="bg-charcoal">
+                        Price: High to Low
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </aside>
+
+              {/* Product Grid */}
+              <div className="flex-grow flex flex-col min-h-[50vh]">
+                <div className="flex justify-between items-center mb-8">
+                  <span className="font-mono text-[10px] text-pearl uppercase tracking-widest">
+                    Showing {displayProducts.length} of {filteredProducts.length} Results
+                  </span>
+                </div>
+
+                {displayProducts.length > 0 ? (
+                  <div className="grid grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-16">
+                    {displayProducts.map((product, index) => (
+                      <DesktopProductCard
+                        key={`prod-${product.id}`}
+                        product={product}
+                        index={index}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-32 border border-dashed border-smoke/20 rounded-lg">
+                    <h3 className="font-display text-4xl text-bone mb-4">No results found</h3>
+                    <p className="font-mono text-sm text-pearl mb-8">
+                      Try adjusting your filters or search criteria.
+                    </p>
+                    <button
+                      onClick={() => {
+                        setFilterType('all');
+                        setSortMethod('featured');
+                        setSearchQuery('');
+                        setMinPrice('');
+                        setMaxPrice('');
+                        router.replace(pathname, { scroll: false });
                       }}
-                      placeholder="Max"
-                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
-                    />
+                      className="bg-bone text-charcoal font-mono text-[11px] uppercase tracking-widest px-8 py-4 transition-transform hover:scale-105"
+                    >
+                      Clear Filters
+                    </button>
                   </div>
-                </div>
+                )}
 
-                <div>
-                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                    Identity
-                  </h4>
-                  <div className="flex flex-col gap-3">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input
-                        type="radio"
-                        name="filterType"
-                        value="all"
-                        checked={filterType === 'all'}
-                        onChange={handleFilterChange}
-                        className="accent-bone"
-                      />
-                      <span
-                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'all' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
-                      >
-                        All Products
-                      </span>
-                    </label>
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input
-                        type="radio"
-                        name="filterType"
-                        value="original"
-                        checked={filterType === 'original'}
-                        onChange={handleFilterChange}
-                        className="accent-bone"
-                      />
-                      <span
-                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'original' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
-                      >
-                        Designed by Us
-                      </span>
-                    </label>
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input
-                        type="radio"
-                        name="filterType"
-                        value="customizable"
-                        checked={filterType === 'customizable'}
-                        onChange={handleFilterChange}
-                        className="accent-bone"
-                      />
-                      <span
-                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'customizable' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
-                      >
-                        Made to be Yours
-                      </span>
-                    </label>
+                {visibleCount < filteredProducts.length && (
+                  <div className="mt-24 flex justify-center">
+                    <button
+                      onClick={() => setVisibleCount((p) => p + 16)}
+                      className="border-b border-smoke text-bone font-mono text-[11px] uppercase tracking-widest pb-1 hover:border-bone transition-colors"
+                    >
+                      Load More
+                    </button>
                   </div>
-                </div>
-
-                <div>
-                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                    Sort By
-                  </h4>
-                  <select
-                    value={sortMethod}
-                    onChange={handleSortChange}
-                    className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs uppercase tracking-widest pb-2 outline-none cursor-pointer"
-                  >
-                    <option value="featured" className="bg-charcoal">
-                      Featured
-                    </option>
-                    <option value="new" className="bg-charcoal">
-                      New Arrivals
-                    </option>
-                    <option value="price-asc" className="bg-charcoal">
-                      Price: Low to High
-                    </option>
-                    <option value="price-desc" className="bg-charcoal">
-                      Price: High to Low
-                    </option>
-                  </select>
-                </div>
+                )}
               </div>
-            </aside>
-
-            {/* Product Grid */}
-            <div className="flex-grow flex flex-col min-h-[50vh]">
-              <div className="flex justify-between items-center mb-8">
-                <span className="font-mono text-[10px] text-pearl uppercase tracking-widest">
-                  Showing {displayProducts.length} of {filteredProducts.length} Results
-                </span>
-              </div>
-
-              {displayProducts.length > 0 ? (
-                <div className="grid grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-16">
-                  {displayProducts.map((product, index) => (
-                    <DesktopProductCard
-                      key={`prod-${product.id}`}
-                      product={product}
-                      index={index}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-32 border border-dashed border-smoke/20 rounded-lg">
-                  <h3 className="font-display text-4xl text-bone mb-4">No results found</h3>
-                  <p className="font-mono text-sm text-pearl mb-8">
-                    Try adjusting your filters or search criteria.
-                  </p>
-                  <button
-                    onClick={() => {
-                      setFilterType('all');
-                      setSortMethod('featured');
-                      setSearchQuery('');
-                      setMinPrice('');
-                      setMaxPrice('');
-                      router.replace(pathname, { scroll: false });
-                    }}
-                    className="bg-bone text-charcoal font-mono text-[11px] uppercase tracking-widest px-8 py-4 transition-transform hover:scale-105"
-                  >
-                    Clear Filters
-                  </button>
-                </div>
-              )}
-
-              {visibleCount < filteredProducts.length && (
-                <div className="mt-24 flex justify-center">
-                  <button
-                    onClick={() => setVisibleCount((p) => p + 16)}
-                    className="border-b border-smoke text-bone font-mono text-[11px] uppercase tracking-widest pb-1 hover:border-bone transition-colors"
-                  >
-                    Load More
-                  </button>
-                </div>
-              )}
             </div>
-          </div>
+          )}
         </div>
       )}
     </main>

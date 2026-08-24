@@ -16,7 +16,7 @@ export function OfferBannerDesktop() {
 
   useEffect(() => {
     // Check session storage after mount
-    if (sessionStorage.getItem('starby-offer-dismissed')) {
+    if (sessionStorage.getItem('fregoro-offer-dismissed')) {
       setIsDismissed(true);
     } else {
       setIsDismissed(false);
@@ -25,7 +25,7 @@ export function OfferBannerDesktop() {
 
   const handleDismiss = () => {
     setIsDismissed(true);
-    sessionStorage.setItem('starby-offer-dismissed', 'true');
+    sessionStorage.setItem('fregoro-offer-dismissed', 'true');
   };
 
   useGSAP(

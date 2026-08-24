@@ -82,10 +82,11 @@ export const categories: Category[] = [
   },
   {
     slug: 'mugs-cups',
-    name: 'Mugs & Cups',
-    tagline: 'Your morning ritual.',
-    description: 'Custom ceramic, magic mugs, and tumblers.',
-    productCount: 8,
+    name: 'Cups & Mugs',
+    tagline: 'Your everyday studio ritual.',
+    description:
+      'A new way to enjoy FREGORO is on the way. Our Cups & Mugs collection is currently in development and will be available soon.',
+    productCount: 6,
     featured: true,
     gradient: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
     image: '/images/products/classic_mug_11oz.png',

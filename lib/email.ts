@@ -113,7 +113,7 @@ export async function sendContactAutoReply(toEmail: string, name: string) {
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
           <h2 style="color: #000;">Hey ${safeName}, we received your message!</h2>
           <p>Thanks for reaching out to Fregoro Studios. Our team will get back to you within 24–48 hours.</p>
-          <p>In the meantime, you can browse our collection or check your order status at <a href="https://starby.in" style="color: #0057FF;">fregorostudios.com</a>.</p>
+          <p>In the meantime, you can browse our collection or check your order status at <a href="https://fregoro.vercel.app" style="color: #0057FF;">fregorostudios.com</a>.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
           <p style="color: #888; font-size: 13px;">If you didn't submit this form, you can ignore this email.</p>
           <p>– The Fregoro Studios Team</p>
