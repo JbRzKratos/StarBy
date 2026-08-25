@@ -34,7 +34,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-[#F5F1EA]/10 bg-[#0E0E10] text-[#F5F1EA]">
-      <div className="section-container max-w-7xl mx-auto px-6 sm:px-8 py-16 md:py-20">
+      <div className="section-container py-[clamp(3.5rem,3rem+3vw,5.5rem)]">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Brand & Newsletter */}
           <div className="lg:col-span-5 pr-0 lg:pr-12">

@@ -35,7 +35,7 @@ export function StudioTeaser() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 md:py-44 grain-overlay overflow-hidden"
+      className="relative py-[clamp(5rem,4rem+6vw,10rem)] grain-overlay overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #0E0E0F 0%, #1A1A1E 40%, #2d1b69 100%)',
       }}

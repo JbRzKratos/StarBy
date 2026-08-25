@@ -17,10 +17,10 @@ export function NavigationClient({ variant = 'solid' }: NavigationProps) {
 
   return (
     <>
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
         <NavigationDesktop variant={effectiveVariant} />
       </div>
-      <div className="block md:hidden">
+      <div className="block lg:hidden">
         <NavigationMobile variant={effectiveVariant} />
       </div>
     </>

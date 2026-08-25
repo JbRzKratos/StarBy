@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export function HeroDesktop() {
   return (
-    <section className="relative w-full min-h-[92vh] lg:min-h-screen bg-[#F5F1EA] text-[#0A0A0A] overflow-hidden flex flex-col justify-between pt-36 pb-12 px-8 lg:px-16 select-none">
+    <section className="relative w-full min-h-[92dvh] lg:min-h-[100dvh] bg-[#F5F1EA] text-[#0A0A0A] overflow-hidden flex flex-col justify-between pt-[clamp(7rem,6rem+4vw,9.5rem)] pb-[clamp(2rem,1.5rem+2vw,3.5rem)] px-[clamp(1.5rem,1rem+2.5vw,4rem)] select-none">
       {/* ── 1. Kicker text (top-left) ── */}
       <div className="relative z-20 max-w-xs">
         <p className="font-mono text-xs md:text-sm font-black tracking-[0.25em] uppercase leading-relaxed text-[#0A0A0A]">
@@ -31,13 +31,13 @@ export function HeroDesktop() {
       </div>
 
       {/* ── 3. Centered Full Model Cutout Photograph (Positioned so head is 100% visible below header nav) ── */}
-      <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-10 pt-28 pb-8">
-        <div className="relative h-[78vh] lg:h-[82vh] w-[450px] lg:w-[600px] max-w-full">
+      <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-10 pt-28 pb-6">
+        <div className="relative h-[80vh] lg:h-[85vh] 2xl:h-[88vh] w-[500px] lg:w-[650px] 2xl:w-[750px] max-w-full">
           <Image
             src="/images/hero-model-transparent.png"
             alt="Fregoro Studios Editorial Streetwear Model"
             fill
-            sizes="(max-width: 1024px) 450px, 600px"
+            sizes="(max-width: 1024px) 500px, (max-width: 1536px) 650px, 750px"
             priority
             className="object-contain object-bottom drop-shadow-[0_20px_35px_rgba(0,0,0,0.3)]"
           />

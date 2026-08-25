@@ -80,6 +80,26 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
   const [enableSnap, setEnableSnap] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Responsive sidebar collapse states
+  const [leftPanelOpen, setLeftPanelOpen] = useState(true);
+  const [rightPanelOpen, setRightPanelOpen] = useState(true);
+  const [isMobileScreen, setIsMobileScreen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const initialW = window.innerWidth;
+      if (initialW < 1280) setRightPanelOpen(false);
+      if (initialW < 768) setLeftPanelOpen(false);
+      setIsMobileScreen(initialW < 768);
+
+      const handleResize = () => {
+        setIsMobileScreen(window.innerWidth < 768);
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
   // History & Clipboard
   const [undoStack, setUndoStack] = useState<MagazineDocument[]>([]);
   const [redoStack, setRedoStack] = useState<MagazineDocument[]>([]);
@@ -508,7 +528,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
   return (
     <div
       onContextMenu={handleContextMenu}
-      className="h-screen w-screen flex flex-col bg-[#0A0A0C] overflow-hidden text-[#F5F1EA] select-none"
+      className="h-[100dvh] w-screen flex flex-col bg-[#0A0A0C] overflow-hidden text-[#F5F1EA] select-none"
     >
       {/* ── 1. Top Studio Toolbar ── */}
       <TopToolbar
@@ -536,45 +556,72 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
         onDownloadPdf={handleDownloadPdf}
         onOrderPrint={handleOrder}
         preflightReport={preflightReport}
+        leftPanelOpen={leftPanelOpen}
+        onToggleLeftPanel={() => setLeftPanelOpen((prev) => !prev)}
+        rightPanelOpen={rightPanelOpen}
+        onToggleRightPanel={() => setRightPanelOpen((prev) => !prev)}
       />
 
       {/* ── 2. Three-Column Workspace Stage ── */}
       <div className="flex-1 flex overflow-hidden relative">
-        <LeftPanel
-          document={doc}
-          currentPageIndex={currentPageIndex}
-          selectedElementIds={selectedElementIds}
-          onSelectPage={(index) => {
-            setCurrentPageIndex(index);
-            setSelectedElementIds([]);
-          }}
-          onAddPage={handleAddPage}
-          onDuplicatePage={handleDuplicatePage}
-          onDeletePage={handleDeletePage}
-          onAddElement={handleAddElement}
-          onSelectElement={(id) => setSelectedElementIds([id])}
-          onToggleLockElement={handleToggleLock}
-          onToggleVisibilityElement={handleToggleVisibility}
-          onReorderLayer={(id, dir) =>
-            handleReorderLayer(id, dir === 'up' ? 'forward' : 'backward')
-          }
-          onApplyTheme={(theme: MagazineTheme) =>
-            pushState({ ...doc, theme, updatedAt: new Date().toISOString() })
-          }
-          onApplyTemplate={(tplId: string) => {
-            const tpl = MAGAZINE_TEMPLATES.find((t) => t.id === tplId);
-            if (!tpl) return;
-            pushState({
-              ...doc,
-              templateId: tpl.id,
-              theme: tpl.theme,
-              pages: JSON.parse(JSON.stringify(tpl.pages)),
-              pageCount: tpl.pages.length,
-              updatedAt: new Date().toISOString(),
-            });
-          }}
-        />
+        {/* Left Panel */}
+        {leftPanelOpen && (
+          <div
+            className={
+              isMobileScreen
+                ? 'absolute inset-y-0 left-0 z-50 flex shadow-2xl'
+                : 'relative shrink-0 flex h-full'
+            }
+          >
+            <LeftPanel
+              document={doc}
+              currentPageIndex={currentPageIndex}
+              selectedElementIds={selectedElementIds}
+              onSelectPage={(index) => {
+                setCurrentPageIndex(index);
+                setSelectedElementIds([]);
+                if (isMobileScreen) setLeftPanelOpen(false);
+              }}
+              onAddPage={handleAddPage}
+              onDuplicatePage={handleDuplicatePage}
+              onDeletePage={handleDeletePage}
+              onAddElement={(el) => {
+                handleAddElement(el);
+                if (isMobileScreen) setLeftPanelOpen(false);
+              }}
+              onSelectElement={(id) => setSelectedElementIds([id])}
+              onToggleLockElement={handleToggleLock}
+              onToggleVisibilityElement={handleToggleVisibility}
+              onReorderLayer={(id, dir) =>
+                handleReorderLayer(id, dir === 'up' ? 'forward' : 'backward')
+              }
+              onApplyTheme={(theme: MagazineTheme) =>
+                pushState({ ...doc, theme, updatedAt: new Date().toISOString() })
+              }
+              onApplyTemplate={(tplId: string) => {
+                const tpl = MAGAZINE_TEMPLATES.find((t) => t.id === tplId);
+                if (!tpl) return;
+                pushState({
+                  ...doc,
+                  templateId: tpl.id,
+                  theme: tpl.theme,
+                  pages: JSON.parse(JSON.stringify(tpl.pages)),
+                  pageCount: tpl.pages.length,
+                  updatedAt: new Date().toISOString(),
+                });
+                if (isMobileScreen) setLeftPanelOpen(false);
+              }}
+            />
+            {isMobileScreen && (
+              <div
+                className="fixed inset-0 bg-black/60 -z-10"
+                onClick={() => setLeftPanelOpen(false)}
+              />
+            )}
+          </div>
+        )}
 
+        {/* Center Canvas */}
         <CanvasWorkspace
           document={doc}
           currentPageIndex={currentPageIndex}
@@ -598,37 +645,54 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
           onToggleLock={handleToggleLock}
         />
 
-        <RightInspector
-          document={doc}
-          currentPageIndex={currentPageIndex}
-          selectedElements={selectedElements}
-          onUpdateElement={(id, updates) =>
-            handleUpdateElement(currentPageIndex, id, updates, true)
-          }
-          onUpdatePageBackground={(bgColor) => {
-            const updatedPages = doc.pages.map((p, idx) =>
-              idx === currentPageIndex ? { ...p, backgroundColor: bgColor } : p,
-            );
-            pushState({ ...doc, pages: updatedPages });
-          }}
-          onUpdateDocumentProps={(updates) => pushState({ ...doc, ...updates })}
-          onAlign={handleAlign}
-          onDistribute={handleDistribute}
-          onDeleteSelected={handleDeleteSelected}
-          onBringForward={() =>
-            selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'forward')
-          }
-          onSendBackward={() =>
-            selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'backward')
-          }
-          onBringToFront={() =>
-            selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'front')
-          }
-          onSendToBack={() =>
-            selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'back')
-          }
-          onToggleLock={handleToggleLock}
-        />
+        {/* Right Inspector */}
+        {rightPanelOpen && (
+          <div
+            className={
+              isMobileScreen
+                ? 'absolute inset-y-0 right-0 z-50 flex shadow-2xl'
+                : 'relative shrink-0 flex h-full'
+            }
+          >
+            <RightInspector
+              document={doc}
+              currentPageIndex={currentPageIndex}
+              selectedElements={selectedElements}
+              onUpdateElement={(id, updates) =>
+                handleUpdateElement(currentPageIndex, id, updates, true)
+              }
+              onUpdatePageBackground={(bgColor) => {
+                const updatedPages = doc.pages.map((p, idx) =>
+                  idx === currentPageIndex ? { ...p, backgroundColor: bgColor } : p,
+                );
+                pushState({ ...doc, pages: updatedPages });
+              }}
+              onUpdateDocumentProps={(updates) => pushState({ ...doc, ...updates })}
+              onAlign={handleAlign}
+              onDistribute={handleDistribute}
+              onDeleteSelected={handleDeleteSelected}
+              onBringForward={() =>
+                selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'forward')
+              }
+              onSendBackward={() =>
+                selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'backward')
+              }
+              onBringToFront={() =>
+                selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'front')
+              }
+              onSendToBack={() =>
+                selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'back')
+              }
+              onToggleLock={handleToggleLock}
+            />
+            {isMobileScreen && (
+              <div
+                className="fixed inset-0 bg-black/60 -z-10"
+                onClick={() => setRightPanelOpen(false)}
+              />
+            )}
+          </div>
+        )}
       </div>
 
       {/* ── 3. Right Click Context Menu ── */}

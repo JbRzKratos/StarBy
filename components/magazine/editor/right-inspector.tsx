@@ -49,7 +49,7 @@ export function RightInspector({
   const singleElement = selectedElements.length === 1 ? selectedElements[0] : null;
 
   return (
-    <aside className="w-72 sm:w-80 bg-[#121214] border-l border-[#F5F1EA]/10 flex flex-col h-full select-none text-[#F5F1EA] overflow-y-auto p-4 space-y-6 z-30">
+    <aside className="w-[calc(100vw-2rem)] max-w-xs sm:w-72 xl:w-80 bg-[#121214] border-l border-[#F5F1EA]/10 flex flex-col h-full select-none text-[#F5F1EA] overflow-y-auto p-4 space-y-6 z-30">
       {/* ── 1. MULTI-SELECTION INSPECTOR ── */}
       {isMultiSelect && (
         <div className="space-y-5">

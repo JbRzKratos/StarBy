@@ -42,7 +42,7 @@ export function BentoGrid() {
   const categories = getFeaturedCategories();
 
   return (
-    <section className="py-20 md:py-32">
+    <section className="py-[var(--section-py)]">
       <div className="section-container">
         <div className="flex items-end justify-between mb-12">
           <div>
@@ -55,7 +55,7 @@ export function BentoGrid() {
 
         <div
           ref={gridRef}
-          className="grid grid-flow-row-dense grid-cols-2 md:grid-cols-4 auto-rows-[200px] md:auto-rows-[240px] gap-3 md:gap-4"
+          className="grid grid-flow-row-dense grid-cols-2 md:grid-cols-4 auto-rows-[clamp(170px,14vw+80px,260px)] gap-[var(--grid-gap)]"
         >
           {categories.map((cat, i) => (
             <BentoTile

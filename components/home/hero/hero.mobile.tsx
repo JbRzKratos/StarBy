@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export function HeroMobile() {
   return (
-    <section className="relative w-full min-h-[90vh] bg-[#F5F1EA] text-[#0A0A0A] overflow-hidden flex flex-col justify-between pt-28 pb-8 px-5 select-none">
+    <section className="relative w-full min-h-[90dvh] bg-[#F5F1EA] text-[#0A0A0A] overflow-hidden flex flex-col justify-between pt-28 pb-8 px-5 select-none">
       {/* ── 1. Kicker text (top) ── */}
       <div className="relative z-20">
         <p className="font-mono text-xs font-black tracking-[0.2em] uppercase leading-relaxed text-[#0A0A0A]">
@@ -30,12 +30,12 @@ export function HeroMobile() {
 
       {/* ── 4. Centered Full Model Cutout (Positioned cleanly between nav header and bottom CTAs) ── */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 pt-20 pb-52">
-        <div className="relative h-[60vh] w-[320px] max-w-full">
+        <div className="relative h-[clamp(260px,52dvh,480px)] w-[clamp(240px,75vw,360px)] max-w-full">
           <Image
             src="/images/hero-model-transparent.png"
             alt="Fregoro Studios Editorial Streetwear Model"
             fill
-            sizes="320px"
+            sizes="(max-width: 430px) 320px, 360px"
             priority
             className="object-contain object-center drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)]"
           />

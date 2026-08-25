@@ -83,18 +83,18 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
       </div>
       <nav
         ref={containerRef}
-        className={`pointer-events-auto w-full px-6 md:px-12 py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
+        className={`pointer-events-auto w-full px-[clamp(1rem,2vw+0.5rem,3rem)] py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
       >
         {/* Logo */}
         <FregoroLogo textIsDark={textIsDark} size="md" />
 
         {/* Desktop Nav Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="flex items-center gap-[clamp(1.25rem,1.8vw,2rem)]">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`font-mono text-caption uppercase tracking-widest font-bold transition-colors ${
+              className={`font-mono text-caption uppercase tracking-widest font-bold transition-colors whitespace-nowrap ${
                 textIsDark
                   ? 'text-[#0A0A0A] hover:text-[#ED9518]'
                   : 'text-[#F5F1EA] hover:text-[#ED9518]'

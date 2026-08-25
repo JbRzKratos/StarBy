@@ -63,7 +63,7 @@ export function SplitPosterTeaser() {
   );
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-32 grain-overlay overflow-hidden">
+    <section ref={sectionRef} className="py-[var(--section-py)] grain-overlay overflow-hidden">
       <div className="section-container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
           {/* Visual */}

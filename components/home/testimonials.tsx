@@ -57,7 +57,7 @@ export function Testimonials() {
   };
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-32 overflow-hidden bg-charcoal">
+    <section ref={sectionRef} className="py-[var(--section-py)] overflow-hidden bg-charcoal">
       <div className="section-container mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <span className="overline-label block mb-3 text-cobalt">Customer Reviews</span>

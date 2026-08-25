@@ -119,9 +119,33 @@ export function SearchOverlay() {
       aria-label="Search products"
       className="fixed inset-0 z-[160] hidden flex-col bg-charcoal/97 backdrop-blur-xl"
     >
+      {/* Top-Right Fixed Close Button */}
+      <button
+        onClick={() => setSearchOpen(false)}
+        aria-label="Close search overlay"
+        className="absolute top-5 right-5 md:top-8 md:right-8 z-50 flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#1A1A1E] border border-[#F5F1EA]/20 text-[#F5F1EA]/70 hover:text-white hover:border-white/50 hover:bg-[#2A2A2F] transition-all duration-200 group shadow-lg"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-widest font-bold hidden sm:inline text-[#F5F1EA]/50 group-hover:text-white">
+          ESC
+        </span>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
       <div className="w-full max-w-4xl mx-auto p-6 md:p-12 flex flex-col h-full">
         {/* Search input row */}
-        <div className="flex items-center gap-4 mb-6 md:mb-8">
+        <div className="flex items-center gap-4 mb-6 md:mb-8 pr-14 sm:pr-0">
           <svg
             className="w-6 h-6 text-pearl shrink-0"
             fill="none"
@@ -148,11 +172,11 @@ export function SearchOverlay() {
           <button
             onClick={() => setSearchOpen(false)}
             aria-label="Close search"
-            className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full border border-smoke text-pearl hover:text-bone hover:border-bone transition-colors"
+            className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full border border-smoke/40 text-pearl hover:text-bone hover:border-bone hover:bg-smoke/20 transition-colors"
           >
             <svg
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

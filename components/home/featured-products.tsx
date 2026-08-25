@@ -110,7 +110,7 @@ export function FeaturedProducts() {
   };
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-32 bg-charcoal relative">
+    <section ref={sectionRef} className="py-[var(--section-py)] bg-charcoal relative">
       <div className="section-container">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
@@ -206,7 +206,10 @@ export function FeaturedProducts() {
             </div>
 
             {/* Upcoming Concept Previews */}
-            <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              ref={gridRef}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[var(--grid-gap)]"
+            >
               {MUG_PREVIEWS.map((item) => (
                 <Link
                   key={item.name}
@@ -265,7 +268,7 @@ export function FeaturedProducts() {
           /* Products Grid for Active Categories */
           <div
             ref={gridRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[var(--grid-gap)]"
           >
             {filtered.map((product) => (
               <ProductCard key={product.id} product={product} />

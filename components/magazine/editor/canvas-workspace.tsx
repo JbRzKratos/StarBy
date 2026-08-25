@@ -87,7 +87,36 @@ export function CanvasWorkspace({
   const isSpacePressedRef = useRef(false);
 
   const dim = PAGE_DIMENSIONS[doc.dimensionKey] || DEFAULT_PAGE_DIMENSION;
-  const aspectRatio = dim.widthMm / dim.heightMm;
+
+  // Intrinsic document dimensions in screen pixels (96 DPI conversion)
+  const MM_TO_PX = 3.7795275591;
+  const pageWidthPx = Math.round(dim.widthMm * MM_TO_PX);
+  const pageHeightPx = Math.round(dim.heightMm * MM_TO_PX);
+
+  // ResizeObserver to track workspace dimensions dynamically
+  const [workspaceSize, setWorkspaceSize] = useState<{ width: number; height: number }>({
+    width: 1000,
+    height: 700,
+  });
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleResize = () => {
+      if (el) {
+        setWorkspaceSize({
+          width: el.clientWidth || 1000,
+          height: el.clientHeight || 700,
+        });
+      }
+    };
+
+    handleResize();
+    const ro = new ResizeObserver(handleResize);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // Track space key for panning
   useEffect(() => {
@@ -128,6 +157,18 @@ export function CanvasWorkspace({
     if (p1) pagesToRender.push({ page: p1, index: baseIdx });
     if (p2) pagesToRender.push({ page: p2, index: baseIdx + 1 });
   }
+
+  // Calculate total document layout in px & fitScale
+  const isSpread = viewMode === 'spread' && pagesToRender.length === 2;
+  const totalDocWidthPx = pageWidthPx * (isSpread ? 2 : 1);
+  const totalDocHeightPx = pageHeightPx;
+
+  const padX = workspaceSize.width < 640 ? 16 : 48;
+  const padY = workspaceSize.height < 640 ? 16 : 48;
+  const availW = Math.max(100, workspaceSize.width - padX * 2);
+  const availH = Math.max(100, workspaceSize.height - padY * 2);
+  const fitScale = Math.min(availW / totalDocWidthPx, availH / totalDocHeightPx);
+  const effectiveScale = zoom * fitScale;
 
   // ─── Direct Element PointerDown Drag Handler ───
   const handleElementPointerDown = (
@@ -361,11 +402,9 @@ export function CanvasWorkspace({
         data-canvas-background="true"
         className="relative bg-white shadow-2xl select-none overflow-hidden"
         style={{
-          aspectRatio: `${aspectRatio}`,
+          width: `${pageWidthPx}px`,
+          height: `${pageHeightPx}px`,
           backgroundColor: bgColor,
-          height: '75vh',
-          maxHeight: '850px',
-          minHeight: '480px',
           boxShadow: '0 25px 65px -12px rgba(0, 0, 0, 0.75)',
         }}
       >
@@ -616,9 +655,11 @@ export function CanvasWorkspace({
           }}
         >
           <div
-            className="transition-transform duration-100 ease-out flex items-center justify-center gap-0"
+            className="transition-transform duration-100 ease-out flex items-center justify-center gap-0 shrink-0"
             style={{
-              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+              width: `${totalDocWidthPx}px`,
+              height: `${totalDocHeightPx}px`,
+              transform: `translate(${pan.x}px, ${pan.y}px) scale(${effectiveScale})`,
               transformOrigin: 'center center',
             }}
           >

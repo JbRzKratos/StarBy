@@ -30,6 +30,10 @@ interface TopToolbarProps {
   onDownloadPdf: () => void;
   onOrderPrint: () => void;
   preflightReport?: PreflightReport | null;
+  leftPanelOpen?: boolean;
+  onToggleLeftPanel?: () => void;
+  rightPanelOpen?: boolean;
+  onToggleRightPanel?: () => void;
 }
 
 export function TopToolbar({
@@ -57,6 +61,10 @@ export function TopToolbar({
   onDownloadPdf,
   onOrderPrint,
   preflightReport,
+  leftPanelOpen = true,
+  onToggleLeftPanel,
+  rightPanelOpen = true,
+  onToggleRightPanel,
 }: TopToolbarProps) {
   const dim = PAGE_DIMENSIONS[doc.dimensionKey] || DEFAULT_PAGE_DIMENSION;
   const isPrintReady = preflightReport ? preflightReport.isPrintReady : true;
@@ -105,6 +113,22 @@ export function TopToolbar({
             />
             <span className="hidden md:inline">{isSaving ? 'Saving...' : 'Saved ✓'}</span>
           </span>
+
+          {/* Left Sidebar Toggle */}
+          {onToggleLeftPanel && (
+            <button
+              onClick={onToggleLeftPanel}
+              title={leftPanelOpen ? 'Hide Left Sidebar' : 'Show Left Sidebar'}
+              className={`px-2 py-1 rounded-md border text-[11px] font-mono font-bold transition-all flex items-center gap-1 ${
+                leftPanelOpen
+                  ? 'bg-[#0057FF]/20 border-[#0057FF]/40 text-white'
+                  : 'bg-[#16161A] border-[#F5F1EA]/10 text-[#F5F1EA]/60 hover:text-white'
+              }`}
+            >
+              <span>◧</span>
+              <span className="hidden sm:inline">Panels</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -224,8 +248,23 @@ export function TopToolbar({
         </div>
       </div>
 
-      {/* ── RIGHT: Preflight, Preview, PDF & Order ── */}
+      {/* ── RIGHT: Inspector Toggle, Preflight, Preview, PDF & Order ── */}
       <div className="flex items-center gap-2">
+        {/* Right Inspector Toggle */}
+        {onToggleRightPanel && (
+          <button
+            onClick={onToggleRightPanel}
+            title={rightPanelOpen ? 'Hide Inspector' : 'Show Inspector'}
+            className={`px-2 py-1.5 rounded-lg border text-xs font-mono font-bold transition-all flex items-center gap-1 ${
+              rightPanelOpen
+                ? 'bg-[#0057FF]/20 border-[#0057FF]/40 text-white'
+                : 'bg-[#16161A] border-[#F5F1EA]/10 text-[#F5F1EA]/60 hover:text-white'
+            }`}
+          >
+            <span className="hidden sm:inline">Inspector</span>
+            <span>◨</span>
+          </button>
+        )}
         {/* Preflight Readiness Indicator */}
         <button
           onClick={onOpenPreflight}

@@ -84,6 +84,23 @@ const config: Config = {
         'body-sm': ['0.875rem', { lineHeight: '1.5' }],
         caption: ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.05em' }],
         overline: ['0.6875rem', { lineHeight: '1.3', letterSpacing: '0.15em' }],
+        /* Fluid display sizes — smooth interpolation between mobile and desktop */
+        'display-fluid-sm': [
+          'clamp(1.25rem, 1rem + 0.75vw, 1.875rem)',
+          { lineHeight: '1.15', letterSpacing: '-0.015em' },
+        ],
+        'display-fluid-md': [
+          'clamp(1.75rem, 1.25rem + 1.5vw, 2.5rem)',
+          { lineHeight: '1.1', letterSpacing: '-0.02em' },
+        ],
+        'display-fluid-lg': [
+          'clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)',
+          { lineHeight: '1.05', letterSpacing: '-0.025em' },
+        ],
+        'display-fluid-xl': [
+          'clamp(3rem, 2rem + 3vw, 5rem)',
+          { lineHeight: '1', letterSpacing: '-0.03em' },
+        ],
       },
       transitionDuration: {
         fast: '150ms',
@@ -132,6 +149,7 @@ const config: Config = {
       md: '768px', // Tablet
       lg: '1024px', // Desktop
       xl: '1440px', // Large Desktop
+      '2xl': '1536px', // Ultrawide / QHD+
     },
   },
   plugins: [],

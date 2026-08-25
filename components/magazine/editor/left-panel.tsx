@@ -259,8 +259,8 @@ export function LeftPanel({
         ))}
       </div>
 
-      {/* ── DRAWER CONTENT (300px WIDTH) ── */}
-      <div className="w-72 sm:w-80 bg-[#121214] flex flex-col h-full overflow-hidden text-[#F5F1EA]">
+      {/* ── DRAWER CONTENT ── */}
+      <div className="w-[calc(100vw-4.5rem)] max-w-xs sm:w-72 xl:w-80 bg-[#121214] flex flex-col h-full overflow-hidden text-[#F5F1EA]">
         {/* ── 1. PAGES TAB: VISUAL MINIATURES & REORDERING ── */}
         {activeTab === 'pages' && (
           <div className="flex flex-col h-full p-4 space-y-4">
