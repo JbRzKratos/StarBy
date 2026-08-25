@@ -21,7 +21,7 @@ interface WebXRPreviewProps {
   onClose: () => void;
 }
 
-const CSS_TO_M = 0.003;
+const CSS_TO_M = 0.0015;
 const GAP = 0.015;
 
 function PosterMesh({

@@ -91,8 +91,6 @@ export function SplitPosterVisualizerMobile() {
           height: `${panelH}px`,
           bgPosition: `${bgPosX}% ${bgPosY}%`,
           bgSize: `${bgSizeX}% ${bgSizeY}%`,
-          gridCol: undefined,
-          gridRow: undefined,
         });
       }
     } else if (layoutStyle === 'grid') {

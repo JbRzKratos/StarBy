@@ -117,35 +117,11 @@ export function SearchOverlay() {
       role="dialog"
       aria-modal="true"
       aria-label="Search products"
-      className="fixed inset-0 z-[160] hidden flex-col bg-charcoal/97 backdrop-blur-xl"
+      className="fixed inset-0 z-[160] hidden flex-col bg-charcoal/95 backdrop-blur-md"
     >
-      {/* Top-Right Fixed Close Button */}
-      <button
-        onClick={() => setSearchOpen(false)}
-        aria-label="Close search overlay"
-        className="absolute top-5 right-5 md:top-8 md:right-8 z-50 flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#1A1A1E] border border-[#F5F1EA]/20 text-[#F5F1EA]/70 hover:text-white hover:border-white/50 hover:bg-[#2A2A2F] transition-all duration-200 group shadow-lg"
-      >
-        <span className="font-mono text-[10px] uppercase tracking-widest font-bold hidden sm:inline text-[#F5F1EA]/50 group-hover:text-white">
-          ESC
-        </span>
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </button>
-
-      <div className="w-full max-w-4xl mx-auto p-6 md:p-12 flex flex-col h-full">
+      <div className="w-full max-w-[var(--container-max)] mx-auto px-[var(--section-px)] py-6 md:py-12 flex flex-col h-full">
         {/* Search input row */}
-        <div className="flex items-center gap-4 mb-6 md:mb-8 pr-14 sm:pr-0">
+        <div className="flex items-center gap-4 mb-6 md:mb-8">
           <svg
             className="w-6 h-6 text-pearl shrink-0"
             fill="none"
@@ -167,20 +143,25 @@ export function SearchOverlay() {
             onKeyDown={(e) => {
               if (e.key === 'Escape') setSearchOpen(false);
             }}
-            className="flex-1 bg-transparent border-none text-display-sm md:text-display-md font-display text-bone focus:outline-none placeholder:text-smoke"
+            className="flex-1 min-w-0 bg-transparent border-none text-display-sm md:text-[clamp(1.75rem,1.25rem+1.5vw,3rem)] leading-none font-display text-bone focus:outline-none placeholder:text-smoke truncate"
           />
           <button
             onClick={() => setSearchOpen(false)}
             aria-label="Close search"
-            className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full border border-smoke/40 text-pearl hover:text-bone hover:border-bone hover:bg-smoke/20 transition-colors"
+            className="flex-shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#1A1A1E] border border-[#F5F1EA]/20 text-[#F5F1EA]/70 hover:text-white hover:border-white/50 hover:bg-[#2A2A2F] transition-all duration-200 group"
           >
+            <span className="font-mono text-[10px] uppercase tracking-widest font-bold hidden sm:inline text-[#F5F1EA]/50 group-hover:text-white">
+              ESC
+            </span>
             <svg
               width="18"
               height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
@@ -217,7 +198,7 @@ export function SearchOverlay() {
           )}
         </div>
 
-        <div className="flex-1 overflow-y-auto pr-2">
+        <div className="flex-1 overflow-y-auto pr-2 pb-24 scrollbar-thin scrollbar-thumb-smoke/30 scrollbar-track-transparent">
           {isEmpty ? (
             <div className="flex flex-col items-center py-20 gap-4 text-center">
               <svg
