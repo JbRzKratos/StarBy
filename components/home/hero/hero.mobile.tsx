@@ -29,7 +29,7 @@ export function HeroMobile() {
         </div>
 
         {/* 3-Character Visual in Foreground */}
-        <div className="relative z-10 w-full h-[clamp(280px,46dvh,420px)] max-w-[440px] flex items-end justify-center pointer-events-none">
+        <div className="relative z-10 w-full max-w-[440px] aspect-[1230/977] flex items-end justify-center pointer-events-none">
           <HeroThreeCharacters priority isMobile />
         </div>
       </div>
@@ -44,9 +44,9 @@ export function HeroMobile() {
           </div>
 
           <h2 className="font-display font-black text-[1.45rem] leading-[1.1] tracking-tight text-[#0A0A0A] uppercase">
-            CLOTHING THAT
+            DESIGNS THAT
             <br />
-            SPEAKS FOR YOU.
+            SPEAK FOR YOU.
           </h2>
 
           <p className="font-sans text-xs text-[#0A0A0A]/70">Minimal designs. Maximum impact.</p>

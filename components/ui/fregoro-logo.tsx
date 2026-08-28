@@ -37,32 +37,38 @@ export function FregoroLogo({
   }[size];
 
   const content = (
-    <span className={`inline-flex items-center select-none ${className}`}>
-      {variant === 'mark' ? (
+    <span className={`inline-flex items-center gap-2.5 sm:gap-3 select-none ${className}`}>
+      {variant !== 'text' && (
         <span className="relative inline-flex items-center justify-center flex-shrink-0">
           <Image
-            src="/images/fregoro-emblem.png"
+            src={variant === 'mark' ? "/images/fregoro-emblem.png" : "/images/fregoro-logo.png"}
             alt="Fregoro Studios Icon"
-            width={60}
-            height={40}
+            width={120}
+            height={60}
             priority
             className={`${sizeClasses.img} object-contain transition-transform group-hover:scale-105 duration-300 ${
               textIsDark ? '' : 'brightness-0 invert'
             }`}
           />
         </span>
-      ) : (
-        <span className="relative inline-flex items-center justify-center flex-shrink-0">
-          <Image
-            src="/images/fregoro-logo.png"
-            alt="Fregoro Studios Logo"
-            width={180}
-            height={60}
-            priority
-            className={`h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105 duration-300 ${
-              textIsDark ? '' : 'brightness-0 invert'
+      )}
+
+      {variant !== 'mark' && (
+        <span className="inline-flex flex-col leading-none justify-center">
+          <span
+            className={`font-display uppercase leading-none ${sizeClasses.text} ${
+              textIsDark ? 'text-[#0A0A0A]' : 'text-[#F5F1EA]'
             }`}
-          />
+          >
+            Fregoro
+          </span>
+          <span
+            className={`font-mono font-bold uppercase ${sizeClasses.sub} mt-0.5 leading-none ${
+              textIsDark ? 'text-[#0A0A0A]/70' : 'text-[#ED9518]'
+            }`}
+          >
+            Studios
+          </span>
         </span>
       )}
     </span>

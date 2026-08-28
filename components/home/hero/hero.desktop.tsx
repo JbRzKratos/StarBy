@@ -50,7 +50,7 @@ export function HeroDesktop() {
 
       {/* ── 4. Centered Extra-Large Three-Character Group Visual ── */}
       <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-10 pt-10 pb-0">
-        <div className="relative h-[86vh] lg:h-[92vh] 2xl:h-[95vh] w-full max-w-[1100px] md:max-w-[1260px] lg:max-w-[1420px] 2xl:max-w-[1600px]">
+        <div className="relative w-[95vw] sm:w-[85vw] md:w-[75vw] lg:w-[65vw] max-w-[1300px] aspect-[1230/977] max-h-[85vh]">
           <HeroThreeCharacters priority />
         </div>
       </div>
@@ -65,9 +65,9 @@ export function HeroDesktop() {
           </div>
 
           <h2 className="font-display font-black text-2xl sm:text-3xl lg:text-[2.5rem] tracking-tight leading-[1.05] text-[#0A0A0A] uppercase">
-            CLOTHING THAT
+            DESIGNS THAT
             <br />
-            SPEAKS FOR YOU.
+            SPEAK FOR YOU.
           </h2>
 
           <p className="font-sans text-xs sm:text-sm text-[#0A0A0A]/70 font-normal">
