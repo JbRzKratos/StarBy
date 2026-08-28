@@ -49,9 +49,7 @@ export function HeroMobile() {
             SPEAKS FOR YOU.
           </h2>
 
-          <p className="font-sans text-xs text-[#0A0A0A]/70">
-            Minimal designs. Maximum impact.
-          </p>
+          <p className="font-sans text-xs text-[#0A0A0A]/70">Minimal designs. Maximum impact.</p>
         </div>
 
         {/* Action Buttons */}

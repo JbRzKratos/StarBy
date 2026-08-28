@@ -8,10 +8,7 @@ interface HeroThreeCharactersProps {
   isMobile?: boolean;
 }
 
-export function HeroThreeCharacters({
-  priority = true,
-  className = '',
-}: HeroThreeCharactersProps) {
+export function HeroThreeCharacters({ priority = true, className = '' }: HeroThreeCharactersProps) {
   return (
     <div
       className={`relative w-full h-full flex items-end justify-center select-none pointer-events-none ${className}`}

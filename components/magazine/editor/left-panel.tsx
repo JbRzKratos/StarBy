@@ -91,7 +91,7 @@ export function LeftPanel({
   const [isDragOver, setIsDragOver] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [draggedPageIdx, setDraggedPageIdx] = useState<number | null>(null);
   const [dragOverPageIdx, setDragOverPageIdx] = useState<number | null>(null);
 
@@ -572,7 +572,12 @@ export function LeftPanel({
                     }}
                     onDrop={(e) => {
                       e.preventDefault();
-                      if (draggedLayerId !== null && draggedLayerId !== el.id && onReorderLayerAbsolute && activePage) {
+                      if (
+                        draggedLayerId !== null &&
+                        draggedLayerId !== el.id &&
+                        onReorderLayerAbsolute &&
+                        activePage
+                      ) {
                         const targetOriginalIdx = activePage.elements.length - 1 - visualIdx;
                         onReorderLayerAbsolute(draggedLayerId, targetOriginalIdx);
                       }
@@ -590,7 +595,9 @@ export function LeftPanel({
                       <span className="font-mono text-[10px] text-[#0057FF] font-bold uppercase pointer-events-none">
                         {el.type === 'text' ? 'T' : el.type === 'image' ? 'IMG' : 'OBJ'}
                       </span>
-                      <span className="font-display text-xs text-white truncate pointer-events-none">{el.name}</span>
+                      <span className="font-display text-xs text-white truncate pointer-events-none">
+                        {el.name}
+                      </span>
                     </div>
 
                     <div className="flex items-center gap-1">
@@ -660,7 +667,9 @@ export function LeftPanel({
 
             {/* ── Upload Zone ── */}
             <div className="space-y-2">
-              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F1EA]/50">My Uploads</span>
+              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F1EA]/50">
+                My Uploads
+              </span>
 
               {/* Hidden file input */}
               <input
@@ -674,7 +683,10 @@ export function LeftPanel({
 
               {/* Drag-and-drop zone */}
               <div
-                onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDragOver(true);
+                }}
                 onDragLeave={() => setIsDragOver(false)}
                 onDrop={(e) => {
                   e.preventDefault();
@@ -750,7 +762,9 @@ export function LeftPanel({
 
             {/* Divider */}
             <div className="border-t border-[#F5F1EA]/10 pt-4">
-              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F1EA]/50">Curated Photos</span>
+              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F1EA]/50">
+                Curated Photos
+              </span>
             </div>
 
             {/* Curated grid */}

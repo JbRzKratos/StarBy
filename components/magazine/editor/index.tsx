@@ -492,13 +492,20 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
   };
 
   const handleReorderPage = (fromIndex: number, toIndex: number) => {
-    if (fromIndex === toIndex || fromIndex < 0 || toIndex < 0 || fromIndex >= doc.pages.length || toIndex >= doc.pages.length) return;
-    
+    if (
+      fromIndex === toIndex ||
+      fromIndex < 0 ||
+      toIndex < 0 ||
+      fromIndex >= doc.pages.length ||
+      toIndex >= doc.pages.length
+    )
+      return;
+
     const updatedPages = [...doc.pages];
     const [movedPage] = updatedPages.splice(fromIndex, 1);
     if (!movedPage) return;
     updatedPages.splice(toIndex, 0, movedPage);
-    
+
     const renumberedPages = updatedPages.map((p, i) => ({ ...p, pageNumber: i + 1 }));
 
     pushState({
@@ -506,7 +513,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
       pages: renumberedPages,
       updatedAt: new Date().toISOString(),
     });
-    
+
     if (currentPageIndex === fromIndex) {
       setCurrentPageIndex(toIndex);
     } else if (currentPageIndex > fromIndex && currentPageIndex <= toIndex) {
@@ -516,16 +523,19 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     }
   };
 
-  const handleAddElement = (element: MagazineElement) => {
-    if (!activePage) return;
-    const updatedElements = [...activePage.elements, element];
-    const updatedPages = doc.pages.map((p, idx) =>
-      idx === currentPageIndex ? { ...p, elements: updatedElements } : p,
-    );
+  const handleAddElement = useCallback(
+    (element: MagazineElement) => {
+      if (!activePage) return;
+      const updatedElements = [...activePage.elements, element];
+      const updatedPages = doc.pages.map((p, idx) =>
+        idx === currentPageIndex ? { ...p, elements: updatedElements } : p,
+      );
 
-    pushState({ ...doc, pages: updatedPages, updatedAt: new Date().toISOString() });
-    setSelectedElementIds([element.id]);
-  };
+      pushState({ ...doc, pages: updatedPages, updatedAt: new Date().toISOString() });
+      setSelectedElementIds([element.id]);
+    },
+    [activePage, doc, currentPageIndex, pushState],
+  );
 
   const handleUpdateElement = (
     pageIndex: number,
@@ -564,42 +574,39 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     }
   };
 
-  const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB
-  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+  const handleUploadImage = useCallback((file: File): Promise<string | null> => {
+    const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
-  const handleUploadImage = useCallback(
-    (file: File): Promise<string | null> => {
-      return new Promise((resolve) => {
-        setUploadError(null);
+    return new Promise((resolve) => {
+      setUploadError(null);
 
-        if (!ALLOWED_TYPES.includes(file.type)) {
-          setUploadError('Only JPEG, PNG, and WebP images are supported.');
-          resolve(null);
-          return;
-        }
-        if (file.size > MAX_UPLOAD_BYTES) {
-          setUploadError(
-            `File too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Max size is 10 MB.`,
-          );
-          resolve(null);
-          return;
-        }
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        setUploadError('Only JPEG, PNG, and WebP images are supported.');
+        resolve(null);
+        return;
+      }
+      if (file.size > MAX_UPLOAD_BYTES) {
+        setUploadError(
+          `File too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Max size is 10 MB.`,
+        );
+        resolve(null);
+        return;
+      }
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const dataUrl = e.target?.result as string;
-          setUploadedImages((prev) => [dataUrl, ...prev]);
-          resolve(dataUrl);
-        };
-        reader.onerror = () => {
-          setUploadError('Failed to read file. Please try again.');
-          resolve(null);
-        };
-        reader.readAsDataURL(file);
-      });
-    },
-    [],
-  );
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        setUploadedImages((prev) => [dataUrl, ...prev]);
+        resolve(dataUrl);
+      };
+      reader.onerror = () => {
+        setUploadError('Failed to read file. Please try again.');
+        resolve(null);
+      };
+      reader.readAsDataURL(file);
+    });
+  }, []);
 
   const handleReplaceImage = useCallback(
     async (file: File) => {
@@ -643,14 +650,20 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
         id: `el-${Date.now()}`,
         type: 'image' as const,
         name: 'Uploaded Image',
-        frame: { x: 10, y: 15, width: 80, height: 50, zIndex: (activePage.elements.length + 1) * 10 },
+        frame: {
+          x: 10,
+          y: 15,
+          width: 80,
+          height: 50,
+          zIndex: (activePage.elements.length + 1) * 10,
+        },
         content: url,
         originalDpi: 96,
         imageStyle: { objectFit: 'cover' as const, borderRadius: 4 },
       };
       handleAddElement(newEl);
     },
-    [handleUploadImage, selectedElementIds, activePage, currentPageIndex],
+    [handleUploadImage, selectedElementIds, activePage, currentPageIndex, handleAddElement],
   );
 
   const handleOpenPreflight = () => {
@@ -781,7 +794,12 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
               uploadError={uploadError}
               onUploadImage={handleUploadImage}
               onInsertUploadedImage={(url) => handleInsertUploadedImage(url)}
-              selectedImageId={selectedElementIds.length === 1 && activePage?.elements.find(e => e.id === selectedElementIds[0])?.type === 'image' ? selectedElementIds[0] : undefined}
+              selectedImageId={
+                selectedElementIds.length === 1 &&
+                activePage?.elements.find((e) => e.id === selectedElementIds[0])?.type === 'image'
+                  ? selectedElementIds[0]
+                  : undefined
+              }
             />
             {isMobileScreen && (
               <div

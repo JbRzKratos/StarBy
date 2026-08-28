@@ -95,6 +95,7 @@ export async function generatePosterUSDZ(panels: Panel[]): Promise<string> {
 
   const exporter = new USDZExporter();
   // Bypass outdated @types/three definitions that don't match Three.js 185 USDZExporter signature
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const arrayBuffer = await (exporter as any).parse(scene);
   const blob = new Blob([arrayBuffer as BlobPart], { type: 'model/vnd.usdz+zip' });
   return URL.createObjectURL(blob);

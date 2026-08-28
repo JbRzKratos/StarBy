@@ -180,11 +180,7 @@ export function CanvasWorkspace({
 
   // ─── Direct Element PointerDown Drag Handler ───
   const handleElementPointerDown = useCallback(
-    (
-      e: React.PointerEvent,
-      pageIdx: number,
-      element: MagazineElement,
-    ) => {
+    (e: React.PointerEvent, pageIdx: number, element: MagazineElement) => {
       // If double-click text editing is active on this element, let text edit events pass through
       if (editingTextId === element.id || croppingImageId === element.id) {
         return;
@@ -300,7 +296,15 @@ export function CanvasWorkspace({
       window.addEventListener('pointermove', onPointerMove, { passive: false });
       window.addEventListener('pointerup', onPointerUp, { passive: false });
     },
-    [doc, editingTextId, croppingImageId, selectedElementIds, onSelectElements, onUpdateElement, enableSnap],
+    [
+      doc,
+      editingTextId,
+      croppingImageId,
+      selectedElementIds,
+      onSelectElements,
+      onUpdateElement,
+      enableSnap,
+    ],
   );
 
   // ─── Mouse Wheel Zoom (Ctrl+Scroll) and Pan (Scroll) ───
@@ -702,7 +706,7 @@ export function CanvasWorkspace({
                   <span className="font-mono text-[9px] text-[#F5F1EA]/50 font-bold mr-2 uppercase tracking-widest">
                     Page {page.pageNumber || index + 1}
                   </span>
-                  
+
                   {onDuplicatePage && (
                     <button
                       onClick={() => onDuplicatePage(index)}

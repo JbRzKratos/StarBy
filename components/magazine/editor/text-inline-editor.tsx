@@ -133,7 +133,10 @@ export function TextInlineEditor({
               A-
             </button>
             <div className="w-[1px] h-4 bg-white/15 mx-0.5" />
-            <label title="Text Color" className="w-6 h-6 rounded flex items-center justify-center cursor-pointer hover:bg-[#25252E] transition-colors overflow-hidden">
+            <label
+              title="Text Color"
+              className="w-6 h-6 rounded flex items-center justify-center cursor-pointer hover:bg-[#25252E] transition-colors overflow-hidden"
+            >
               <span className="text-xs">🎨</span>
               <input
                 type="color"
