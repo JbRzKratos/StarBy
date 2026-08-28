@@ -36,12 +36,14 @@ export function FregoroLogo({
     },
   }[size];
 
+  const logoSrc = variant === 'mark' ? '/images/fregoro-emblem.png' : '/images/fregoro-logo.png';
+
   const content = (
     <span className={`inline-flex items-center gap-2.5 sm:gap-3 select-none ${className}`}>
       {variant !== 'text' && (
         <span className="relative inline-flex items-center justify-center flex-shrink-0">
           <Image
-            src={variant === 'mark' ? "/images/fregoro-emblem.png" : "/images/fregoro-logo.png"}
+            src={logoSrc}
             alt="Fregoro Studios Icon"
             width={120}
             height={60}
