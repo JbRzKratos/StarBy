@@ -51,29 +51,27 @@ export async function middleware(request: NextRequest) {
       },
     });
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
     const path = request.nextUrl.pathname;
+    
+    // Only fetch user on protected routes to prevent timeouts on public pages
+    const isProtectedRoute = path.startsWith('/account') || path.startsWith('/admin');
 
-    // Protect /account routes
-    if (path.startsWith('/account') && !user) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
+    if (isProtectedRoute) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    // Protect all /admin routes — require login first
-    if (path.startsWith('/admin')) {
-      if (!user) {
+      // Protect /account routes
+      if (path.startsWith('/account') && !user) {
         return NextResponse.redirect(new URL('/login', request.url));
       }
 
-      // Fetch role from DB via Prisma is not possible in edge middleware,
-      // so we store role in a signed session cookie set at login (handled server-side).
-      // Here we do a lightweight check against the session JWT custom claims if available,
-      // falling back to allowing the page to load (the layout/page does the authoritative check).
-      // The authoritative RBAC check is enforced in each page's requireAdmin/requireStaff call.
-      // This middleware acts as the first unauthenticated-user gate only.
+      // Protect all /admin routes — require login first
+      if (path.startsWith('/admin')) {
+        if (!user) {
+          return NextResponse.redirect(new URL('/login', request.url));
+        }
+      }
     }
   }
 
