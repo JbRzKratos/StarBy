@@ -95,6 +95,7 @@ export function ImageCropOverlay({
           alt="Magazine Graphic"
           fill
           sizes="800px"
+          draggable={false}
           className={`pointer-events-none ${
             imageStyle?.objectFit === 'contain'
               ? 'object-contain'

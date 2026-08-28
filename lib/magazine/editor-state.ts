@@ -187,6 +187,32 @@ export function reorderElementZIndex(
 }
 
 /**
+ * Reorders an element in a page's z-index stack to an absolute target index.
+ */
+export function reorderElementAbsolute(
+  page: MagazinePage,
+  elementId: string,
+  toIndex: number,
+): MagazinePage {
+  const elements = [...page.elements];
+  const fromIndex = elements.findIndex((el) => el.id === elementId);
+  if (fromIndex === -1) return page;
+
+  const el = elements[fromIndex];
+  if (!el) return page;
+
+  elements.splice(fromIndex, 1);
+  elements.splice(toIndex, 0, el);
+
+  const normalized = elements.map((item, idx) => ({
+    ...item,
+    frame: { ...item.frame, zIndex: (idx + 1) * 10 },
+  }));
+
+  return { ...page, elements: normalized };
+}
+
+/**
  * Calculates snapping suggestions against page center, margins, and neighboring objects.
  */
 export interface SnapResult {

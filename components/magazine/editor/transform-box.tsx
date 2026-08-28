@@ -13,6 +13,7 @@ interface TransformBoxProps {
   onBringForward?: (() => void) | undefined;
   onSendBackward?: (() => void) | undefined;
   onToggleLock?: (() => void) | undefined;
+  onMoveStart?: ((e: React.PointerEvent) => void) | undefined;
 }
 
 type HandleType = 'nw' | 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w' | 'rot';
@@ -27,6 +28,7 @@ export function TransformBox({
   onBringForward,
   onSendBackward,
   onToggleLock,
+  onMoveStart,
 }: TransformBoxProps) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [activeHandle, setActiveHandle] = useState<HandleType | null>(null);
@@ -179,6 +181,14 @@ export function TransformBox({
         onClick={(e) => e.stopPropagation()}
         className="absolute -bottom-9 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-[#0E0E10] border border-[#F5F1EA]/20 px-2 py-1 rounded-lg shadow-2xl z-50 pointer-events-auto select-none"
       >
+        <button
+          onPointerDown={onMoveStart}
+          title="Move Element"
+          className="p-1 text-[12px] text-white hover:text-[#0057FF] cursor-move flex items-center justify-center font-bold"
+        >
+          ✥
+        </button>
+        <div className="w-[1px] h-3 bg-white/20 mx-0.5" />
         <button
           onClick={onBringForward}
           title="Bring Forward"

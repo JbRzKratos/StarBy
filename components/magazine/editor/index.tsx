@@ -18,6 +18,7 @@ import {
   alignElements,
   distributeElements,
   reorderElementZIndex,
+  reorderElementAbsolute,
 } from '@/lib/magazine/editor-state';
 import { runPreflightCheck } from '@/lib/magazine/preflight';
 import { downloadMagazinePdf } from '@/lib/magazine/pdf-generator';
@@ -110,6 +111,29 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showPreflightModal, setShowPreflightModal] = useState(false);
   const [preflightReport, setPreflightReport] = useState<PreflightReport | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // Uploaded images — persisted to localStorage
+  const [uploadedImages, setUploadedImages] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = localStorage.getItem('fregoro_uploads');
+      return saved ? (JSON.parse(saved) as string[]) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Persist uploaded images
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      // Only store last 20 uploads to limit storage usage
+      localStorage.setItem('fregoro_uploads', JSON.stringify(uploadedImages.slice(-20)));
+    } catch {
+      // QuotaExceededError — silently ignore
+    }
+  }, [uploadedImages]);
 
   // Push new state to history
   const pushState = useCallback(
@@ -262,6 +286,16 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     (elementId: string, action: 'front' | 'back' | 'forward' | 'backward') => {
       if (!activePage) return;
       const updatedPage = reorderElementZIndex(activePage, elementId, action);
+      const updatedPages = doc.pages.map((p, idx) => (idx === currentPageIndex ? updatedPage : p));
+      pushState({ ...doc, pages: updatedPages, updatedAt: new Date().toISOString() });
+    },
+    [activePage, doc, currentPageIndex, pushState],
+  );
+
+  const handleReorderLayerAbsolute = useCallback(
+    (elementId: string, toIndex: number) => {
+      if (!activePage) return;
+      const updatedPage = reorderElementAbsolute(activePage, elementId, toIndex);
       const updatedPages = doc.pages.map((p, idx) => (idx === currentPageIndex ? updatedPage : p));
       pushState({ ...doc, pages: updatedPages, updatedAt: new Date().toISOString() });
     },
@@ -457,6 +491,31 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     setSelectedElementIds([]);
   };
 
+  const handleReorderPage = (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex || fromIndex < 0 || toIndex < 0 || fromIndex >= doc.pages.length || toIndex >= doc.pages.length) return;
+    
+    const updatedPages = [...doc.pages];
+    const [movedPage] = updatedPages.splice(fromIndex, 1);
+    if (!movedPage) return;
+    updatedPages.splice(toIndex, 0, movedPage);
+    
+    const renumberedPages = updatedPages.map((p, i) => ({ ...p, pageNumber: i + 1 }));
+
+    pushState({
+      ...doc,
+      pages: renumberedPages,
+      updatedAt: new Date().toISOString(),
+    });
+    
+    if (currentPageIndex === fromIndex) {
+      setCurrentPageIndex(toIndex);
+    } else if (currentPageIndex > fromIndex && currentPageIndex <= toIndex) {
+      setCurrentPageIndex(currentPageIndex - 1);
+    } else if (currentPageIndex < fromIndex && currentPageIndex >= toIndex) {
+      setCurrentPageIndex(currentPageIndex + 1);
+    }
+  };
+
   const handleAddElement = (element: MagazineElement) => {
     if (!activePage) return;
     const updatedElements = [...activePage.elements, element];
@@ -474,20 +533,125 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     updates: Partial<MagazineElement>,
     isFinal: boolean,
   ) => {
-    const updatedPages = doc.pages.map((page, idx) => {
-      if (idx !== pageIndex) return page;
-      const updatedElements = page.elements.map((el) =>
-        el.id === elementId ? { ...el, ...updates } : el,
-      );
-      return { ...page, elements: updatedElements };
-    });
-
     if (isFinal) {
-      pushState({ ...doc, pages: updatedPages, updatedAt: new Date().toISOString() });
+      // Commit to undo history using latest state
+      setDoc((prev) => {
+        const updatedPages = prev.pages.map((page, idx) => {
+          if (idx !== pageIndex) return page;
+          const updatedElements = page.elements.map((el) =>
+            el.id === elementId ? { ...el, ...updates } : el,
+          );
+          return { ...page, elements: updatedElements };
+        });
+        const newDoc = { ...prev, pages: updatedPages, updatedAt: new Date().toISOString() };
+        // Push to undo stack
+        setUndoStack((prevStack) => [...prevStack.slice(-30), prev]);
+        setRedoStack([]);
+        return newDoc;
+      });
     } else {
-      setDoc((prev) => ({ ...prev, pages: updatedPages }));
+      // Live drag update — use functional form to avoid stale closure
+      setDoc((prev) => {
+        const updatedPages = prev.pages.map((page, idx) => {
+          if (idx !== pageIndex) return page;
+          const updatedElements = page.elements.map((el) =>
+            el.id === elementId ? { ...el, ...updates } : el,
+          );
+          return { ...page, elements: updatedElements };
+        });
+        return { ...prev, pages: updatedPages };
+      });
     }
   };
+
+  const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+  const handleUploadImage = useCallback(
+    (file: File): Promise<string | null> => {
+      return new Promise((resolve) => {
+        setUploadError(null);
+
+        if (!ALLOWED_TYPES.includes(file.type)) {
+          setUploadError('Only JPEG, PNG, and WebP images are supported.');
+          resolve(null);
+          return;
+        }
+        if (file.size > MAX_UPLOAD_BYTES) {
+          setUploadError(
+            `File too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Max size is 10 MB.`,
+          );
+          resolve(null);
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const dataUrl = e.target?.result as string;
+          setUploadedImages((prev) => [dataUrl, ...prev]);
+          resolve(dataUrl);
+        };
+        reader.onerror = () => {
+          setUploadError('Failed to read file. Please try again.');
+          resolve(null);
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    [],
+  );
+
+  const handleReplaceImage = useCallback(
+    async (file: File) => {
+      const dataUrl = await handleUploadImage(file);
+      if (!dataUrl || selectedElementIds.length === 0) return;
+      // Replace the selected image element's content
+      const selectedId = selectedElementIds[0];
+      if (!selectedId || !activePage) return;
+      const el = activePage.elements.find((e) => e.id === selectedId);
+      if (!el || el.type !== 'image') return;
+      handleUpdateElement(currentPageIndex, selectedId, { content: dataUrl }, true);
+    },
+    [handleUploadImage, selectedElementIds, activePage, currentPageIndex],
+  );
+
+  const handleInsertUploadedImage = useCallback(
+    async (dataUrlOrFile: string | File) => {
+      let url: string;
+      if (typeof dataUrlOrFile === 'string') {
+        url = dataUrlOrFile;
+      } else {
+        const result = await handleUploadImage(dataUrlOrFile);
+        if (!result) return;
+        url = result;
+      }
+
+      // If an image element is selected, replace it; otherwise insert new
+      if (selectedElementIds.length === 1 && activePage) {
+        const sel = activePage.elements.find(
+          (e) => e.id === selectedElementIds[0] && e.type === 'image',
+        );
+        if (sel) {
+          handleUpdateElement(currentPageIndex, sel.id, { content: url }, true);
+          return;
+        }
+      }
+
+      // Insert as new element
+      if (!activePage) return;
+      const newEl = {
+        id: `el-${Date.now()}`,
+        type: 'image' as const,
+        name: 'Uploaded Image',
+        frame: { x: 10, y: 15, width: 80, height: 50, zIndex: (activePage.elements.length + 1) * 10 },
+        content: url,
+        originalDpi: 96,
+        imageStyle: { objectFit: 'cover' as const, borderRadius: 4 },
+      };
+      handleAddElement(newEl);
+    },
+    [handleUploadImage, selectedElementIds, activePage, currentPageIndex],
+  );
 
   const handleOpenPreflight = () => {
     const report = runPreflightCheck(doc);
@@ -585,6 +749,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
               onAddPage={handleAddPage}
               onDuplicatePage={handleDuplicatePage}
               onDeletePage={handleDeletePage}
+              onReorderPage={handleReorderPage}
               onAddElement={(el) => {
                 handleAddElement(el);
                 if (isMobileScreen) setLeftPanelOpen(false);
@@ -595,6 +760,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
               onReorderLayer={(id, dir) =>
                 handleReorderLayer(id, dir === 'up' ? 'forward' : 'backward')
               }
+              onReorderLayerAbsolute={handleReorderLayerAbsolute}
               onApplyTheme={(theme: MagazineTheme) =>
                 pushState({ ...doc, theme, updatedAt: new Date().toISOString() })
               }
@@ -611,6 +777,11 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
                 });
                 if (isMobileScreen) setLeftPanelOpen(false);
               }}
+              uploadedImages={uploadedImages}
+              uploadError={uploadError}
+              onUploadImage={handleUploadImage}
+              onInsertUploadedImage={(url) => handleInsertUploadedImage(url)}
+              selectedImageId={selectedElementIds.length === 1 && activePage?.elements.find(e => e.id === selectedElementIds[0])?.type === 'image' ? selectedElementIds[0] : undefined}
             />
             {isMobileScreen && (
               <div
@@ -643,6 +814,10 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
             selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'backward')
           }
           onToggleLock={handleToggleLock}
+          onAddPage={handleAddPage}
+          onDuplicatePage={handleDuplicatePage}
+          onDeletePage={handleDeletePage}
+          onZoomChange={setZoom}
         />
 
         {/* Right Inspector */}
@@ -684,6 +859,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
                 selectedElementIds[0] && handleReorderLayer(selectedElementIds[0], 'back')
               }
               onToggleLock={handleToggleLock}
+              onReplaceImage={handleReplaceImage}
             />
             {isMobileScreen && (
               <div

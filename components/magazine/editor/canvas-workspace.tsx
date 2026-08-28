@@ -38,6 +38,10 @@ interface CanvasWorkspaceProps {
   onBringForward?: (() => void) | undefined;
   onSendBackward?: (() => void) | undefined;
   onToggleLock?: ((elementId: string) => void) | undefined;
+  onAddPage?: (() => void) | undefined;
+  onDuplicatePage?: ((index: number) => void) | undefined;
+  onDeletePage?: ((index: number) => void) | undefined;
+  onZoomChange?: ((zoom: number) => void) | undefined;
 }
 
 export function CanvasWorkspace({
@@ -57,6 +61,10 @@ export function CanvasWorkspace({
   onBringForward,
   onSendBackward,
   onToggleLock,
+  onAddPage,
+  onDuplicatePage,
+  onDeletePage,
+  onZoomChange,
 }: CanvasWorkspaceProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pageDomRefs = useRef<Record<number, HTMLDivElement | null>>({});
@@ -171,124 +179,145 @@ export function CanvasWorkspace({
   const effectiveScale = zoom * fitScale;
 
   // ─── Direct Element PointerDown Drag Handler ───
-  const handleElementPointerDown = (
-    e: React.PointerEvent,
-    pageIdx: number,
-    element: MagazineElement,
-  ) => {
-    // If double-click text editing is active on this element, let text edit events pass through
-    if (editingTextId === element.id || croppingImageId === element.id) {
-      return;
-    }
+  const handleElementPointerDown = useCallback(
+    (
+      e: React.PointerEvent,
+      pageIdx: number,
+      element: MagazineElement,
+    ) => {
+      // If double-click text editing is active on this element, let text edit events pass through
+      if (editingTextId === element.id || croppingImageId === element.id) {
+        return;
+      }
 
-    if (element.locked) {
-      if (!selectedElementIds.includes(element.id)) {
+      if (element.locked) {
+        if (!selectedElementIds.includes(element.id)) {
+          onSelectElements([element.id]);
+        }
+        return;
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Determine currently selected items to move together
+      let targetIds = selectedElementIds;
+      if (e.shiftKey) {
+        targetIds = selectedElementIds.includes(element.id)
+          ? selectedElementIds.filter((id) => id !== element.id)
+          : [...selectedElementIds, element.id];
+        onSelectElements(targetIds);
+      } else if (!selectedElementIds.includes(element.id)) {
+        targetIds = [element.id];
         onSelectElements([element.id]);
       }
-      return;
-    }
 
-    e.preventDefault();
-    e.stopPropagation();
+      const pageDom = pageDomRefs.current[pageIdx];
+      if (!pageDom) return;
 
-    // Determine currently selected items to move together
-    let targetIds = selectedElementIds;
-    if (e.shiftKey) {
-      targetIds = selectedElementIds.includes(element.id)
-        ? selectedElementIds.filter((id) => id !== element.id)
-        : [...selectedElementIds, element.id];
-      onSelectElements(targetIds);
-    } else if (!selectedElementIds.includes(element.id)) {
-      targetIds = [element.id];
-      onSelectElements([element.id]);
-    }
+      const pageRect = pageDom.getBoundingClientRect();
+      const startX = e.clientX;
+      const startY = e.clientY;
 
-    const pageDom = pageDomRefs.current[pageIdx];
-    if (!pageDom) return;
+      const page = doc.pages[pageIdx];
+      if (!page) return;
 
-    const pageRect = pageDom.getBoundingClientRect();
-    const startX = e.clientX;
-    const startY = e.clientY;
+      // Snapshot initial frames of all selected elements at drag start
+      const initialElements = page.elements
+        .filter((item) => targetIds.includes(item.id))
+        .map((item) => ({ id: item.id, frame: { ...item.frame } }));
 
-    const page = doc.pages[pageIdx];
-    if (!page) return;
+      const otherElements = page.elements.filter((item) => !targetIds.includes(item.id));
+      let hasMoved = false;
 
-    // Snapshot initial frames of all selected elements
-    const initialElements = page.elements
-      .filter((item) => targetIds.includes(item.id))
-      .map((item) => ({ id: item.id, frame: { ...item.frame } }));
+      const onPointerMove = (moveEvent: PointerEvent) => {
+        moveEvent.preventDefault();
+        const dxPx = moveEvent.clientX - startX;
+        const dyPx = moveEvent.clientY - startY;
 
-    const otherElements = page.elements.filter((item) => !targetIds.includes(item.id));
-    let hasMoved = false;
-
-    const onPointerMove = (moveEvent: PointerEvent) => {
-      moveEvent.preventDefault();
-      const dxPx = moveEvent.clientX - startX;
-      const dyPx = moveEvent.clientY - startY;
-
-      if (Math.abs(dxPx) > 2 || Math.abs(dyPx) > 2) {
-        hasMoved = true;
-      }
-
-      const dx = (dxPx / pageRect.width) * 100;
-      const dy = (dyPx / pageRect.height) * 100;
-
-      // Handle single element drag with snapping
-      if (initialElements.length === 1) {
-        const single = initialElements[0];
-        if (!single) return;
-        let newX = single.frame.x + dx;
-        let newY = single.frame.y + dy;
-
-        if (enableSnap) {
-          const snap = snapElementPosition(
-            newX,
-            newY,
-            single.frame.width,
-            single.frame.height,
-            otherElements,
-          );
-          newX = snap.x;
-          newY = snap.y;
-          setActiveGuides(snap.guides);
+        if (Math.abs(dxPx) > 2 || Math.abs(dyPx) > 2) {
+          hasMoved = true;
         }
 
-        onUpdateElement(
-          pageIdx,
-          single.id,
-          { frame: { ...single.frame, x: newX, y: newY } },
-          false,
-        );
-      } else {
-        // Multi-element simultaneous drag
-        initialElements.forEach((item) => {
+        // Convert pixel deltas to percentage based on the page rect snapshotted at drag start
+        const currentPageRect = pageDomRefs.current[pageIdx]?.getBoundingClientRect() || pageRect;
+        const dx = (dxPx / currentPageRect.width) * 100;
+        const dy = (dyPx / currentPageRect.height) * 100;
+
+        // Handle single element drag with snapping
+        if (initialElements.length === 1) {
+          const single = initialElements[0];
+          if (!single) return;
+          let newX = single.frame.x + dx;
+          let newY = single.frame.y + dy;
+
+          if (enableSnap) {
+            const snap = snapElementPosition(
+              newX,
+              newY,
+              single.frame.width,
+              single.frame.height,
+              otherElements,
+            );
+            newX = snap.x;
+            newY = snap.y;
+            setActiveGuides(snap.guides);
+          }
+
           onUpdateElement(
             pageIdx,
-            item.id,
-            { frame: { ...item.frame, x: item.frame.x + dx, y: item.frame.y + dy } },
+            single.id,
+            { frame: { ...single.frame, x: newX, y: newY } },
             false,
           );
-        });
+        } else {
+          // Multi-element simultaneous drag
+          initialElements.forEach((item) => {
+            onUpdateElement(
+              pageIdx,
+              item.id,
+              { frame: { ...item.frame, x: item.frame.x + dx, y: item.frame.y + dy } },
+              false,
+            );
+          });
+        }
+      };
+
+      const onPointerUp = (upEvent: PointerEvent) => {
+        upEvent.preventDefault();
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        setActiveGuides([]);
+
+        if (hasMoved) {
+          // Commit final position to undo history
+          initialElements.forEach((item) => {
+            onUpdateElement(pageIdx, item.id, {}, true);
+          });
+        }
+      };
+
+      window.addEventListener('pointermove', onPointerMove, { passive: false });
+      window.addEventListener('pointerup', onPointerUp, { passive: false });
+    },
+    [doc, editingTextId, croppingImageId, selectedElementIds, onSelectElements, onUpdateElement, enableSnap],
+  );
+
+  // ─── Mouse Wheel Zoom (Ctrl+Scroll) and Pan (Scroll) ───
+  const handleWheel = useCallback(
+    (e: React.WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        // Ctrl+Scroll = zoom in/out
+        e.preventDefault();
+        if (onZoomChange) {
+          const delta = e.deltaY > 0 ? -0.1 : 0.1;
+          onZoomChange(Math.max(0.2, Math.min(4, zoom + delta)));
+        }
       }
-    };
-
-    const onPointerUp = (upEvent: PointerEvent) => {
-      upEvent.preventDefault();
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      setActiveGuides([]);
-
-      if (hasMoved) {
-        // Commit final change to history
-        initialElements.forEach((item) => {
-          onUpdateElement(pageIdx, item.id, {}, true);
-        });
-      }
-    };
-
-    window.addEventListener('pointermove', onPointerMove, { passive: false });
-    window.addEventListener('pointerup', onPointerUp, { passive: false });
-  };
+      // Plain scroll = let browser handle (pan inside overflow-auto)
+    },
+    [zoom, onZoomChange],
+  );
 
   // ─── Canvas Background PointerDown (Pan or Marquee) ───
   const handleCanvasPointerDown = (e: React.PointerEvent) => {
@@ -456,6 +485,7 @@ export function CanvasWorkspace({
             <div
               key={el.id}
               onPointerDown={(e) => handleElementPointerDown(e, pageIdx, el)}
+              onDragStart={(e) => e.preventDefault()}
               onDoubleClick={(e) => {
                 e.stopPropagation();
                 if (el.locked) return;
@@ -602,6 +632,7 @@ export function CanvasWorkspace({
                 onBringForward={onBringForward}
                 onSendBackward={onSendBackward}
                 onToggleLock={() => onToggleLock?.(selectedId)}
+                onMoveStart={(e) => handleElementPointerDown(e, pageIdx, targetElement)}
               />
             );
           })()}
@@ -642,7 +673,8 @@ export function CanvasWorkspace({
           onPointerDown={handleCanvasPointerDown}
           onPointerMove={handleCanvasPointerMove}
           onPointerUp={handleCanvasPointerUp}
-          className={`flex-1 w-full h-full flex items-center justify-center p-8 overflow-auto relative ${
+          onWheel={handleWheel}
+          className={`flex-1 w-full h-full flex items-center justify-center p-8 overflow-auto relative touch-none ${
             isPanning
               ? 'cursor-grabbing'
               : isSpacePressedRef.current
@@ -664,7 +696,42 @@ export function CanvasWorkspace({
             }}
           >
             {pagesToRender.map(({ page, index }, idx) => (
-              <div key={page.id} className="relative flex items-center">
+              <div key={page.id} className="relative flex items-center group">
+                {/* ── Inline Page Toolbar (Like Canva) ── */}
+                <div className="absolute -top-9 left-0 flex items-center gap-1.5 bg-[#16161A] border border-[#F5F1EA]/10 px-3 py-1.5 rounded-t-lg shadow-lg z-50 transition-opacity opacity-40 group-hover:opacity-100 pointer-events-auto">
+                  <span className="font-mono text-[9px] text-[#F5F1EA]/50 font-bold mr-2 uppercase tracking-widest">
+                    Page {page.pageNumber || index + 1}
+                  </span>
+                  
+                  {onDuplicatePage && (
+                    <button
+                      onClick={() => onDuplicatePage(index)}
+                      title="Duplicate Page"
+                      className="p-1 text-[11px] text-[#F5F1EA]/70 hover:text-white font-mono rounded hover:bg-[#25252E] transition-colors"
+                    >
+                      ❐
+                    </button>
+                  )}
+                  {onDeletePage && doc.pages.length > 1 && (
+                    <button
+                      onClick={() => onDeletePage(index)}
+                      title="Delete Page"
+                      className="p-1 text-[11px] text-rose-400/70 hover:text-rose-400 font-mono rounded hover:bg-rose-500/20 transition-colors"
+                    >
+                      ✕
+                    </button>
+                  )}
+                  <div className="w-[1px] h-3 bg-white/10 mx-1" />
+                  {onAddPage && (
+                    <button
+                      onClick={onAddPage}
+                      className="text-[9px] font-mono font-bold text-[#0057FF] hover:text-white uppercase flex items-center gap-1 ml-1"
+                    >
+                      <span>+</span> Add Page
+                    </button>
+                  )}
+                </div>
+
                 {renderPage(page, index)}
                 {/* Center Gutter Fold Spine Shadow in 2-Up Spread Mode */}
                 {viewMode === 'spread' && idx === 0 && pagesToRender.length === 2 && (

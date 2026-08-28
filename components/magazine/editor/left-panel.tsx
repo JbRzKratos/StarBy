@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import type {
   MagazineDocument,
@@ -19,13 +19,20 @@ interface LeftPanelProps {
   onAddPage: () => void;
   onDuplicatePage: (index: number) => void;
   onDeletePage: (index: number) => void;
+  onReorderPage?: (fromIndex: number, toIndex: number) => void;
   onAddElement: (element: MagazineElement) => void;
   onSelectElement: (elementId: string) => void;
   onToggleLockElement: (elementId: string) => void;
   onToggleVisibilityElement: (elementId: string) => void;
   onReorderLayer: (elementId: string, direction: 'up' | 'down') => void;
+  onReorderLayerAbsolute?: (elementId: string, toIndex: number) => void;
   onApplyTheme: (theme: MagazineTheme) => void;
   onApplyTemplate: (templateId: string) => void;
+  uploadedImages?: string[];
+  uploadError?: string | null;
+  onUploadImage?: (file: File) => Promise<string | null>;
+  onInsertUploadedImage?: (url: string) => void;
+  selectedImageId?: string | undefined;
 }
 
 type TabType = 'pages' | 'elements' | 'layers' | 'photos' | 'themes' | 'presets';
@@ -65,16 +72,45 @@ export function LeftPanel({
   onAddPage,
   onDuplicatePage,
   onDeletePage,
+  onReorderPage,
   onAddElement,
   onSelectElement,
   onToggleLockElement,
   onToggleVisibilityElement,
   onReorderLayer,
+  onReorderLayerAbsolute,
   onApplyTheme,
   onApplyTemplate,
+  uploadedImages = [],
+  uploadError,
+  onUploadImage,
+  onInsertUploadedImage,
+  selectedImageId,
 }: LeftPanelProps) {
   const [activeTab, setActiveTab] = useState<TabType>('pages');
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const [draggedPageIdx, setDraggedPageIdx] = useState<number | null>(null);
+  const [dragOverPageIdx, setDragOverPageIdx] = useState<number | null>(null);
+
+  const [draggedLayerId, setDraggedLayerId] = useState<string | null>(null);
+  const [dragOverLayerId, setDragOverLayerId] = useState<string | null>(null);
+
   const activePage = doc.pages[currentPageIndex] || doc.pages[0];
+
+  const handleFileDrop = useCallback(
+    async (files: FileList | null) => {
+      if (!files || !onUploadImage) return;
+      setIsUploading(true);
+      for (const file of Array.from(files)) {
+        await onUploadImage(file);
+      }
+      setIsUploading(false);
+    },
+    [onUploadImage],
+  );
 
   // Helper to add different element types
   const handleCreateElement = (type: ElementType, preset?: string) => {
@@ -288,18 +324,49 @@ export function LeftPanel({
                 return (
                   <div
                     key={page.id}
+                    draggable
+                    onDragStart={(e) => {
+                      setDraggedPageIdx(idx);
+                      e.dataTransfer.effectAllowed = 'move';
+                      // For visual feedback
+                      const target = e.target as HTMLElement;
+                      target.style.opacity = '0.5';
+                    }}
+                    onDragEnd={(e) => {
+                      setDraggedPageIdx(null);
+                      setDragOverPageIdx(null);
+                      const target = e.target as HTMLElement;
+                      target.style.opacity = '1';
+                    }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.dataTransfer.dropEffect = 'move';
+                    }}
+                    onDragEnter={() => {
+                      if (draggedPageIdx !== null && draggedPageIdx !== idx) {
+                        setDragOverPageIdx(idx);
+                      }
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      if (draggedPageIdx !== null && draggedPageIdx !== idx && onReorderPage) {
+                        onReorderPage(draggedPageIdx, idx);
+                      }
+                      setDraggedPageIdx(null);
+                      setDragOverPageIdx(null);
+                    }}
                     onClick={() => onSelectPage(idx)}
-                    className={`p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                    className={`p-3 rounded-xl border transition-all cursor-grab active:cursor-grabbing flex items-center justify-between gap-3 ${
                       isActive
                         ? 'bg-[#1A1A24] border-[#0057FF] shadow-md ring-1 ring-[#0057FF]'
                         : 'bg-[#16161A] border-[#F5F1EA]/10 hover:border-[#F5F1EA]/30'
-                    }`}
+                    } ${dragOverPageIdx === idx ? 'border-[#0057FF] bg-[#0057FF]/10' : ''}`}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex items-center gap-3 min-w-0 pointer-events-none">
                       <div className="w-10 h-14 rounded-md bg-[#0A0A0C] border border-[#F5F1EA]/15 flex items-center justify-center font-mono text-[11px] font-bold text-[#0057FF] shrink-0">
                         {idx + 1}
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 pointer-events-none">
                         <span className="font-display text-xs font-bold text-white block truncate">
                           {page.title || `Page ${idx + 1}`}
                         </span>
@@ -474,24 +541,56 @@ export function LeftPanel({
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-2 pr-1">
-              {[...(activePage?.elements || [])].reverse().map((el) => {
+              {[...(activePage?.elements || [])].reverse().map((el, visualIdx) => {
                 const isSelected = selectedElementIds.includes(el.id);
+                const isDragOverTarget = dragOverLayerId === el.id;
 
                 return (
                   <div
                     key={el.id}
+                    draggable
+                    onDragStart={(e) => {
+                      setDraggedLayerId(el.id);
+                      e.dataTransfer.effectAllowed = 'move';
+                      const target = e.target as HTMLElement;
+                      target.style.opacity = '0.5';
+                    }}
+                    onDragEnd={(e) => {
+                      setDraggedLayerId(null);
+                      setDragOverLayerId(null);
+                      const target = e.target as HTMLElement;
+                      target.style.opacity = '1';
+                    }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.dataTransfer.dropEffect = 'move';
+                    }}
+                    onDragEnter={() => {
+                      if (draggedLayerId !== null && draggedLayerId !== el.id) {
+                        setDragOverLayerId(el.id);
+                      }
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      if (draggedLayerId !== null && draggedLayerId !== el.id && onReorderLayerAbsolute && activePage) {
+                        const targetOriginalIdx = activePage.elements.length - 1 - visualIdx;
+                        onReorderLayerAbsolute(draggedLayerId, targetOriginalIdx);
+                      }
+                      setDraggedLayerId(null);
+                      setDragOverLayerId(null);
+                    }}
                     onClick={() => onSelectElement(el.id)}
-                    className={`p-2.5 rounded-xl border transition-all flex items-center justify-between gap-2 cursor-pointer ${
+                    className={`p-2.5 rounded-xl border transition-all flex items-center justify-between gap-2 cursor-grab active:cursor-grabbing ${
                       isSelected
                         ? 'bg-[#1A1A24] border-[#0057FF] shadow-sm ring-1 ring-[#0057FF]'
                         : 'bg-[#16161A] border-[#F5F1EA]/10 hover:border-[#F5F1EA]/25'
-                    }`}
+                    } ${isDragOverTarget ? 'border-[#0057FF] bg-[#0057FF]/10' : ''}`}
                   >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="font-mono text-[10px] text-[#0057FF] font-bold uppercase">
+                    <div className="flex items-center gap-2 min-w-0 pointer-events-none">
+                      <span className="font-mono text-[10px] text-[#0057FF] font-bold uppercase pointer-events-none">
                         {el.type === 'text' ? 'T' : el.type === 'image' ? 'IMG' : 'OBJ'}
                       </span>
-                      <span className="font-display text-xs text-white truncate">{el.name}</span>
+                      <span className="font-display text-xs text-white truncate pointer-events-none">{el.name}</span>
                     </div>
 
                     <div className="flex items-center gap-1">
@@ -549,21 +648,123 @@ export function LeftPanel({
           </div>
         )}
 
-        {/* ── 4. PHOTOS TAB: CURATED GALLERY ── */}
+        {/* ── 4. PHOTOS TAB: UPLOAD + CURATED GALLERY ── */}
         {activeTab === 'photos' && (
-          <div className="p-4 space-y-4 overflow-y-auto">
+          <div className="p-4 space-y-5 overflow-y-auto h-full">
             <div className="pb-3 border-b border-[#F5F1EA]/10">
               <span className="font-mono text-[9px] uppercase tracking-widest text-[#0057FF] font-bold">
-                HIGH-RESOLUTION MEDIA
+                MEDIA LIBRARY
               </span>
-              <h3 className="font-display text-sm font-bold">Curated Photography</h3>
+              <h3 className="font-display text-sm font-bold">Photos & Uploads</h3>
             </div>
 
+            {/* ── Upload Zone ── */}
+            <div className="space-y-2">
+              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F1EA]/50">My Uploads</span>
+
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                className="hidden"
+                onChange={(e) => handleFileDrop(e.target.files)}
+              />
+
+              {/* Drag-and-drop zone */}
+              <div
+                onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+                onDragLeave={() => setIsDragOver(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setIsDragOver(false);
+                  handleFileDrop(e.dataTransfer.files);
+                }}
+                onClick={() => fileInputRef.current?.click()}
+                className={`relative border-2 border-dashed rounded-xl p-5 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all ${
+                  isDragOver
+                    ? 'border-[#0057FF] bg-[#0057FF]/10 scale-[1.02]'
+                    : 'border-[#F5F1EA]/20 hover:border-[#0057FF]/60 hover:bg-[#0057FF]/5'
+                }`}
+              >
+                {isUploading ? (
+                  <>
+                    <div className="w-6 h-6 border-2 border-[#0057FF] border-t-transparent rounded-full animate-spin" />
+                    <span className="font-mono text-[10px] text-[#F5F1EA]/60">Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-2xl">{isDragOver ? '📥' : '☁️'}</span>
+                    <div className="text-center">
+                      <span className="font-mono text-[10px] text-white font-bold block">
+                        {isDragOver ? 'Drop to upload' : 'Click or drag & drop'}
+                      </span>
+                      <span className="font-mono text-[9px] text-[#F5F1EA]/40">
+                        JPEG · PNG · WebP · max 10 MB
+                      </span>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Upload error */}
+              {uploadError && (
+                <div className="bg-rose-500/15 border border-rose-500/30 rounded-lg px-3 py-2 text-rose-400 font-mono text-[10px]">
+                  ⚠ {uploadError}
+                </div>
+              )}
+
+              {/* Hint when an image frame is selected */}
+              {selectedImageId && (
+                <div className="bg-[#0057FF]/10 border border-[#0057FF]/30 rounded-lg px-3 py-2 text-[#0057FF] font-mono text-[10px]">
+                  💡 Click any photo below to <strong>replace</strong> the selected image
+                </div>
+              )}
+
+              {/* Uploaded images grid */}
+              {uploadedImages.length > 0 && (
+                <div className="grid grid-cols-2 gap-2">
+                  {uploadedImages.map((url, i) => (
+                    <div
+                      key={i}
+                      onClick={() => onInsertUploadedImage?.(url)}
+                      className="group relative aspect-square rounded-xl overflow-hidden bg-[#16161A] border border-[#F5F1EA]/10 hover:border-[#0057FF] cursor-pointer transition-all"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={url}
+                        alt={`Upload ${i + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                        <span className="font-mono text-[10px] text-white font-bold uppercase bg-[#0057FF] px-2 py-1 rounded">
+                          {selectedImageId ? '↔ Replace' : '+ Insert'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-[#F5F1EA]/10 pt-4">
+              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F1EA]/50">Curated Photos</span>
+            </div>
+
+            {/* Curated grid */}
             <div className="grid grid-cols-2 gap-2.5">
               {CURATED_EDITORIAL_PHOTOS.map((photo, i) => (
                 <div
                   key={i}
-                  onClick={() => handleCreateElement('image', photo.url)}
+                  onClick={() => {
+                    if (selectedImageId && onInsertUploadedImage) {
+                      onInsertUploadedImage(photo.url);
+                    } else {
+                      handleCreateElement('image', photo.url);
+                    }
+                  }}
                   className="group relative aspect-square rounded-xl overflow-hidden bg-[#16161A] border border-[#F5F1EA]/10 hover:border-[#0057FF] cursor-pointer transition-all"
                 >
                   <Image
@@ -575,7 +776,7 @@ export function LeftPanel({
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                     <span className="font-mono text-[10px] text-white font-bold uppercase bg-[#0057FF] px-2 py-1 rounded">
-                      + Insert
+                      {selectedImageId ? '↔ Replace' : '+ Insert'}
                     </span>
                   </div>
                 </div>

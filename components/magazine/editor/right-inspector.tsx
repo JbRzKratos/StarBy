@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import type {
   MagazineDocument,
   MagazineElement,
@@ -24,6 +24,7 @@ interface RightInspectorProps {
   onBringToFront?: () => void;
   onSendToBack?: () => void;
   onToggleLock?: (elementId: string) => void;
+  onReplaceImage?: (file: File) => Promise<void>;
 }
 
 export function RightInspector({
@@ -41,9 +42,11 @@ export function RightInspector({
   onBringToFront,
   onSendToBack,
   onToggleLock,
+  onReplaceImage,
 }: RightInspectorProps) {
   const activePage = doc.pages[currentPageIndex] || doc.pages[0];
   const dim = PAGE_DIMENSIONS[doc.dimensionKey] || DEFAULT_PAGE_DIMENSION;
+  const replaceImageInputRef = useRef<HTMLInputElement>(null);
 
   const isMultiSelect = selectedElements.length > 1;
   const singleElement = selectedElements.length === 1 ? selectedElements[0] : null;
@@ -360,9 +363,33 @@ export function RightInspector({
               <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase font-bold block">
                 Image Source & Fit
               </span>
+              {/* Replace Image button */}
+              <div>
+                <input
+                  ref={replaceImageInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file && onReplaceImage) {
+                      onReplaceImage(file);
+                    }
+                    // Reset so same file can be re-selected
+                    if (replaceImageInputRef.current) replaceImageInputRef.current.value = '';
+                  }}
+                />
+                <button
+                  onClick={() => replaceImageInputRef.current?.click()}
+                  className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-[#0057FF]/15 hover:bg-[#0057FF]/25 border border-[#0057FF]/40 hover:border-[#0057FF] text-[#0057FF] font-mono text-xs font-bold uppercase transition-all"
+                >
+                  <span>↑</span> Replace Image
+                </button>
+              </div>
+
               <div>
                 <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
-                  Image URL
+                  Or paste Image URL
                 </label>
                 <input
                   type="text"

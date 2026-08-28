@@ -20,29 +20,29 @@ export function FregoroLogo({
 }: FregoroLogoProps) {
   const sizeClasses = {
     sm: {
-      img: 'h-7 w-auto',
-      text: 'text-lg',
-      sub: 'text-[9px] tracking-[0.25em]',
+      img: 'h-6 w-auto sm:h-7',
+      text: 'text-base sm:text-lg font-black tracking-tight',
+      sub: 'text-[8px] sm:text-[9px] tracking-[0.28em]',
     },
     md: {
-      img: 'h-9 w-auto',
-      text: 'text-2xl',
-      sub: 'text-[10px] tracking-[0.3em]',
+      img: 'h-8 w-auto sm:h-9',
+      text: 'text-xl sm:text-2xl font-black tracking-tight',
+      sub: 'text-[9px] sm:text-[10px] tracking-[0.32em]',
     },
     lg: {
-      img: 'h-12 w-auto',
-      text: 'text-3xl',
-      sub: 'text-xs tracking-[0.35em]',
+      img: 'h-10 w-auto sm:h-12',
+      text: 'text-2xl sm:text-3xl font-black tracking-tight',
+      sub: 'text-[10px] sm:text-xs tracking-[0.36em]',
     },
   }[size];
 
   const content = (
-    <span className={`inline-flex items-center gap-3 select-none ${className}`}>
+    <span className={`inline-flex items-center gap-2.5 sm:gap-3 select-none ${className}`}>
       {variant !== 'text' && (
         <span className="relative inline-flex items-center justify-center flex-shrink-0">
           <Image
-            src="/images/fregoro-logo.png"
-            alt="Fregoro Studios"
+            src="/images/fregoro-emblem.png"
+            alt="Fregoro Studios Icon"
             width={60}
             height={40}
             priority
@@ -56,14 +56,14 @@ export function FregoroLogo({
       {variant !== 'mark' && (
         <span className="inline-flex flex-col leading-none">
           <span
-            className={`font-display font-black tracking-tight uppercase ${sizeClasses.text} ${
+            className={`font-display uppercase leading-none ${sizeClasses.text} ${
               textIsDark ? 'text-[#0A0A0A]' : 'text-[#F5F1EA]'
             }`}
           >
             Fregoro
           </span>
           <span
-            className={`font-mono font-bold uppercase ${sizeClasses.sub} mt-0.5 ${
+            className={`font-mono font-bold uppercase ${sizeClasses.sub} mt-0.5 leading-none ${
               textIsDark ? 'text-[#0A0A0A]/70' : 'text-[#ED9518]'
             }`}
           >

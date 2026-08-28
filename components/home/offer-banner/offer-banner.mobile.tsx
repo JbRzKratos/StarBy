@@ -1,29 +1,18 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { gsap } from '@/lib/gsap-config';
-import { useGSAP } from '@gsap/react';
+import { useState, useEffect } from 'react';
 import { getOfferString } from './offer-banner.shared';
 import { usePrice } from '@/lib/hooks/usePrice';
-import { ScrollTriggerWrapper } from '@/components/animations/scroll-trigger-wrapper';
 
 export function OfferBannerMobile() {
-  const container = useRef<HTMLDivElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const [isDismissed, setIsDismissed] = useState(false); // Default false: visible on SSR for first-time visitors
-  const prefersReducedMotion = useRef(false);
+  const [isDismissed, setIsDismissed] = useState(false);
   const { formatPrice } = usePrice();
   const offerString = getOfferString(formatPrice);
 
   useEffect(() => {
     if (sessionStorage.getItem('fregoro-offer-dismissed')) {
       setIsDismissed(true);
-    } else {
-      setIsDismissed(false);
     }
-
-    // Check reduced motion
-    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
   const handleDismiss = () => {
@@ -31,80 +20,55 @@ export function OfferBannerMobile() {
     sessionStorage.setItem('fregoro-offer-dismissed', 'true');
   };
 
-  useGSAP(
-    () => {
-      if (isDismissed || !marqueeRef.current || prefersReducedMotion.current) return;
-
-      const track = marqueeRef.current;
-      const totalWidth = track.scrollWidth;
-
-      const tl = gsap.to(track, {
-        x: -(totalWidth / 2),
-        duration: 35, // Slower on mobile
-        ease: 'none',
-        repeat: -1,
-      });
-
-      const handleVisibilityChange = () => {
-        if (document.hidden) {
-          tl.pause();
-        } else {
-          tl.play();
-        }
-      };
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-
-      return () => {
-        document.removeEventListener('visibilitychange', handleVisibilityChange);
-      };
-    },
-    { scope: container, dependencies: [isDismissed, offerString] },
-  );
+  if (isDismissed) return null;
 
   return (
-    <ScrollTriggerWrapper>
-      {/* Height always reserved to prevent CLS */}
-      <div
-        ref={container}
-        className="w-full bg-cobalt text-bone py-2 relative overflow-hidden flex items-center z-50 h-8"
-        style={{ display: isDismissed ? 'none' : 'flex' }}
-        aria-hidden={isDismissed}
-        suppressHydrationWarning
-      >
-        <div
-          ref={marqueeRef}
-          className={`flex whitespace-nowrap font-mono text-[8px] uppercase tracking-widest ${prefersReducedMotion.current ? 'justify-center w-full' : ''}`}
-        >
-          {prefersReducedMotion.current ? (
-            <span className="px-4 truncate">{offerString.split(' ✦ ')[0]}</span>
-          ) : (
-            <>
-              <span className="px-4">{offerString}</span>
-              <span className="px-4">{offerString}</span>
-              <span className="px-4">{offerString}</span>
-              <span className="px-4">{offerString}</span>
-            </>
-          )}
-        </div>
+    <div
+      className="w-full bg-cobalt text-bone relative overflow-hidden flex items-center z-50 h-7 select-none"
+      aria-label="Promotional announcements"
+    >
+      {/* ── Left Soft Fade Mask ── */}
+      <div className="absolute left-0 top-0 bottom-0 w-6 z-10 bg-gradient-to-r from-cobalt to-transparent pointer-events-none" />
 
+      {/* ── Infinite Seamless Marquee Track ── */}
+      <div className="w-full overflow-hidden flex whitespace-nowrap">
+        <div className="flex shrink-0 animate-marquee items-center will-change-transform font-mono text-[8px] uppercase tracking-[0.18em] font-bold">
+          <span className="px-4">{offerString}</span>
+          <span className="px-4">{offerString}</span>
+          <span className="px-4">{offerString}</span>
+        </div>
+        <div
+          className="flex shrink-0 animate-marquee items-center will-change-transform font-mono text-[8px] uppercase tracking-[0.18em] font-bold"
+          aria-hidden="true"
+        >
+          <span className="px-4">{offerString}</span>
+          <span className="px-4">{offerString}</span>
+          <span className="px-4">{offerString}</span>
+        </div>
+      </div>
+
+      {/* ── Right Protective Shield with Dismiss Button ── */}
+      <div className="absolute right-0 top-0 bottom-0 z-20 flex items-center bg-gradient-to-l from-cobalt via-cobalt to-transparent pl-7 pr-2.5 pointer-events-auto">
         <button
           onClick={handleDismiss}
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-bone/60 hover:text-bone transition-colors w-6 h-6 flex items-center justify-center bg-cobalt"
+          className="text-bone/70 hover:text-bone active:scale-90 transition-all w-5 h-5 flex items-center justify-center rounded cursor-pointer"
           aria-label="Dismiss offer banner"
         >
           <svg
-            width="8"
-            height="8"
+            width="9"
+            height="9"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
       </div>
-    </ScrollTriggerWrapper>
+    </div>
   );
 }

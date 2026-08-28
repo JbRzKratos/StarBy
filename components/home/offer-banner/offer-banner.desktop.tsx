@@ -1,25 +1,17 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { gsap } from '@/lib/gsap-config';
-import { useGSAP } from '@gsap/react';
+import { useState, useEffect } from 'react';
 import { getOfferString } from './offer-banner.shared';
-import { ScrollTriggerWrapper } from '@/components/animations/scroll-trigger-wrapper';
 import { usePrice } from '@/lib/hooks/usePrice';
 
 export function OfferBannerDesktop() {
-  const container = useRef<HTMLDivElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const [isDismissed, setIsDismissed] = useState(false); // Default false: banner visible on SSR (correct for first-time visitors)
+  const [isDismissed, setIsDismissed] = useState(false);
   const { formatPrice } = usePrice();
   const offerString = getOfferString(formatPrice);
 
   useEffect(() => {
-    // Check session storage after mount
     if (sessionStorage.getItem('fregoro-offer-dismissed')) {
       setIsDismissed(true);
-    } else {
-      setIsDismissed(false);
     }
   }, []);
 
@@ -28,79 +20,40 @@ export function OfferBannerDesktop() {
     sessionStorage.setItem('fregoro-offer-dismissed', 'true');
   };
 
-  useGSAP(
-    () => {
-      if (isDismissed || !marqueeRef.current) return;
-
-      const track = marqueeRef.current;
-
-      // We need to calculate the width of one single text instance.
-      // Since we duplicate it, we move by half the total scrollWidth.
-      const totalWidth = track.scrollWidth;
-
-      const tl = gsap.to(track, {
-        x: -(totalWidth / 2),
-        duration: 25,
-        ease: 'none',
-        repeat: -1,
-      });
-
-      // Pause on hover
-      const banner = container.current;
-
-      // Pause when tab is inactive
-      const handleVisibilityChange = () => {
-        if (document.hidden) {
-          tl.pause();
-        } else {
-          tl.play();
-        }
-      };
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-
-      const onEnter = () => tl.pause();
-      const onLeave = () => tl.play();
-
-      if (banner) {
-        banner.addEventListener('mouseenter', onEnter);
-        banner.addEventListener('mouseleave', onLeave);
-      }
-
-      return () => {
-        if (banner) {
-          banner.removeEventListener('mouseenter', onEnter);
-          banner.removeEventListener('mouseleave', onLeave);
-        }
-        document.removeEventListener('visibilitychange', handleVisibilityChange);
-      };
-    },
-    { scope: container, dependencies: [isDismissed] },
-  );
+  if (isDismissed) return null;
 
   return (
-    <ScrollTriggerWrapper>
-      {/* Height is always reserved to prevent CLS. Content is hidden when dismissed. */}
-      <div
-        ref={container}
-        className="w-full bg-cobalt text-bone py-2 relative overflow-hidden flex items-center z-50 h-8"
-        style={{ display: isDismissed ? 'none' : 'flex' }}
-        aria-hidden={isDismissed}
-        suppressHydrationWarning
-      >
-        <div
-          ref={marqueeRef}
-          className="flex whitespace-nowrap font-mono text-[9px] uppercase tracking-widest"
-        >
-          {/* We duplicate the string twice to create a seamless loop */}
-          <span className="px-4">{offerString}</span>
-          <span className="px-4">{offerString}</span>
-          <span className="px-4">{offerString}</span>
-          <span className="px-4">{offerString}</span>
-        </div>
+    <div
+      className="w-full bg-cobalt text-bone relative overflow-hidden flex items-center z-50 h-7 select-none"
+      aria-label="Promotional announcements"
+    >
+      {/* ── Left Soft Fade Mask ── */}
+      <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-cobalt to-transparent pointer-events-none" />
 
+      {/* ── Infinite Seamless Marquee Track ── */}
+      <div className="w-full overflow-hidden flex whitespace-nowrap group">
+        <div className="flex shrink-0 animate-marquee items-center will-change-transform font-mono text-[9px] uppercase tracking-[0.2em] font-bold group-hover:[animation-play-state:paused]">
+          <span className="px-6">{offerString}</span>
+          <span className="px-6">{offerString}</span>
+          <span className="px-6">{offerString}</span>
+          <span className="px-6">{offerString}</span>
+        </div>
+        <div
+          className="flex shrink-0 animate-marquee items-center will-change-transform font-mono text-[9px] uppercase tracking-[0.2em] font-bold group-hover:[animation-play-state:paused]"
+          aria-hidden="true"
+        >
+          <span className="px-6">{offerString}</span>
+          <span className="px-6">{offerString}</span>
+          <span className="px-6">{offerString}</span>
+          <span className="px-6">{offerString}</span>
+        </div>
+      </div>
+
+      {/* ── Right Protective Shield with Dismiss Button ── */}
+      <div className="absolute right-0 top-0 bottom-0 z-20 flex items-center bg-gradient-to-l from-cobalt via-cobalt to-transparent pl-8 pr-3 pointer-events-auto">
         <button
           onClick={handleDismiss}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-bone/60 hover:text-bone transition-colors w-6 h-6 flex items-center justify-center bg-cobalt"
+          className="text-bone/70 hover:text-bone hover:scale-110 active:scale-95 transition-all w-5 h-5 flex items-center justify-center rounded cursor-pointer"
           aria-label="Dismiss offer banner"
         >
           <svg
@@ -109,13 +62,15 @@ export function OfferBannerDesktop() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
       </div>
-    </ScrollTriggerWrapper>
+    </div>
   );
 }
