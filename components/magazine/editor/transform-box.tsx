@@ -176,52 +176,52 @@ export function TransformBox({
         {Math.round(frame.width)}% × {Math.round(frame.height)}%{rotation ? ` · ${rotation}°` : ''}
       </div>
 
-      {/* ── Quick Floating Contextual Actions Bar ── */}
+      {/* ── Action Pill ── */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="absolute -bottom-9 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-[#0E0E10] border border-[#F5F1EA]/20 px-2 py-1 rounded-lg shadow-2xl z-50 pointer-events-auto select-none"
+        className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-[#0E0E10] border border-[#F5F1EA]/20 px-2 py-1 rounded-lg shadow-2xl z-50 pointer-events-auto select-none max-w-[92vw] overflow-x-auto"
       >
         <button
           onPointerDown={onMoveStart}
           title="Move Element"
-          className="p-1 text-[12px] text-white hover:text-[#0057FF] cursor-move flex items-center justify-center font-bold"
+          className="p-1.5 text-[13px] text-white hover:text-[#0057FF] cursor-move flex items-center justify-center font-bold touch-manipulation"
         >
           ✥
         </button>
-        <div className="w-[1px] h-3 bg-white/20 mx-0.5" />
+        <div className="w-[1px] h-3 bg-white/20 mx-0.5 shrink-0" />
         <button
           onClick={onBringForward}
           title="Bring Forward"
-          className="p-1 text-[11px] text-[#F5F1EA]/70 hover:text-white font-mono"
+          className="p-1.5 text-[11px] text-[#F5F1EA]/70 hover:text-white font-mono touch-manipulation"
         >
           ▲
         </button>
         <button
           onClick={onSendBackward}
           title="Send Backward"
-          className="p-1 text-[11px] text-[#F5F1EA]/70 hover:text-white font-mono"
+          className="p-1.5 text-[11px] text-[#F5F1EA]/70 hover:text-white font-mono touch-manipulation"
         >
           ▼
         </button>
-        <div className="w-[1px] h-3 bg-white/20 mx-0.5" />
+        <div className="w-[1px] h-3 bg-white/20 mx-0.5 shrink-0" />
         <button
           onClick={onDuplicate}
           title="Duplicate (Ctrl+D)"
-          className="p-1 text-[11px] text-[#F5F1EA]/70 hover:text-white font-mono"
+          className="p-1.5 text-[11px] text-[#F5F1EA]/70 hover:text-white font-mono touch-manipulation"
         >
           ❐
         </button>
         <button
           onClick={onToggleLock}
           title={isLocked ? 'Unlock Element' : 'Lock Element'}
-          className={`p-1 text-[11px] font-mono ${isLocked ? 'text-amber-400' : 'text-[#F5F1EA]/70 hover:text-white'}`}
+          className={`p-1.5 text-[11px] font-mono touch-manipulation ${isLocked ? 'text-amber-400' : 'text-[#F5F1EA]/70 hover:text-white'}`}
         >
           {isLocked ? '🔒' : '🔓'}
         </button>
         <button
           onClick={onDelete}
           title="Delete (Delete Key)"
-          className="p-1 text-[11px] text-rose-400/80 hover:text-rose-400 font-mono"
+          className="p-1.5 text-[11px] text-rose-400/80 hover:text-rose-400 font-mono touch-manipulation"
         >
           ✕
         </button>
@@ -230,10 +230,10 @@ export function TransformBox({
       {!isLocked && (
         <>
           {/* ── Top Rotation Handle & Stalk ── */}
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-auto">
+          <div className="absolute -top-7 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-auto">
             <div
               onPointerDown={(e) => handleHandlePointerDown(e, 'rot')}
-              className={`w-3.5 h-3.5 rounded-full bg-white border-2 border-[#0057FF] cursor-grab active:cursor-grabbing shadow-md hover:scale-125 transition-transform ${
+              className={`w-4 h-4 sm:w-3.5 sm:h-3.5 rounded-full bg-white border-2 border-[#0057FF] cursor-grab active:cursor-grabbing shadow-md hover:scale-125 transition-transform relative before:absolute before:-inset-2 before:content-[''] touch-manipulation ${
                 activeHandle === 'rot' ? 'scale-125 bg-[#0057FF]' : ''
               }`}
               title="Rotate (Hold Shift for 15° snap)"
@@ -244,37 +244,37 @@ export function TransformBox({
           {/* ── 4 Corner Resize Handles ── */}
           <div
             onPointerDown={(e) => handleHandlePointerDown(e, 'nw')}
-            className="pointer-events-auto absolute -top-1.5 -left-1.5 w-3 h-3 bg-white border-2 border-[#0057FF] rounded-sm cursor-nwse-resize shadow-md hover:scale-125 transition-transform"
+            className="pointer-events-auto absolute -top-1.5 -left-1.5 w-3.5 h-3.5 sm:w-3 sm:h-3 bg-white border-2 border-[#0057FF] rounded-sm cursor-nwse-resize shadow-md hover:scale-125 transition-transform relative before:absolute before:-inset-2.5 before:content-[''] touch-manipulation"
           />
           <div
             onPointerDown={(e) => handleHandlePointerDown(e, 'ne')}
-            className="pointer-events-auto absolute -top-1.5 -right-1.5 w-3 h-3 bg-white border-2 border-[#0057FF] rounded-sm cursor-nesw-resize shadow-md hover:scale-125 transition-transform"
+            className="pointer-events-auto absolute -top-1.5 -right-1.5 w-3.5 h-3.5 sm:w-3 sm:h-3 bg-white border-2 border-[#0057FF] rounded-sm cursor-nesw-resize shadow-md hover:scale-125 transition-transform relative before:absolute before:-inset-2.5 before:content-[''] touch-manipulation"
           />
           <div
             onPointerDown={(e) => handleHandlePointerDown(e, 'se')}
-            className="pointer-events-auto absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-white border-2 border-[#0057FF] rounded-sm cursor-nwse-resize shadow-md hover:scale-125 transition-transform"
+            className="pointer-events-auto absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 sm:w-3 sm:h-3 bg-white border-2 border-[#0057FF] rounded-sm cursor-nwse-resize shadow-md hover:scale-125 transition-transform relative before:absolute before:-inset-2.5 before:content-[''] touch-manipulation"
           />
           <div
             onPointerDown={(e) => handleHandlePointerDown(e, 'sw')}
-            className="pointer-events-auto absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-white border-2 border-[#0057FF] rounded-sm cursor-nesw-resize shadow-md hover:scale-125 transition-transform"
+            className="pointer-events-auto absolute -bottom-1.5 -left-1.5 w-3.5 h-3.5 sm:w-3 sm:h-3 bg-white border-2 border-[#0057FF] rounded-sm cursor-nesw-resize shadow-md hover:scale-125 transition-transform relative before:absolute before:-inset-2.5 before:content-[''] touch-manipulation"
           />
 
           {/* ── 4 Edge Resize Handles ── */}
           <div
             onPointerDown={(e) => handleHandlePointerDown(e, 'n')}
-            className="pointer-events-auto absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-2 bg-white border border-[#0057FF] rounded-sm cursor-ns-resize shadow-sm hover:scale-110 transition-transform"
+            className="pointer-events-auto absolute -top-1 left-1/2 -translate-x-1/2 w-5 h-2.5 sm:w-4 sm:h-2 bg-white border border-[#0057FF] rounded-sm cursor-ns-resize shadow-sm hover:scale-110 transition-transform relative before:absolute before:-inset-2 before:content-[''] touch-manipulation"
           />
           <div
             onPointerDown={(e) => handleHandlePointerDown(e, 's')}
-            className="pointer-events-auto absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-2 bg-white border border-[#0057FF] rounded-sm cursor-ns-resize shadow-sm hover:scale-110 transition-transform"
+            className="pointer-events-auto absolute -bottom-1 left-1/2 -translate-x-1/2 w-5 h-2.5 sm:w-4 sm:h-2 bg-white border border-[#0057FF] rounded-sm cursor-ns-resize shadow-sm hover:scale-110 transition-transform relative before:absolute before:-inset-2 before:content-[''] touch-manipulation"
           />
           <div
             onPointerDown={(e) => handleHandlePointerDown(e, 'e')}
-            className="pointer-events-auto absolute top-1/2 -right-1 -translate-y-1/2 w-2 h-4 bg-white border border-[#0057FF] rounded-sm cursor-ew-resize shadow-sm hover:scale-110 transition-transform"
+            className="pointer-events-auto absolute top-1/2 -right-1 -translate-y-1/2 w-2.5 h-5 sm:w-2 sm:h-4 bg-white border border-[#0057FF] rounded-sm cursor-ew-resize shadow-sm hover:scale-110 transition-transform relative before:absolute before:-inset-2 before:content-[''] touch-manipulation"
           />
           <div
             onPointerDown={(e) => handleHandlePointerDown(e, 'w')}
-            className="pointer-events-auto absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-4 bg-white border border-[#0057FF] rounded-sm cursor-ew-resize shadow-sm hover:scale-110 transition-transform"
+            className="pointer-events-auto absolute top-1/2 -left-1 -translate-y-1/2 w-2.5 h-5 sm:w-2 sm:h-4 bg-white border border-[#0057FF] rounded-sm cursor-ew-resize shadow-sm hover:scale-110 transition-transform relative before:absolute before:-inset-2 before:content-[''] touch-manipulation"
           />
         </>
       )}

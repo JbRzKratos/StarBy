@@ -123,7 +123,7 @@ export function WishlistDrawer() {
       ref={containerRef}
       role="dialog"
       aria-modal="true"
-      aria-label="Wishlist"
+      aria-labelledby="wishlist-drawer-title"
       className="fixed inset-0 z-[99990] hidden flex-col lg:flex-row"
     >
       <div
@@ -160,7 +160,10 @@ export function WishlistDrawer() {
         </div>
 
         <div>
-          <h1 className="font-display text-display-lg lg:text-[6rem] font-bold text-bone leading-none mb-4 lg:mb-8 tracking-tight">
+          <h1
+            id="wishlist-drawer-title"
+            className="font-display text-display-lg lg:text-[6rem] font-bold text-bone leading-none mb-4 lg:mb-8 tracking-tight"
+          >
             Your
             <br />
             Wishlist.

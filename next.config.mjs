@@ -23,6 +23,8 @@ const nextConfig = {
 
   async headers() {
     /** @type {import('next/dist/lib/load-custom-routes').Header['headers']} */
+    const isProd = process.env.NODE_ENV === 'production';
+
     const securityHeaders = [
       // Prevent MIME-type sniffing
       { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -32,11 +34,56 @@ const nextConfig = {
       { key: 'X-XSS-Protection', value: '1; mode=block' },
       // Only send origin on cross-origin requests
       { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-      // Restrict powerful browser APIs
+      // Restrict powerful browser APIs — camera allowed for AR/WebXR features
       {
         key: 'Permissions-Policy',
-        value: 'camera=(), microphone=(), geolocation=()',
+        value: 'camera=(self), microphone=(), geolocation=()',
       },
+      // HSTS: enforce HTTPS for 1 year on production (with subdomains + preload)
+      ...(isProd
+        ? [
+            {
+              key: 'Strict-Transport-Security',
+              value: 'max-age=31536000; includeSubDomains; preload',
+            },
+          ]
+        : []),
+      // Content Security Policy — enforced in production only to avoid blocking local dev / HMR / 3D models
+      ...(isProd
+        ? [
+            {
+              key: 'Content-Security-Policy',
+              value: [
+                `default-src 'self'`,
+                // Scripts: self + inline/eval for Next.js + fabric.js (cdnjs) + cashfree/tawk
+                // blob: required for Three.js inline worker strings
+                `script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.cashfree.com https://embed.tawk.to https://va.tawk.to https://cdn.jsdelivr.net https://cdnjs.cloudflare.com`,
+                // Styles: self + inline (Tailwind/fabric) + Google Fonts + cdnjs + jsdelivr
+                `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com`,
+                // Fonts: self + Google Fonts CDN + data URIs
+                `font-src 'self' https://fonts.gstatic.com data:`,
+                // Images: self + data URIs + blob (canvas/Three.js) + Supabase + Unsplash + cdnjs + R2 + Drei assets
+                `img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://plus.unsplash.com https://*.tawk.to https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com`,
+                // Fetch/XHR: self + Supabase + Cashfree + Tawk + cdnjs + Drei assets + Polyhaven + jsDelivr + R2
+                `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.cashfree.com https://sandbox.cashfree.com https://*.tawk.to wss://*.tawk.to https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com ws://localhost:* http://localhost:*`,
+                // iframes: Cashfree checkout + Tawk.to chat widget
+                `frame-src https://payments.cashfree.com https://checkout.cashfree.com https://sandbox.cashfree.com https://*.tawk.to`,
+                // Workers: self + blob for Three.js draco workers and fabric.js
+                `worker-src 'self' blob:`,
+                // Media: self + blob (canvas export)
+                `media-src 'self' blob:`,
+                // Manifest
+                `manifest-src 'self'`,
+                // Object (PDF embeds etc): none
+                `object-src 'none'`,
+                // Base URI: restrict to self to prevent base tag injection
+                `base-uri 'self'`,
+                // Form action: self only
+                `form-action 'self'`,
+              ].join('; '),
+            },
+          ]
+        : []),
     ];
 
     return [

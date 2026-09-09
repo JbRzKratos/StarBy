@@ -19,10 +19,10 @@ export function ProductCardDesktop({ product }: ProductCardProps) {
   const isWishlisted = useWishlistStore((state) => state.hasItem(product.id));
   const { formatPrice } = usePrice();
 
-  const isComingSoon = product.categorySlug === 'mugs-cups';
+  const isComingSoon = product.categorySlug === 'skins';
   const variant = product.variants[0];
   const href = isComingSoon
-    ? '/products/mugs-cups'
+    ? '/products/skins'
     : `/products/${product.categorySlug}/${product.slug}`;
 
   return (

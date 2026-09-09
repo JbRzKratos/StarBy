@@ -1,14 +1,40 @@
 'use client';
 
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 
 export function TawkToWidget() {
+  const pathname = usePathname();
   // Replace these with your actual Tawk.to property and widget IDs
   const propertyId = process.env.NEXT_PUBLIC_TAWKTO_PROPERTY_ID || 'REPLACE_ME';
   const widgetId = process.env.NEXT_PUBLIC_TAWKTO_WIDGET_ID || 'default';
 
-  if (propertyId === 'REPLACE_ME') {
-    return null; // Don't render until configured
+  const isExcluded = pathname?.startsWith('/magazine/editor') || pathname?.startsWith('/admin');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const win = window as unknown as {
+      Tawk_API?: { hideWidget?: () => void; showWidget?: () => void };
+    };
+
+    if (isExcluded) {
+      try {
+        win.Tawk_API?.hideWidget?.();
+      } catch {
+        // ignore
+      }
+    } else {
+      try {
+        win.Tawk_API?.showWidget?.();
+      } catch {
+        // ignore
+      }
+    }
+  }, [isExcluded, pathname]);
+
+  if (propertyId === 'REPLACE_ME' || isExcluded) {
+    return null; // Don't render until configured or on excluded editor routes
   }
 
   return (

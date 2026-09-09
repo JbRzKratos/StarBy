@@ -188,8 +188,10 @@ const OVERSIZED_TEE_COLORS = (view: GarmentView): GarmentColor[] => [
     id: 'white',
     label: 'White',
     hex: '#FFFFFF',
-    // Only front real asset; back uses CSS tint (white shirt, so tint = white = fine)
-    mockupImage: view === 'front' ? '/images/mockups/oversized-tee-white-front.png' : null,
+    mockupImage:
+      view === 'front'
+        ? '/images/mockups/oversized-tee-white-front.png'
+        : '/images/mockups/tee-white-back.png',
   },
   {
     id: 'charcoal-grey',
@@ -211,13 +213,22 @@ const OVERSIZED_TEE_COLORS = (view: GarmentView): GarmentColor[] => [
   },
 ];
 
-// Hoodie: black front+back, white front only (back uses tint)
+// Hoodie: black front+back, white front available
 const HOODIE_COLORS = (view: GarmentView): GarmentColor[] => [
   {
     id: 'acid-black',
     label: 'Acid Black',
     hex: '#1C1C1C',
     mockupImage: `/images/mockups/hoodie-black-${view}.png`,
+  },
+  {
+    id: 'white',
+    label: 'White',
+    hex: '#FFFFFF',
+    mockupImage:
+      view === 'front'
+        ? '/images/mockups/hoodie-white-front.png'
+        : '/images/mockups/hoodie-white-front.png',
   },
   {
     id: 'burnt-orange',

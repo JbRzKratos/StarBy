@@ -3,7 +3,7 @@
 import { Suspense, useMemo } from 'react';
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Center } from '@react-three/drei';
+import { OrbitControls, ContactShadows, Center } from '@react-three/drei';
 
 interface Panel {
   width: string;
@@ -174,7 +174,8 @@ export function ThreeRoomFallback({ panels, onClose }: { panels: Panel[]; onClos
           <directionalLight position={[5, 5, 5]} intensity={1} castShadow shadow-mapSize={1024} />
 
           <Suspense fallback={null}>
-            <Environment preset="studio" />
+            <hemisphereLight intensity={0.6} groundColor="#111111" />
+            <directionalLight position={[-4, 3, 3]} intensity={0.5} />
             <group position={[0, 0.2, 0]}>
               <PosterAssembly panels={panels} />
             </group>

@@ -13,19 +13,34 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import {
   useApparelCustomizerStore,
   type GarmentType,
   type DesignTransform,
 } from '@/lib/stores/apparel-customizer-store';
 import { useApparelHistoryStore } from '@/lib/stores/apparel-history-store';
-import { GARMENT_COLORS, type GarmentView, type GarmentColor } from '@/data/printAreaConfig';
+import {
+  GARMENT_COLORS,
+  type GarmentView,
+  type GarmentColor,
+  getPrintAreaConfig,
+} from '@/data/printAreaConfig';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { useCustomizerStore } from '@/store/customizer';
 import { usePrice } from '@/lib/hooks/usePrice';
-import { products } from '@/data/products';
+import { products, getProductBySlug } from '@/data/products';
 import { validateImage, fileToDataUrl } from '@/components/customizer-hub/CustomizerHub.shared';
 import { ApparelCanvas, type ApparelCanvasHandle } from '../apparel-canvas';
+import { UVPlacementEditor } from './UVPlacementEditor';
+
+// ── 3D viewer — dynamically imported to avoid SSR/WebGL issues ───────────────
+const TShirt3DViewer = dynamic(() => import('./TShirt3DViewer').then((m) => m.TShirt3DViewer), {
+  ssr: false,
+});
+
+// Garments that support the 3D preview mode
+const SUPPORTS_3D: GarmentType[] = ['tee', 'oversized-tee'];
 
 const GARMENT_LABELS: Record<GarmentType, string> = {
   tee: 'Regular Tee',
@@ -50,7 +65,7 @@ interface Props {
 }
 
 export function ApparelCustomizerMobile({ productId }: Props) {
-  const product = products.find((p) => p.id === productId);
+  const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
   const garmentFromCategory = categoryToGarment(product?.categorySlug) ?? 'tee';
 
   const {
@@ -74,7 +89,7 @@ export function ApparelCustomizerMobile({ productId }: Props) {
 
   useEffect(() => {
     setGarment(garmentFromCategory);
-    if (studioImage && !designsByView.front?.imageUrl) {
+    if (studioImage && !designsByView?.front?.imageUrl) {
       const img = new Image();
       img.src = studioImage;
       img.onload = () => {
@@ -90,6 +105,13 @@ export function ApparelCustomizerMobile({ productId }: Props) {
   const [activeTab, setActiveTab] = useState<SheetTab>('color');
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+
+  // ── 3D / 2D preview mode (only available for tee / oversized-tee) ────────
+  const supports3D = SUPPORTS_3D.includes(garment);
+  const [previewMode, setPreviewMode] = useState<'2d' | '3d'>('2d');
+  useEffect(() => {
+    if (!supports3D) setPreviewMode('2d');
+  }, [supports3D]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<ApparelCanvasHandle>(null);
@@ -107,7 +129,7 @@ export function ApparelCustomizerMobile({ productId }: Props) {
     if (snapshot) await canvasRef.current?.loadFromSnapshot(snapshot);
   }, [redo]);
 
-  const currentDesign = designsByView[view];
+  const currentDesign = designsByView?.[view] ?? { imageUrl: null, transform: null };
   const colorOptions: GarmentColor[] = useMemo(
     () => GARMENT_COLORS[garment]?.[view] ?? [],
     [garment, view],
@@ -115,10 +137,15 @@ export function ApparelCustomizerMobile({ productId }: Props) {
   const activeColor: GarmentColor = useMemo(
     () =>
       colorOptions.find((c) => c.id === color) ??
-      colorOptions[0] ?? { id: 'black', label: 'Black', hex: '#0E0E0F', mockupImage: null },
-    [colorOptions, color],
+      colorOptions[0] ?? {
+        id: 'black',
+        label: 'Black',
+        hex: '#000000',
+        mockupImage: `/images/mockups/tee-black-${view}.png`,
+      },
+    [colorOptions, color, view],
   );
-  const transform = currentDesign.transform;
+  const transform = currentDesign?.transform;
   const opacity = transform?.opacity ?? 1;
   const angle = transform?.angle ?? 0;
 
@@ -332,6 +359,48 @@ export function ApparelCustomizerMobile({ productId }: Props) {
     });
   };
 
+  // ── UV Placement & Reposition handler (3D mode sync) ───────────────────────
+  const handleUVTransformChange = useCallback(
+    (t: Partial<DesignTransform>) => {
+      updateTransform(view, t);
+      const target = getTargetObject();
+      if (target) {
+        if (t.scaleX !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          target.obj.set({ scaleX: t.scaleX, scaleY: t.scaleX });
+        }
+        if (t.angle !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          target.obj.set({ angle: t.angle });
+        }
+        if (t.opacity !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          target.obj.set({ opacity: t.opacity });
+        }
+        if (t.normX !== undefined || t.normY !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          const containerW = (target.canvas.width as number) || 480;
+          const scaleFactor = containerW / 1000;
+          const config = getPrintAreaConfig(garment, view);
+          const paCenterX = (config.printArea.x + config.printArea.width / 2) * scaleFactor;
+          const paCenterY = (config.printArea.y + config.printArea.height / 2) * scaleFactor;
+          const paHalfW = (config.printArea.width / 2) * scaleFactor;
+          const paHalfH = (config.printArea.height / 2) * scaleFactor;
+          const nX = t.normX ?? currentDesign.transform?.normX ?? 0;
+          const nY = t.normY ?? currentDesign.transform?.normY ?? 0;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          target.obj.set({
+            left: paCenterX + nX * paHalfW,
+            top: paCenterY + nY * paHalfH,
+          });
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        (target.canvas as any).renderAll();
+      }
+    },
+    [view, updateTransform, getTargetObject, garment, currentDesign.transform],
+  );
+
   // ── Add to cart ──────────────────────────────────────────────────────────
   const handleAddToCart = useCallback(async () => {
     if (!product) return;
@@ -351,13 +420,13 @@ export function ApparelCustomizerMobile({ productId }: Props) {
         color,
         text: '',
         textFont: '',
-        imageUrl: currentDesign.imageUrl,
+        imageUrl: currentDesign?.imageUrl ?? null,
         // Apparel-specific fields
         thumbnail,
         garment,
         view,
-        designFront: designsByView.front.imageUrl ?? undefined,
-        designBack: designsByView.back.imageUrl ?? undefined,
+        designFront: designsByView?.front?.imageUrl ?? undefined,
+        designBack: designsByView?.back?.imageUrl ?? undefined,
       },
     });
     setAddedToCart(true);
@@ -375,16 +444,25 @@ export function ApparelCustomizerMobile({ productId }: Props) {
     designsByView,
     addItem,
     setCartOpen,
-    currentDesign.imageUrl,
+    currentDesign?.imageUrl,
   ]);
 
   return (
     <div className="flex flex-col min-h-screen bg-charcoal pt-20 pb-4">
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      {/* Root unconditionally mounted file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        accept=".png,.jpg,.jpeg,.svg"
+        onChange={handleFileInput}
+      />
+
+      {/* ── Header ──────────────────────────────────────────────────── */}
       <div className="px-4 py-3 flex items-center justify-between">
         <div>
           <span className="font-mono text-[9px] text-cobalt uppercase tracking-widest block">
-            Customizer
+            {previewMode === '3d' ? '3D Preview' : 'Customizer'}
           </span>
           <h1 className="font-display text-xl font-bold text-bone leading-tight">
             {product?.name ?? GARMENT_LABELS[garment]}
@@ -410,7 +488,7 @@ export function ApparelCustomizerMobile({ productId }: Props) {
             }`}
           >
             {v === 'front' ? 'Front' : 'Back'}
-            {designsByView[v].imageUrl && (
+            {designsByView?.[v]?.imageUrl && (
               <span className="ml-1 inline-block w-1.5 h-1.5 rounded-full bg-[#ED9518] align-middle" />
             )}
           </button>
@@ -419,17 +497,95 @@ export function ApparelCustomizerMobile({ productId }: Props) {
 
       {/* ── Canvas ─────────────────────────────────────────────────────────── */}
       <div className="px-4">
-        <div className="bg-[#1A1A1E] rounded-xl overflow-hidden border border-smoke/20">
-          <ApparelCanvas
-            ref={canvasRef}
-            garment={garment}
-            view={view}
-            color={activeColor}
-            designImageUrl={currentDesign.imageUrl}
-            onTransformChange={handleTransformChange}
-          />
+        {/* 2D / 3D toggle pill (tee & oversized-tee only) */}
+        {supports3D && (
+          <div className="flex mb-2 border border-smoke rounded-sm overflow-hidden">
+            <button
+              id="mobile-apparel-toggle-2d"
+              onClick={() => setPreviewMode('2d')}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors border-r border-smoke ${
+                previewMode === '2d'
+                  ? 'bg-cobalt/20 text-cobalt font-semibold'
+                  : 'bg-charcoal text-ash'
+              }`}
+            >
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M3 9h18M9 21V9" />
+              </svg>
+              2D Edit
+            </button>
+            <button
+              id="mobile-apparel-toggle-3d"
+              onClick={() => setPreviewMode('3d')}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                previewMode === '3d'
+                  ? 'bg-[#ED9518]/20 text-[#ED9518] font-semibold'
+                  : 'bg-charcoal text-ash'
+              }`}
+            >
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+              3D Preview
+            </button>
+          </div>
+        )}
+
+        <div
+          className="bg-[#1A1A1E] rounded-xl overflow-hidden border border-smoke/20 relative"
+          style={{ minHeight: 340 }}
+        >
+          {/* 2D canvas — keep alive with visibility, not display:none, so fabric.js
+              always has valid pixel dimensions (prevents black canvas on view switch) */}
+          <div
+            style={
+              previewMode === '3d'
+                ? {
+                    visibility: 'hidden',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    overflow: 'hidden',
+                  }
+                : {}
+            }
+          >
+            <ApparelCanvas
+              ref={canvasRef}
+              garment={garment}
+              view={view}
+              color={activeColor}
+              designImageUrl={currentDesign?.imageUrl ?? null}
+              onTransformChange={handleTransformChange}
+            />
+          </div>
+
+          {/* 3D preview */}
+          {previewMode === '3d' && supports3D && (
+            <div className="absolute inset-0">
+              <TShirt3DViewer colorHex={activeColor.hex} view={view} />
+            </div>
+          )}
         </div>
-        {!currentDesign.imageUrl && (
+
+        {previewMode === '2d' && !currentDesign?.imageUrl && (
           <button
             onClick={() => {
               setActiveTab('design');
@@ -441,9 +597,14 @@ export function ApparelCustomizerMobile({ productId }: Props) {
             ↑ Tap to upload your design
           </button>
         )}
-        {!activeColor.mockupImage && (
+        {previewMode === '2d' && !activeColor.mockupImage && (
           <p className="mt-1.5 font-mono text-[9px] text-amber-400/70 italic text-center">
             ⚠ Color preview is approximate
+          </p>
+        )}
+        {previewMode === '3d' && (
+          <p className="mt-1.5 font-mono text-[9px] text-cobalt/70 italic text-center">
+            Switch to 2D Edit to adjust your design placement.
           </p>
         )}
       </div>
@@ -512,18 +673,11 @@ export function ApparelCustomizerMobile({ productId }: Props) {
           {/* Design tab */}
           {activeTab === 'design' && (
             <div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                className="hidden"
-                accept=".png,.jpg,.jpeg,.svg"
-                onChange={handleFileInput}
-              />
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="w-full py-4 border-2 border-dashed border-smoke/50 rounded-lg font-mono text-xs text-pearl mb-3 hover:border-[#ED9518]/50 transition-colors"
               >
-                {currentDesign.imageUrl ? '📁 Replace Design' : '📤 Upload PNG / SVG / JPG'}
+                {currentDesign?.imageUrl ? '📁 Replace Design' : '📤 Upload PNG / SVG / JPG'}
               </button>
               {uploadError && (
                 <p className="font-mono text-xs text-red-400 mb-2">⚠ {uploadError}</p>
@@ -533,7 +687,7 @@ export function ApparelCustomizerMobile({ productId }: Props) {
                   Tip: PNG with transparent background gives the best print result.
                 </p>
               )}
-              {currentDesign.imageUrl && (
+              {currentDesign?.imageUrl && (
                 <button
                   onClick={() => {
                     clearDesign(view);
@@ -579,6 +733,14 @@ export function ApparelCustomizerMobile({ productId }: Props) {
                 <p className="font-mono text-xs text-ash italic text-center py-4">
                   Upload a design to access controls.
                 </p>
+              ) : previewMode === '3d' ? (
+                <UVPlacementEditor
+                  view={view}
+                  colorHex={activeColor.hex}
+                  imageUrl={currentDesign.imageUrl}
+                  transform={currentDesign.transform}
+                  onChange={handleUVTransformChange}
+                />
               ) : (
                 <>
                   {/* Opacity */}

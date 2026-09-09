@@ -13,33 +13,33 @@ const CATEGORY_TABS = [
   { id: 'posters', label: 'Posters' },
   { id: 'split-posters', label: 'Split Posters' },
   { id: 'hoodies', label: 'Hoodies & Tees' },
-  { id: 'mugs-cups', label: 'Mugs & Cups' },
+  { id: 'mugs-cups', label: 'Cups & Mugs' },
   { id: 'skins', label: 'Device Skins' },
 ];
 
-const MUG_PREVIEWS = [
+const SKIN_PREVIEWS = [
   {
-    name: 'Classic Stoneware Mug',
-    tagline: '11oz ceramic stoneware for daily rituals.',
-    image: '/images/products/classic_mug_11oz.png',
-    stage: 'In Development',
-  },
-  {
-    name: 'Heavyweight Studio Mug',
-    tagline: '15oz velvet matte weighted stoneware.',
-    image: '/images/products/classic_mug_15oz.png',
-    stage: 'Material Testing',
-  },
-  {
-    name: 'Magic Heat-Shift Mug',
-    tagline: 'Obsidian thermal color-shift glaze.',
-    image: '/images/products/magic_mug.png',
+    name: 'Phantom Carbon Skin',
+    tagline: 'Precision 3M forged carbon weave texture.',
+    image: '/images/products/phantom-skin.webp',
     stage: 'Lab Formulation',
   },
   {
-    name: 'Insulated Travel Tumbler',
-    tagline: 'Double-wall stainless vacuum vessel.',
-    image: '/images/products/tumbler.png',
+    name: 'Stealth Obsidian Skin',
+    tagline: 'Anti-reflective true-matte stealth armor.',
+    image: '/images/products/stealth-skin.webp',
+    stage: 'In Development',
+  },
+  {
+    name: 'Aura Iridescent Matrix',
+    tagline: 'Chameleonic color-shifting micro-film.',
+    image: '/images/products/aura-skin.webp',
+    stage: 'Material Testing',
+  },
+  {
+    name: 'Cypher Cybernetic Mesh',
+    tagline: 'Tactile geometric circuit patterns.',
+    image: '/images/products/cypher-skin.webp',
     stage: 'Prototyping',
   },
 ];
@@ -74,18 +74,18 @@ export function FeaturedProducts() {
 
   let filtered: Product[] = [];
   if (activeTab === 'all') {
-    filtered = products.filter((p) => p.featured && p.categorySlug !== 'mugs-cups').slice(0, 8);
+    filtered = products.filter((p) => p.featured && p.categorySlug !== 'skins').slice(0, 8);
   } else if (activeTab === 'hoodies') {
     filtered = products
       .filter((p) => p.categorySlug === 'hoodies' || p.categorySlug === 'tees')
       .slice(0, 8);
-  } else if (activeTab !== 'mugs-cups') {
+  } else if (activeTab !== 'skins') {
     filtered = products.filter((p) => p.categorySlug === activeTab).slice(0, 8);
   }
 
-  // Fallback if empty and not mugs
-  if (filtered.length === 0 && activeTab !== 'mugs-cups') {
-    filtered = products.filter((p) => p.categorySlug !== 'mugs-cups').slice(0, 8);
+  // Fallback if empty and not skins
+  if (filtered.length === 0 && activeTab !== 'skins') {
+    filtered = products.filter((p) => p.categorySlug !== 'skins').slice(0, 8);
   }
 
   const handleWaitlist = async (e: React.FormEvent) => {
@@ -153,7 +153,7 @@ export function FeaturedProducts() {
         </div>
 
         {/* Dynamic Content: Coming Soon state vs Active Products Grid */}
-        {activeTab === 'mugs-cups' ? (
+        {activeTab === 'skins' ? (
           <div className="space-y-12">
             {/* Coming Soon Hero Banner */}
             <div className="p-8 md:p-12 rounded-2xl bg-[#121214] border border-[#ED9518]/30 shadow-2xl relative overflow-hidden">
@@ -166,12 +166,13 @@ export function FeaturedProducts() {
                   </span>
                 </div>
                 <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#F5F1EA]">
-                  Cups & Mugs Collection
+                  Device Skins Collection
                 </h3>
                 <p className="font-mono text-xs sm:text-sm text-[#F5F1EA]/75 leading-relaxed max-w-2xl">
-                  A new way to enjoy <strong className="text-[#F5F1EA]">FREGORO</strong> is on the
-                  way. Our Cups & Mugs collection is currently in development and will be available
-                  soon with custom stoneware, thermal drinkware, and heat-reactive finishes.
+                  A new way to personalize your tech with{' '}
+                  <strong className="text-[#F5F1EA]">FREGORO</strong> is on the way. Our Device
+                  Skins collection is currently in development and will be available soon with 3M
+                  architectural cast vinyl, sub-millimeter laser tolerances, and tactile finishes.
                 </p>
 
                 {/* VIP Early Access Form */}
@@ -210,10 +211,10 @@ export function FeaturedProducts() {
               ref={gridRef}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[var(--grid-gap)]"
             >
-              {MUG_PREVIEWS.map((item) => (
+              {SKIN_PREVIEWS.map((item) => (
                 <Link
                   key={item.name}
-                  href="/products/mugs-cups"
+                  href="/products/skins"
                   className="group block relative bg-[#121214] border border-[#F5F1EA]/10 hover:border-[#ED9518]/40 rounded-2xl p-5 transition-all duration-300 shadow-lg"
                 >
                   <div className="flex items-center justify-between gap-2 mb-3">
@@ -256,10 +257,10 @@ export function FeaturedProducts() {
             {/* Explore Full Roadmap Link */}
             <div className="mt-10 flex justify-center">
               <Link
-                href="/products/mugs-cups"
+                href="/products/skins"
                 className="group inline-flex items-center gap-3 bg-[#1A1A1E] hover:bg-[#222228] border border-[#ED9518]/40 text-[#ED9518] font-mono text-caption uppercase tracking-widest px-8 py-4 rounded-lg transition-all hover:scale-105 shadow-xl"
               >
-                <span>Explore Full 2026 Cups & Mugs Roadmap</span>
+                <span>Explore Full 2026 Device Skins Roadmap</span>
                 <span className="transition-transform group-hover:translate-x-1">→</span>
               </Link>
             </div>
@@ -277,7 +278,7 @@ export function FeaturedProducts() {
         )}
 
         {/* Explore More Products CTA Button */}
-        {activeTab !== 'mugs-cups' && (
+        {activeTab !== 'skins' && (
           <div className="mt-14 flex justify-center">
             <Link
               href="/products/all"

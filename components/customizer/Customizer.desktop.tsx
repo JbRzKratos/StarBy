@@ -32,7 +32,7 @@ const Mug3DViewer = dynamic(() => import('./Mug3DViewer').then((m) => m.Mug3DVie
   ssr: false,
   loading: () => (
     <div className="w-full h-[700px] bg-graphite animate-pulse rounded-lg flex items-center justify-center font-mono text-pearl">
-      Loading 3D Engine...
+      Loading 3D Mug Engine...
     </div>
   ),
 });
@@ -175,10 +175,17 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
     isMagicMugRevealed,
     setIsMagicMugRevealed,
     viewMode,
-    setViewMode: _setViewMode,
+    setViewMode,
   } = useCustomizerStore();
   const [mounted, setMounted] = useState(false);
-  const mTemplate = product?.categorySlug === 'mugs-cups' ? mugTemplates[product.slug] : null;
+  const slugClean = product?.slug?.replace(/_/g, '-');
+  const mTemplate =
+    product?.categorySlug === 'mugs-cups'
+      ? mugTemplates[product.slug] ||
+        (slugClean ? mugTemplates[slugClean] : undefined) ||
+        Object.values(mugTemplates).find((t) => t.productId === product.id) ||
+        mugTemplates['classic-mug-11oz']
+      : null;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -294,18 +301,19 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Canvas Area (left) */}
         <div className="lg:col-span-8 bg-charcoal/50 rounded-xl overflow-hidden relative">
+          {/* Hidden file input shared by upload button and replace button — MUST be outside conditionals */}
+          <input
+            id="customizer-file-input"
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/jpeg, image/png, image/webp"
+            onChange={handleInlineUpload}
+          />
+
           {/* ── SKIN EDITOR: SVG-native per-device preview ── */}
           {isSkinProduct ? (
             <div className="p-6 flex flex-col gap-4">
-              {/* Hidden file input shared by upload button and replace button */}
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                accept="image/jpeg, image/png, image/webp"
-                onChange={handleInlineUpload}
-              />
-
               {/* SVG Skin Editor */}
               <SkinEditor
                 deviceId={selectedDeviceId ?? 'iphone-16-pro-max'}
@@ -339,7 +347,36 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
           ) : (
             <>
               {/* ── OTHER CATEGORIES: existing canvas ── */}
+              {product?.categorySlug === 'mugs-cups' && (
+                <div className="absolute top-4 right-4 z-20 flex items-center bg-graphite/90 border border-smoke/50 rounded-md p-1 shadow-lg backdrop-blur-md">
+                  <button
+                    id="mug-canvas-toggle-2d"
+                    onClick={() => setViewMode('2d')}
+                    className={`px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider rounded transition-all ${
+                      viewMode !== '3d'
+                        ? 'bg-cobalt text-bone font-medium shadow'
+                        : 'text-ash hover:text-bone'
+                    }`}
+                  >
+                    2D Editor
+                  </button>
+                  <button
+                    id="mug-canvas-toggle-3d"
+                    onClick={() => setViewMode('3d')}
+                    className={`px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider rounded transition-all flex items-center gap-1.5 ${
+                      viewMode === '3d'
+                        ? 'bg-cobalt text-bone font-medium shadow'
+                        : 'text-ash hover:text-bone'
+                    }`}
+                  >
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    360° 3D View
+                  </button>
+                </div>
+              )}
+
               {!uploadedImage &&
+                viewMode !== '3d' &&
                 (() => {
                   const instructions = getUploadInstructions(product?.categorySlug);
                   return (
@@ -368,8 +405,30 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
                 })()}
 
               {viewMode === '3d' && product?.categorySlug === 'mugs-cups' ? (
-                <div className="w-full h-[700px]">
+                <div className="w-full h-[700px] relative">
                   <Mug3DViewer product={product} />
+                  {!uploadedImage && (
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="bg-cobalt text-bone font-mono text-xs uppercase px-6 py-2.5 rounded-sm hover:bg-cobalt/80 shadow-lg flex items-center gap-2 transition-all"
+                      >
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="17 8 12 3 7 8" />
+                          <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                        Upload Image to Wrap
+                      </button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <CustomizerCanvas
@@ -386,6 +445,39 @@ function CustomizerDesktopInner({ productId }: { productId: string }) {
 
         {/* Tools Area (right) */}
         <div className="lg:col-span-4 flex flex-col gap-8">
+          {/* View Mode (Mugs only) */}
+          {product?.categorySlug === 'mugs-cups' && (
+            <div className="bg-graphite border border-smoke/30 p-6 rounded-lg flex flex-col gap-5">
+              <h3 className="font-mono text-caption text-bone uppercase tracking-widest">
+                Preview Mode
+              </h3>
+              <div className="flex border border-smoke rounded-sm overflow-hidden">
+                <button
+                  id="mug-toggle-2d"
+                  onClick={() => setViewMode('2d')}
+                  className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors border-r border-smoke ${
+                    viewMode === '2d'
+                      ? 'bg-cobalt text-bone'
+                      : 'bg-charcoal text-ash hover:text-pearl'
+                  }`}
+                >
+                  2D Editor
+                </button>
+                <button
+                  id="mug-toggle-3d"
+                  onClick={() => setViewMode('3d')}
+                  className={`flex-1 px-2 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
+                    viewMode === '3d'
+                      ? 'bg-cobalt text-bone'
+                      : 'bg-charcoal text-ash hover:text-pearl'
+                  }`}
+                >
+                  360° 3D View
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Device Selector (Skins Only) */}
           {isSkinProduct && (
             <DeviceSelector

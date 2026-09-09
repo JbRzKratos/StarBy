@@ -175,17 +175,17 @@ export function PublicationPreviewer({
             FRG
           </div>
           <div>
-            <h3 className="font-display text-base font-bold text-[#F5F1EA] truncate max-w-xs sm:max-w-md">
+            <h3 className="font-display text-sm sm:text-base font-bold text-[#F5F1EA] truncate max-w-[120px] xs:max-w-[180px] sm:max-w-xs md:max-w-md">
               {doc.title || 'Untitled Publication'}
             </h3>
-            <p className="font-mono text-[11px] text-[#F5F1EA]/50">
+            <p className="font-mono text-[10px] sm:text-[11px] text-[#F5F1EA]/50">
               {doc.pages.length} Pages · {dim.name} · {doc.paperWeight}
             </p>
           </div>
         </div>
 
         {/* Preflight Badge & Controls */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div
             className={`hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold ${
               preflight.isPrintReady
@@ -201,7 +201,7 @@ export function PublicationPreviewer({
             </span>
           </div>
 
-          <div className="flex items-center gap-1 bg-[#1A1A1E] p-1 rounded-lg border border-[#F5F1EA]/10">
+          <div className="hidden sm:flex items-center gap-1 bg-[#1A1A1E] p-1 rounded-lg border border-[#F5F1EA]/10">
             <button
               onClick={() => setZoomLevel(1)}
               className={`px-2.5 py-1 text-xs font-mono rounded ${
@@ -246,7 +246,7 @@ export function PublicationPreviewer({
         <button
           onClick={handlePrev}
           disabled={currentSpreadIndex === 0}
-          className="absolute left-2 sm:left-6 z-30 p-3 rounded-full bg-[#1A1A1E]/80 hover:bg-[#0057FF] disabled:opacity-20 text-white backdrop-blur border border-[#F5F1EA]/10 transition-all"
+          className="absolute left-1 sm:left-6 z-30 p-2 sm:p-3 rounded-full bg-[#1A1A1E]/80 hover:bg-[#0057FF] disabled:opacity-20 text-white backdrop-blur border border-[#F5F1EA]/10 transition-all text-sm sm:text-base"
           aria-label="Previous Spread"
         >
           ←
@@ -255,7 +255,7 @@ export function PublicationPreviewer({
         <button
           onClick={handleNext}
           disabled={currentSpreadIndex === spreads.length - 1}
-          className="absolute right-2 sm:right-6 z-30 p-3 rounded-full bg-[#1A1A1E]/80 hover:bg-[#0057FF] disabled:opacity-20 text-white backdrop-blur border border-[#F5F1EA]/10 transition-all"
+          className="absolute right-1 sm:right-6 z-30 p-2 sm:p-3 rounded-full bg-[#1A1A1E]/80 hover:bg-[#0057FF] disabled:opacity-20 text-white backdrop-blur border border-[#F5F1EA]/10 transition-all text-sm sm:text-base"
           aria-label="Next Spread"
         >
           →
@@ -271,7 +271,7 @@ export function PublicationPreviewer({
         >
           {/* Left Page (or Inside Cover) */}
           <div
-            className="w-[280px] sm:w-[380px] md:w-[460px] max-h-[75vh] border-r border-[#0D0D0E]/80 relative"
+            className="w-[calc(46vw-16px)] sm:w-[380px] md:w-[460px] max-w-[460px] max-h-[75vh] border-r border-[#0D0D0E]/80 relative"
             style={{ aspectRatio: `${aspectRatio}` }}
           >
             {renderMiniPage(currentSpread.left)}
@@ -281,7 +281,7 @@ export function PublicationPreviewer({
 
           {/* Right Page */}
           <div
-            className="w-[280px] sm:w-[380px] md:w-[460px] max-h-[75vh] relative"
+            className="w-[calc(46vw-16px)] sm:w-[380px] md:w-[460px] max-w-[460px] max-h-[75vh] relative"
             style={{ aspectRatio: `${aspectRatio}` }}
           >
             {renderMiniPage(currentSpread.right)}

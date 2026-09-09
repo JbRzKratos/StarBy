@@ -43,9 +43,10 @@ export const categories: Category[] = [
   {
     slug: 'skins',
     name: 'Device Skins',
-    tagline: 'Redefine your tech.',
-    description: 'Precision-cut skins for every device.',
-    productCount: 32,
+    tagline: 'Precision armor for your tech.',
+    description:
+      'A new way to protect and personalize your devices is on the way. Our Device Skins collection is currently in development and will be available soon.',
+    productCount: 10,
     featured: true,
     gradient: 'linear-gradient(135deg, #0E0E0F 0%, #3B5EFF 100%)',
     image: '/images/hero/skins.webp',
@@ -84,9 +85,8 @@ export const categories: Category[] = [
     slug: 'mugs-cups',
     name: 'Cups & Mugs',
     tagline: 'Your everyday studio ritual.',
-    description:
-      'A new way to enjoy FREGORO is on the way. Our Cups & Mugs collection is currently in development and will be available soon.',
-    productCount: 6,
+    description: 'Custom ceramic stoneware, insulated travel tumblers, and heat-reactive mugs.',
+    productCount: 8,
     featured: true,
     gradient: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
     image: '/images/products/classic_mug_11oz.png',

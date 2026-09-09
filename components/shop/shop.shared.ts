@@ -6,7 +6,7 @@ export const SHOP_CATEGORIES = [
   { id: 'posters', label: 'Posters' },
   { id: 'split-posters', label: 'Split Posters' },
   { id: 'stationery', label: 'Stationery' },
-  { id: 'mugs-cups', label: 'Mugs & Cups' },
+  { id: 'mugs-cups', label: 'Cups & Mugs' },
 ];
 
 export const SHOP_TABS = [...SHOP_CATEGORIES, { id: 'diy', label: '✦ Design It Yourself' }];

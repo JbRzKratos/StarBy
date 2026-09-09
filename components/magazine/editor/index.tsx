@@ -88,6 +88,16 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      document.body.classList.add('magazine-editor-active');
+      const win = window as unknown as {
+        Tawk_API?: { hideWidget?: () => void; showWidget?: () => void };
+      };
+      try {
+        win.Tawk_API?.hideWidget?.();
+      } catch {
+        // ignore
+      }
+
       const initialW = window.innerWidth;
       if (initialW < 1280) setRightPanelOpen(false);
       if (initialW < 768) setLeftPanelOpen(false);
@@ -97,7 +107,15 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
         setIsMobileScreen(window.innerWidth < 768);
       };
       window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
+      return () => {
+        document.body.classList.remove('magazine-editor-active');
+        try {
+          win.Tawk_API?.showWidget?.();
+        } catch {
+          // ignore
+        }
+        window.removeEventListener('resize', handleResize);
+      };
     }
   }, []);
 
@@ -704,8 +722,9 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
 
   return (
     <div
+      data-magazine-editor="true"
       onContextMenu={handleContextMenu}
-      className="h-[100dvh] w-screen flex flex-col bg-[#0A0A0C] overflow-hidden text-[#F5F1EA] select-none"
+      className="magazine-editor-root h-[100dvh] w-screen flex flex-col bg-[#0A0A0C] overflow-hidden text-[#F5F1EA] select-none"
     >
       {/* ── 1. Top Studio Toolbar ── */}
       <TopToolbar
@@ -800,6 +819,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
                   ? selectedElementIds[0]
                   : undefined
               }
+              onClose={() => setLeftPanelOpen(false)}
             />
             {isMobileScreen && (
               <div
@@ -878,6 +898,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
               }
               onToggleLock={handleToggleLock}
               onReplaceImage={handleReplaceImage}
+              onClose={() => setRightPanelOpen(false)}
             />
             {isMobileScreen && (
               <div
@@ -888,6 +909,92 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
           </div>
         )}
       </div>
+
+      {/* ── Mobile Bottom Navigation Dock (Canva/Figma mobile style) ── */}
+      {isMobileScreen && (
+        <nav
+          aria-label="Mobile Magazine Toolbar"
+          className="h-14 bg-[#0E0E10]/95 backdrop-blur-md border-t border-[#F5F1EA]/10 px-2.5 sm:px-3 flex items-center justify-between z-50 relative shrink-0 select-none shadow-2xl"
+        >
+          {/* Page Paging: Prev / Next */}
+          <div className="flex items-center gap-0.5 bg-[#16161A] rounded-lg border border-[#F5F1EA]/10 p-0.5 shrink-0">
+            <button
+              onClick={() => setCurrentPageIndex((prev) => Math.max(0, prev - 1))}
+              disabled={currentPageIndex === 0}
+              className="p-1.5 rounded text-[#F5F1EA]/70 hover:text-white disabled:opacity-20 text-xs font-mono font-bold shrink-0"
+              aria-label="Previous Page"
+            >
+              ◀
+            </button>
+            <button
+              onClick={() => {
+                setRightPanelOpen(false);
+                setLeftPanelOpen(true);
+              }}
+              className="px-1.5 sm:px-2 py-1 text-[11px] font-mono font-bold text-white hover:text-[#0057FF] transition-colors whitespace-nowrap shrink-0"
+              title="Page List"
+            >
+              {currentPageIndex + 1}/{doc.pages.length}
+            </button>
+            <button
+              onClick={() =>
+                setCurrentPageIndex((prev) => Math.min(doc.pages.length - 1, prev + 1))
+              }
+              disabled={currentPageIndex === doc.pages.length - 1}
+              className="p-1.5 rounded text-[#F5F1EA]/70 hover:text-white disabled:opacity-20 text-xs font-mono font-bold shrink-0"
+              aria-label="Next Page"
+            >
+              ▶
+            </button>
+          </div>
+
+          {/* Add Elements Drawer */}
+          <button
+            onClick={() => {
+              setRightPanelOpen(false);
+              setLeftPanelOpen((prev) => !prev);
+            }}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-lg border text-xs font-mono font-bold transition-all shrink-0 ${
+              leftPanelOpen
+                ? 'bg-[#0057FF] text-white border-[#0057FF] shadow-md shadow-[#0057FF]/30'
+                : 'bg-[#16161A] border-[#F5F1EA]/10 text-[#F5F1EA]/80 hover:text-white'
+            }`}
+          >
+            <span>＋</span>
+            <span>Add</span>
+          </button>
+
+          {/* Style / Inspector Drawer */}
+          <button
+            onClick={() => {
+              setLeftPanelOpen(false);
+              setRightPanelOpen((prev) => !prev);
+            }}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-lg border text-xs font-mono font-bold transition-all shrink-0 ${
+              rightPanelOpen
+                ? 'bg-[#0057FF] text-white border-[#0057FF] shadow-md shadow-[#0057FF]/30'
+                : 'bg-[#16161A] border-[#F5F1EA]/10 text-[#F5F1EA]/80 hover:text-white'
+            }`}
+          >
+            <span>✎</span>
+            <span>Style</span>
+            {selectedElementIds.length > 0 && (
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            )}
+          </button>
+
+          {/* Fit Canvas Button */}
+          <button
+            onClick={() => {
+              setZoom(1);
+            }}
+            title="Fit Canvas"
+            className="p-2 rounded-lg bg-[#16161A] hover:bg-[#22222A] text-[#F5F1EA]/70 hover:text-white border border-[#F5F1EA]/10 text-xs font-mono font-bold transition-colors shrink-0"
+          >
+            ⊙ Fit
+          </button>
+        </nav>
+      )}
 
       {/* ── 3. Right Click Context Menu ── */}
       {contextMenuPos && (

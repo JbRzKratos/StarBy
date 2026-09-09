@@ -74,6 +74,49 @@
     @apply bg-cobalt text-bone;
   }
 
+  /* ── Keyboard accessibility ────────────────────────────────────────────────
+   * Skip-to-content link: visually hidden until focused by keyboard.
+   * Must be placed as the first focusable element inside <body>.
+   */
+  .skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 9999;
+    padding: 0.5rem 1rem;
+    background: #3b5eff;
+    color: #f5f1ea;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 0 0 0.5rem 0.5rem;
+    text-decoration: none;
+    transition: top 0.15s ease;
+  }
+  .skip-to-content:focus {
+    top: 0;
+    outline: 2px solid #3b5eff;
+    outline-offset: 2px;
+  }
+
+  /* Global focus-visible ring: consistent keyboard focus indicator.
+   * Only shown for keyboard navigation (not mouse clicks) via :focus-visible. */
+  :focus-visible {
+    outline: 2px solid #3b5eff;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* On pointer (mouse/touch) devices, suppress the outline for cleaner UI.
+   * Screen-reader + keyboard users on fine-pointer devices still get the ring. */
+  @media (pointer: fine) {
+    :focus:not(:focus-visible) {
+      outline: none;
+    }
+  }
+
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -106,22 +149,52 @@
     pointer-events: none !important;
   }
 
-  /* Hide floating widgets (Tawk.to chat & WhatsApp) when any drawer or modal or AR is open */
+  /* Hide floating widgets (Tawk.to chat & WhatsApp) when any drawer or modal, AR, admin, or magazine editor is open */
+  body:has([data-magazine-editor]) #tawk-default-container,
+  body:has([data-magazine-editor]) .tawk-min-container,
+  body:has([data-magazine-editor]) iframe[title*='chat' i],
+  body:has([data-magazine-editor]) iframe[title*='tawk' i],
+  body:has([data-magazine-editor]) div[class*='tawk'],
+  body:has([data-magazine-editor]) [class*='tawk'],
+  body:has([data-magazine-editor]) .fixed.bottom-4.left-4,
+  body:has([data-magazine-editor]) .fixed.bottom-6.left-6,
+  body:has([data-magazine-editor]) .fixed.bottom-20.right-4,
+  body:has([data-magazine-editor]) .fixed.bottom-24.right-6,
+  body:has([data-magazine-editor]) .floating-whatsapp-btn,
+  body:has([data-magazine-editor]) .floating-scroll-top-btn,
+  body.magazine-editor-active #tawk-default-container,
+  body.magazine-editor-active .tawk-min-container,
+  body.magazine-editor-active iframe[title*='chat' i],
+  body.magazine-editor-active iframe[title*='tawk' i],
+  body.magazine-editor-active div[class*='tawk'],
+  body.magazine-editor-active [class*='tawk'],
+  body.magazine-editor-active .fixed.bottom-4.left-4,
+  body.magazine-editor-active .fixed.bottom-6.left-6,
+  body.magazine-editor-active .fixed.bottom-20.right-4,
+  body.magazine-editor-active .fixed.bottom-24.right-6,
+  body.magazine-editor-active .floating-whatsapp-btn,
+  body.magazine-editor-active .floating-scroll-top-btn,
+  body[style*='overflow: hidden'] .fixed.bottom-4.left-4,
   body[style*='overflow: hidden'] .fixed.bottom-6.left-6,
+  body[style*='overflow: hidden'] .fixed.bottom-20.right-4,
   body[style*='overflow: hidden'] .fixed.bottom-24.right-6,
   body[style*='overflow: hidden'] #tawk-default-container,
   body[style*='overflow: hidden'] .tawk-min-container,
   body[style*='overflow: hidden'] iframe[title*='chat' i],
   body[style*='overflow: hidden'] iframe[title*='tawk' i],
   body[style*='overflow: hidden'] div[class*='tawk'],
+  body.mobile-drawer-open .fixed.bottom-4.left-4,
   body.mobile-drawer-open .fixed.bottom-6.left-6,
+  body.mobile-drawer-open .fixed.bottom-20.right-4,
   body.mobile-drawer-open .fixed.bottom-24.right-6,
   body.mobile-drawer-open #tawk-default-container,
   body.mobile-drawer-open .tawk-min-container,
   body.mobile-drawer-open iframe[title*='chat' i],
   body.mobile-drawer-open iframe[title*='tawk' i],
   body.mobile-drawer-open div[class*='tawk'],
+  body.ar-active .fixed.bottom-4.left-4,
   body.ar-active .fixed.bottom-6.left-6,
+  body.ar-active .fixed.bottom-20.right-4,
   body.ar-active .fixed.bottom-24.right-6,
   body.ar-active #tawk-default-container,
   body.ar-active .tawk-min-container,
@@ -133,7 +206,9 @@
   .admin-root iframe[title*='chat' i],
   .admin-root iframe[title*='tawk' i],
   .admin-root div[class*='tawk'],
+  .admin-root .fixed.bottom-4.left-4,
   .admin-root .fixed.bottom-6.left-6,
+  .admin-root .fixed.bottom-20.right-4,
   .admin-root .fixed.bottom-24.right-6 {
     display: none !important;
     visibility: hidden !important;

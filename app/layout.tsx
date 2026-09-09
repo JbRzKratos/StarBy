@@ -93,12 +93,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body suppressHydrationWarning>
+        {/* Skip-to-content: first focusable element for keyboard/screen-reader users */}
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
         <DeviceProvider initialDevice="desktop">
           <GsapProvider>
             <CustomCursor />
             <FloatingActions />
             <TawkToWidget />
-            {children}
+            <div id="main-content">{children}</div>
           </GsapProvider>
         </DeviceProvider>
       </body>

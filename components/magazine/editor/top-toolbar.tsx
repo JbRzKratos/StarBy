@@ -87,12 +87,12 @@ export function TopToolbar({
         </Link>
 
         {/* Title & Document Meta */}
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
           <input
             type="text"
             value={doc.title}
             onChange={(e) => onUpdateTitle(e.target.value)}
-            className="bg-transparent border border-transparent hover:border-[#F5F1EA]/20 focus:border-[#0057FF] px-2 py-1 rounded-md font-display font-bold text-xs sm:text-sm text-white outline-none max-w-[130px] sm:max-w-[200px] md:max-w-[260px] truncate transition-all"
+            className="bg-transparent border border-transparent hover:border-[#F5F1EA]/20 focus:border-[#0057FF] px-1.5 sm:px-2 py-1 rounded-md font-display font-bold text-xs sm:text-sm text-white outline-none max-w-[90px] xs:max-w-[130px] sm:max-w-[200px] md:max-w-[260px] truncate transition-all"
             placeholder="Magazine Title"
           />
 
@@ -105,7 +105,7 @@ export function TopToolbar({
           </span>
 
           {/* Autosave Status Indicator */}
-          <span className="font-mono text-[9px] text-[#F5F1EA]/50 flex items-center gap-1">
+          <span className="font-mono text-[9px] text-[#F5F1EA]/50 flex items-center gap-1 shrink-0">
             <span
               className={`w-1.5 h-1.5 rounded-full ${
                 isSaving ? 'bg-amber-400 animate-ping' : 'bg-emerald-400'
@@ -114,19 +114,19 @@ export function TopToolbar({
             <span className="hidden md:inline">{isSaving ? 'Saving...' : 'Saved ✓'}</span>
           </span>
 
-          {/* Left Sidebar Toggle */}
+          {/* Left Sidebar Toggle (desktop only, mobile has bottom bar) */}
           {onToggleLeftPanel && (
             <button
               onClick={onToggleLeftPanel}
               title={leftPanelOpen ? 'Hide Left Sidebar' : 'Show Left Sidebar'}
-              className={`px-2 py-1 rounded-md border text-[11px] font-mono font-bold transition-all flex items-center gap-1 ${
+              className={`hidden md:flex px-2 py-1 rounded-md border text-[11px] font-mono font-bold transition-all items-center gap-1 ${
                 leftPanelOpen
                   ? 'bg-[#0057FF]/20 border-[#0057FF]/40 text-white'
                   : 'bg-[#16161A] border-[#F5F1EA]/10 text-[#F5F1EA]/60 hover:text-white'
               }`}
             >
               <span>◧</span>
-              <span className="hidden sm:inline">Panels</span>
+              <span>Panels</span>
             </button>
           )}
         </div>
@@ -249,19 +249,19 @@ export function TopToolbar({
       </div>
 
       {/* ── RIGHT: Inspector Toggle, Preflight, Preview, PDF & Order ── */}
-      <div className="flex items-center gap-2">
-        {/* Right Inspector Toggle */}
+      <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+        {/* Right Inspector Toggle (desktop only, mobile has bottom dock) */}
         {onToggleRightPanel && (
           <button
             onClick={onToggleRightPanel}
             title={rightPanelOpen ? 'Hide Inspector' : 'Show Inspector'}
-            className={`px-2 py-1.5 rounded-lg border text-xs font-mono font-bold transition-all flex items-center gap-1 ${
+            className={`hidden md:flex px-2 py-1.5 rounded-lg border text-xs font-mono font-bold transition-all items-center gap-1 ${
               rightPanelOpen
                 ? 'bg-[#0057FF]/20 border-[#0057FF]/40 text-white'
                 : 'bg-[#16161A] border-[#F5F1EA]/10 text-[#F5F1EA]/60 hover:text-white'
             }`}
           >
-            <span className="hidden sm:inline">Inspector</span>
+            <span>Inspector</span>
             <span>◨</span>
           </button>
         )}
@@ -269,10 +269,10 @@ export function TopToolbar({
         <button
           onClick={onOpenPreflight}
           title="Inspect Print Readiness"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#16161A] hover:bg-[#202028] border border-[#F5F1EA]/10 font-mono text-xs text-[#F5F1EA] transition-all"
+          className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-[#16161A] hover:bg-[#202028] border border-[#F5F1EA]/10 font-mono text-xs text-[#F5F1EA] transition-all"
         >
           <span
-            className={`w-2 h-2 rounded-full ${
+            className={`w-2 h-2 rounded-full shrink-0 ${
               isPrintReady ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'
             }`}
           />
@@ -283,7 +283,7 @@ export function TopToolbar({
         <button
           onClick={onOpenPreview}
           title="Open Publication Spread Reader"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#16161A] hover:bg-[#202028] border border-[#F5F1EA]/10 font-mono text-xs text-[#F5F1EA] transition-all"
+          className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-[#16161A] hover:bg-[#202028] border border-[#F5F1EA]/10 font-mono text-xs text-[#F5F1EA] transition-all"
         >
           <span>📖</span>
           <span className="hidden sm:inline">Preview</span>
@@ -293,7 +293,7 @@ export function TopToolbar({
         <button
           onClick={onDownloadPdf}
           title="Export 300 DPI Print-Ready Vector PDF"
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#1F1F24] hover:bg-[#2A2A32] border border-[#F5F1EA]/15 font-mono text-xs font-bold text-white transition-all shadow-sm"
+          className="flex items-center gap-1.5 p-1.5 sm:px-3.5 sm:py-1.5 rounded-lg bg-[#1F1F24] hover:bg-[#2A2A32] border border-[#F5F1EA]/15 font-mono text-xs font-bold text-white transition-all shadow-sm"
         >
           <span>↓</span>
           <span className="hidden md:inline">PDF</span>
@@ -302,9 +302,11 @@ export function TopToolbar({
         {/* Order Print CTA */}
         <button
           onClick={onOrderPrint}
-          className="flex items-center gap-2 px-4 sm:px-5 py-2 rounded-lg bg-gradient-to-r from-[#0057FF] to-[#3B5EFF] hover:from-[#0046CC] hover:to-[#0057FF] font-mono text-xs font-bold text-white uppercase tracking-wider transition-all shadow-lg shadow-[#0057FF]/30 hover:scale-105 active:scale-95"
+          className="flex items-center gap-1.5 px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg bg-gradient-to-r from-[#0057FF] to-[#3B5EFF] hover:from-[#0046CC] hover:to-[#0057FF] font-mono text-[11px] sm:text-xs font-bold text-white uppercase tracking-wider transition-all shadow-lg shadow-[#0057FF]/30 active:scale-95 shrink-0"
         >
-          <span>Order Print</span>
+          <span>
+            Order<span className="hidden xs:inline"> Print</span>
+          </span>
           <span>→</span>
         </button>
       </div>

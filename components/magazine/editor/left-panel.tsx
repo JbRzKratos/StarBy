@@ -33,6 +33,7 @@ interface LeftPanelProps {
   onUploadImage?: (file: File) => Promise<string | null>;
   onInsertUploadedImage?: (url: string) => void;
   selectedImageId?: string | undefined;
+  onClose?: (() => void) | undefined;
 }
 
 type TabType = 'pages' | 'elements' | 'layers' | 'photos' | 'themes' | 'presets';
@@ -86,6 +87,7 @@ export function LeftPanel({
   onUploadImage,
   onInsertUploadedImage,
   selectedImageId,
+  onClose,
 }: LeftPanelProps) {
   const [activeTab, setActiveTab] = useState<TabType>('pages');
   const [isDragOver, setIsDragOver] = useState(false);
@@ -293,10 +295,34 @@ export function LeftPanel({
             </span>
           </button>
         ))}
+        {onClose && (
+          <button
+            onClick={onClose}
+            aria-label="Close Left Panel"
+            className="mt-auto w-11 h-11 rounded-xl flex flex-col items-center justify-center gap-0.5 text-rose-400/80 hover:text-rose-400 hover:bg-rose-500/10 active:scale-95 transition-all"
+          >
+            <span className="text-sm font-bold">✕</span>
+            <span className="font-mono text-[8px] uppercase font-bold">Close</span>
+          </button>
+        )}
       </div>
 
       {/* ── DRAWER CONTENT ── */}
       <div className="w-[calc(100vw-4.5rem)] max-w-xs sm:w-72 xl:w-80 bg-[#121214] flex flex-col h-full overflow-hidden text-[#F5F1EA]">
+        {onClose && (
+          <div className="flex md:hidden items-center justify-between px-3 py-2 border-b border-[#F5F1EA]/10 bg-[#0E0E10] shrink-0">
+            <span className="font-mono text-[10px] text-[#F5F1EA]/60 uppercase tracking-wider font-bold">
+              {activeTab} Panel
+            </span>
+            <button
+              onClick={onClose}
+              className="px-2.5 py-1 rounded-md bg-[#1F1F24] hover:bg-[#2A2A32] text-[#F5F1EA] text-xs font-mono font-bold flex items-center gap-1 active:scale-95 transition-all"
+            >
+              <span>✕</span>
+              <span>Close</span>
+            </button>
+          </div>
+        )}
         {/* ── 1. PAGES TAB: VISUAL MINIATURES & REORDERING ── */}
         {activeTab === 'pages' && (
           <div className="flex flex-col h-full p-4 space-y-4">

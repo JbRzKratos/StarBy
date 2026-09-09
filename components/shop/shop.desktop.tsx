@@ -7,18 +7,18 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
 import { CustomizerPanelDesktop } from '../customizer-hub/CustomizerHub.desktop';
-import { CupsMugsComingSoon } from './cups-mugs-coming-soon';
+import { DeviceSkinsComingSoon } from './device-skins-coming-soon';
 import { usePrice } from '@/lib/hooks/usePrice';
 
 function DesktopProductCard({ product, index }: { product: Product; index: number }) {
   const { formatPrice } = usePrice();
-  const isComingSoon = product.categorySlug === 'mugs-cups';
+  const isComingSoon = product.categorySlug === 'skins';
 
   return (
     <Link
       href={
         isComingSoon
-          ? '/products/mugs-cups'
+          ? '/products/skins'
           : `/products/${product.categorySlug}/${product.slug || product.id}`
       }
       className="group flex flex-col gap-0"
@@ -164,9 +164,11 @@ export function ShopDesktop({ category, products }: { category: string; products
             <h1 className="font-display text-7xl uppercase tracking-tighter">
               {activeTab === 'all'
                 ? 'The Catalog'
-                : activeTab === 'mugs-cups'
-                  ? 'Cups & Mugs'
-                  : activeTab}
+                : activeTab === 'skins'
+                  ? 'Device Skins'
+                  : activeTab === 'mugs-cups'
+                    ? 'Cups & Mugs'
+                    : activeTab}
             </h1>
 
             <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar pb-4 border-b border-smoke/20">
@@ -192,8 +194,8 @@ export function ShopDesktop({ category, products }: { category: string; products
             </div>
           </div>
 
-          {activeTab === 'mugs-cups' ? (
-            <CupsMugsComingSoon />
+          {activeTab === 'skins' ? (
+            <DeviceSkinsComingSoon />
           ) : (
             /* Filters & Grid */
             <div className="flex items-start gap-12">

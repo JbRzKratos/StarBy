@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
+import { OrbitControls, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 import { useCustomizerStore } from '@/store/customizer';
 import type { Product } from '@/data/products';
@@ -13,7 +13,12 @@ interface Mug3DViewerProps {
 }
 
 function MugModel({ product }: { product: Product }) {
-  const mTemplate = mugTemplates[product.slug || product.id];
+  const slugClean = product.slug?.replace(/_/g, '-');
+  const mTemplate =
+    mugTemplates[product.slug] ||
+    (slugClean ? mugTemplates[slugClean] : undefined) ||
+    Object.values(mugTemplates).find((t) => t.productId === product.id) ||
+    mugTemplates['classic-mug-11oz'];
   const {
     uploadedImage,
     customText,
@@ -51,21 +56,19 @@ function MugModel({ product }: { product: Product }) {
       const texture = new THREE.CanvasTexture(canvas);
       texture.anisotropy = 16;
       texture.colorSpace = THREE.SRGBColorSpace;
-
-      // Flip Y because Three.js uses different texture coordinates
-      texture.flipY = false;
+      texture.needsUpdate = true;
       setCanvasTex(texture);
     };
 
     if (uploadedImage && (!mTemplate?.isColorChanging || isMagicMugRevealed)) {
       const img = new Image();
       img.src = uploadedImage;
-      img.onload = () => {
+      const draw = () => {
         // Simple mapping: if single-panel, draw in center. If full-wrap, stretch.
         if (mugLayout === 'single-panel') {
-          // Draw smaller in the center
-          const dw = canvas.width * 0.4;
-          const dh = canvas.height * 0.6;
+          // Draw nicely proportioned in the center
+          const dw = canvas.width * 0.45;
+          const dh = canvas.height * 0.75;
           const dx = (canvas.width - dw) / 2;
           const dy = (canvas.height - dh) / 2;
           ctx.drawImage(img, dx, dy, dw, dh);
@@ -75,6 +78,11 @@ function MugModel({ product }: { product: Product }) {
         }
         renderText();
       };
+      if (img.complete && img.naturalWidth > 0) {
+        draw();
+      } else {
+        img.onload = draw;
+      }
     } else {
       renderText();
     }
@@ -99,12 +107,13 @@ function MugModel({ product }: { product: Product }) {
   const isMatte = material === 'matte';
 
   return (
-    <group position={[0, -height / 2, 0]}>
+    <group position={[0, -height / 2, 0]} rotation={[0, Math.PI * 0.9, 0]}>
       {/* Mug Body */}
       <mesh ref={meshRef} position={[0, height / 2, 0]} castShadow receiveShadow>
         {/* Radius top, Radius bottom, Height, RadialSegments, HeightSegments, OpenEnded */}
         <cylinderGeometry args={[radius, radius, height, 64, 1, false]} />
         <meshPhysicalMaterial
+          key={canvasTex?.uuid || 'empty'}
           map={canvasTex}
           roughness={isMatte ? 0.7 : isGlass ? 0.1 : 0.2}
           metalness={isEnamel ? 0.3 : 0.0}
@@ -150,14 +159,13 @@ function MugModel({ product }: { product: Product }) {
 export function Mug3DViewer({ product }: Mug3DViewerProps) {
   return (
     <div className="w-full h-full relative bg-charcoal/50 rounded-2xl overflow-hidden cursor-move">
-      <Canvas shadows camera={{ position: [0, 2, 5], fov: 45 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[5, 5, 5]} intensity={1} castShadow shadow-mapSize={1024} />
+      <Canvas shadows camera={{ position: [0, 1.4, 5.5], fov: 45 }}>
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 5, 5]} intensity={1.2} castShadow shadow-mapSize={1024} />
         <directionalLight position={[-5, 5, -5]} intensity={0.5} />
-
         <MugModel product={product} />
-
-        <Environment preset="city" />
+        <hemisphereLight intensity={0.5} groundColor="#222222" />
+        <directionalLight position={[0, -5, 0]} intensity={0.2} />
         <ContactShadows position={[0, -0.01, 0]} opacity={0.5} scale={10} blur={2} far={4} />
 
         <OrbitControls

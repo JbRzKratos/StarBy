@@ -93,6 +93,11 @@ export function CanvasWorkspace({
     initPanY: number;
   } | null>(null);
   const isSpacePressedRef = useRef(false);
+  const activeTouchPointersRef = useRef<Map<number, { clientX: number; clientY: number }>>(
+    new Map(),
+  );
+  const pinchStartDistanceRef = useRef<number | null>(null);
+  const pinchStartZoomRef = useRef<number>(1);
 
   const dim = PAGE_DIMENSIONS[doc.dimensionKey] || DEFAULT_PAGE_DIMENSION;
 
@@ -325,6 +330,41 @@ export function CanvasWorkspace({
 
   // ─── Canvas Background PointerDown (Pan or Marquee) ───
   const handleCanvasPointerDown = (e: React.PointerEvent) => {
+    // Touchscreen gesture detection
+    if (e.pointerType === 'touch') {
+      activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+
+      if (activeTouchPointersRef.current.size === 1) {
+        // 1-finger touch on canvas background: initiate pan
+        if (
+          e.target === containerRef.current ||
+          (e.target as HTMLElement).dataset.canvasBackground
+        ) {
+          setIsPanning(true);
+          panStartRef.current = {
+            startX: e.clientX,
+            startY: e.clientY,
+            initPanX: pan.x,
+            initPanY: pan.y,
+          };
+          onSelectElements([]);
+          setEditingTextId(null);
+          setCroppingImageId(null);
+        }
+      } else if (activeTouchPointersRef.current.size === 2) {
+        // 2-finger touch: initiate pinch-to-zoom
+        setIsPanning(false);
+        setMarqueeBox(null);
+        const pts = Array.from(activeTouchPointersRef.current.values());
+        if (pts.length >= 2 && pts[0] && pts[1]) {
+          const dist = Math.hypot(pts[0].clientX - pts[1].clientX, pts[0].clientY - pts[1].clientY);
+          pinchStartDistanceRef.current = dist;
+          pinchStartZoomRef.current = zoom;
+        }
+      }
+      return;
+    }
+
     if (e.button === 1 || isSpacePressedRef.current) {
       e.preventDefault();
       setIsPanning(true);
@@ -357,6 +397,46 @@ export function CanvasWorkspace({
   };
 
   const handleCanvasPointerMove = (e: React.PointerEvent) => {
+    // Touch gestures
+    if (e.pointerType === 'touch') {
+      if (activeTouchPointersRef.current.has(e.pointerId)) {
+        activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+      }
+
+      // 2-finger pinch zoom
+      if (
+        activeTouchPointersRef.current.size === 2 &&
+        pinchStartDistanceRef.current &&
+        onZoomChange
+      ) {
+        const pts = Array.from(activeTouchPointersRef.current.values());
+        if (pts.length >= 2 && pts[0] && pts[1]) {
+          const currentDist = Math.hypot(
+            pts[0].clientX - pts[1].clientX,
+            pts[0].clientY - pts[1].clientY,
+          );
+          const scaleChange = currentDist / pinchStartDistanceRef.current;
+          const newZoom = Math.min(
+            2.5,
+            Math.max(0.4, Number((pinchStartZoomRef.current * scaleChange).toFixed(2))),
+          );
+          onZoomChange(newZoom);
+          return;
+        }
+      }
+
+      // 1-finger canvas pan
+      if (isPanning && panStartRef.current && activeTouchPointersRef.current.size === 1) {
+        const dx = e.clientX - panStartRef.current.startX;
+        const dy = e.clientY - panStartRef.current.startY;
+        setPan({
+          x: panStartRef.current.initPanX + dx,
+          y: panStartRef.current.initPanY + dy,
+        });
+        return;
+      }
+    }
+
     if (isPanning && panStartRef.current) {
       const dx = e.clientX - panStartRef.current.startX;
       const dy = e.clientY - panStartRef.current.startY;
@@ -393,7 +473,19 @@ export function CanvasWorkspace({
     }
   };
 
-  const handleCanvasPointerUp = () => {
+  const handleCanvasPointerUp = (e?: React.PointerEvent) => {
+    if (e?.pointerType === 'touch') {
+      activeTouchPointersRef.current.delete(e.pointerId);
+      if (activeTouchPointersRef.current.size < 2) {
+        pinchStartDistanceRef.current = null;
+      }
+      if (activeTouchPointersRef.current.size === 0) {
+        setIsPanning(false);
+        panStartRef.current = null;
+      }
+      return;
+    }
+
     setIsPanning(false);
     panStartRef.current = null;
     setMarqueeBox(null);
@@ -652,8 +744,8 @@ export function CanvasWorkspace({
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[#08080A] relative overflow-hidden select-none">
-      {/* ── Top Horizontal Millimeter Ruler ── */}
-      {showRulers && (
+      {/* ── Top Horizontal Millimeter Ruler (Desktop/Tablet) ── */}
+      {showRulers && workspaceSize.width >= 768 && (
         <div className="h-5 pl-5 w-full bg-[#0E0E10] shrink-0 z-30">
           <CanvasRuler
             orientation="horizontal"
@@ -664,8 +756,8 @@ export function CanvasWorkspace({
       )}
 
       <div className="flex-1 flex w-full h-full relative overflow-hidden">
-        {/* ── Left Vertical Millimeter Ruler ── */}
-        {showRulers && (
+        {/* ── Left Vertical Millimeter Ruler (Desktop/Tablet) ── */}
+        {showRulers && workspaceSize.width >= 768 && (
           <div className="w-5 h-full bg-[#0E0E10] shrink-0 z-30">
             <CanvasRuler orientation="vertical" lengthMm={dim.heightMm} cursorPosMm={cursorMm?.y} />
           </div>
@@ -678,7 +770,7 @@ export function CanvasWorkspace({
           onPointerMove={handleCanvasPointerMove}
           onPointerUp={handleCanvasPointerUp}
           onWheel={handleWheel}
-          className={`flex-1 w-full h-full flex items-center justify-center p-8 overflow-auto relative touch-none ${
+          className={`flex-1 w-full h-full flex items-center justify-center p-2 sm:p-4 md:p-8 overflow-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden relative touch-none ${
             isPanning
               ? 'cursor-grabbing'
               : isSpacePressedRef.current

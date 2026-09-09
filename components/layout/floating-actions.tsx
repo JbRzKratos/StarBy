@@ -1,24 +1,29 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { gsap } from '@/lib/gsap-config';
 import Link from 'next/link';
 
 export function FloatingActions() {
+  const pathname = usePathname();
   const [showScrollTop, setShowScrollTop] = useState(false);
   const scrollTopRef = useRef<HTMLButtonElement>(null);
   const waRef = useRef<HTMLAnchorElement>(null);
 
+  const isExcludedRoute =
+    pathname?.startsWith('/magazine/editor') || pathname?.startsWith('/admin');
+
   useEffect(() => {
+    if (isExcludedRoute) return;
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initialize state on mount
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isExcludedRoute]);
 
   useEffect(() => {
     if (!scrollTopRef.current) return;
@@ -58,10 +63,14 @@ export function FloatingActions() {
     }
   };
 
+  if (isExcludedRoute) {
+    return null;
+  }
+
   return (
     <>
       {/* Scroll to Top - Bottom Right */}
-      <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-[90] flex flex-col gap-4">
+      <div className="floating-scroll-top-btn fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-[90] flex flex-col gap-4">
         <button
           ref={scrollTopRef}
           onClick={scrollToTop}
@@ -86,7 +95,7 @@ export function FloatingActions() {
       </div>
 
       {/* WhatsApp Floating Button - Bottom Left */}
-      <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-[90]">
+      <div className="floating-whatsapp-btn fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-[90]">
         <Link
           href={
             process.env.NEXT_PUBLIC_WHATSAPP_NUMBER

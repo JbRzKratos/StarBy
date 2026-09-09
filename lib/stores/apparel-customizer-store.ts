@@ -11,6 +11,8 @@ export interface DesignTransform {
   scaleY: number;
   angle: number;
   opacity: number;
+  normX?: number;
+  normY?: number;
 }
 
 interface DesignState {
@@ -63,26 +65,32 @@ export const useApparelCustomizerStore = create<ApparelCustomizerState>()(
       setView: (view) => set(() => ({ view })),
 
       setDesignImage: (view, url, _width = 300, _height = 300) =>
-        set((state) => ({
-          designsByView: {
-            ...state.designsByView,
-            [view]: {
-              imageUrl: url,
-              transform: state.designsByView[view].transform ?? {
-                x: 0,
-                y: 0,
-                scaleX: 1,
-                scaleY: 1,
-                angle: 0,
-                opacity: 1,
+        set((state) => {
+          const currentView = state.designsByView?.[view] ?? defaultDesign();
+          return {
+            designsByView: {
+              ...state.designsByView,
+              [view]: {
+                imageUrl: url,
+                transform: currentView.transform ?? {
+                  x: 0,
+                  y: 0,
+                  scaleX: 1,
+                  scaleY: 1,
+                  angle: 0,
+                  opacity: 1,
+                  normX: 0,
+                  normY: 0,
+                },
               },
             },
-          },
-        })),
+          };
+        }),
 
       updateTransform: (view, transform) =>
         set((state) => {
-          const current = state.designsByView[view].transform ?? {
+          const currentView = state.designsByView?.[view] ?? defaultDesign();
+          const current = currentView.transform ?? {
             x: 0,
             y: 0,
             scaleX: 1,
@@ -94,7 +102,7 @@ export const useApparelCustomizerStore = create<ApparelCustomizerState>()(
             designsByView: {
               ...state.designsByView,
               [view]: {
-                ...state.designsByView[view],
+                ...currentView,
                 transform: { ...current, ...transform },
               },
             },
@@ -114,6 +122,19 @@ export const useApparelCustomizerStore = create<ApparelCustomizerState>()(
     {
       name: 'starby-apparel-store',
       storage: createJSONStorage(() => localStorage),
+      merge: (persistedState: unknown, currentState) => {
+        const p = (
+          persistedState && typeof persistedState === 'object' ? persistedState : {}
+        ) as Partial<ApparelCustomizerState>;
+        return {
+          ...currentState,
+          ...p,
+          designsByView: {
+            front: p?.designsByView?.front ?? defaultDesign(),
+            back: p?.designsByView?.back ?? defaultDesign(),
+          },
+        };
+      },
     },
   ),
 );

@@ -28,8 +28,8 @@ const CustomizerCanvas = dynamic(
 const Mug3DViewer = dynamic(() => import('./Mug3DViewer').then((m) => m.Mug3DViewer), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[60vh] bg-graphite animate-pulse flex items-center justify-center font-mono text-[10px] text-pearl">
-      Loading 3D...
+    <div className="w-full h-[60vh] bg-graphite animate-pulse flex items-center justify-center font-mono text-pearl text-xs">
+      Loading 3D Mug Engine...
     </div>
   ),
 });
@@ -172,10 +172,17 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
     isMagicMugRevealed,
     setIsMagicMugRevealed,
     viewMode,
-    setViewMode: _setViewMode,
+    setViewMode,
   } = useCustomizerStore();
   const [mounted, setMounted] = useState(false);
-  const mTemplate = product?.categorySlug === 'mugs-cups' ? mugTemplates[product.slug] : null;
+  const slugClean = product?.slug?.replace(/_/g, '-');
+  const mTemplate =
+    product?.categorySlug === 'mugs-cups'
+      ? mugTemplates[product.slug] ||
+        (slugClean ? mugTemplates[slugClean] : undefined) ||
+        Object.values(mugTemplates).find((t) => t.productId === product.id) ||
+        mugTemplates['classic-mug-11oz']
+      : null;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -246,7 +253,7 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
       {/* Canvas Area (Top) */}
       <div className="relative w-full bg-graphite shrink-0">
         <input
-          type="file"
+          id="mobile-customizer-file-input"
           ref={fileInputRef}
           className="hidden"
           accept="image/jpeg, image/png, image/webp"
@@ -273,7 +280,36 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
         ) : (
           // ── OTHER CATEGORIES: existing canvas ──
           <div className="relative w-full h-[60vh]">
+            {product?.categorySlug === 'mugs-cups' && (
+              <div className="absolute top-3 right-3 z-20 flex items-center bg-graphite/90 border border-smoke/50 rounded-md p-1 shadow-lg backdrop-blur-md">
+                <button
+                  id="mobile-mug-canvas-toggle-2d"
+                  onClick={() => setViewMode('2d')}
+                  className={`px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider rounded transition-all ${
+                    viewMode !== '3d'
+                      ? 'bg-cobalt text-bone font-medium shadow'
+                      : 'text-ash hover:text-bone'
+                  }`}
+                >
+                  2D
+                </button>
+                <button
+                  id="mobile-mug-canvas-toggle-3d"
+                  onClick={() => setViewMode('3d')}
+                  className={`px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider rounded transition-all flex items-center gap-1 ${
+                    viewMode === '3d'
+                      ? 'bg-cobalt text-bone font-medium shadow'
+                      : 'text-ash hover:text-bone'
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  3D
+                </button>
+              </div>
+            )}
+
             {!uploadedImage &&
+              viewMode !== '3d' &&
               (() => {
                 const instructions = getUploadInstructions(product?.categorySlug);
                 return (
@@ -301,8 +337,18 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
                 );
               })()}
             {viewMode === '3d' && product?.categorySlug === 'mugs-cups' ? (
-              <div className="w-full h-[60vh]">
+              <div className="w-full h-[60vh] relative">
                 <Mug3DViewer product={product} />
+                {!uploadedImage && (
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="bg-cobalt text-bone font-mono text-[10px] uppercase px-4 py-2 rounded-sm shadow-lg flex items-center gap-1.5"
+                    >
+                      Upload Image to Wrap
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <CustomizerCanvas
@@ -349,6 +395,30 @@ function CustomizerMobileInner({ productId }: { productId: string }) {
             </button>
           </div>
         </div>
+
+        {/* View Mode Toggle (Mugs only) */}
+        {product?.categorySlug === 'mugs-cups' && (
+          <div className="flex border border-smoke rounded-sm overflow-hidden">
+            <button
+              id="mobile-mug-toggle-2d"
+              onClick={() => setViewMode('2d')}
+              className={`flex-1 py-2 font-mono text-[10px] uppercase tracking-wider transition-colors border-r border-smoke ${
+                viewMode === '2d' ? 'bg-cobalt text-bone font-semibold' : 'bg-charcoal text-ash'
+              }`}
+            >
+              2D Editor
+            </button>
+            <button
+              id="mobile-mug-toggle-3d"
+              onClick={() => setViewMode('3d')}
+              className={`flex-1 py-2 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                viewMode === '3d' ? 'bg-cobalt text-bone font-semibold' : 'bg-charcoal text-ash'
+              }`}
+            >
+              360° 3D View
+            </button>
+          </div>
+        )}
 
         {/* Sizing (if applicable) */}
         {product?.sizes && product.sizes.length > 0 && (

@@ -78,8 +78,8 @@ const WHITE_BASE_MOCKUP: Record<GarmentType, Record<GarmentView, string>> = {
   },
   hoodie: {
     front: '/images/mockups/hoodie-white-front.png',
-    // back not yet available — fall back to black-back
-    back: '/images/mockups/hoodie-black-back.png',
+    // back not yet available — fall back to white front for correct tinting
+    back: '/images/mockups/hoodie-white-front.png',
   },
 };
 
@@ -124,12 +124,13 @@ const loadFabric = (): Promise<any> => {
   return _fabricPromise;
 };
 
-// ── Image URL options: NEVER set crossOrigin on data: URLs ───────────────────
-// Setting crossOrigin on a data: URI causes silent load failures in Chrome and
-// Firefox because data: URIs have no origin and the browser treats the
-// crossOrigin attribute as an error trigger.
+// ── Image URL options: NEVER set crossOrigin on data: or blob: URLs ───────────
+// Setting crossOrigin on a data: or blob: URI causes silent load failures / CORS errors
+// in Chrome and Firefox.
 const imgOptions = (url: string): Record<string, string> =>
-  url.startsWith('data:') ? {} : { crossOrigin: 'anonymous' };
+  url.startsWith('data:') || url.startsWith('blob:') || url.startsWith('/')
+    ? {}
+    : { crossOrigin: 'anonymous' };
 
 // ── Place design image on an existing fabric canvas ──────────────────────────
 function placeDesignImage(opts: {
@@ -194,17 +195,29 @@ function placeDesignImage(opts: {
       }
 
       const targetW = pa.w * config.defaultDesignScale;
-      const designScale = targetW / Math.max(img.width || 1, 1);
+      const baseDesignScale = targetW / Math.max(img.width || 1, 1);
+
+      const existing = useApparelCustomizerStore.getState().designsByView[view]?.transform;
+      const initNormX = existing?.normX ?? 0;
+      const initNormY = existing?.normY ?? 0;
+      const initialLeft = pa.x + pa.w / 2 + initNormX * (pa.w / 2);
+      const initialTop = pa.y + pa.h / 2 + initNormY * (pa.h / 2);
+
+      // Preserve existing user scale factor if already set
+      const userScaleX = existing?.scaleX ?? 1;
+      const userScaleY = existing?.scaleY ?? userScaleX;
+      const finalScaleX = baseDesignScale * userScaleX;
+      const finalScaleY = baseDesignScale * userScaleY;
 
       img.set({
-        left: pa.x + pa.w / 2,
-        top: pa.y + pa.h / 2,
+        left: initialLeft,
+        top: initialTop,
         originX: 'center',
         originY: 'center',
-        scaleX: designScale,
-        scaleY: designScale,
-        angle: 0,
-        opacity: 1,
+        scaleX: finalScaleX,
+        scaleY: finalScaleY,
+        angle: existing?.angle ?? 0,
+        opacity: existing?.opacity ?? 1,
         clipPath: clip,
         cornerColor: '#ED9518',
         borderColor: '#ED9518',
@@ -245,7 +258,92 @@ function placeDesignImage(opts: {
       // Flush initial placement to store
       onFlushStore(img);
     },
-    imgOptions(designImageUrl), // ← KEY FIX: empty object for data: URLs
+    imgOptions(designImageUrl), // ← KEY FIX: empty object for data: or blob: URLs
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Tinted garment mockup helper for accent colors without dedicated photos ──
+function TintedGarmentMockup({
+  src,
+  tintColor,
+  alt,
+}: {
+  src: string;
+  tintColor: string;
+  alt: string;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const img = new Image();
+    // NEVER set crossOrigin for relative or same-origin URLs
+    if (src.startsWith('http://') || src.startsWith('https://')) {
+      try {
+        const u = new URL(src);
+        if (typeof window !== 'undefined' && u.origin !== window.location.origin) {
+          img.crossOrigin = 'anonymous';
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    const draw = () => {
+      if (cancelled) return;
+      canvas.width = img.naturalWidth || 1000;
+      canvas.height = img.naturalHeight || 1200;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.fillStyle = tintColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      ctx.globalCompositeOperation = 'source-over';
+    };
+
+    img.onload = draw;
+    img.onerror = () => {
+      console.warn('[TintedGarmentMockup] Failed to load image:', src);
+    };
+    img.src = src;
+
+    if (img.complete && img.naturalWidth > 0) {
+      draw();
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [src, tintColor]);
+
+  return (
+    <div className="w-full h-full relative">
+      {/* Underlying base image ensures canvas never flashes blank */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-contain pointer-events-none select-none absolute inset-0 z-[1]"
+      />
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full object-contain pointer-events-none select-none absolute inset-0 z-[2]"
+        aria-label={alt}
+      />
+    </div>
   );
 }
 
@@ -264,42 +362,75 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
     const updateTransform = useApparelCustomizerStore((s) => s.updateTransform);
 
     // Called every drag frame — writes to ref only (zero React/Zustand cost)
-    const onLocalSync = useCallback((obj: any) => {
-      localTransformRef.current = {
-        x: obj.left,
-        y: obj.top,
-        scaleX: obj.scaleX,
-        scaleY: obj.scaleY,
-        angle: obj.angle,
-        opacity: obj.opacity,
-      };
-    }, []);
+    const onLocalSync = useCallback(
+      (obj: any) => {
+        const containerW = containerRef.current?.clientWidth || 480;
+        const scaleFactor = containerW / CANVAS_REF_WIDTH;
+        const config = getPrintAreaConfig(garment, view);
+        const paCenterX = (config.printArea.x + config.printArea.width / 2) * scaleFactor;
+        const paCenterY = (config.printArea.y + config.printArea.height / 2) * scaleFactor;
+        const paHalfW = (config.printArea.width / 2) * scaleFactor;
+        const paHalfH = (config.printArea.height / 2) * scaleFactor;
+
+        const normX = paHalfW > 0 ? Number(((obj.left - paCenterX) / paHalfW).toFixed(3)) : 0;
+        const normY = paHalfH > 0 ? Number(((obj.top - paCenterY) / paHalfH).toFixed(3)) : 0;
+
+        const targetW = config.printArea.width * scaleFactor * config.defaultDesignScale;
+        const baseScale = targetW / Math.max(obj.width || 1, 1);
+        const userScaleX = baseScale > 0 ? Number((obj.scaleX / baseScale).toFixed(3)) : 1;
+        const userScaleY = baseScale > 0 ? Number((obj.scaleY / baseScale).toFixed(3)) : 1;
+
+        localTransformRef.current = {
+          x: obj.left,
+          y: obj.top,
+          scaleX: userScaleX,
+          scaleY: userScaleY,
+          angle: obj.angle,
+          opacity: obj.opacity,
+          normX,
+          normY,
+        };
+      },
+      [garment, view],
+    );
 
     // Called once on modified (mouse-up) — flush to Zustand
     const onFlushStore = useCallback(
       (obj: any) => {
+        const containerW = containerRef.current?.clientWidth || 480;
+        const scaleFactor = containerW / CANVAS_REF_WIDTH;
+        const config = getPrintAreaConfig(garment, view);
+        const paCenterX = (config.printArea.x + config.printArea.width / 2) * scaleFactor;
+        const paCenterY = (config.printArea.y + config.printArea.height / 2) * scaleFactor;
+        const paHalfW = (config.printArea.width / 2) * scaleFactor;
+        const paHalfH = (config.printArea.height / 2) * scaleFactor;
+
+        const normX = paHalfW > 0 ? Number(((obj.left - paCenterX) / paHalfW).toFixed(3)) : 0;
+        const normY = paHalfH > 0 ? Number(((obj.top - paCenterY) / paHalfH).toFixed(3)) : 0;
+
+        const targetW = config.printArea.width * scaleFactor * config.defaultDesignScale;
+        const baseScale = targetW / Math.max(obj.width || 1, 1);
+        const userScaleX = baseScale > 0 ? Number((obj.scaleX / baseScale).toFixed(3)) : 1;
+        const userScaleY = baseScale > 0 ? Number((obj.scaleY / baseScale).toFixed(3)) : 1;
+
         const t: DesignTransform = {
           x: obj.left,
           y: obj.top,
-          scaleX: obj.scaleX,
-          scaleY: obj.scaleY,
+          scaleX: userScaleX,
+          scaleY: userScaleY,
           angle: obj.angle,
           opacity: obj.opacity,
+          normX,
+          normY,
         };
         localTransformRef.current = t;
         updateTransform(view, t);
         onTransformChange?.(t);
       },
-      [view, updateTransform, onTransformChange],
+      [garment, view, updateTransform, onTransformChange],
     );
 
     // ── Stable refs for callbacks ──────────────────────────────────────────
-    // This is the key fix for the infinite-reload loop:
-    // onTransformChange is an inline arrow in the parent => new reference every render.
-    // If onFlushStore (which depends on onTransformChange) is in the design-image effect
-    // deps, the effect fires every render, removes+reloads the design, calls onFlushStore,
-    // triggers updateTransform, triggers re-render, new onTransformChange, loop forever.
-    // Solution: store the latest callbacks in refs and keep them OUT of effect deps.
     const onLocalSyncRef = useRef(onLocalSync);
     onLocalSyncRef.current = onLocalSync;
     const onFlushStoreRef = useRef(onFlushStore);
@@ -313,10 +444,32 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
         if (!fc) return '';
         if (guideRectRef.current) guideRectRef.current.set({ visible: false });
         fc.renderAll();
-        const url: string = fc.toDataURL({ format: 'png', multiplier: 1 });
+
+        const containerW = containerRef.current?.clientWidth || 480;
+        const containerH =
+          fc.height || Math.round(containerW * (CANVAS_REF_HEIGHT / CANVAS_REF_WIDTH));
+
+        const offscreen = document.createElement('canvas');
+        offscreen.width = containerW;
+        offscreen.height = containerH;
+        const ctx = offscreen.getContext('2d');
+
+        if (ctx) {
+          const renderedGarment = containerRef.current?.parentElement?.querySelector(
+            'canvas:not(.lower-canvas):not(.upper-canvas), img',
+          );
+          if (renderedGarment) {
+            ctx.drawImage(renderedGarment as CanvasImageSource, 0, 0, containerW, containerH);
+          }
+          const lowerCanvas = fc.lowerCanvasEl;
+          if (lowerCanvas) {
+            ctx.drawImage(lowerCanvas, 0, 0);
+          }
+        }
+
         if (guideRectRef.current) guideRectRef.current.set({ visible: true });
         fc.renderAll();
-        return url;
+        return offscreen.toDataURL('image/png');
       },
       loadFromSnapshot: async (json: string) => {
         const fc = fabricRef.current;
@@ -331,7 +484,7 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
       },
     }));
 
-    // ── Canvas initialisation ────────────────────────────────────────────────
+    // ── Canvas initialisation (depends on garment type or mount) ─────────────
     useEffect(() => {
       let destroyed = false;
       let fc: any = null;
@@ -431,84 +584,34 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
         tintRectRef.current = null;
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [garment, view]);
+    }, [garment]);
 
-    // ── Effect: colour change → swap garment image + update tint rect ──────────
+    // ── Effect: update guide rect when garment or view changes ───────────────
     useEffect(() => {
-      let isCancelled = false;
-
-      if (!isReady) return;
-
       const fc = fabricRef.current;
-      if (!fc) return;
+      const guide = guideRectRef.current;
+      if (!isReady || !fc || !guide) return;
 
-      const fabric = (window as any).fabric;
-      if (!fabric) return;
-
-      // Remove ALL old tint rects and background mockup images before adding the new color mockup
-      if (tintRectRef.current) {
-        fc.remove(tintRectRef.current);
-        tintRectRef.current = null;
-      }
-      const existingBgObjects = fc
-        .getObjects()
-        .filter((o: any) => o !== designObjRef.current && o !== guideRectRef.current);
-      existingBgObjects.forEach((o: any) => fc.remove(o));
-
-      const mockupSrc = color.mockupImage ?? WHITE_BASE_MOCKUP[garment][view];
-      const containerW = containerRef.current?.clientWidth ?? 480;
-      const containerH = fc.height as number;
-
-      fabric.Image.fromURL(
-        mockupSrc,
-        (img: any) => {
-          if (isCancelled || !img || !fabricRef.current) return;
-          const gScale = Math.max(
-            containerW / Math.max(img.width || 1, 1),
-            containerH / Math.max(img.height || 1, 1),
-          );
-
-          // Add tint rect inside fabric for non-real-asset colours
-          if (!color.mockupImage) {
-            const tr = new fabric.Rect({
-              left: 0,
-              top: 0,
-              width: containerW,
-              height: containerH,
-              fill: color.hex,
-              selectable: false,
-              evented: false,
-            });
-            fabricRef.current.add(tr);
-            fabricRef.current.sendToBack(tr);
-            tintRectRef.current = tr;
-            img.set({ globalCompositeOperation: 'multiply' });
-          }
-
-          img.set({
-            left: containerW / 2,
-            top: containerH / 2,
-            originX: 'center',
-            originY: 'center',
-            scaleX: gScale,
-            scaleY: gScale,
-            selectable: false,
-            evented: false,
-          });
-          fabricRef.current.add(img);
-          fabricRef.current.sendToBack(img);
-          if (tintRectRef.current) fabricRef.current.sendToBack(tintRectRef.current);
-          fabricRef.current.renderAll();
-        },
-        imgOptions(mockupSrc),
-      );
-
-      return () => {
-        isCancelled = true;
+      const containerW = containerRef.current?.clientWidth || 480;
+      const scaleFactor = containerW / CANVAS_REF_WIDTH;
+      const config = getPrintAreaConfig(garment, view);
+      const pa = {
+        x: config.printArea.x * scaleFactor,
+        y: config.printArea.y * scaleFactor,
+        w: config.printArea.width * scaleFactor,
+        h: config.printArea.height * scaleFactor,
       };
-    }, [isReady, color, garment, view]);
 
-    // ── Effect: design image change (upload / clear) ──────────────────────────
+      guide.set({
+        left: pa.x,
+        top: pa.y,
+        width: pa.w,
+        height: pa.h,
+      });
+      fc.renderAll();
+    }, [isReady, garment, view]);
+
+    // ── Effect: design image change (upload / clear / view switch) ───────────
     useEffect(() => {
       if (!isReady) return;
 
@@ -542,27 +645,69 @@ export const ApparelCanvas = forwardRef<ApparelCanvasHandle, ApparelCanvasProps>
         containerW,
         designObjRef,
         guideRectRef,
-        // Use refs so this effect does NOT re-run when callback identity changes
         onLocalSync: (obj: any) => onLocalSyncRef.current(obj),
         onFlushStore: (obj: any) => onFlushStoreRef.current(obj),
         destroyed: false,
       });
-      // Intentionally exclude onLocalSync/onFlushStore from deps — stored in refs above.
-      // The effect must only re-run on actual data changes (url, garment, view).
+      // Preload both front and back mockups for this garment & color to make switching instantaneous
+      const frontSrc =
+        color.mockupImage?.replace(/-(front|back)\.png$/, '-front.png') ??
+        WHITE_BASE_MOCKUP[garment]?.front ??
+        '/images/mockups/tee-white-front.png';
+      const backSrc =
+        color.mockupImage?.replace(/-(front|back)\.png$/, '-back.png') ??
+        WHITE_BASE_MOCKUP[garment]?.back ??
+        '/images/mockups/tee-white-back.png';
+
+      if (typeof window !== 'undefined') {
+        const p1 = new Image();
+        p1.src = frontSrc;
+        const p2 = new Image();
+        p2.src = backSrc;
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isReady, designImageUrl, garment, view]);
 
     // ── Render ────────────────────────────────────────────────────────────────
-    // The canvas container is a simple absolutely-positioned div.
-    // Tinting is handled INSIDE fabric.js (tintRect + multiply blend on garment image),
-    // NOT via CSS mix-blend-mode on this container. This prevents tinting from
-    // bleeding into the dark outer wrapper area around the garment photo.
+    // The garment mockup image is rendered as a clean element in the DOM
+    // directly behind the transparent Fabric.js canvas.
+    // Photographed colors render a clean <img>; accent colors render TintedGarmentMockup.
+    // This guarantees the garment NEVER goes black or blank regardless of canvas init/view switches.
+    const mockupSrc =
+      color.mockupImage ??
+      WHITE_BASE_MOCKUP[garment]?.[view] ??
+      '/images/mockups/tee-white-front.png';
+    const isTinted = !color.mockupImage;
+
     return (
       <div
-        className="w-full relative select-none touch-none"
+        className="w-full relative select-none touch-none overflow-hidden"
         style={{ aspectRatio: `${CANVAS_REF_WIDTH} / ${CANVAS_REF_HEIGHT}` }}
       >
-        <div ref={containerRef} style={{ position: 'absolute', inset: 0 }} />
+        {/* Layer 1: Garment Mockup Image (rendered behind the canvas) */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          {isTinted ? (
+            <TintedGarmentMockup src={mockupSrc} tintColor={color.hex} alt={`${garment} ${view}`} />
+          ) : (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={mockupSrc}
+              alt={`${garment} ${view}`}
+              onError={(e) => {
+                const target = e.currentTarget;
+                const fallback =
+                  WHITE_BASE_MOCKUP[garment]?.[view] ?? '/images/mockups/tee-white-front.png';
+                if (target.src !== fallback) {
+                  target.src = fallback;
+                }
+              }}
+              className="w-full h-full object-contain pointer-events-none select-none relative z-[1]"
+            />
+          )}
+        </div>
+
+        {/* Layer 2: Interactive Fabric.js Canvas */}
+        <div ref={containerRef} className="absolute inset-0 z-[2]" />
       </div>
     );
   },

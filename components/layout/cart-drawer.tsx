@@ -124,7 +124,7 @@ export function CartDrawer() {
       ref={containerRef}
       role="dialog"
       aria-modal="true"
-      aria-label="Shopping cart"
+      aria-labelledby="cart-drawer-title"
       className="fixed inset-0 z-[99990] hidden flex-col lg:flex-row"
     >
       {/* Background Overlay */}
@@ -170,7 +170,10 @@ export function CartDrawer() {
         </div>
 
         <div>
-          <h1 className="font-display text-display-lg lg:text-[6rem] font-bold text-bone leading-none mb-4 lg:mb-8 tracking-tight">
+          <h1
+            id="cart-drawer-title"
+            className="font-display text-display-lg lg:text-[6rem] font-bold text-bone leading-none mb-4 lg:mb-8 tracking-tight"
+          >
             Your
             <br />
             Bag.

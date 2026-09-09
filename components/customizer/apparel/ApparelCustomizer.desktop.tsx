@@ -10,29 +10,46 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import {
   useApparelCustomizerStore,
   type GarmentType,
   type DesignTransform,
 } from '@/lib/stores/apparel-customizer-store';
 import { useApparelHistoryStore } from '@/lib/stores/apparel-history-store';
-import { GARMENT_COLORS, type GarmentView, type GarmentColor } from '@/data/printAreaConfig';
+import {
+  GARMENT_COLORS,
+  type GarmentView,
+  type GarmentColor,
+  getPrintAreaConfig,
+} from '@/data/printAreaConfig';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { useCustomizerStore } from '@/store/customizer';
 import { usePrice } from '@/lib/hooks/usePrice';
-import { products } from '@/data/products';
+import { products, getProductBySlug } from '@/data/products';
 import { validateImage, fileToDataUrl } from '@/components/customizer-hub/CustomizerHub.shared';
 import { ApparelCanvas, type ApparelCanvasHandle } from '../apparel-canvas';
+import { UVPlacementEditor } from './UVPlacementEditor';
+
+// ── 3D viewer — dynamically imported to avoid SSR/WebGL issues ───────────────
+const TShirt3DViewer = dynamic(
+  () => import('./TShirt3DViewer').then((m) => ({ default: m.TShirt3DViewer })),
+  { ssr: false },
+);
+
+// Garments that support the 3D preview mode
+const SUPPORTS_3D: GarmentType[] = ['tee', 'oversized-tee'];
 
 // ── Garment type display labels ──────────────────────────────────────────────
 const GARMENT_LABELS: Record<GarmentType, string> = {
   tee: 'Regular Tee',
   'oversized-tee': 'Oversized Tee',
-  hoodie: 'Hoodie',
+  hoodie: 'Acid Wash Hoodie',
 };
 
 // ── Category slug → garment type mapping ────────────────────────────────────
 function categoryToGarment(categorySlug?: string): GarmentType | null {
+  if (!categorySlug) return null;
   if (categorySlug === 'tees') return 'tee';
   if (categorySlug === 'oversized-tees') return 'oversized-tee';
   if (categorySlug === 'hoodies') return 'hoodie';
@@ -48,7 +65,7 @@ interface Props {
 }
 
 export function ApparelCustomizerDesktop({ productId }: Props) {
-  const product = products.find((p) => p.id === productId);
+  const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
   const garmentFromCategory = categoryToGarment(product?.categorySlug) ?? 'tee';
 
   const {
@@ -73,7 +90,7 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
   // Sync garment type from product category on mount
   useEffect(() => {
     setGarment(garmentFromCategory);
-    if (studioImage && !designsByView.front?.imageUrl) {
+    if (studioImage && !designsByView?.front?.imageUrl) {
       const img = new Image();
       img.src = studioImage;
       img.onload = () => {
@@ -88,6 +105,14 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [isTransparentWarning, setIsTransparentWarning] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+
+  // ── 3D / 2D preview mode (only available for tee / oversized-tee) ────────
+  const supports3D = SUPPORTS_3D.includes(garment);
+  const [previewMode, setPreviewMode] = useState<'2d' | '3d'>('2d');
+  // If garment changes to one that doesn't support 3D, fall back to 2D
+  useEffect(() => {
+    if (!supports3D) setPreviewMode('2d');
+  }, [supports3D]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<ApparelCanvasHandle>(null);
@@ -124,7 +149,7 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   }, [handleUndo, handleRedo]);
 
-  const currentDesign = designsByView[view];
+  const currentDesign = designsByView?.[view] ?? { imageUrl: null, transform: null };
   const colorOptions: GarmentColor[] = useMemo(
     () => GARMENT_COLORS[garment]?.[view] ?? [],
     [garment, view],
@@ -132,12 +157,17 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
   const activeColor: GarmentColor = useMemo(
     () =>
       colorOptions.find((c) => c.id === color) ??
-      colorOptions[0] ?? { id: 'black', label: 'Black', hex: '#0E0E0F', mockupImage: null },
-    [colorOptions, color],
+      colorOptions[0] ?? {
+        id: 'black',
+        label: 'Black',
+        hex: '#000000',
+        mockupImage: `/images/mockups/tee-black-${view}.png`,
+      },
+    [colorOptions, color, view],
   );
 
   // ── Design controls from active transform ────────────────────────────────
-  const transform = currentDesign.transform;
+  const transform = currentDesign?.transform;
   const opacity = transform?.opacity ?? 1;
   const scaleX = transform?.scaleX ?? 1;
   const angle = transform?.angle ?? 0;
@@ -366,6 +396,48 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
     });
   };
 
+  // ── UV Placement & Reposition handler (3D mode sync) ───────────────────────
+  const handleUVTransformChange = useCallback(
+    (t: Partial<DesignTransform>) => {
+      updateTransform(view, t);
+      const target = getTargetObject();
+      if (target) {
+        if (t.scaleX !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          target.obj.set({ scaleX: t.scaleX, scaleY: t.scaleX });
+        }
+        if (t.angle !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          target.obj.set({ angle: t.angle });
+        }
+        if (t.opacity !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          target.obj.set({ opacity: t.opacity });
+        }
+        if (t.normX !== undefined || t.normY !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          const containerW = (target.canvas.width as number) || 480;
+          const scaleFactor = containerW / 1000;
+          const config = getPrintAreaConfig(garment, view);
+          const paCenterX = (config.printArea.x + config.printArea.width / 2) * scaleFactor;
+          const paCenterY = (config.printArea.y + config.printArea.height / 2) * scaleFactor;
+          const paHalfW = (config.printArea.width / 2) * scaleFactor;
+          const paHalfH = (config.printArea.height / 2) * scaleFactor;
+          const nX = t.normX ?? currentDesign.transform?.normX ?? 0;
+          const nY = t.normY ?? currentDesign.transform?.normY ?? 0;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          target.obj.set({
+            left: paCenterX + nX * paHalfW,
+            top: paCenterY + nY * paHalfH,
+          });
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        (target.canvas as any).renderAll();
+      }
+    },
+    [view, updateTransform, getTargetObject, garment, currentDesign.transform],
+  );
+
   // ── Add to cart ──────────────────────────────────────────────────────────
   const handleAddToCart = useCallback(async () => {
     if (!product) return;
@@ -387,13 +459,13 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
         color,
         text: '',
         textFont: '',
-        imageUrl: currentDesign.imageUrl,
+        imageUrl: currentDesign?.imageUrl ?? null,
         // Apparel-specific fields
         thumbnail,
         garment,
         view,
-        designFront: designsByView.front.imageUrl ?? undefined,
-        designBack: designsByView.back.imageUrl ?? undefined,
+        designFront: designsByView?.front?.imageUrl ?? undefined,
+        designBack: designsByView?.back?.imageUrl ?? undefined,
       },
     });
 
@@ -412,7 +484,7 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
     designsByView,
     addItem,
     setCartOpen,
-    currentDesign.imageUrl,
+    currentDesign?.imageUrl,
   ]);
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -422,7 +494,7 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
       <div className="mb-8 flex items-end justify-between">
         <div>
           <span className="font-mono text-caption text-cobalt uppercase tracking-widest block mb-2">
-            2D Apparel Customizer
+            {previewMode === '3d' ? '3D Preview' : 'Apparel Customizer'}
           </span>
           <h1 className="font-display text-[3.5rem] font-bold text-bone leading-none uppercase">
             {product?.name ?? GARMENT_LABELS[garment]}
@@ -436,42 +508,130 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* ── Canvas area ─────────────────────────────────────────────────── */}
         <div className="lg:col-span-8">
-          {/* Front / Back toggle */}
-          <div className="flex mb-3 border border-smoke rounded-sm overflow-hidden w-fit">
-            {(['front', 'back'] as GarmentView[]).map((v) => (
-              <button
-                key={v}
-                onClick={() => setView(v)}
-                className={`px-6 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
-                  view === v
-                    ? 'bg-[#ED9518] text-charcoal font-semibold'
-                    : 'bg-charcoal text-ash hover:text-pearl'
-                }`}
-              >
-                {v === 'front' ? 'Front' : 'Back'}
-                {designsByView[v].imageUrl && (
-                  <span className="ml-1.5 inline-block w-1.5 h-1.5 rounded-full bg-[#ED9518] align-middle" />
-                )}
-              </button>
-            ))}
+          {/* ── Toolbar row: Front/Back toggle + 2D/3D mode toggle ─────────── */}
+          <div className="flex items-center justify-between mb-3">
+            {/* Front / Back (only relevant in 2D mode) */}
+            <div className="flex border border-smoke rounded-sm overflow-hidden">
+              {(['front', 'back'] as GarmentView[]).map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setView(v)}
+                  className={`px-6 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
+                    view === v
+                      ? 'bg-[#ED9518] text-charcoal font-semibold'
+                      : 'bg-charcoal text-ash hover:text-pearl'
+                  }`}
+                >
+                  {v === 'front' ? 'Front' : 'Back'}
+                  {designsByView?.[v]?.imageUrl && (
+                    <span className="ml-1.5 inline-block w-1.5 h-1.5 rounded-full bg-[#ED9518] align-middle" />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* 2D / 3D mode toggle (tee & oversized-tee only) */}
+            {supports3D && (
+              <div className="flex border border-smoke rounded-sm overflow-hidden">
+                <button
+                  id="apparel-toggle-2d"
+                  onClick={() => setPreviewMode('2d')}
+                  className={`flex items-center gap-1.5 px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
+                    previewMode === '2d'
+                      ? 'bg-cobalt/20 text-cobalt font-semibold border-r border-smoke'
+                      : 'bg-charcoal text-ash hover:text-pearl border-r border-smoke'
+                  }`}
+                >
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <path d="M3 9h18M9 21V9" />
+                  </svg>
+                  2D Edit
+                </button>
+                <button
+                  id="apparel-toggle-3d"
+                  onClick={() => setPreviewMode('3d')}
+                  className={`flex items-center gap-1.5 px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
+                    previewMode === '3d'
+                      ? 'bg-[#ED9518]/20 text-[#ED9518] font-semibold'
+                      : 'bg-charcoal text-ash hover:text-pearl'
+                  }`}
+                >
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                    <path d="M2 17l10 5 10-5" />
+                    <path d="M2 12l10 5 10-5" />
+                  </svg>
+                  3D Preview
+                </button>
+              </div>
+            )}
           </div>
 
-          {/* Canvas */}
-          <div className="bg-[#1A1A1E] rounded-xl overflow-hidden border border-smoke/20">
-            <ApparelCanvas
-              ref={canvasRef}
-              garment={garment}
-              view={view}
-              color={activeColor}
-              designImageUrl={currentDesign.imageUrl}
-              onTransformChange={handleTransformChange}
-            />
+          {/* ── Canvas / 3D viewer ─────────────────────────────────────────── */}
+          <div
+            className="bg-[#1A1A1E] rounded-xl overflow-hidden border border-smoke/20 relative"
+            style={{ minHeight: 480 }}
+          >
+            {/* 2D fabric.js canvas:
+                Keep VISIBLE (not display:none) so fabric.js always has valid
+                pixel dimensions. Hide with visibility+clip to prevent layout clash. */}
+            <div
+              style={
+                previewMode === '3d'
+                  ? {
+                      visibility: 'hidden',
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'hidden',
+                    }
+                  : {}
+              }
+            >
+              <ApparelCanvas
+                ref={canvasRef}
+                garment={garment}
+                view={view}
+                color={activeColor}
+                designImageUrl={currentDesign?.imageUrl ?? null}
+                onTransformChange={handleTransformChange}
+              />
+            </div>
+
+            {/* 3D preview — only mounted when mode is '3d' and garment supports it */}
+            {previewMode === '3d' && supports3D && (
+              <div className="absolute inset-0" style={{ height: 560 }}>
+                <TShirt3DViewer colorHex={activeColor.hex} view={view} />
+              </div>
+            )}
           </div>
 
-          {/* Placeholder asset notice */}
-          {!activeColor.mockupImage && (
+          {/* Placeholder asset notice (2D mode only) */}
+          {previewMode === '2d' && !activeColor.mockupImage && (
             <p className="mt-2 font-mono text-[10px] text-amber-400/70 italic">
               ⚠ Color preview is approximate — final product matches your selection exactly.
+            </p>
+          )}
+
+          {/* 3D mode hint */}
+          {previewMode === '3d' && (
+            <p className="mt-2 font-mono text-[10px] text-cobalt/70 italic">
+              3D preview reflects your design and color — switch to 2D Edit to adjust placement.
             </p>
           )}
         </div>
@@ -566,7 +726,7 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
                 <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
               <p className="font-mono text-xs text-pearl mb-1">
-                {currentDesign.imageUrl
+                {currentDesign?.imageUrl
                   ? 'Click to replace design'
                   : 'Drag & drop or click to upload'}
               </p>
@@ -587,7 +747,7 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
             )}
 
             {/* Quick actions on existing design */}
-            {currentDesign.imageUrl && (
+            {currentDesign?.imageUrl && (
               <div className="mt-3 flex gap-2">
                 <button
                   onClick={() => fileInputRef.current?.click()}
@@ -609,105 +769,148 @@ export function ApparelCustomizerDesktop({ productId }: Props) {
             )}
           </div>
 
-          {/* Design controls (only shown when a design is loaded) */}
-          {currentDesign.imageUrl && (
-            <div className="bg-graphite border border-smoke/30 p-5 rounded-lg space-y-4">
-              <h3 className="font-mono text-caption text-bone uppercase tracking-widest">
-                Controls
-              </h3>
+          {/* Design controls & UV Placement (only shown when a design is loaded) */}
+          {currentDesign.imageUrl &&
+            (previewMode === '3d' ? (
+              <UVPlacementEditor
+                view={view}
+                colorHex={activeColor.hex}
+                imageUrl={currentDesign.imageUrl}
+                transform={currentDesign.transform}
+                onChange={handleUVTransformChange}
+              />
+            ) : (
+              <div className="bg-graphite border border-smoke/30 p-5 rounded-lg space-y-4">
+                <h3 className="font-mono text-caption text-bone uppercase tracking-widest">
+                  Controls
+                </h3>
 
-              {/* Opacity */}
-              <div>
-                <div className="flex justify-between mb-1.5">
-                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
-                    Opacity
-                  </span>
-                  <span className="font-mono text-[10px] text-pearl">
-                    {Math.round(localOpacity * 100)}%
-                  </span>
+                {/* Opacity */}
+                <div>
+                  <div className="flex justify-between mb-1.5">
+                    <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                      Opacity
+                    </span>
+                    <span className="font-mono text-[10px] text-pearl">
+                      {Math.round(localOpacity * 100)}%
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0.1}
+                    max={1}
+                    step={0.01}
+                    value={localOpacity}
+                    onChange={(e) => handleOpacityChange(Number(e.target.value))}
+                    onMouseUp={(e) =>
+                      handleOpacityCommit(Number((e.target as HTMLInputElement).value))
+                    }
+                    onTouchEnd={(e) =>
+                      handleOpacityCommit(Number((e.target as HTMLInputElement).value))
+                    }
+                    className="w-full accent-[#ED9518] h-1.5 rounded-full"
+                  />
                 </div>
-                <input
-                  type="range"
-                  min={0.1}
-                  max={1}
-                  step={0.01}
-                  value={localOpacity}
-                  onChange={(e) => handleOpacityChange(Number(e.target.value))}
-                  onMouseUp={(e) =>
-                    handleOpacityCommit(Number((e.target as HTMLInputElement).value))
-                  }
-                  onTouchEnd={(e) =>
-                    handleOpacityCommit(Number((e.target as HTMLInputElement).value))
-                  }
-                  className="w-full accent-[#ED9518] h-1.5 rounded-full"
-                />
-              </div>
 
-              {/* Scale */}
-              <div>
-                <div className="flex justify-between mb-1.5">
-                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
-                    Scale
-                  </span>
-                  <span className="font-mono text-[10px] text-pearl">
-                    {Math.round(localScale * 100)}%
-                  </span>
+                {/* Scale */}
+                <div>
+                  <div className="flex justify-between mb-1.5">
+                    <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                      Scale
+                    </span>
+                    <span className="font-mono text-[10px] text-pearl">
+                      {Math.round(localScale * 100)}%
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0.05}
+                    max={1.5}
+                    step={0.01}
+                    value={localScale}
+                    onChange={(e) => handleScaleChange(Number(e.target.value))}
+                    onMouseUp={(e) =>
+                      handleScaleCommit(Number((e.target as HTMLInputElement).value))
+                    }
+                    onTouchEnd={(e) =>
+                      handleScaleCommit(Number((e.target as HTMLInputElement).value))
+                    }
+                    className="w-full accent-[#ED9518] h-1.5 rounded-full"
+                  />
                 </div>
-                <input
-                  type="range"
-                  min={0.05}
-                  max={1.5}
-                  step={0.01}
-                  value={localScale}
-                  onChange={(e) => handleScaleChange(Number(e.target.value))}
-                  onMouseUp={(e) => handleScaleCommit(Number((e.target as HTMLInputElement).value))}
-                  onTouchEnd={(e) =>
-                    handleScaleCommit(Number((e.target as HTMLInputElement).value))
-                  }
-                  className="w-full accent-[#ED9518] h-1.5 rounded-full"
-                />
-              </div>
 
-              {/* Rotate */}
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
-                    Rotate
-                  </span>
-                  <span className="font-mono text-[10px] text-pearl">{Math.round(angle)}°</span>
+                {/* Rotate */}
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <span className="font-mono text-[10px] text-ash uppercase tracking-wider">
+                      Rotate
+                    </span>
+                    <span className="font-mono text-[10px] text-pearl">{Math.round(angle)}°</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleRotate(-15)}
+                      className="flex-1 py-1.5 border border-smoke rounded-sm font-mono text-xs text-pearl hover:border-[#ED9518] hover:text-[#ED9518] transition-colors"
+                    >
+                      ↺ -15°
+                    </button>
+                    <button
+                      onClick={() => handleRotate(15)}
+                      className="flex-1 py-1.5 border border-smoke rounded-sm font-mono text-xs text-pearl hover:border-[#ED9518] hover:text-[#ED9518] transition-colors"
+                    >
+                      ↻ +15°
+                    </button>
+                    <button
+                      onClick={handleRotateReset}
+                      className="px-3 py-1.5 border border-smoke rounded-sm font-mono text-xs text-ash hover:text-pearl transition-colors"
+                      title="Reset rotation to 0°"
+                    >
+                      0°
+                    </button>
+                  </div>
                 </div>
-                <div className="flex gap-2">
+
+                {/* Position Quick Actions */}
+                <div className="pt-1">
                   <button
-                    onClick={() => handleRotate(-15)}
-                    className="flex-1 py-1.5 border border-smoke rounded-sm font-mono text-xs text-pearl hover:border-[#ED9518] hover:text-[#ED9518] transition-colors"
+                    onClick={handleCenter}
+                    className="w-full py-1.5 border border-smoke/60 rounded-sm font-mono text-xs text-pearl hover:border-[#ED9518] hover:text-[#ED9518] transition-colors"
                   >
-                    ↺ -15°
-                  </button>
-                  <button
-                    onClick={() => handleRotate(15)}
-                    className="flex-1 py-1.5 border border-smoke rounded-sm font-mono text-xs text-pearl hover:border-[#ED9518] hover:text-[#ED9518] transition-colors"
-                  >
-                    ↻ +15°
-                  </button>
-                  <button
-                    onClick={handleRotateReset}
-                    className="px-3 py-1.5 border border-smoke rounded-sm font-mono text-xs text-ash hover:text-pearl transition-colors"
-                    title="Reset rotation to 0°"
-                  >
-                    0°
+                    🎯 Center Design
                   </button>
                 </div>
               </div>
+            ))}
 
-              {/* Position Quick Actions */}
-              <div className="pt-1">
-                <button
-                  onClick={handleCenter}
-                  className="w-full py-1.5 border border-smoke/60 rounded-sm font-mono text-xs text-pearl hover:border-[#ED9518] hover:text-[#ED9518] transition-colors"
+          {/* 3D mode: friendly empty state when no design is uploaded for active view */}
+          {previewMode === '3d' && !currentDesign.imageUrl && (
+            <div className="bg-graphite/80 border border-smoke/30 rounded-lg p-5 text-center">
+              <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-smoke/20 flex items-center justify-center text-ash">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
                 >
-                  🎯 Center Design
-                </button>
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <path d="M21 15l-5-5L5 21" />
+                </svg>
               </div>
+              <p className="font-mono text-xs text-pearl mb-1">
+                No design on {view === 'front' ? 'Front' : 'Back'} yet
+              </p>
+              <p className="font-mono text-[10px] text-ash/70 mb-3">
+                Upload artwork to customize the {view} of the garment.
+              </p>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="px-4 py-2 bg-[#ED9518]/20 hover:bg-[#ED9518]/30 border border-[#ED9518]/40 rounded font-mono text-xs text-[#ED9518] transition-colors"
+              >
+                Upload {view === 'front' ? 'Front' : 'Back'} Artwork
+              </button>
             </div>
           )}
 

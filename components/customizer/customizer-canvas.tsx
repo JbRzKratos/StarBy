@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { templates } from '@/data/customizationTemplates';
 import { mugTemplates } from '@/data/mugTemplates';
-import { products } from '@/data/products';
+import { products, getProductBySlug } from '@/data/products';
 import { devices } from '@/data/devices';
 import { useCustomizerStore } from '@/store/customizer';
 
@@ -87,7 +87,7 @@ export function CustomizerCanvas({
       canvasEl.className = 'max-w-full max-h-full';
       containerRef.current.appendChild(canvasEl);
 
-      const product = products.find((p) => p.id === productId);
+      const product = products.find((p) => p.id === productId) || getProductBySlug(productId);
       const category = product ? product.categorySlug : 'tees';
 
       let template = Object.values(templates)[0];
@@ -96,7 +96,12 @@ export function CustomizerCanvas({
 
       if (category === 'mugs-cups') {
         isMug = true;
-        mTemplate = mugTemplates[product?.slug || ''] || mugTemplates['classic-mug-11oz'];
+        const slugClean = product?.slug?.replace(/_/g, '-');
+        mTemplate =
+          mugTemplates[product?.slug || ''] ||
+          (slugClean ? mugTemplates[slugClean] : undefined) ||
+          Object.values(mugTemplates).find((t) => t.productId === product?.id) ||
+          mugTemplates['classic-mug-11oz'];
       } else if (category === 'tees') template = templates['eclipse-tee'];
       else if (category === 'hoodies') template = templates['orbit-hoodie'];
       else if (category === 'skins') template = templates['phantom-skin'];

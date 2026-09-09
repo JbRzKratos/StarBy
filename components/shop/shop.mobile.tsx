@@ -7,18 +7,18 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
 import { CustomizerPanelMobile } from '../customizer-hub/CustomizerHub.mobile';
-import { CupsMugsComingSoon } from './cups-mugs-coming-soon';
+import { DeviceSkinsComingSoon } from './device-skins-coming-soon';
 import { usePrice } from '@/lib/hooks/usePrice';
 
 function MobileProductCard({ product, index }: { product: Product; index: number }) {
   const { formatPrice } = usePrice();
-  const isComingSoon = product.categorySlug === 'mugs-cups';
+  const isComingSoon = product.categorySlug === 'skins';
 
   return (
     <Link
       href={
         isComingSoon
-          ? '/products/mugs-cups'
+          ? '/products/skins'
           : `/products/${product.categorySlug}/${product.slug || product.id}`
       }
       className="group flex flex-col gap-0 col-span-1"
@@ -143,9 +143,11 @@ export function ShopMobile({ category, products }: { category: string; products:
           <h1 className="font-display text-4xl tracking-tighter uppercase">
             {activeTab === 'all'
               ? 'Catalog'
-              : activeTab === 'mugs-cups'
-                ? 'Cups & Mugs'
-                : activeTab}
+              : activeTab === 'skins'
+                ? 'Device Skins'
+                : activeTab === 'mugs-cups'
+                  ? 'Cups & Mugs'
+                  : activeTab}
           </h1>
           {activeTab !== 'diy' && (
             <button
@@ -209,8 +211,8 @@ export function ShopMobile({ category, products }: { category: string; products:
       <div className="px-5 pt-6">
         {activeTab === 'diy' ? (
           <CustomizerPanelMobile />
-        ) : activeTab === 'mugs-cups' ? (
-          <CupsMugsComingSoon />
+        ) : activeTab === 'skins' ? (
+          <DeviceSkinsComingSoon />
         ) : (
           <div className="flex flex-col">
             <p className="font-mono text-[9px] text-pearl uppercase tracking-widest mb-6">

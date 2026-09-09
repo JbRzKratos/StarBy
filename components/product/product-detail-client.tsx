@@ -51,7 +51,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   const variant = product.variants[selectedVariant];
 
-  const isComingSoon = product.categorySlug === 'mugs-cups';
+  const isComingSoon = product.categorySlug === 'skins';
 
   const [notifyEmail, setNotifyEmail] = useState('');
   const [notifySubmitted, setNotifySubmitted] = useState(false);
@@ -217,8 +217,9 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 </div>
                 <p className="font-mono text-xs text-[#F5F1EA]/75 leading-relaxed">
                   This item is part of the upcoming{' '}
-                  <strong className="text-[#F5F1EA]">FREGORO</strong> Cups & Mugs collection. Custom
-                  ceramic printing and production tooling are currently in progress.
+                  <strong className="text-[#F5F1EA]">FREGORO</strong> Device Skins collection.
+                  Precision laser cutting, 3M architectural vinyl testing, and custom device
+                  modeling are currently in progress.
                 </p>
                 {notifySubmitted ? (
                   <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg font-mono text-xs text-emerald-400">
@@ -250,10 +251,10 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 {notifyError && <p className="font-mono text-xs text-rose-400">{notifyError}</p>}
                 <div className="pt-2 border-t border-[#F5F1EA]/10 flex justify-between items-center text-xs font-mono">
                   <Link
-                    href="/products/mugs-cups"
+                    href="/products/skins"
                     className="text-[#ED9518] hover:underline uppercase tracking-wider font-semibold"
                   >
-                    ← Full Cups & Mugs Roadmap
+                    ← Full Device Skins Roadmap
                   </Link>
                   <Link
                     href="/products/all"

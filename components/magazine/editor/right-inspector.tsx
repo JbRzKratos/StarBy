@@ -25,6 +25,7 @@ interface RightInspectorProps {
   onSendToBack?: () => void;
   onToggleLock?: (elementId: string) => void;
   onReplaceImage?: (file: File) => Promise<void>;
+  onClose?: (() => void) | undefined;
 }
 
 export function RightInspector({
@@ -43,6 +44,7 @@ export function RightInspector({
   onSendToBack,
   onToggleLock,
   onReplaceImage,
+  onClose,
 }: RightInspectorProps) {
   const activePage = doc.pages[currentPageIndex] || doc.pages[0];
   const dim = PAGE_DIMENSIONS[doc.dimensionKey] || DEFAULT_PAGE_DIMENSION;
@@ -53,6 +55,20 @@ export function RightInspector({
 
   return (
     <aside className="w-[calc(100vw-2rem)] max-w-xs sm:w-72 xl:w-80 bg-[#121214] border-l border-[#F5F1EA]/10 flex flex-col h-full select-none text-[#F5F1EA] overflow-y-auto p-4 space-y-6 z-30">
+      {onClose && (
+        <div className="flex items-center justify-between pb-3 border-b border-[#F5F1EA]/10 shrink-0">
+          <span className="font-mono text-[10px] text-[#F5F1EA]/60 uppercase tracking-widest font-bold">
+            Inspector Panel
+          </span>
+          <button
+            onClick={onClose}
+            className="p-1 px-2 rounded-md bg-[#1A1A20] hover:bg-[#25252E] text-xs font-mono text-[#F5F1EA]/80 hover:text-white transition-colors"
+            title="Close Inspector"
+          >
+            ✕ Close
+          </button>
+        </div>
+      )}
       {/* ── 1. MULTI-SELECTION INSPECTOR ── */}
       {isMultiSelect && (
         <div className="space-y-5">
