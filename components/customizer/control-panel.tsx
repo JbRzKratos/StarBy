@@ -47,6 +47,7 @@ export function ControlPanel() {
   const handleSave = () => {
     // Check if we have at least one design
     if (!designs.front.url && !designs.back.url) return;
+    if (!productId) return;
     setIsSaving(true);
 
     const frontPreviewUrl = exportPreviewFns.front ? exportPreviewFns.front() : null;
@@ -65,7 +66,7 @@ export function ControlPanel() {
         designFileUrl: designs.front.url || designs.back.url,
         previewFileUrl: frontPreviewUrl || backPreviewUrl,
         color: selectedColor,
-        instructions: instructions || 'No special instructions',
+        printInstructions: instructions || 'No special instructions',
       },
     });
 

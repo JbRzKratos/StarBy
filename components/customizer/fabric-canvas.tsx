@@ -65,7 +65,8 @@ export function FabricCanvas({ productType, side }: FabricCanvasProps) {
       const printedWidthInches = physicalWidthInches * ratio;
 
       // Calculate effective DPI
-      const { imageNativeWidth } = useCustomizerStore.getState();
+      const { designs } = useCustomizerStore.getState();
+      const imageNativeWidth = side === 'front' ? designs.front.width : designs.back.width;
       if (imageNativeWidth === 0) return;
 
       const dpi = Math.round(imageNativeWidth / printedWidthInches);

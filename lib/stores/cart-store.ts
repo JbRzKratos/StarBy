@@ -12,6 +12,10 @@ export interface CartCustomization {
   // New production-grade customization fields
   designFileUrl?: string | null;
   previewFileUrl?: string | null;
+  frontDesignFileUrl?: string | null;
+  frontPreviewFileUrl?: string | null;
+  backDesignFileUrl?: string | null;
+  backPreviewFileUrl?: string | null;
   printPosition?: string | null;
   printInstructions?: string | null;
 

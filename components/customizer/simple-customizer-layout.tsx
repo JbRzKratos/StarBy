@@ -54,7 +54,7 @@ export function SimpleCustomizerLayout({
       customization: {
         designFileUrl: uploadedImage,
         previewFileUrl: null, // No preview for simple mode
-        instructions: instructions || 'No special instructions',
+        printInstructions: instructions || 'No special instructions',
       },
     });
 

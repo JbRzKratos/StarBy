@@ -37,7 +37,7 @@ export async function GET(request: Request) {
               const matches = url.match(/^data:image\/([a-zA-Z0-9]+);base64,(.+)$/);
               if (matches && matches.length === 3) {
                 const ext = matches[1] === 'jpeg' ? 'jpg' : matches[1];
-                const data = matches[2];
+                const data = matches[2] as string;
                 zip.addFile(`${prefix}-${suffix}.${ext}`, Buffer.from(data, 'base64'));
                 fileCount++;
               }
@@ -70,7 +70,7 @@ export async function GET(request: Request) {
 
     const zipBuffer = zip.toBuffer();
 
-    return new NextResponse(zipBuffer, {
+    return new NextResponse(zipBuffer as unknown as BodyInit, {
       status: 200,
       headers: {
         'Content-Type': 'application/zip',
