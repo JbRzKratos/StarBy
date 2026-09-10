@@ -35,8 +35,8 @@ export function CustomizerLayout({
   let selectedHexColor = '';
 
   const colors: Record<string, string> = {
-    'Black': '#000000',
-    'White': '#FFFFFF',
+    Black: '#000000',
+    White: '#FFFFFF',
     'Cornflower Blue': '#6495ED',
     'Light Pink': '#FFB6C1',
     'Olive Green': '#556B2F',
@@ -44,7 +44,7 @@ export function CustomizerLayout({
 
   if (productType === 't-shirt' || productType === 'hoodie') {
     const prefix = productType === 'hoodie' ? 'hoodie' : 'tee';
-    
+
     // Check if we have native images (black and white)
     if (selectedColor === 'Black' || selectedColor === 'White') {
       const colorKey = selectedColor.toLowerCase();
@@ -61,7 +61,7 @@ export function CustomizerLayout({
     <div className="flex flex-col lg:flex-row w-full min-h-screen pt-[80px] lg:pt-[100px] bg-[#0A0A0B] text-[#F5F1EA]">
       {/* Left: Mockup Viewer (Interactive Canvas Area) */}
       <div className="flex-1 relative flex items-center justify-center p-4 lg:p-8 border-b lg:border-b-0 lg:border-r border-[#F5F1EA]/10">
-        <div 
+        <div
           className="relative w-full max-w-2xl aspect-square rounded-2xl overflow-hidden shadow-2xl transition-colors duration-300"
           style={{ backgroundColor: requiresColorOverlay ? selectedHexColor : '#121214' }}
         >

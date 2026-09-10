@@ -28,9 +28,7 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-display-sm font-bold text-bone mb-2">Customers</h1>
-          <p className="font-mono text-sm text-ash">
-            {customers.length} registered customers
-          </p>
+          <p className="font-mono text-sm text-ash">{customers.length} registered customers</p>
         </div>
       </div>
 
@@ -67,19 +65,23 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
           </thead>
           <tbody className="divide-y divide-[#F5F1EA]/5">
             {filtered.map((c) => (
-              <tr 
-                key={c.id} 
+              <tr
+                key={c.id}
                 onClick={() => router.push(`/admin/customers/${c.id}`)}
                 className="hover:bg-[#F5F1EA]/5 cursor-pointer transition-colors group"
               >
                 <td className="px-6 py-4">
-                  <p className="font-medium text-bone group-hover:text-cobalt transition-colors">{c.name}</p>
+                  <p className="font-medium text-bone group-hover:text-cobalt transition-colors">
+                    {c.name}
+                  </p>
                   <p className="text-xs text-ash mt-1">{c.email}</p>
                 </td>
                 <td className="px-6 py-4 text-center font-semibold text-pearl">
                   <span className="bg-smoke/20 px-2.5 py-1 rounded-md">{c.orderCount}</span>
                 </td>
-                <td className="px-6 py-4 text-right font-medium">₹{c.totalSpent.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</td>
+                <td className="px-6 py-4 text-right font-medium">
+                  ₹{c.totalSpent.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+                </td>
                 <td className="px-6 py-4 text-ash text-right">
                   {new Date(c.createdAt).toLocaleDateString('en-IN', {
                     day: 'numeric',

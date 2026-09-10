@@ -149,7 +149,9 @@ export function DashboardClient({
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-caption text-ash uppercase tracking-widest mb-2 group-hover:text-pearl transition-colors">{card.label}</p>
+                <p className="text-caption text-ash uppercase tracking-widest mb-2 group-hover:text-pearl transition-colors">
+                  {card.label}
+                </p>
                 <p className="text-3xl font-bold tracking-tight text-bone mt-1">{card.value}</p>
               </div>
               <div
@@ -167,13 +169,15 @@ export function DashboardClient({
           {/* Revenue chart */}
           <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-6 shadow-lg h-full">
             <h2 className="font-display text-lg tracking-tight text-bone mb-6 flex items-center gap-2">
-              Revenue 
-              <span className="text-xs font-mono uppercase tracking-widest text-ash bg-smoke/20 px-2 py-1 rounded-md ml-2">Last 90 Days</span>
+              Revenue
+              <span className="text-xs font-mono uppercase tracking-widest text-ash bg-smoke/20 px-2 py-1 rounded-md ml-2">
+                Last 90 Days
+              </span>
             </h2>
             <RevenueChart data={revenueData} />
           </div>
         </div>
-        
+
         {/* Storage Widget */}
         <div className="lg:col-span-1">
           <StorageWidget />
@@ -184,9 +188,7 @@ export function DashboardClient({
         {/* Recent orders */}
         <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg flex flex-col">
           <div className="flex items-center justify-between px-6 py-5 border-b border-[#F5F1EA]/10">
-            <h2 className="font-display text-lg tracking-tight text-bone">
-              Recent Orders
-            </h2>
+            <h2 className="font-display text-lg tracking-tight text-bone">Recent Orders</h2>
             <Link
               href="/admin/orders"
               className="text-xs font-mono uppercase tracking-widest text-cobalt hover:text-cobalt/80 transition-colors"
@@ -204,7 +206,9 @@ export function DashboardClient({
                 className="flex items-center justify-between px-6 py-4 hover:bg-[#F5F1EA]/5 transition-colors group"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-bone truncate group-hover:text-cobalt transition-colors">{order.customerName}</p>
+                  <p className="text-sm font-medium text-bone truncate group-hover:text-cobalt transition-colors">
+                    {order.customerName}
+                  </p>
                   <p className="text-xs text-ash mt-1">{order.id.slice(0, 12)}…</p>
                 </div>
                 <div className="flex items-center gap-4 flex-shrink-0">
@@ -224,7 +228,8 @@ export function DashboardClient({
           <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg">
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#F5F1EA]/10">
               <h2 className="font-display text-lg tracking-tight text-bone">
-                Top Products <span className="text-ash text-sm ml-1 font-sans font-normal">(30d)</span>
+                Top Products{' '}
+                <span className="text-ash text-sm ml-1 font-sans font-normal">(30d)</span>
               </h2>
               <Link
                 href="/admin/products"
@@ -265,7 +270,9 @@ export function DashboardClient({
             </div>
             <div className="divide-y divide-[#F5F1EA]/5 max-h-[220px] overflow-y-auto font-mono custom-scrollbar">
               {lowStockVariants.length === 0 && (
-                <p className="text-sm text-ash px-6 py-6 text-center">All variants well-stocked ✓</p>
+                <p className="text-sm text-ash px-6 py-6 text-center">
+                  All variants well-stocked ✓
+                </p>
               )}
               {lowStockVariants.map((v) => (
                 <div

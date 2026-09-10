@@ -54,7 +54,7 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
   }
 
   // Default to base price, or use default variant price if available
-  const defaultVariant = product.variants.find(v => v.name.toLowerCase() === 'default');
+  const defaultVariant = product.variants.find((v) => v.name.toLowerCase() === 'default');
   const price = defaultVariant ? defaultVariant.price : product.basePrice;
 
   // Use simple customizer for cups, mugs, hoodies, etc.

@@ -183,12 +183,10 @@ export default function AdminMagazinesPage() {
               <h4 className="font-bold text-bone">Print Team Specifications</h4>
               <div className="grid grid-cols-2 gap-2 text-xs text-ash/80">
                 <div>
-                  Cover Finish:{' '}
-                  <strong className="text-bone">{selectedOrder.coverFinish}</strong>
+                  Cover Finish: <strong className="text-bone">{selectedOrder.coverFinish}</strong>
                 </div>
                 <div>
-                  Interior Stock:{' '}
-                  <strong className="text-bone">{selectedOrder.paperWeight}</strong>
+                  Interior Stock: <strong className="text-bone">{selectedOrder.paperWeight}</strong>
                 </div>
                 <div>
                   Binding: <strong className="text-bone">{selectedOrder.binding}</strong>

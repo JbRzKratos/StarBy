@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { Camera, CheckCircle2, Loader2 } from 'lucide-react';
 import type { ProductType } from '@/lib/config/printSpecs';
@@ -15,7 +15,7 @@ interface SimpleCustomizerLayoutProps {
 }
 
 export function SimpleCustomizerLayout({
-  productType,
+  productType: _productType,
   productId,
   mockupImageSrc,
   price,
@@ -25,7 +25,7 @@ export function SimpleCustomizerLayout({
   const [uploadedImage, setUploadedImage] = useState<string>('');
   const [instructions, setInstructions] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const addItem = useCartStore((state) => state.addItem);
   const setCartOpen = useCartStore((state) => state.setCartOpen);
@@ -105,7 +105,11 @@ export function SimpleCustomizerLayout({
               <div className="flex flex-col gap-4">
                 <div className="relative w-full aspect-video bg-[#1A1A1E] rounded-xl overflow-hidden border border-[#F5F1EA]/10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={uploadedImage} alt="Uploaded" className="w-full h-full object-contain" />
+                  <img
+                    src={uploadedImage}
+                    alt="Uploaded"
+                    className="w-full h-full object-contain"
+                  />
                   <button
                     onClick={() => setUploadedImage('')}
                     className="absolute top-2 right-2 px-3 py-1.5 bg-black/50 hover:bg-black/80 rounded-md text-xs font-medium backdrop-blur-sm transition-colors text-white"

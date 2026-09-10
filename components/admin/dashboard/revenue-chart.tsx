@@ -83,9 +83,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
               key={r}
               onClick={() => setRange(r)}
               className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
-                range === r
-                  ? 'bg-[#3B5EFF] text-white'
-                  : 'bg-white/5 text-ash/80 hover:bg-white/10'
+                range === r ? 'bg-[#3B5EFF] text-white' : 'bg-white/5 text-ash/80 hover:bg-white/10'
               }`}
             >
               {r}

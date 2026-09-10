@@ -341,9 +341,7 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
                 </span>
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-bone truncate">
-                  {userName || 'Admin'}
-                </p>
+                <p className="text-xs font-semibold text-bone truncate">{userName || 'Admin'}</p>
                 <p className="text-xs text-ash/60 truncate">{userEmail}</p>
               </div>
             </div>

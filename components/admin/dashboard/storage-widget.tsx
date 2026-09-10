@@ -57,7 +57,11 @@ export function StorageWidget() {
       return;
     }
 
-    if (!window.confirm('Are you sure you want to permanently delete all customer design files from Cloudflare R2? Make sure you have downloaded a backup first!')) {
+    if (
+      !window.confirm(
+        'Are you sure you want to permanently delete all customer design files from Cloudflare R2? Make sure you have downloaded a backup first!',
+      )
+    ) {
       return;
     }
 
@@ -89,21 +93,22 @@ export function StorageWidget() {
           </h2>
           {loading && <Loader2 className="w-4 h-4 text-ash animate-spin" />}
         </div>
-        
+
         {data && (
           <div className="space-y-6 mb-6">
-            
             {/* Supabase Meter */}
             <div className="bg-black/20 rounded-lg p-4 border border-[#F5F1EA]/5">
               <div className="flex justify-between text-sm mb-3">
                 <span className="text-ash font-medium flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div> 
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
                   Supabase Database
                 </span>
-                <span className="text-bone font-mono">{formatBytes(data.supabase.usedBytes)} / {formatBytes(data.supabase.totalBytes)}</span>
+                <span className="text-bone font-mono">
+                  {formatBytes(data.supabase.usedBytes)} / {formatBytes(data.supabase.totalBytes)}
+                </span>
               </div>
               <div className="w-full h-2.5 bg-black/50 rounded-full overflow-hidden border border-[#F5F1EA]/5 mb-4">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-1000 ease-out"
                   style={{ width: `${Math.max(data.supabase.percentage, 1)}%` }}
                 ></div>
@@ -124,13 +129,15 @@ export function StorageWidget() {
             <div className="bg-black/20 rounded-lg p-4 border border-[#F5F1EA]/5">
               <div className="flex justify-between text-sm mb-3">
                 <span className="text-ash font-medium flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-cobalt shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div> 
+                  <div className="w-2 h-2 rounded-full bg-cobalt shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
                   Cloudflare R2
                 </span>
-                <span className="text-bone font-mono">{formatBytes(data.r2.usedBytes)} / {formatBytes(data.r2.totalBytes)}</span>
+                <span className="text-bone font-mono">
+                  {formatBytes(data.r2.usedBytes)} / {formatBytes(data.r2.totalBytes)}
+                </span>
               </div>
               <div className="w-full h-2.5 bg-black/50 rounded-full overflow-hidden border border-[#F5F1EA]/5 mb-4">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-cobalt to-[#8b5cf6] rounded-full transition-all duration-1000 ease-out"
                   style={{ width: `${Math.max(data.r2.percentage, 1)}%` }}
                 ></div>
@@ -149,12 +156,15 @@ export function StorageWidget() {
                   disabled={loading || isClearing}
                   className="py-1.5 px-4 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 rounded-md text-xs font-medium transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isClearing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                  {isClearing ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-3.5 h-3.5" />
+                  )}
                   Clear Storage
                 </button>
               </div>
             </div>
-
           </div>
         )}
       </div>

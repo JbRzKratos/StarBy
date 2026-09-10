@@ -6,9 +6,19 @@ import { useCartStore } from '@/lib/stores/cart-store';
 import { Camera, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 
 export function ControlPanel() {
-  const { designs, setUploadedImage, productId, activeVariant, productType, selectedColor, setSelectedColor, selectedSide, setSelectedSide, exportPreviewFns } =
-    useCustomizerStore();
-  
+  const {
+    designs,
+    setUploadedImage,
+    productId,
+    activeVariant,
+    productType,
+    selectedColor,
+    setSelectedColor,
+    selectedSide,
+    setSelectedSide,
+    exportPreviewFns,
+  } = useCustomizerStore();
+
   const currentDesign = designs[selectedSide];
   const uploadedImage = currentDesign.url;
   const { dpiStatus, effectiveDpi } = currentDesign;

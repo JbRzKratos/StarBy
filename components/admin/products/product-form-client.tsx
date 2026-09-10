@@ -345,9 +345,7 @@ export function ProductFormClient({
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-ash mb-1">
-                  Reorder Threshold
-                </label>
+                <label className="block text-xs font-medium text-ash mb-1">Reorder Threshold</label>
                 <input
                   type="number"
                   min={0}

@@ -164,11 +164,11 @@ export async function deleteR2Object(objectKey: string): Promise<void> {
 export async function uploadBufferToR2(
   buffer: Buffer,
   fileName: string,
-  contentType: string
+  contentType: string,
 ): Promise<{ objectKey: string }> {
   const client = getR2Client();
   const bucket = getBucketName();
-  
+
   const timestamp = Date.now();
   const randomSuffix = Math.random().toString(36).substring(2, 10);
   const sanitizedFileName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_').substring(0, 100);

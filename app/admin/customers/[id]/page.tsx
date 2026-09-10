@@ -29,7 +29,9 @@ export default async function AdminCustomerDetailPage({ params }: { params: { id
   }
 
   // Calculate metrics
-  const completedOrders = user.orders.filter((o) => o.paymentStatus === 'paid' || o.paymentStatus === 'completed');
+  const completedOrders = user.orders.filter(
+    (o) => o.paymentStatus === 'paid' || o.paymentStatus === 'completed',
+  );
   const totalSpent = completedOrders.reduce((sum, order) => sum + order.total, 0);
   const aov = completedOrders.length > 0 ? totalSpent / completedOrders.length : 0;
 

@@ -190,13 +190,19 @@ export async function POST(request: Request) {
       subtotal += totalItemPrice;
 
       // ──── Upload customizations to R2 ────
-      let processedCustomization: any = item.customization ? JSON.parse(JSON.stringify(item.customization)) : null;
-      
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const processedCustomization: any = item.customization
+        ? JSON.parse(JSON.stringify(item.customization))
+        : null;
+
       if (processedCustomization && typeof processedCustomization === 'object') {
         const uploadKeys = ['designFileUrl', 'frontDesignFileUrl', 'backDesignFileUrl'];
-        
+
         for (const key of uploadKeys) {
-          if (processedCustomization[key] && processedCustomization[key].startsWith('data:image/')) {
+          if (
+            processedCustomization[key] &&
+            processedCustomization[key].startsWith('data:image/')
+          ) {
             try {
               const dataStr = processedCustomization[key];
               const matches = dataStr.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
@@ -204,13 +210,13 @@ export async function POST(request: Request) {
                 const contentType = matches[1];
                 const base64Data = matches[2];
                 const buffer = Buffer.from(base64Data, 'base64');
-                
+
                 const { objectKey } = await uploadBufferToR2(
                   buffer,
                   `custom_${key}.png`,
-                  contentType
+                  contentType,
                 );
-                
+
                 processedCustomization[key] = `/api/storage?key=${encodeURIComponent(objectKey)}`;
               }
             } catch (e) {

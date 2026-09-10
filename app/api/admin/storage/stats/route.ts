@@ -15,7 +15,7 @@ export async function GET() {
 
     const objects = await listR2Objects('designs/checkout/');
     let r2Bytes = 0;
-    
+
     for (const obj of objects) {
       if (obj.Size) {
         r2Bytes += obj.Size;
@@ -37,9 +37,21 @@ export async function GET() {
     for (const item of items) {
       if (item.customization && typeof item.customization === 'object') {
         const custom = item.customization as any;
-        if (typeof custom.designFileUrl === 'string' && custom.designFileUrl.startsWith('data:image')) supabaseBytes += custom.designFileUrl.length;
-        if (typeof custom.frontDesignFileUrl === 'string' && custom.frontDesignFileUrl.startsWith('data:image')) supabaseBytes += custom.frontDesignFileUrl.length;
-        if (typeof custom.backDesignFileUrl === 'string' && custom.backDesignFileUrl.startsWith('data:image')) supabaseBytes += custom.backDesignFileUrl.length;
+        if (
+          typeof custom.designFileUrl === 'string' &&
+          custom.designFileUrl.startsWith('data:image')
+        )
+          supabaseBytes += custom.designFileUrl.length;
+        if (
+          typeof custom.frontDesignFileUrl === 'string' &&
+          custom.frontDesignFileUrl.startsWith('data:image')
+        )
+          supabaseBytes += custom.frontDesignFileUrl.length;
+        if (
+          typeof custom.backDesignFileUrl === 'string' &&
+          custom.backDesignFileUrl.startsWith('data:image')
+        )
+          supabaseBytes += custom.backDesignFileUrl.length;
       }
     }
 
@@ -56,7 +68,7 @@ export async function GET() {
         usedBytes: supabaseBytes,
         totalBytes: SUPABASE_MAX_BYTES,
         percentage: supabaseBytes > 0 ? (supabaseBytes / SUPABASE_MAX_BYTES) * 100 : 0,
-      }
+      },
     });
   } catch (error) {
     console.error('Error calculating storage stats:', error);

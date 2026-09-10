@@ -22,7 +22,11 @@ interface CustomizerState {
   };
 
   setUploadedImage: (url: string, width: number, height: number, side: 'front' | 'back') => void;
-  setEffectiveDpi: (dpi: number, status: 'excellent' | 'good' | 'poor' | 'unusable', side: 'front' | 'back') => void;
+  setEffectiveDpi: (
+    dpi: number,
+    status: 'excellent' | 'good' | 'poor' | 'unusable',
+    side: 'front' | 'back',
+  ) => void;
 
   // Fabric Canvas State
   exportPreviewFns: {

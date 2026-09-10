@@ -56,13 +56,19 @@ interface CustomerDetailClientProps {
   designs: DesignRow[];
 }
 
-export function CustomerDetailClient({ customer, metrics, orders, addresses, designs }: CustomerDetailClientProps) {
+export function CustomerDetailClient({
+  customer,
+  metrics,
+  orders,
+  addresses,
+  designs,
+}: CustomerDetailClientProps) {
   return (
     <div className="space-y-8 max-w-[90rem]">
       {/* Header */}
       <div>
-        <Link 
-          href="/admin/customers" 
+        <Link
+          href="/admin/customers"
           className="inline-flex items-center gap-2 text-sm font-mono text-ash hover:text-bone mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -78,11 +84,18 @@ export function CustomerDetailClient({ customer, metrics, orders, addresses, des
             <div>
               <h1 className="text-3xl font-display font-bold text-bone">{customer.name}</h1>
               <div className="flex flex-wrap items-center gap-4 mt-3 text-sm font-mono text-ash">
-                <span className="flex items-center gap-1.5"><Mail className="w-4 h-4 text-cobalt" /> {customer.email}</span>
+                <span className="flex items-center gap-1.5">
+                  <Mail className="w-4 h-4 text-cobalt" /> {customer.email}
+                </span>
                 {customer.phone !== '—' && (
-                  <span className="flex items-center gap-1.5"><Phone className="w-4 h-4 text-emerald-400" /> {customer.phone}</span>
+                  <span className="flex items-center gap-1.5">
+                    <Phone className="w-4 h-4 text-emerald-400" /> {customer.phone}
+                  </span>
                 )}
-                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-purple-400" /> Joined {new Date(customer.createdAt).toLocaleDateString('en-IN')}</span>
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4 text-purple-400" /> Joined{' '}
+                  {new Date(customer.createdAt).toLocaleDateString('en-IN')}
+                </span>
               </div>
             </div>
           </div>
@@ -94,25 +107,32 @@ export function CustomerDetailClient({ customer, metrics, orders, addresses, des
         <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
           <div>
             <p className="text-xs font-mono uppercase tracking-widest text-ash mb-1">Total Spent</p>
-            <p className="text-3xl font-display font-bold text-bone">₹{metrics.totalSpent.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
+            <p className="text-3xl font-display font-bold text-bone">
+              ₹{metrics.totalSpent.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            </p>
           </div>
         </div>
         <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
           <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-ash mb-1">Total Orders</p>
+            <p className="text-xs font-mono uppercase tracking-widest text-ash mb-1">
+              Total Orders
+            </p>
             <p className="text-3xl font-display font-bold text-bone">{metrics.totalOrders}</p>
           </div>
         </div>
         <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
           <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-ash mb-1">Average Order Value</p>
-            <p className="text-3xl font-display font-bold text-bone">₹{metrics.aov.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
+            <p className="text-xs font-mono uppercase tracking-widest text-ash mb-1">
+              Average Order Value
+            </p>
+            <p className="text-3xl font-display font-bold text-bone">
+              ₹{metrics.aov.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+            </p>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
         {/* Left Column - Order History */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg overflow-hidden">
@@ -124,28 +144,51 @@ export function CustomerDetailClient({ customer, metrics, orders, addresses, des
               <table className="w-full text-left font-mono text-sm text-bone">
                 <thead className="bg-black/20 border-b border-[#F5F1EA]/10">
                   <tr>
-                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs">Order</th>
-                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs">Date</th>
-                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs text-center">Items</th>
-                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs">Status</th>
-                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs text-right">Total</th>
+                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs">
+                      Order
+                    </th>
+                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs">
+                      Date
+                    </th>
+                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs text-center">
+                      Items
+                    </th>
+                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs">
+                      Status
+                    </th>
+                    <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs text-right">
+                      Total
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#F5F1EA]/5">
                   {orders.length === 0 ? (
-                    <tr><td colSpan={5} className="px-6 py-8 text-center text-ash">No orders found.</td></tr>
+                    <tr>
+                      <td colSpan={5} className="px-6 py-8 text-center text-ash">
+                        No orders found.
+                      </td>
+                    </tr>
                   ) : (
-                    orders.map(order => (
+                    orders.map((order) => (
                       <tr key={order.id} className="hover:bg-[#F5F1EA]/5 transition-colors group">
                         <td className="px-6 py-4">
-                          <Link href={`/admin/orders/${order.id}`} className="text-cobalt hover:underline">
-                            {order.publicOrderId || order.id.slice(0,8)}
+                          <Link
+                            href={`/admin/orders/${order.id}`}
+                            className="text-cobalt hover:underline"
+                          >
+                            {order.publicOrderId || order.id.slice(0, 8)}
                           </Link>
                         </td>
-                        <td className="px-6 py-4 text-ash">{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 text-ash">
+                          {new Date(order.createdAt).toLocaleDateString()}
+                        </td>
                         <td className="px-6 py-4 text-center">{order.itemCount}</td>
-                        <td className="px-6 py-4"><StatusBadge status={order.status} /></td>
-                        <td className="px-6 py-4 text-right font-medium">₹{order.total.toLocaleString()}</td>
+                        <td className="px-6 py-4">
+                          <StatusBadge status={order.status} />
+                        </td>
+                        <td className="px-6 py-4 text-right font-medium">
+                          ₹{order.total.toLocaleString()}
+                        </td>
                       </tr>
                     ))
                   )}
@@ -167,15 +210,21 @@ export function CustomerDetailClient({ customer, metrics, orders, addresses, des
               {addresses.length === 0 ? (
                 <p className="px-6 py-6 text-sm text-ash text-center">No saved addresses.</p>
               ) : (
-                addresses.map(addr => (
+                addresses.map((addr) => (
                   <div key={addr.id} className="px-6 py-4">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-semibold text-bone">{addr.name}</span>
-                      {addr.isDefault && <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md border border-emerald-500/20 uppercase tracking-widest">Default</span>}
+                      {addr.isDefault && (
+                        <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md border border-emerald-500/20 uppercase tracking-widest">
+                          Default
+                        </span>
+                      )}
                     </div>
                     <p className="text-xs text-ash leading-relaxed">
-                      {addr.street}<br />
-                      {addr.city}, {addr.state} {addr.zip}<br />
+                      {addr.street}
+                      <br />
+                      {addr.city}, {addr.state} {addr.zip}
+                      <br />
                       {addr.country}
                     </p>
                   </div>
@@ -194,23 +243,33 @@ export function CustomerDetailClient({ customer, metrics, orders, addresses, des
               {designs.length === 0 ? (
                 <p className="px-6 py-6 text-sm text-ash text-center">No saved designs.</p>
               ) : (
-                designs.map(design => (
-                  <div key={design.id} className="px-6 py-4 flex items-center gap-4 hover:bg-[#F5F1EA]/5 transition-colors">
+                designs.map((design) => (
+                  <div
+                    key={design.id}
+                    className="px-6 py-4 flex items-center gap-4 hover:bg-[#F5F1EA]/5 transition-colors"
+                  >
                     {design.previewUrl ? (
-                      <img src={design.previewUrl} alt={design.title} className="w-12 h-12 rounded-lg object-cover bg-white/5 border border-white/10" />
+                      <img
+                        src={design.previewUrl}
+                        alt={design.title}
+                        className="w-12 h-12 rounded-lg object-cover bg-white/5 border border-white/10"
+                      />
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-black/50 border border-white/10 flex items-center justify-center text-[10px] text-ash text-center p-1">No Image</div>
+                      <div className="w-12 h-12 rounded-lg bg-black/50 border border-white/10 flex items-center justify-center text-[10px] text-ash text-center p-1">
+                        No Image
+                      </div>
                     )}
                     <div>
                       <p className="text-sm font-medium text-bone">{design.title}</p>
-                      <p className="text-xs text-ash mt-0.5">Product ID: {design.productId.slice(0,8)}</p>
+                      <p className="text-xs text-ash mt-0.5">
+                        Product ID: {design.productId.slice(0, 8)}
+                      </p>
                     </div>
                   </div>
                 ))
               )}
             </div>
           </div>
-
         </div>
       </div>
     </div>
