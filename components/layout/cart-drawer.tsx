@@ -250,33 +250,27 @@ export function CartDrawer() {
               const variant = product?.variants.find((v) => v.id === item.variantId);
               const displayName = product ? product.name : item.productId.replace('-', ' ');
               const displayVariantName = variant ? variant.name : item.variantId.replace('-', ' ');
-              const displayImage =
-                item.customization?.imageUrl ||
-                variant?.images[0] ||
-                product?.variants[0]?.images[0];
 
               return (
                 <div
                   key={`${item.productId}-${item.variantId}-${index}`}
                   className="cart-item group relative flex flex-row gap-4 sm:gap-6 p-4 lg:p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-all duration-300 rounded-xl"
                 >
-                  {/* Image Placeholder / Visual */}
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 bg-charcoal rounded-lg flex-shrink-0 relative overflow-hidden border border-smoke/30 flex items-center justify-center">
-                    {displayImage ? (
-                      <Image
-                        src={displayImage}
-                        alt={displayName}
-                        fill
-                        className="object-cover opacity-80"
-                        sizes="(max-width: 640px) 96px, 128px"
-                      />
-                    ) : (
-                      <span className="font-mono text-caption text-smoke uppercase rotate-45">
-                        Preview
-                      </span>
-                    )}
-                    {/* Overlay gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-cobalt/20 to-transparent mix-blend-overlay pointer-events-none" />
+                  {/* Thumbnail */}
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 bg-[#121214] rounded-lg overflow-hidden shrink-0 border border-[#F5F1EA]/10">
+                    <Image
+                      src={
+                        item.customization?.previewFileUrl ||
+                        item.customization?.thumbnail ||
+                        item.image ||
+                        product?.variants[0]?.images[0] ||
+                        '/images/placeholder.png'
+                      }
+                      alt={item.name || displayName}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 96px, 128px"
+                    />
                   </div>
 
                   {/* Details */}

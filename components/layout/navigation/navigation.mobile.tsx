@@ -19,7 +19,6 @@ const menuLinks = [
   { href: '/products/all', label: 'Shop All' },
   { href: '/magazine', label: 'Magazine Studio' },
   { href: '/split-poster', label: 'Split Posters' },
-  { href: '/customize', label: 'Design DIY' },
   { href: '/account', label: 'My Account' },
   { href: '/studio', label: 'Studio' },
   { href: '/faq', label: 'FAQ & Shipping' },

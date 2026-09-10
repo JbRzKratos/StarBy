@@ -83,7 +83,7 @@ export function HeroDesktop() {
             </Link>
 
             <Link
-              href="/customize"
+              href="/products/all"
               className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#0A0A0A] border-b-2 border-[#0A0A0A] pb-1 hover:text-[#ED9518] hover:border-[#ED9518] transition-colors"
             >
               EXPLORE THE DROP

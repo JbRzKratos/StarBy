@@ -54,22 +54,26 @@ export async function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
 
     // Only fetch user on protected routes to prevent timeouts on public pages
-    const isProtectedRoute = path.startsWith('/account') || path.startsWith('/admin');
+    const isProtectedRoute = path.startsWith('/account') || path.startsWith('/admin') || path.startsWith('/checkout');
 
     if (isProtectedRoute) {
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
-      // Protect /account routes
-      if (path.startsWith('/account') && !user) {
-        return NextResponse.redirect(new URL('/login', request.url));
+      // Protect /account and /checkout routes
+      if ((path.startsWith('/account') || path.startsWith('/checkout')) && !user) {
+        const redirectUrl = new URL('/login', request.url);
+        redirectUrl.searchParams.set('redirectTo', path);
+        return NextResponse.redirect(redirectUrl);
       }
 
       // Protect all /admin routes — require login first
       if (path.startsWith('/admin')) {
         if (!user) {
-          return NextResponse.redirect(new URL('/login', request.url));
+          const redirectUrl = new URL('/login', request.url);
+          redirectUrl.searchParams.set('redirectTo', path);
+          return NextResponse.redirect(redirectUrl);
         }
       }
     }

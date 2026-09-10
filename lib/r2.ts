@@ -13,6 +13,8 @@ import {
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
+  ListObjectsV2Command,
+  DeleteObjectsCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -155,4 +157,92 @@ export async function deleteR2Object(objectKey: string): Promise<void> {
       Key: objectKey,
     }),
   );
+}
+
+// ─── Upload Buffer ────────────────────────────────────────────────────────────
+
+export async function uploadBufferToR2(
+  buffer: Buffer,
+  fileName: string,
+  contentType: string
+): Promise<{ objectKey: string }> {
+  const client = getR2Client();
+  const bucket = getBucketName();
+  
+  const timestamp = Date.now();
+  const randomSuffix = Math.random().toString(36).substring(2, 10);
+  const sanitizedFileName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_').substring(0, 100);
+  const objectKey = `designs/checkout/${timestamp}_${randomSuffix}_${sanitizedFileName}`;
+
+  const command = new PutObjectCommand({
+    Bucket: bucket,
+    Key: objectKey,
+    Body: buffer,
+    ContentType: contentType,
+  });
+
+  await client.send(command);
+
+  return { objectKey };
+}
+
+// ─── List Objects ─────────────────────────────────────────────────────────────
+
+export async function listR2Objects(prefix?: string) {
+  const client = getR2Client();
+  const bucket = getBucketName();
+
+  const command = new ListObjectsV2Command({
+    Bucket: bucket,
+    Prefix: prefix,
+  });
+
+  const response = await client.send(command);
+  return response.Contents || [];
+}
+
+// ─── Delete Multiple Objects ──────────────────────────────────────────────────
+
+export async function deleteR2Objects(keys: string[]) {
+  if (keys.length === 0) return;
+  const client = getR2Client();
+  const bucket = getBucketName();
+
+  // AWS S3 allows deleting max 1000 objects per request
+  const chunks = [];
+  for (let i = 0; i < keys.length; i += 1000) {
+    chunks.push(keys.slice(i, i + 1000));
+  }
+
+  for (const chunk of chunks) {
+    const command = new DeleteObjectsCommand({
+      Bucket: bucket,
+      Delete: {
+        Objects: chunk.map((key) => ({ Key: key })),
+      },
+    });
+    await client.send(command);
+  }
+}
+
+// ─── Get Object Buffer ────────────────────────────────────────────────────────
+
+export async function getR2ObjectBuffer(key: string): Promise<Buffer | null> {
+  const client = getR2Client();
+  const bucket = getBucketName();
+
+  try {
+    const command = new GetObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    });
+    const response = await client.send(command);
+    if (response.Body) {
+      const byteArray = await response.Body.transformToByteArray();
+      return Buffer.from(byteArray);
+    }
+  } catch (error) {
+    console.error(`Error fetching R2 object ${key}:`, error);
+  }
+  return null;
 }

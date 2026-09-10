@@ -31,14 +31,14 @@ export function ConfirmDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6">
-        <h3 className="text-base font-semibold text-gray-900 mb-2">{title}</h3>
-        <p className="text-sm text-gray-600 mb-6">{description}</p>
+      <div className="bg-[#1A1A1E] border border-white/10 rounded-xl shadow-2xl w-full max-w-md mx-4 p-6">
+        <h3 className="text-base font-semibold text-bone mb-2">{title}</h3>
+        <p className="text-sm text-ash/80 mb-6">{description}</p>
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}
             disabled={isPending}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium text-ash bg-black/20 border border-white/20 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
           >
             {cancelLabel}
           </button>

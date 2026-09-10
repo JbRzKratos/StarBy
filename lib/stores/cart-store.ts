@@ -8,7 +8,14 @@ export interface CartCustomization {
   text?: string;
   textFont?: string;
   imageUrl?: string | null;
-  // Apparel customizer fields
+
+  // New production-grade customization fields
+  designFileUrl?: string | null;
+  previewFileUrl?: string | null;
+  printPosition?: string | null;
+  printInstructions?: string | null;
+
+  // Apparel customizer fields (legacy)
   thumbnail?: string | undefined;
   garment?: string | undefined;
   view?: string | undefined;

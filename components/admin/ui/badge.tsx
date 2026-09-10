@@ -19,21 +19,21 @@ interface BadgeProps {
 }
 
 const VARIANTS: Record<BadgeProps['variant'], string> = {
-  processing: 'bg-amber-100 text-amber-800',
-  placed: 'bg-blue-100 text-blue-800',
-  shipped: 'bg-indigo-100 text-indigo-800',
-  delivered: 'bg-green-100 text-green-800',
-  cancelled: 'bg-red-100 text-red-800',
-  refunded: 'bg-gray-100 text-gray-700',
-  'low-stock': 'bg-orange-100 text-orange-800',
-  'out-of-stock': 'bg-red-100 text-red-800',
-  active: 'bg-green-100 text-green-800',
-  draft: 'bg-gray-100 text-gray-600',
-  paid: 'bg-green-100 text-green-800',
-  pending: 'bg-amber-100 text-amber-800',
+  processing: 'bg-amber-500/15 text-amber-400',
+  placed: 'bg-blue-500/15 text-blue-400',
+  shipped: 'bg-indigo-500/15 text-indigo-400',
+  delivered: 'bg-green-500/15 text-green-400',
+  cancelled: 'bg-red-500/15 text-red-400',
+  refunded: 'bg-white/5 text-ash',
+  'low-stock': 'bg-orange-500/15 text-orange-400',
+  'out-of-stock': 'bg-red-500/15 text-red-400',
+  active: 'bg-green-500/15 text-green-400',
+  draft: 'bg-white/5 text-ash/80',
+  paid: 'bg-green-500/15 text-green-400',
+  pending: 'bg-amber-500/15 text-amber-400',
   admin: 'bg-[#3B5EFF]/10 text-[#3B5EFF]',
-  staff: 'bg-amber-100 text-amber-700',
-  customer: 'bg-gray-100 text-gray-600',
+  staff: 'bg-amber-500/15 text-amber-400',
+  customer: 'bg-white/5 text-ash/80',
 };
 
 export function AdminBadge({ variant, label }: BadgeProps) {

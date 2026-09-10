@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { Prisma } from '@prisma/client';
 import { sendOrderConfirmationEmail, sendAdminNewOrderEmail } from '@/lib/email';
 import { createCashfreeOrder, generatePublicOrderId, getCashfreeEnvironment } from '@/lib/cashfree';
+import { uploadBufferToR2 } from '@/lib/r2';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -79,10 +80,18 @@ export async function POST(request: Request) {
           },
         });
         userId = dbUser.id;
+      } else {
+        return NextResponse.json(
+          { success: false, message: 'You must be logged in to place an order.' },
+          { status: 401 },
+        );
       }
     } catch (authErr) {
       console.warn('Auth user sync notice:', authErr);
-      userId = null;
+      return NextResponse.json(
+        { success: false, message: 'Authentication required. Please log in.' },
+        { status: 401 },
+      );
     }
 
     // 4. ──── SECURITY FIX: Server-side price recalculation ────
@@ -180,6 +189,38 @@ export async function POST(request: Request) {
       const totalItemPrice = unitPrice * item.quantity;
       subtotal += totalItemPrice;
 
+      // ──── Upload customizations to R2 ────
+      let processedCustomization: any = item.customization ? JSON.parse(JSON.stringify(item.customization)) : null;
+      
+      if (processedCustomization && typeof processedCustomization === 'object') {
+        const uploadKeys = ['designFileUrl', 'frontDesignFileUrl', 'backDesignFileUrl'];
+        
+        for (const key of uploadKeys) {
+          if (processedCustomization[key] && processedCustomization[key].startsWith('data:image/')) {
+            try {
+              const dataStr = processedCustomization[key];
+              const matches = dataStr.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+              if (matches && matches.length === 3) {
+                const contentType = matches[1];
+                const base64Data = matches[2];
+                const buffer = Buffer.from(base64Data, 'base64');
+                
+                const { objectKey } = await uploadBufferToR2(
+                  buffer,
+                  `custom_${key}.png`,
+                  contentType
+                );
+                
+                processedCustomization[key] = `/api/storage?key=${encodeURIComponent(objectKey)}`;
+              }
+            } catch (e) {
+              console.error(`Error uploading ${key} to R2:`, e);
+              // Fallback to storing base64 if R2 fails
+            }
+          }
+        }
+      }
+
       validatedItems.push({
         productId: item.productId,
         variantId: item.variantId || 'default',
@@ -187,7 +228,7 @@ export async function POST(request: Request) {
         unitPrice,
         totalPrice: totalItemPrice,
         size: item.size || null,
-        customization: item.customization || null,
+        customization: processedCustomization,
         productNameSnapshot: product.name,
         skuSnapshot,
       });
@@ -281,7 +322,7 @@ export async function POST(request: Request) {
           order_amount: Math.round(totalAmount * 100) / 100, // Cashfree expects amount in rupees, not paise
           order_currency: 'INR',
           customer_details: {
-            customer_id: userId || `guest_${Date.now()}`,
+            customer_id: userId,
             customer_name: address.name || 'Valued Customer',
             customer_email: address.email,
             customer_phone: cleanPhone,
@@ -321,7 +362,7 @@ export async function POST(request: Request) {
     }
 
     // 10. ──── Save Order to Database ────
-    const createOrderData = (targetUserId: string | null) => ({
+    const createOrderData = (targetUserId: string) => ({
       publicOrderId,
       userId: targetUserId,
       subtotal,
@@ -371,19 +412,11 @@ export async function POST(request: Request) {
       });
       orderId = newOrder.id;
     } catch (dbError) {
-      console.warn('DB order creation notice (retrying without userId constraint):', dbError);
-      try {
-        const fallbackOrder = await prisma.order.create({
-          data: createOrderData(null),
-        });
-        orderId = fallbackOrder.id;
-      } catch (fallbackError) {
-        console.error('Final DB order creation error:', fallbackError);
-        return NextResponse.json(
-          { success: false, message: 'Failed to create order in database.' },
-          { status: 500 },
-        );
-      }
+      console.error('Final DB order creation error:', dbError);
+      return NextResponse.json(
+        { success: false, message: 'Failed to create order in database.' },
+        { status: 500 },
+      );
     }
 
     // 11. ──── COD post-order side effects ────

@@ -72,8 +72,8 @@ export default function AdminMagazinesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Magazine Print Production</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-bone">Magazine Print Production</h1>
+          <p className="text-sm text-ash/60">
             Inspect preflight validation, customer print specifications, and download
             production-ready PDFs.
           </p>
@@ -86,10 +86,10 @@ export default function AdminMagazinesPage() {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <div className="bg-black/20 rounded-xl border border-white/10 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-600">
-            <thead className="bg-gray-50 text-xs uppercase font-semibold text-gray-500 border-b border-gray-200">
+          <table className="w-full text-left text-sm text-ash/80">
+            <thead className="bg-black/40 text-xs uppercase font-semibold text-ash/60 border-b border-white/10">
               <tr>
                 <th className="px-6 py-3.5">Order ID</th>
                 <th className="px-6 py-3.5">Customer</th>
@@ -100,20 +100,20 @@ export default function AdminMagazinesPage() {
                 <th className="px-6 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 font-medium">
+            <tbody className="divide-y divide-white/5 font-medium">
               {orders.map((ord) => (
                 <tr key={ord.id} className="hover:bg-gray-50/70 transition-colors">
-                  <td className="px-6 py-4 font-mono font-bold text-gray-900">{ord.orderNumber}</td>
+                  <td className="px-6 py-4 font-mono font-bold text-bone">{ord.orderNumber}</td>
                   <td className="px-6 py-4">
-                    <div className="text-gray-900 font-semibold">{ord.customerName}</div>
-                    <div className="text-xs text-gray-400 font-mono">{ord.customerEmail}</div>
+                    <div className="text-bone font-semibold">{ord.customerName}</div>
+                    <div className="text-xs text-ash/60 font-mono">{ord.customerEmail}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="text-gray-900">{ord.magazineTitle}</div>
-                    <div className="text-xs text-gray-400">{ord.format}</div>
+                    <div className="text-bone">{ord.magazineTitle}</div>
+                    <div className="text-xs text-ash/60">{ord.format}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="inline-block px-2 py-0.5 rounded text-[11px] bg-gray-100 text-gray-700 font-mono">
+                    <span className="inline-block px-2 py-0.5 rounded text-[11px] bg-white/5 text-ash font-mono">
                       {ord.orderType} · {ord.pageCount}p
                     </span>
                   </td>
@@ -145,53 +145,53 @@ export default function AdminMagazinesPage() {
       {/* Detail Inspection Modal */}
       {selectedOrder && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+          <div className="bg-black/20 rounded-2xl max-w-2xl w-full p-6 space-y-6 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/5 pb-4">
               <div>
                 <span className="text-xs font-mono font-bold text-[#0057FF] uppercase">
                   Production Inspection
                 </span>
-                <h3 className="text-xl font-bold text-gray-900">{selectedOrder.orderNumber}</h3>
+                <h3 className="text-xl font-bold text-bone">{selectedOrder.orderNumber}</h3>
               </div>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg"
+                className="p-2 text-ash/60 hover:text-gray-600 rounded-lg"
               >
                 ✕
               </button>
             </div>
 
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="p-4 rounded-xl bg-gray-50 space-y-1">
-                <span className="text-xs text-gray-500 block">Customer Information</span>
-                <div className="font-bold text-gray-900">{selectedOrder.customerName}</div>
-                <div className="text-xs text-gray-600">{selectedOrder.customerEmail}</div>
+              <div className="p-4 rounded-xl bg-black/40 space-y-1">
+                <span className="text-xs text-ash/60 block">Customer Information</span>
+                <div className="font-bold text-bone">{selectedOrder.customerName}</div>
+                <div className="text-xs text-ash/80">{selectedOrder.customerEmail}</div>
               </div>
 
-              <div className="p-4 rounded-xl bg-gray-50 space-y-1">
-                <span className="text-xs text-gray-500 block">Order Specifications</span>
-                <div className="font-bold text-gray-900">
+              <div className="p-4 rounded-xl bg-black/40 space-y-1">
+                <span className="text-xs text-ash/60 block">Order Specifications</span>
+                <div className="font-bold text-bone">
                   {selectedOrder.pageCount} Pages · {selectedOrder.format}
                 </div>
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-ash/80">
                   {selectedOrder.quantity} Copies · ₹{selectedOrder.totalPrice.toLocaleString()}
                 </div>
               </div>
             </div>
 
-            <div className="space-y-2 text-sm border-t border-gray-100 pt-4">
-              <h4 className="font-bold text-gray-900">Print Team Specifications</h4>
-              <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+            <div className="space-y-2 text-sm border-t border-white/5 pt-4">
+              <h4 className="font-bold text-bone">Print Team Specifications</h4>
+              <div className="grid grid-cols-2 gap-2 text-xs text-ash/80">
                 <div>
                   Cover Finish:{' '}
-                  <strong className="text-gray-900">{selectedOrder.coverFinish}</strong>
+                  <strong className="text-bone">{selectedOrder.coverFinish}</strong>
                 </div>
                 <div>
                   Interior Stock:{' '}
-                  <strong className="text-gray-900">{selectedOrder.paperWeight}</strong>
+                  <strong className="text-bone">{selectedOrder.paperWeight}</strong>
                 </div>
                 <div>
-                  Binding: <strong className="text-gray-900">{selectedOrder.binding}</strong>
+                  Binding: <strong className="text-bone">{selectedOrder.binding}</strong>
                 </div>
                 <div>
                   Bleed Setup: <strong className="text-emerald-600">+3mm Verified</strong>
@@ -199,10 +199,10 @@ export default function AdminMagazinesPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between border-t border-gray-100 pt-4">
+            <div className="flex items-center justify-between border-t border-white/5 pt-4">
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 font-semibold text-xs"
+                className="px-4 py-2 rounded-lg bg-white/5 text-ash font-semibold text-xs"
               >
                 Close
               </button>

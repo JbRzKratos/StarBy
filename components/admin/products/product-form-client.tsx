@@ -145,16 +145,16 @@ export function ProductFormClient({
   }
 
   const inputClass =
-    'w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]';
+    'w-full text-sm text-bone bg-black/30 border border-white/10 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF] placeholder:text-ash/40';
 
   return (
     <div className="space-y-5">
       {/* Main info */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-900">Basic Info</h2>
+      <div className="bg-black/20 rounded-xl border border-white/10 p-6 space-y-4">
+        <h2 className="text-sm font-semibold text-bone">Basic Info</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1.5">Product Name</label>
+            <label className="block text-xs font-medium text-ash mb-1.5">Product Name</label>
             <input
               value={form.name}
               onChange={(e) =>
@@ -172,7 +172,7 @@ export function ProductFormClient({
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1.5">Slug</label>
+            <label className="block text-xs font-medium text-ash mb-1.5">Slug</label>
             <input
               value={form.slug}
               onChange={(e) => setForm({ ...form, slug: e.target.value })}
@@ -182,7 +182,7 @@ export function ProductFormClient({
           </div>
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1.5">Tagline</label>
+          <label className="block text-xs font-medium text-ash mb-1.5">Tagline</label>
           <input
             value={form.tagline}
             onChange={(e) => setForm({ ...form, tagline: e.target.value })}
@@ -191,7 +191,7 @@ export function ProductFormClient({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1.5">Description</label>
+          <label className="block text-xs font-medium text-ash mb-1.5">Description</label>
           <textarea
             rows={4}
             value={form.description}
@@ -202,7 +202,7 @@ export function ProductFormClient({
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1.5">Category</label>
+            <label className="block text-xs font-medium text-ash mb-1.5">Category</label>
             <select
               value={form.categorySlug}
               onChange={(e) => setForm({ ...form, categorySlug: e.target.value })}
@@ -217,7 +217,7 @@ export function ProductFormClient({
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1.5">Base Price (₹)</label>
+            <label className="block text-xs font-medium text-ash mb-1.5">Base Price (₹)</label>
             <input
               type="number"
               min={0}
@@ -228,7 +228,7 @@ export function ProductFormClient({
           </div>
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1.5">
+          <label className="block text-xs font-medium text-ash mb-1.5">
             Tags (comma-separated)
           </label>
           <input
@@ -239,7 +239,7 @@ export function ProductFormClient({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1.5">
+          <label className="block text-xs font-medium text-ash mb-1.5">
             Sizes (comma-separated)
           </label>
           <input
@@ -257,7 +257,7 @@ export function ProductFormClient({
               onChange={(e) => setForm({ ...form, featured: e.target.checked })}
               className="w-4 h-4 rounded accent-[#3B5EFF]"
             />
-            <span className="text-sm text-gray-700 font-medium">Featured</span>
+            <span className="text-sm text-ash font-medium">Featured</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -266,15 +266,15 @@ export function ProductFormClient({
               onChange={(e) => setForm({ ...form, customizable: e.target.checked })}
               className="w-4 h-4 rounded accent-[#3B5EFF]"
             />
-            <span className="text-sm text-gray-700 font-medium">Customizable</span>
+            <span className="text-sm text-ash font-medium">Customizable</span>
           </label>
         </div>
       </div>
 
       {/* Variants */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-black/20 rounded-xl border border-white/10 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-gray-900">Variants ({variants.length})</h2>
+          <h2 className="text-sm font-semibold text-bone">Variants ({variants.length})</h2>
           <button
             onClick={() => setShowVariantForm(!showVariantForm)}
             className="text-xs text-[#3B5EFF] hover:underline font-medium"
@@ -284,10 +284,10 @@ export function ProductFormClient({
         </div>
 
         {showVariantForm && (
-          <div className="bg-gray-50 rounded-lg p-4 mb-4 space-y-3 border border-gray-200">
+          <div className="bg-black/40 rounded-lg p-4 mb-4 space-y-3 border border-white/10">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Variant Name</label>
+                <label className="block text-xs font-medium text-ash mb-1">Variant Name</label>
                 <input
                   value={newVariant.name}
                   onChange={(e) => setNewVariant({ ...newVariant, name: e.target.value })}
@@ -296,7 +296,7 @@ export function ProductFormClient({
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Color Name</label>
+                <label className="block text-xs font-medium text-ash mb-1">Color Name</label>
                 <input
                   value={newVariant.color}
                   onChange={(e) => setNewVariant({ ...newVariant, color: e.target.value })}
@@ -305,13 +305,13 @@ export function ProductFormClient({
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Color Hex</label>
+                <label className="block text-xs font-medium text-ash mb-1">Color Hex</label>
                 <div className="flex gap-2">
                   <input
                     type="color"
                     value={newVariant.colorHex}
                     onChange={(e) => setNewVariant({ ...newVariant, colorHex: e.target.value })}
-                    className="w-10 h-10 rounded border border-gray-200 cursor-pointer"
+                    className="w-10 h-10 rounded border border-white/10 cursor-pointer"
                   />
                   <input
                     value={newVariant.colorHex}
@@ -321,7 +321,7 @@ export function ProductFormClient({
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Price (₹)</label>
+                <label className="block text-xs font-medium text-ash mb-1">Price (₹)</label>
                 <input
                   type="number"
                   min={0}
@@ -333,7 +333,7 @@ export function ProductFormClient({
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Stock Qty</label>
+                <label className="block text-xs font-medium text-ash mb-1">Stock Qty</label>
                 <input
                   type="number"
                   min={0}
@@ -345,7 +345,7 @@ export function ProductFormClient({
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-ash mb-1">
                   Reorder Threshold
                 </label>
                 <input
@@ -374,21 +374,21 @@ export function ProductFormClient({
 
         <div className="space-y-2">
           {variants.length === 0 && !showVariantForm && (
-            <p className="text-sm text-gray-400 italic">No variants yet</p>
+            <p className="text-sm text-ash/60 italic">No variants yet</p>
           )}
           {variants.map((v) => (
             <div
               key={v.id}
-              className="flex items-center gap-3 bg-gray-50 rounded-lg px-4 py-2.5 border border-gray-100"
+              className="flex items-center gap-3 bg-black/40 rounded-lg px-4 py-2.5 border border-white/5"
             >
               <span
-                className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"
+                className="w-4 h-4 rounded-full border border-white/10 flex-shrink-0"
                 style={{ background: v.colorHex }}
               />
-              <span className="text-sm text-gray-800 flex-1">
+              <span className="text-sm text-bone/90 flex-1">
                 {v.name} — {v.color}
               </span>
-              <span className="text-xs text-gray-500">₹{v.price}</span>
+              <span className="text-xs text-ash/60">₹{v.price}</span>
               <span
                 className={`text-xs font-medium ${v.inStock ? 'text-green-700' : 'text-red-600'}`}
               >
@@ -416,7 +416,7 @@ export function ProductFormClient({
         </button>
         <button
           onClick={() => router.push('/admin/products')}
-          className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900"
+          className="px-4 py-2.5 text-sm font-medium text-ash/80 hover:text-white"
         >
           Cancel
         </button>

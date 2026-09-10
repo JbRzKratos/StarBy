@@ -30,10 +30,3 @@ export const CheckoutSchema = z.object({
   paymentMethod: z.enum(['upi', 'card', 'netbanking', 'cashfree', 'cod']).default('cashfree'),
   couponCode: z.string().optional(),
 });
-
-export const CustomizerSaveSchema = z.object({
-  productId: z.string().min(1, 'Product ID is required'),
-  title: z.string().optional().default('My Custom Design'),
-  canvasState: z.record(z.string(), z.unknown()),
-  previewUrl: z.string().optional(),
-});

@@ -56,9 +56,9 @@ export function RevenueChart({ data }: RevenueChartProps) {
     const { active, payload, label } = props || {};
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white border border-gray-200 rounded-lg shadow-lg px-3 py-2">
-          <p className="text-xs text-gray-500">{formatDateLabel(String(label || ''))}</p>
-          <p className="text-sm font-semibold text-gray-900">
+        <div className="bg-black/20 border border-white/10 rounded-lg shadow-lg px-3 py-2">
+          <p className="text-xs text-ash/60">{formatDateLabel(String(label || ''))}</p>
+          <p className="text-sm font-semibold text-bone">
             ₹{Number(payload[0]?.value || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
           </p>
         </div>
@@ -71,9 +71,9 @@ export function RevenueChart({ data }: RevenueChartProps) {
     <div>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-ash/60">
           Total:{' '}
-          <span className="font-semibold text-gray-900">
+          <span className="font-semibold text-bone">
             ₹{total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
           </span>
         </p>
@@ -85,7 +85,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
               className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                 range === r
                   ? 'bg-[#3B5EFF] text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-white/5 text-ash/80 hover:bg-white/10'
               }`}
             >
               {r}
@@ -96,7 +96,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
 
       {/* Chart */}
       {filtered.length === 0 ? (
-        <div className="h-48 flex items-center justify-center text-sm text-gray-400">
+        <div className="h-48 flex items-center justify-center text-sm text-ash/60">
           No revenue data for this period
         </div>
       ) : (

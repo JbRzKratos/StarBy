@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
-import { CustomizerPanelMobile } from '../customizer-hub/CustomizerHub.mobile';
 import { DeviceSkinsComingSoon } from './device-skins-coming-soon';
 import { usePrice } from '@/lib/hooks/usePrice';
 
@@ -33,21 +32,13 @@ function MobileProductCard({ product, index }: { product: Product; index: number
           className="object-cover transition-transform duration-700 active:scale-105"
           sizes="(max-width: 768px) 50vw"
         />
-        {product.customizable && (
-          <div className="absolute top-2 left-2 bg-charcoal text-bone px-2 py-1 text-[8px] uppercase font-mono tracking-widest z-[1] rounded shadow-lg">
-            Custom
-          </div>
-        )}
       </div>
 
       <div className="flex flex-col gap-0.5 mt-3">
         <h3 className="font-mono text-[11px] text-bone uppercase tracking-widest truncate">
           {product.name}
         </h3>
-        <p className="font-display text-sm text-pearl">
-          {product.customizable ? 'from ' : ''}
-          {formatPrice(product.basePrice)}
-        </p>
+        <p className="font-display text-sm text-pearl">{formatPrice(product.basePrice)}</p>
       </div>
     </Link>
   );
@@ -194,24 +185,12 @@ export function ShopMobile({ category, products }: { category: string; products:
               {tab.label}
             </button>
           ))}
-          <button
-            onClick={() => handleTabClick('diy')}
-            className={`font-mono text-[10px] uppercase tracking-widest whitespace-nowrap snap-start transition-colors ml-4 ${
-              activeTab === 'diy'
-                ? 'text-bone border-b border-bone pb-1'
-                : 'text-cobalt pb-1 border-b border-transparent'
-            }`}
-          >
-            ✦ Design It Yourself
-          </button>
         </div>
       </header>
 
       {/* Content Area */}
       <div className="px-5 pt-6">
-        {activeTab === 'diy' ? (
-          <CustomizerPanelMobile />
-        ) : activeTab === 'skins' ? (
+        {activeTab === 'skins' ? (
           <DeviceSkinsComingSoon />
         ) : (
           <div className="flex flex-col">
@@ -347,12 +326,6 @@ export function ShopMobile({ category, products }: { category: string; products:
             className={`text-left font-mono text-[11px] uppercase tracking-widest py-3 px-4 rounded-md ${filterType === 'original' ? 'bg-smoke/20 text-bone' : 'text-ash'}`}
           >
             Designed by Us
-          </button>
-          <button
-            onClick={() => handleFilterChange('customizable')}
-            className={`text-left font-mono text-[11px] uppercase tracking-widest py-3 px-4 rounded-md ${filterType === 'customizable' ? 'bg-smoke/20 text-bone' : 'text-ash'}`}
-          >
-            Made to be Yours
           </button>
         </div>
 

@@ -16,7 +16,6 @@ const navLinks = [
   { href: '/products/all', label: 'Shop All' },
   { href: '/magazine', label: 'Magazine' },
   { href: '/split-poster', label: 'Split Posters' },
-  { href: '/customize', label: 'Design DIY' },
   { href: '/studio', label: 'Studio' },
   { href: '/faq', label: 'FAQ' },
 ];

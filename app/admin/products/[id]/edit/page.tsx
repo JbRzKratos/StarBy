@@ -21,7 +21,7 @@ export default async function EditProductPage({ params }: PageProps) {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-lg font-bold text-gray-900 mb-6">Edit: {product.name}</h1>
+      <h1 className="text-lg font-bold text-bone mb-6">Edit: {product.name}</h1>
       <ProductFormClient
         mode="edit"
         productId={product.id}

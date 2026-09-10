@@ -241,24 +241,24 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
       {/* Mobile backdrop */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-gray-900/50 z-40 md:hidden transition-opacity"
+          className="fixed inset-0 bg-black/60 z-40 md:hidden transition-opacity"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-full bg-white border-r border-gray-200 flex flex-col z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 h-full bg-black/20 border-r border-white/10 flex flex-col z-50 transition-all duration-300 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         } ${collapsed ? 'w-60 md:w-16' : 'w-60'}`}
       >
         {/* Logo + collapse button */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100 min-h-[60px]">
+        <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 min-h-[60px]">
           {!collapsed && (
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 bg-[#0A0A0A] rounded-lg flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold text-xs">FS</span>
               </div>
-              <span className="font-bold text-gray-900 text-sm tracking-tight">Fregoro Admin</span>
+              <span className="font-bold text-bone text-sm tracking-tight">Fregoro Admin</span>
             </div>
           )}
           {collapsed && (
@@ -269,7 +269,7 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
           {!collapsed && (
             <button
               onClick={() => setCollapsed(true)}
-              className="text-gray-400 hover:text-gray-600 transition-colors ml-2"
+              className="text-ash/60 hover:text-bone transition-colors ml-2"
               title="Collapse sidebar"
             >
               <svg
@@ -287,7 +287,7 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
           {collapsed && (
             <button
               onClick={() => setCollapsed(false)}
-              className="text-gray-400 hover:text-gray-600 transition-colors absolute -right-3 top-6 bg-white border border-gray-200 rounded-full w-6 h-6 flex items-center justify-center shadow-sm"
+              className="text-ash/60 hover:text-bone transition-colors absolute -right-3 top-6 bg-[#1A1A1E] border border-white/10 rounded-full w-6 h-6 flex items-center justify-center shadow-sm"
               title="Expand sidebar"
             >
               <svg
@@ -318,10 +318,10 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     active
                       ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      : 'text-ash/80 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  <span className={`flex-shrink-0 ${active ? 'text-[#3B5EFF]' : 'text-gray-400'}`}>
+                  <span className={`flex-shrink-0 ${active ? 'text-[#3B5EFF]' : 'text-ash/60'}`}>
                     {item.icon}
                   </span>
                   {!collapsed && <span className="truncate">{item.label}</span>}
@@ -333,18 +333,18 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
 
         {/* User footer */}
         {!collapsed && (
-          <div className="px-3 py-3 border-t border-gray-100">
+          <div className="px-3 py-3 border-t border-white/10">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
-                <span className="text-gray-600 text-xs font-semibold uppercase">
+              <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                <span className="text-ash/80 text-xs font-semibold uppercase">
                   {(userName || userEmail || 'A').charAt(0)}
                 </span>
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-gray-900 truncate">
+                <p className="text-xs font-semibold text-bone truncate">
                   {userName || 'Admin'}
                 </p>
-                <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+                <p className="text-xs text-ash/60 truncate">{userEmail}</p>
               </div>
             </div>
           </div>

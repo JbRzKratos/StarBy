@@ -51,11 +51,6 @@ export function ProductCardMobile({ product }: ProductCardProps) {
               </span>
             ) : (
               <>
-                {product.customizable && (
-                  <span className="px-2 py-1 bg-cobalt/90 text-bone font-mono text-[10px] uppercase tracking-wider rounded-md">
-                    Customizable
-                  </span>
-                )}
                 {product.tags.includes('new') && (
                   <span className="px-2 py-1 bg-ember/90 text-bone font-mono text-[10px] uppercase tracking-wider rounded-md">
                     New

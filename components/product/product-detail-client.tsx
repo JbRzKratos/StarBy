@@ -266,19 +266,20 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </div>
             ) : (
               <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
-                >
-                  Add to Cart
-                </button>
-                {product.customizable && (
+                {product.customizable ? (
                   <Link
                     href={`/customize/${product.id}`}
-                    className="flex-1 py-3.5 border border-bone/20 text-bone font-mono text-caption uppercase tracking-widest text-center hover:bg-bone/5 transition-colors"
+                    className="w-full flex items-center justify-center py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
                   >
-                    Customize This →
+                    Customize Design
                   </Link>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    className="w-full py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
+                  >
+                    Add to Cart
+                  </button>
                 )}
               </div>
             )}

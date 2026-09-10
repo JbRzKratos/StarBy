@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
-import { CustomizerPanelDesktop } from '../customizer-hub/CustomizerHub.desktop';
 import { DeviceSkinsComingSoon } from './device-skins-coming-soon';
 import { usePrice } from '@/lib/hooks/usePrice';
 
@@ -34,16 +33,11 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
           className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-105"
           sizes="(max-width: 1024px) 33vw, 25vw"
         />
-        {product.customizable && (
-          <div className="absolute top-4 left-4 bg-charcoal text-bone px-3 py-1 text-[10px] uppercase font-mono tracking-widest z-[1] rounded-md shadow-lg">
-            Customizable
-          </div>
-        )}
 
         {/* Hover overlay with button */}
         <div className="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
           <span className="bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg shadow-xl translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-            {product.customizable ? 'Customize' : 'View Product'}
+            View Product
           </span>
         </div>
       </div>
@@ -53,10 +47,7 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
         <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-cobalt transition-colors">
           {product.name}
         </h3>
-        <p className="font-display text-lg text-pearl">
-          {product.customizable ? 'from ' : ''}
-          {formatPrice(product.basePrice)}
-        </p>
+        <p className="font-display text-lg text-pearl">{formatPrice(product.basePrice)}</p>
       </div>
     </Link>
   );
@@ -147,251 +138,218 @@ export function ShopDesktop({ category, products }: { category: string; products
 
   return (
     <main className="min-h-screen bg-charcoal text-bone pt-40 pb-24">
-      {activeTab === 'diy' ? (
-        <div className="pt-12 px-12">
-          <button
-            onClick={() => handleTabClick('all')}
-            className="mb-8 text-pearl hover:text-bone font-mono text-[10px] uppercase tracking-widest transition-colors flex items-center gap-2"
-          >
-            ← Back to Shop
-          </button>
-          <CustomizerPanelDesktop />
-        </div>
-      ) : (
-        <div className="section-container">
-          {/* Header & Categories */}
-          <div className="flex flex-col gap-12 mb-16">
-            <h1 className="font-display text-7xl uppercase tracking-tighter">
-              {activeTab === 'all'
-                ? 'The Catalog'
-                : activeTab === 'skins'
-                  ? 'Device Skins'
-                  : activeTab === 'mugs-cups'
-                    ? 'Cups & Mugs'
-                    : activeTab}
-            </h1>
+      <div className="section-container">
+        {/* Header & Categories */}
+        <div className="flex flex-col gap-12 mb-16">
+          <h1 className="font-display text-7xl uppercase tracking-tighter">
+            {activeTab === 'all'
+              ? 'The Catalog'
+              : activeTab === 'skins'
+                ? 'Device Skins'
+                : activeTab === 'mugs-cups'
+                  ? 'Cups & Mugs'
+                  : activeTab}
+          </h1>
 
-            <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar pb-4 border-b border-smoke/20">
-              {SHOP_CATEGORIES.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabClick(tab.id)}
-                  className={`font-mono text-[11px] uppercase tracking-widest pb-4 border-b-2 whitespace-nowrap transition-colors ${
-                    activeTab === tab.id
-                      ? 'border-bone text-bone'
-                      : 'border-transparent text-pearl hover:text-bone'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+          <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar pb-4 border-b border-smoke/20">
+            {SHOP_CATEGORIES.map((tab) => (
               <button
-                onClick={() => handleTabClick('diy')}
-                className="font-mono text-[11px] uppercase tracking-widest pb-4 border-b-2 border-transparent text-cobalt hover:text-bone whitespace-nowrap transition-colors ml-auto"
+                key={tab.id}
+                onClick={() => handleTabClick(tab.id)}
+                className={`font-mono text-[11px] uppercase tracking-widest pb-4 border-b-2 whitespace-nowrap transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-bone text-bone'
+                    : 'border-transparent text-pearl hover:text-bone'
+                }`}
               >
-                ✦ Design It Yourself
+                {tab.label}
               </button>
-            </div>
+            ))}
           </div>
+        </div>
 
-          {activeTab === 'skins' ? (
-            <DeviceSkinsComingSoon />
-          ) : (
-            /* Filters & Grid */
-            <div className="flex items-start gap-12">
-              {/* Sidebar Filters */}
-              <aside className="w-64 flex-shrink-0 sticky top-32">
-                <div className="flex flex-col gap-10">
-                  {/* Search */}
-                  <div>
-                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                      Search
-                    </h4>
+        {activeTab === 'skins' ? (
+          <DeviceSkinsComingSoon />
+        ) : (
+          /* Filters & Grid */
+          <div className="flex items-start gap-12">
+            {/* Sidebar Filters */}
+            <aside className="w-64 flex-shrink-0 sticky top-32">
+              <div className="flex flex-col gap-10">
+                {/* Search */}
+                <div>
+                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                    Search
+                  </h4>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      const params = new URLSearchParams(searchParams.toString());
+                      if (e.target.value) params.set('q', e.target.value);
+                      else params.delete('q');
+                      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                    }}
+                    placeholder="Search products..."
+                    className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke"
+                  />
+                </div>
+
+                {/* Price Range */}
+                <div>
+                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                    Price Range
+                  </h4>
+                  <div className="flex items-center gap-2">
                     <input
-                      type="text"
-                      value={searchQuery}
+                      type="number"
+                      value={minPrice}
                       onChange={(e) => {
-                        setSearchQuery(e.target.value);
+                        setMinPrice(e.target.value);
                         const params = new URLSearchParams(searchParams.toString());
-                        if (e.target.value) params.set('q', e.target.value);
-                        else params.delete('q');
+                        if (e.target.value) params.set('min', e.target.value);
+                        else params.delete('min');
                         router.replace(`${pathname}?${params.toString()}`, { scroll: false });
                       }}
-                      placeholder="Search products..."
-                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke"
+                      placeholder="Min"
+                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
+                    />
+                    <span className="text-pearl">-</span>
+                    <input
+                      type="number"
+                      value={maxPrice}
+                      onChange={(e) => {
+                        setMaxPrice(e.target.value);
+                        const params = new URLSearchParams(searchParams.toString());
+                        if (e.target.value) params.set('max', e.target.value);
+                        else params.delete('max');
+                        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                      }}
+                      placeholder="Max"
+                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
                     />
                   </div>
-
-                  {/* Price Range */}
-                  <div>
-                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                      Price Range
-                    </h4>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="number"
-                        value={minPrice}
-                        onChange={(e) => {
-                          setMinPrice(e.target.value);
-                          const params = new URLSearchParams(searchParams.toString());
-                          if (e.target.value) params.set('min', e.target.value);
-                          else params.delete('min');
-                          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-                        }}
-                        placeholder="Min"
-                        className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
-                      />
-                      <span className="text-pearl">-</span>
-                      <input
-                        type="number"
-                        value={maxPrice}
-                        onChange={(e) => {
-                          setMaxPrice(e.target.value);
-                          const params = new URLSearchParams(searchParams.toString());
-                          if (e.target.value) params.set('max', e.target.value);
-                          else params.delete('max');
-                          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-                        }}
-                        placeholder="Max"
-                        className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke text-center"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                      Identity
-                    </h4>
-                    <div className="flex flex-col gap-3">
-                      <label className="flex items-center gap-3 cursor-pointer group">
-                        <input
-                          type="radio"
-                          name="filterType"
-                          value="all"
-                          checked={filterType === 'all'}
-                          onChange={handleFilterChange}
-                          className="accent-bone"
-                        />
-                        <span
-                          className={`font-mono text-xs uppercase tracking-widest ${filterType === 'all' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
-                        >
-                          All Products
-                        </span>
-                      </label>
-                      <label className="flex items-center gap-3 cursor-pointer group">
-                        <input
-                          type="radio"
-                          name="filterType"
-                          value="original"
-                          checked={filterType === 'original'}
-                          onChange={handleFilterChange}
-                          className="accent-bone"
-                        />
-                        <span
-                          className={`font-mono text-xs uppercase tracking-widest ${filterType === 'original' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
-                        >
-                          Designed by Us
-                        </span>
-                      </label>
-                      <label className="flex items-center gap-3 cursor-pointer group">
-                        <input
-                          type="radio"
-                          name="filterType"
-                          value="customizable"
-                          checked={filterType === 'customizable'}
-                          onChange={handleFilterChange}
-                          className="accent-bone"
-                        />
-                        <span
-                          className={`font-mono text-xs uppercase tracking-widest ${filterType === 'customizable' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
-                        >
-                          Made to be Yours
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                      Sort By
-                    </h4>
-                    <select
-                      value={sortMethod}
-                      onChange={handleSortChange}
-                      className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs uppercase tracking-widest pb-2 outline-none cursor-pointer"
-                    >
-                      <option value="featured" className="bg-charcoal">
-                        Featured
-                      </option>
-                      <option value="new" className="bg-charcoal">
-                        New Arrivals
-                      </option>
-                      <option value="price-asc" className="bg-charcoal">
-                        Price: Low to High
-                      </option>
-                      <option value="price-desc" className="bg-charcoal">
-                        Price: High to Low
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </aside>
-
-              {/* Product Grid */}
-              <div className="flex-grow flex flex-col min-h-[50vh]">
-                <div className="flex justify-between items-center mb-8">
-                  <span className="font-mono text-[10px] text-pearl uppercase tracking-widest">
-                    Showing {displayProducts.length} of {filteredProducts.length} Results
-                  </span>
                 </div>
 
-                {displayProducts.length > 0 ? (
-                  <div className="grid grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-16">
-                    {displayProducts.map((product, index) => (
-                      <DesktopProductCard
-                        key={`prod-${product.id}`}
-                        product={product}
-                        index={index}
+                <div>
+                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                    Identity
+                  </h4>
+                  <div className="flex flex-col gap-3">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="filterType"
+                        value="all"
+                        checked={filterType === 'all'}
+                        onChange={handleFilterChange}
+                        className="accent-bone"
                       />
-                    ))}
+                      <span
+                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'all' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
+                      >
+                        All Products
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="filterType"
+                        value="original"
+                        checked={filterType === 'original'}
+                        onChange={handleFilterChange}
+                        className="accent-bone"
+                      />
+                      <span
+                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'original' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
+                      >
+                        Designed by Us
+                      </span>
+                    </label>
                   </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-32 border border-dashed border-smoke/20 rounded-lg">
-                    <h3 className="font-display text-4xl text-bone mb-4">No results found</h3>
-                    <p className="font-mono text-sm text-pearl mb-8">
-                      Try adjusting your filters or search criteria.
-                    </p>
-                    <button
-                      onClick={() => {
-                        setFilterType('all');
-                        setSortMethod('featured');
-                        setSearchQuery('');
-                        setMinPrice('');
-                        setMaxPrice('');
-                        router.replace(pathname, { scroll: false });
-                      }}
-                      className="bg-bone text-charcoal font-mono text-[11px] uppercase tracking-widest px-8 py-4 transition-transform hover:scale-105"
-                    >
-                      Clear Filters
-                    </button>
-                  </div>
-                )}
+                </div>
 
-                {visibleCount < filteredProducts.length && (
-                  <div className="mt-24 flex justify-center">
-                    <button
-                      onClick={() => setVisibleCount((p) => p + 16)}
-                      className="border-b border-smoke text-bone font-mono text-[11px] uppercase tracking-widest pb-1 hover:border-bone transition-colors"
-                    >
-                      Load More
-                    </button>
-                  </div>
-                )}
+                <div>
+                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
+                    Sort By
+                  </h4>
+                  <select
+                    value={sortMethod}
+                    onChange={handleSortChange}
+                    className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs uppercase tracking-widest pb-2 outline-none cursor-pointer"
+                  >
+                    <option value="featured" className="bg-charcoal">
+                      Featured
+                    </option>
+                    <option value="new" className="bg-charcoal">
+                      New Arrivals
+                    </option>
+                    <option value="price-asc" className="bg-charcoal">
+                      Price: Low to High
+                    </option>
+                    <option value="price-desc" className="bg-charcoal">
+                      Price: High to Low
+                    </option>
+                  </select>
+                </div>
               </div>
+            </aside>
+
+            {/* Product Grid */}
+            <div className="flex-grow flex flex-col min-h-[50vh]">
+              <div className="flex justify-between items-center mb-8">
+                <span className="font-mono text-[10px] text-pearl uppercase tracking-widest">
+                  Showing {displayProducts.length} of {filteredProducts.length} Results
+                </span>
+              </div>
+
+              {displayProducts.length > 0 ? (
+                <div className="grid grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-16">
+                  {displayProducts.map((product, index) => (
+                    <DesktopProductCard
+                      key={`prod-${product.id}`}
+                      product={product}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-32 border border-dashed border-smoke/20 rounded-lg">
+                  <h3 className="font-display text-4xl text-bone mb-4">No results found</h3>
+                  <p className="font-mono text-sm text-pearl mb-8">
+                    Try adjusting your filters or search criteria.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setFilterType('all');
+                      setSortMethod('featured');
+                      setSearchQuery('');
+                      setMinPrice('');
+                      setMaxPrice('');
+                      router.replace(pathname, { scroll: false });
+                    }}
+                    className="bg-bone text-charcoal font-mono text-[11px] uppercase tracking-widest px-8 py-4 transition-transform hover:scale-105"
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              )}
+
+              {visibleCount < filteredProducts.length && (
+                <div className="mt-24 flex justify-center">
+                  <button
+                    onClick={() => setVisibleCount((p) => p + 16)}
+                    className="border-b border-smoke text-bone font-mono text-[11px] uppercase tracking-widest pb-1 hover:border-bone transition-colors"
+                  >
+                    Load More
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </main>
   );
 }

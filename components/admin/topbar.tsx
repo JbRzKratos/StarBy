@@ -34,12 +34,12 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
   }
 
   return (
-    <header className="fixed top-0 right-0 left-0 md:left-60 h-[60px] bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-40 transition-[left] duration-300">
+    <header className="fixed top-0 right-0 left-0 md:left-60 h-[60px] bg-black/20 border-b border-white/10 flex items-center justify-between px-4 sm:px-6 z-40 transition-[left] duration-300">
       <div className="flex items-center gap-3">
         {/* Mobile menu toggle button */}
         <button
           onClick={() => window.dispatchEvent(new Event('admin-sidebar-toggle'))}
-          className="md:hidden p-1.5 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
+          className="md:hidden p-1.5 text-ash/60 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
           aria-label="Toggle admin menu"
         >
           <svg
@@ -62,13 +62,13 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
         <nav className="flex items-center gap-1.5 text-xs sm:text-sm overflow-x-auto whitespace-nowrap py-1">
           {breadcrumbs.map((crumb, i) => (
             <span key={crumb.href} className="flex items-center gap-1.5">
-              {i > 0 && <span className="text-gray-300">/</span>}
+              {i > 0 && <span className="text-ash/40">/</span>}
               {i === breadcrumbs.length - 1 ? (
-                <span className="font-semibold text-gray-900">{crumb.label}</span>
+                <span className="font-semibold text-bone">{crumb.label}</span>
               ) : (
                 <Link
                   href={crumb.href}
-                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                  className="text-ash/60 hover:text-bone/80 transition-colors"
                 >
                   {crumb.label}
                 </Link>
@@ -83,7 +83,7 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
         {/* Role badge */}
         <span
           className={`text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-            isAdmin ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]' : 'bg-amber-100 text-amber-700'
+            isAdmin ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]' : 'bg-amber-500/10 text-amber-400'
           }`}
         >
           {role}
@@ -92,7 +92,7 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
         {/* Sign out */}
         <Link
           href="/api/auth/signout"
-          className="text-sm text-gray-500 hover:text-gray-800 transition-colors flex items-center gap-1.5"
+          className="text-sm text-ash/60 hover:text-bone transition-colors flex items-center gap-1.5"
         >
           <svg
             width="15"

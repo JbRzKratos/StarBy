@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { RevenueChart } from './revenue-chart';
+import { StorageWidget } from './storage-widget';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -140,19 +141,19 @@ export function DashboardClient({
   return (
     <div className="space-y-6">
       {/* Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="bg-charcoal rounded-sm border border-smoke p-4 font-mono"
+            className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 font-mono shadow-lg hover:shadow-xl hover:scale-[1.02] hover:border-cobalt/30 transition-all duration-300 group"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-caption text-ash uppercase tracking-widest mb-1">{card.label}</p>
-                <p className="text-2xl font-bold text-bone mt-1">{card.value}</p>
+                <p className="text-caption text-ash uppercase tracking-widest mb-2 group-hover:text-pearl transition-colors">{card.label}</p>
+                <p className="text-3xl font-bold tracking-tight text-bone mt-1">{card.value}</p>
               </div>
               <div
-                className={`w-10 h-10 ${card.bg} rounded-xl flex items-center justify-center flex-shrink-0`}
+                className={`w-12 h-12 ${card.bg} rounded-xl flex items-center justify-center flex-shrink-0 bg-opacity-10 backdrop-blur-sm group-hover:scale-110 transition-transform duration-300`}
               >
                 {card.icon}
               </div>
@@ -161,44 +162,54 @@ export function DashboardClient({
         ))}
       </div>
 
-      {/* Revenue chart */}
-      <div className="bg-charcoal rounded-sm border border-smoke p-6">
-        <h2 className="font-mono text-caption uppercase tracking-widest text-pearl mb-4">
-          Revenue (last 90 days)
-        </h2>
-        <RevenueChart data={revenueData} />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          {/* Revenue chart */}
+          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-6 shadow-lg h-full">
+            <h2 className="font-display text-lg tracking-tight text-bone mb-6 flex items-center gap-2">
+              Revenue 
+              <span className="text-xs font-mono uppercase tracking-widest text-ash bg-smoke/20 px-2 py-1 rounded-md ml-2">Last 90 Days</span>
+            </h2>
+            <RevenueChart data={revenueData} />
+          </div>
+        </div>
+        
+        {/* Storage Widget */}
+        <div className="lg:col-span-1">
+          <StorageWidget />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent orders */}
-        <div className="bg-charcoal rounded-sm border border-smoke">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-smoke">
-            <h2 className="font-mono text-caption uppercase tracking-widest text-pearl">
+        <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg flex flex-col">
+          <div className="flex items-center justify-between px-6 py-5 border-b border-[#F5F1EA]/10">
+            <h2 className="font-display text-lg tracking-tight text-bone">
               Recent Orders
             </h2>
             <Link
               href="/admin/orders"
-              className="text-caption font-mono uppercase tracking-widest text-cobalt hover:underline"
+              className="text-xs font-mono uppercase tracking-widest text-cobalt hover:text-cobalt/80 transition-colors"
             >
               View all
             </Link>
           </div>
-          <div className="divide-y divide-smoke font-mono">
+          <div className="divide-y divide-[#F5F1EA]/5 font-mono flex-1">
             {recentOrders.length === 0 && (
-              <p className="text-sm text-ash px-5 py-4">No orders yet</p>
+              <p className="text-sm text-ash px-6 py-6 text-center">No orders yet</p>
             )}
             {recentOrders.slice(0, 6).map((order) => (
               <div
                 key={order.id}
-                className="flex items-center justify-between px-5 py-3 hover:bg-smoke/10"
+                className="flex items-center justify-between px-6 py-4 hover:bg-[#F5F1EA]/5 transition-colors group"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-bone truncate">{order.customerName}</p>
-                  <p className="text-xs text-gray-500">{order.id.slice(0, 12)}…</p>
+                  <p className="text-sm font-medium text-bone truncate group-hover:text-cobalt transition-colors">{order.customerName}</p>
+                  <p className="text-xs text-ash mt-1">{order.id.slice(0, 12)}…</p>
                 </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="flex items-center gap-4 flex-shrink-0">
                   <StatusBadge status={order.status} />
-                  <span className="text-sm font-semibold text-bone">
+                  <span className="text-sm font-semibold text-bone tabular-nums">
                     ₹{order.total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                   </span>
                 </div>
@@ -208,32 +219,32 @@ export function DashboardClient({
         </div>
 
         {/* Right column: top products + low stock */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Top products */}
-          <div className="bg-charcoal rounded-sm border border-smoke">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-smoke">
-              <h2 className="font-mono text-caption uppercase tracking-widest text-pearl">
-                Top Products (30d)
+          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-[#F5F1EA]/10">
+              <h2 className="font-display text-lg tracking-tight text-bone">
+                Top Products <span className="text-ash text-sm ml-1 font-sans font-normal">(30d)</span>
               </h2>
               <Link
                 href="/admin/products"
-                className="text-caption font-mono uppercase tracking-widest text-cobalt hover:underline"
+                className="text-xs font-mono uppercase tracking-widest text-cobalt hover:text-cobalt/80 transition-colors"
               >
                 Manage
               </Link>
             </div>
-            <div className="divide-y divide-smoke font-mono">
+            <div className="divide-y divide-[#F5F1EA]/5 font-mono">
               {topProducts.length === 0 && (
-                <p className="text-sm text-ash px-5 py-4">No sales data yet</p>
+                <p className="text-sm text-ash px-6 py-6 text-center">No sales data yet</p>
               )}
               {topProducts.slice(0, 4).map((product, i) => (
                 <div
                   key={product.id}
-                  className="flex items-center gap-3 px-5 py-3 hover:bg-smoke/10"
+                  className="flex items-center gap-4 px-6 py-4 hover:bg-[#F5F1EA]/5 transition-colors"
                 >
-                  <span className="text-xs text-ash w-4">{i + 1}</span>
+                  <span className="text-xs text-ash w-4 flex-shrink-0">{i + 1}</span>
                   <p className="text-sm text-bone flex-1 truncate">{product.name}</p>
-                  <span className="text-xs font-semibold text-pearl">
+                  <span className="text-xs font-semibold text-pearl bg-smoke/20 px-2 py-1 rounded-md">
                     {product.unitsSold} units
                   </span>
                 </div>
@@ -242,39 +253,28 @@ export function DashboardClient({
           </div>
 
           {/* Low stock alerts */}
-          <div className="bg-charcoal rounded-sm border border-amber-500/20">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-amber-500/10">
-              <h2 className="font-mono text-caption uppercase tracking-widest text-amber-500 flex items-center gap-2">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                  <line x1="12" y1="9" x2="12" y2="13" />
-                  <line x1="12" y1="17" x2="12.01" y2="17" />
-                </svg>
+          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-amber-500/20 shadow-lg shadow-amber-500/5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
+            <div className="flex items-center justify-between px-6 py-5 border-b border-amber-500/10">
+              <h2 className="font-display text-lg tracking-tight text-amber-500 flex items-center gap-2">
                 Low Stock Alerts
               </h2>
-              <span className="text-[10px] bg-amber-500/10 text-amber-500 font-mono tracking-widest px-2 py-0.5 rounded-sm border border-amber-500/20">
+              <span className="text-[10px] bg-amber-500/10 text-amber-500 font-mono tracking-widest px-2.5 py-1 rounded-md border border-amber-500/20">
                 {lowStockVariants.length}
               </span>
             </div>
-            <div className="divide-y divide-smoke max-h-40 overflow-y-auto font-mono">
+            <div className="divide-y divide-[#F5F1EA]/5 max-h-[220px] overflow-y-auto font-mono custom-scrollbar">
               {lowStockVariants.length === 0 && (
-                <p className="text-sm text-ash px-5 py-4">All variants well-stocked ✓</p>
+                <p className="text-sm text-ash px-6 py-6 text-center">All variants well-stocked ✓</p>
               )}
               {lowStockVariants.map((v) => (
                 <div
                   key={v.id}
-                  className="flex items-center justify-between px-5 py-3 hover:bg-smoke/10"
+                  className="flex items-center justify-between px-6 py-4 hover:bg-amber-500/5 transition-colors"
                 >
-                  <div className="min-w-0">
+                  <div className="min-w-0 pr-4">
                     <p className="text-xs font-medium text-bone truncate">{v.productName}</p>
-                    <p className="text-xs text-ash">{v.name}</p>
+                    <p className="text-xs text-ash mt-1">{v.name}</p>
                   </div>
                   <StatusBadge status={v.inStock ? 'low_stock' : 'out_of_stock'} />
                 </div>

@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import { categories } from '../data/categories';
 import { products } from '../data/products';
 import { deviceModels } from '../data/devices';
-import { templates } from '../data/customizationTemplates';
 
 const prisma = new PrismaClient();
 
@@ -122,25 +121,6 @@ async function main() {
         sPenSilo: d.sPenSilo || false,
         confidence: d.confidence || 'verified',
         notes: d.notes || null,
-      },
-    });
-  }
-
-  // 4. Seed Customization Templates
-  console.log('Seeding customization templates...');
-  for (const t of Object.values(templates)) {
-    await prisma.customizationTemplate.upsert({
-      where: { productId: t.productId },
-      update: {
-        mockupImage: t.mockupImage,
-        printArea: t.printArea as any,
-        blendMode: t.blendMode || 'source-over',
-      },
-      create: {
-        productId: t.productId,
-        mockupImage: t.mockupImage,
-        printArea: t.printArea as any,
-        blendMode: t.blendMode || 'source-over',
       },
     });
   }

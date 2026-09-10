@@ -83,18 +83,18 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-gray-900">Orders</h1>
-          <p className="text-sm text-gray-500">{orders.length} total orders</p>
+          <h1 className="text-lg font-bold text-bone">Orders</h1>
+          <p className="text-sm text-ash/60">{orders.length} total orders</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
+      <div className="bg-black/20 rounded-xl border border-white/10 p-4">
         <div className="flex flex-wrap items-center gap-3">
           {/* Search */}
           <div className="relative flex-1 min-w-48">
             <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-ash/60"
               width="14"
               height="14"
               viewBox="0 0 24 24"
@@ -113,7 +113,7 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
+              className="w-full pl-9 pr-3 py-2 text-sm border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 focus:border-[#3B5EFF]"
             />
           </div>
 
@@ -129,7 +129,7 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
                   filter === s
                     ? 'bg-[#3B5EFF] text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-white/5 text-ash/80 hover:bg-white/10'
                 }`}
               >
                 {s}
@@ -140,7 +140,7 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
           {/* Sort */}
           <button
             onClick={() => setSortDir((d) => (d === 'desc' ? 'asc' : 'desc'))}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-ash/80 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
           >
             <svg
               width="12"
@@ -159,30 +159,30 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-black/20 rounded-xl border border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-100">
+            <thead className="bg-black/40 border-b border-white/5">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-ash/60 uppercase tracking-wide">
                   Order ID
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-ash/60 uppercase tracking-wide">
                   Customer
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-ash/60 uppercase tracking-wide">
                   Status
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-ash/60 uppercase tracking-wide">
                   Payment
                 </th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                <th className="text-right px-4 py-3 text-xs font-semibold text-ash/60 uppercase tracking-wide">
                   Total
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-ash/60 uppercase tracking-wide">
                   Date
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-ash/60 uppercase tracking-wide">
                   Actions
                 </th>
               </tr>
@@ -190,13 +190,13 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
             <tbody className="divide-y divide-gray-50">
               {paginated.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-10 text-center text-sm text-gray-400">
+                  <td colSpan={7} className="px-4 py-10 text-center text-sm text-ash/60">
                     No orders match the current filter
                   </td>
                 </tr>
               )}
               {paginated.map((order) => (
-                <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={order.id} className="hover:bg-white/5 transition-colors">
                   <td className="px-4 py-3">
                     <Link
                       href={`/admin/orders/${order.id}`}
@@ -206,15 +206,15 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                     </Link>
                   </td>
                   <td className="px-4 py-3">
-                    <p className="font-medium text-gray-900">{order.customerName}</p>
-                    <p className="text-xs text-gray-500">{order.customerEmail}</p>
+                    <p className="font-medium text-bone">{order.customerName}</p>
+                    <p className="text-xs text-ash/60">{order.customerEmail}</p>
                   </td>
                   <td className="px-4 py-3">
                     <select
                       value={order.status}
                       onChange={(e) => handleStatusChange(order.id, e.target.value)}
                       disabled={isPending}
-                      className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 disabled:opacity-50"
+                      className="text-xs border border-white/10 rounded-lg px-2 py-1.5 bg-black/20 focus:outline-none focus:ring-2 focus:ring-[#3B5EFF]/20 disabled:opacity-50"
                     >
                       {STATUS_OPTIONS.map((s) => (
                         <option key={s} value={s}>
@@ -226,10 +226,10 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                   <td className="px-4 py-3">
                     <AdminBadge variant={order.paymentStatus === 'paid' ? 'paid' : 'pending'} />
                   </td>
-                  <td className="px-4 py-3 text-right font-semibold text-gray-900">
+                  <td className="px-4 py-3 text-right font-semibold text-bone">
                     ₹{order.total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                   </td>
-                  <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
+                  <td className="px-4 py-3 text-ash/60 whitespace-nowrap">
                     {new Date(order.createdAt).toLocaleDateString('en-IN', {
                       day: 'numeric',
                       month: 'short',
@@ -239,7 +239,7 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                   <td className="px-4 py-3">
                     <Link
                       href={`/admin/orders/${order.id}`}
-                      className="text-xs text-gray-600 hover:text-[#3B5EFF] transition-colors underline"
+                      className="text-xs text-ash/80 hover:text-[#3B5EFF] transition-colors underline"
                     >
                       View
                     </Link>
@@ -252,8 +252,8 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100">
-            <p className="text-xs text-gray-500">
+          <div className="flex items-center justify-between px-4 py-3 border-t border-white/5">
+            <p className="text-xs text-ash/60">
               Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} of{' '}
               {filtered.length}
             </p>
@@ -261,14 +261,14 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs font-medium text-ash/80 border border-white/10 rounded-lg hover:bg-white/5 disabled:opacity-40"
               >
                 Prev
               </button>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40"
+                className="px-3 py-1.5 text-xs font-medium text-ash/80 border border-white/10 rounded-lg hover:bg-white/5 disabled:opacity-40"
               >
                 Next
               </button>

@@ -62,7 +62,7 @@ export function HeroMobile() {
           </Link>
 
           <Link
-            href="/customize"
+            href="/products/all"
             className="w-full text-center bg-transparent text-[#0A0A0A] py-3 px-6 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] active:bg-[#ED9518] active:border-[#ED9518] active:text-[#0A0A0A] transition-all"
           >
             EXPLORE THE DROP
