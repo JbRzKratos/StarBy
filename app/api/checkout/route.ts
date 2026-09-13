@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { Prisma } from '@prisma/client';
 import { sendOrderConfirmationEmail, sendAdminNewOrderEmail } from '@/lib/email';
 import { createCashfreeOrder, generatePublicOrderId, getCashfreeEnvironment } from '@/lib/cashfree';
-import { uploadBufferToR2 } from '@/lib/r2';
+import { uploadBufferToR2, getR2PublicUrl } from '@/lib/r2';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -217,7 +217,7 @@ export async function POST(request: Request) {
                   contentType,
                 );
 
-                processedCustomization[key] = `/api/storage?key=${encodeURIComponent(objectKey)}`;
+                processedCustomization[key] = getR2PublicUrl(objectKey);
               }
             } catch (e) {
               console.error(`Error uploading ${key} to R2:`, e);

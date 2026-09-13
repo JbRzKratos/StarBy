@@ -4,11 +4,9 @@ const nextConfig = {
   poweredByHeader: false,
 
   images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [320, 375, 425, 768, 1024, 1440, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256],
-    // Cache optimized images for 30 days (default is 60s)
-    minimumCacheTTL: 2592000,
+    // Disable Vercel image optimization — images are served directly from
+    // Cloudflare R2 (CDN) to avoid Vercel optimization charges.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -17,6 +15,16 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'plus.unsplash.com',
+      },
+      {
+        // Cloudflare R2 — private endpoint
+        protocol: 'https',
+        hostname: '*.r2.cloudflarestorage.com',
+      },
+      {
+        // Cloudflare R2 — custom public domain (set NEXT_PUBLIC_R2_PUBLIC_URL)
+        protocol: 'https',
+        hostname: '*.r2.dev',
       },
     ],
   },
@@ -63,9 +71,9 @@ const nextConfig = {
                 // Fonts: self + Google Fonts CDN + data URIs
                 `font-src 'self' https://fonts.gstatic.com data:`,
                 // Images: self + data URIs + blob (canvas/Three.js) + Supabase + Unsplash + cdnjs + R2 + Drei assets
-                `img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://plus.unsplash.com https://*.tawk.to https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com`,
+                `img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://plus.unsplash.com https://*.tawk.to https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com https://*.r2.dev https://pub-*.r2.dev`,
                 // Fetch/XHR: self + Supabase + Cashfree + Tawk + cdnjs + Drei assets + Polyhaven + jsDelivr + R2
-                `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.cashfree.com https://sandbox.cashfree.com https://*.tawk.to wss://*.tawk.to https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com ws://localhost:* http://localhost:*`,
+                `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.cashfree.com https://sandbox.cashfree.com https://*.tawk.to wss://*.tawk.to https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com https://*.r2.dev https://pub-*.r2.dev ws://localhost:* http://localhost:*`,
                 // iframes: Cashfree checkout + Tawk.to chat widget
                 `frame-src https://payments.cashfree.com https://checkout.cashfree.com https://sandbox.cashfree.com https://*.tawk.to`,
                 // Workers: self + blob for Three.js draco workers and fabric.js

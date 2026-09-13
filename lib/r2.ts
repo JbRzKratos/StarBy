@@ -3,9 +3,9 @@
  *
  * Uses S3-compatible API via @aws-sdk/client-s3 for pre-signed URLs.
  * All uploads go through pre-signed URLs (browser → R2 directly).
- * All downloads are served via pre-signed URLs (time-limited).
+ * All downloads are served via NEXT_PUBLIC_R2_PUBLIC_URL (direct CDN, no Vercel).
  *
- * NEVER import this from client-side code.
+ * NEVER import this from client-side code (except getR2PublicUrl which is safe).
  */
 
 import {
@@ -51,6 +51,19 @@ function getBucketName(): string {
   const bucket = process.env.R2_BUCKET_NAME;
   if (!bucket) throw new Error('R2_BUCKET_NAME not configured');
   return bucket;
+}
+
+// ─── Public CDN URL Builder ──────────────────────────────────────────────────
+// Use this to build direct Cloudflare R2 URLs for images — zero Vercel involved.
+// Requires NEXT_PUBLIC_R2_PUBLIC_URL to be set (e.g. your r2.dev or custom domain).
+
+export function getR2PublicUrl(objectKey: string): string {
+  const base =
+    process.env.NEXT_PUBLIC_R2_PUBLIC_URL ||
+    `https://pub-${process.env.R2_ACCOUNT_ID}.r2.dev`;
+  // Strip leading slashes from objectKey for safety
+  const cleanKey = objectKey.replace(/^\/+/, '');
+  return `${base}/${cleanKey}`;
 }
 
 // ─── Types ──────────────────────────────────────────────────────────────────
