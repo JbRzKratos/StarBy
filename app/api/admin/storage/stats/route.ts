@@ -36,7 +36,7 @@ export async function GET() {
     let supabaseBytes = 0;
     for (const item of items) {
       if (item.customization && typeof item.customization === 'object') {
-        const custom = item.customization as any;
+        const custom = item.customization as Record<string, unknown>;
         if (
           typeof custom.designFileUrl === 'string' &&
           custom.designFileUrl.startsWith('data:image')

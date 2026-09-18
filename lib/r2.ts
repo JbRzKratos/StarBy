@@ -59,8 +59,7 @@ function getBucketName(): string {
 
 export function getR2PublicUrl(objectKey: string): string {
   const base =
-    process.env.NEXT_PUBLIC_R2_PUBLIC_URL ||
-    `https://pub-${process.env.R2_ACCOUNT_ID}.r2.dev`;
+    process.env.NEXT_PUBLIC_R2_PUBLIC_URL || `https://pub-${process.env.R2_ACCOUNT_ID}.r2.dev`;
   // Strip leading slashes from objectKey for safety
   const cleanKey = objectKey.replace(/^\/+/, '');
   return `${base}/${cleanKey}`;

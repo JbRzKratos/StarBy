@@ -3,6 +3,10 @@ const nextConfig = {
   // Disable X-Powered-By header for security
   poweredByHeader: false,
 
+  // Use Turbopack in dev for much faster compilation (Rust-based, replaces Webpack)
+  // Run with: npx next dev --turbopack
+  // Or set NEXT_TURBOPACK=1 env variable
+
   images: {
     // Disable Vercel image optimization — images are served directly from
     // Cloudflare R2 (CDN) to avoid Vercel optimization charges.

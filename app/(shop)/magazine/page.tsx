@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MAGAZINE_TEMPLATES } from '@/data/magazineTemplates';
+import { MAGAZINE_TEMPLATES as INITIAL_TEMPLATES } from '@/data/magazineTemplates';
 import type { MagazineCategory, MagazineTemplate } from '@/types/magazine';
 
 const CATEGORIES: Array<{ id: MagazineCategory | 'all'; label: string }> = [
   { id: 'all', label: 'All Templates' },
   { id: 'fashion', label: 'Fashion & Lifestyle' },
+  { id: 'lifestyle', label: 'Lifestyle & Birthday' },
   { id: 'technology', label: 'Technology & Catalogue' },
   { id: 'mens-style', label: 'Men’s Style' },
   { id: 'catalogue', label: 'Product Catalogues' },
@@ -22,8 +23,22 @@ export default function MagazineStudioLanding() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTemplateForPreview, setSelectedTemplateForPreview] =
     useState<MagazineTemplate | null>(null);
+  const [dbTemplates, setDbTemplates] = useState<MagazineTemplate[]>([]);
 
-  const filteredTemplates = MAGAZINE_TEMPLATES.filter((tpl) => {
+  useEffect(() => {
+    fetch('/api/admin/magazine-templates')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setDbTemplates(data);
+      })
+      .catch(() => {
+        /* DB not ready yet — use hardcoded templates only */
+      });
+  }, []);
+
+  const allTemplates = [...INITIAL_TEMPLATES, ...dbTemplates];
+
+  const filteredTemplates = allTemplates.filter((tpl) => {
     const matchesCategory = activeCategory === 'all' || tpl.category === activeCategory;
     const matchesSearch =
       tpl.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -74,7 +89,7 @@ export default function MagazineStudioLanding() {
 
         {/* Hero Featured Spreads Collage */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-          {MAGAZINE_TEMPLATES.slice(0, 3).map((tpl) => (
+          {allTemplates.slice(0, 3).map((tpl) => (
             <div
               key={tpl.id}
               onClick={() => setSelectedTemplateForPreview(tpl)}

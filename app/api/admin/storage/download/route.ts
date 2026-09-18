@@ -28,7 +28,7 @@ export async function GET(request: Request) {
 
       for (const item of items) {
         if (item.customization && typeof item.customization === 'object') {
-          const custom = item.customization as any;
+          const custom = item.customization as Record<string, unknown>;
           const orderId = item.order.publicOrderId || item.orderId;
           const prefix = `${orderId}-${item.id}`;
 
@@ -44,9 +44,9 @@ export async function GET(request: Request) {
             }
           };
 
-          addBase64ToZip(custom.designFileUrl, 'design');
-          addBase64ToZip(custom.frontDesignFileUrl, 'front-design');
-          addBase64ToZip(custom.backDesignFileUrl, 'back-design');
+          addBase64ToZip(custom.designFileUrl as string | undefined, 'design');
+          addBase64ToZip(custom.frontDesignFileUrl as string | undefined, 'front-design');
+          addBase64ToZip(custom.backDesignFileUrl as string | undefined, 'back-design');
         }
       }
     } else {

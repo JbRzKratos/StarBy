@@ -57,3 +57,22 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Temporary / Scratch
+scratch/
+tmp/
+temp/

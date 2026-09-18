@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, Mail, Phone, Calendar, Package, MapPin, Palette } from 'lucide-react';
 import { StatusBadge } from '@/components/admin/status-badge';
 
@@ -249,10 +250,13 @@ export function CustomerDetailClient({
                     className="px-6 py-4 flex items-center gap-4 hover:bg-[#F5F1EA]/5 transition-colors"
                   >
                     {design.previewUrl ? (
-                      <img
+                      <Image
                         src={design.previewUrl}
                         alt={design.title}
+                        width={48}
+                        height={48}
                         className="w-12 h-12 rounded-lg object-cover bg-white/5 border border-white/10"
+                        unoptimized
                       />
                     ) : (
                       <div className="w-12 h-12 rounded-lg bg-black/50 border border-white/10 flex items-center justify-center text-[10px] text-ash text-center p-1">

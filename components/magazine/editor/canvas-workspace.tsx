@@ -93,6 +93,8 @@ export function CanvasWorkspace({
     initPanY: number;
   } | null>(null);
   const isSpacePressedRef = useRef(false);
+  // Track if an element is being dragged (blocks canvas pan on touch)
+  const isElementDraggingRef = useRef(false);
   const activeTouchPointersRef = useRef<Map<number, { clientX: number; clientY: number }>>(
     new Map(),
   );
@@ -201,6 +203,12 @@ export function CanvasWorkspace({
       e.preventDefault();
       e.stopPropagation();
 
+      // Flag that an element drag is in progress — blocks canvas pan on touch
+      isElementDraggingRef.current = true;
+      // Cancel any canvas panning that may have been initiated simultaneously on touch
+      setIsPanning(false);
+      panStartRef.current = null;
+
       // Determine currently selected items to move together
       let targetIds = selectedElementIds;
       if (e.shiftKey) {
@@ -289,6 +297,8 @@ export function CanvasWorkspace({
         window.removeEventListener('pointermove', onPointerMove);
         window.removeEventListener('pointerup', onPointerUp);
         setActiveGuides([]);
+        // Release element drag lock
+        isElementDraggingRef.current = false;
 
         if (hasMoved) {
           // Commit final position to undo history
@@ -335,11 +345,10 @@ export function CanvasWorkspace({
       activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
 
       if (activeTouchPointersRef.current.size === 1) {
-        // 1-finger touch on canvas background: initiate pan
-        if (
-          e.target === containerRef.current ||
-          (e.target as HTMLElement).dataset.canvasBackground
-        ) {
+        // 1-finger touch on canvas background: initiate pan ONLY if not dragging element
+        const isCanvasBackground =
+          e.target === containerRef.current || !!(e.target as HTMLElement).dataset.canvasBackground;
+        if (!isElementDraggingRef.current && isCanvasBackground) {
           setIsPanning(true);
           panStartRef.current = {
             startX: e.clientX,
@@ -348,12 +357,12 @@ export function CanvasWorkspace({
             initPanY: pan.y,
           };
           onSelectElements([]);
-          setEditingTextId(null);
           setCroppingImageId(null);
         }
       } else if (activeTouchPointersRef.current.size === 2) {
         // 2-finger touch: initiate pinch-to-zoom
         setIsPanning(false);
+        isElementDraggingRef.current = false;
         setMarqueeBox(null);
         const pts = Array.from(activeTouchPointersRef.current.values());
         if (pts.length >= 2 && pts[0] && pts[1]) {
@@ -381,7 +390,6 @@ export function CanvasWorkspace({
       if (!e.shiftKey) {
         onSelectElements([]);
       }
-      setEditingTextId(null);
       setCroppingImageId(null);
 
       const rect = containerRef.current?.getBoundingClientRect();
@@ -744,8 +752,8 @@ export function CanvasWorkspace({
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[#08080A] relative overflow-hidden select-none">
-      {/* ── Top Horizontal Millimeter Ruler (Desktop/Tablet) ── */}
-      {showRulers && workspaceSize.width >= 768 && (
+      {/* ── Top Horizontal Millimeter Ruler (Desktop only, hidden on mobile/tablet) ── */}
+      {showRulers && workspaceSize.width >= 1024 && (
         <div className="h-5 pl-5 w-full bg-[#0E0E10] shrink-0 z-30">
           <CanvasRuler
             orientation="horizontal"
@@ -756,8 +764,8 @@ export function CanvasWorkspace({
       )}
 
       <div className="flex-1 flex w-full h-full relative overflow-hidden">
-        {/* ── Left Vertical Millimeter Ruler (Desktop/Tablet) ── */}
-        {showRulers && workspaceSize.width >= 768 && (
+        {/* ── Left Vertical Millimeter Ruler (Desktop only, hidden on mobile/tablet) ── */}
+        {showRulers && workspaceSize.width >= 1024 && (
           <div className="w-5 h-full bg-[#0E0E10] shrink-0 z-30">
             <CanvasRuler orientation="vertical" lengthMm={dim.heightMm} cursorPosMm={cursorMm?.y} />
           </div>

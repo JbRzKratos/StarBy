@@ -54,6 +54,7 @@ export const PAGE_DIMENSIONS: Record<string, PageDimension> = {
 
 export type MagazineCategory =
   | 'fashion'
+  | 'lifestyle'
   | 'technology'
   | 'mens-style'
   | 'catalogue'

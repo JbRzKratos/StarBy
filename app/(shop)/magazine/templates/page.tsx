@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MAGAZINE_TEMPLATES } from '@/data/magazineTemplates';
+import { MAGAZINE_TEMPLATES as INITIAL_TEMPLATES } from '@/data/magazineTemplates';
 import type { MagazineCategory, MagazineTemplate } from '@/types/magazine';
 
 const CATEGORIES: Array<{ id: MagazineCategory | 'all'; label: string }> = [
   { id: 'all', label: 'All Templates' },
   { id: 'fashion', label: 'Fashion & Lifestyle' },
+  { id: 'lifestyle', label: 'Lifestyle & Birthday' },
   { id: 'technology', label: 'Technology & Catalogue' },
   { id: 'mens-style', label: 'Men’s Style' },
   { id: 'catalogue', label: 'Product Catalogues' },
@@ -23,13 +24,26 @@ export default function MagazineTemplatesDirectory() {
   const [selectedFormat, setSelectedFormat] = useState<string>('all');
   const [favorites, setFavorites] = useState<string[]>([]);
   const [previewTemplate, setPreviewTemplate] = useState<MagazineTemplate | null>(null);
+  const [dbTemplates, setDbTemplates] = useState<MagazineTemplate[]>([]);
 
+  useEffect(() => {
+    fetch('/api/admin/magazine-templates')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setDbTemplates(data);
+      })
+      .catch(() => {
+        /* DB not ready yet — use hardcoded templates only */
+      });
+  }, []);
+
+  const allTemplates = [...INITIAL_TEMPLATES, ...dbTemplates];
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setFavorites((prev) => (prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]));
   };
 
-  const filteredTemplates = MAGAZINE_TEMPLATES.filter((tpl) => {
+  const filteredTemplates = allTemplates.filter((tpl) => {
     const matchesCat = activeCategory === 'all' || tpl.category === activeCategory;
     const matchesFormat = selectedFormat === 'all' || tpl.dimensionKey === selectedFormat;
     const q = searchQuery.toLowerCase();
