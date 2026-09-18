@@ -1,0 +1,5863 @@
+{
+  "pages": [
+    {
+      "id": "page-0",
+      "pageNumber": 1,
+      "layoutType": "cover",
+      "title": "Page 1",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p0-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_0_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p0-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 0.0,
+            "y": 11.21,
+            "width": 100.0,
+            "height": 88.79,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_0_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p0-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 30.76,
+            "y": 2.45,
+            "width": 50.12,
+            "height": 1.33,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_0_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p0-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 3.81,
+            "y": 59.99,
+            "width": 11.64,
+            "height": 1.33,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_0_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p0-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 0.0,
+            "y": 73.72,
+            "width": 100.0,
+            "height": 26.28,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_0_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p0-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 7.06,
+            "y": -4.89,
+            "width": 85.88,
+            "height": 37.49,
+            "zIndex": 20
+          },
+          "content": "MAN",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 218.4,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#9f8054",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 4.3,
+            "y": 2.43,
+            "width": 26.61,
+            "height": 2.5,
+            "zIndex": 21
+          },
+          "content": "LUXURY FASHION, DESIGN & CULTURE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.3,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1b1b1b",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 82.67,
+            "y": 2.55,
+            "width": 12.73,
+            "height": 2.5,
+            "zIndex": 22
+          },
+          "content": "SPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.7,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1b1b1b",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 4.3,
+            "y": 26.45,
+            "width": 18.86,
+            "height": 3.31,
+            "zIndex": 23
+          },
+          "content": "ISSUE 01\nSPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 10.7,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1b1b1b",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 4.9,
+            "y": 36.99,
+            "width": 21.1,
+            "height": 19.99,
+            "zIndex": 24
+          },
+          "content": "29+\nLUXE\nDESIGNER",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 87.4,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#9f8054",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 5.3,
+            "y": 56.78,
+            "width": 17.89,
+            "height": 2.95,
+            "zIndex": 25
+          },
+          "content": "COLLECTIONS\nFOR THE MODERN MAN",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 9.2,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#ffffff",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 5.3,
+            "y": 62.31,
+            "width": 16.79,
+            "height": 8.48,
+            "zIndex": 26
+          },
+          "content": "EXCLUSIVE\nINTERVIEW\nTOP MAN",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 20.8,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#ffffff",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 12.22,
+            "y": 72.76,
+            "width": 75.46,
+            "height": 24.22,
+            "zIndex": 27
+          },
+          "content": "L\nI\nF\nE\nO F\nPOWER",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 17.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#9f8054",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 11.47,
+            "y": 93.46,
+            "width": 77.06,
+            "height": 2.5,
+            "zIndex": 28
+          },
+          "content": "STYLE | WATCHES | TRAVEL | GROOMING | AUTOMOTIVE | INTERIORS",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 14.4,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#9f8054",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-9",
+          "type": "text",
+          "name": "Text Element 10",
+          "frame": {
+            "x": 23.93,
+            "y": 96.37,
+            "width": 52.14,
+            "height": 2.5,
+            "zIndex": 29
+          },
+          "content": "DEFINING EXCELLENCE. LIVING WITHOUT COMPROMISE.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 11.0,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#ffffff",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p0-text-10",
+          "type": "text",
+          "name": "Text Element 11",
+          "frame": {
+            "x": 5.3,
+            "y": 70.32,
+            "width": 22.35,
+            "height": 2.5,
+            "zIndex": 30
+          },
+          "content": "INSIDE THE MIND OF SUCCESS",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#ffffff",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-1",
+      "pageNumber": 2,
+      "layoutType": "blank",
+      "title": "Page 2",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p1-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_1_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p1-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 30.74,
+            "y": 2.48,
+            "width": 50.0,
+            "height": 1.33,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 3.84,
+            "y": 28.74,
+            "width": 38.48,
+            "height": 2.56,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 3.84,
+            "y": 37.5,
+            "width": 38.48,
+            "height": 1.23,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 3.84,
+            "y": 46.23,
+            "width": 38.48,
+            "height": 1.33,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 3.84,
+            "y": 54.99,
+            "width": 38.48,
+            "height": 1.23,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 3.84,
+            "y": 63.73,
+            "width": 38.48,
+            "height": 1.33,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-7",
+          "type": "image",
+          "name": "Image Element 7",
+          "frame": {
+            "x": 3.84,
+            "y": 72.49,
+            "width": 38.48,
+            "height": 1.33,
+            "zIndex": 16
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_7.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-8",
+          "type": "image",
+          "name": "Image Element 8",
+          "frame": {
+            "x": 3.84,
+            "y": 79.99,
+            "width": 38.48,
+            "height": 1.23,
+            "zIndex": 17
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_8.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-9",
+          "type": "image",
+          "name": "Image Element 9",
+          "frame": {
+            "x": 3.84,
+            "y": 96.23,
+            "width": 23.16,
+            "height": 1.33,
+            "zIndex": 18
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_9.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-10",
+          "type": "image",
+          "name": "Image Element 10",
+          "frame": {
+            "x": 69.22,
+            "y": 96.23,
+            "width": 26.96,
+            "height": 1.33,
+            "zIndex": 19
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_10.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-11",
+          "type": "image",
+          "name": "Image Element 11",
+          "frame": {
+            "x": 44.22,
+            "y": 18.75,
+            "width": 30.76,
+            "height": 22.54,
+            "zIndex": 20
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_11.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-12",
+          "type": "image",
+          "name": "Image Element 12",
+          "frame": {
+            "x": 73.06,
+            "y": 18.75,
+            "width": 23.16,
+            "height": 22.54,
+            "zIndex": 21
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_12.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-13",
+          "type": "image",
+          "name": "Image Element 13",
+          "frame": {
+            "x": 44.22,
+            "y": 39.98,
+            "width": 30.76,
+            "height": 31.25,
+            "zIndex": 22
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_13.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-14",
+          "type": "image",
+          "name": "Image Element 14",
+          "frame": {
+            "x": 73.06,
+            "y": 39.98,
+            "width": 23.16,
+            "height": 31.25,
+            "zIndex": 23
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_14.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-15",
+          "type": "image",
+          "name": "Image Element 15",
+          "frame": {
+            "x": 76.9,
+            "y": 42.49,
+            "width": 5.76,
+            "height": 3.79,
+            "zIndex": 24
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_15.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-16",
+          "type": "image",
+          "name": "Image Element 16",
+          "frame": {
+            "x": 76.9,
+            "y": 46.23,
+            "width": 11.64,
+            "height": 1.33,
+            "zIndex": 25
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_16.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-17",
+          "type": "image",
+          "name": "Image Element 17",
+          "frame": {
+            "x": 76.9,
+            "y": 64.98,
+            "width": 11.64,
+            "height": 1.33,
+            "zIndex": 26
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_17.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-18",
+          "type": "image",
+          "name": "Image Element 18",
+          "frame": {
+            "x": 76.9,
+            "y": 66.24,
+            "width": 5.76,
+            "height": 2.56,
+            "zIndex": 27
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_18.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-19",
+          "type": "image",
+          "name": "Image Element 19",
+          "frame": {
+            "x": 44.22,
+            "y": 69.98,
+            "width": 26.96,
+            "height": 23.77,
+            "zIndex": 28
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_19.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-img-20",
+          "type": "image",
+          "name": "Image Element 20",
+          "frame": {
+            "x": 69.22,
+            "y": 69.98,
+            "width": 26.96,
+            "height": 23.77,
+            "zIndex": 29
+          },
+          "content": "/templates/canva/personal-man-1/page_1_img_20.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p1-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 4.4,
+            "y": 2.2,
+            "width": 25.96,
+            "height": 2.5,
+            "zIndex": 20
+          },
+          "content": "LUXURY FASHION, DESIGN & CULTURE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.1,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 8.44,
+            "y": 1.2,
+            "width": 83.12,
+            "height": 20.69,
+            "zIndex": 21
+          },
+          "content": "CONTENTS",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 120.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 5.0,
+            "y": 23.05,
+            "width": 6.0,
+            "height": 5.95,
+            "zIndex": 22
+          },
+          "content": "03",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 34.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 15.9,
+            "y": 26.35,
+            "width": 17.18,
+            "height": 2.5,
+            "zIndex": 23
+          },
+          "content": "Effortless Intent",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 13.8,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 5.0,
+            "y": 31.45,
+            "width": 6.0,
+            "height": 5.95,
+            "zIndex": 24
+          },
+          "content": "04",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 34.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 15.9,
+            "y": 33.71,
+            "width": 18.9,
+            "height": 2.5,
+            "zIndex": 25
+          },
+          "content": "Marks of Identity",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 14.2,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 5.0,
+            "y": 40.05,
+            "width": 6.0,
+            "height": 5.95,
+            "zIndex": 26
+          },
+          "content": "05",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 34.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 15.9,
+            "y": 42.81,
+            "width": 9.27,
+            "height": 2.5,
+            "zIndex": 27
+          },
+          "content": "The Best",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 14.2,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 5.0,
+            "y": 48.25,
+            "width": 6.0,
+            "height": 5.95,
+            "zIndex": 28
+          },
+          "content": "06",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 34.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-9",
+          "type": "text",
+          "name": "Text Element 10",
+          "frame": {
+            "x": 15.9,
+            "y": 50.59,
+            "width": 7.37,
+            "height": 2.5,
+            "zIndex": 29
+          },
+          "content": "Spring",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 14.4,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-10",
+          "type": "text",
+          "name": "Text Element 11",
+          "frame": {
+            "x": 5.0,
+            "y": 56.95,
+            "width": 6.0,
+            "height": 5.95,
+            "zIndex": 30
+          },
+          "content": "07",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 34.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-11",
+          "type": "text",
+          "name": "Text Element 12",
+          "frame": {
+            "x": 15.9,
+            "y": 57.87,
+            "width": 22.51,
+            "height": 4.6,
+            "zIndex": 31
+          },
+          "content": "Built on Vision,\nDriven by Discipline",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 14.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-12",
+          "type": "text",
+          "name": "Text Element 13",
+          "frame": {
+            "x": 5.0,
+            "y": 65.95,
+            "width": 6.0,
+            "height": 5.95,
+            "zIndex": 32
+          },
+          "content": "08",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 34.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-13",
+          "type": "text",
+          "name": "Text Element 14",
+          "frame": {
+            "x": 15.9,
+            "y": 68.29,
+            "width": 23.48,
+            "height": 2.5,
+            "zIndex": 33
+          },
+          "content": "The Modern Uniform",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 14.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-14",
+          "type": "text",
+          "name": "Text Element 15",
+          "frame": {
+            "x": 5.0,
+            "y": 74.25,
+            "width": 6.0,
+            "height": 5.95,
+            "zIndex": 34
+          },
+          "content": "09",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 34.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-15",
+          "type": "text",
+          "name": "Text Element 16",
+          "frame": {
+            "x": 15.9,
+            "y": 76.48,
+            "width": 19.69,
+            "height": 2.5,
+            "zIndex": 35
+          },
+          "content": "The Man in Focus",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 14.5,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-16",
+          "type": "text",
+          "name": "Text Element 17",
+          "frame": {
+            "x": 77.9,
+            "y": 48.17,
+            "width": 11.88,
+            "height": 16.0,
+            "zIndex": 36
+          },
+          "content": "STYLE IS\nHOW\nYOU\nCARRY\nYOUR\nSTORY.",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 21.8,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#f1f1f1",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-17",
+          "type": "text",
+          "name": "Text Element 18",
+          "frame": {
+            "x": 82.86,
+            "y": 2.19,
+            "width": 12.34,
+            "height": 2.5,
+            "zIndex": 37
+          },
+          "content": "SPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.5,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-18",
+          "type": "text",
+          "name": "Text Element 19",
+          "frame": {
+            "x": 29.36,
+            "y": 96.7,
+            "width": 37.87,
+            "height": 2.5,
+            "zIndex": 38
+          },
+          "content": "DEFINING EXCELLENCE. LIVING WITHOUT COMPROMISE.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#000000",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p1-text-19",
+          "type": "text",
+          "name": "Text Element 20",
+          "frame": {
+            "x": 5.4,
+            "y": 82.66,
+            "width": 24.39,
+            "height": 5.54,
+            "zIndex": 39
+          },
+          "content": "10\nClosing Note",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 32.2,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-2",
+      "pageNumber": 3,
+      "layoutType": "blank",
+      "title": "Page 3",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p2-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_2_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p2-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 34.57,
+            "y": 2.45,
+            "width": 46.32,
+            "height": 1.33,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_2_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p2-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 11.52,
+            "y": 2.45,
+            "width": 38.48,
+            "height": 97.54,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_2_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p2-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 53.81,
+            "y": 22.49,
+            "width": 11.64,
+            "height": 1.23,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_2_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p2-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 53.81,
+            "y": 37.49,
+            "width": 42.4,
+            "height": 50.0,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_2_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p2-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 3.81,
+            "y": 81.22,
+            "width": 13.48,
+            "height": 1.33,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_2_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p2-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 53.81,
+            "y": 88.72,
+            "width": 42.4,
+            "height": 1.33,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_2_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p2-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 55.6,
+            "y": 9.86,
+            "width": 31.63,
+            "height": 11.75,
+            "zIndex": 20
+          },
+          "content": "EFFORTLESS\nINTENT",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 42.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a68155",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p2-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 55.4,
+            "y": 28.2,
+            "width": 27.12,
+            "height": 4.91,
+            "zIndex": 21
+          },
+          "content": "Modern tailoring embraces ease. Lightweight\nfabrics, relaxed silhouettes, and tonal palettes\ncreate a new kind of elegance - one that's\nconfident without trying too hard.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.3,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p2-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 5.0,
+            "y": 69.7,
+            "width": 10.56,
+            "height": 13.11,
+            "zIndex": 22
+          },
+          "content": "03",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 76.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a68155",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p2-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 4.5,
+            "y": 84.4,
+            "width": 11.57,
+            "height": 2.5,
+            "zIndex": 23
+          },
+          "content": "CURATED STYLE.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p2-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 4.5,
+            "y": 85.94,
+            "width": 13.61,
+            "height": 2.5,
+            "zIndex": 24
+          },
+          "content": "CONFIDENT LIVING.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p2-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 4.5,
+            "y": 87.48,
+            "width": 12.77,
+            "height": 2.5,
+            "zIndex": 25
+          },
+          "content": "TIMELESS IMPACT.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p2-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 55.4,
+            "y": 91.11,
+            "width": 13.77,
+            "height": 2.5,
+            "zIndex": 26
+          },
+          "content": "A STUDY IN CONTRAST:",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.7,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p2-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 55.4,
+            "y": 92.44,
+            "width": 19.18,
+            "height": 2.5,
+            "zIndex": 27
+          },
+          "content": "STRUCTURE MEETS SUBSTANCE.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.7,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p2-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 4.5,
+            "y": 3.0,
+            "width": 90.9,
+            "height": 2.5,
+            "zIndex": 28
+          },
+          "content": "MAN  |  ISSUE 01\nSPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-3",
+      "pageNumber": 4,
+      "layoutType": "blank",
+      "title": "Page 4",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p3-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_3_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p3-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 23.05,
+            "y": 2.45,
+            "width": 53.92,
+            "height": 1.33,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 3.81,
+            "y": 6.24,
+            "width": 51.96,
+            "height": 82.58,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 3.81,
+            "y": 72.46,
+            "width": 51.96,
+            "height": 16.29,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 30.76,
+            "y": 76.24,
+            "width": 17.28,
+            "height": 1.23,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 5.72,
+            "y": 84.93,
+            "width": 44.24,
+            "height": 1.33,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 3.81,
+            "y": 94.95,
+            "width": 51.96,
+            "height": 1.33,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-7",
+          "type": "image",
+          "name": "Image Element 7",
+          "frame": {
+            "x": 57.62,
+            "y": 24.95,
+            "width": 11.64,
+            "height": 1.33,
+            "zIndex": 16
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_7.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-8",
+          "type": "image",
+          "name": "Image Element 8",
+          "frame": {
+            "x": 57.62,
+            "y": 32.45,
+            "width": 28.92,
+            "height": 27.65,
+            "zIndex": 17
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_8.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-9",
+          "type": "image",
+          "name": "Image Element 9",
+          "frame": {
+            "x": 57.62,
+            "y": 68.75,
+            "width": 28.92,
+            "height": 1.23,
+            "zIndex": 18
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_9.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-10",
+          "type": "image",
+          "name": "Image Element 10",
+          "frame": {
+            "x": 57.62,
+            "y": 76.24,
+            "width": 28.92,
+            "height": 2.56,
+            "zIndex": 19
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_10.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-img-11",
+          "type": "image",
+          "name": "Image Element 11",
+          "frame": {
+            "x": 57.62,
+            "y": 86.19,
+            "width": 28.92,
+            "height": 2.56,
+            "zIndex": 20
+          },
+          "content": "/templates/canva/personal-man-1/page_3_img_11.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p3-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 6.7,
+            "y": 74.28,
+            "width": 13.49,
+            "height": 11.48,
+            "zIndex": 20
+          },
+          "content": "04",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 91.0,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#c29e77",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 32.3,
+            "y": 78.44,
+            "width": 15.85,
+            "height": 2.54,
+            "zIndex": 21
+          },
+          "content": "INK ISN'T DECORATION.\nIT'S DECLARATION.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#ffffff",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 4.7,
+            "y": 89.99,
+            "width": 11.48,
+            "height": 2.5,
+            "zIndex": 22
+          },
+          "content": "DEFINED BY MORE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 4.7,
+            "y": 91.39,
+            "width": 12.34,
+            "height": 2.5,
+            "zIndex": 23
+          },
+          "content": "THAN APPEARANCE.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 4.7,
+            "y": 92.79,
+            "width": 11.56,
+            "height": 2.5,
+            "zIndex": 24
+          },
+          "content": "LED BY INTENTION.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 59.8,
+            "y": 9.14,
+            "width": 24.57,
+            "height": 15.55,
+            "zIndex": 25
+          },
+          "content": "MARKS\nOF\nIDENTITY",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 44.4,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#c29e77",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 59.8,
+            "y": 27.94,
+            "width": 17.66,
+            "height": 2.54,
+            "zIndex": 26
+          },
+          "content": "A CONVERSATION ON INK,\nINTENTION, AND SELF.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 59.8,
+            "y": 62.32,
+            "width": 22.65,
+            "height": 5.19,
+            "zIndex": 27
+          },
+          "content": "WHAT DOES INK MEAN TO YOU?\nIt's memory made visible. Every\npiece carries a chapter - some loud,\nsome quiet, all mine.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 59.8,
+            "y": 70.82,
+            "width": 22.07,
+            "height": 4.94,
+            "zIndex": 28
+          },
+          "content": "HOW DO YOU CHOOSE A DESIGN?\nInstinct first, research second.\nIt has to resonate long after\nthe moment passes.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-9",
+          "type": "text",
+          "name": "Text Element 10",
+          "frame": {
+            "x": 59.8,
+            "y": 79.96,
+            "width": 24.14,
+            "height": 5.47,
+            "zIndex": 29
+          },
+          "content": "DOES IT CHANGE HOW YOU PRESENT\nYOURSELF?\nIt grounds me. It's not about showing out - it's\nabout showing up as\nwho I really am.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.4,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-10",
+          "type": "text",
+          "name": "Text Element 11",
+          "frame": {
+            "x": 59.8,
+            "y": 89.22,
+            "width": 24.33,
+            "height": 5.19,
+            "zIndex": 30
+          },
+          "content": "ANY ADVICE FOR SOMEONE\nCONSIDERING THEIR FIRST TATTOO?\nBe patient. Choose meaning over\nimpulse. The best ink ages with you.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p3-text-11",
+          "type": "text",
+          "name": "Text Element 12",
+          "frame": {
+            "x": 4.5,
+            "y": 2.91,
+            "width": 90.9,
+            "height": 2.5,
+            "zIndex": 31
+          },
+          "content": "MAN  |  ISSUE 01\nSPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-4",
+      "pageNumber": 5,
+      "layoutType": "blank",
+      "title": "Page 5",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p4-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_4_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p4-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 17.24,
+            "y": 3.71,
+            "width": 63.6,
+            "height": 1.33,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 5.72,
+            "y": 32.45,
+            "width": 7.84,
+            "height": 1.33,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 15.34,
+            "y": 34.97,
+            "width": 1.96,
+            "height": 6.34,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 5.72,
+            "y": 42.47,
+            "width": 28.92,
+            "height": 1.33,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 5.72,
+            "y": 57.46,
+            "width": 28.92,
+            "height": 30.02,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 7.62,
+            "y": 61.25,
+            "width": 7.84,
+            "height": 1.23,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-img-7",
+          "type": "image",
+          "name": "Image Element 7",
+          "frame": {
+            "x": 7.62,
+            "y": 76.24,
+            "width": 7.84,
+            "height": 1.23,
+            "zIndex": 16
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_7.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-img-8",
+          "type": "image",
+          "name": "Image Element 8",
+          "frame": {
+            "x": 5.72,
+            "y": 88.72,
+            "width": 7.84,
+            "height": 1.33,
+            "zIndex": 17
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_8.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-img-9",
+          "type": "image",
+          "name": "Image Element 9",
+          "frame": {
+            "x": 38.38,
+            "y": 8.69,
+            "width": 55.88,
+            "height": 87.59,
+            "zIndex": 18
+          },
+          "content": "/templates/canva/personal-man-1/page_4_img_9.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p4-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 6.5,
+            "y": 8.93,
+            "width": 24.63,
+            "height": 22.36,
+            "zIndex": 20
+          },
+          "content": "THE\nBEST",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 82.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a8875c",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 6.5,
+            "y": 35.76,
+            "width": 8.34,
+            "height": 2.5,
+            "zIndex": 21
+          },
+          "content": "PROFILE NO.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.6,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 6.5,
+            "y": 37.37,
+            "width": 7.18,
+            "height": 2.5,
+            "zIndex": 22
+          },
+          "content": "CATEGORY",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.6,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 6.5,
+            "y": 38.98,
+            "width": 6.0,
+            "height": 2.5,
+            "zIndex": 23
+          },
+          "content": "FOCUS",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.6,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 18.1,
+            "y": 35.98,
+            "width": 6.0,
+            "height": 2.5,
+            "zIndex": 24
+          },
+          "content": "05",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 18.1,
+            "y": 37.45,
+            "width": 6.1,
+            "height": 2.5,
+            "zIndex": 25
+          },
+          "content": "PORTRAIT",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 18.1,
+            "y": 38.92,
+            "width": 6.0,
+            "height": 2.5,
+            "zIndex": 26
+          },
+          "content": "PEOPLE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 6.5,
+            "y": 45.36,
+            "width": 24.42,
+            "height": 8.25,
+            "zIndex": 27
+          },
+          "content": "Presence is more than appearance.\nIt's compsure, conviction, and\nclarity of purpose. This is a study of\ncharacter  -  captured in a moment\nthat says everything without\nneeding to speak.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.1,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 8.9,
+            "y": 66.27,
+            "width": 12.21,
+            "height": 8.94,
+            "zIndex": 28
+          },
+          "content": "FOCUSED\nDISCIPLINED\nINTENTIONAL",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 17.5,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#f8f8f8",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-9",
+          "type": "text",
+          "name": "Text Element 10",
+          "frame": {
+            "x": 8.9,
+            "y": 79.82,
+            "width": 9.06,
+            "height": 2.5,
+            "zIndex": 29
+          },
+          "content": "Built on routine.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#f8f8f8",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-10",
+          "type": "text",
+          "name": "Text Element 11",
+          "frame": {
+            "x": 8.9,
+            "y": 81.15,
+            "width": 10.57,
+            "height": 2.5,
+            "zIndex": 30
+          },
+          "content": "Driven by purpose.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#f8f8f8",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-11",
+          "type": "text",
+          "name": "Text Element 12",
+          "frame": {
+            "x": 8.9,
+            "y": 82.48,
+            "width": 11.49,
+            "height": 2.5,
+            "zIndex": 31
+          },
+          "content": "Defined by restraint.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#f8f8f8",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-12",
+          "type": "text",
+          "name": "Text Element 13",
+          "frame": {
+            "x": 6.5,
+            "y": 90.65,
+            "width": 15.25,
+            "height": 2.8,
+            "zIndex": 32
+          },
+          "content": "\"Excelience is not an\nact, but a habit.\"",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.6,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#a8875c",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-13",
+          "type": "text",
+          "name": "Text Element 14",
+          "frame": {
+            "x": 6.5,
+            "y": 3.47,
+            "width": 87.7,
+            "height": 2.5,
+            "zIndex": 33
+          },
+          "content": "MAN | ISSUE 01\nSPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.1,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-14",
+          "type": "text",
+          "name": "Text Element 15",
+          "frame": {
+            "x": 8.9,
+            "y": 63.57,
+            "width": 9.3,
+            "height": 2.5,
+            "zIndex": 34
+          },
+          "content": "AT A GLANCE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.1,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#a8875c",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p4-text-15",
+          "type": "text",
+          "name": "Text Element 16",
+          "frame": {
+            "x": 6.5,
+            "y": 94.4,
+            "width": 6.87,
+            "height": 2.5,
+            "zIndex": 35
+          },
+          "content": "ARISTOTLE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.2,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-5",
+      "pageNumber": 6,
+      "layoutType": "blank",
+      "title": "Page 6",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p5-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_5_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p5-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 48.0,
+            "y": 3.71,
+            "width": 38.6,
+            "height": 93.84,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_5_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p5-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 28.77,
+            "y": 2.45,
+            "width": 38.6,
+            "height": 1.33,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_5_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p5-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 3.81,
+            "y": 33.71,
+            "width": 7.84,
+            "height": 1.33,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_5_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p5-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 3.81,
+            "y": 58.72,
+            "width": 28.92,
+            "height": 26.33,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_5_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p5-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 3.81,
+            "y": 84.93,
+            "width": 7.84,
+            "height": 1.33,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_5_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p5-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 88.38,
+            "y": 92.43,
+            "width": 7.84,
+            "height": 1.33,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_5_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p5-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 5.0,
+            "y": 3.85,
+            "width": 51.83,
+            "height": 26.52,
+            "zIndex": 20
+          },
+          "content": "SPRING",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 175.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88455",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p5-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 5.8,
+            "y": 36.95,
+            "width": 18.56,
+            "height": 16.9,
+            "zIndex": 21
+          },
+          "content": "AS THE DAYS GROW\nLONGER, A NEW SENSE OF\nDIRECTION EMERGES. THIS\nSEASON IS DEFINED BY\nLIGHTER FABRICS, RELAXED\nTAILORING AND A PALETTE\nTHAT REFLECTS CLARITY\nAND CONFIDENCE.\nELEVATED ESSENTIALS.\nCONSIDERED DETAILS.\nTIMELESS APPEAL. THIS IS\nMODERN LUXURY.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p5-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 5.8,
+            "y": 85.95,
+            "width": 19.81,
+            "height": 2.72,
+            "zIndex": 22
+          },
+          "content": "LIGHTER. SHARPER. STRONGER.\nTHE SEASON OF INTENTION.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p5-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 5.8,
+            "y": 91.6,
+            "width": 6.0,
+            "height": 4.84,
+            "zIndex": 23
+          },
+          "content": "06",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 32.0,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88455",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p5-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 83.86,
+            "y": 88.71,
+            "width": 10.94,
+            "height": 2.5,
+            "zIndex": 24
+          },
+          "content": "LINEN SUIT\nCOTTON KNIT POLO",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.5,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p5-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 86.08,
+            "y": 90.95,
+            "width": 8.71,
+            "height": 2.5,
+            "zIndex": 25
+          },
+          "content": "SUEDE LOAFERS",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.5,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p5-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 4.9,
+            "y": 3.2,
+            "width": 90.2,
+            "height": 2.5,
+            "zIndex": 26
+          },
+          "content": "LUXURY FASHION, DESIGN & CULTURE\nSPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.1,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p5-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 5.8,
+            "y": 27.22,
+            "width": 28.58,
+            "height": 2.5,
+            "zIndex": 27
+          },
+          "content": "NEW SEASON. REFINED POSSIBILITIES.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p5-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 87.87,
+            "y": 94.74,
+            "width": 6.93,
+            "height": 2.5,
+            "zIndex": 28
+          },
+          "content": "SEE PAGE 48",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.6,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-6",
+      "pageNumber": 7,
+      "layoutType": "blank",
+      "title": "Page 7",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p6-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_6_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p6-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 1.91,
+            "y": 3.71,
+            "width": 19.36,
+            "height": 57.58,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 5.72,
+            "y": 8.69,
+            "width": 13.48,
+            "height": 1.33,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 5.72,
+            "y": 51.23,
+            "width": 3.92,
+            "height": 1.33,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 0.0,
+            "y": 33.71,
+            "width": 55.76,
+            "height": 66.29,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 55.72,
+            "y": 36.23,
+            "width": 1.96,
+            "height": 12.5,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 57.62,
+            "y": 36.23,
+            "width": 5.88,
+            "height": 3.79,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-7",
+          "type": "image",
+          "name": "Image Element 7",
+          "frame": {
+            "x": 55.72,
+            "y": 66.22,
+            "width": 13.48,
+            "height": 1.33,
+            "zIndex": 16
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_7.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-8",
+          "type": "image",
+          "name": "Image Element 8",
+          "frame": {
+            "x": 74.95,
+            "y": 49.96,
+            "width": 1.96,
+            "height": 36.27,
+            "zIndex": 17
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_8.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-9",
+          "type": "image",
+          "name": "Image Element 9",
+          "frame": {
+            "x": 76.86,
+            "y": 66.22,
+            "width": 13.6,
+            "height": 1.33,
+            "zIndex": 18
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_9.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-img-10",
+          "type": "image",
+          "name": "Image Element 10",
+          "frame": {
+            "x": 55.72,
+            "y": 88.72,
+            "width": 38.6,
+            "height": 1.33,
+            "zIndex": 19
+          },
+          "content": "/templates/canva/personal-man-1/page_6_img_10.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p6-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 5.6,
+            "y": 2.67,
+            "width": 90.1,
+            "height": 2.5,
+            "zIndex": 20
+          },
+          "content": "LUXURY FASHION, DESIGN & CULTURE\nSPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.1,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 6.2,
+            "y": 10.66,
+            "width": 12.58,
+            "height": 8.41,
+            "zIndex": 21
+          },
+          "content": "MIND.\nPASSION.\nPURPOSE.",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 18.0,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#f1f1f1",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 5.6,
+            "y": 29.58,
+            "width": 13.99,
+            "height": 13.63,
+            "zIndex": 22
+          },
+          "content": "07",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 79.4,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#c2a16b",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 6.2,
+            "y": 45.02,
+            "width": 9.31,
+            "height": 4.62,
+            "zIndex": 23
+          },
+          "content": "EXCLUSIVE\nLONGFORM\nINTERVIEW",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 8.9,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#f1f1f1",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 6.2,
+            "y": 53.86,
+            "width": 9.44,
+            "height": 4.4,
+            "zIndex": 24
+          },
+          "content": "A CLOSER LOOK\nAT THE MAN\nBEHIND THE\nVISION",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.7,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#f1f1f1",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 34.7,
+            "y": 4.61,
+            "width": 47.21,
+            "height": 27.16,
+            "zIndex": 25
+          },
+          "content": "BUILT\nON VISION\nDRIVEN BY\nDISCIPLINE.",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 55.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 64.3,
+            "y": 39.26,
+            "width": 22.28,
+            "height": 7.74,
+            "zIndex": 26
+          },
+          "content": "I don't chase success.\nI build meaning.\nThe rest is noise.\"",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 15.7,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 57.4,
+            "y": 54.61,
+            "width": 16.37,
+            "height": 8.88,
+            "zIndex": 27
+          },
+          "content": "From wanting more - not for\nrecognition, but for freedom.\nFreedom to create, to choose,\nto build something that\noutlasts trends and time.\nI was never interested in\nfollowing a path.\nI wanted to design my own.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.7,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 57.4,
+            "y": 72.81,
+            "width": 15.07,
+            "height": 12.45,
+            "zIndex": 28
+          },
+          "content": "It's not a number, a title,\nor a headline.\nIt's waking up aligned\nwith your values.\nIt's having the impact\nyou set out to make.\nAnd it's staying grounded\nwhile everything around\nyou keeps moving.\nThat's the real win.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-9",
+          "type": "text",
+          "name": "Text Element 10",
+          "frame": {
+            "x": 78.3,
+            "y": 53.94,
+            "width": 13.75,
+            "height": 11.79,
+            "zIndex": 29
+          },
+          "content": "Purpose. Always.\nThere are distractions at\nevery level - but I've\nlearned to filter the\nnoise.\nI revise my 'why' often.\nIt reminds me that\neverything I do is part of\na bigger picture.\nThat keeps me steady.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-10",
+          "type": "text",
+          "name": "Text Element 11",
+          "frame": {
+            "x": 78.3,
+            "y": 73.39,
+            "width": 14.54,
+            "height": 11.19,
+            "zIndex": 30
+          },
+          "content": "Invest in yourself first.\nNot just your skille - your\ncharacter, your mindset,\nyour resilience.\nThe world doesn't need\nmore followers.\nIt needs more leaders\nwith substance and soul.\nBe that person.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-11",
+          "type": "text",
+          "name": "Text Element 12",
+          "frame": {
+            "x": 57.87,
+            "y": 91.04,
+            "width": 33.95,
+            "height": 2.68,
+            "zIndex": 31
+          },
+          "content": "E N T R E P R E N E U R , C R E A T I V E , L E A D E R ,\nS H A P I N G C U L T U R E , I N S P I R I N G C H A N G E .",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 7.8,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-12",
+          "type": "text",
+          "name": "Text Element 13",
+          "frame": {
+            "x": 93.86,
+            "y": 95.82,
+            "width": 6.0,
+            "height": 2.5,
+            "zIndex": 32
+          },
+          "content": "07",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 10.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-13",
+          "type": "text",
+          "name": "Text Element 14",
+          "frame": {
+            "x": 34.7,
+            "y": 31.41,
+            "width": 45.98,
+            "height": 2.5,
+            "zIndex": 33
+          },
+          "content": "ON PURPOSE, PROGRESS AND DEFINING HIS OWN LEGACY.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-14",
+          "type": "text",
+          "name": "Text Element 15",
+          "frame": {
+            "x": 57.4,
+            "y": 50.8,
+            "width": 13.04,
+            "height": 2.5,
+            "zIndex": 34
+          },
+          "content": "PM: WHERE DID YOUR\nDRIVE ORIGINATE?",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.7,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-15",
+          "type": "text",
+          "name": "Text Element 16",
+          "frame": {
+            "x": 78.3,
+            "y": 50.8,
+            "width": 10.24,
+            "height": 2.5,
+            "zIndex": 35
+          },
+          "content": "PM: WHAT KEEPS\nYOU FOCUSED?",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.7,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-16",
+          "type": "text",
+          "name": "Text Element 17",
+          "frame": {
+            "x": 57.4,
+            "y": 68.79,
+            "width": 32.66,
+            "height": 2.52,
+            "zIndex": 36
+          },
+          "content": "PM: HOW DO YOU\nDEFINE SUCCESS TODAY?\nPM: ADVICE TO THE\nNEXT GENERATION?",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1e1e1e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-17",
+          "type": "text",
+          "name": "Text Element 18",
+          "frame": {
+            "x": 6.2,
+            "y": 22.2,
+            "width": 12.18,
+            "height": 2.5,
+            "zIndex": 37
+          },
+          "content": "BY EDITORIAL TEAM",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#f1f1f1",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p6-text-18",
+          "type": "text",
+          "name": "Text Element 19",
+          "frame": {
+            "x": 6.2,
+            "y": 7.2,
+            "width": 9.0,
+            "height": 2.5,
+            "zIndex": 38
+          },
+          "content": "THE PROFILE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#c2a16b",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-7",
+      "pageNumber": 8,
+      "layoutType": "blank",
+      "title": "Page 8",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p7-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_7_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p7-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 30.88,
+            "height": 100.0,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 0.0,
+            "y": 9.95,
+            "width": 30.88,
+            "height": 90.05,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 1.91,
+            "y": 4.98,
+            "width": 11.64,
+            "height": 1.33,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 5.72,
+            "y": 82.48,
+            "width": 5.88,
+            "height": 2.56,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 5.72,
+            "y": 93.69,
+            "width": 7.84,
+            "height": 1.33,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 28.77,
+            "y": 36.23,
+            "width": 5.88,
+            "height": 33.81,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-7",
+          "type": "image",
+          "name": "Image Element 7",
+          "frame": {
+            "x": 36.48,
+            "y": 27.47,
+            "width": 11.64,
+            "height": 1.33,
+            "zIndex": 16
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_7.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-8",
+          "type": "image",
+          "name": "Image Element 8",
+          "frame": {
+            "x": 36.48,
+            "y": 73.72,
+            "width": 7.84,
+            "height": 2.56,
+            "zIndex": 17
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_8.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-9",
+          "type": "image",
+          "name": "Image Element 9",
+          "frame": {
+            "x": 55.72,
+            "y": 2.45,
+            "width": 42.4,
+            "height": 95.08,
+            "zIndex": 18
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_9.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-img-10",
+          "type": "image",
+          "name": "Image Element 10",
+          "frame": {
+            "x": 90.38,
+            "y": 4.98,
+            "width": 5.76,
+            "height": 1.33,
+            "zIndex": 19
+          },
+          "content": "/templates/canva/personal-man-1/page_7_img_10.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p7-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 37.2,
+            "y": 8.0,
+            "width": 23.63,
+            "height": 19.04,
+            "zIndex": 20
+          },
+          "content": "The\nModern\nUniform",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 48.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 37.2,
+            "y": 30.85,
+            "width": 14.57,
+            "height": 3.18,
+            "zIndex": 21
+          },
+          "content": "EFFORTLESS FORM,\nEXACTING DETAIL.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 37.2,
+            "y": 36.47,
+            "width": 16.45,
+            "height": 3.97,
+            "zIndex": 22
+          },
+          "content": "Purposefully refined pieces\nthat move with intention\nand stand the test of time.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 92.99,
+            "y": 2.32,
+            "width": 6.0,
+            "height": 3.1,
+            "zIndex": 23
+          },
+          "content": "08",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 18.0,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#c29e7b",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 37.2,
+            "y": 76.51,
+            "width": 10.0,
+            "height": 2.5,
+            "zIndex": 24
+          },
+          "content": "TAILORED COAT",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.2,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 37.2,
+            "y": 77.91,
+            "width": 14.85,
+            "height": 2.5,
+            "zIndex": 25
+          },
+          "content": "WOOL-CASHMERE BLEND",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 37.2,
+            "y": 80.4,
+            "width": 6.9,
+            "height": 2.5,
+            "zIndex": 26
+          },
+          "content": "KNIT POLO",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 37.2,
+            "y": 81.91,
+            "width": 11.45,
+            "height": 2.5,
+            "zIndex": 27
+          },
+          "content": "EXTRA FINE MERINO",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 37.2,
+            "y": 84.3,
+            "width": 12.08,
+            "height": 2.5,
+            "zIndex": 28
+          },
+          "content": "RELAXED TROUSER",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-9",
+          "type": "text",
+          "name": "Text Element 10",
+          "frame": {
+            "x": 37.2,
+            "y": 85.81,
+            "width": 13.67,
+            "height": 2.5,
+            "zIndex": 29
+          },
+          "content": "ITALIAN COTTON TWILL",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-10",
+          "type": "text",
+          "name": "Text Element 11",
+          "frame": {
+            "x": 37.2,
+            "y": 88.2,
+            "width": 11.78,
+            "height": 2.5,
+            "zIndex": 30
+          },
+          "content": "MINIMAL SNEAKER",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-11",
+          "type": "text",
+          "name": "Text Element 12",
+          "frame": {
+            "x": 37.2,
+            "y": 89.71,
+            "width": 8.39,
+            "height": 2.5,
+            "zIndex": 31
+          },
+          "content": "CALF LEATHER",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#171717",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-12",
+          "type": "text",
+          "name": "Text Element 13",
+          "frame": {
+            "x": 37.2,
+            "y": 93.17,
+            "width": 14.37,
+            "height": 2.5,
+            "zIndex": 32
+          },
+          "content": "SEE PAGE 54 FOR DETAILS",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.7,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#c29e7b",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-13",
+          "type": "text",
+          "name": "Text Element 14",
+          "frame": {
+            "x": 3.8,
+            "y": 2.8,
+            "width": 17.1,
+            "height": 2.5,
+            "zIndex": 33
+          },
+          "content": "PERSONAL MAN MAGAZINE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#ffffff",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p7-text-14",
+          "type": "text",
+          "name": "Text Element 15",
+          "frame": {
+            "x": 9.12,
+            "y": 95.32,
+            "width": 6.0,
+            "height": 3.1,
+            "zIndex": 34
+          },
+          "content": "\"",
+          "textStyle": {
+            "fontFamily": "Playfair Display, serif",
+            "fontSize": 18.0,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#c29e7b",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-8",
+      "pageNumber": 9,
+      "layoutType": "blank",
+      "title": "Page 9",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p8-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_8_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p8-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 30.76,
+            "y": 0.0,
+            "width": 69.24,
+            "height": 100.0,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_8_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p8-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 21.14,
+            "y": 2.45,
+            "width": 61.64,
+            "height": 1.33,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_8_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p8-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 3.81,
+            "y": 43.73,
+            "width": 13.48,
+            "height": 1.33,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_8_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p8-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 3.81,
+            "y": 59.99,
+            "width": 30.88,
+            "height": 26.33,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_8_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p8-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 7.62,
+            "y": 63.7,
+            "width": 5.88,
+            "height": 3.88,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_8_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p8-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 3.81,
+            "y": 94.95,
+            "width": 9.68,
+            "height": 1.33,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_8_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p8-img-7",
+          "type": "image",
+          "name": "Image Element 7",
+          "frame": {
+            "x": 13.43,
+            "y": 88.72,
+            "width": 3.92,
+            "height": 7.58,
+            "zIndex": 16
+          },
+          "content": "/templates/canva/personal-man-1/page_8_img_7.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p8-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 4.2,
+            "y": 2.65,
+            "width": 15.6,
+            "height": 2.5,
+            "zIndex": 20
+          },
+          "content": "PERSONAL MAN MAGAZINE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1a1a1a",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p8-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 5.4,
+            "y": 2.67,
+            "width": 90.0,
+            "height": 42.54,
+            "zIndex": 21
+          },
+          "content": "SPRING / SUMMER 2024\nTHE\nMAN\nIN\nFOCUS",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#1a1a1a",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p8-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 5.7,
+            "y": 46.6,
+            "width": 20.78,
+            "height": 3.59,
+            "zIndex": 22
+          },
+          "content": "CHARACTER.\nCRAFT. PRESENCE.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 12.4,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1a1a1a",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p8-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 5.7,
+            "y": 51.61,
+            "width": 22.0,
+            "height": 6.7,
+            "zIndex": 23
+          },
+          "content": "TRUE STYLE GOES BEYOND\nAPPEARANCE. IT'S FOUND IN\nINTENTION, DISCIPLINE AND\nTHE QUIET CONFIDENCE OF\nA LIFE WELL-LIVED.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1a1a1a",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p8-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 8.4,
+            "y": 67.02,
+            "width": 17.59,
+            "height": 14.11,
+            "zIndex": 24
+          },
+          "content": "ELEGANCE\nIS WHEN THE\nINSIDE IS AS\nBEAUTIFUL AS\nTHE OUTSIDE.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 24.7,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#e6c69e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p8-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 5.4,
+            "y": 87.92,
+            "width": 8.09,
+            "height": 8.44,
+            "zIndex": 25
+          },
+          "content": "09",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 55.7,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#a88a6a",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p8-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 17.7,
+            "y": 90.85,
+            "width": 11.95,
+            "height": 3.59,
+            "zIndex": 26
+          },
+          "content": "STYLE IS PERSONAL.\nPOWER IS EARNED.\nLEGACY IS CHOSEN.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 6.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#1a1a1a",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p8-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 8.4,
+            "y": 82.07,
+            "width": 11.79,
+            "height": 2.5,
+            "zIndex": 27
+          },
+          "content": "-  COCO CHANEL",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.1,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#e6c69e",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    },
+    {
+      "id": "page-9",
+      "pageNumber": 10,
+      "layoutType": "blank",
+      "title": "Page 10",
+      "backgroundColor": "#FFFFFF",
+      "elements": [
+        {
+          "id": "p9-bg",
+          "type": "image",
+          "name": "Page Background",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "zIndex": 0
+          },
+          "content": "/templates/canva/personal-man-1/page_9_bg.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
+        },
+        {
+          "id": "p9-img-1",
+          "type": "image",
+          "name": "Image Element 1",
+          "frame": {
+            "x": 23.05,
+            "y": 2.45,
+            "width": 71.2,
+            "height": 1.33,
+            "zIndex": 10
+          },
+          "content": "/templates/canva/personal-man-1/page_9_img_1.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p9-img-2",
+          "type": "image",
+          "name": "Image Element 2",
+          "frame": {
+            "x": 3.81,
+            "y": 36.23,
+            "width": 9.68,
+            "height": 1.33,
+            "zIndex": 11
+          },
+          "content": "/templates/canva/personal-man-1/page_9_img_2.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p9-img-3",
+          "type": "image",
+          "name": "Image Element 3",
+          "frame": {
+            "x": 3.81,
+            "y": 52.49,
+            "width": 32.72,
+            "height": 25.0,
+            "zIndex": 12
+          },
+          "content": "/templates/canva/personal-man-1/page_9_img_3.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p9-img-4",
+          "type": "image",
+          "name": "Image Element 4",
+          "frame": {
+            "x": 9.53,
+            "y": 94.95,
+            "width": 31.0,
+            "height": 1.33,
+            "zIndex": 13
+          },
+          "content": "/templates/canva/personal-man-1/page_9_img_4.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p9-img-5",
+          "type": "image",
+          "name": "Image Element 5",
+          "frame": {
+            "x": 40.38,
+            "y": 21.23,
+            "width": 57.72,
+            "height": 78.77,
+            "zIndex": 14
+          },
+          "content": "/templates/canva/personal-man-1/page_9_img_5.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p9-img-6",
+          "type": "image",
+          "name": "Image Element 6",
+          "frame": {
+            "x": 92.29,
+            "y": 74.98,
+            "width": 3.92,
+            "height": 21.31,
+            "zIndex": 15
+          },
+          "content": "/templates/canva/personal-man-1/page_9_img_6.png",
+          "imageStyle": {
+            "objectFit": "cover"
+          },
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "image-placeholder"
+        },
+        {
+          "id": "p9-text-0",
+          "type": "text",
+          "name": "Text Element 1",
+          "frame": {
+            "x": 5.9,
+            "y": 2.53,
+            "width": 17.1,
+            "height": 2.5,
+            "zIndex": 20
+          },
+          "content": "PERSONAL MAN MAGAZINE",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.5,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-1",
+          "type": "text",
+          "name": "Text Element 2",
+          "frame": {
+            "x": 5.9,
+            "y": 7.46,
+            "width": 14.73,
+            "height": 2.5,
+            "zIndex": 21
+          },
+          "content": "C L O S I N G N O T E",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 8.9,
+            "fontWeight": 700,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-2",
+          "type": "text",
+          "name": "Text Element 3",
+          "frame": {
+            "x": 9.62,
+            "y": -1.24,
+            "width": 80.75,
+            "height": 41.13,
+            "zIndex": 22
+          },
+          "content": "POWER",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 162.9,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-3",
+          "type": "text",
+          "name": "Text Element 4",
+          "frame": {
+            "x": 5.9,
+            "y": 28.92,
+            "width": 21.56,
+            "height": 6.51,
+            "zIndex": 23
+          },
+          "content": "ISN'T GIVEN.\nIT'S CHOSEN.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 19.5,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-4",
+          "type": "text",
+          "name": "Text Element 5",
+          "frame": {
+            "x": 5.9,
+            "y": 40.28,
+            "width": 31.11,
+            "height": 2.5,
+            "zIndex": 24
+          },
+          "content": "IT'S THE QUIET DECISION TO SHOW UP,",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 9.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-5",
+          "type": "text",
+          "name": "Text Element 6",
+          "frame": {
+            "x": 5.9,
+            "y": 42.66,
+            "width": 35.26,
+            "height": 2.5,
+            "zIndex": 25
+          },
+          "content": "TO LEAD, TO STAY TRUE TO WHAT MATTERS.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 9.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-6",
+          "type": "text",
+          "name": "Text Element 7",
+          "frame": {
+            "x": 5.9,
+            "y": 45.05,
+            "width": 22.94,
+            "height": 2.5,
+            "zIndex": 26
+          },
+          "content": "WEAR IT WELL. LIVE IT FULLY.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 9.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-7",
+          "type": "text",
+          "name": "Text Element 8",
+          "frame": {
+            "x": 5.9,
+            "y": 47.43,
+            "width": 22.02,
+            "height": 2.5,
+            "zIndex": 27
+          },
+          "content": "MAKE IT MEAN SOMETHING.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 9.6,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-8",
+          "type": "text",
+          "name": "Text Element 9",
+          "frame": {
+            "x": 5.9,
+            "y": 79.98,
+            "width": 19.69,
+            "height": 2.5,
+            "zIndex": 28
+          },
+          "content": "THE STANDARD REMAINS.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 9.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-9",
+          "type": "text",
+          "name": "Text Element 10",
+          "frame": {
+            "x": 5.9,
+            "y": 81.81,
+            "width": 19.69,
+            "height": 2.5,
+            "zIndex": 29
+          },
+          "content": "THE LEGACY CONTINUES.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 9.3,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-10",
+          "type": "text",
+          "name": "Text Element 11",
+          "frame": {
+            "x": 5.9,
+            "y": 91.92,
+            "width": 6.0,
+            "height": 6.76,
+            "zIndex": 30
+          },
+          "content": "10",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 26.8,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-11",
+          "type": "text",
+          "name": "Text Element 12",
+          "frame": {
+            "x": 5.9,
+            "y": 87.44,
+            "width": 22.78,
+            "height": 2.5,
+            "zIndex": 31
+          },
+          "content": "ISSUE 01   •   SPRING/SUMMER 2024",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-12",
+          "type": "text",
+          "name": "Text Element 13",
+          "frame": {
+            "x": 5.9,
+            "y": 89.4,
+            "width": 17.19,
+            "height": 2.5,
+            "zIndex": 32
+          },
+          "content": "THANK YOU FOR READING.",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 7.8,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#222222",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        },
+        {
+          "id": "p9-text-13",
+          "type": "text",
+          "name": "Text Element 14",
+          "frame": {
+            "x": 93.18,
+            "y": 37.37,
+            "width": 6.0,
+            "height": 38.77,
+            "zIndex": 33
+          },
+          "content": "F L E E T I N G D I V E M A G A Z I N E L I C O P R O M I S E .",
+          "textStyle": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": 11.0,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "color": "#a88a62",
+            "textAlign": "left"
+          },
+          "isEditable": true,
+          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
+          "placeholderKey": "text-placeholder"
+        }
+      ]
+    }
+  ]
+}

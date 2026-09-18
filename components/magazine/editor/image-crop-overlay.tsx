@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import type { ElementCrop, ImageStyle } from '@/types/magazine';
 
@@ -23,6 +23,16 @@ export function ImageCropOverlay({
 }: ImageCropOverlayProps) {
   const [scale, setScale] = useState(crop.scale || 1);
   const [offset, setOffset] = useState({ x: crop.offsetX || 0, y: crop.offsetY || 0 });
+
+  // Sync internal state when crop prop changes (e.g. after undo/redo or image replacement)
+  useEffect(() => {
+    setScale(crop.scale || 1);
+    setOffset({ x: crop.offsetX || 0, y: crop.offsetY || 0 });
+  }, [crop.scale, crop.offsetX, crop.offsetY]);
+
+  // Detect if src is a data URL or blob URL — next/image can't handle those with fill
+  const safeSrc = src || '';
+  const isDataOrBlobUrl = safeSrc.startsWith('data:') || safeSrc.startsWith('blob:');
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef<{
     startX: number;
@@ -90,13 +100,13 @@ export function ImageCropOverlay({
           transition: isDragging ? 'none' : 'transform 0.15s ease-out',
         }}
       >
-        <Image
-          src={src}
+        {/* Native img element ensures instant rendering for local static files, data URLs, and remote images */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={safeSrc || '/images/placeholder.png'}
           alt="Magazine Graphic"
-          fill
-          sizes="800px"
           draggable={false}
-          className={`pointer-events-none ${
+          className={`absolute inset-0 w-full h-full pointer-events-none select-none ${
             imageStyle?.objectFit === 'contain'
               ? 'object-contain'
               : imageStyle?.objectFit === 'fill'

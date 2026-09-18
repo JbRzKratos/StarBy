@@ -899,7 +899,13 @@ export function LeftPanel({
                 >
                   <div className="w-12 h-16 rounded-md bg-[#0A0A0C] border border-[#F5F1EA]/15 relative overflow-hidden shrink-0">
                     {tpl.coverImage && (
-                      <Image src={tpl.coverImage} alt={tpl.name} fill className="object-cover" />
+                      <Image
+                        src={tpl.coverImage}
+                        alt={tpl.name}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
                     )}
                   </div>
                   <div>

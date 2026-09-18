@@ -516,8 +516,6 @@ export function CanvasWorkspace({
   // Render an individual page on canvas
   const renderPage = (page: MagazinePage, pageIdx: number) => {
     const bgColor = page.backgroundColor || doc.theme.backgroundColor || '#0D0D0E';
-    const pageDom = pageDomRefs.current[pageIdx];
-    const containerRect = pageDom ? pageDom.getBoundingClientRect() : null;
 
     return (
       <div
@@ -726,7 +724,7 @@ export function CanvasWorkspace({
             return (
               <TransformBox
                 frame={targetElement.frame}
-                containerRect={containerRect}
+                containerRect={pageDomRefs.current[pageIdx]?.getBoundingClientRect() ?? null}
                 isLocked={Boolean(targetElement.locked)}
                 onUpdateFrame={(newFrame, isFinal) =>
                   handleTransformFrame(pageIdx, selectedId, newFrame, isFinal)

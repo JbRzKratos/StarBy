@@ -10,7 +10,7 @@
         {
           "id": "p0-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -18,143 +18,118 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_0_bg.webp",
+          "content": "/templates/canva/fashion-2/page_0_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p0-img-0",
           "type": "image",
-          "name": "Image 0",
+          "name": "Image Element 1",
           "frame": {
             "x": 10.0,
             "y": 20.29,
             "width": 80.0,
             "height": 62.62,
-            "zIndex": 5
+            "zIndex": 10
           },
-          "content": "/templates/canva/fashion-2/page_0_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_0_img_0.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p0-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 28.45,
             "y": 7.64,
             "width": 43.11,
             "height": 14.48,
-            "zIndex": 10
+            "zIndex": 20
           },
           "content": "MERAKI",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 75.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p0-text-1",
           "type": "text",
-          "name": "Text Element 1",
+          "name": "Text Element 2",
           "frame": {
             "x": 10.0,
             "y": 85.71,
-            "width": 18.77,
-            "height": 2.0,
-            "zIndex": 10
+            "width": 80.0,
+            "height": 2.5,
+            "zIndex": 21
           },
-          "content": "Fashion Magazine",
+          "content": "Fashion Magazine\nLookbook Fashion",
           "textStyle": {
-            "fontFamily": "Poppins-Bold",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 12.0,
-            "fontWeight": 400,
+            "fontWeight": 700,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p0-text-2",
           "type": "text",
-          "name": "Text Element 2",
-          "frame": {
-            "x": 72.19,
-            "y": 85.71,
-            "width": 17.81,
-            "height": 2.0,
-            "zIndex": 10
-          },
-          "content": "Lookbook Fashion",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 12.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p0-text-3",
-          "type": "text",
           "name": "Text Element 3",
           "frame": {
             "x": 10.0,
             "y": 91.04,
-            "width": 21.52,
-            "height": 2.0,
-            "zIndex": 10
+            "width": 80.0,
+            "height": 2.5,
+            "zIndex": 22
           },
-          "content": "Brand New Collection",
+          "content": "Brand New Collection\nVolume 122",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 12.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p0-text-4",
-          "type": "text",
-          "name": "Text Element 4",
-          "frame": {
-            "x": 78.43,
-            "y": 91.04,
-            "width": 11.57,
-            "height": 2.0,
-            "zIndex": 10
-          },
-          "content": "Volume 122",
-          "textStyle": {
-            "fontFamily": "Poppins-Bold",
-            "fontSize": 12.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]
@@ -169,7 +144,7 @@
         {
           "id": "p1-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -177,327 +152,118 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_1_bg.webp",
+          "content": "/templates/canva/fashion-2/page_1_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p1-img-0",
           "type": "image",
-          "name": "Image 0",
+          "name": "Image Element 1",
           "frame": {
             "x": 60.4,
             "y": 66.53,
             "width": 27.47,
             "height": 18.71,
-            "zIndex": 5
+            "zIndex": 10
           },
-          "content": "/templates/canva/fashion-2/page_1_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_1_img_0.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p1-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 10.0,
             "y": 19.33,
             "width": 58.0,
             "height": 5.79,
-            "zIndex": 10
+            "zIndex": 20
           },
           "content": "Hi, from Estelle Darcy",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 30.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p1-text-1",
           "type": "text",
-          "name": "Text Element 1",
+          "name": "Text Element 2",
           "frame": {
             "x": 10.0,
             "y": 28.48,
-            "width": 53.66,
-            "height": 1.66,
-            "zIndex": 10
+            "width": 53.67,
+            "height": 6.47,
+            "zIndex": 21
           },
-          "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non",
+          "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non\nnunc ut est suscipit molestie eu a ante. Aenean vitae tempor\nante. Cras at ante lobortis, ultricies sem ac, dignissim leo. Morbi\nmauris tortor, molestie a tortor vel, viverra faucibus orci.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p1-text-2",
           "type": "text",
-          "name": "Text Element 2",
-          "frame": {
-            "x": 10.0,
-            "y": 30.09,
-            "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "nunc ut est suscipit molestie eu a ante. Aenean vitae tempor",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-3",
-          "type": "text",
           "name": "Text Element 3",
-          "frame": {
-            "x": 10.0,
-            "y": 31.69,
-            "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "ante. Cras at ante lobortis, ultricies sem ac, dignissim leo. Morbi",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-4",
-          "type": "text",
-          "name": "Text Element 4",
-          "frame": {
-            "x": 10.0,
-            "y": 33.29,
-            "width": 46.58,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "mauris tortor, molestie a tortor vel, viverra faucibus orci.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-5",
-          "type": "text",
-          "name": "Text Element 5",
           "frame": {
             "x": 10.0,
             "y": 36.5,
             "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 12.89,
+            "zIndex": 22
           },
-          "content": "Quisque justo mauris, lacinia eget mattis eget, hendrerit vitae",
+          "content": "Quisque justo mauris, lacinia eget mattis eget, hendrerit vitae\ndiam. Nam sit amet pulvinar massa, eget mollis tellus. Integer\nvolutpat, sem sit amet cursus fringilla, nibh sapien eleifend\nneque, non dignissim ante elit consectetur justo. Sed blandit,\ntellus eu scelerisque fringilla, elit sem efficitur ipsum, lobortis\nporttitor lacus elit ut odio. Etiam at vehicula lectus. Mauris\ntristique ut nisl pretium luctus. Vestibulum porttitor fermentum\nligula laoreet ultrices. Nunc vitae tristique nisi, eu luctus sem.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-6",
-          "type": "text",
-          "name": "Text Element 6",
-          "frame": {
-            "x": 10.0,
-            "y": 38.1,
-            "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "diam. Nam sit amet pulvinar massa, eget mollis tellus. Integer",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-7",
-          "type": "text",
-          "name": "Text Element 7",
-          "frame": {
-            "x": 10.0,
-            "y": 39.71,
-            "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "volutpat, sem sit amet cursus fringilla, nibh sapien eleifend",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-8",
-          "type": "text",
-          "name": "Text Element 8",
-          "frame": {
-            "x": 10.0,
-            "y": 41.31,
-            "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "neque, non dignissim ante elit consectetur justo. Sed blandit,",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-9",
-          "type": "text",
-          "name": "Text Element 9",
-          "frame": {
-            "x": 10.0,
-            "y": 42.92,
-            "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "tellus eu scelerisque fringilla, elit sem efficitur ipsum, lobortis",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-10",
-          "type": "text",
-          "name": "Text Element 10",
-          "frame": {
-            "x": 10.0,
-            "y": 44.52,
-            "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "porttitor lacus elit ut odio. Etiam at vehicula lectus. Mauris",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-11",
-          "type": "text",
-          "name": "Text Element 11",
-          "frame": {
-            "x": 10.0,
-            "y": 46.12,
-            "width": 53.67,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "tristique ut nisl pretium luctus. Vestibulum porttitor fermentum",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p1-text-12",
-          "type": "text",
-          "name": "Text Element 12",
-          "frame": {
-            "x": 10.0,
-            "y": 47.73,
-            "width": 50.58,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "ligula laoreet ultrices. Nunc vitae tristique nisi, eu luctus sem.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]
@@ -512,7 +278,7 @@
         {
           "id": "p2-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -520,115 +286,86 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_2_bg.webp",
+          "content": "/templates/canva/fashion-2/page_2_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p2-img-0",
           "type": "image",
-          "name": "Image 0",
+          "name": "Image Element 1",
           "frame": {
             "x": 0.0,
             "y": 65.89,
             "width": 100.0,
             "height": 34.11,
-            "zIndex": 5
+            "zIndex": 10
           },
-          "content": "/templates/canva/fashion-2/page_2_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_2_img_0.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p2-img-1",
           "type": "image",
-          "name": "Image 1",
+          "name": "Image Element 2",
           "frame": {
             "x": 15.1,
             "y": 15.4,
             "width": 69.8,
             "height": 34.56,
-            "zIndex": 5
+            "zIndex": 11
           },
-          "content": "/templates/canva/fashion-2/page_2_img_1.webp",
+          "content": "/templates/canva/fashion-2/page_2_img_1.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p2-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 15.1,
             "y": 51.76,
             "width": 37.05,
-            "height": 1.33,
-            "zIndex": 10
+            "height": 3.86,
+            "zIndex": 20
           },
-          "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed non nunc ut est suscipit molestie eu a ante.\nAenean vitae tempor ante.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 8.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p2-text-1",
-          "type": "text",
-          "name": "Text Element 1",
-          "frame": {
-            "x": 15.1,
-            "y": 53.03,
-            "width": 31.99,
-            "height": 1.33,
-            "zIndex": 10
-          },
-          "content": "Sed non nunc ut est suscipit molestie eu a ante.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 8.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p2-text-2",
-          "type": "text",
-          "name": "Text Element 2",
-          "frame": {
-            "x": 15.1,
-            "y": 54.3,
-            "width": 17.94,
-            "height": 1.33,
-            "zIndex": 10
-          },
-          "content": "Aenean vitae tempor ante.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 8.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]
@@ -643,7 +380,7 @@
         {
           "id": "p3-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -651,419 +388,496 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_3_bg.webp",
+          "content": "/templates/canva/fashion-2/page_3_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p3-img-0",
           "type": "image",
-          "name": "Image 0",
+          "name": "Image Element 1",
           "frame": {
             "x": 0.0,
             "y": 0.0,
             "width": 100.0,
             "height": 51.04,
-            "zIndex": 5
+            "zIndex": 10
           },
-          "content": "/templates/canva/fashion-2/page_3_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_3_img_0.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p3-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 18.78,
             "y": 54.93,
             "width": 62.43,
             "height": 6.76,
-            "zIndex": 10
+            "zIndex": 20
           },
           "content": "WHAT TODAY'S LOOK?",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 35.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-1",
           "type": "text",
-          "name": "Text Element 1",
+          "name": "Text Element 2",
           "frame": {
             "x": 14.76,
             "y": 64.48,
             "width": 25.99,
             "height": 2.99,
-            "zIndex": 10
+            "zIndex": 21
           },
           "content": "Classic Elegance",
           "textStyle": {
-            "fontFamily": "Poppins-SemiBold",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 18.0,
-            "fontWeight": 400,
+            "fontWeight": 700,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-2",
           "type": "text",
-          "name": "Text Element 2",
+          "name": "Text Element 3",
           "frame": {
             "x": 10.85,
             "y": 71.31,
             "width": 33.81,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 22
           },
           "content": "Lorem ipsum dolor sit amet, consectetur",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-3",
           "type": "text",
-          "name": "Text Element 3",
+          "name": "Text Element 4",
           "frame": {
             "x": 11.37,
             "y": 72.92,
             "width": 32.77,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 23
           },
           "content": "adipiscing elit. Proin interdum metus at",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-4",
           "type": "text",
-          "name": "Text Element 4",
+          "name": "Text Element 5",
           "frame": {
             "x": 20.56,
             "y": 74.52,
             "width": 14.39,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 24
           },
           "content": "tempus placerat.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-5",
           "type": "text",
-          "name": "Text Element 5",
+          "name": "Text Element 6",
           "frame": {
             "x": 10.85,
             "y": 88.14,
             "width": 33.81,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 25
           },
           "content": "Lorem ipsum dolor sit amet, consectetur",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-6",
           "type": "text",
-          "name": "Text Element 6",
+          "name": "Text Element 7",
           "frame": {
             "x": 11.37,
             "y": 89.75,
             "width": 32.77,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 26
           },
           "content": "adipiscing elit. Proin interdum metus at",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-7",
           "type": "text",
-          "name": "Text Element 7",
+          "name": "Text Element 8",
           "frame": {
             "x": 20.56,
             "y": 91.35,
             "width": 14.39,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 27
           },
           "content": "tempus placerat.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-8",
           "type": "text",
-          "name": "Text Element 8",
+          "name": "Text Element 9",
           "frame": {
             "x": 55.34,
             "y": 71.31,
             "width": 33.81,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 28
           },
           "content": "Lorem ipsum dolor sit amet, consectetur",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-9",
           "type": "text",
-          "name": "Text Element 9",
+          "name": "Text Element 10",
           "frame": {
             "x": 55.86,
             "y": 72.92,
             "width": 32.77,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 29
           },
           "content": "adipiscing elit. Proin interdum metus at",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-10",
           "type": "text",
-          "name": "Text Element 10",
+          "name": "Text Element 11",
           "frame": {
             "x": 65.05,
             "y": 74.52,
             "width": 14.39,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 30
           },
           "content": "tempus placerat.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-11",
           "type": "text",
-          "name": "Text Element 11",
+          "name": "Text Element 12",
           "frame": {
             "x": 55.34,
             "y": 88.14,
             "width": 33.81,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 31
           },
           "content": "Lorem ipsum dolor sit amet, consectetur",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-12",
           "type": "text",
-          "name": "Text Element 12",
+          "name": "Text Element 13",
           "frame": {
             "x": 55.86,
             "y": 89.75,
             "width": 32.77,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 32
           },
           "content": "adipiscing elit. Proin interdum metus at",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-13",
           "type": "text",
-          "name": "Text Element 13",
+          "name": "Text Element 14",
           "frame": {
             "x": 65.05,
             "y": 91.35,
             "width": 14.39,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 33
           },
           "content": "tempus placerat.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-14",
           "type": "text",
-          "name": "Text Element 14",
+          "name": "Text Element 15",
           "frame": {
             "x": 15.03,
             "y": 80.76,
             "width": 25.44,
             "height": 2.99,
-            "zIndex": 10
+            "zIndex": 34
           },
           "content": "Bold Statements",
           "textStyle": {
-            "fontFamily": "Poppins-SemiBold",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 18.0,
-            "fontWeight": 400,
+            "fontWeight": 700,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-15",
           "type": "text",
-          "name": "Text Element 15",
+          "name": "Text Element 16",
           "frame": {
             "x": 61.38,
             "y": 64.48,
             "width": 21.72,
             "height": 2.99,
-            "zIndex": 10
+            "zIndex": 35
           },
           "content": "Effortless Chic",
           "textStyle": {
-            "fontFamily": "Poppins-SemiBold",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 18.0,
-            "fontWeight": 400,
+            "fontWeight": 700,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p3-text-16",
           "type": "text",
-          "name": "Text Element 16",
+          "name": "Text Element 17",
           "frame": {
             "x": 62.2,
             "y": 80.76,
             "width": 20.08,
             "height": 2.99,
-            "zIndex": 10
+            "zIndex": 36
           },
           "content": "Modern Edge",
           "textStyle": {
-            "fontFamily": "Poppins-SemiBold",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 18.0,
-            "fontWeight": 400,
+            "fontWeight": 700,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]
@@ -1078,7 +892,7 @@
         {
           "id": "p4-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -1086,552 +900,167 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_4_bg.webp",
+          "content": "/templates/canva/fashion-2/page_4_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p4-img-0",
           "type": "image",
-          "name": "Image 0",
+          "name": "Image Element 1",
           "frame": {
             "x": 10.45,
             "y": 57.75,
             "width": 79.5,
             "height": 35.19,
-            "zIndex": 5
+            "zIndex": 10
           },
-          "content": "/templates/canva/fashion-2/page_4_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_4_img_0.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p4-img-1",
           "type": "image",
-          "name": "Image 1",
+          "name": "Image Element 2",
           "frame": {
             "x": 10.0,
             "y": 7.07,
             "width": 40.19,
             "height": 19.69,
-            "zIndex": 5
+            "zIndex": 11
           },
-          "content": "/templates/canva/fashion-2/page_4_img_1.webp",
+          "content": "/templates/canva/fashion-2/page_4_img_1.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p4-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 10.45,
             "y": 27.01,
-            "width": 26.91,
-            "height": 7.72,
-            "zIndex": 10
+            "width": 31.6,
+            "height": 12.44,
+            "zIndex": 20
           },
-          "content": "Classic",
+          "content": "Classic\nElegance",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 40.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p4-text-1",
           "type": "text",
-          "name": "Text Element 1",
-          "frame": {
-            "x": 10.45,
-            "y": 31.73,
-            "width": 31.6,
-            "height": 7.72,
-            "zIndex": 10
-          },
-          "content": "Elegance",
-          "textStyle": {
-            "fontFamily": "Atteron",
-            "fontSize": 40.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-2",
-          "type": "text",
           "name": "Text Element 2",
           "frame": {
             "x": 85.21,
             "y": 6.16,
-            "width": 4.79,
+            "width": 6.0,
             "height": 6.18,
-            "zIndex": 10
+            "zIndex": 21
           },
           "content": "01.",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 32.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
-          "id": "p4-text-3",
+          "id": "p4-text-2",
           "type": "text",
           "name": "Text Element 3",
           "frame": {
             "x": 10.0,
             "y": 39.52,
             "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 16.09,
+            "zIndex": 22
           },
-          "content": "Morbi eget turpis a orci ornare fringilla non",
+          "content": "Morbi eget turpis a orci ornare fringilla non\net orci. Pellentesque non dui in est finibus\nsemper. Phasellus lobortis risus sed ligula\nlobortis, et porttitor magna suscipit. Orci\nvarius natoque penatibus et magnis dis\nparturient montes, nascetur ridiculus mus.\nPhasellus a diam at velit rutrum lacinia.\nPhasellus at ipsum massa. Donec pretium\nlacus in tellus posuere, et venenatis enim\ntincidunt.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
-          "id": "p4-text-4",
+          "id": "p4-text-3",
           "type": "text",
           "name": "Text Element 4",
-          "frame": {
-            "x": 10.0,
-            "y": 41.12,
-            "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "et orci. Pellentesque non dui in est finibus",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-5",
-          "type": "text",
-          "name": "Text Element 5",
-          "frame": {
-            "x": 10.0,
-            "y": 42.72,
-            "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "semper. Phasellus lobortis risus sed ligula",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-6",
-          "type": "text",
-          "name": "Text Element 6",
-          "frame": {
-            "x": 10.0,
-            "y": 44.33,
-            "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "lobortis, et porttitor magna suscipit. Orci",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-7",
-          "type": "text",
-          "name": "Text Element 7",
-          "frame": {
-            "x": 10.0,
-            "y": 45.93,
-            "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "varius natoque penatibus et magnis dis",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-8",
-          "type": "text",
-          "name": "Text Element 8",
-          "frame": {
-            "x": 10.0,
-            "y": 47.53,
-            "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "parturient montes, nascetur ridiculus mus.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-9",
-          "type": "text",
-          "name": "Text Element 9",
-          "frame": {
-            "x": 10.0,
-            "y": 49.14,
-            "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "Phasellus a diam at velit rutrum lacinia.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-10",
-          "type": "text",
-          "name": "Text Element 10",
-          "frame": {
-            "x": 10.0,
-            "y": 50.74,
-            "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "Phasellus at ipsum massa. Donec pretium",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-11",
-          "type": "text",
-          "name": "Text Element 11",
-          "frame": {
-            "x": 10.0,
-            "y": 52.34,
-            "width": 36.48,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "lacus in tellus posuere, et venenatis enim",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-12",
-          "type": "text",
-          "name": "Text Element 12",
-          "frame": {
-            "x": 10.0,
-            "y": 53.95,
-            "width": 7.78,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "tincidunt.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-13",
-          "type": "text",
-          "name": "Text Element 13",
           "frame": {
             "x": 50.0,
             "y": 39.52,
             "width": 40.0,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 14.49,
+            "zIndex": 23
           },
-          "content": "Lorem ipsum dolor sit amet, consectetur",
+          "content": "Lorem ipsum dolor sit amet, consectetur\nadipiscing elit. Sed non nunc ut est suscipit\nmolestie eu a ante. Aenean vitae tempor ante.\nCras at ante lobortis, ultricies sem ac, dignissim\nleo. Morbi mauris tortor, molestie a tortor vel,\nviverra faucibus orci. Quisque justo mauris,\nlacinia eget mattis eget, hendrerit vitae diam.\nNam sit amet pulvinar massa, eget mollis\ntellus.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-14",
-          "type": "text",
-          "name": "Text Element 14",
-          "frame": {
-            "x": 50.0,
-            "y": 41.12,
-            "width": 40.0,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "adipiscing elit. Sed non nunc ut est suscipit",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-15",
-          "type": "text",
-          "name": "Text Element 15",
-          "frame": {
-            "x": 50.0,
-            "y": 42.72,
-            "width": 40.0,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "molestie eu a ante. Aenean vitae tempor ante.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-16",
-          "type": "text",
-          "name": "Text Element 16",
-          "frame": {
-            "x": 50.0,
-            "y": 44.33,
-            "width": 40.0,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "Cras at ante lobortis, ultricies sem ac, dignissim",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-17",
-          "type": "text",
-          "name": "Text Element 17",
-          "frame": {
-            "x": 50.0,
-            "y": 45.93,
-            "width": 40.0,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "leo. Morbi mauris tortor, molestie a tortor vel,",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-18",
-          "type": "text",
-          "name": "Text Element 18",
-          "frame": {
-            "x": 50.0,
-            "y": 47.53,
-            "width": 40.0,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "viverra faucibus orci. Quisque justo mauris,",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-19",
-          "type": "text",
-          "name": "Text Element 19",
-          "frame": {
-            "x": 50.0,
-            "y": 49.14,
-            "width": 40.0,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "lacinia eget mattis eget, hendrerit vitae diam.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-20",
-          "type": "text",
-          "name": "Text Element 20",
-          "frame": {
-            "x": 50.0,
-            "y": 50.74,
-            "width": 40.0,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "Nam sit amet pulvinar massa, eget mollis",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p4-text-21",
-          "type": "text",
-          "name": "Text Element 21",
-          "frame": {
-            "x": 50.0,
-            "y": 52.34,
-            "width": 5.23,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "tellus. ",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]
@@ -1646,7 +1075,7 @@
         {
           "id": "p5-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -1654,276 +1083,221 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_5_bg.webp",
+          "content": "/templates/canva/fashion-2/page_5_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p5-img-0",
           "type": "image",
-          "name": "Image 0",
+          "name": "Image Element 1",
           "frame": {
             "x": 30.95,
             "y": 14.02,
             "width": 38.05,
             "height": 31.09,
-            "zIndex": 5
+            "zIndex": 10
           },
-          "content": "/templates/canva/fashion-2/page_5_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_5_img_0.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p5-img-1",
           "type": "image",
-          "name": "Image 1",
+          "name": "Image Element 2",
           "frame": {
             "x": 30.95,
             "y": 54.9,
             "width": 38.05,
             "height": 31.09,
-            "zIndex": 5
+            "zIndex": 11
           },
-          "content": "/templates/canva/fashion-2/page_5_img_1.webp",
+          "content": "/templates/canva/fashion-2/page_5_img_1.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p5-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 38.26,
             "y": 46.83,
             "width": 23.48,
             "height": 3.32,
-            "zIndex": 10
+            "zIndex": 20
           },
           "content": "Effortless Chic",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 20.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#ffffff",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p5-text-1",
           "type": "text",
-          "name": "Text Element 1",
+          "name": "Text Element 2",
           "frame": {
             "x": 70.95,
             "y": 23.76,
             "width": 18.0,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 4.87,
+            "zIndex": 21
           },
-          "content": "Lorem ipsum dolor sit",
+          "content": "Lorem ipsum dolor sit\namet, consectetur\nadipiscing elit.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#ffffff",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p5-text-2",
           "type": "text",
-          "name": "Text Element 2",
+          "name": "Text Element 3",
           "frame": {
             "x": 70.95,
-            "y": 25.37,
-            "width": 15.37,
-            "height": 1.66,
-            "zIndex": 10
+            "y": 64.32,
+            "width": 18.0,
+            "height": 4.87,
+            "zIndex": 22
           },
-          "content": "amet, consectetur",
+          "content": "Lorem ipsum dolor sit\namet, consectetur\nadipiscing elit.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#ffffff",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p5-text-3",
           "type": "text",
-          "name": "Text Element 3",
-          "frame": {
-            "x": 70.95,
-            "y": 26.97,
-            "width": 12.03,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "adipiscing elit.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#ffffff",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p5-text-4",
-          "type": "text",
           "name": "Text Element 4",
-          "frame": {
-            "x": 70.95,
-            "y": 64.32,
-            "width": 18.0,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "Lorem ipsum dolor sit",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#ffffff",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p5-text-5",
-          "type": "text",
-          "name": "Text Element 5",
-          "frame": {
-            "x": 70.95,
-            "y": 65.92,
-            "width": 15.37,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "amet, consectetur",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#ffffff",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p5-text-6",
-          "type": "text",
-          "name": "Text Element 6",
-          "frame": {
-            "x": 70.95,
-            "y": 67.52,
-            "width": 12.03,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "adipiscing elit.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#ffffff",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p5-text-7",
-          "type": "text",
-          "name": "Text Element 7",
           "frame": {
             "x": 41.9,
             "y": 87.63,
             "width": 16.19,
             "height": 3.32,
-            "zIndex": 10
+            "zIndex": 23
           },
           "content": "Bold Style",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 20.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#ffffff",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
-          "id": "p5-text-8",
+          "id": "p5-text-4",
           "type": "text",
-          "name": "Text Element 8",
+          "name": "Text Element 5",
           "frame": {
             "x": 17.15,
             "y": 13.11,
             "width": 6.65,
             "height": 6.18,
-            "zIndex": 10
+            "zIndex": 24
           },
           "content": "02.",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 32.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#ffffff",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
-          "id": "p5-text-9",
+          "id": "p5-text-5",
           "type": "text",
-          "name": "Text Element 9",
+          "name": "Text Element 6",
           "frame": {
             "x": 17.08,
             "y": 53.99,
             "width": 6.78,
             "height": 6.18,
-            "zIndex": 10
+            "zIndex": 25
           },
           "content": "03.",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 32.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#ffffff",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]
@@ -1938,7 +1312,7 @@
         {
           "id": "p6-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -1946,29 +1320,16 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_6_bg.webp",
-          "imageStyle": {
-            "objectFit": "cover"
-          },
-          "isReplaceable": false
-        },
-        {
-          "id": "p6-img-0",
-          "type": "image",
-          "name": "Image 0",
-          "frame": {
-            "x": 0.0,
-            "y": 0.0,
-            "width": 100.0,
-            "height": 100.0,
-            "zIndex": 5
-          },
-          "content": "/templates/canva/fashion-2/page_6_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_6_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
-          "placeholderKey": "image-placeholder"
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         }
       ]
     },
@@ -1982,7 +1343,7 @@
         {
           "id": "p7-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -1990,143 +1351,118 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_7_bg.webp",
+          "content": "/templates/canva/fashion-2/page_7_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p7-img-0",
           "type": "image",
-          "name": "Image 0",
+          "name": "Image Element 1",
           "frame": {
             "x": 28.26,
             "y": 0.0,
             "width": 71.74,
             "height": 100.0,
-            "zIndex": 5
+            "zIndex": 10
           },
-          "content": "/templates/canva/fashion-2/page_7_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_7_img_0.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p7-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 7.23,
             "y": 11.27,
             "width": 20.48,
             "height": 76.07,
-            "zIndex": 10
+            "zIndex": 20
           },
           "content": "Midsummer Times",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 75.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p7-text-1",
           "type": "text",
-          "name": "Text Element 1",
+          "name": "Text Element 2",
           "frame": {
             "x": 35.98,
             "y": 87.81,
             "width": 16.54,
-            "height": 2.49,
-            "zIndex": 10
+            "height": 2.5,
+            "zIndex": 21
           },
           "content": "Modern Edge",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 15.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#ffffff",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p7-text-2",
           "type": "text",
-          "name": "Text Element 2",
-          "frame": {
-            "x": 35.98,
-            "y": 91.28,
-            "width": 23.4,
-            "height": 1.33,
-            "zIndex": 10
-          },
-          "content": "Aliquam tincidunt quis mi euismod",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 8.0,
-            "fontWeight": 400,
-            "color": "#ffffff",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p7-text-3",
-          "type": "text",
           "name": "Text Element 3",
           "frame": {
             "x": 35.98,
-            "y": 92.55,
+            "y": 91.28,
             "width": 24.89,
-            "height": 1.33,
-            "zIndex": 10
+            "height": 3.86,
+            "zIndex": 22
           },
-          "content": "ultrices. Quisque feugiat iaculis leo et",
+          "content": "Aliquam tincidunt quis mi euismod\nultrices. Quisque feugiat iaculis leo et\ninterdum.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 8.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#ffffff",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p7-text-4",
-          "type": "text",
-          "name": "Text Element 4",
-          "frame": {
-            "x": 35.98,
-            "y": 93.81,
-            "width": 6.45,
-            "height": 1.33,
-            "zIndex": 10
-          },
-          "content": "interdum.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 8.0,
-            "fontWeight": 400,
-            "color": "#ffffff",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]
@@ -2141,7 +1477,7 @@
         {
           "id": "p8-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -2149,96 +1485,90 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_8_bg.webp",
+          "content": "/templates/canva/fashion-2/page_8_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p8-img-0",
           "type": "image",
-          "name": "Image 0",
+          "name": "Image Element 1",
           "frame": {
             "x": 48.11,
             "y": 53.1,
             "width": 37.17,
             "height": 39.82,
-            "zIndex": 5
+            "zIndex": 10
           },
-          "content": "/templates/canva/fashion-2/page_8_img_0.webp",
+          "content": "/templates/canva/fashion-2/page_8_img_0.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p8-img-1",
           "type": "image",
-          "name": "Image 1",
+          "name": "Image Element 2",
           "frame": {
             "x": 0.0,
             "y": 7.07,
             "width": 85.3,
             "height": 35.28,
-            "zIndex": 5
+            "zIndex": 11
           },
-          "content": "/templates/canva/fashion-2/page_8_img_1.webp",
+          "content": "/templates/canva/fashion-2/page_8_img_1.jpg",
           "imageStyle": {
             "objectFit": "cover"
           },
           "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
           "placeholderKey": "image-placeholder"
         },
         {
           "id": "p8-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 10.0,
             "y": 52.19,
             "width": 31.75,
-            "height": 6.18,
-            "zIndex": 10
+            "height": 10.19,
+            "zIndex": 20
           },
-          "content": "Effortless",
+          "content": "Effortless\nChic",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 32.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p8-text-1",
-          "type": "text",
-          "name": "Text Element 1",
-          "frame": {
-            "x": 10.0,
-            "y": 56.2,
-            "width": 11.07,
-            "height": 6.18,
-            "zIndex": 10
-          },
-          "content": "Chic",
-          "textStyle": {
-            "fontFamily": "Atteron",
-            "fontSize": 32.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-2",
           "type": "text",
           "name": "Text Element 2",
           "frame": {
@@ -2246,386 +1576,49 @@
             "y": 41.45,
             "width": 6.78,
             "height": 6.18,
-            "zIndex": 10
+            "zIndex": 21
           },
           "content": "03.",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 32.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
-          "id": "p8-text-3",
+          "id": "p8-text-2",
           "type": "text",
           "name": "Text Element 3",
           "frame": {
             "x": 10.0,
             "y": 72.01,
             "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
+            "height": 19.3,
+            "zIndex": 22
           },
-          "content": "Phasellus aliquet, elit sit amet",
+          "content": "Phasellus aliquet, elit sit amet\npellentesque mattis, mi libero\nmattis enim, et lacinia lacus\nsapien sit amet tellus. Donec\nelementum\negestas\naliquet.\nPhasellus congue interdum nibh,\nvitae bibendum ex egestas et.\nPhasellus in ullamcorper risus, ut\negestas\nerat.\nSuspendisse\npotenti. Curabitur sed magna\ntempus, vulputate magna vel,\nbibendum purus.",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 10.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-4",
-          "type": "text",
-          "name": "Text Element 4",
-          "frame": {
-            "x": 10.0,
-            "y": 73.61,
-            "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "pellentesque mattis, mi libero",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-5",
-          "type": "text",
-          "name": "Text Element 5",
-          "frame": {
-            "x": 10.0,
-            "y": 75.21,
-            "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "mattis enim, et lacinia lacus",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-6",
-          "type": "text",
-          "name": "Text Element 6",
-          "frame": {
-            "x": 10.0,
-            "y": 76.82,
-            "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "sapien sit amet tellus. Donec",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-7",
-          "type": "text",
-          "name": "Text Element 7",
-          "frame": {
-            "x": 10.0,
-            "y": 78.42,
-            "width": 10.2,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "elementum ",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-8",
-          "type": "text",
-          "name": "Text Element 8",
-          "frame": {
-            "x": 22.54,
-            "y": 78.42,
-            "width": 7.17,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "egestas ",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-9",
-          "type": "text",
-          "name": "Text Element 9",
-          "frame": {
-            "x": 32.04,
-            "y": 78.42,
-            "width": 6.18,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "aliquet.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-10",
-          "type": "text",
-          "name": "Text Element 10",
-          "frame": {
-            "x": 10.0,
-            "y": 80.02,
-            "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "Phasellus congue interdum nibh,",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-11",
-          "type": "text",
-          "name": "Text Element 11",
-          "frame": {
-            "x": 10.0,
-            "y": 81.63,
-            "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "vitae bibendum ex egestas et.",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-12",
-          "type": "text",
-          "name": "Text Element 12",
-          "frame": {
-            "x": 10.0,
-            "y": 83.23,
-            "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "Phasellus in ullamcorper risus, ut",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-13",
-          "type": "text",
-          "name": "Text Element 13",
-          "frame": {
-            "x": 10.0,
-            "y": 84.83,
-            "width": 7.17,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "egestas ",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-14",
-          "type": "text",
-          "name": "Text Element 14",
-          "frame": {
-            "x": 20.32,
-            "y": 84.83,
-            "width": 4.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "erat. ",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-15",
-          "type": "text",
-          "name": "Text Element 15",
-          "frame": {
-            "x": 27.68,
-            "y": 84.83,
-            "width": 10.53,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "Suspendisse",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-16",
-          "type": "text",
-          "name": "Text Element 16",
-          "frame": {
-            "x": 10.0,
-            "y": 86.44,
-            "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "potenti. Curabitur sed magna",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-17",
-          "type": "text",
-          "name": "Text Element 17",
-          "frame": {
-            "x": 10.0,
-            "y": 88.04,
-            "width": 28.21,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "tempus, vulputate magna vel,",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p8-text-18",
-          "type": "text",
-          "name": "Text Element 18",
-          "frame": {
-            "x": 10.0,
-            "y": 89.64,
-            "width": 14.78,
-            "height": 1.66,
-            "zIndex": 10
-          },
-          "content": "bibendum purus. ",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 10.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]
@@ -2640,7 +1633,7 @@
         {
           "id": "p9-bg",
           "type": "image",
-          "name": "Background Design",
+          "name": "Page Background",
           "frame": {
             "x": 0,
             "y": 0,
@@ -2648,125 +1641,96 @@
             "height": 100,
             "zIndex": 0
           },
-          "content": "/templates/canva/fashion-2/page_9_bg.webp",
+          "content": "/templates/canva/fashion-2/page_9_bg.png",
           "imageStyle": {
             "objectFit": "cover"
           },
-          "isReplaceable": false
+          "isReplaceable": true,
+          "isEditable": true,
+          "replaceable": true,
+          "editable": true,
+          "locked": false,
+          "placeholderKey": "background-image"
         },
         {
           "id": "p9-text-0",
           "type": "text",
-          "name": "Text Element 0",
+          "name": "Text Element 1",
           "frame": {
             "x": 28.45,
             "y": 33.7,
             "width": 43.11,
             "height": 14.48,
-            "zIndex": 10
+            "zIndex": 20
           },
           "content": "MERAKI",
           "textStyle": {
-            "fontFamily": "Atteron",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 75.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p9-text-1",
           "type": "text",
-          "name": "Text Element 1",
+          "name": "Text Element 2",
           "frame": {
             "x": 10.0,
             "y": 57.76,
-            "width": 18.77,
-            "height": 2.0,
-            "zIndex": 10
+            "width": 80.0,
+            "height": 2.5,
+            "zIndex": 21
           },
-          "content": "Fashion Magazine",
+          "content": "Fashion Magazine\nLookbook Fashion",
           "textStyle": {
-            "fontFamily": "Poppins-Bold",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 12.0,
-            "fontWeight": 400,
+            "fontWeight": 700,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         },
         {
           "id": "p9-text-2",
           "type": "text",
-          "name": "Text Element 2",
-          "frame": {
-            "x": 72.19,
-            "y": 57.76,
-            "width": 17.81,
-            "height": 2.0,
-            "zIndex": 10
-          },
-          "content": "Lookbook Fashion",
-          "textStyle": {
-            "fontFamily": "Poppins-Regular",
-            "fontSize": 12.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p9-text-3",
-          "type": "text",
           "name": "Text Element 3",
           "frame": {
             "x": 10.0,
             "y": 60.76,
-            "width": 21.52,
-            "height": 2.0,
-            "zIndex": 10
+            "width": 80.0,
+            "height": 2.5,
+            "zIndex": 22
           },
-          "content": "Brand New Collection",
+          "content": "Brand New Collection\nVolume 122",
           "textStyle": {
-            "fontFamily": "Poppins-Regular",
+            "fontFamily": "Inter, sans-serif",
             "fontSize": 12.0,
             "fontWeight": 400,
+            "fontStyle": "normal",
             "color": "#000000",
             "textAlign": "left"
           },
           "isEditable": true,
           "isReplaceable": true,
-          "placeholderKey": "text-placeholder"
-        },
-        {
-          "id": "p9-text-4",
-          "type": "text",
-          "name": "Text Element 4",
-          "frame": {
-            "x": 78.43,
-            "y": 60.76,
-            "width": 11.57,
-            "height": 2.0,
-            "zIndex": 10
-          },
-          "content": "Volume 122",
-          "textStyle": {
-            "fontFamily": "Poppins-Bold",
-            "fontSize": 12.0,
-            "fontWeight": 400,
-            "color": "#000000",
-            "textAlign": "left"
-          },
-          "isEditable": true,
-          "isReplaceable": true,
+          "editable": true,
+          "replaceable": true,
+          "locked": false,
           "placeholderKey": "text-placeholder"
         }
       ]

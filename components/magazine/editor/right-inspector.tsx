@@ -267,6 +267,19 @@ export function RightInspector({
 
               <div>
                 <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Text Content
+                </label>
+                <textarea
+                  rows={3}
+                  value={singleElement.content || ''}
+                  onChange={(e) => onUpdateElement(singleElement.id, { content: e.target.value })}
+                  placeholder="Enter text..."
+                  className="w-full bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] p-2 rounded-lg text-xs font-mono text-white outline-none resize-y"
+                />
+              </div>
+
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
                   Font Family
                 </label>
                 <select

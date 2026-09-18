@@ -76,3 +76,6 @@ env/
 scratch/
 tmp/
 temp/
+.tempmediaStorage/
+*.log
+
