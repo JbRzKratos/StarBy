@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
+import { getR2AssetUrl } from '@/lib/r2';
 
 interface SkinConcept {
   id: string;
@@ -24,7 +25,7 @@ const UPCOMING_SKINS: SkinConcept[] = [
     description:
       'Ultra-deep matte forged carbon weave offering high-traction grip and zero fingerprint smudging.',
     features: ['3M Cast Vinyl', 'Air-Release Microchannels', 'Matte Carbon Texture'],
-    image: '/images/products/phantom-skin.webp',
+    image: getR2AssetUrl('images/products/phantom-skin.webp'),
     badge: 'Lab Formulation',
   },
   {
@@ -34,7 +35,7 @@ const UPCOMING_SKINS: SkinConcept[] = [
     description:
       'Anti-reflective deep black finish engineered for minimalist aesthetics and edge-to-edge scratch protection.',
     features: ['Sub-Zero Reflection', 'Scratch Resistant', 'Precision Cut <0.1mm'],
-    image: '/images/products/stealth-skin.webp',
+    image: getR2AssetUrl('images/products/stealth-skin.webp'),
     badge: 'In Development',
   },
   {
@@ -44,7 +45,7 @@ const UPCOMING_SKINS: SkinConcept[] = [
     description:
       'Chameleonic color-shift micro-film that catches ambient light gradients across device contours.',
     features: ['Light-Reactive Layer', 'Zero-Residue Removal', 'Thermal Stability'],
-    image: '/images/products/aura-skin.webp',
+    image: getR2AssetUrl('images/products/aura-skin.webp'),
     badge: 'Material Testing',
   },
   {
@@ -54,7 +55,7 @@ const UPCOMING_SKINS: SkinConcept[] = [
     description:
       'Precision tactile geometric circuit patterns designed for laptops, phones, and gaming consoles.',
     features: ['Tactile Embossing', 'Laser Edge Alignment', 'Edge Wrap Retention'],
-    image: '/images/products/cypher-skin.webp',
+    image: getR2AssetUrl('images/products/cypher-skin.webp'),
     badge: 'Prototyping',
   },
   {
@@ -64,7 +65,7 @@ const UPCOMING_SKINS: SkinConcept[] = [
     description:
       'Absorptive true-black surface that creates an ultra-clean monolithic aesthetic across any chassis.',
     features: ['Absorptive Pigment', 'Anti-Fingerprint Coating', 'Device Heat Vent Safe'],
-    image: '/images/products/void-skin.webp',
+    image: getR2AssetUrl('images/products/void-skin.webp'),
     badge: 'Sampling',
   },
   {
@@ -74,7 +75,7 @@ const UPCOMING_SKINS: SkinConcept[] = [
     description:
       'Brushed metallic architectural texture mimicking industrial titanium and space-grade alloys.',
     features: ['Brushed Metal Grain', '3D Contoured Corners', 'Clean Peel Guarantee'],
-    image: '/images/products/spectre-skin.webp',
+    image: getR2AssetUrl('images/products/spectre-skin.webp'),
     badge: 'Tooling',
   },
 ];

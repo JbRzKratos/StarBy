@@ -73,7 +73,7 @@ const jsonLd = {
   '@type': 'Organization',
   name: 'Fregoro Studios',
   url: siteUrl,
-  logo: `${siteUrl}/images/fregoro-logo.png`,
+  logo: `https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/images/fregoro-logo.png`,
   description:
     'Design what defines you. Fregoro Studios is a premium customizable eCommerce brand where every product is uniquely yours.',
   sameAs: [],

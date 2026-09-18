@@ -26,9 +26,14 @@ const nextConfig = {
         hostname: '*.r2.cloudflarestorage.com',
       },
       {
-        // Cloudflare R2 — custom public domain (set NEXT_PUBLIC_R2_PUBLIC_URL)
+        // Cloudflare R2 — public r2.dev subdomain (NEXT_PUBLIC_R2_PUBLIC_URL)
         protocol: 'https',
         hostname: '*.r2.dev',
+      },
+      {
+        // Cloudflare R2 — specific pub- subdomain for this project
+        protocol: 'https',
+        hostname: 'pub-911817f7f441483a9ef72eecab9dbf49.r2.dev',
       },
     ],
   },
@@ -112,16 +117,6 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Cache static public images for 7 days with revalidation
-        source: '/images/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=604800, stale-while-revalidate=86400',
           },
         ],
       },

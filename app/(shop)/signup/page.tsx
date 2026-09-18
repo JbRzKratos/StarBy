@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
+import { getR2AssetUrl } from '@/lib/r2';
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -56,7 +57,7 @@ export default function SignUpPage() {
       <div className="hidden lg:flex lg:w-1/2 relative bg-graphite border-r border-smoke/20 items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/login_side_image.png"
+            src={getR2AssetUrl('images/login_side_image.png')}
             alt="Premium device skin design"
             fill
             className="object-cover opacity-60"

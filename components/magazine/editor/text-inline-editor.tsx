@@ -106,7 +106,13 @@ export function TextInlineEditor({
   const color = style?.color || '#F5F1EA';
   const textAlign = style?.textAlign || 'left';
   const lineHeight = style?.lineHeight || 1.3;
-  const letterSpacing = style?.letterSpacing ? `${style.letterSpacing}px` : 'normal';
+  const letterSpacing =
+    style?.letterSpacing !== undefined && style?.letterSpacing !== null
+      ? typeof style.letterSpacing === 'number'
+        ? `${style.letterSpacing}em`
+        : style.letterSpacing
+      : 'normal';
+  const textTransform = style?.textTransform || 'none';
 
   return (
     <div
@@ -131,6 +137,7 @@ export function TextInlineEditor({
             color,
             lineHeight,
             letterSpacing,
+            textTransform,
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-word',
           }}
@@ -148,6 +155,7 @@ export function TextInlineEditor({
             color,
             lineHeight,
             letterSpacing,
+            textTransform,
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-word',
           }}

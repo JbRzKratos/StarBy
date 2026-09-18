@@ -1,14 +1,15 @@
 import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/prisma';
+import { products } from '@/data/products';
 import { CustomizerLayout } from '@/components/customizer/customizer-layout';
 import { SimpleCustomizerLayout } from '@/components/customizer/simple-customizer-layout';
 import type { ProductType } from '@/lib/config/printSpecs';
+import { getR2AssetUrl } from '@/lib/r2';
 
 interface CustomizePageProps {
   params: { productId: string };
 }
 
-// Map database category slug to our internal ProductType for customizer logic
+// Map category slug to our internal ProductType for customizer logic
 function mapCategoryToProductType(categorySlug: string): ProductType | null {
   switch (categorySlug) {
     case 'tees':
@@ -17,21 +18,19 @@ function mapCategoryToProductType(categorySlug: string): ProductType | null {
     case 'hoodies':
       return 'hoodie';
     case 'posters':
-      return 'poster-single'; // We might need to handle split posters separately or use variants
+      return 'poster-single';
     case 'mugs':
       return 'mug';
     case 'diaries':
       return 'diary';
     default:
-      return null; // Not customizable
+      return null;
   }
 }
 
 export default async function CustomizePage({ params }: CustomizePageProps) {
-  const product = await prisma.product.findUnique({
-    where: { id: params.productId },
-    include: { variants: true },
-  });
+  // Use static product data — no DB query needed for catalogue
+  const product = products.find((p) => p.id === params.productId);
 
   if (!product || !product.customizable) {
     notFound();
@@ -43,17 +42,13 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
     notFound();
   }
 
-  // Temporary fallback logic for mockups. In a real app, these might be defined in the DB or config
-  let mockupImageSrc = '/images/mockups/tee-black-front.png';
+  let mockupImageSrc = getR2AssetUrl('images/mockups/tee-black-front.png');
   if (productType === 'hoodie') {
-    mockupImageSrc = '/images/mockups/hoodie-black-front.png';
+    mockupImageSrc = getR2AssetUrl('images/mockups/hoodie-black-front.png');
   } else if (productType === 't-shirt') {
-    // If we have oversized or different colors, we can map them based on the active variant
-    // For now, let's use the standard one
-    mockupImageSrc = '/images/mockups/tee-black-front.png';
+    mockupImageSrc = getR2AssetUrl('images/mockups/tee-black-front.png');
   }
 
-  // Default to base price, or use default variant price if available
   const defaultVariant = product.variants.find((v) => v.name.toLowerCase() === 'default');
   const price = defaultVariant ? defaultVariant.price : product.basePrice;
 

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { products, type Product } from '@/data/products';
+import { getR2AssetUrl } from '@/lib/r2';
 import { ProductCard } from '@/components/product/product-card';
 
 const CATEGORY_TABS = [
@@ -21,25 +22,25 @@ const SKIN_PREVIEWS = [
   {
     name: 'Phantom Carbon Skin',
     tagline: 'Precision 3M forged carbon weave texture.',
-    image: '/images/products/phantom-skin.webp',
+    image: getR2AssetUrl('images/products/phantom-skin.webp'),
     stage: 'Lab Formulation',
   },
   {
     name: 'Stealth Obsidian Skin',
     tagline: 'Anti-reflective true-matte stealth armor.',
-    image: '/images/products/stealth-skin.webp',
+    image: getR2AssetUrl('images/products/stealth-skin.webp'),
     stage: 'In Development',
   },
   {
     name: 'Aura Iridescent Matrix',
     tagline: 'Chameleonic color-shifting micro-film.',
-    image: '/images/products/aura-skin.webp',
+    image: getR2AssetUrl('images/products/aura-skin.webp'),
     stage: 'Material Testing',
   },
   {
     name: 'Cypher Cybernetic Mesh',
     tagline: 'Tactile geometric circuit patterns.',
-    image: '/images/products/cypher-skin.webp',
+    image: getR2AssetUrl('images/products/cypher-skin.webp'),
     stage: 'Prototyping',
   },
 ];

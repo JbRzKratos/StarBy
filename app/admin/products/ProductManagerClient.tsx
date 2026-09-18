@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { toggleVariantStock, deleteProduct, createProduct } from '@/app/admin/lib/actions';
 import { StatusBadge } from '@/components/admin/status-badge';
 
@@ -25,7 +26,9 @@ type ProductManagerClientProps = {
 };
 
 export function ProductManagerClient({ products: initialProducts }: ProductManagerClientProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [products, setProducts] = useState<Product[]>(initialProducts);
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -36,16 +39,35 @@ export function ProductManagerClient({ products: initialProducts }: ProductManag
     description: '',
   });
 
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
   const handleToggleStock = (variantId: string, currentStock: boolean) => {
+    // Instant optimistic update in UI
+    setProducts((prev) =>
+      prev.map((prod) => ({
+        ...prod,
+        variants: prod.variants.map((v) =>
+          v.id === variantId ? { ...v, inStock: !currentStock } : v,
+        ),
+      })),
+    );
+
     startTransition(async () => {
       await toggleVariantStock(variantId, !currentStock);
+      router.refresh();
     });
   };
 
   const handleDeleteProduct = (productId: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
+      // Instant optimistic removal in UI
+      setProducts((prev) => prev.filter((p) => p.id !== productId));
+
       startTransition(async () => {
         await deleteProduct(productId);
+        router.refresh();
       });
     }
   };
@@ -74,6 +96,7 @@ export function ProductManagerClient({ products: initialProducts }: ProductManag
         tagline: '',
         description: '',
       });
+      router.refresh();
     });
   };
 
@@ -160,7 +183,7 @@ export function ProductManagerClient({ products: initialProducts }: ProductManag
       )}
 
       <div className="space-y-6">
-        {initialProducts.map((product) => (
+        {products.map((product) => (
           <div
             key={product.id}
             className="bg-charcoal border border-smoke rounded-sm overflow-hidden flex flex-col"

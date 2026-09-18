@@ -65,6 +65,18 @@ export function getR2PublicUrl(objectKey: string): string {
   return `${base}/${cleanKey}`;
 }
 
+// ─── Asset URL Builder ────────────────────────────────────────────────────────
+// Converts a local public-folder path like '/images/products/foo.webp' or
+// '3d-models/tshirt.glb' into a full Cloudflare R2 CDN URL.
+// This is the primary replacement for all Next.js <Image src="/images/…"> usage.
+// Safe to call from both client and server code.
+
+export function getR2AssetUrl(assetPath: string): string {
+  const base = process.env.NEXT_PUBLIC_R2_PUBLIC_URL || '';
+  const cleanPath = assetPath.replace(/^\/+/, '');
+  return base ? `${base}/${cleanPath}` : `/${cleanPath}`;
+}
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 export interface PresignedUploadResult {

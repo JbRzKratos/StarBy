@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
 import { createCategory, updateCategory, deleteCategory } from '@/app/admin/lib/actions';
 
@@ -24,12 +25,18 @@ const BLANK = {
 };
 
 export function CategoriesClient({ categories }: { categories: CategoryRow[] }) {
+  const router = useRouter();
   const { toast, show, dismiss } = useToast();
   const [isPending, startTransition] = useTransition();
+  const [localCategories, setLocalCategories] = useState<CategoryRow[]>(categories);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState(BLANK);
+
+  useEffect(() => {
+    setLocalCategories(categories);
+  }, [categories]);
 
   function openEdit(cat: CategoryRow) {
     setEditId(cat.id);
@@ -53,6 +60,21 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
     startTransition(async () => {
       try {
         if (editId) {
+          // Instant optimistic update in UI
+          setLocalCategories((prev) =>
+            prev.map((c) =>
+              c.id === editId
+                ? {
+                    ...c,
+                    name: form.name,
+                    description: form.description,
+                    tagline: form.tagline,
+                    gradient: form.gradient,
+                  }
+                : c,
+            ),
+          );
+
           await updateCategory(editId, {
             name: form.name,
             description: form.description,
@@ -66,6 +88,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         }
         setEditId(null);
         setShowCreate(false);
+        router.refresh();
       } catch (e) {
         show(e instanceof Error ? e.message : 'Error', 'error');
       }
@@ -74,10 +97,16 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
 
   function handleDelete() {
     if (!deleteId) return;
+    const targetId = deleteId;
+
+    // Instant optimistic removal in UI
+    setLocalCategories((prev) => prev.filter((c) => c.id !== targetId));
+
     startTransition(async () => {
       try {
-        await deleteCategory(deleteId);
+        await deleteCategory(targetId);
         show('Category deleted', 'success');
+        router.refresh();
       } catch (e) {
         show(e instanceof Error ? e.message : 'Cannot delete', 'error');
       } finally {
@@ -232,7 +261,7 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
             </tr>
           </thead>
           <tbody className="divide-y divide-smoke">
-            {categories.map((cat) => (
+            {localCategories.map((cat) => (
               <React.Fragment key={cat.id}>
                 <tr className="hover:bg-smoke/10">
                   <td className="px-6 py-4">

@@ -79,3 +79,21 @@ temp/
 .tempmediaStorage/
 *.log
 
+# ─── Cloudflare R2 Assets (served from CDN, not committed to git) ────────────
+# These files live in R2. Run `python scripts/upload_to_r2.py` to upload them.
+# Keep: favicon.ico, robots.txt, placeholder.png (tiny, needed at build time)
+/public/images/hero/
+/public/images/products/
+/public/images/mockups/
+/public/images/fregoro-emblem.png
+/public/images/fregoro-logo.png
+/public/images/fregoro-logo-original.png
+/public/images/hero-three-models.png
+/public/images/hero-three-models.webp
+/public/images/hero-model-transparent.png
+/public/images/login_side_image.png
+/public/fonts/
+/public/textures/
+/public/3d models/
+/public/templates/
+/public/*.pdf

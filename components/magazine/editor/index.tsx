@@ -592,6 +592,23 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     }
   };
 
+  const handleUpdateElementLive = (
+    pageIndex: number,
+    elementId: string,
+    updates: Partial<MagazineElement>,
+  ) => {
+    setDoc((prev) => {
+      const updatedPages = prev.pages.map((page, idx) => {
+        if (idx !== pageIndex) return page;
+        const updatedElements = page.elements.map((el) =>
+          el.id === elementId ? { ...el, ...updates } : el,
+        );
+        return { ...page, elements: updatedElements };
+      });
+      return { ...prev, pages: updatedPages };
+    });
+  };
+
   const handleUploadImage = useCallback((file: File): Promise<string | null> => {
     const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB
     const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
@@ -863,14 +880,18 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
           <div
             className={
               isMobileScreen
-                ? 'absolute inset-y-0 right-0 z-50 flex shadow-2xl'
+                ? 'fixed inset-y-0 right-0 z-50 flex shadow-2xl w-[90vw] max-w-sm'
                 : 'relative shrink-0 flex h-full'
             }
+            style={isMobileScreen ? { bottom: '3.5rem', top: 0 } : undefined}
           >
             <RightInspector
               document={doc}
               currentPageIndex={currentPageIndex}
               selectedElements={selectedElements}
+              onUpdateElementLive={(id, updates) =>
+                handleUpdateElementLive(currentPageIndex, id, updates)
+              }
               onUpdateElement={(id, updates) =>
                 handleUpdateElement(currentPageIndex, id, updates, true)
               }

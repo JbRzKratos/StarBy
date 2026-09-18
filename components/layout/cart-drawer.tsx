@@ -8,6 +8,7 @@ import { usePrice } from '@/lib/hooks/usePrice';
 import Link from 'next/link';
 import Image from 'next/image';
 import { products } from '@/data/products';
+import { getR2AssetUrl } from '@/lib/r2';
 
 export function CartDrawer() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -264,7 +265,7 @@ export function CartDrawer() {
                         item.customization?.thumbnail ||
                         item.image ||
                         product?.variants[0]?.images[0] ||
-                        '/images/placeholder.png'
+                        getR2AssetUrl('images/placeholder.png')
                       }
                       alt={item.name || displayName}
                       fill

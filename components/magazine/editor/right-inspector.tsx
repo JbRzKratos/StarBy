@@ -13,6 +13,9 @@ interface RightInspectorProps {
   document: MagazineDocument;
   currentPageIndex: number;
   selectedElements: MagazineElement[];
+  /** Called on every keystroke/change for live canvas preview */
+  onUpdateElementLive: (elementId: string, updates: Partial<MagazineElement>) => void;
+  /** Called on blur/commit to push to undo stack */
   onUpdateElement: (elementId: string, updates: Partial<MagazineElement>) => void;
   onUpdatePageBackground: (color: string) => void;
   onUpdateDocumentProps: (updates: Partial<MagazineDocument>) => void;
@@ -32,6 +35,7 @@ export function RightInspector({
   document: doc,
   currentPageIndex,
   selectedElements,
+  onUpdateElementLive,
   onUpdateElement,
   onUpdatePageBackground,
   onUpdateDocumentProps,
@@ -54,7 +58,7 @@ export function RightInspector({
   const singleElement = selectedElements.length === 1 ? selectedElements[0] : null;
 
   return (
-    <aside className="w-[calc(100vw-2rem)] max-w-xs sm:w-72 xl:w-80 bg-[#121214] border-l border-[#F5F1EA]/10 flex flex-col h-full select-none text-[#F5F1EA] overflow-y-auto p-4 space-y-6 z-30">
+    <aside className="w-full sm:w-72 xl:w-80 bg-[#121214] border-l border-[#F5F1EA]/10 flex flex-col h-full select-none text-[#F5F1EA] overflow-y-auto p-4 pb-24 sm:pb-6 space-y-6 z-30">
       {onClose && (
         <div className="flex items-center justify-between pb-3 border-b border-[#F5F1EA]/10 shrink-0">
           <span className="font-mono text-[10px] text-[#F5F1EA]/60 uppercase tracking-widest font-bold">
@@ -164,18 +168,24 @@ export function RightInspector({
             </div>
           </div>
 
-          {/* Exact Numeric Geometry Inputs */}
+          {/* Exact Numeric Geometry Inputs — LIVE UPDATE on change, COMMIT on blur */}
           <div className="space-y-2">
             <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase font-bold block">
               Geometry & Transform (%)
             </span>
             <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+              {/* X Position */}
               <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
                 <span className="text-[#F5F1EA]/40 block text-[9px]">X Position</span>
                 <input
                   type="number"
                   value={Math.round(singleElement.frame.x)}
                   onChange={(e) =>
+                    onUpdateElementLive(singleElement.id, {
+                      frame: { ...singleElement.frame, x: Number(e.target.value) },
+                    })
+                  }
+                  onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
                       frame: { ...singleElement.frame, x: Number(e.target.value) },
                     })
@@ -183,12 +193,18 @@ export function RightInspector({
                   className="w-full bg-transparent text-white font-bold outline-none"
                 />
               </div>
+              {/* Y Position */}
               <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
                 <span className="text-[#F5F1EA]/40 block text-[9px]">Y Position</span>
                 <input
                   type="number"
                   value={Math.round(singleElement.frame.y)}
                   onChange={(e) =>
+                    onUpdateElementLive(singleElement.id, {
+                      frame: { ...singleElement.frame, y: Number(e.target.value) },
+                    })
+                  }
+                  onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
                       frame: { ...singleElement.frame, y: Number(e.target.value) },
                     })
@@ -196,12 +212,18 @@ export function RightInspector({
                   className="w-full bg-transparent text-white font-bold outline-none"
                 />
               </div>
+              {/* Width */}
               <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
                 <span className="text-[#F5F1EA]/40 block text-[9px]">Width</span>
                 <input
                   type="number"
                   value={Math.round(singleElement.frame.width)}
                   onChange={(e) =>
+                    onUpdateElementLive(singleElement.id, {
+                      frame: { ...singleElement.frame, width: Number(e.target.value) },
+                    })
+                  }
+                  onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
                       frame: { ...singleElement.frame, width: Number(e.target.value) },
                     })
@@ -209,12 +231,18 @@ export function RightInspector({
                   className="w-full bg-transparent text-white font-bold outline-none"
                 />
               </div>
+              {/* Height */}
               <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
                 <span className="text-[#F5F1EA]/40 block text-[9px]">Height</span>
                 <input
                   type="number"
                   value={Math.round(singleElement.frame.height)}
                   onChange={(e) =>
+                    onUpdateElementLive(singleElement.id, {
+                      frame: { ...singleElement.frame, height: Number(e.target.value) },
+                    })
+                  }
+                  onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
                       frame: { ...singleElement.frame, height: Number(e.target.value) },
                     })
@@ -225,12 +253,18 @@ export function RightInspector({
             </div>
 
             <div className="grid grid-cols-2 gap-2 text-xs font-mono pt-1">
+              {/* Rotation */}
               <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
                 <span className="text-[#F5F1EA]/40 block text-[9px]">Rotation (°)</span>
                 <input
                   type="number"
                   value={singleElement.frame.rotation || 0}
                   onChange={(e) =>
+                    onUpdateElementLive(singleElement.id, {
+                      frame: { ...singleElement.frame, rotation: Number(e.target.value) },
+                    })
+                  }
+                  onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
                       frame: { ...singleElement.frame, rotation: Number(e.target.value) },
                     })
@@ -238,6 +272,7 @@ export function RightInspector({
                   className="w-full bg-transparent text-white font-bold outline-none"
                 />
               </div>
+              {/* Opacity */}
               <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
                 <span className="text-[#F5F1EA]/40 block text-[9px]">Opacity (%)</span>
                 <input
@@ -246,6 +281,11 @@ export function RightInspector({
                   max="100"
                   value={Math.round((singleElement.opacity ?? 1) * 100)}
                   onChange={(e) =>
+                    onUpdateElementLive(singleElement.id, {
+                      opacity: Math.max(0, Math.min(100, Number(e.target.value))) / 100,
+                    })
+                  }
+                  onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
                       opacity: Math.max(0, Math.min(100, Number(e.target.value))) / 100,
                     })
@@ -272,7 +312,10 @@ export function RightInspector({
                 <textarea
                   rows={3}
                   value={singleElement.content || ''}
-                  onChange={(e) => onUpdateElement(singleElement.id, { content: e.target.value })}
+                  onChange={(e) =>
+                    onUpdateElementLive(singleElement.id, { content: e.target.value })
+                  }
+                  onBlur={(e) => onUpdateElement(singleElement.id, { content: e.target.value })}
                   placeholder="Enter text..."
                   className="w-full bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] p-2 rounded-lg text-xs font-mono text-white outline-none resize-y"
                 />
@@ -284,8 +327,8 @@ export function RightInspector({
                 </label>
                 <select
                   value={singleElement.textStyle?.fontFamily || 'Inter, sans-serif'}
-                  onChange={(e) =>
-                    onUpdateElement(singleElement.id, {
+                  onChange={(e) => {
+                    const updates = {
                       textStyle: {
                         fontFamily: e.target.value,
                         fontSize: singleElement.textStyle?.fontSize || 12,
@@ -293,8 +336,10 @@ export function RightInspector({
                         color: singleElement.textStyle?.color || '#F5F1EA',
                         textAlign: singleElement.textStyle?.textAlign || 'left',
                       },
-                    })
-                  }
+                    };
+                    onUpdateElementLive(singleElement.id, updates);
+                    onUpdateElement(singleElement.id, updates);
+                  }}
                   className="w-full bg-[#16161A] border border-[#F5F1EA]/15 p-2 rounded-lg text-xs font-mono text-white outline-none cursor-pointer"
                 >
                   <option value="Playfair Display, serif">
@@ -303,6 +348,10 @@ export function RightInspector({
                   <option value="Inter, sans-serif">Inter (Modern Clean Sans)</option>
                   <option value="Cinzel, serif">Cinzel (Luxury Classical)</option>
                   <option value="Space Mono, monospace">Space Mono (Technical Monospace)</option>
+                  <option value="Bebas Neue, sans-serif">Bebas Neue (Display)</option>
+                  <option value="DM Serif Display, serif">DM Serif Display</option>
+                  <option value="Cormorant Garamond, serif">Cormorant Garamond (Elegant)</option>
+                  <option value="Montserrat, sans-serif">Montserrat (Magazine Sans)</option>
                 </select>
               </div>
 
@@ -314,7 +363,19 @@ export function RightInspector({
                   <input
                     type="number"
                     value={singleElement.textStyle?.fontSize || 12}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const updates = {
+                        textStyle: {
+                          fontFamily: singleElement.textStyle?.fontFamily || 'Inter, sans-serif',
+                          fontSize: Number(e.target.value),
+                          fontWeight: singleElement.textStyle?.fontWeight || 400,
+                          color: singleElement.textStyle?.color || '#F5F1EA',
+                          textAlign: singleElement.textStyle?.textAlign || 'left',
+                        },
+                      };
+                      onUpdateElementLive(singleElement.id, updates);
+                    }}
+                    onBlur={(e) =>
                       onUpdateElement(singleElement.id, {
                         textStyle: {
                           fontFamily: singleElement.textStyle?.fontFamily || 'Inter, sans-serif',
@@ -336,8 +397,8 @@ export function RightInspector({
                   <input
                     type="color"
                     value={singleElement.textStyle?.color || '#F5F1EA'}
-                    onChange={(e) =>
-                      onUpdateElement(singleElement.id, {
+                    onChange={(e) => {
+                      const updates = {
                         textStyle: {
                           fontFamily: singleElement.textStyle?.fontFamily || 'Inter, sans-serif',
                           fontSize: singleElement.textStyle?.fontSize || 12,
@@ -345,24 +406,60 @@ export function RightInspector({
                           color: e.target.value,
                           textAlign: singleElement.textStyle?.textAlign || 'left',
                         },
-                      })
-                    }
+                      };
+                      onUpdateElementLive(singleElement.id, updates);
+                      onUpdateElement(singleElement.id, updates);
+                    }}
                     className="w-full h-8 bg-transparent cursor-pointer rounded border border-[#F5F1EA]/15"
                   />
+                </div>
+              </div>
+
+              {/* Font Weight */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Font Weight
+                </label>
+                <div className="flex gap-1 bg-[#16161A] p-1 rounded-lg border border-[#F5F1EA]/15">
+                  {([300, 400, 500, 600, 700, 900] as const).map((w) => (
+                    <button
+                      key={w}
+                      onClick={() => {
+                        const updates = {
+                          textStyle: {
+                            fontFamily: singleElement.textStyle?.fontFamily || 'Inter, sans-serif',
+                            fontSize: singleElement.textStyle?.fontSize || 12,
+                            fontWeight: w,
+                            color: singleElement.textStyle?.color || '#F5F1EA',
+                            textAlign: singleElement.textStyle?.textAlign || 'left',
+                          },
+                        };
+                        onUpdateElementLive(singleElement.id, updates);
+                        onUpdateElement(singleElement.id, updates);
+                      }}
+                      className={`flex-1 py-1 text-[10px] font-mono rounded ${
+                        (singleElement.textStyle?.fontWeight || 400) === w
+                          ? 'bg-[#0057FF] text-white font-bold'
+                          : 'text-[#F5F1EA]/50 hover:text-white'
+                      }`}
+                    >
+                      {w}
+                    </button>
+                  ))}
                 </div>
               </div>
 
               {/* Text Alignment */}
               <div>
                 <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
-                  Horizontal Alignment
+                  Alignment
                 </label>
                 <div className="flex gap-1 bg-[#16161A] p-1 rounded-lg border border-[#F5F1EA]/15">
                   {(['left', 'center', 'right', 'justify'] as const).map((align) => (
                     <button
                       key={align}
-                      onClick={() =>
-                        onUpdateElement(singleElement.id, {
+                      onClick={() => {
+                        const updates = {
                           textStyle: {
                             fontFamily: singleElement.textStyle?.fontFamily || 'Inter, sans-serif',
                             fontSize: singleElement.textStyle?.fontSize || 12,
@@ -370,17 +467,175 @@ export function RightInspector({
                             color: singleElement.textStyle?.color || '#F5F1EA',
                             textAlign: align,
                           },
-                        })
-                      }
+                        };
+                        onUpdateElementLive(singleElement.id, updates);
+                        onUpdateElement(singleElement.id, updates);
+                      }}
                       className={`flex-1 py-1 text-xs font-mono rounded uppercase ${
                         singleElement.textStyle?.textAlign === align
                           ? 'bg-[#0057FF] text-white font-bold'
                           : 'text-[#F5F1EA]/50 hover:text-white'
                       }`}
                     >
-                      {align}
+                      {align[0]}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              {/* Letter Spacing */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Letter Spacing (em): {(singleElement.textStyle?.letterSpacing ?? 0).toFixed(2)}
+                </label>
+                <input
+                  type="range"
+                  min="-0.1"
+                  max="0.5"
+                  step="0.01"
+                  value={singleElement.textStyle?.letterSpacing ?? 0}
+                  onChange={(e) => {
+                    const updates = {
+                      textStyle: {
+                        ...(singleElement.textStyle || {
+                          fontFamily: 'Inter, sans-serif',
+                          fontSize: 12,
+                          fontWeight: 400,
+                          color: '#F5F1EA',
+                          textAlign: 'left' as const,
+                        }),
+                        letterSpacing: Number(e.target.value),
+                      },
+                    };
+                    onUpdateElementLive(singleElement.id, updates);
+                  }}
+                  onMouseUp={(e) => {
+                    const updates = {
+                      textStyle: {
+                        ...(singleElement.textStyle || {
+                          fontFamily: 'Inter, sans-serif',
+                          fontSize: 12,
+                          fontWeight: 400,
+                          color: '#F5F1EA',
+                          textAlign: 'left' as const,
+                        }),
+                        letterSpacing: Number((e.target as HTMLInputElement).value),
+                      },
+                    };
+                    onUpdateElement(singleElement.id, updates);
+                  }}
+                  className="w-full accent-[#0057FF]"
+                />
+              </div>
+
+              {/* Line Height */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Line Height: {(singleElement.textStyle?.lineHeight ?? 1.4).toFixed(1)}
+                </label>
+                <input
+                  type="range"
+                  min="0.8"
+                  max="3"
+                  step="0.1"
+                  value={singleElement.textStyle?.lineHeight ?? 1.4}
+                  onChange={(e) => {
+                    const updates = {
+                      textStyle: {
+                        ...(singleElement.textStyle || {
+                          fontFamily: 'Inter, sans-serif',
+                          fontSize: 12,
+                          fontWeight: 400,
+                          color: '#F5F1EA',
+                          textAlign: 'left' as const,
+                        }),
+                        lineHeight: Number(e.target.value),
+                      },
+                    };
+                    onUpdateElementLive(singleElement.id, updates);
+                  }}
+                  onMouseUp={(e) => {
+                    const updates = {
+                      textStyle: {
+                        ...(singleElement.textStyle || {
+                          fontFamily: 'Inter, sans-serif',
+                          fontSize: 12,
+                          fontWeight: 400,
+                          color: '#F5F1EA',
+                          textAlign: 'left' as const,
+                        }),
+                        lineHeight: Number((e.target as HTMLInputElement).value),
+                      },
+                    };
+                    onUpdateElement(singleElement.id, updates);
+                  }}
+                  className="w-full accent-[#0057FF]"
+                />
+              </div>
+
+              {/* Text Transform */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Text Transform
+                </label>
+                <div className="flex gap-1 bg-[#16161A] p-1 rounded-lg border border-[#F5F1EA]/15">
+                  {(['none', 'uppercase', 'lowercase', 'capitalize'] as const).map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => {
+                        const updates = {
+                          textStyle: {
+                            ...(singleElement.textStyle || {
+                              fontFamily: 'Inter, sans-serif',
+                              fontSize: 12,
+                              fontWeight: 400,
+                              color: '#F5F1EA',
+                              textAlign: 'left' as const,
+                            }),
+                            textTransform: t,
+                          },
+                        };
+                        onUpdateElementLive(singleElement.id, updates);
+                        onUpdateElement(singleElement.id, updates);
+                      }}
+                      className={`flex-1 py-1 text-[9px] font-mono rounded uppercase truncate ${
+                        (singleElement.textStyle?.textTransform || 'none') === t
+                          ? 'bg-[#0057FF] text-white font-bold'
+                          : 'text-[#F5F1EA]/50 hover:text-white'
+                      }`}
+                    >
+                      {t === 'none' ? 'As-is' : t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Background Color */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Text Box Background
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={singleElement.backgroundColor || '#00000000'}
+                    onChange={(e) => {
+                      onUpdateElementLive(singleElement.id, {
+                        backgroundColor: e.target.value,
+                      });
+                      onUpdateElement(singleElement.id, { backgroundColor: e.target.value });
+                    }}
+                    className="w-8 h-8 bg-transparent cursor-pointer rounded border border-[#F5F1EA]/15"
+                  />
+                  <button
+                    onClick={() => {
+                      onUpdateElementLive(singleElement.id, { backgroundColor: undefined });
+                      onUpdateElement(singleElement.id, { backgroundColor: undefined });
+                    }}
+                    className="text-[10px] font-mono text-[#F5F1EA]/40 hover:text-white"
+                  >
+                    Clear
+                  </button>
                 </div>
               </div>
             </div>
@@ -397,14 +652,13 @@ export function RightInspector({
                 <input
                   ref={replaceImageInputRef}
                   type="file"
-                  accept="image/jpeg,image/png,image/webp"
+                  accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file && onReplaceImage) {
                       onReplaceImage(file);
                     }
-                    // Reset so same file can be re-selected
                     if (replaceImageInputRef.current) replaceImageInputRef.current.value = '';
                   }}
                 />
@@ -422,8 +676,14 @@ export function RightInspector({
                 </label>
                 <input
                   type="text"
-                  value={singleElement.content || ''}
-                  onChange={(e) => onUpdateElement(singleElement.id, { content: e.target.value })}
+                  value={
+                    singleElement.content?.startsWith('data:') ? '' : singleElement.content || ''
+                  }
+                  onChange={(e) =>
+                    onUpdateElementLive(singleElement.id, { content: e.target.value })
+                  }
+                  onBlur={(e) => onUpdateElement(singleElement.id, { content: e.target.value })}
+                  placeholder="https://..."
                   className="w-full bg-[#16161A] border border-[#F5F1EA]/15 p-2 rounded-lg text-xs font-mono text-white outline-none"
                 />
               </div>
@@ -436,14 +696,16 @@ export function RightInspector({
                   {(['cover', 'contain', 'fill'] as const).map((fit) => (
                     <button
                       key={fit}
-                      onClick={() =>
-                        onUpdateElement(singleElement.id, {
+                      onClick={() => {
+                        const updates = {
                           imageStyle: {
                             objectFit: fit,
                             borderRadius: singleElement.imageStyle?.borderRadius || 0,
                           },
-                        })
-                      }
+                        };
+                        onUpdateElementLive(singleElement.id, updates);
+                        onUpdateElement(singleElement.id, updates);
+                      }}
                       className={`flex-1 py-1 text-xs font-mono rounded uppercase ${
                         singleElement.imageStyle?.objectFit === fit
                           ? 'bg-[#0057FF] text-white font-bold'
@@ -454,6 +716,39 @@ export function RightInspector({
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Border Radius */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Corner Radius: {singleElement.imageStyle?.borderRadius ?? 0}px
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="50"
+                  step="1"
+                  value={singleElement.imageStyle?.borderRadius ?? 0}
+                  onChange={(e) => {
+                    const updates = {
+                      imageStyle: {
+                        objectFit: singleElement.imageStyle?.objectFit || ('cover' as const),
+                        borderRadius: Number(e.target.value),
+                      },
+                    };
+                    onUpdateElementLive(singleElement.id, updates);
+                  }}
+                  onMouseUp={(e) => {
+                    const updates = {
+                      imageStyle: {
+                        objectFit: singleElement.imageStyle?.objectFit || ('cover' as const),
+                        borderRadius: Number((e.target as HTMLInputElement).value),
+                      },
+                    };
+                    onUpdateElement(singleElement.id, updates);
+                  }}
+                  className="w-full accent-[#0057FF]"
+                />
               </div>
 
               <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[#16161A] border border-[#F5F1EA]/15 font-mono text-xs">
@@ -481,8 +776,8 @@ export function RightInspector({
                 <input
                   type="color"
                   value={singleElement.shapeStyle?.fillColor || '#0057FF'}
-                  onChange={(e) =>
-                    onUpdateElement(singleElement.id, {
+                  onChange={(e) => {
+                    const updates = {
                       shapeStyle: {
                         fillColor: e.target.value,
                         ...(singleElement.shapeStyle?.strokeWidth !== undefined
@@ -492,11 +787,133 @@ export function RightInspector({
                           ? { borderRadius: singleElement.shapeStyle.borderRadius }
                           : {}),
                       },
-                    })
-                  }
+                    };
+                    onUpdateElementLive(singleElement.id, updates);
+                    onUpdateElement(singleElement.id, updates);
+                  }}
                   className="w-full h-8 bg-transparent cursor-pointer rounded border border-[#F5F1EA]/15"
                 />
               </div>
+              {/* Stroke Width */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Stroke Width: {singleElement.shapeStyle?.strokeWidth ?? 0}px
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="20"
+                  step="0.5"
+                  value={singleElement.shapeStyle?.strokeWidth ?? 0}
+                  onChange={(e) => {
+                    const updates = {
+                      shapeStyle: {
+                        ...(singleElement.shapeStyle || {}),
+                        strokeWidth: Number(e.target.value),
+                      },
+                    };
+                    onUpdateElementLive(singleElement.id, updates);
+                  }}
+                  onMouseUp={(e) => {
+                    const updates = {
+                      shapeStyle: {
+                        ...(singleElement.shapeStyle || {}),
+                        strokeWidth: Number((e.target as HTMLInputElement).value),
+                      },
+                    };
+                    onUpdateElement(singleElement.id, updates);
+                  }}
+                  className="w-full accent-[#0057FF]"
+                />
+              </div>
+
+              {/* Stroke Color */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Stroke Color
+                </label>
+                <input
+                  type="color"
+                  value={singleElement.shapeStyle?.strokeColor || '#000000'}
+                  onChange={(e) => {
+                    const updates = {
+                      shapeStyle: {
+                        ...(singleElement.shapeStyle || {}),
+                        strokeColor: e.target.value,
+                      },
+                    };
+                    onUpdateElementLive(singleElement.id, updates);
+                    onUpdateElement(singleElement.id, updates);
+                  }}
+                  className="w-full h-8 bg-transparent cursor-pointer rounded border border-[#F5F1EA]/15"
+                />
+              </div>
+
+              {/* Line Style (for lines, dividers, and stroked shapes) */}
+              <div>
+                <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                  Line / Border Style
+                </label>
+                <div className="flex gap-1 bg-[#16161A] p-1 rounded-lg border border-[#F5F1EA]/15">
+                  {(['solid', 'dashed', 'dotted'] as const).map((st) => (
+                    <button
+                      key={st}
+                      onClick={() => {
+                        const updates = {
+                          shapeStyle: {
+                            ...(singleElement.shapeStyle || {}),
+                            lineStyle: st,
+                          },
+                        };
+                        onUpdateElementLive(singleElement.id, updates);
+                        onUpdateElement(singleElement.id, updates);
+                      }}
+                      className={`flex-1 py-1 text-[10px] font-mono rounded uppercase ${
+                        (singleElement.shapeStyle?.lineStyle || 'solid') === st
+                          ? 'bg-[#0057FF] text-white font-bold'
+                          : 'text-[#F5F1EA]/50 hover:text-white'
+                      }`}
+                    >
+                      {st}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Shape Corner Radius */}
+              {singleElement.type === 'shape' && (
+                <div>
+                  <label className="font-mono text-[10px] text-[#F5F1EA]/60 block mb-1">
+                    Corner Radius: {singleElement.shapeStyle?.borderRadius ?? 0}px
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="50"
+                    step="1"
+                    value={singleElement.shapeStyle?.borderRadius ?? 0}
+                    onChange={(e) => {
+                      const updates = {
+                        shapeStyle: {
+                          ...(singleElement.shapeStyle || {}),
+                          borderRadius: Number(e.target.value),
+                        },
+                      };
+                      onUpdateElementLive(singleElement.id, updates);
+                    }}
+                    onMouseUp={(e) => {
+                      const updates = {
+                        shapeStyle: {
+                          ...(singleElement.shapeStyle || {}),
+                          borderRadius: Number((e.target as HTMLInputElement).value),
+                        },
+                      };
+                      onUpdateElement(singleElement.id, updates);
+                    }}
+                    className="w-full accent-[#0057FF]"
+                  />
+                </div>
+              )}
             </div>
           )}
 

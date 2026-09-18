@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { AdminToast, useToast } from '../ui/confirm-dialog';
 import { updateSettings } from '@/app/admin/lib/actions';
 
@@ -26,9 +27,14 @@ export function SettingsClient({
   settings: StoreSettings;
   shippingZones: ShippingZone[];
 }) {
+  const router = useRouter();
   const { toast, show, dismiss } = useToast();
   const [isPending, startTransition] = useTransition();
   const [form, setForm] = useState(settings);
+
+  useEffect(() => {
+    setForm(settings);
+  }, [settings]);
 
   function handleSave() {
     startTransition(async () => {
@@ -41,6 +47,7 @@ export function SettingsClient({
           maintenanceMode: false,
         });
         show('Settings saved successfully', 'success');
+        router.refresh();
       } catch {
         show('Error saving settings', 'error');
       }

@@ -614,6 +614,7 @@ export function CanvasWorkspace({
                 zIndex: el.frame.zIndex || 10,
                 transform: el.frame.rotation ? `rotate(${el.frame.rotation}deg)` : undefined,
                 opacity: el.opacity !== undefined ? el.opacity : 1,
+                backgroundColor: el.backgroundColor || undefined,
               }}
             >
               {/* Text Object */}
@@ -654,7 +655,7 @@ export function CanvasWorkspace({
                   style={{
                     backgroundColor: el.shapeStyle?.fillColor || doc.theme.accentColor || '#0057FF',
                     border: el.shapeStyle?.strokeWidth
-                      ? `${el.shapeStyle.strokeWidth}px solid ${el.shapeStyle.strokeColor || '#000'}`
+                      ? `${el.shapeStyle.strokeWidth}px ${el.shapeStyle.lineStyle || 'solid'} ${el.shapeStyle.strokeColor || '#000'}`
                       : undefined,
                     borderRadius: `${el.shapeStyle?.borderRadius || 0}px`,
                   }}
@@ -668,7 +669,7 @@ export function CanvasWorkspace({
                   style={{
                     backgroundColor: el.shapeStyle?.fillColor || doc.theme.accentColor || '#0057FF',
                     border: el.shapeStyle?.strokeWidth
-                      ? `${el.shapeStyle.strokeWidth}px solid ${el.shapeStyle.strokeColor || '#000'}`
+                      ? `${el.shapeStyle.strokeWidth}px ${el.shapeStyle.lineStyle || 'solid'} ${el.shapeStyle.strokeColor || '#000'}`
                       : undefined,
                   }}
                 />
@@ -682,11 +683,16 @@ export function CanvasWorkspace({
                     style={{
                       height: `${el.shapeStyle?.strokeWidth || 2}px`,
                       backgroundColor:
-                        el.shapeStyle?.fillColor || doc.theme.accentColor || '#0057FF',
+                        el.shapeStyle?.lineStyle === 'dashed' ||
+                        el.shapeStyle?.lineStyle === 'dotted'
+                          ? 'transparent'
+                          : el.shapeStyle?.fillColor || doc.theme.accentColor || '#0057FF',
                       borderTop:
                         el.shapeStyle?.lineStyle === 'dashed'
-                          ? `2px dashed ${el.shapeStyle.strokeColor || el.shapeStyle.fillColor}`
-                          : undefined,
+                          ? `${el.shapeStyle?.strokeWidth || 2}px dashed ${el.shapeStyle.strokeColor || el.shapeStyle.fillColor || '#0057FF'}`
+                          : el.shapeStyle?.lineStyle === 'dotted'
+                            ? `${el.shapeStyle?.strokeWidth || 2}px dotted ${el.shapeStyle.strokeColor || el.shapeStyle.fillColor || '#0057FF'}`
+                            : undefined,
                     }}
                   />
                 </div>

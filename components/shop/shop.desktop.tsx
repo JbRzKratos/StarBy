@@ -8,6 +8,7 @@ import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
 import { DeviceSkinsComingSoon } from './device-skins-coming-soon';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { getR2AssetUrl } from '@/lib/r2';
 
 function DesktopProductCard({ product, index }: { product: Product; index: number }) {
   const { formatPrice } = usePrice();
@@ -26,7 +27,7 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
       {/* Standard Hover Image wrapper */}
       <div className="relative aspect-[3/4] overflow-hidden bg-smoke/5 rounded-xl border border-transparent group-hover:border-smoke/40 transition-colors duration-300">
         <Image
-          src={product.variants[0]?.images?.[0] || '/images/hero/hoodies.webp'}
+          src={product.variants[0]?.images?.[0] || getR2AssetUrl('images/hero/hoodies.webp')}
           alt={product.name}
           fill
           priority={index < 4}

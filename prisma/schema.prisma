@@ -1,11 +1,14 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
+
+// ─── Catalogue (editable by admin, served to public) ─────────────────────────
 
 model Category {
   id           String   @id @default(cuid())
@@ -16,7 +19,7 @@ model Category {
   productCount Int      @default(0)
   featured     Boolean  @default(false)
   gradient     String
-  image        String?
+  image        String?  // R2 URL
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -48,47 +51,14 @@ model ProductVariant {
   color            String
   colorHex         String
   price            Float
-  images           String[]
+  images           String[] // R2 URLs
   inStock          Boolean  @default(true)
   stockQuantity    Int      @default(0)
   reorderThreshold Int      @default(5)
 }
 
-model DeviceSkinTemplate {
-  id           String   @id
-  name         String
-  brand        String
-  type         String
-  aspectRatio  Float
-  borderRadius Float
-  cameraModule Json?
-  logoCutout   Json?
-  sPenSilo     Boolean  @default(false)
-  confidence   String
-  notes        String?
-  createdAt    DateTime @default(now())
-}
+// ─── User & Auth ─────────────────────────────────────────────────────────────
 
-model MagazineTemplate {
-  id          String   @id @default(cuid())
-  name        String
-  category    String
-  description String
-  coverImage  String
-  pages       Json     // Array of MagazinePage objects
-  styleTags   String[] @default([])
-  badge       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model CustomizationTemplate {
-  id          String @id @default(cuid())
-  productId   String @unique
-  mockupImage String
-  printArea   Json
-  blendMode   String @default("source-over")
-}
 enum Role {
   CUSTOMER
   STAFF
@@ -96,20 +66,21 @@ enum Role {
 }
 
 model User {
-  id        String             @id
-  email     String             @unique
+  id        String   @id
+  email     String   @unique
   fullName  String?
   phone     String?
-  role      Role               @default(CUSTOMER)
-  notes     String?            // staff-only CRM notes
-  createdAt DateTime           @default(now())
-  updatedAt DateTime           @updatedAt
-  addresses Address[]
-  orders    Order[]
-  designs   CustomizerDesign[]
-  reviews   Review[]
+  role      Role     @default(CUSTOMER)
+  notes     String?  // staff-only CRM notes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  addresses     Address[]
+  orders        Order[]
+  designs       CustomizerDesign[]
+  reviews       Review[]
   wishlistItems WishlistItem[]
-  files     StoredFile[]
+  files         StoredFile[]
 }
 
 model Address {
@@ -128,98 +99,102 @@ model Address {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
+// ─── Orders ──────────────────────────────────────────────────────────────────
+
 model Order {
-  id                      String              @id @default(cuid())
-  publicOrderId           String?             @unique  // e.g. STB-2026-00001
+  id                      String   @id @default(cuid())
+  publicOrderId           String?  @unique
   userId                  String?
-  user                    User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
-  subtotal                Float               @default(0)
-  discount                Float?              @default(0)
-  shippingFee             Float               @default(0)
-  tax                     Float               @default(0)
+  user                    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  subtotal                Float    @default(0)
+  discount                Float?   @default(0)
+  shippingFee             Float    @default(0)
+  tax                     Float    @default(0)
   total                   Float
-  currency                String              @default("INR")
-  status                  String              @default("pending_payment")
-  paymentStatus           String              @default("pending")
-  paymentProvider         String?             // 'cashfree' | 'razorpay' | 'cod'
-  paymentGatewayOrderId   String?             // Cashfree cf_order_id or Razorpay order_id
-  paymentGatewayPaymentId String?             // Cashfree cf_payment_id or Razorpay payment_id
-  shippingAddress         Json                // immutable snapshot
+  currency                String   @default("INR")
+  status                  String   @default("pending_payment")
+  paymentStatus           String   @default("pending")
+  paymentProvider         String?
+  paymentGatewayOrderId   String?
+  paymentGatewayPaymentId String?
+  shippingAddress         Json
   couponCode              String?
   estimatedDeliveryDate   DateTime?
-  shippingMethod          String?             @default("standard")
+  shippingMethod          String?  @default("standard")
   trackingNumber          String?
   trackingUrl             String?
   carrier                 String?
-  internalNotes           String?             // staff-only, never shown to customer
-  createdAt               DateTime            @default(now())
-  updatedAt               DateTime            @updatedAt
-  items                   OrderItem[]
-  statusHistory           OrderStatusHistory[]
-  files                   StoredFile[]
+  internalNotes           String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  items         OrderItem[]
+  statusHistory OrderStatusHistory[]
+  files         StoredFile[]
 }
 
 model OrderItem {
-  id                  String              @id @default(cuid())
+  id                  String   @id @default(cuid())
   orderId             String
-  order               Order               @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order               Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId           String
   variantId           String
-  productNameSnapshot String?             // frozen product name at time of order
-  skuSnapshot         String?             // frozen SKU at time of order
+  productNameSnapshot String?
+  skuSnapshot         String?
   quantity            Int
-  price               Float?              @default(0) // legacy price field
-  unitPrice           Float               @default(0) // price per unit at time of order
-  totalPrice          Float               @default(0) // unitPrice * quantity
+  price               Float?   @default(0)
+  unitPrice           Float    @default(0)
+  totalPrice          Float    @default(0)
   size                String?
-  customization       Json?               // legacy canvas customization data
-  orderCustomization  OrderCustomization? // production-grade customization
-  createdAt           DateTime            @default(now())
+  customization       Json?
+  orderCustomization  OrderCustomization?
+  createdAt           DateTime @default(now())
 }
 
-// ─── Production-grade customization for order items with file uploads ───
 model OrderCustomization {
-  id                String   @id @default(cuid())
-  orderItemId       String   @unique
+  id                String    @id @default(cuid())
+  orderItemId       String    @unique
   orderItem         OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
-  designFileUrl     String?  // R2 signed URL (temporary) or relative key
-  designFileKey     String?  // R2 object key for retrieval
-  designFileName    String?  // original filename
-  designFileType    String?  // MIME type e.g. image/png
-  designFileSize    Int?     // bytes
-  printPosition     String?  // e.g. 'front', 'back', 'full-wrap'
-  printInstructions String?  // e.g. 'Centered chest print'
+  designFileUrl     String?
+  designFileKey     String?
+  designFileName    String?
+  designFileType    String?
+  designFileSize    Int?
+  printPosition     String?
+  printInstructions String?
   customerNotes     String?
-  previewFileUrl    String?  // preview image URL
-  productionStatus  String   @default("pending") // pending | design_received | review | approved | printing | completed
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
+  previewFileUrl    String?
+  productionStatus  String    @default("pending")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
 }
 
-// ─── Order status audit trail ───
 model OrderStatusHistory {
   id        String   @id @default(cuid())
   orderId   String
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   oldStatus String?
   newStatus String
-  changedBy String?  // userId or 'system' or 'webhook'
+  changedBy String?
   note      String?
   createdAt DateTime @default(now())
 }
 
-// ─── Webhook idempotency ───
+// ─── Webhook Idempotency ──────────────────────────────────────────────────────
+
 model WebhookEvent {
-  id              String   @id @default(cuid())
-  provider        String   // 'cashfree' | 'razorpay'
-  eventId         String   // provider-specific event identifier
-  eventType       String   // e.g. 'PAYMENT_SUCCESS', 'PAYMENT_FAILED'
-  orderId         String?  // internal order id
-  payload         Json?    // raw webhook payload for debugging
-  processedAt     DateTime @default(now())
+  id           String   @id @default(cuid())
+  provider     String
+  eventId      String
+  eventType    String
+  orderId      String?
+  payload      Json?
+  processedAt  DateTime @default(now())
 
   @@unique([provider, eventId])
 }
+
+// ─── Customizer Designs ───────────────────────────────────────────────────────
 
 model CustomizerDesign {
   id          String   @id @default(cuid())
@@ -232,10 +207,12 @@ model CustomizerDesign {
   createdAt   DateTime @default(now())
 }
 
+// ─── Coupons ─────────────────────────────────────────────────────────────────
+
 model Coupon {
   id               String    @id @default(cuid())
   code             String    @unique
-  discountType     String    // 'percentage' or 'flat'
+  discountType     String
   discountValue    Float
   isActive         Boolean   @default(true)
   expiresAt        DateTime?
@@ -247,30 +224,7 @@ model Coupon {
   updatedAt        DateTime  @updatedAt
 }
 
-model StoreSettings {
-  id           String   @id @default("singleton")
-  storeName    String   @default("StarBy")
-  contactEmail String   @default("")
-  logoUrl      String?
-  taxRate      Float    @default(0)
-  newOrderEmail Boolean @default(true)
-  updatedAt    DateTime @updatedAt
-}
-
-model ShippingZone {
-  id        String   @id @default(cuid())
-  name      String
-  states    String[]
-  rateType  String   // 'flat' | 'per_item'
-  rateValue Float
-  createdAt DateTime @default(now())
-}
-
-model NewsletterSubscriber {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  createdAt DateTime @default(now())
-}
+// ─── Reviews & Wishlist ───────────────────────────────────────────────────────
 
 model Review {
   id        String   @id @default(cuid())
@@ -296,7 +250,37 @@ model WishlistItem {
   @@unique([userId, productId])
 }
 
-// ─── Generic File Metadata (Cloudflare R2) ───
+// ─── Store Config (admin-editable) ───────────────────────────────────────────
+
+model StoreSettings {
+  id           String   @id @default("singleton")
+  storeName    String   @default("StarBy")
+  contactEmail String   @default("")
+  logoUrl      String?
+  taxRate      Float    @default(0)
+  newOrderEmail Boolean @default(true)
+  updatedAt    DateTime @updatedAt
+}
+
+model ShippingZone {
+  id        String   @id @default(cuid())
+  name      String
+  states    String[]
+  rateType  String   // 'flat' | 'per_item'
+  rateValue Float
+  createdAt DateTime @default(now())
+}
+
+// ─── Newsletter ───────────────────────────────────────────────────────────────
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+// ─── File Storage Metadata (Cloudflare R2) ────────────────────────────────────
+
 model StoredFile {
   id               String   @id @default(cuid())
   ownerUserId      String?
@@ -304,7 +288,7 @@ model StoredFile {
   orderId          String?
   order            Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
   orderItemId      String?
-  fileType         String   // 'product_image' | 'customer_design' | 'production_artwork' | 'invoice' | 'proof'
+  fileType         String   // 'customer_design' | 'production_artwork' | 'invoice' | 'proof'
   storageProvider  String   @default("cloudflare_r2")
   bucket           String
   objectKey        String   @unique
@@ -320,4 +304,3 @@ model StoredFile {
   @@index([orderId])
   @@index([fileType])
 }
-

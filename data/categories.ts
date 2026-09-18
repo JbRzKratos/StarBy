@@ -1,3 +1,5 @@
+import { getR2AssetUrl } from '@/lib/r2';
+
 export interface Category {
   slug: string;
   name: string;
@@ -18,7 +20,7 @@ export const categories: Category[] = [
     productCount: 24,
     featured: true,
     gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-    image: '/images/hero/tees.webp',
+    image: getR2AssetUrl('images/hero/tees.webp'),
   },
   {
     slug: 'oversized-tees',
@@ -28,7 +30,7 @@ export const categories: Category[] = [
     productCount: 0,
     featured: false,
     gradient: 'linear-gradient(135deg, #1a1a2e 0%, #4a1942 100%)',
-    image: '/images/mockups/oversized-tee-black-front.png',
+    image: getR2AssetUrl('images/mockups/oversized-tee-black-front.png'),
   },
   {
     slug: 'hoodies',
@@ -38,7 +40,7 @@ export const categories: Category[] = [
     productCount: 16,
     featured: true,
     gradient: 'linear-gradient(135deg, #2d1b69 0%, #11998e 100%)',
-    image: '/images/hero/hoodies.webp',
+    image: getR2AssetUrl('images/hero/hoodies.webp'),
   },
   {
     slug: 'skins',
@@ -49,7 +51,7 @@ export const categories: Category[] = [
     productCount: 10,
     featured: true,
     gradient: 'linear-gradient(135deg, #0E0E0F 0%, #3B5EFF 100%)',
-    image: '/images/hero/skins.webp',
+    image: getR2AssetUrl('images/hero/skins.webp'),
   },
   {
     slug: 'posters',
@@ -59,7 +61,7 @@ export const categories: Category[] = [
     productCount: 18,
     featured: true,
     gradient: 'linear-gradient(135deg, #434343 0%, #1a1a2e 100%)',
-    image: '/images/hero/posters.webp',
+    image: getR2AssetUrl('images/hero/posters.webp'),
   },
   {
     slug: 'split-posters',
@@ -69,7 +71,7 @@ export const categories: Category[] = [
     productCount: 8,
     featured: true,
     gradient: 'linear-gradient(135deg, #0E0E0F 0%, #C45D3E 100%)',
-    image: '/images/hero/split_posters.webp',
+    image: getR2AssetUrl('images/hero/split_posters.webp'),
   },
   {
     slug: 'stationery',
@@ -79,7 +81,7 @@ export const categories: Category[] = [
     productCount: 12,
     featured: true,
     gradient: 'linear-gradient(135deg, #2A2A2F 0%, #D8D0C8 100%)',
-    image: '/images/hero/stationery.webp',
+    image: getR2AssetUrl('images/hero/stationery.webp'),
   },
   {
     slug: 'mugs-cups',
@@ -89,7 +91,7 @@ export const categories: Category[] = [
     productCount: 8,
     featured: true,
     gradient: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
-    image: '/images/products/classic_mug_11oz.png',
+    image: getR2AssetUrl('images/products/classic_mug_11oz.png'),
   },
   {
     slug: 'accessories',

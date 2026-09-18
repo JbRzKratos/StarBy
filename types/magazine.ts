@@ -208,7 +208,7 @@ export interface ImageStyle {
 }
 
 export interface ShapeStyle {
-  fillColor: string;
+  fillColor?: string;
   strokeColor?: string;
   strokeWidth?: number;
   borderRadius?: number;
@@ -227,6 +227,7 @@ export interface MagazineElement {
   shapeStyle?: ShapeStyle;
   crop?: ElementCrop;
   opacity?: number;
+  backgroundColor?: string;
   visible?: boolean;
   locked?: boolean;
   isLocked?: boolean;

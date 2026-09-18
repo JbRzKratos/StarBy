@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { getR2AssetUrl } from '@/lib/r2';
 
 interface FregoroLogoProps {
   className?: string;
@@ -36,7 +37,10 @@ export function FregoroLogo({
     },
   }[size];
 
-  const logoSrc = variant === 'mark' ? '/images/fregoro-emblem.png' : '/images/fregoro-logo.png';
+  const logoSrc =
+    variant === 'mark'
+      ? getR2AssetUrl('images/fregoro-emblem.png')
+      : getR2AssetUrl('images/fregoro-logo.png');
 
   const content = (
     <span className={`inline-flex items-center gap-2.5 sm:gap-3 select-none ${className}`}>

@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { categories } from '../data/categories';
 import { products } from '../data/products';
-import { deviceModels } from '../data/devices';
 
 const prisma = new PrismaClient();
 
@@ -90,39 +89,6 @@ async function main() {
         },
       });
     }
-  }
-
-  // 3. Seed Device Templates
-  console.log('Seeding device skin templates...');
-  for (const d of deviceModels) {
-    await prisma.deviceSkinTemplate.upsert({
-      where: { id: d.id },
-      update: {
-        name: d.name,
-        brand: d.brand,
-        type: d.type,
-        aspectRatio: d.aspectRatio,
-        borderRadius: d.borderRadius,
-        cameraModule: d.cameraModule ? (d.cameraModule as any) : undefined,
-        logoCutout: d.logoCutout ? (d.logoCutout as any) : undefined,
-        sPenSilo: d.sPenSilo || false,
-        confidence: d.confidence || 'verified',
-        notes: d.notes || null,
-      },
-      create: {
-        id: d.id,
-        name: d.name,
-        brand: d.brand,
-        type: d.type,
-        aspectRatio: d.aspectRatio,
-        borderRadius: d.borderRadius,
-        cameraModule: d.cameraModule ? (d.cameraModule as any) : undefined,
-        logoCutout: d.logoCutout ? (d.logoCutout as any) : undefined,
-        sPenSilo: d.sPenSilo || false,
-        confidence: d.confidence || 'verified',
-        notes: d.notes || null,
-      },
-    });
   }
 
   console.log('✅ Database seeding complete!');

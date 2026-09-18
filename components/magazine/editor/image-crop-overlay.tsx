@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import type { ElementCrop, ImageStyle } from '@/types/magazine';
+import { getR2AssetUrl } from '@/lib/r2';
 
 interface ImageCropOverlayProps {
   src: string;
@@ -100,7 +101,7 @@ export function ImageCropOverlay({
         {/* Native img element ensures instant rendering for local static files, data URLs, and remote images */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={safeSrc || '/images/placeholder.png'}
+          src={safeSrc || getR2AssetUrl('images/placeholder.png')}
           alt="Magazine Graphic"
           draggable={false}
           className={`absolute inset-0 w-full h-full pointer-events-none select-none ${

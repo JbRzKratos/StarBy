@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { createCoupon, updateCoupon, deleteCoupon } from '@/app/admin/lib/actions';
@@ -29,11 +30,17 @@ const BLANK = {
 };
 
 export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
+  const router = useRouter();
   const { toast, show, dismiss } = useToast();
   const [isPending, startTransition] = useTransition();
+  const [localCoupons, setLocalCoupons] = useState<CouponRow[]>(coupons);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState(BLANK);
+
+  useEffect(() => {
+    setLocalCoupons(coupons);
+  }, [coupons]);
 
   function openCreate() {
     setShowCreate(true);
@@ -49,6 +56,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
         });
         show('Coupon created', 'success');
         setShowCreate(false);
+        router.refresh();
       } catch (e) {
         show(e instanceof Error ? e.message : 'Error', 'error');
       }
@@ -56,10 +64,16 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
   }
 
   function handleToggleActive(id: string, currentStatus: boolean) {
+    // Instant optimistic update in UI
+    setLocalCoupons((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, isActive: !currentStatus } : c)),
+    );
+
     startTransition(async () => {
       try {
         await updateCoupon(id, { isActive: !currentStatus });
         show('Coupon status updated', 'success');
+        router.refresh();
       } catch {
         show('Error updating coupon', 'error');
       }
@@ -68,10 +82,16 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
 
   function handleDelete() {
     if (!deleteId) return;
+    const targetId = deleteId;
+
+    // Instant optimistic removal in UI
+    setLocalCoupons((prev) => prev.filter((c) => c.id !== targetId));
+
     startTransition(async () => {
       try {
-        await deleteCoupon(deleteId);
+        await deleteCoupon(targetId);
         show('Coupon deleted', 'success');
+        router.refresh();
       } catch (e) {
         show(e instanceof Error ? e.message : 'Cannot delete', 'error');
       } finally {
@@ -235,7 +255,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-smoke">
-            {coupons.map((c) => {
+            {localCoupons.map((c) => {
               const isExpired = c.expiresAt && new Date(c.expiresAt) < new Date();
               const isMaxedOut = c.maxUses && c.usageCount >= c.maxUses;
               const statusVariant = !c.isActive

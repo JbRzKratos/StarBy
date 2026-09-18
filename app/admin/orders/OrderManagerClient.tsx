@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useTransition, useState } from 'react';
+import React, { useTransition, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { updateOrderStatus, updateOrderTracking } from '@/app/admin/lib/actions';
 import { StatusBadge } from '@/components/admin/status-badge';
 import Link from 'next/link';
@@ -61,7 +62,9 @@ type OrderManagerClientProps = {
 };
 
 export function OrderManagerClient({ orders }: OrderManagerClientProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [localOrders, setLocalOrders] = useState<Order[]>(orders);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [trackingModalOrder, setTrackingModalOrder] = useState<string | null>(null);
   const [trackingForm, setTrackingForm] = useState({
@@ -70,9 +73,14 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
     trackingUrl: '',
   });
 
+  // Keep in sync with server revalidation
+  useEffect(() => {
+    setLocalOrders(orders);
+  }, [orders]);
+
   const handleStatusChange = (orderId: string, newStatus: string) => {
     if (newStatus === 'shipped') {
-      const order = orders.find((o) => o.id === orderId);
+      const order = localOrders.find((o) => o.id === orderId);
       setTrackingForm({
         carrier: order?.carrier || '',
         trackingNumber: order?.trackingNumber || '',
@@ -82,17 +90,39 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
       return;
     }
 
+    // Instant optimistic update in UI
+    setLocalOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)));
+
     startTransition(async () => {
       await updateOrderStatus(orderId, newStatus);
+      router.refresh();
     });
   };
 
   const handleTrackingSubmit = () => {
     if (!trackingModalOrder) return;
+    const targetId = trackingModalOrder;
+
+    // Instant optimistic update in UI
+    setLocalOrders((prev) =>
+      prev.map((o) =>
+        o.id === targetId
+          ? {
+              ...o,
+              status: 'shipped',
+              carrier: trackingForm.carrier,
+              trackingNumber: trackingForm.trackingNumber,
+              trackingUrl: trackingForm.trackingUrl,
+            }
+          : o,
+      ),
+    );
+    setTrackingModalOrder(null);
+
     startTransition(async () => {
-      await updateOrderTracking(trackingModalOrder, trackingForm);
-      await updateOrderStatus(trackingModalOrder, 'shipped');
-      setTrackingModalOrder(null);
+      await updateOrderTracking(targetId, trackingForm);
+      await updateOrderStatus(targetId, 'shipped');
+      router.refresh();
     });
   };
 
@@ -132,14 +162,14 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-smoke">
-            {orders.length === 0 ? (
+            {localOrders.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-6 py-8 text-center text-ash">
                   No orders found.
                 </td>
               </tr>
             ) : (
-              orders.map((order) => (
+              localOrders.map((order) => (
                 <React.Fragment key={order.id}>
                   <tr
                     className="hover:bg-smoke/10 transition-colors cursor-pointer"

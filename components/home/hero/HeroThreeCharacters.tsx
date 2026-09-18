@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { getR2AssetUrl } from '@/lib/r2';
 
 interface HeroThreeCharactersProps {
   priority?: boolean;
@@ -15,7 +16,7 @@ export function HeroThreeCharacters({ priority = true, className = '' }: HeroThr
     >
       <div className="relative w-full h-full z-10">
         <Image
-          src="/images/hero-three-models.png"
+          src={getR2AssetUrl('images/hero-three-models.png')}
           alt="Fregoro Studios Hero Models - Three Men in Navy Blue Suits"
           fill
           quality={100}
