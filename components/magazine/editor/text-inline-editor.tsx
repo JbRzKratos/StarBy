@@ -122,21 +122,21 @@ export function TextInlineEditor({
           onBlur={handleBlur}
           onInput={handleInput}
           onKeyDown={handleKeyDown}
-            className="w-full h-full outline-none select-text cursor-text ring-1 ring-[#0057FF] bg-black/20 rounded p-0.5"
-            style={{
-              fontFamily,
-              fontSize,
-              fontWeight,
-              fontStyle,
-              color,
-              lineHeight,
-              letterSpacing,
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-            }}
-          >
-            {content}
-          </div>
+          className="w-full h-full outline-none select-text cursor-text ring-1 ring-[#0057FF] bg-black/20 rounded p-0.5"
+          style={{
+            fontFamily,
+            fontSize,
+            fontWeight,
+            fontStyle,
+            color,
+            lineHeight,
+            letterSpacing,
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+          }}
+        >
+          {content}
+        </div>
       ) : (
         <div
           className="w-full h-full select-none pointer-events-none"

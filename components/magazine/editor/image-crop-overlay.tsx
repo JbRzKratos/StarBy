@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import type { ElementCrop, ImageStyle } from '@/types/magazine';
 
 interface ImageCropOverlayProps {
@@ -30,9 +29,7 @@ export function ImageCropOverlay({
     setOffset({ x: crop.offsetX || 0, y: crop.offsetY || 0 });
   }, [crop.scale, crop.offsetX, crop.offsetY]);
 
-  // Detect if src is a data URL or blob URL — next/image can't handle those with fill
   const safeSrc = src || '';
-  const isDataOrBlobUrl = safeSrc.startsWith('data:') || safeSrc.startsWith('blob:');
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef<{
     startX: number;
