@@ -38,30 +38,7 @@ export function TawkToWidget() {
 
   return (
     <>
-      {/* Suppress the Tawk attention-grabber close button and constrain widget on mobile */}
-      <style>{`
-        /* Hide Tawk attention grabber overlay / close button */
-        .tawk-min-container .tawk-button-circle,
-        [id^="tawk-bubble"],
-        .tawk-chat-panel .tawk-close-button,
-        iframe[title="chat widget"] + div,
-        .tawk-chat-panel > .tawk-attention-grabber,
-        div[class*="tawk-"][class*="attention"],
-        div[class*="tawk-"][class*="grabber"] {
-          display: none !important;
-        }
-        /* Keep the main chat button tidy on mobile */
-        @media (max-width: 768px) {
-          #tawkchat-minified-wrapper,
-          .tawk-min-container {
-            bottom: 12px !important;
-            right: 12px !important;
-            max-width: 52px !important;
-            max-height: 52px !important;
-            overflow: hidden !important;
-          }
-        }
-      `}</style>
+
       <Script
         id="tawk-to-script"
         strategy="lazyOnload"
