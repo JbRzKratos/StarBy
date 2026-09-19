@@ -12,7 +12,6 @@ interface ContentFormProps {
   schema: PageWizardSchema;
   contentMap: WizardContentMap;
   focusedElementId: string | null;
-  mode?: 'simple' | 'advanced';
   onContentChange: (elementId: string, value: string) => void;
   onFocusElement: (elementId: string | null) => void;
 }
@@ -40,7 +39,6 @@ export function ContentForm({
   schema,
   contentMap,
   focusedElementId,
-  mode,
   onContentChange,
   onFocusElement,
 }: ContentFormProps) {
@@ -81,7 +79,6 @@ export function ContentForm({
                 onInstructionChange={(v) => onContentChange(`${el.elementId}__instructions`, v)}
                 onFocus={() => onFocusElement(el.elementId)}
                 onBlur={() => onFocusElement(null)}
-                mode={mode}
               />
             ))}
           </div>
@@ -104,7 +101,6 @@ export function ContentForm({
                 onInstructionChange={(v) => onContentChange(`${el.elementId}__instructions`, v)}
                 onFocus={() => onFocusElement(el.elementId)}
                 onBlur={() => onFocusElement(null)}
-                mode={mode}
               />
             ))}
           </div>
@@ -137,7 +133,6 @@ interface FieldProps {
   value: string;
   instructionValue: string;
   isFocused: boolean;
-  mode?: 'simple' | 'advanced';
   onChange: (v: string) => void;
   onInstructionChange: (v: string) => void;
   onFocus: () => void;
@@ -149,7 +144,6 @@ function TextField({
   value,
   instructionValue,
   isFocused,
-  mode: _mode,
   onChange,
   onInstructionChange,
   onFocus,
@@ -233,7 +227,6 @@ function ImageField({
   value,
   instructionValue,
   isFocused,
-  mode,
   onChange,
   onInstructionChange,
   onFocus,

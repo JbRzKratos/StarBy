@@ -35,6 +35,20 @@ function ReviewInner() {
 
   const schema = useMemo(() => (template ? getWizardSchema(template) : null), [template]);
 
+  const userInstructions = useMemo(() => {
+    if (!schema) return [];
+    const list: { page: string; label: string; instruction: string }[] = [];
+    schema.pages.forEach((p) => {
+      p.elements.forEach((el) => {
+        const note = (contentMap[`${el.elementId}__instructions`] ?? '').trim();
+        if (note) {
+          list.push({ page: p.pageLabel, label: el.label, instruction: note });
+        }
+      });
+    });
+    return list;
+  }, [schema, contentMap]);
+
   if (!template || !schema) {
     return (
       <div className="min-h-screen bg-[#0D0D0E] flex flex-col items-center justify-center text-center px-6">
@@ -64,20 +78,6 @@ function ReviewInner() {
     },
     [] as { page: string; label: string }[],
   );
-
-  const userInstructions = useMemo(() => {
-    if (!schema) return [];
-    const list: { page: string; label: string; instruction: string }[] = [];
-    schema.pages.forEach((p) => {
-      p.elements.forEach((el) => {
-        const note = (contentMap[`${el.elementId}__instructions`] ?? '').trim();
-        if (note) {
-          list.push({ page: p.pageLabel, label: el.label, instruction: note });
-        }
-      });
-    });
-    return list;
-  }, [schema, contentMap]);
 
   const handleAddToCart = async () => {
     setIsAdding(true);
