@@ -358,3 +358,56 @@ export interface PdfExportOptions {
   includeCropMarks?: boolean;
   onProgress?: (current: number, total: number) => void;
 }
+
+// ── Content Wizard Types ──────────────────────────────────────────────────────
+
+/** Semantic role of a template element for the content wizard */
+export type ElementRole =
+  | 'headline'
+  | 'subheadline'
+  | 'body'
+  | 'caption'
+  | 'quote'
+  | 'author'
+  | 'date'
+  | 'page-number'
+  | 'hero-image'
+  | 'portrait'
+  | 'product-shot'
+  | 'background-image'
+  | 'image-placeholder'
+  | 'logo'
+  | 'decorative';
+
+/** Wizard metadata for a single template element */
+export interface ElementWizardMeta {
+  elementId: string;
+  role: ElementRole;
+  label: string;           // Human-readable: "Cover Headline"
+  guidance?: string;       // Hint: "Keep under 60 chars for best fit"
+  maxChars?: number;       // Text character limit
+  minChars?: number;
+  required?: boolean;
+  recommendedAspectRatio?: string; // For images: "3:4", "16:9"
+  placeholder?: string;    // Input placeholder text
+}
+
+/** Wizard schema for a single page */
+export interface PageWizardSchema {
+  pageId: string;
+  pageLabel: string;       // "Cover", "Contents", "Feature Spread"
+  elements: ElementWizardMeta[];
+}
+
+/** Full wizard schema for a template */
+export interface TemplateWizardSchema {
+  templateId: string;
+  pages: PageWizardSchema[];
+}
+
+/** User's content map: elementId → text content or image URL */
+export type WizardContentMap = Record<string, string>;
+
+/** Per-page completion status */
+export type WizardCompletionMap = Record<string, 'complete' | 'partial' | 'empty'>;
+

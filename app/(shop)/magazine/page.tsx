@@ -128,43 +128,66 @@ export default function MagazineStudioLanding() {
         </div>
       </section>
 
-      {/* ── 2. Two Distinct Workflows (Path A vs Path B) ── */}
+      {/* ── 2. Three Distinct Workflows ── */}
       <section className="section-container py-16 border-y border-[#F5F1EA]/10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Path A */}
-          <div className="p-8 rounded-2xl bg-[#141418] border border-[#0057FF]/30 space-y-4 relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-[#0057FF]/20 border border-[#0057FF]/40 flex items-center justify-center font-mono text-sm font-bold text-[#0057FF]">
+        <div className="text-center mb-8">
+          <span className="font-mono text-xs text-[#0057FF] uppercase tracking-widest font-bold">
+            Choose Your Path
+          </span>
+          <h2 className="font-display text-2xl font-bold text-white mt-1">Three Ways to Create</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Path A — Full Editor */}
+          <div className="p-7 rounded-2xl bg-[#141418] border border-[#F5F1EA]/10 hover:border-[#F5F1EA]/20 space-y-4 transition-all">
+            <div className="w-10 h-10 rounded-xl bg-[#1A1A1E] border border-[#F5F1EA]/20 flex items-center justify-center font-mono text-sm font-bold text-white">
               01
             </div>
-            <h3 className="font-display text-2xl font-bold text-white">
-              Create With FREGORO Studio
-            </h3>
+            <h3 className="font-display text-xl font-bold text-white">Full Creative Control</h3>
             <p className="font-mono text-xs text-[#F5F1EA]/70 leading-relaxed">
-              Select from curated editorial layouts, replace images and typography with smart
-              auto-fitting, inspect through real-time 300 DPI preflight, and order high-spec
-              physical copies.
+              Open our full drag-and-drop editor. Design every page from scratch, use our curated
+              layouts, and customise absolutely everything.
             </p>
             <Link
               href="/magazine/templates"
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase font-bold text-[#0057FF] hover:text-white transition-colors pt-2"
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase font-bold text-[#F5F1EA] hover:text-[#0057FF] transition-colors pt-2"
             >
-              <span>Explore Templates</span>
+              <span>Open Editor</span>
               <span>→</span>
             </Link>
           </div>
 
-          {/* Path B */}
-          <div className="p-8 rounded-2xl bg-[#141418] border border-[#F5F1EA]/10 hover:border-[#F5F1EA]/30 space-y-4 transition-all">
-            <div className="w-10 h-10 rounded-xl bg-[#1A1A1E] border border-[#F5F1EA]/20 flex items-center justify-center font-mono text-sm font-bold text-white">
+          {/* Path B — Content Wizard (Highlighted) */}
+          <div className="p-7 rounded-2xl bg-[#141418] border border-[#0057FF]/40 space-y-4 relative overflow-hidden shadow-xl shadow-[#0057FF]/10">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#0057FF] to-[#00B4FF]" />
+            <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-[#0057FF] font-mono text-[9px] font-bold uppercase tracking-widest text-white">
+              Recommended
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-[#0057FF]/20 border border-[#0057FF]/50 flex items-center justify-center font-mono text-sm font-bold text-[#0057FF]">
               02
             </div>
-            <h3 className="font-display text-2xl font-bold text-white">
-              Already Have a Finished PDF?
-            </h3>
+            <h3 className="font-display text-xl font-bold text-white">Fill With My Content</h3>
             <p className="font-mono text-xs text-[#F5F1EA]/70 leading-relaxed">
-              Designed your publication in InDesign, Canva, or Figma? Upload your print-ready PDF
-              (up to 50MB) for automated plate verification, paper selection, and door-to-door
-              delivery.
+              We designed it, you fill it. Select a professional template and our step-by-step
+              wizard guides you to add your photos and text — zero design skills needed.
+            </p>
+            <Link
+              href="/magazine"
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase font-bold text-[#0057FF] hover:text-white transition-colors pt-2"
+            >
+              <span>Pick a Template Below</span>
+              <span>↓</span>
+            </Link>
+          </div>
+
+          {/* Path C — Upload PDF */}
+          <div className="p-7 rounded-2xl bg-[#141418] border border-[#F5F1EA]/10 hover:border-[#F5F1EA]/20 space-y-4 transition-all">
+            <div className="w-10 h-10 rounded-xl bg-[#1A1A1E] border border-[#F5F1EA]/20 flex items-center justify-center font-mono text-sm font-bold text-white">
+              03
+            </div>
+            <h3 className="font-display text-xl font-bold text-white">Already Have a PDF?</h3>
+            <p className="font-mono text-xs text-[#F5F1EA]/70 leading-relaxed">
+              Designed in InDesign, Canva, or Figma? Upload your print-ready PDF (up to 50MB) for
+              automated plate verification and door-to-door delivery.
             </p>
             <Link
               href="/magazine/upload-pdf"
@@ -259,19 +282,30 @@ export default function MagazineStudioLanding() {
               </div>
 
               {/* Card Actions */}
-              <div className="pt-3 border-t border-[#F5F1EA]/5 flex items-center gap-2">
-                <button
-                  onClick={() => setSelectedTemplateForPreview(tpl)}
-                  className="flex-1 py-2.5 rounded-lg bg-[#1A1A1E] hover:bg-[#25252E] font-mono text-xs font-bold text-[#F5F1EA] uppercase transition-colors"
-                >
-                  Preview
-                </button>
+              <div className="pt-3 border-t border-[#F5F1EA]/5 space-y-2">
+                {/* Primary: Fill with My Content */}
                 <Link
-                  href={`/magazine/editor?template=${tpl.id}`}
-                  className="flex-1 py-2.5 rounded-lg bg-[#0057FF] hover:bg-[#0046CC] text-center font-mono text-xs font-bold text-white uppercase transition-colors shadow-md shadow-[#0057FF]/20"
+                  href={`/magazine/content-wizard?template=${tpl.id}`}
+                  className="flex w-full items-center justify-center gap-1.5 py-2.5 rounded-lg font-mono text-xs font-bold text-white uppercase transition-all shadow-md shadow-[#0057FF]/20"
+                  style={{ background: 'linear-gradient(135deg, #0057FF, #003FBF)' }}
                 >
-                  Customize →
+                  ✦ Fill With My Content
                 </Link>
+                {/* Secondary actions */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setSelectedTemplateForPreview(tpl)}
+                    className="flex-1 py-2 rounded-lg bg-[#1A1A1E] hover:bg-[#25252E] font-mono text-[10px] font-bold text-[#F5F1EA]/70 uppercase transition-colors"
+                  >
+                    Preview
+                  </button>
+                  <Link
+                    href={`/magazine/editor?template=${tpl.id}`}
+                    className="flex-1 py-2 text-center rounded-lg bg-white/5 hover:bg-white/10 font-mono text-[10px] font-bold text-white/70 uppercase transition-colors border border-white/10"
+                  >
+                    Full Editor
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
@@ -345,19 +379,30 @@ export default function MagazineStudioLanding() {
               </div>
             </div>
 
-            <div className="p-6 border-t border-[#F5F1EA]/10 flex items-center justify-between bg-[#0D0D0E]">
-              <button
-                onClick={() => setSelectedTemplateForPreview(null)}
-                className="px-4 py-2.5 rounded-lg bg-[#1A1A1E] font-mono text-xs font-bold uppercase"
-              >
-                Close Preview
-              </button>
+            <div className="p-6 border-t border-[#F5F1EA]/10 bg-[#0D0D0E] space-y-3">
+              {/* Primary CTA */}
               <Link
-                href={`/magazine/editor?template=${selectedTemplateForPreview.id}`}
-                className="px-6 py-2.5 rounded-lg bg-[#0057FF] hover:bg-[#0046CC] font-mono text-xs font-bold text-white uppercase shadow-lg shadow-[#0057FF]/30"
+                href={`/magazine/content-wizard?template=${selectedTemplateForPreview.id}`}
+                className="flex w-full items-center justify-center gap-2 py-3 rounded-xl font-mono text-xs font-bold text-white uppercase shadow-lg shadow-[#0057FF]/30 transition-all hover:scale-[1.02]"
+                style={{ background: 'linear-gradient(135deg, #0057FF, #003FBF)' }}
               >
-                Open in Editor →
+                ✦ Fill With My Content — Start Wizard
               </Link>
+              {/* Secondary */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setSelectedTemplateForPreview(null)}
+                  className="flex-1 py-2.5 rounded-lg bg-[#1A1A1E] hover:bg-[#25252E] font-mono text-[10px] font-bold uppercase text-white/60 transition-colors"
+                >
+                  Close
+                </button>
+                <Link
+                  href={`/magazine/editor?template=${selectedTemplateForPreview.id}`}
+                  className="flex-1 py-2.5 text-center rounded-lg bg-white/5 hover:bg-white/10 font-mono text-[10px] font-bold text-white/70 uppercase transition-colors border border-white/10"
+                >
+                  Full Editor
+                </Link>
+              </div>
             </div>
           </div>
         </div>
