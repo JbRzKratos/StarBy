@@ -193,7 +193,6 @@ export default function CheckoutPage() {
         body: JSON.stringify(payload),
       });
 
-
       let data: {
         success: boolean;
         message?: string;
@@ -255,9 +254,7 @@ export default function CheckoutPage() {
     } catch (err) {
       console.error('Checkout execution error:', err);
       const msg = err instanceof Error ? err.message : 'Unknown error';
-      setCheckoutError(
-        `Checkout failed: ${msg}. Please check your connection and try again.`,
-      );
+      setCheckoutError(`Checkout failed: ${msg}. Please check your connection and try again.`);
       setLoading(false);
       submittingRef.current = false;
     }

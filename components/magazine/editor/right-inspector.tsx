@@ -207,12 +207,18 @@ export function RightInspector({
                 }
                 onMouseUp={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, x: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      x: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 onTouchEnd={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, x: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      x: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
@@ -252,12 +258,18 @@ export function RightInspector({
                 }
                 onMouseUp={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, y: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      y: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 onTouchEnd={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, y: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      y: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
@@ -298,12 +310,18 @@ export function RightInspector({
                 }
                 onMouseUp={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, width: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      width: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 onTouchEnd={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, width: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      width: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
@@ -320,12 +338,18 @@ export function RightInspector({
                   value={Math.round(singleElement.frame.height)}
                   onChange={(e) =>
                     onUpdateElementLive(singleElement.id, {
-                      frame: { ...singleElement.frame, height: Math.max(1, Number(e.target.value)) },
+                      frame: {
+                        ...singleElement.frame,
+                        height: Math.max(1, Number(e.target.value)),
+                      },
                     })
                   }
                   onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
-                      frame: { ...singleElement.frame, height: Math.max(1, Number(e.target.value)) },
+                      frame: {
+                        ...singleElement.frame,
+                        height: Math.max(1, Number(e.target.value)),
+                      },
                     })
                   }
                   className="w-14 bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] text-white font-bold text-xs font-mono text-right px-1.5 py-0.5 rounded outline-none"
@@ -344,12 +368,18 @@ export function RightInspector({
                 }
                 onMouseUp={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, height: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      height: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 onTouchEnd={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, height: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      height: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
@@ -359,7 +389,9 @@ export function RightInspector({
             {/* Rotation */}
             <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">Rotation (deg)</span>
+                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">
+                  Rotation (deg)
+                </span>
                 <input
                   type="number"
                   min="-180"
@@ -391,12 +423,18 @@ export function RightInspector({
                 }
                 onMouseUp={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, rotation: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      rotation: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 onTouchEnd={(e) =>
                   onUpdateElement(singleElement.id, {
-                    frame: { ...singleElement.frame, rotation: Number((e.target as HTMLInputElement).value) },
+                    frame: {
+                      ...singleElement.frame,
+                      rotation: Number((e.target as HTMLInputElement).value),
+                    },
                   })
                 }
                 className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
@@ -406,7 +444,9 @@ export function RightInspector({
             {/* Opacity */}
             <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">Opacity (%)</span>
+                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">
+                  Opacity (%)
+                </span>
                 <input
                   type="number"
                   min="0"

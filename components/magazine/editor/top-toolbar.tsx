@@ -304,7 +304,8 @@ export function TopToolbar({
           onClick={onOrderPrint}
           className="flex items-center gap-1 px-2.5 sm:px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#0057FF] to-[#3B5EFF] hover:from-[#0046CC] hover:to-[#0057FF] font-mono text-[11px] font-bold text-white uppercase tracking-wider transition-all shadow-lg shadow-[#0057FF]/30 active:scale-95 shrink-0"
         >
-          <span className="hidden sm:inline">ORDER </span><span>PRINT</span>
+          <span className="hidden sm:inline">ORDER </span>
+          <span>PRINT</span>
           <span>→</span>
         </button>
       </div>
