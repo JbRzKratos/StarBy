@@ -48,7 +48,7 @@ export function ContextMenu({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="fixed bg-[#0E0E10] border border-[#F5F1EA]/15 rounded-xl shadow-2xl p-1.5 min-w-[180px] font-mono text-xs text-[#F5F1EA] z-[99999] select-none"
+      className="fixed bg-[#0E0E10]/85 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl p-1.5 min-w-[180px] font-mono text-xs text-[#F5F1EA] z-[99999] select-none"
       style={{ left: `${x}px`, top: `${y}px` }}
     >
       {hasSelection && (
@@ -147,7 +147,7 @@ export function ContextMenu({
             className="w-full px-3 py-1.5 hover:bg-[#1A1A22] rounded flex justify-between items-center text-left"
           >
             <span>{isLocked ? 'Unlock' : 'Lock'}</span>
-            <span className="text-[10px]">{isLocked ? '🔓' : '🔒'}</span>
+            <span className="text-[10px]">{isLocked ? '○' : '●'}</span>
           </button>
           <button
             onClick={() => {

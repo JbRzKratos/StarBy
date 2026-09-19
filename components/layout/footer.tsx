@@ -66,7 +66,7 @@ export function Footer() {
                     });
                     const data = await res.json();
                     if (res.ok) {
-                      setNewsletterMsg({ text: 'Thanks for subscribing! 🎉', ok: true });
+                      setNewsletterMsg({ text: 'Thanks for subscribing! ✦', ok: true });
                       form.reset();
                     } else {
                       setNewsletterMsg({

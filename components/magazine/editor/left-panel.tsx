@@ -273,12 +273,12 @@ export function LeftPanel({
       {/* ── VERTICAL TAB BAR (FAR LEFT) ── */}
       <div className="w-16 bg-[#0E0E10] border-r border-[#F5F1EA]/10 flex flex-col items-center py-4 gap-3 shrink-0">
         {[
-          { id: 'pages', label: 'Pages', icon: '📑' },
+          { id: 'pages', label: 'Pages', icon: '◫' },
           { id: 'elements', label: 'Elements', icon: '＋' },
           { id: 'layers', label: 'Layers', icon: '☷' },
-          { id: 'photos', label: 'Photos', icon: '🖼' },
-          { id: 'themes', label: 'Themes', icon: '🎨' },
-          { id: 'presets', label: 'Presets', icon: '⚡' },
+          { id: 'photos', label: 'Photos', icon: '⧉' },
+          { id: 'themes', label: 'Themes', icon: '◈' },
+          { id: 'presets', label: 'Presets', icon: '✦' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -496,7 +496,7 @@ export function LeftPanel({
                   onClick={() => handleCreateElement('image')}
                   className="p-3 bg-[#16161A] hover:bg-[#1F1F26] border border-[#F5F1EA]/10 hover:border-[#0057FF] rounded-xl text-left transition-all"
                 >
-                  <span className="text-base block">🖼</span>
+                  <span className="text-base block">⧉</span>
                   <span className="font-display text-xs font-bold text-white block">
                     Image Frame
                   </span>
@@ -657,7 +657,7 @@ export function LeftPanel({
                           el.locked ? 'text-amber-400' : 'text-[#F5F1EA]/50 hover:text-white'
                         }`}
                       >
-                        {el.locked ? '🔒' : '🔓'}
+                        {el.locked ? '●' : '○'}
                       </button>
                       <button
                         onClick={(e) => {
@@ -671,7 +671,7 @@ export function LeftPanel({
                             : 'text-[#F5F1EA]/50 hover:text-white'
                         }`}
                       >
-                        {el.visible === false ? '👁‍🗨' : '👁'}
+                        {el.visible === false ? '○' : '●'}
                       </button>
                     </div>
                   </div>
@@ -733,7 +733,7 @@ export function LeftPanel({
                   </>
                 ) : (
                   <>
-                    <span className="text-2xl">{isDragOver ? '📥' : '☁️'}</span>
+                    <span className="text-2xl">{isDragOver ? '↓' : '↑'}</span>
                     <div className="text-center">
                       <span className="font-mono text-[10px] text-white font-bold block">
                         {isDragOver ? 'Drop to upload' : 'Click or drag & drop'}
@@ -749,14 +749,14 @@ export function LeftPanel({
               {/* Upload error */}
               {uploadError && (
                 <div className="bg-rose-500/15 border border-rose-500/30 rounded-lg px-3 py-2 text-rose-400 font-mono text-[10px]">
-                  ⚠ {uploadError}
+                  ! {uploadError}
                 </div>
               )}
 
               {/* Hint when an image frame is selected */}
               {selectedImageId && (
                 <div className="bg-[#0057FF]/10 border border-[#0057FF]/30 rounded-lg px-3 py-2 text-[#0057FF] font-mono text-[10px]">
-                  💡 Click any photo below to <strong>replace</strong> the selected image
+                  ✦ Click any photo below to <strong>replace</strong> the selected image
                 </div>
               )}
 

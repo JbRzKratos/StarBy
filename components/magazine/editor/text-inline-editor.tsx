@@ -182,7 +182,7 @@ export function TextInlineEditor({
           className="absolute bottom-1 right-1 bg-amber-500/90 text-black font-mono text-[8px] font-bold px-1.5 py-0.5 rounded shadow-md pointer-events-none z-30 flex items-center gap-1 uppercase"
           title="Text exceeds frame dimensions. Expand frame or reduce font size."
         >
-          <span>⚠</span>
+          <span>!</span>
           <span>Overflow</span>
         </div>
       )}

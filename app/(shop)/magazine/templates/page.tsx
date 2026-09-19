@@ -158,7 +158,7 @@ export default function MagazineTemplatesDirectory() {
                       className="absolute top-3 right-3 p-2 rounded-full bg-black/60 backdrop-blur hover:bg-black/80 text-white z-10"
                       title="Favorite"
                     >
-                      {isFav ? '❤️' : '🤍'}
+                      {isFav ? '★' : '☆'}
                     </button>
 
                     {tpl.badge && (
@@ -203,7 +203,7 @@ export default function MagazineTemplatesDirectory() {
 
         {filteredTemplates.length === 0 && (
           <div className="text-center py-20 bg-[#141418] rounded-2xl border border-[#F5F1EA]/10 space-y-4">
-            <span className="text-3xl">📖</span>
+            <span className="text-3xl">◈</span>
             <h3 className="font-display text-xl font-bold">No templates found</h3>
             <p className="font-mono text-xs text-[#F5F1EA]/60 max-w-sm mx-auto">
               Try adjusting your search filters or start from a blank modular canvas.

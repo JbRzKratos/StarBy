@@ -30,6 +30,18 @@ import { ContextMenu } from './context-menu';
 import { PublicationPreviewer } from '@/components/magazine/publication-previewer';
 import { PreflightModal } from '@/components/magazine/preflight-modal';
 import { useCartStore } from '@/lib/stores/cart-store';
+import { MobileTopBar } from './mobile-top-bar';
+import { MobileBottomDock, type MobileActiveSheet } from './mobile-bottom-dock';
+import { MobileBottomSheet } from './mobile-bottom-sheet';
+import {
+  AddSheetContent,
+  PagesSheetContent,
+  TemplatesSheetContent,
+  BackgroundSheetContent,
+  TransformSheetContent,
+  StyleSheetContent,
+  LayerSheetContent,
+} from './mobile-sheet-content';
 
 interface MagazineEditorProps {
   initialDocument?: MagazineDocument | undefined;
@@ -85,6 +97,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
   const [leftPanelOpen, setLeftPanelOpen] = useState(true);
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
   const [isMobileScreen, setIsMobileScreen] = useState(false);
+  const [mobileActiveSheet, setMobileActiveSheet] = useState<MobileActiveSheet>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -186,6 +199,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
   const selectedElements = (activePage?.elements || []).filter((el) =>
     selectedElementIds.includes(el.id),
   );
+  const singleSelectedElement = selectedElements.length === 1 ? selectedElements[0] : null;
 
   // ─── Clipboard Actions: Copy, Cut, Paste, Duplicate ───
   const handleCopy = useCallback(() => {
@@ -744,48 +758,69 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
       className="magazine-editor-root h-[100dvh] w-screen flex flex-col bg-[#0A0A0C] overflow-hidden text-[#F5F1EA] select-none"
     >
       {/* ── 1. Top Studio Toolbar ── */}
-      <TopToolbar
-        document={doc}
-        onUpdateTitle={(title) => pushState({ ...doc, title, updatedAt: new Date().toISOString() })}
-        viewMode={viewMode}
-        onToggleViewMode={() => setViewMode((prev) => (prev === 'page' ? 'spread' : 'page'))}
-        zoom={zoom}
-        onZoomChange={setZoom}
-        showGuides={showGuides}
-        onToggleGuides={() => setShowGuides((prev) => !prev)}
-        showGrid={showGrid}
-        onToggleGrid={() => setShowGrid((prev) => !prev)}
-        showRulers={showRulers}
-        onToggleRulers={() => setShowRulers((prev) => !prev)}
-        enableSnap={enableSnap}
-        onToggleSnap={() => setEnableSnap((prev) => !prev)}
-        canUndo={undoStack.length > 0}
-        canRedo={redoStack.length > 0}
-        onUndo={handleUndo}
-        onRedo={handleRedo}
-        isSaving={isSaving}
-        onOpenPreflight={handleOpenPreflight}
-        onOpenPreview={() => setShowPreviewModal(true)}
-        onDownloadPdf={handleDownloadPdf}
-        onOrderPrint={handleOrder}
-        preflightReport={preflightReport}
-        leftPanelOpen={leftPanelOpen}
-        onToggleLeftPanel={() => setLeftPanelOpen((prev) => !prev)}
-        rightPanelOpen={rightPanelOpen}
-        onToggleRightPanel={() => setRightPanelOpen((prev) => !prev)}
-      />
+      {isMobileScreen ? (
+        <MobileTopBar
+          document={doc}
+          onUpdateTitle={(title) =>
+            pushState({ ...doc, title, updatedAt: new Date().toISOString() })
+          }
+          canUndo={undoStack.length > 0}
+          canRedo={redoStack.length > 0}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          isSaving={isSaving}
+          onOpenPreflight={handleOpenPreflight}
+          onOpenPreview={() => setShowPreviewModal(true)}
+          onDownloadPdf={handleDownloadPdf}
+          onOrderPrint={handleOrder}
+          preflightReport={preflightReport}
+          showGrid={showGrid}
+          onToggleGrid={() => setShowGrid((prev) => !prev)}
+          showGuides={showGuides}
+          onToggleGuides={() => setShowGuides((prev) => !prev)}
+          enableSnap={enableSnap}
+          onToggleSnap={() => setEnableSnap((prev) => !prev)}
+        />
+      ) : (
+        <TopToolbar
+          document={doc}
+          onUpdateTitle={(title) =>
+            pushState({ ...doc, title, updatedAt: new Date().toISOString() })
+          }
+          viewMode={viewMode}
+          onToggleViewMode={() => setViewMode((prev) => (prev === 'page' ? 'spread' : 'page'))}
+          zoom={zoom}
+          onZoomChange={setZoom}
+          showGuides={showGuides}
+          onToggleGuides={() => setShowGuides((prev) => !prev)}
+          showGrid={showGrid}
+          onToggleGrid={() => setShowGrid((prev) => !prev)}
+          showRulers={showRulers}
+          onToggleRulers={() => setShowRulers((prev) => !prev)}
+          enableSnap={enableSnap}
+          onToggleSnap={() => setEnableSnap((prev) => !prev)}
+          canUndo={undoStack.length > 0}
+          canRedo={redoStack.length > 0}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          isSaving={isSaving}
+          onOpenPreflight={handleOpenPreflight}
+          onOpenPreview={() => setShowPreviewModal(true)}
+          onDownloadPdf={handleDownloadPdf}
+          onOrderPrint={handleOrder}
+          preflightReport={preflightReport}
+          leftPanelOpen={leftPanelOpen}
+          onToggleLeftPanel={() => setLeftPanelOpen((prev) => !prev)}
+          rightPanelOpen={rightPanelOpen}
+          onToggleRightPanel={() => setRightPanelOpen((prev) => !prev)}
+        />
+      )}
 
       {/* ── 2. Three-Column Workspace Stage ── */}
-      <div className="flex-1 flex overflow-hidden relative">
-        {/* Left Panel */}
-        {leftPanelOpen && (
-          <div
-            className={
-              isMobileScreen
-                ? 'absolute inset-y-0 left-0 z-50 flex shadow-2xl'
-                : 'relative shrink-0 flex h-full'
-            }
-          >
+      <div className={`flex-1 flex overflow-hidden relative ${isMobileScreen ? 'pb-16' : ''}`}>
+        {/* Left Panel (Desktop only) */}
+        {!isMobileScreen && leftPanelOpen && (
+          <div className="relative shrink-0 flex h-full">
             <LeftPanel
               document={doc}
               currentPageIndex={currentPageIndex}
@@ -793,7 +828,6 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
               onSelectPage={(index) => {
                 setCurrentPageIndex(index);
                 setSelectedElementIds([]);
-                if (isMobileScreen) setLeftPanelOpen(false);
               }}
               onAddPage={handleAddPage}
               onDuplicatePage={handleDuplicatePage}
@@ -801,7 +835,6 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
               onReorderPage={handleReorderPage}
               onAddElement={(el) => {
                 handleAddElement(el);
-                if (isMobileScreen) setLeftPanelOpen(false);
               }}
               onSelectElement={(id) => setSelectedElementIds([id])}
               onToggleLockElement={handleToggleLock}
@@ -824,7 +857,6 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
                   pageCount: tpl.pages.length,
                   updatedAt: new Date().toISOString(),
                 });
-                if (isMobileScreen) setLeftPanelOpen(false);
               }}
               uploadedImages={uploadedImages}
               uploadError={uploadError}
@@ -838,12 +870,6 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
               }
               onClose={() => setLeftPanelOpen(false)}
             />
-            {isMobileScreen && (
-              <div
-                className="fixed inset-0 bg-black/60 -z-10"
-                onClick={() => setLeftPanelOpen(false)}
-              />
-            )}
           </div>
         )}
 
@@ -856,7 +882,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
           zoom={zoom}
           showGuides={showGuides}
           showGrid={showGrid}
-          showRulers={showRulers}
+          showRulers={!isMobileScreen && showRulers}
           enableSnap={enableSnap}
           onSelectElements={setSelectedElementIds}
           onUpdateElement={handleUpdateElement}
@@ -875,16 +901,9 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
           onZoomChange={setZoom}
         />
 
-        {/* Right Inspector */}
-        {rightPanelOpen && (
-          <div
-            className={
-              isMobileScreen
-                ? 'fixed inset-y-0 right-0 z-50 flex shadow-2xl w-[90vw] max-w-sm'
-                : 'relative shrink-0 flex h-full'
-            }
-            style={isMobileScreen ? { bottom: '3.5rem', top: 0 } : undefined}
-          >
+        {/* Right Inspector (Desktop only) */}
+        {!isMobileScreen && rightPanelOpen && (
+          <div className="relative shrink-0 flex h-full">
             <RightInspector
               document={doc}
               currentPageIndex={currentPageIndex}
@@ -921,100 +940,170 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
               onReplaceImage={handleReplaceImage}
               onClose={() => setRightPanelOpen(false)}
             />
-            {isMobileScreen && (
-              <div
-                className="fixed inset-0 bg-black/60 -z-10"
-                onClick={() => setRightPanelOpen(false)}
-              />
-            )}
           </div>
         )}
       </div>
 
-      {/* ── Mobile Bottom Navigation Dock (Canva/Figma mobile style) ── */}
+      {/* ── Mobile Bottom Navigation Dock & Sheets ── */}
       {isMobileScreen && (
-        <nav
-          aria-label="Mobile Magazine Toolbar"
-          className="h-14 bg-[#0E0E10]/95 backdrop-blur-md border-t border-[#F5F1EA]/10 px-2.5 sm:px-3 flex items-center justify-between z-50 relative shrink-0 select-none shadow-2xl"
-        >
-          {/* Page Paging: Prev / Next */}
-          <div className="flex items-center gap-0.5 bg-[#16161A] rounded-lg border border-[#F5F1EA]/10 p-0.5 shrink-0">
-            <button
-              onClick={() => setCurrentPageIndex((prev) => Math.max(0, prev - 1))}
-              disabled={currentPageIndex === 0}
-              className="p-1.5 rounded text-[#F5F1EA]/70 hover:text-white disabled:opacity-20 text-xs font-mono font-bold shrink-0"
-              aria-label="Previous Page"
-            >
-              ◀
-            </button>
-            <button
-              onClick={() => {
-                setRightPanelOpen(false);
-                setLeftPanelOpen(true);
+        <>
+          <MobileBottomDock
+            document={doc}
+            currentPageIndex={currentPageIndex}
+            selectedElements={selectedElements}
+            activeSheet={mobileActiveSheet}
+            onOpenSheet={setMobileActiveSheet}
+            onSelectPage={(index) => {
+              setCurrentPageIndex(index);
+              setSelectedElementIds([]);
+            }}
+            onDuplicateSelected={handleDuplicate}
+            onDeleteSelected={handleDeleteSelected}
+            onDeselect={() => {
+              setSelectedElementIds([]);
+              setMobileActiveSheet(null);
+            }}
+            onResetZoom={() => setZoom(1)}
+          />
+
+          {/* Mobile Bottom Sheets */}
+          <MobileBottomSheet
+            isOpen={mobileActiveSheet === 'add'}
+            onClose={() => setMobileActiveSheet(null)}
+            title="Add to Page"
+            subtitle="Text, photos, shapes, or image frames"
+          >
+            <AddSheetContent
+              onAddElement={handleAddElement}
+              uploadedImages={uploadedImages}
+              uploadError={uploadError}
+              onUploadImage={handleUploadImage}
+              onClose={() => setMobileActiveSheet(null)}
+            />
+          </MobileBottomSheet>
+
+          <MobileBottomSheet
+            isOpen={mobileActiveSheet === 'pages'}
+            onClose={() => setMobileActiveSheet(null)}
+            title={`Pages (${currentPageIndex + 1}/${doc.pages.length})`}
+            subtitle="Select, add, duplicate, or delete pages"
+          >
+            <PagesSheetContent
+              document={doc}
+              currentPageIndex={currentPageIndex}
+              onSelectPage={(index) => {
+                setCurrentPageIndex(index);
+                setSelectedElementIds([]);
               }}
-              className="px-1.5 sm:px-2 py-1 text-[11px] font-mono font-bold text-white hover:text-[#0057FF] transition-colors whitespace-nowrap shrink-0"
-              title="Page List"
-            >
-              {currentPageIndex + 1}/{doc.pages.length}
-            </button>
-            <button
-              onClick={() =>
-                setCurrentPageIndex((prev) => Math.min(doc.pages.length - 1, prev + 1))
+              onAddPage={handleAddPage}
+              onDuplicatePage={handleDuplicatePage}
+              onDeletePage={handleDeletePage}
+              onClose={() => setMobileActiveSheet(null)}
+            />
+          </MobileBottomSheet>
+
+          <MobileBottomSheet
+            isOpen={mobileActiveSheet === 'templates'}
+            onClose={() => setMobileActiveSheet(null)}
+            title="Templates & Color Themes"
+            subtitle="Editorial layout presets and styling"
+          >
+            <TemplatesSheetContent
+              onApplyTemplate={(tplId) => {
+                const tpl = MAGAZINE_TEMPLATES.find((t) => t.id === tplId);
+                if (!tpl) return;
+                pushState({
+                  ...doc,
+                  templateId: tpl.id,
+                  theme: tpl.theme,
+                  pages: JSON.parse(JSON.stringify(tpl.pages)),
+                  pageCount: tpl.pages.length,
+                  updatedAt: new Date().toISOString(),
+                });
+              }}
+              onApplyTheme={(theme: MagazineTheme) =>
+                pushState({ ...doc, theme, updatedAt: new Date().toISOString() })
               }
-              disabled={currentPageIndex === doc.pages.length - 1}
-              className="p-1.5 rounded text-[#F5F1EA]/70 hover:text-white disabled:opacity-20 text-xs font-mono font-bold shrink-0"
-              aria-label="Next Page"
-            >
-              ▶
-            </button>
-          </div>
+              onClose={() => setMobileActiveSheet(null)}
+            />
+          </MobileBottomSheet>
 
-          {/* Add Elements Drawer */}
-          <button
-            onClick={() => {
-              setRightPanelOpen(false);
-              setLeftPanelOpen((prev) => !prev);
-            }}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-lg border text-xs font-mono font-bold transition-all shrink-0 ${
-              leftPanelOpen
-                ? 'bg-[#0057FF] text-white border-[#0057FF] shadow-md shadow-[#0057FF]/30'
-                : 'bg-[#16161A] border-[#F5F1EA]/10 text-[#F5F1EA]/80 hover:text-white'
-            }`}
+          <MobileBottomSheet
+            isOpen={mobileActiveSheet === 'background'}
+            onClose={() => setMobileActiveSheet(null)}
+            title="Page Background"
+            subtitle="Change background color for current page"
           >
-            <span>＋</span>
-            <span>Add</span>
-          </button>
+            <BackgroundSheetContent
+              backgroundColor={activePage?.backgroundColor || '#0E0E10'}
+              onUpdatePageBackground={(bgColor) => {
+                const updatedPages = doc.pages.map((p, idx) =>
+                  idx === currentPageIndex ? { ...p, backgroundColor: bgColor } : p,
+                );
+                pushState({ ...doc, pages: updatedPages });
+              }}
+              onClose={() => setMobileActiveSheet(null)}
+            />
+          </MobileBottomSheet>
 
-          {/* Style / Inspector Drawer */}
-          <button
-            onClick={() => {
-              setLeftPanelOpen(false);
-              setRightPanelOpen((prev) => !prev);
-            }}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-lg border text-xs font-mono font-bold transition-all shrink-0 ${
-              rightPanelOpen
-                ? 'bg-[#0057FF] text-white border-[#0057FF] shadow-md shadow-[#0057FF]/30'
-                : 'bg-[#16161A] border-[#F5F1EA]/10 text-[#F5F1EA]/80 hover:text-white'
-            }`}
-          >
-            <span>✎</span>
-            <span>Style</span>
-            {selectedElementIds.length > 0 && (
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            )}
-          </button>
+          {singleSelectedElement && (
+            <>
+              <MobileBottomSheet
+                isOpen={mobileActiveSheet === 'transform'}
+                onClose={() => setMobileActiveSheet(null)}
+                title="Position & Size"
+                subtitle="Live sliders for coordinates, scale, angle, and opacity"
+              >
+                <TransformSheetContent
+                  element={singleSelectedElement}
+                  onUpdateElementLive={(id, updates) =>
+                    handleUpdateElementLive(currentPageIndex, id, updates)
+                  }
+                  onUpdateElement={(id, updates) =>
+                    handleUpdateElement(currentPageIndex, id, updates, true)
+                  }
+                />
+              </MobileBottomSheet>
 
-          {/* Fit Canvas Button */}
-          <button
-            onClick={() => {
-              setZoom(1);
-            }}
-            title="Fit Canvas"
-            className="p-2 rounded-lg bg-[#16161A] hover:bg-[#22222A] text-[#F5F1EA]/70 hover:text-white border border-[#F5F1EA]/10 text-xs font-mono font-bold transition-colors shrink-0"
-          >
-            ⊙ Fit
-          </button>
-        </nav>
+              <MobileBottomSheet
+                isOpen={mobileActiveSheet === 'style'}
+                onClose={() => setMobileActiveSheet(null)}
+                title={
+                  singleSelectedElement.type === 'text' ? 'Text & Typography' : 'Style & Colors'
+                }
+                subtitle={
+                  singleSelectedElement.type === 'text'
+                    ? 'Font family, size, alignment, and color'
+                    : 'Fills, strokes, borders, and effects'
+                }
+              >
+                <StyleSheetContent
+                  element={singleSelectedElement}
+                  onUpdateElement={(id, updates) =>
+                    handleUpdateElement(currentPageIndex, id, updates, true)
+                  }
+                />
+              </MobileBottomSheet>
+
+              <MobileBottomSheet
+                isOpen={mobileActiveSheet === 'layer'}
+                onClose={() => setMobileActiveSheet(null)}
+                title="Layer & Alignment"
+                subtitle="Z-index hierarchy and page alignment"
+              >
+                <LayerSheetContent
+                  element={singleSelectedElement}
+                  onBringForward={() => handleReorderLayer(singleSelectedElement.id, 'forward')}
+                  onSendBackward={() => handleReorderLayer(singleSelectedElement.id, 'backward')}
+                  onBringToFront={() => handleReorderLayer(singleSelectedElement.id, 'front')}
+                  onSendToBack={() => handleReorderLayer(singleSelectedElement.id, 'back')}
+                  onToggleLock={handleToggleLock}
+                  onAlign={handleAlign}
+                />
+              </MobileBottomSheet>
+            </>
+          )}
+        </>
       )}
 
       {/* ── 3. Right Click Context Menu ── */}

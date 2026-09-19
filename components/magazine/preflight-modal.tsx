@@ -16,8 +16,8 @@ export function PreflightModal({
   onProceedToOrder,
 }: PreflightModalProps) {
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="bg-[#121214] border border-[#F5F1EA]/15 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-[#F5F1EA]">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-[#121214]/85 backdrop-blur-2xl border border-white/20 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-[#F5F1EA]">
         {/* Header */}
         <div className="p-6 border-b border-[#F5F1EA]/10 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -28,7 +28,7 @@ export function PreflightModal({
                   : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
               }`}
             >
-              {report.isPrintReady ? '✓' : '⚠'}
+              {report.isPrintReady ? '✓' : '!'}
             </div>
             <div>
               <h3 className="font-display text-xl font-bold">Print Preflight Check</h3>

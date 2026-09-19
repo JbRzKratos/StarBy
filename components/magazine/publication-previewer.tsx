@@ -193,7 +193,7 @@ export function PublicationPreviewer({
                 : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
             }`}
           >
-            <span>{preflight.isPrintReady ? '✓' : '⚠'}</span>
+            <span>{preflight.isPrintReady ? '✓' : '!'}</span>
             <span>
               {preflight.isPrintReady
                 ? 'Print Ready (300 DPI)'

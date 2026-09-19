@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useRef } from 'react';
 import type {
@@ -156,7 +156,7 @@ export function RightInspector({
                     : 'text-[#F5F1EA]/60 hover:text-white'
                 }`}
               >
-                {singleElement.locked ? '🔒' : '🔓'}
+                {singleElement.locked ? '●' : '○'}
               </button>
               <button
                 onClick={onDeleteSelected}

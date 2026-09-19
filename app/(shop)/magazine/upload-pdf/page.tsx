@@ -126,7 +126,7 @@ export default function UploadPdfPortalPage() {
             />
             <label htmlFor="pdf-upload" className="cursor-pointer space-y-4 block">
               <div className="w-16 h-16 rounded-2xl bg-[#1A1A1E] border border-[#F5F1EA]/20 flex items-center justify-center mx-auto text-3xl">
-                📄
+                ◫
               </div>
               <div>
                 <h3 className="font-display text-xl font-bold text-white">
@@ -210,7 +210,7 @@ export default function UploadPdfPortalPage() {
 
                 {inspection.warnings.map((w, idx) => (
                   <p key={idx} className="font-mono text-xs text-amber-300/80">
-                    ⚠ Note: {w}
+                    ! Note: {w}
                   </p>
                 ))}
               </div>

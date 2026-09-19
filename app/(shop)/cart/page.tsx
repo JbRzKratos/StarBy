@@ -229,9 +229,9 @@ export default function CartPage() {
               </Link>
 
               <div className="flex items-center justify-center gap-4 text-center font-mono text-[11px] text-[#F5F1EA]/40 pt-2">
-                <span>🔒 256-Bit Encrypted</span>
+                <span>◈ 256-Bit Encrypted</span>
                 <span>•</span>
-                <span>⚡ Instant Processing</span>
+                <span>✦ Instant Processing</span>
               </div>
             </div>
           </div>

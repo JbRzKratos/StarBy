@@ -94,7 +94,7 @@ export default function MyMagazinesDashboard() {
         {/* Project List / Empty State */}
         {magazines.length === 0 ? (
           <div className="text-center py-20 bg-[#141418] rounded-2xl border border-[#F5F1EA]/10 space-y-4">
-            <span className="text-4xl">📚</span>
+            <span className="text-4xl">◫</span>
             <h3 className="font-display text-2xl font-bold text-white">No Magazines Yet</h3>
             <p className="font-mono text-xs text-[#F5F1EA]/60 max-w-md mx-auto leading-relaxed">
               Create your first magazine using a professional FREGORO template or upload your

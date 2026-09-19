@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -298,7 +298,7 @@ export default function CheckoutPage() {
           <div className="lg:col-span-2">
             {checkoutError && (
               <div className="mb-6 p-4 bg-ember/10 border border-ember/50 rounded-lg flex items-start gap-3">
-                <span className="text-ember text-lg leading-none mt-0.5">⚠</span>
+                <span className="text-ember text-lg leading-none mt-0.5">!</span>
                 <div className="flex-1">
                   <p className="font-mono text-caption text-ember whitespace-pre-line">
                     {checkoutError}

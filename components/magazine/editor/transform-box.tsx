@@ -179,7 +179,7 @@ export function TransformBox({
       {/* ── Action Pill ── */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-[#0E0E10] border border-[#F5F1EA]/20 px-2 py-1 rounded-lg shadow-2xl z-50 pointer-events-auto select-none max-w-[92vw] overflow-x-auto"
+        className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-[#0E0E10]/85 backdrop-blur-xl border border-white/20 px-2 py-1 rounded-lg shadow-2xl z-50 pointer-events-auto select-none max-w-[92vw] overflow-x-auto"
       >
         <button
           onPointerDown={onMoveStart}
@@ -216,7 +216,7 @@ export function TransformBox({
           title={isLocked ? 'Unlock Element' : 'Lock Element'}
           className={`p-1.5 text-[11px] font-mono touch-manipulation ${isLocked ? 'text-amber-400' : 'text-[#F5F1EA]/70 hover:text-white'}`}
         >
-          {isLocked ? '🔒' : '🔓'}
+          {isLocked ? '●' : '○'}
         </button>
         <button
           onClick={onDelete}

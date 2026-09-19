@@ -294,7 +294,7 @@ export function DeviceSkinsComingSoon() {
                   {/* Lock Indicator */}
                   <div className="pt-3 flex items-center justify-between text-xs font-mono border-t border-[#F5F1EA]/5">
                     <span className="text-[#ED9518] uppercase tracking-wider font-semibold flex items-center gap-1.5">
-                      <span>🔒</span> Pre-Release
+                      <span>◈</span> Pre-Release
                     </span>
                     <span className="text-[#F5F1EA]/40">Q4 2026 Drop</span>
                   </div>

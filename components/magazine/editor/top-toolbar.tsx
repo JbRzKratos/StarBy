@@ -285,7 +285,7 @@ export function TopToolbar({
           title="Open Publication Spread Reader"
           className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-[#16161A] hover:bg-[#202028] border border-[#F5F1EA]/10 font-mono text-xs text-[#F5F1EA] transition-all"
         >
-          <span>📖</span>
+          <span>◈</span>
           <span className="hidden sm:inline">Preview</span>
         </button>
 
