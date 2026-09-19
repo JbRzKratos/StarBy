@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -32,7 +32,7 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
         </div>
       </div>
 
-      <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg">
+      <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg">
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-ash w-4 h-4" />
           <input
@@ -45,7 +45,7 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
         </div>
       </div>
 
-      <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 overflow-x-auto shadow-lg">
+      <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 overflow-x-auto shadow-lg">
         <table className="w-full text-left font-mono text-sm text-bone">
           <thead className="bg-black/20 border-b border-[#F5F1EA]/10">
             <tr>

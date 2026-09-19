@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useRef } from 'react';
 import type {
@@ -168,15 +168,16 @@ export function RightInspector({
             </div>
           </div>
 
-          {/* Exact Numeric Geometry Inputs — LIVE UPDATE on change, COMMIT on blur */}
-          <div className="space-y-2">
+          {/* Geometry & Transform â€” sliders + manual inputs, both live-update canvas */}
+          <div className="space-y-3">
             <span className="font-mono text-[10px] text-[#F5F1EA]/50 uppercase font-bold block">
-              Geometry & Transform (%)
+              Geometry &amp; Transform (%)
             </span>
-            <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-              {/* X Position */}
-              <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
-                <span className="text-[#F5F1EA]/40 block text-[9px]">X Position</span>
+
+            {/* X Position */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">X Position</span>
                 <input
                   type="number"
                   value={Math.round(singleElement.frame.x)}
@@ -190,12 +191,38 @@ export function RightInspector({
                       frame: { ...singleElement.frame, x: Number(e.target.value) },
                     })
                   }
-                  className="w-full bg-transparent text-white font-bold outline-none"
+                  className="w-14 bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] text-white font-bold text-xs font-mono text-right px-1.5 py-0.5 rounded outline-none"
                 />
               </div>
-              {/* Y Position */}
-              <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
-                <span className="text-[#F5F1EA]/40 block text-[9px]">Y Position</span>
+              <input
+                type="range"
+                min="-50"
+                max="150"
+                step="1"
+                value={Math.round(singleElement.frame.x)}
+                onChange={(e) =>
+                  onUpdateElementLive(singleElement.id, {
+                    frame: { ...singleElement.frame, x: Number(e.target.value) },
+                  })
+                }
+                onMouseUp={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, x: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                onTouchEnd={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, x: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
+              />
+            </div>
+
+            {/* Y Position */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">Y Position</span>
                 <input
                   type="number"
                   value={Math.round(singleElement.frame.y)}
@@ -209,55 +236,134 @@ export function RightInspector({
                       frame: { ...singleElement.frame, y: Number(e.target.value) },
                     })
                   }
-                  className="w-full bg-transparent text-white font-bold outline-none"
+                  className="w-14 bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] text-white font-bold text-xs font-mono text-right px-1.5 py-0.5 rounded outline-none"
                 />
               </div>
-              {/* Width */}
-              <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
-                <span className="text-[#F5F1EA]/40 block text-[9px]">Width</span>
+              <input
+                type="range"
+                min="-50"
+                max="150"
+                step="1"
+                value={Math.round(singleElement.frame.y)}
+                onChange={(e) =>
+                  onUpdateElementLive(singleElement.id, {
+                    frame: { ...singleElement.frame, y: Number(e.target.value) },
+                  })
+                }
+                onMouseUp={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, y: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                onTouchEnd={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, y: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
+              />
+            </div>
+
+            {/* Width */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">Width</span>
                 <input
                   type="number"
+                  min="1"
                   value={Math.round(singleElement.frame.width)}
                   onChange={(e) =>
                     onUpdateElementLive(singleElement.id, {
-                      frame: { ...singleElement.frame, width: Number(e.target.value) },
+                      frame: { ...singleElement.frame, width: Math.max(1, Number(e.target.value)) },
                     })
                   }
                   onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
-                      frame: { ...singleElement.frame, width: Number(e.target.value) },
+                      frame: { ...singleElement.frame, width: Math.max(1, Number(e.target.value)) },
                     })
                   }
-                  className="w-full bg-transparent text-white font-bold outline-none"
+                  className="w-14 bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] text-white font-bold text-xs font-mono text-right px-1.5 py-0.5 rounded outline-none"
                 />
               </div>
-              {/* Height */}
-              <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
-                <span className="text-[#F5F1EA]/40 block text-[9px]">Height</span>
+              <input
+                type="range"
+                min="1"
+                max="150"
+                step="1"
+                value={Math.round(singleElement.frame.width)}
+                onChange={(e) =>
+                  onUpdateElementLive(singleElement.id, {
+                    frame: { ...singleElement.frame, width: Number(e.target.value) },
+                  })
+                }
+                onMouseUp={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, width: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                onTouchEnd={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, width: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
+              />
+            </div>
+
+            {/* Height */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">Height</span>
                 <input
                   type="number"
+                  min="1"
                   value={Math.round(singleElement.frame.height)}
                   onChange={(e) =>
                     onUpdateElementLive(singleElement.id, {
-                      frame: { ...singleElement.frame, height: Number(e.target.value) },
+                      frame: { ...singleElement.frame, height: Math.max(1, Number(e.target.value)) },
                     })
                   }
                   onBlur={(e) =>
                     onUpdateElement(singleElement.id, {
-                      frame: { ...singleElement.frame, height: Number(e.target.value) },
+                      frame: { ...singleElement.frame, height: Math.max(1, Number(e.target.value)) },
                     })
                   }
-                  className="w-full bg-transparent text-white font-bold outline-none"
+                  className="w-14 bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] text-white font-bold text-xs font-mono text-right px-1.5 py-0.5 rounded outline-none"
                 />
               </div>
+              <input
+                type="range"
+                min="1"
+                max="150"
+                step="1"
+                value={Math.round(singleElement.frame.height)}
+                onChange={(e) =>
+                  onUpdateElementLive(singleElement.id, {
+                    frame: { ...singleElement.frame, height: Number(e.target.value) },
+                  })
+                }
+                onMouseUp={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, height: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                onTouchEnd={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, height: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
+              />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-xs font-mono pt-1">
-              {/* Rotation */}
-              <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
-                <span className="text-[#F5F1EA]/40 block text-[9px]">Rotation (°)</span>
+            {/* Rotation */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">Rotation (deg)</span>
                 <input
                   type="number"
+                  min="-180"
+                  max="180"
                   value={singleElement.frame.rotation || 0}
                   onChange={(e) =>
                     onUpdateElementLive(singleElement.id, {
@@ -269,12 +375,38 @@ export function RightInspector({
                       frame: { ...singleElement.frame, rotation: Number(e.target.value) },
                     })
                   }
-                  className="w-full bg-transparent text-white font-bold outline-none"
+                  className="w-14 bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] text-white font-bold text-xs font-mono text-right px-1.5 py-0.5 rounded outline-none"
                 />
               </div>
-              {/* Opacity */}
-              <div className="bg-[#16161A] p-2 rounded-lg border border-[#F5F1EA]/10 space-y-1">
-                <span className="text-[#F5F1EA]/40 block text-[9px]">Opacity (%)</span>
+              <input
+                type="range"
+                min="-180"
+                max="180"
+                step="1"
+                value={singleElement.frame.rotation || 0}
+                onChange={(e) =>
+                  onUpdateElementLive(singleElement.id, {
+                    frame: { ...singleElement.frame, rotation: Number(e.target.value) },
+                  })
+                }
+                onMouseUp={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, rotation: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                onTouchEnd={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    frame: { ...singleElement.frame, rotation: Number((e.target as HTMLInputElement).value) },
+                  })
+                }
+                className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
+              />
+            </div>
+
+            {/* Opacity */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[9px] text-[#F5F1EA]/40 uppercase">Opacity (%)</span>
                 <input
                   type="number"
                   min="0"
@@ -290,9 +422,32 @@ export function RightInspector({
                       opacity: Math.max(0, Math.min(100, Number(e.target.value))) / 100,
                     })
                   }
-                  className="w-full bg-transparent text-white font-bold outline-none"
+                  className="w-14 bg-[#16161A] border border-[#F5F1EA]/15 focus:border-[#0057FF] text-white font-bold text-xs font-mono text-right px-1.5 py-0.5 rounded outline-none"
                 />
               </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value={Math.round((singleElement.opacity ?? 1) * 100)}
+                onChange={(e) =>
+                  onUpdateElementLive(singleElement.id, {
+                    opacity: Number(e.target.value) / 100,
+                  })
+                }
+                onMouseUp={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    opacity: Number((e.target as HTMLInputElement).value) / 100,
+                  })
+                }
+                onTouchEnd={(e) =>
+                  onUpdateElement(singleElement.id, {
+                    opacity: Number((e.target as HTMLInputElement).value) / 100,
+                  })
+                }
+                className="w-full h-1.5 accent-[#0057FF] cursor-pointer"
+              />
             </div>
           </div>
 

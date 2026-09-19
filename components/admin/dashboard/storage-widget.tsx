@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState } from 'react';
 import { Database, Download, Trash2, Loader2 } from 'lucide-react';
@@ -84,7 +84,7 @@ export function StorageWidget() {
   };
 
   return (
-    <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-6 flex flex-col justify-between hover:scale-[1.01] hover:border-cobalt/30 transition-all duration-300 shadow-xl group">
+    <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 p-6 flex flex-col justify-between hover:scale-[1.01] hover:border-cobalt/30 transition-all duration-300 shadow-xl group">
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display tracking-tight text-bone flex items-center gap-2 text-lg">

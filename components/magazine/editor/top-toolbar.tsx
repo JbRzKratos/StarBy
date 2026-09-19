@@ -70,12 +70,12 @@ export function TopToolbar({
   const isPrintReady = preflightReport ? preflightReport.isPrintReady : true;
 
   return (
-    <header className="h-14 bg-[#0E0E10] border-b border-[#F5F1EA]/10 px-4 flex items-center justify-between select-none text-[#F5F1EA] z-40 relative shrink-0">
+    <header className="h-14 bg-[#0E0E10] border-b border-[#F5F1EA]/10 px-2 sm:px-4 flex items-center gap-2 justify-between select-none text-[#F5F1EA] z-40 relative shrink-0">
       {/* ── LEFT: Studio Logo, Editable Document Title, Cloud Status ── */}
-      <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+      <div className="flex items-center gap-2 min-w-0 flex-1">
         <Link
           href="/magazine"
-          className="flex items-center gap-2 group py-1 pr-3 border-r border-[#F5F1EA]/10 shrink-0"
+          className="flex items-center gap-1.5 group py-1 pr-2 sm:pr-3 border-r border-[#F5F1EA]/10 shrink-0"
           title="Back to Magazine Studio"
         >
           <div className="w-7 h-7 rounded-lg bg-[#0057FF] flex items-center justify-center font-display font-black text-xs text-white shadow-md shadow-[#0057FF]/30">
@@ -87,12 +87,12 @@ export function TopToolbar({
         </Link>
 
         {/* Title & Document Meta */}
-        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+        <div className="flex items-center gap-1 min-w-0 flex-1">
           <input
             type="text"
             value={doc.title}
             onChange={(e) => onUpdateTitle(e.target.value)}
-            className="bg-transparent border border-transparent hover:border-[#F5F1EA]/20 focus:border-[#0057FF] px-1.5 sm:px-2 py-1 rounded-md font-display font-bold text-xs sm:text-sm text-white outline-none max-w-[90px] xs:max-w-[130px] sm:max-w-[200px] md:max-w-[260px] truncate transition-all"
+            className="bg-transparent border border-transparent hover:border-[#F5F1EA]/20 focus:border-[#0057FF] px-1.5 py-1 rounded-md font-display font-bold text-xs text-white outline-none w-full max-w-[80px] xs:max-w-[110px] sm:max-w-[180px] md:max-w-[240px] truncate transition-all"
             placeholder="Magazine Title"
           />
 
@@ -249,7 +249,7 @@ export function TopToolbar({
       </div>
 
       {/* ── RIGHT: Inspector Toggle, Preflight, Preview, PDF & Order ── */}
-      <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+      <div className="flex items-center gap-1 shrink-0">
         {/* Right Inspector Toggle (desktop only, mobile has bottom dock) */}
         {onToggleRightPanel && (
           <button
@@ -302,11 +302,9 @@ export function TopToolbar({
         {/* Order Print CTA */}
         <button
           onClick={onOrderPrint}
-          className="flex items-center gap-1.5 px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg bg-gradient-to-r from-[#0057FF] to-[#3B5EFF] hover:from-[#0046CC] hover:to-[#0057FF] font-mono text-[11px] sm:text-xs font-bold text-white uppercase tracking-wider transition-all shadow-lg shadow-[#0057FF]/30 active:scale-95 shrink-0"
+          className="flex items-center gap-1 px-2.5 sm:px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#0057FF] to-[#3B5EFF] hover:from-[#0046CC] hover:to-[#0057FF] font-mono text-[11px] font-bold text-white uppercase tracking-wider transition-all shadow-lg shadow-[#0057FF]/30 active:scale-95 shrink-0"
         >
-          <span>
-            Order<span className="hidden xs:inline"> Print</span>
-          </span>
+          <span className="hidden sm:inline">ORDER </span><span>PRINT</span>
           <span>→</span>
         </button>
       </div>

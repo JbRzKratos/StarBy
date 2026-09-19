@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -75,7 +75,7 @@ export function CustomerDetailClient({
           <ArrowLeft className="w-4 h-4" />
           Back to Customers
         </Link>
-        <div className="flex flex-col md:flex-row gap-6 md:items-end justify-between bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-6 sm:p-8 shadow-xl">
+        <div className="flex flex-col md:flex-row gap-6 md:items-end justify-between bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 p-6 sm:p-8 shadow-xl">
           <div className="flex items-center gap-6">
             <div className="w-20 h-20 bg-gradient-to-br from-cobalt to-[#8b5cf6] rounded-full flex items-center justify-center flex-shrink-0 shadow-lg border border-white/10">
               <span className="text-3xl font-display font-bold text-white uppercase">
@@ -105,7 +105,7 @@ export function CustomerDetailClient({
 
       {/* Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-        <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
+        <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
           <div>
             <p className="text-xs font-mono uppercase tracking-widest text-ash mb-1">Total Spent</p>
             <p className="text-3xl font-display font-bold text-bone">
@@ -113,7 +113,7 @@ export function CustomerDetailClient({
             </p>
           </div>
         </div>
-        <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
+        <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
           <div>
             <p className="text-xs font-mono uppercase tracking-widest text-ash mb-1">
               Total Orders
@@ -121,7 +121,7 @@ export function CustomerDetailClient({
             <p className="text-3xl font-display font-bold text-bone">{metrics.totalOrders}</p>
           </div>
         </div>
-        <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
+        <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 p-5 shadow-lg flex items-center justify-between">
           <div>
             <p className="text-xs font-mono uppercase tracking-widest text-ash mb-1">
               Average Order Value
@@ -136,7 +136,7 @@ export function CustomerDetailClient({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Order History */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg overflow-hidden">
+          <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 shadow-lg overflow-hidden">
             <div className="px-6 py-5 border-b border-[#F5F1EA]/10 flex items-center gap-2">
               <Package className="w-5 h-5 text-cobalt" />
               <h2 className="text-lg font-display tracking-tight text-bone">Order History</h2>
@@ -202,7 +202,7 @@ export function CustomerDetailClient({
         {/* Right Column - Addresses & Designs */}
         <div className="space-y-6">
           {/* Addresses */}
-          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg overflow-hidden">
+          <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 shadow-lg overflow-hidden">
             <div className="px-6 py-5 border-b border-[#F5F1EA]/10 flex items-center gap-2">
               <MapPin className="w-5 h-5 text-emerald-400" />
               <h2 className="text-lg font-display tracking-tight text-bone">Saved Addresses</h2>
@@ -235,7 +235,7 @@ export function CustomerDetailClient({
           </div>
 
           {/* Designs */}
-          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg overflow-hidden">
+          <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 shadow-lg overflow-hidden">
             <div className="px-6 py-5 border-b border-[#F5F1EA]/10 flex items-center gap-2">
               <Palette className="w-5 h-5 text-purple-400" />
               <h2 className="text-lg font-display tracking-tight text-bone">Saved Designs</h2>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -193,10 +193,31 @@ export default function CheckoutPage() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
 
-      if (!data.success) {
-        let errStr = data.message || 'Checkout failed';
+      let data: {
+        success: boolean;
+        message?: string;
+        errors?: Record<string, string[]>;
+        isCod?: boolean;
+        cashfreeOrderId?: string;
+        orderId?: string;
+        paymentSessionId?: string;
+        cashfreeEnvironment?: string;
+      };
+
+      try {
+        data = await res.json();
+      } catch {
+        setCheckoutError(
+          `Server error (${res.status}): Unable to process your request. Please try again.`,
+        );
+        setLoading(false);
+        submittingRef.current = false;
+        return;
+      }
+
+      if (!res.ok || !data.success) {
+        let errStr = data.message || `Checkout failed (HTTP ${res.status})`;
         if (data.errors) {
           const detail = Object.entries(data.errors)
             .map(([k, v]) => `${k}: ${(v as string[]).join(', ')}`)
@@ -233,7 +254,10 @@ export default function CheckoutPage() {
       }
     } catch (err) {
       console.error('Checkout execution error:', err);
-      setCheckoutError('An unexpected error occurred during checkout. Please try again.');
+      const msg = err instanceof Error ? err.message : 'Unknown error';
+      setCheckoutError(
+        `Checkout failed: ${msg}. Please check your connection and try again.`,
+      );
       setLoading(false);
       submittingRef.current = false;
     }

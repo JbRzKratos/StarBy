@@ -268,7 +268,7 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-full bg-black/20 border-r border-white/10 flex flex-col z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 h-full bg-[#0E0E12] border-r border-white/10 flex flex-col z-50 transition-all duration-300 shadow-2xl ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         } ${collapsed ? 'w-60 md:w-16' : 'w-60'}`}
       >

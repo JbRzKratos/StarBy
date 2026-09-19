@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Link from 'next/link';
 import { StatusBadge } from '@/components/admin/status-badge';
@@ -125,7 +125,7 @@ const STAT_CARDS = (stats: DashboardStats) => [
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
       </svg>
     ),
-    bg: 'bg-purple-50',
+    bg: 'bg-purple-500/10',
   },
 ];
 
@@ -145,7 +145,7 @@ export function DashboardClient({
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-5 font-mono shadow-lg hover:shadow-xl hover:scale-[1.02] hover:border-cobalt/30 transition-all duration-300 group"
+            className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 p-5 font-mono shadow-lg hover:shadow-xl hover:scale-[1.02] hover:border-cobalt/30 transition-all duration-300 group"
           >
             <div className="flex items-start justify-between">
               <div>
@@ -167,7 +167,7 @@ export function DashboardClient({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           {/* Revenue chart */}
-          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 p-6 shadow-lg h-full">
+          <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 p-6 shadow-lg h-full">
             <h2 className="font-display text-lg tracking-tight text-bone mb-6 flex items-center gap-2">
               Revenue
               <span className="text-xs font-mono uppercase tracking-widest text-ash bg-smoke/20 px-2 py-1 rounded-md ml-2">
@@ -186,7 +186,7 @@ export function DashboardClient({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent orders */}
-        <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg flex flex-col">
+        <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 shadow-lg flex flex-col">
           <div className="flex items-center justify-between px-6 py-5 border-b border-[#F5F1EA]/10">
             <h2 className="font-display text-lg tracking-tight text-bone">Recent Orders</h2>
             <Link
@@ -225,7 +225,7 @@ export function DashboardClient({
         {/* Right column: top products + low stock */}
         <div className="space-y-6">
           {/* Top products */}
-          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-[#F5F1EA]/10 shadow-lg">
+          <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 shadow-lg">
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#F5F1EA]/10">
               <h2 className="font-display text-lg tracking-tight text-bone">
                 Top Products{' '}
@@ -258,7 +258,7 @@ export function DashboardClient({
           </div>
 
           {/* Low stock alerts */}
-          <div className="bg-[#1A1A1E]/80 backdrop-blur-md rounded-xl border border-amber-500/20 shadow-lg shadow-amber-500/5 relative overflow-hidden">
+          <div className="bg-[#1A1A1E] rounded-xl border border-amber-500/20 shadow-lg shadow-amber-500/5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
             <div className="flex items-center justify-between px-6 py-5 border-b border-amber-500/10">
               <h2 className="font-display text-lg tracking-tight text-amber-500 flex items-center gap-2">

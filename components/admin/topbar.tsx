@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useTransition, useCallback } from 'react';
 import Link from 'next/link';
@@ -80,7 +80,7 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
   const lastUpdatedDisplay = secondsAgo < 5 ? 'Just now' : `${secondsAgo}s ago`;
 
   return (
-    <header className="fixed top-0 right-0 left-0 md:left-60 h-[60px] bg-[#0E0E10]/90 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-3 sm:px-6 z-40 transition-[left] duration-300">
+    <header className="fixed top-0 right-0 left-0 md:left-60 h-[60px] bg-[#0E0E10] border-b border-white/10 flex items-center justify-between px-3 sm:px-6 z-40 transition-[left] duration-300">
       <div className="flex items-center gap-3 min-w-0">
         {/* Mobile menu toggle button */}
         <button
