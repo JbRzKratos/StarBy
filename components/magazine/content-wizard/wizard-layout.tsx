@@ -20,6 +20,31 @@ export function WizardLayout({ template, onComplete }: WizardLayoutProps) {
   const [contentMap, setContentMap] = useState<WizardContentMap>({});
   const [focusedElementId, setFocusedElementId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
+
+  // Hide floating chat widgets (Tawk.to and WhatsApp) while in the wizard
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.body.classList.add('magazine-editor-active');
+      const win = window as unknown as {
+        Tawk_API?: { hideWidget?: () => void; showWidget?: () => void };
+      };
+      try {
+        win.Tawk_API?.hideWidget?.();
+      } catch {
+        /* ignore */
+      }
+
+      return () => {
+        document.body.classList.remove('magazine-editor-active');
+        try {
+          win.Tawk_API?.showWidget?.();
+        } catch {
+          /* ignore */
+        }
+      };
+    }
+  }, []);
 
   // Auto-save to sessionStorage
   useEffect(() => {
@@ -45,6 +70,12 @@ export function WizardLayout({ template, onComplete }: WizardLayoutProps) {
   const currentPage = template.pages[currentPageIndex];
   const currentPageSchema = schema.pages[currentPageIndex];
 
+  const currentPageElements = currentPageSchema?.elements ?? [];
+  const currentPageTotalCount = currentPageElements.length;
+  const currentPageFilledCount = currentPageElements.filter(
+    (el) => (contentMap[el.elementId] ?? '').trim().length > 0,
+  ).length;
+
   const completedPages = schema.pages.filter(
     (p) => getPageCompletion(p, contentMap) === 'complete',
   ).length;
@@ -65,7 +96,10 @@ export function WizardLayout({ template, onComplete }: WizardLayoutProps) {
   };
 
   return (
-    <div className="flex h-full bg-[#0D0D0E] text-[#F5F1EA] overflow-hidden">
+    <div
+      data-magazine-editor="true"
+      className="flex h-full bg-[#0D0D0E] text-[#F5F1EA] overflow-hidden"
+    >
       {/* ── Left: Completion Sidebar ── */}
       <div
         className={`flex-shrink-0 transition-all duration-300 ${
@@ -118,21 +152,28 @@ export function WizardLayout({ template, onComplete }: WizardLayoutProps) {
         </div>
 
         {/* Canvas area */}
-        <div className="flex-1 overflow-hidden flex items-center justify-center p-3 md:p-6 bg-[#111113]">
-          <div className="h-full max-h-[calc(100vh-140px)] w-auto max-w-full flex items-center justify-center">
+        <div
+          className={`flex-1 min-h-0 overflow-hidden flex items-center justify-center p-2 sm:p-4 md:p-6 bg-[#111113] isolate ${
+            mobileSheetOpen ? 'pointer-events-none' : ''
+          }`}
+        >
+          <div className="h-full w-full max-h-full max-w-full flex items-center justify-center isolate">
             {currentPage && (
               <PageCanvasPreview
                 page={currentPage}
                 contentMap={contentMap}
                 focusedElementId={focusedElementId}
-                onSelectElement={setFocusedElementId}
+                onSelectElement={(id) => {
+                  setFocusedElementId(id);
+                  setMobileSheetOpen(true);
+                }}
               />
             )}
           </div>
         </div>
 
-        {/* Canvas bottom nav */}
-        <div className="flex items-center justify-between px-4 py-3 border-t border-white/10 bg-[#0E0E12] flex-shrink-0">
+        {/* ── Desktop Canvas bottom nav ── */}
+        <div className="hidden md:flex items-center justify-between px-4 py-3 border-t border-white/10 bg-[#0E0E12] flex-shrink-0">
           <button
             onClick={goPrev}
             disabled={currentPageIndex === 0}
@@ -141,7 +182,7 @@ export function WizardLayout({ template, onComplete }: WizardLayoutProps) {
             ← Previous
           </button>
 
-          {/* Mobile: page indicator */}
+          {/* Desktop page indicator */}
           <div className="flex items-center gap-1">
             {schema.pages.map((_, i) => (
               <button
@@ -177,9 +218,80 @@ export function WizardLayout({ template, onComplete }: WizardLayoutProps) {
             </button>
           )}
         </div>
+
+        {/* ── Mobile Unified Bottom Action Dock (iPhone SE to iPhone 18 Pro Max) ── */}
+        <div
+          className="flex md:hidden flex-col gap-2 px-3 pt-2.5 border-t border-white/10 bg-[#0E0E12] flex-shrink-0 z-30 shadow-2xl"
+          style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
+        >
+          {/* Top micro-bar: page dots & current count */}
+          <div className="flex items-center justify-between px-1">
+            <span className="font-mono text-[10px] text-white/50">
+              Page {currentPageIndex + 1}/{schema.pages.length} · {currentPageSchema?.pageLabel}
+            </span>
+            <div className="flex items-center gap-1">
+              {schema.pages.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setCurrentPageIndex(i);
+                    setFocusedElementId(null);
+                  }}
+                  className={`h-1 rounded-full transition-all ${
+                    i === currentPageIndex ? 'bg-[#0057FF] w-3' : 'bg-white/20 w-1'
+                  }`}
+                  aria-label={`Go to page ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom row: Prev + Primary Fill Button + Next/Review */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={goPrev}
+              disabled={currentPageIndex === 0}
+              className="px-3 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-25 disabled:cursor-not-allowed bg-white/5 hover:bg-white/10 text-white/80 active:scale-95 flex-shrink-0"
+              aria-label="Previous Page"
+            >
+              ← Prev
+            </button>
+
+            <button
+              onClick={() => setMobileSheetOpen(true)}
+              className="flex-1 py-2.5 px-3 rounded-xl bg-[#0057FF] hover:bg-[#0046CC] active:scale-[0.98] font-mono text-xs font-bold uppercase tracking-wider text-white flex items-center justify-center gap-1.5 shadow-lg shadow-[#0057FF]/30 truncate"
+            >
+              <span>◈ Fill Content</span>
+              <span className="opacity-80 text-[10px]">
+                ({currentPageFilledCount}/{currentPageTotalCount})
+              </span>
+              <span className="opacity-70 text-sm leading-none ml-0.5">↑</span>
+            </button>
+
+            {currentPageIndex < schema.pages.length - 1 ? (
+              <button
+                onClick={goNext}
+                className="px-3 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider bg-white/10 hover:bg-white/15 text-white active:scale-95 flex-shrink-0"
+                aria-label="Next Page"
+              >
+                Next →
+              </button>
+            ) : (
+              <button
+                onClick={() => onComplete(contentMap)}
+                className={`px-3 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all active:scale-95 flex-shrink-0 ${
+                  allDone ? 'bg-emerald-500 text-white' : 'bg-[#0057FF] text-white'
+                }`}
+                aria-label="Review and Order"
+              >
+                {allDone ? 'Review ✓' : 'Review →'}
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* ── Right: Content Form ── */}
+      {/* ── Right: Content Form (Desktop) ── */}
       <div className="w-80 xl:w-96 flex-shrink-0 flex flex-col bg-[#0E0E12] hidden md:flex">
         {/* Form header */}
         <div className="px-5 py-4 border-b border-white/10 flex-shrink-0">
@@ -208,7 +320,13 @@ export function WizardLayout({ template, onComplete }: WizardLayoutProps) {
 
       {/* ── Mobile: Bottom sheet for content form ── */}
       <MobileContentSheet
+        isOpen={mobileSheetOpen}
+        onClose={() => setMobileSheetOpen(false)}
         pageLabel={currentPageSchema?.pageLabel ?? ''}
+        pageIndex={currentPageIndex}
+        totalPages={schema.pages.length}
+        onPrevPage={goPrev}
+        onNextPage={goNext}
         pageSchema={currentPageSchema}
         contentMap={contentMap}
         focusedElementId={focusedElementId}
@@ -224,7 +342,13 @@ export function WizardLayout({ template, onComplete }: WizardLayoutProps) {
 import type { PageWizardSchema } from '@/types/magazine';
 
 interface MobileContentSheetProps {
+  isOpen: boolean;
+  onClose: () => void;
   pageLabel: string;
+  pageIndex: number;
+  totalPages: number;
+  onPrevPage: () => void;
+  onNextPage: () => void;
   pageSchema: PageWizardSchema | undefined;
   contentMap: WizardContentMap;
   focusedElementId: string | null;
@@ -233,61 +357,83 @@ interface MobileContentSheetProps {
 }
 
 function MobileContentSheet({
+  isOpen,
+  onClose,
   pageLabel,
+  pageIndex,
+  totalPages,
+  onPrevPage,
+  onNextPage,
   pageSchema,
   contentMap,
   focusedElementId,
   onContentChange,
   onFocusElement,
 }: MobileContentSheetProps) {
-  const [open, setOpen] = useState(false);
-
   return (
     <>
-      {/* Mobile form trigger bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden">
-        <button
-          onClick={() => setOpen(true)}
-          className="w-full py-4 bg-[#0057FF] font-mono text-xs font-bold uppercase tracking-widest text-white flex items-center justify-center gap-2 shadow-2xl"
-        >
-          <span>◈ Fill Content for {pageLabel}</span>
-          <span className="opacity-60">↑</span>
-        </button>
-      </div>
-
       {/* Sheet backdrop */}
-      {open && (
+      {isOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm md:hidden"
-          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm md:hidden transition-opacity"
+          onClick={onClose}
         />
       )}
 
       {/* Sheet drawer */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 flex flex-col bg-[#0E0E12]/95 backdrop-blur-2xl border-t border-white/15 rounded-t-2xl transition-transform duration-300 md:hidden ${
-          open ? 'translate-y-0' : 'translate-y-full'
+        className={`fixed bottom-0 left-0 right-0 z-[70] flex flex-col bg-[#0E0E12]/98 backdrop-blur-2xl border-t border-white/15 rounded-t-2xl transition-transform duration-300 md:hidden ${
+          isOpen ? 'translate-y-0' : 'translate-y-full pointer-events-none'
         }`}
-        style={{ maxHeight: '75vh' }}
+        style={{
+          maxHeight: '85vh',
+          paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))',
+        }}
       >
         {/* Handle */}
-        <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
-          <div className="w-10 h-1 rounded-full bg-white/20" />
+        <div className="flex justify-center pt-3 pb-1 flex-shrink-0 cursor-grab" onClick={onClose}>
+          <div className="w-10 h-1 rounded-full bg-white/25" />
         </div>
 
-        {/* Sheet header */}
-        <div className="flex items-center justify-between px-5 pb-3 border-b border-white/10 flex-shrink-0">
-          <h3 className="font-display text-sm font-bold text-white">{pageLabel}</h3>
+        {/* Sheet header with page navigation */}
+        <div className="flex items-center justify-between px-4 py-2 border-b border-white/10 flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onPrevPage}
+              disabled={pageIndex === 0}
+              className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center font-mono text-xs text-white/60 disabled:opacity-20"
+              aria-label="Previous Page"
+            >
+              ←
+            </button>
+            <div>
+              <span className="font-mono text-[9px] uppercase tracking-wider text-[#0057FF] font-bold block">
+                Page {pageIndex + 1} of {totalPages}
+              </span>
+              <h3 className="font-display text-xs sm:text-sm font-bold text-white leading-tight">
+                {pageLabel}
+              </h3>
+            </div>
+            <button
+              onClick={onNextPage}
+              disabled={pageIndex === totalPages - 1}
+              className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center font-mono text-xs text-white/60 disabled:opacity-20"
+              aria-label="Next Page"
+            >
+              →
+            </button>
+          </div>
+
           <button
-            onClick={() => setOpen(false)}
-            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center font-mono text-white/50 transition-colors"
+            onClick={onClose}
+            className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 font-mono text-[10px] font-bold uppercase tracking-wider text-white/60 transition-colors"
           >
-            ✕
+            Done ✕
           </button>
         </div>
 
         {/* Scrollable form content */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 pb-8">
+        <div className="flex-1 overflow-y-auto px-4 py-3 pb-6 overscroll-contain">
           {pageSchema ? (
             <ContentForm
               schema={pageSchema}

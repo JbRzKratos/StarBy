@@ -40,42 +40,49 @@ function ContentWizardInner() {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-[#0D0D0E] overflow-hidden select-none">
+    <div
+      data-magazine-editor="true"
+      className="h-screen w-screen flex flex-col bg-[#0D0D0E] overflow-hidden select-none"
+    >
       {/* Top bar */}
-      <header className="flex items-center justify-between px-4 md:px-6 py-2.5 border-b border-white/10 bg-[#0D0D0E] z-30 flex-shrink-0">
-        <div className="flex items-center gap-3">
+      <header className="flex items-center justify-between px-3 sm:px-6 py-2 border-b border-white/10 bg-[#0D0D0E] z-30 flex-shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <Link
             href="/magazine"
-            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center font-mono text-white/60 hover:text-white transition-all text-sm"
+            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center font-mono text-white/60 hover:text-white transition-all text-sm flex-shrink-0"
             title="Back to Templates"
           >
             ←
           </Link>
-          <div>
-            <div className="flex items-center gap-2">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <span className="font-mono text-[9px] uppercase tracking-widest text-[#0057FF] font-bold">
-                Content Wizard
+                Wizard
               </span>
               <span className="text-white/20 text-[10px]">/</span>
-              <span className="font-mono text-[9px] uppercase tracking-wider text-emerald-400 font-bold">
+              <span className="hidden sm:inline font-mono text-[9px] uppercase tracking-wider text-emerald-400 font-bold">
                 Original PDF Layout Locked
               </span>
+              <span className="sm:hidden font-mono text-[9px] uppercase tracking-wider text-emerald-400 font-bold">
+                Design Locked
+              </span>
             </div>
-            <h1 className="font-display text-sm font-bold text-white leading-tight">
+            <h1 className="font-display text-xs sm:text-sm font-bold text-white leading-tight truncate">
               {template.name}
             </h1>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <span className="hidden lg:block font-mono text-[10px] text-white/40 uppercase tracking-wider">
             You provide content · We preserve design
           </span>
           <Link
             href={`/magazine/editor?template=${template.id}`}
-            className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 font-mono text-[10px] font-bold uppercase tracking-widest text-white/60 hover:text-white transition-all border border-white/10"
+            className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-white/60 hover:text-white transition-all border border-white/10"
           >
-            Switch to Full Editor
+            <span className="hidden sm:inline">Switch to Full Editor</span>
+            <span className="sm:hidden">Editor ↗</span>
           </Link>
         </div>
       </header>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MAGAZINE_TEMPLATES as INITIAL_TEMPLATES } from '@/data/magazineTemplates';
@@ -37,7 +37,12 @@ export default function MagazineTemplatesDirectory() {
       });
   }, []);
 
-  const allTemplates = [...INITIAL_TEMPLATES, ...dbTemplates];
+  const allTemplates = useMemo(() => {
+    const map = new Map<string, MagazineTemplate>();
+    INITIAL_TEMPLATES.forEach((tpl) => map.set(tpl.id, tpl));
+    dbTemplates.forEach((tpl) => map.set(tpl.id, tpl));
+    return Array.from(map.values());
+  }, [dbTemplates]);
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setFavorites((prev) => (prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]));

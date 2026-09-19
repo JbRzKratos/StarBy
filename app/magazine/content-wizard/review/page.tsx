@@ -3,7 +3,6 @@
 import React, { Suspense, useEffect, useState, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { MAGAZINE_TEMPLATES } from '@/data/magazineTemplates';
 import type { MagazineDocument, WizardContentMap } from '@/types/magazine';
 import { DEFAULT_THEME } from '@/types/magazine';
@@ -141,7 +140,7 @@ function ReviewInner() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D0E] text-[#F5F1EA] pb-24">
+    <div data-magazine-editor="true" className="min-h-screen bg-[#0D0D0E] text-[#F5F1EA] pb-24">
       {/* Top bar */}
       <header className="sticky top-0 z-30 flex items-center justify-between px-4 md:px-8 py-4 border-b border-white/10 bg-[#0D0D0E]/95 backdrop-blur-xl">
         <div className="flex items-center gap-3">
@@ -176,7 +175,7 @@ function ReviewInner() {
 
       <div className="max-w-5xl mx-auto px-4 md:px-8 pt-8 space-y-10">
         {/* Completion summary */}
-        <div className="p-6 rounded-2xl bg-[#141418] border border-white/10 grid grid-cols-3 gap-6">
+        <div className="p-3 sm:p-6 rounded-2xl bg-[#141418] border border-white/10 grid grid-cols-3 gap-2 sm:gap-6">
           <StatBlock
             value={`${completedPages}/${schema.pages.length}`}
             label="Pages Complete"
@@ -196,7 +195,7 @@ function ReviewInner() {
 
         {/* Missing required fields warning */}
         {requiredUnfilled.length > 0 && (
-          <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30">
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30">
             <p className="font-mono text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">
               ⚠ Required fields missing
             </p>
@@ -224,7 +223,7 @@ function ReviewInner() {
           <h2 className="font-mono text-xs font-bold uppercase tracking-widest text-white/50 mb-5">
             All Pages
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
             {template.pages.map((page, index) => {
               const pageSchema = schema.pages[index];
               const status = pageSchema ? getPageCompletion(pageSchema, contentMap) : 'complete';
@@ -234,11 +233,15 @@ function ReviewInner() {
                   (e.frame.x <= 1 && e.frame.y <= 1 && e.frame.width >= 99 && e.frame.height >= 99),
               );
               const rawBg = bgEl?.content ?? '';
-              const thumbSrc = rawBg.includes('_bg.png')
+              const fullPdf = rawBg.includes('_bg.png')
                 ? rawBg.replace('_bg.png', '_full.png')
-                : index === 0
+                : rawBg;
+              const thumbSrc =
+                fullPdf ||
+                rawBg ||
+                (index === 0
                   ? template.coverImage
-                  : (template.spreadPreviews?.[index - 1] ?? template.coverImage);
+                  : (template.spreadPreviews?.[index - 1] ?? template.coverImage));
 
               return (
                 <Link
@@ -255,14 +258,19 @@ function ReviewInner() {
                           : 'border-white/10'
                     }`}
                   >
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                       src={thumbSrc}
                       alt={pageSchema?.pageLabel ?? `Page ${index + 1}`}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 640px) 50vw, 25vw"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        if (rawBg && (e.target as HTMLImageElement).src !== rawBg) {
+                          (e.target as HTMLImageElement).src = rawBg;
+                        }
+                      }}
                     />
-                    <div className="absolute top-2 right-2">
+
+                    <div className="absolute top-2 right-2 z-20">
                       {status === 'complete' && (
                         <span className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-[9px] shadow-lg">
                           ✓
@@ -279,7 +287,7 @@ function ReviewInner() {
                         </span>
                       )}
                     </div>
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2 z-20">
                       <span className="font-mono text-[10px] text-white font-bold">Edit</span>
                     </div>
                   </div>
@@ -331,12 +339,15 @@ function ReviewInner() {
         </section>
 
         {/* Pricing & CTA */}
-        <div className="p-6 rounded-2xl bg-[#141418] border border-[#0057FF]/30 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div
+          className="p-4 sm:p-6 rounded-2xl bg-[#141418] border border-[#0057FF]/30 flex flex-col md:flex-row items-center justify-between gap-6"
+          style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom, 0px))' }}
+        >
           <div>
             <p className="font-mono text-xs text-white/50 mb-1">Starting from</p>
-            <p className="font-display text-3xl font-black text-white">
+            <p className="font-display text-2xl sm:text-3xl font-black text-white">
               ₹1,499
-              <span className="font-mono text-sm text-white/40 ml-2">/ copy</span>
+              <span className="font-mono text-xs sm:text-sm text-white/40 ml-2">/ copy</span>
             </p>
             <p className="font-mono text-[10px] text-white/35 mt-1">
               Includes print, lamination & delivery. VAT not included.
@@ -374,11 +385,13 @@ function ReviewInner() {
 
 function StatBlock({ value, label, color }: { value: string; label: string; color: string }) {
   return (
-    <div className="text-center">
-      <p className="font-display text-2xl font-black" style={{ color }}>
+    <div className="text-center px-1">
+      <p className="font-display text-lg sm:text-2xl font-black truncate" style={{ color }}>
         {value}
       </p>
-      <p className="font-mono text-[10px] text-white/40 uppercase tracking-wider mt-1">{label}</p>
+      <p className="font-mono text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 truncate">
+        {label}
+      </p>
     </div>
   );
 }

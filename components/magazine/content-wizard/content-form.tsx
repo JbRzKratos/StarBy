@@ -200,7 +200,7 @@ function TextField({
         placeholder={meta.placeholder ?? `Enter ${meta.label.toLowerCase()}...`}
         rows={rows}
         maxLength={meta.maxChars ? meta.maxChars * 1.2 : undefined} // soft limit
-        className="w-full px-3 pb-2.5 bg-transparent outline-none font-mono text-xs text-white/85 placeholder-white/25 resize-none leading-relaxed"
+        className="w-full px-3 pb-2.5 bg-transparent outline-none font-mono text-base sm:text-xs text-white/90 placeholder-white/25 resize-none leading-relaxed"
       />
 
       {/* Optional Design Notes / Custom Preferences Box */}
@@ -213,7 +213,7 @@ function TextField({
           value={instructionValue}
           onChange={(e) => onInstructionChange(e.target.value)}
           placeholder="e.g. Change font, larger size, change color, shift position..."
-          className="w-full px-2.5 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 font-mono text-[11px] text-white/80 placeholder-white/20 focus:border-[#0057FF]/60 focus:bg-white/[0.06] outline-none transition-all"
+          className="w-full px-2.5 py-2 rounded-lg bg-white/[0.03] border border-white/10 font-mono text-base sm:text-[11px] text-white/80 placeholder-white/20 focus:border-[#0057FF]/60 focus:bg-white/[0.06] outline-none transition-all"
         />
       </div>
     </div>
@@ -349,7 +349,7 @@ function ImageField({
           value={instructionValue}
           onChange={(e) => onInstructionChange(e.target.value)}
           placeholder="e.g. Center subject, zoom in/crop, move position, black & white..."
-          className="w-full px-2.5 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 font-mono text-[11px] text-white/80 placeholder-white/20 focus:border-[#0057FF]/60 focus:bg-white/[0.06] outline-none transition-all"
+          className="w-full px-2.5 py-2 rounded-lg bg-white/[0.03] border border-white/10 font-mono text-base sm:text-[11px] text-white/80 placeholder-white/20 focus:border-[#0057FF]/60 focus:bg-white/[0.06] outline-none transition-all"
         />
       </div>
 

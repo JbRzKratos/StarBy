@@ -108,6 +108,7 @@ export function CompletionSidebar({
                   src={thumbSrc}
                   alt={pageSchema.pageLabel}
                   fill
+                  priority={index === 0}
                   className="object-cover"
                   sizes="36px"
                 />
