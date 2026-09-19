@@ -38,7 +38,6 @@ export function TawkToWidget() {
 
   return (
     <>
-
       <Script
         id="tawk-to-script"
         strategy="lazyOnload"
