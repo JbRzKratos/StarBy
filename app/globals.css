@@ -1,4 +1,4 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -217,12 +217,22 @@
   }
 
   /* -- Tawk.to: Hide attention-grabber overlay/close button sitewide -- */
-  /* The chat attention grabber shows a large X button that covers content */
+  /* The chat attention grabber shows a large X button that covers content and breaks mobile layouts */
   div[id^='tawk-bubble'],
+  div[id*='tawk-bubble'],
   .tawk-attention-grabber,
   .tawk-chat-panel .tawk-close-button,
-  iframe[title='chat widget'] + div {
+  iframe[title='chat widget'] + div,
+  iframe[title*='chat widget'] ~ div,
+  div[style*='z-index: 2000000000'],
+  .tawk-min-container button[class*='close'],
+  .tawk-min-container .tawk-custom-color.tawk-button-close {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 }
 
