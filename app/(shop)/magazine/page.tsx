@@ -36,6 +36,15 @@ export default function MagazineStudioLanding() {
       });
   }, []);
 
+  useEffect(() => {
+    if (selectedTemplateForPreview) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [selectedTemplateForPreview]);
+
   const allTemplates = [...INITIAL_TEMPLATES, ...dbTemplates];
 
   const filteredTemplates = allTemplates.filter((tpl) => {
