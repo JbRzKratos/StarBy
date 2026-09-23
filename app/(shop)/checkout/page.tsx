@@ -240,10 +240,39 @@ export default function CheckoutPage() {
           return;
         }
 
-        // Initialize Cashfree JS SDK
-        const cashfree = await loadCashfree({
-          mode: data.cashfreeEnvironment === 'production' ? 'production' : 'sandbox',
-        });
+        // Initialize Cashfree JS SDK — retry up to 2 times if SDK script fails to load
+        const sdkMode = data.cashfreeEnvironment === 'production' ? 'production' : 'sandbox';
+        let cashfree;
+        let sdkLoadAttempts = 0;
+        const maxSdkAttempts = 2;
+        while (sdkLoadAttempts < maxSdkAttempts) {
+          try {
+            cashfree = await loadCashfree({ mode: sdkMode });
+            break;
+          } catch (sdkErr) {
+            sdkLoadAttempts++;
+            console.warn(`Cashfree SDK load attempt ${sdkLoadAttempts} failed:`, sdkErr);
+            if (sdkLoadAttempts >= maxSdkAttempts) {
+              // SDK failed — fall back to direct URL redirect using payment session
+              console.error('Cashfree SDK could not be loaded. Falling back to direct redirect.');
+              const cfPayUrl =
+                sdkMode === 'production'
+                  ? `https://payments.cashfree.com/order-pay/${data.paymentSessionId}`
+                  : `https://sandbox.cashfree.com/pg/view/sessions/${data.paymentSessionId}`;
+              window.location.href = cfPayUrl;
+              return;
+            }
+            // Wait 500ms before retrying
+            await new Promise((r) => setTimeout(r, 500));
+          }
+        }
+
+        if (!cashfree) {
+          setCheckoutError('Payment gateway could not be initialized. Please try again.');
+          setLoading(false);
+          submittingRef.current = false;
+          return;
+        }
 
         // Trigger Cashfree checkout redirect
         await cashfree.checkout({
@@ -254,7 +283,13 @@ export default function CheckoutPage() {
     } catch (err) {
       console.error('Checkout execution error:', err);
       const msg = err instanceof Error ? err.message : 'Unknown error';
-      setCheckoutError(`Checkout failed: ${msg}. Please check your connection and try again.`);
+      if (msg.includes('Failed to load Cashfree')) {
+        setCheckoutError(
+          'Payment gateway failed to load. Please disable any ad blockers, check your internet connection, and try again.',
+        );
+      } else {
+        setCheckoutError(`Checkout failed: ${msg}. Please check your connection and try again.`);
+      }
       setLoading(false);
       submittingRef.current = false;
     }
