@@ -29,7 +29,10 @@ export default async function AdminDashboardPage() {
     prisma.order.findMany({
       take: 10,
       orderBy: { createdAt: 'desc' },
-      include: { user: { select: { fullName: true, email: true } } },
+      include: {
+        user: { select: { fullName: true, email: true, phone: true } },
+        items: true,
+      },
     }),
     prisma.order.findMany({
       where: {
@@ -83,15 +86,56 @@ export default async function AdminDashboardPage() {
         totalOrders,
         aov,
       }}
-      recentOrders={recentOrders.map((o) => ({
-        id: o.id,
-        customerName: o.user?.fullName || o.user?.email || 'Guest',
-        status: o.status,
-        paymentStatus: o.paymentStatus,
-        total: o.total,
-        createdAt: o.createdAt.toISOString(),
-        itemCount: 0,
-      }))}
+      recentOrders={recentOrders.map((o) => {
+        const addr = (o.shippingAddress as Record<string, unknown>) || {};
+        const customerName =
+          (typeof addr.name === 'string' && addr.name.trim()) ||
+          `${typeof addr.firstName === 'string' ? addr.firstName : ''} ${typeof addr.lastName === 'string' ? addr.lastName : ''}`.trim() ||
+          o.user?.fullName ||
+          o.user?.email ||
+          'Customer';
+        const customerEmail =
+          (typeof addr.email === 'string' && addr.email) || o.user?.email || '—';
+        const customerPhone =
+          (typeof addr.phone === 'string' && addr.phone) || o.user?.phone || '—';
+        const shippingStreet = typeof addr.street === 'string' ? addr.street : '';
+        const shippingCity = typeof addr.city === 'string' ? addr.city : '';
+        const shippingState = typeof addr.state === 'string' ? addr.state : '';
+        const shippingZip = typeof addr.zip === 'string' ? addr.zip : '';
+        const shippingCountry = typeof addr.country === 'string' ? addr.country : 'India';
+
+        return {
+          id: o.id,
+          publicOrderId: o.publicOrderId || o.id,
+          customerName,
+          customerEmail,
+          customerPhone,
+          shippingAddress: {
+            name: customerName,
+            street: shippingStreet,
+            city: shippingCity,
+            state: shippingState,
+            zip: shippingZip,
+            country: shippingCountry,
+            phone: customerPhone,
+            email: customerEmail,
+          },
+          status: o.status,
+          paymentStatus: o.paymentStatus,
+          paymentProvider: o.paymentProvider || 'Cashfree',
+          total: o.total,
+          createdAt: o.createdAt.toISOString(),
+          itemCount: o.items.reduce((sum, i) => sum + i.quantity, 0),
+          items: o.items.map((i) => ({
+            id: i.id,
+            name: i.productNameSnapshot || i.productId,
+            quantity: i.quantity,
+            size: i.size,
+            unitPrice: i.unitPrice || i.price || 0,
+            totalPrice: i.totalPrice || (i.price ? i.price * i.quantity : 0),
+          })),
+        };
+      })}
       revenueData={allOrders90d.map((o) => ({
         date: o.createdAt.toISOString().split('T')[0] ?? '',
         revenue: o.total,

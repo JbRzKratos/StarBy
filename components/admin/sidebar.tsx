@@ -338,11 +338,11 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
                   title={collapsed ? item.label : undefined}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     active
-                      ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]'
-                      : 'text-ash/80 hover:bg-white/10 hover:text-white'
+                      ? 'bg-[#3B5EFF]/15 text-[#3B5EFF] font-semibold'
+                      : 'text-slate-300 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  <span className={`flex-shrink-0 ${active ? 'text-[#3B5EFF]' : 'text-ash/60'}`}>
+                  <span className={`flex-shrink-0 ${active ? 'text-[#3B5EFF]' : 'text-slate-400'}`}>
                     {item.icon}
                   </span>
                   {!collapsed && <span className="truncate">{item.label}</span>}
@@ -356,14 +356,14 @@ export function AdminSidebar({ isAdmin, userEmail, userName }: AdminSidebarProps
         {!collapsed && (
           <div className="px-3 py-3 border-t border-white/10">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                <span className="text-ash/80 text-xs font-semibold uppercase">
+              <div className="w-8 h-8 rounded-full bg-cobalt/20 border border-cobalt/40 flex items-center justify-center flex-shrink-0">
+                <span className="text-white text-xs font-bold uppercase">
                   {(userName || userEmail || 'A').charAt(0)}
                 </span>
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-bone truncate">{userName || 'Admin'}</p>
-                <p className="text-xs text-ash/60 truncate">{userEmail}</p>
+                <p className="text-xs font-semibold text-white truncate">{userName || 'Admin'}</p>
+                <p className="text-xs text-slate-400 truncate">{userEmail}</p>
               </div>
             </div>
           </div>

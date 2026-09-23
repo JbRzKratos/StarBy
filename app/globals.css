@@ -140,6 +140,29 @@
     cursor: auto !important;
   }
 
+  /* Admin Panel High-Contrast & Legibility Enhancements */
+  .admin-root {
+    color-scheme: dark;
+  }
+  .admin-root th {
+    color: #CBD5E1 !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em;
+  }
+  .admin-root td {
+    color: #F8FAFC;
+  }
+  .admin-root input,
+  .admin-root select,
+  .admin-root textarea {
+    color: #F8FAFC !important;
+  }
+  .admin-root input::placeholder,
+  .admin-root textarea::placeholder {
+    color: #94A3B8 !important;
+    opacity: 0.85;
+  }
+
   /* Hide underlying page content during AR camera preview so WebXR background doesn't bleed through */
   body.ar-active main,
   body.ar-active header:not(#xr-overlay header),

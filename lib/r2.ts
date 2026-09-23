@@ -14,6 +14,7 @@ import {
   GetObjectCommand,
   DeleteObjectCommand,
   ListObjectsV2Command,
+  type ListObjectsV2CommandOutput,
   DeleteObjectsCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
@@ -269,4 +270,38 @@ export async function getR2ObjectBuffer(key: string): Promise<Buffer | null> {
     console.error(`Error fetching R2 object ${key}:`, error);
   }
   return null;
+}
+
+// ─── Get Total Storage Usage ──────────────────────────────────────────────────
+
+export async function getR2StorageUsage(): Promise<{ totalBytes: number; fileCount: number }> {
+  try {
+    const client = getR2Client();
+    const bucket = getBucketName();
+    let totalBytes = 0;
+    let fileCount = 0;
+    let token: string | undefined = undefined;
+
+    do {
+      const response: ListObjectsV2CommandOutput = await client.send(
+        new ListObjectsV2Command({
+          Bucket: bucket,
+          ContinuationToken: token,
+        }),
+      );
+
+      if (response.Contents) {
+        for (const item of response.Contents) {
+          totalBytes += item.Size || 0;
+          fileCount++;
+        }
+      }
+      token = response.NextContinuationToken;
+    } while (token);
+
+    return { totalBytes, fileCount };
+  } catch (error) {
+    console.error('Error calculating R2 storage usage:', error);
+    return { totalBytes: 0, fileCount: 0 };
+  }
 }

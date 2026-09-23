@@ -10,6 +10,9 @@ import {
   sendOrderDeliveredEmail,
   sendContactEmail,
   sendContactAutoReply,
+  type OrderEmailDetails,
+  type OrderItemEmailData,
+  type ShippingAddressEmailData,
 } from './email';
 
 export type NotificationEvent =
@@ -30,10 +33,20 @@ export interface NotificationPayload {
   customerEmail?: string | null | undefined;
   customerPhone?: string | null | undefined;
   total?: number | undefined;
+  subtotal?: number | undefined;
+  shippingFee?: number | undefined;
+  discount?: number | null | undefined;
+  couponCode?: string | null | undefined;
+  paymentMethod?: string | null | undefined;
+  paymentGatewayPaymentId?: string | null | undefined;
+  paymentStatus?: string | null | undefined;
+  shippingAddress?: ShippingAddressEmailData | Record<string, unknown> | null | undefined;
+  items?: OrderItemEmailData[] | undefined;
   trackingNumber?: string | null | undefined;
   trackingUrl?: string | null | undefined;
   carrier?: string | null | undefined;
   customMessage?: string | null | undefined;
+  createdAt?: string | Date | undefined;
 }
 
 export interface NotificationResult {
@@ -57,12 +70,32 @@ export async function dispatchNotification(
     switch (event) {
       case 'ORDER_CREATED':
       case 'PAYMENT_CONFIRMED': {
+        const emailDetails: OrderEmailDetails = {
+          orderId: payload.orderId,
+          publicOrderId: payload.publicOrderId,
+          createdAt: payload.createdAt || new Date(),
+          customerName: payload.customerName,
+          customerEmail: payload.customerEmail,
+          customerPhone: payload.customerPhone,
+          items: payload.items || [],
+          subtotal: payload.subtotal ?? (payload.total || 0),
+          shippingFee: payload.shippingFee ?? 0,
+          discount: payload.discount,
+          couponCode: payload.couponCode,
+          total: payload.total || 0,
+          paymentMethod: payload.paymentMethod || 'Online (Cashfree)',
+          paymentGatewayPaymentId: payload.paymentGatewayPaymentId,
+          paymentStatus: payload.paymentStatus || 'Paid',
+          shippingAddress: payload.shippingAddress as ShippingAddressEmailData,
+        };
+
         if (payload.customerEmail) {
           const sent = await sendOrderConfirmationEmail(
             payload.customerEmail,
             displayOrderId,
             payload.customerName,
             payload.total || 0,
+            emailDetails,
           );
           results.push({
             channel: 'email',
@@ -71,8 +104,12 @@ export async function dispatchNotification(
           });
         }
 
-        // Notify Admin of new paid order
-        const adminSent = await sendAdminNewOrderEmail(displayOrderId, payload.total || 0);
+        // Notify Admin of new paid order with itemized billing invoice
+        const adminSent = await sendAdminNewOrderEmail(
+          displayOrderId,
+          payload.total || 0,
+          emailDetails,
+        );
         results.push({
           channel: 'email',
           success: adminSent,

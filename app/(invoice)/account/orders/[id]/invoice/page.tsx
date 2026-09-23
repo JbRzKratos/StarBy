@@ -2,11 +2,17 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { PrintInvoiceButton } from '@/components/print-invoice-button';
+import { PrintInvoiceButton, AutoPrintTrigger } from '@/components/print-invoice-button';
 
 export const dynamic = 'force-dynamic';
 
-export default async function InvoicePage({ params }: { params: { id: string } }) {
+export default async function InvoicePage({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams?: { email?: string; print?: string; autoPrint?: string };
+}) {
   const supabase = createClient();
   const {
     data: { user },
@@ -24,16 +30,27 @@ export default async function InvoicePage({ params }: { params: { id: string } }
 
   if (!order) return notFound();
 
-  // Restrict to admin or the owner
-  if (
-    user?.id !== order.userId &&
-    user?.email !== 'fregorostudios@gmail.com' &&
-    user?.email !== 'admin@fregorostudios.com'
-  ) {
+  const address = (order.shippingAddress as Record<string, string | undefined>) || {};
+  const orderEmail = (address.email || order.user?.email || '').toLowerCase().trim();
+  const searchEmail = (searchParams?.email || '').toLowerCase().trim();
+
+  const isOwner = Boolean(user?.id && user.id === order.userId);
+  let isAdmin =
+    user?.email === 'fregorostudios@gmail.com' || user?.email === 'admin@fregorostudios.com';
+
+  if (!isAdmin && user?.id) {
+    const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+    isAdmin = dbUser?.role === 'ADMIN' || dbUser?.role === 'STAFF';
+  }
+
+  const isEmailVerifiedLink = Boolean(searchEmail && orderEmail && searchEmail === orderEmail);
+
+  // Restrict to admin, owner, or verified order recipient link
+  if (!isOwner && !isAdmin && !isEmailVerifiedLink) {
     return notFound();
   }
 
-  const address = (order.shippingAddress as Record<string, string | undefined>) || {};
+  const shouldAutoPrint = searchParams?.print === '1' || searchParams?.autoPrint === '1';
   const subtotal =
     order.subtotal ||
     order.items.reduce(
@@ -85,11 +102,17 @@ export default async function InvoicePage({ params }: { params: { id: string } }
           </div>
           <div className="text-right">
             <h2 className="text-2xl font-bold text-slate-950 mb-1 font-display">Fregoro Studios</h2>
-            <p className="text-xs text-slate-700 leading-relaxed">
-              Engineered Streetwear & Design Objects
+            <p className="text-xs text-slate-700 leading-relaxed font-medium">
+              Engineered Custom Star Maps & Art Objects
             </p>
-            <p className="text-xs text-slate-700 leading-relaxed">Bengaluru, Karnataka, India</p>
-            <p className="text-xs text-slate-700 leading-relaxed">fregorostudios@gmail.com</p>
+            <p className="text-xs text-slate-700 leading-relaxed">Plot No: A-134, N.G.G.O Nagar</p>
+            <p className="text-xs text-slate-700 leading-relaxed">
+              Selai Village, Thiruvallur - 631203
+            </p>
+            <p className="text-xs text-slate-700 leading-relaxed">Tamil Nadu, India</p>
+            <p className="text-xs text-slate-700 leading-relaxed font-mono">
+              fregorostudios@gmail.com
+            </p>
           </div>
         </div>
 
@@ -225,6 +248,7 @@ export default async function InvoicePage({ params }: { params: { id: string } }
           </p>
         </div>
       </div>
+      <AutoPrintTrigger enabled={shouldAutoPrint} />
     </div>
   );
 }

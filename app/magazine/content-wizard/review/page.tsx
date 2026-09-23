@@ -110,16 +110,24 @@ function ReviewInner() {
 
       localStorage.setItem(`magazine-doc-${doc.id}`, JSON.stringify(doc));
 
+      const isFirstFashionMagazine =
+        template.id === 'tpl_fashion_1' ||
+        template.slug === 'fashion-magazine-1' ||
+        template.name.toLowerCase().includes('fashion magazine 1');
+
       addItem({
         productId: 'prod_test_magazine',
         variantId: 'var_test_magazine_01',
         quantity: 1,
-        price: 1,
-        name: `Custom Magazine - ${template.name}`,
+        price: isFirstFashionMagazine ? 1 : 499,
+        name: isFirstFashionMagazine
+          ? `Fashion Magazine 1 (Test ₹1) · ${template.name}`
+          : `Custom Magazine · ${template.name}`,
         image: template.coverImage,
         customization: {
           magazineId: doc.id,
           magazineTitle: template.name,
+          templateId: template.id,
           pageCount: doc.pageCount,
           paperWeight: doc.paperWeight,
           coverFinish: doc.coverFinish,

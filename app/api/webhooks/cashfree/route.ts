@@ -77,10 +77,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ received: true, duplicate: true });
     }
 
-    // 4. Find the internal order
+    // 4. Find the internal order (robust against cfOrderId being publicOrderId or gateway order id)
     const order = await prisma.order.findFirst({
-      where: { paymentGatewayOrderId: cfOrderId },
-      include: { items: true, user: true },
+      where: {
+        OR: [{ paymentGatewayOrderId: cfOrderId }, { publicOrderId: cfOrderId }, { id: cfOrderId }],
+      },
+      include: {
+        items: {
+          include: {
+            orderCustomization: true,
+          },
+        },
+        user: true,
+      },
     });
 
     if (!order) {
@@ -158,14 +167,38 @@ export async function POST(req: Request) {
 
         // Send notifications (non-blocking, outside transaction)
         try {
-          const address = order.shippingAddress as Record<string, string> | null;
+          const address = (order.shippingAddress as Record<string, string | undefined>) || {};
+          const mappedItems = order.items.map((item) => ({
+            id: item.id,
+            name: item.productNameSnapshot || `Product #${item.productId}`,
+            variant: item.variantId,
+            size: item.size,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice ?? (item.totalPrice ? item.totalPrice / item.quantity : 0),
+            totalPrice: item.totalPrice,
+            customization: item.customization as Record<string, unknown> | null,
+            previewUrl: item.orderCustomization?.previewFileUrl || null,
+            designFileUrl: item.orderCustomization?.designFileUrl || null,
+          }));
+
           await dispatchNotification('PAYMENT_CONFIRMED', {
             orderId: order.id,
             publicOrderId: order.publicOrderId || undefined,
-            customerName: address?.name || order.user?.fullName || 'Valued Customer',
-            customerEmail: address?.email || order.user?.email || undefined,
-            customerPhone: address?.phone || order.user?.phone || undefined,
+            customerName: address.name || order.user?.fullName || 'Valued Customer',
+            customerEmail: address.email || order.user?.email || undefined,
+            customerPhone: address.phone || order.user?.phone || undefined,
             total: order.total,
+            subtotal: order.subtotal,
+            shippingFee: order.shippingFee,
+            discount: order.discount,
+            couponCode: order.couponCode,
+            paymentMethod: order.paymentProvider || 'Cashfree',
+            paymentGatewayPaymentId:
+              paymentData?.cf_payment_id?.toString() || order.paymentGatewayPaymentId || undefined,
+            paymentStatus: 'paid',
+            shippingAddress: address,
+            items: mappedItems,
+            createdAt: order.createdAt,
           });
         } catch (notifErr) {
           console.warn('Webhook notification error (non-critical):', notifErr);

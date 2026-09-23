@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -47,42 +47,44 @@ export function CustomersClient({ customers }: { customers: CustomerRow[] }) {
 
       <div className="bg-[#1A1A1E] rounded-xl border border-[#F5F1EA]/10 overflow-x-auto shadow-lg">
         <table className="w-full text-left font-mono text-sm text-bone">
-          <thead className="bg-black/20 border-b border-[#F5F1EA]/10">
+          <thead className="bg-[#121215] border-b border-white/10">
             <tr>
-              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs">
+              <th className="px-6 py-4 font-bold text-slate-200 uppercase tracking-wider text-xs">
                 Customer
               </th>
-              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs text-center">
+              <th className="px-6 py-4 font-bold text-slate-200 uppercase tracking-wider text-xs text-center">
                 Orders
               </th>
-              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs text-right">
+              <th className="px-6 py-4 font-bold text-slate-200 uppercase tracking-wider text-xs text-right">
                 Total Spent
               </th>
-              <th className="px-6 py-4 font-normal text-ash uppercase tracking-widest text-xs text-right">
+              <th className="px-6 py-4 font-bold text-slate-200 uppercase tracking-wider text-xs text-right">
                 Joined
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#F5F1EA]/5">
+          <tbody className="divide-y divide-white/5">
             {filtered.map((c) => (
               <tr
                 key={c.id}
                 onClick={() => router.push(`/admin/customers/${c.id}`)}
-                className="hover:bg-[#F5F1EA]/5 cursor-pointer transition-colors group"
+                className="hover:bg-white/5 cursor-pointer transition-colors group"
               >
                 <td className="px-6 py-4">
-                  <p className="font-medium text-bone group-hover:text-cobalt transition-colors">
+                  <p className="font-semibold text-white group-hover:text-cobalt transition-colors">
                     {c.name}
                   </p>
-                  <p className="text-xs text-ash mt-1">{c.email}</p>
+                  <p className="text-xs text-slate-300 font-mono mt-0.5">{c.email}</p>
                 </td>
-                <td className="px-6 py-4 text-center font-semibold text-pearl">
-                  <span className="bg-smoke/20 px-2.5 py-1 rounded-md">{c.orderCount}</span>
+                <td className="px-6 py-4 text-center font-bold text-white">
+                  <span className="bg-white/10 px-2.5 py-1 rounded-md text-xs font-mono">
+                    {c.orderCount}
+                  </span>
                 </td>
-                <td className="px-6 py-4 text-right font-medium">
+                <td className="px-6 py-4 text-right font-bold text-white font-mono">
                   ₹{c.totalSpent.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                 </td>
-                <td className="px-6 py-4 text-ash text-right">
+                <td className="px-6 py-4 text-slate-300 font-mono text-right text-xs">
                   {new Date(c.createdAt).toLocaleDateString('en-IN', {
                     day: 'numeric',
                     month: 'short',

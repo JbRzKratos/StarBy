@@ -42,20 +42,33 @@ export default function MyMagazinesDashboard() {
   };
 
   const handleOrder = (doc: MagazineDocument) => {
+    const isFirstFashion =
+      doc.templateId === 'tpl_fashion_1' ||
+      doc.templateId === 'fashion-magazine-1' ||
+      doc.title?.toLowerCase().includes('fashion magazine 1') ||
+      doc.title?.toLowerCase().includes('fashion editorial');
+
     addItem({
       productId: 'prod_mag_01',
       variantId: 'v_mag_12p',
-      name: `FREGORO Magazine · ${doc.title}`,
-      price: 499,
+      name: isFirstFashion
+        ? `Fashion Magazine 1 (Test ₹1) · ${doc.title}`
+        : `FREGORO Magazine · ${doc.title}`,
+      price: isFirstFashion ? 1 : 499,
       image:
         doc.pages[0]?.elements?.find((e) => e.type === 'image')?.content ||
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+        '/templates/canva/fashion-1/thumbnail.webp',
       quantity: 1,
       size: 'A4 Portrait',
       customization: {
         magazineId: doc.id,
         magazineTitle: doc.title,
+        templateId: doc.templateId,
         pageCount: doc.pages.length,
+        coverFinish: doc.coverFinish,
+        paperWeight: doc.paperWeight,
+        bindingType: doc.bindingType,
+        document: doc,
       },
     });
     router.push('/checkout');

@@ -178,9 +178,16 @@ export default function MagazineTemplatesDirectory() {
                       <span>{tpl.category}</span>
                       <span>{tpl.pageCount} Pages</span>
                     </div>
-                    <h3 className="font-display text-lg font-bold text-white group-hover:text-[#0057FF] transition-colors">
-                      {tpl.name}
-                    </h3>
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="font-display text-lg font-bold text-white group-hover:text-[#0057FF] transition-colors">
+                        {tpl.name}
+                      </h3>
+                      {tpl.id === 'tpl_fashion_1' && (
+                        <span className="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-mono text-xs font-bold whitespace-nowrap">
+                          ₹1 Test
+                        </span>
+                      )}
+                    </div>
                     <p className="font-mono text-xs text-[#F5F1EA]/70 mt-1 line-clamp-2 leading-relaxed">
                       {tpl.description}
                     </p>
@@ -196,9 +203,13 @@ export default function MagazineTemplatesDirectory() {
                   </button>
                   <Link
                     href={`/magazine/editor?template=${tpl.id}`}
-                    className="flex-1 py-2.5 rounded-lg bg-[#0057FF] hover:bg-[#0046CC] text-center font-mono text-xs font-bold text-white uppercase transition-colors shadow-md shadow-[#0057FF]/20"
+                    className={`flex-1 py-2.5 rounded-lg text-center font-mono text-xs font-bold text-white uppercase transition-colors shadow-md ${
+                      tpl.id === 'tpl_fashion_1'
+                        ? 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/20'
+                        : 'bg-[#0057FF] hover:bg-[#0046CC] shadow-[#0057FF]/20'
+                    }`}
                   >
-                    Customize →
+                    Customize {tpl.id === 'tpl_fashion_1' ? '(₹1)' : '→'}
                   </Link>
                 </div>
               </div>

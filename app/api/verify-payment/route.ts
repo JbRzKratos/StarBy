@@ -26,10 +26,23 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. Look up internal order
+    // 1. Look up internal order (by paymentGatewayOrderId, publicOrderId, or internal id)
     const order = await prisma.order.findFirst({
-      where: { paymentGatewayOrderId: cashfreeOrderId },
-      include: { items: true, user: true },
+      where: {
+        OR: [
+          { paymentGatewayOrderId: cashfreeOrderId },
+          { publicOrderId: cashfreeOrderId },
+          { id: cashfreeOrderId },
+        ],
+      },
+      include: {
+        items: {
+          include: {
+            orderCustomization: true,
+          },
+        },
+        user: true,
+      },
     });
 
     if (!order) {
@@ -50,7 +63,8 @@ export async function POST(request: Request) {
     // 3. Verify payment status via Cashfree API (server-to-server)
     let cfStatus;
     try {
-      cfStatus = await getCashfreeOrderStatus(cashfreeOrderId);
+      const lookupOrderId = order.paymentGatewayOrderId || order.publicOrderId || cashfreeOrderId;
+      cfStatus = await getCashfreeOrderStatus(lookupOrderId);
     } catch (err) {
       console.error('Cashfree status check failed:', err);
       return NextResponse.json(
@@ -112,14 +126,38 @@ export async function POST(request: Request) {
 
       // Send confirmation notifications (outside transaction, non-blocking)
       try {
-        const address = order.shippingAddress as Record<string, string> | null;
+        const address = (order.shippingAddress as Record<string, string | undefined>) || {};
+        const mappedItems = order.items.map((item) => ({
+          id: item.id,
+          name: item.productNameSnapshot || `Product #${item.productId}`,
+          variant: item.variantId,
+          size: item.size,
+          quantity: item.quantity,
+          unitPrice: item.unitPrice ?? (item.totalPrice ? item.totalPrice / item.quantity : 0),
+          totalPrice: item.totalPrice,
+          customization: item.customization as Record<string, unknown> | null,
+          previewUrl: item.orderCustomization?.previewFileUrl || null,
+          designFileUrl: item.orderCustomization?.designFileUrl || null,
+        }));
+
         await dispatchNotification('PAYMENT_CONFIRMED', {
           orderId: order.id,
           publicOrderId: order.publicOrderId || undefined,
-          customerName: address?.name || order.user?.fullName || 'Valued Customer',
-          customerEmail: address?.email || order.user?.email || undefined,
-          customerPhone: address?.phone || order.user?.phone || undefined,
+          customerName: address.name || order.user?.fullName || 'Valued Customer',
+          customerEmail: address.email || order.user?.email || undefined,
+          customerPhone: address.phone || order.user?.phone || undefined,
           total: order.total,
+          subtotal: order.subtotal,
+          shippingFee: order.shippingFee,
+          discount: order.discount,
+          couponCode: order.couponCode,
+          paymentMethod: order.paymentProvider || 'Cashfree',
+          paymentGatewayPaymentId:
+            order.paymentGatewayPaymentId || cfStatus.cf_order_id?.toString() || undefined,
+          paymentStatus: 'paid',
+          shippingAddress: address,
+          items: mappedItems,
+          createdAt: order.createdAt,
         });
       } catch (notifErr) {
         console.warn('Notification dispatch error (non-critical):', notifErr);

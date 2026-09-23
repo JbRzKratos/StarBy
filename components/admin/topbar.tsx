@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useTransition, useCallback } from 'react';
 import Link from 'next/link';
@@ -108,13 +108,13 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
         <nav className="flex items-center gap-1.5 text-xs sm:text-sm overflow-x-auto whitespace-nowrap py-1">
           {breadcrumbs.map((crumb, i) => (
             <span key={crumb.href} className="flex items-center gap-1.5">
-              {i > 0 && <span className="text-ash/40">/</span>}
+              {i > 0 && <span className="text-slate-500">/</span>}
               {i === breadcrumbs.length - 1 ? (
-                <span className="font-semibold text-bone">{crumb.label}</span>
+                <span className="font-semibold text-white">{crumb.label}</span>
               ) : (
                 <Link
                   href={crumb.href}
-                  className="text-ash/60 hover:text-bone/80 transition-colors"
+                  className="text-slate-400 hover:text-white transition-colors"
                 >
                   {crumb.label}
                 </Link>
@@ -140,7 +140,7 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
             onClick={refreshData}
             disabled={isPending}
             title="Click to sync data now"
-            className="flex items-center gap-1 text-[11px] text-ash/70 hover:text-white transition-colors"
+            className="flex items-center gap-1 text-[11px] text-slate-300 hover:text-white transition-colors"
           >
             <svg
               className={`w-3 h-3 ${isPending ? 'animate-spin text-emerald-400' : ''}`}
@@ -162,7 +162,9 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
         {/* Role badge */}
         <span
           className={`hidden sm:inline-block text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-            isAdmin ? 'bg-[#3B5EFF]/10 text-[#3B5EFF]' : 'bg-amber-500/10 text-amber-400'
+            isAdmin
+              ? 'bg-[#3B5EFF]/15 text-[#3B5EFF] border border-[#3B5EFF]/30'
+              : 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
           }`}
         >
           {role}
@@ -171,7 +173,7 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
         {/* Sign out */}
         <Link
           href="/api/auth/signout"
-          className="text-xs sm:text-sm text-ash/60 hover:text-bone transition-colors flex items-center gap-1.5 p-1"
+          className="text-xs sm:text-sm text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 p-1"
         >
           <svg
             width="15"

@@ -48,13 +48,19 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
 
       // Header
       doc.fontSize(20).text('Fregoro Studios', 50, 45);
-      doc.fontSize(10).text('INVOICE', 450, 45, { align: 'right' });
-      doc.text(`Order ID: ${order.id}`, { align: 'right' });
-      doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-IN')}`, {
+      doc.fontSize(8).fillColor('#555555');
+      doc.text('Plot No: A-134, N.G.G.O Nagar, Selai Village', 50, 70);
+      doc.text('Thiruvallur - 631203, Tamil Nadu, India', 50, 80);
+      doc.text('fregorostudios@gmail.com', 50, 90);
+      doc.fillColor('#000000');
+
+      doc.fontSize(10).text('TAX INVOICE', 400, 45, { align: 'right' });
+      doc.text(`Order ID: ${order.publicOrderId || order.id}`, 400, 60, { align: 'right' });
+      doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-IN')}`, 400, 75, {
         align: 'right',
       });
 
-      doc.moveDown(2);
+      doc.y = 115;
 
       // Customer Info
       doc.fontSize(12).text('Billed To:');

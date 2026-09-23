@@ -70,7 +70,7 @@ const config: Config = {
         cobalt: '#3B5EFF',
         graphite: '#1A1A1E',
         smoke: '#2A2A2F',
-        ash: '#3A3A40',
+        ash: '#94A3B8',
         pearl: '#D8D0C8',
         ember: '#C45D3E',
       },

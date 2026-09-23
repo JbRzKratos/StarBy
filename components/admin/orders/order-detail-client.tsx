@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { AdminBadge } from '../ui/badge';
 import { AdminToast, useToast } from '../ui/confirm-dialog';
+import { AdminPrintInvoiceButton } from './print-invoice-button';
 import {
   updateOrderStatus,
   updateOrderInternalNotes,
@@ -193,7 +194,8 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
             })}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <AdminPrintInvoiceButton orderId={order.id} variant="primary" />
           <AdminBadge variant={order.paymentStatus === 'paid' ? 'paid' : 'pending'} />
           <select
             value={order.status}
@@ -529,6 +531,174 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                             )}
                           </div>
                         )}
+
+                      {/* Editorial Magazine Customer Data & Uploaded Images */}
+                      {item.customization &&
+                        (item.customization.magazineTitle ||
+                          item.customization.pagesData ||
+                          item.customization.document) && (
+                          <div className="mt-3 p-3.5 bg-black/40 border border-cobalt/30 rounded-xl space-y-3 font-mono">
+                            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                              <span className="text-xs font-bold text-white uppercase flex items-center gap-1.5">
+                                📖 Editorial Magazine Content & Images
+                              </span>
+                              <span className="text-[10px] text-cobalt font-semibold">
+                                {item.customization.pageCount ||
+                                  item.customization.document?.pages?.length ||
+                                  10}{' '}
+                                Pages
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-300">
+                              <div>
+                                <span className="text-slate-400 block text-[10px]">Title:</span>
+                                <span className="font-semibold text-white">
+                                  {item.customization.magazineTitle ||
+                                    item.customization.document?.title ||
+                                    'Custom Magazine'}
+                                </span>
+                              </div>
+                              {item.customization.paperWeight && (
+                                <div>
+                                  <span className="text-slate-400 block text-[10px]">Paper:</span>
+                                  <span>{item.customization.paperWeight}</span>
+                                </div>
+                              )}
+                              {item.customization.coverFinish && (
+                                <div>
+                                  <span className="text-slate-400 block text-[10px]">
+                                    Cover Finish:
+                                  </span>
+                                  <span>{item.customization.coverFinish}</span>
+                                </div>
+                              )}
+                              {item.customization.bindingType && (
+                                <div>
+                                  <span className="text-slate-400 block text-[10px]">Binding:</span>
+                                  <span>{item.customization.bindingType}</span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Render customer page images and text */}
+                            {(() => {
+                              const pages =
+                                item.customization.pagesData ||
+                                item.customization.document?.pages ||
+                                [];
+                              if (!Array.isArray(pages) || pages.length === 0) return null;
+
+                              return (
+                                <div className="space-y-2 pt-2 border-t border-white/10">
+                                  <span className="text-[11px] font-bold text-slate-300 uppercase block">
+                                    Customer Uploaded Assets & Text per Page:
+                                  </span>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                    {pages.map((p: any, pIdx: number) => {
+                                      const pageNum = p.pageNumber || pIdx + 1;
+                                      const elements = p.elements || [];
+                                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                      const images = elements.filter(
+                                        (el: any) =>
+                                          (el.src &&
+                                            typeof el.src === 'string' &&
+                                            el.src.trim() !== '') ||
+                                          (el.content &&
+                                            typeof el.content === 'string' &&
+                                            el.type === 'image'),
+                                      );
+                                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                      const texts = elements.filter(
+                                        (el: any) =>
+                                          (el.text &&
+                                            typeof el.text === 'string' &&
+                                            el.text.trim() !== '') ||
+                                          (el.content &&
+                                            typeof el.content === 'string' &&
+                                            el.type === 'text'),
+                                      );
+
+                                      return (
+                                        <div
+                                          key={pIdx}
+                                          className="p-2.5 bg-white/5 border border-white/10 rounded-lg text-xs space-y-1.5"
+                                        >
+                                          <div className="font-bold text-white text-[11px] flex justify-between">
+                                            <span>Page {pageNum}</span>
+                                            <span className="text-[10px] text-slate-400 font-normal">
+                                              {images.length} images · {texts.length} text blocks
+                                            </span>
+                                          </div>
+
+                                          {/* Images */}
+                                          {images.length > 0 && (
+                                            <div className="flex flex-wrap gap-2 pt-1">
+                                              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                              {images.map((img: any, iIdx: number) => {
+                                                const src = img.src || img.content;
+                                                return (
+                                                  <div key={iIdx} className="space-y-1">
+                                                    <a
+                                                      href={src}
+                                                      target="_blank"
+                                                      rel="noreferrer"
+                                                      className="block w-16 h-16 rounded border border-white/20 overflow-hidden bg-black/60 relative group"
+                                                    >
+                                                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                      <img
+                                                        src={src}
+                                                        alt={`P${pageNum} Element ${iIdx + 1}`}
+                                                        className="w-full h-full object-cover"
+                                                      />
+                                                      <span className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[9px] text-white font-bold">
+                                                        View ↗
+                                                      </span>
+                                                    </a>
+                                                    <a
+                                                      href={src}
+                                                      target="_blank"
+                                                      rel="noreferrer"
+                                                      className="text-[9px] text-cobalt hover:underline block truncate max-w-[64px]"
+                                                    >
+                                                      Original ↗
+                                                    </a>
+                                                  </div>
+                                                );
+                                              })}
+                                            </div>
+                                          )}
+
+                                          {/* Texts */}
+                                          {texts.length > 0 && (
+                                            <div className="space-y-1 pt-1">
+                                              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                              {texts.map((t: any, tIdx: number) => {
+                                                const textVal = t.text || t.content;
+                                                return (
+                                                  <div
+                                                    key={tIdx}
+                                                    className="bg-black/40 p-1.5 rounded border border-white/5 text-[10px] text-slate-200 line-clamp-3"
+                                                  >
+                                                    <span className="text-slate-400 font-bold block text-[9px]">
+                                                      {t.name || t.label || `Text ${tIdx + 1}`}:
+                                                    </span>
+                                                    {textVal}
+                                                  </div>
+                                                );
+                                              })}
+                                            </div>
+                                          )}
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        )}
                     </div>
                   )}
                 </div>
@@ -555,6 +725,9 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
               <div className="flex justify-between text-sm font-bold text-bone pt-2 border-t border-white/5">
                 <span>Grand Total</span>
                 <span>₹{order.total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
+              </div>
+              <div className="pt-3 border-t border-white/5 flex justify-end">
+                <AdminPrintInvoiceButton orderId={order.id} variant="secondary" />
               </div>
             </div>
           </div>
@@ -589,20 +762,26 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
         {/* Sidebar — right col */}
         <div className="space-y-4">
           {/* Customer */}
-          <div className="bg-black/20 rounded-xl border border-white/10 p-5">
-            <h2 className="text-sm font-semibold text-bone mb-3">Customer</h2>
-            <div>
-              <p className="text-sm font-medium text-bone">{customerFullName}</p>
-              <p className="text-xs text-ash/60 mt-0.5">
+          <div className="bg-[#1A1A1E] rounded-xl border border-white/10 p-5 shadow-lg">
+            <h2 className="text-sm font-bold text-white mb-3 uppercase tracking-wider flex items-center gap-2">
+              Customer Details
+            </h2>
+            <div className="space-y-2">
+              <p className="text-base font-bold text-white">{customerFullName}</p>
+              <p className="text-xs text-slate-300 font-mono">
                 {order.shippingAddress.email || order.customer?.email || 'No email provided'}
               </p>
               {order.shippingAddress.phone && (
-                <p className="text-xs text-ash/60 mt-0.5">Tel: {order.shippingAddress.phone}</p>
+                <p className="text-xs text-blue-300 font-mono font-medium">
+                  <a href={`tel:${order.shippingAddress.phone}`} className="hover:underline">
+                    Tel: {order.shippingAddress.phone}
+                  </a>
+                </p>
               )}
               {order.customer && (
                 <Link
                   href={`/admin/customers/${order.customer.id}`}
-                  className="text-xs text-[#3B5EFF] hover:underline mt-2 block font-mono"
+                  className="text-xs text-cobalt hover:underline mt-2 inline-block font-mono font-semibold"
                 >
                   View customer profile →
                 </Link>
@@ -611,10 +790,12 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
           </div>
 
           {/* Shipping address */}
-          <div className="bg-black/20 rounded-xl border border-white/10 p-5">
-            <h2 className="text-sm font-semibold text-bone mb-3">Shipping Address</h2>
-            <address className="text-sm text-ash not-italic space-y-0.5">
-              <p className="font-medium">{customerFullName}</p>
+          <div className="bg-[#1A1A1E] rounded-xl border border-white/10 p-5 shadow-lg">
+            <h2 className="text-sm font-bold text-white mb-3 uppercase tracking-wider">
+              Shipping Address
+            </h2>
+            <address className="text-sm text-slate-200 not-italic space-y-1 font-mono">
+              <p className="font-semibold text-white">{customerFullName}</p>
               {order.shippingAddress.street && <p>{order.shippingAddress.street}</p>}
               {(order.shippingAddress.city || order.shippingAddress.state) && (
                 <p>
@@ -627,37 +808,45 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                     .join(', ')}
                 </p>
               )}
-              {order.shippingAddress.country && <p>{order.shippingAddress.country}</p>}
+              {order.shippingAddress.country && (
+                <p className="text-slate-400">{order.shippingAddress.country}</p>
+              )}
             </address>
-            <p className="text-xs text-ash/60 mt-2 capitalize font-mono">
-              Method: {order.shippingMethod}
+            <p className="text-xs text-slate-400 mt-3 capitalize font-mono pt-2 border-t border-white/5">
+              Method: <span className="text-slate-200 font-semibold">{order.shippingMethod}</span>
             </p>
           </div>
 
           {/* Payment info */}
-          <div className="bg-black/20 rounded-xl border border-white/10 p-5">
-            <h2 className="text-sm font-semibold text-bone mb-3">Payment Info</h2>
-            <div className="space-y-2 text-sm font-mono">
-              <div className="flex justify-between">
-                <span className="text-ash/60">Gateway</span>
-                <span className="text-xs font-bold uppercase text-[#3B5EFF]">
+          <div className="bg-[#1A1A1E] rounded-xl border border-white/10 p-5 shadow-lg">
+            <h2 className="text-sm font-bold text-white mb-3 uppercase tracking-wider">
+              Payment Info
+            </h2>
+            <div className="space-y-2.5 text-sm font-mono">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">Gateway</span>
+                <span className="text-xs font-bold uppercase text-cobalt bg-cobalt/10 px-2 py-0.5 rounded border border-cobalt/20">
                   {order.paymentProvider || 'Cashfree'}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-ash/60">Status</span>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">Status</span>
                 <AdminBadge variant={order.paymentStatus === 'paid' ? 'paid' : 'pending'} />
               </div>
               {order.paymentGatewayOrderId && (
-                <div className="flex justify-between">
-                  <span className="text-ash/60">CF Order ID</span>
-                  <span className="text-xs text-ash">{order.paymentGatewayOrderId}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400">CF Order ID</span>
+                  <span className="text-xs text-slate-200 font-semibold">
+                    {order.paymentGatewayOrderId}
+                  </span>
                 </div>
               )}
               {order.paymentGatewayPaymentId && (
-                <div className="flex justify-between">
-                  <span className="text-ash/60">Payment ID</span>
-                  <span className="text-xs text-ash">{order.paymentGatewayPaymentId}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400">Payment ID</span>
+                  <span className="text-xs text-slate-200 font-semibold">
+                    {order.paymentGatewayPaymentId}
+                  </span>
                 </div>
               )}
             </div>

@@ -451,7 +451,7 @@ export async function POST(request: Request) {
           order_note: `Fregoro Studios Order ${publicOrderId}`,
         });
 
-        paymentGatewayOrderId = cfOrder.cf_order_id.toString();
+        paymentGatewayOrderId = cfOrderId;
         paymentSessionId = cfOrder.payment_session_id;
       } catch (err) {
         const rawErrMsg = err instanceof Error ? err.message : String(err);
