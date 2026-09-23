@@ -239,55 +239,34 @@ export default function CheckoutPage() {
           return;
         }
 
-        const sdkMode = data.cashfreeEnvironment === 'production' ? 'production' : 'sandbox';
-        const paymentSessionId = data.paymentSessionId;
+        // Cashfree PG v3 Hosted Checkout:
+        // Cashfree's official checkout endpoint receives payment_session_id via HTTP POST.
+        // This immediately opens Cashfree's secure payment gateway with full support for:
+        // UPI (Google Pay, PhonePe, Paytm, QR code), Cards, Net Banking, and Wallets.
+        // Completely avoids third-party script injection failures, ad-blocker stalls, and mobile iframe issues.
+        const checkoutUrl =
+          data.cashfreeEnvironment === 'production'
+            ? 'https://api.cashfree.com/pg/view/sessions/checkout'
+            : 'https://sandbox.cashfree.com/pg/view/sessions/checkout';
 
-        // Direct redirect to Cashfree-hosted payment page (most reliable, no DOM script injection needed)
-        // This works for both production and sandbox environments.
-        const cfPayUrl =
-          sdkMode === 'production'
-            ? `https://payments.cashfree.com/order-pay/${paymentSessionId}`
-            : `https://sandbox.cashfree.com/pg/view/sessions/${paymentSessionId}`;
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = checkoutUrl;
+        form.style.display = 'none';
 
-        // Try Cashfree.js SDK first (preferred UX — inline checkout), but with a 6-second timeout
-        // If it hangs (script injection blocked or slow), fall back to direct redirect
-        let sdkLaunched = false;
-        const sdkTimeout = new Promise<void>((_, reject) =>
-          setTimeout(() => reject(new Error('SDK_TIMEOUT')), 6000),
-        );
+        const sessionInput = document.createElement('input');
+        sessionInput.type = 'hidden';
+        sessionInput.name = 'payment_session_id';
+        sessionInput.value = data.paymentSessionId;
+        form.appendChild(sessionInput);
 
-        const trySDKCheckout = async () => {
-          // Dynamically import so it doesn't block page load
-          const { load: loadCF } = await import('@cashfreepayments/cashfree-js');
-          const cf = await loadCF({ mode: sdkMode });
-          if (!cf) throw new Error('SDK_NULL');
-          sdkLaunched = true;
-          await cf.checkout({
-            paymentSessionId,
-            redirectTarget: '_self',
-          });
-        };
-
-        try {
-          await Promise.race([trySDKCheckout(), sdkTimeout]);
-        } catch (sdkErr) {
-          const sdkErrMsg = sdkErr instanceof Error ? sdkErr.message : String(sdkErr);
-          console.warn('Cashfree SDK failed/timed out, redirecting directly:', sdkErrMsg);
-          if (!sdkLaunched) {
-            window.location.href = cfPayUrl;
-          }
-        }
+        document.body.appendChild(form);
+        form.submit();
       }
     } catch (err) {
       console.error('Checkout execution error:', err);
       const msg = err instanceof Error ? err.message : 'Unknown error';
-      if (msg.includes('Failed to load Cashfree') || msg.includes('SDK_TIMEOUT')) {
-        setCheckoutError(
-          'Payment gateway failed to load. Please disable any ad blockers, check your internet connection, and try again.',
-        );
-      } else {
-        setCheckoutError(`Checkout failed: ${msg}. Please check your connection and try again.`);
-      }
+      setCheckoutError(`Checkout failed: ${msg}. Please check your connection and try again.`);
       setLoading(false);
       submittingRef.current = false;
     }

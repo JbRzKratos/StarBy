@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
     const { items, address, paymentMethod, couponCode } = validation.data;
 
-    // 3. Get Authenticated User & Ensure User exists in DB
+    // 3. Get Authenticated User or Fallback to Guest Checkout
     let userId: string | null = null;
     let userEmail: string | undefined;
     let userName: string | undefined;
@@ -80,18 +80,39 @@ export async function POST(request: Request) {
           },
         });
         userId = dbUser.id;
-      } else {
-        return NextResponse.json(
-          { success: false, message: 'You must be logged in to place an order.' },
-          { status: 401 },
-        );
       }
     } catch (authErr) {
       console.warn('Auth user sync notice:', authErr);
-      return NextResponse.json(
-        { success: false, message: 'Authentication required. Please log in.' },
-        { status: 401 },
-      );
+    }
+
+    // Support guest checkout if user is not authenticated
+    if (!userId && address.email) {
+      try {
+        const guestEmail = address.email.trim().toLowerCase();
+        const guestName = address.name?.trim() || 'Guest';
+
+        const existingUser = await prisma.user.findUnique({
+          where: { email: guestEmail },
+        });
+
+        if (existingUser) {
+          userId = existingUser.id;
+        } else {
+          const guestId = `guest_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+          const dbUser = await prisma.user.create({
+            data: {
+              id: guestId,
+              email: guestEmail,
+              fullName: guestName,
+              phone: address.phone || null,
+            },
+          });
+          userId = dbUser.id;
+        }
+      } catch (guestErr) {
+        console.warn('Guest user creation notice (proceeding as unlinked order):', guestErr);
+        // userId remains null, perfectly supported by Prisma Order model
+      }
     }
 
     // 4. ──── SECURITY FIX: Server-side price recalculation ────
@@ -418,7 +439,7 @@ export async function POST(request: Request) {
           order_amount: Math.round(totalAmount * 100) / 100, // Cashfree expects amount in rupees, not paise
           order_currency: 'INR',
           customer_details: {
-            customer_id: userId,
+            customer_id: userId || `guest_${cleanPhone || Date.now()}`,
             customer_name: address.name || 'Valued Customer',
             customer_email: address.email,
             customer_phone: cleanPhone,
@@ -463,7 +484,7 @@ export async function POST(request: Request) {
     }
 
     // 10. ──── Save Order to Database ────
-    const createOrderData = (targetUserId: string) => ({
+    const createOrderData = (targetUserId: string | null) => ({
       publicOrderId,
       userId: targetUserId,
       subtotal,
