@@ -252,6 +252,7 @@ export default function CheckoutPage() {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = checkoutUrl;
+        form.target = '_self';
         form.style.display = 'none';
 
         const sessionInput = document.createElement('input');
@@ -262,6 +263,12 @@ export default function CheckoutPage() {
 
         document.body.appendChild(form);
         form.submit();
+
+        // Safety timeout: if browser fails to unload within 10 seconds, reset loading state
+        setTimeout(() => {
+          setLoading(false);
+          submittingRef.current = false;
+        }, 10000);
       }
     } catch (err) {
       console.error('Checkout execution error:', err);
