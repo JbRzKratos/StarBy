@@ -6,29 +6,27 @@ import { prisma } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 
 export default async function AccountPage() {
-  let user = null;
+  const supabase = createClient();
+  const {
+    data: { user: authUser },
+  } = await supabase.auth.getUser();
+
+  if (!authUser) {
+    redirect('/login?redirectTo=/account');
+  }
+
+  const user = authUser;
   let orderCount = 0;
   let addressCount = 0;
   let designCount = 0;
 
   try {
-    const supabase = createClient();
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-
-    if (!authUser) {
-      redirect('/login');
-    }
-
-    user = authUser;
-
     // Fetch counts from DB
     orderCount = await prisma.order.count({ where: { userId: user.id } });
     addressCount = await prisma.address.count({ where: { userId: user.id } });
     designCount = await prisma.customizerDesign.count({ where: { userId: user.id } });
-  } catch {
-    // Graceful fallback if auth/DB not configured
+  } catch (err) {
+    console.warn('Error fetching account counts:', err);
   }
 
   return (

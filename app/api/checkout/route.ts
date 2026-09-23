@@ -394,6 +394,25 @@ export async function POST(request: Request) {
           cleanPhone = rawPhone.slice(-10);
         }
 
+        // Cashfree production strictly enforces HTTPS for return_url and notify_url
+        const cfEnvironment = getCashfreeEnvironment();
+        const siteUrl = getSiteUrl(request);
+        const isLocal = siteUrl.includes('localhost') || siteUrl.includes('127.0.0.1');
+
+        let returnUrl = `${siteUrl}/payment/status?order_id=${cfOrderId}`;
+        if (cfEnvironment === 'production' && returnUrl.startsWith('http://')) {
+          if (isLocal) {
+            returnUrl = `https://fregoro.vercel.app/payment/status?order_id=${cfOrderId}`;
+          } else {
+            returnUrl = returnUrl.replace(/^http:\/\//i, 'https://');
+          }
+        }
+
+        const notifyUrl =
+          !isLocal && siteUrl.startsWith('https://')
+            ? `${siteUrl}/api/webhooks/cashfree`
+            : undefined;
+
         const cfOrder = await createCashfreeOrder({
           order_id: cfOrderId,
           order_amount: Math.round(totalAmount * 100) / 100, // Cashfree expects amount in rupees, not paise
@@ -405,8 +424,8 @@ export async function POST(request: Request) {
             customer_phone: cleanPhone,
           },
           order_meta: {
-            return_url: `${getSiteUrl(request)}/payment/status?order_id=${cfOrderId}`,
-            notify_url: `${getSiteUrl(request)}/api/webhooks/cashfree`,
+            return_url: returnUrl,
+            ...(notifyUrl ? { notify_url: notifyUrl } : {}),
           },
           order_note: `Fregoro Studios Order ${publicOrderId}`,
         });
@@ -426,6 +445,11 @@ export async function POST(request: Request) {
               if (parsed.message) errorMsg = parsed.message;
             }
           } catch {}
+        }
+
+        if (errorMsg.toLowerCase().includes('authentication failed')) {
+          errorMsg =
+            'Payment gateway authentication failed. Please verify your Cashfree credentials.';
         }
 
         return NextResponse.json(

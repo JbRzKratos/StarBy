@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, Suspense, type FormEvent } from 'react';
+import { useState, useEffect, Suspense, type FormEvent } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
 import { getR2AssetUrl } from '@/lib/r2';
@@ -19,18 +19,27 @@ function getFriendlyError(msg: string): string {
 }
 
 function LoginContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirectTo') || '/account';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // If the user already has an active session, forward them immediately
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        window.location.href = redirectTo;
+      }
+    });
+  }, [redirectTo]);
 
   const validateEmail = (val: string) => {
     if (!val) {
@@ -65,23 +74,10 @@ function LoginContent() {
 
     try {
       const supabase = createClient();
-      const { error: authError } = await supabase.auth.signInWithPassword({
-        email,
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
         password,
       });
-      // After login, clear the session from localStorage if rememberMe is false
-      // so it behaves as a session-only cookie (expires when browser closes)
-      if (!rememberMe) {
-        // Supabase JS v2 persists session by default; we convert the token to session-scoped
-        // by removing the persisted key so the next page load won't auto-restore it
-        try {
-          Object.keys(localStorage).forEach((k) => {
-            if (k.startsWith('sb-') && k.endsWith('-auth-token')) localStorage.removeItem(k);
-          });
-        } catch {
-          // localStorage unavailable — no-op
-        }
-      }
 
       if (authError) {
         setAuthError(getFriendlyError(authError.message));
@@ -89,9 +85,14 @@ function LoginContent() {
         return;
       }
 
-      router.push(redirectTo);
-      router.refresh();
-    } catch {
+      if (data?.session) {
+        // Hard navigation ensures cookies are sent cleanly in HTTP headers to server
+        window.location.href = redirectTo;
+      } else {
+        window.location.href = redirectTo;
+      }
+    } catch (err) {
+      console.error('Login error:', err);
       setAuthError('An unexpected error occurred. Please try again.');
       setLoading(false);
     }

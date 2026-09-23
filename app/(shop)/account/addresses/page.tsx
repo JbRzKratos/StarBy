@@ -8,16 +8,16 @@ export const dynamic = 'force-dynamic';
 export default async function AccountAddressesPage() {
   let addresses: Array<Record<string, unknown>> = [];
 
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/login?redirectTo=/account/addresses');
+  }
+
   try {
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      redirect('/login');
-    }
-
     addresses = await prisma.address.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: 'desc' },

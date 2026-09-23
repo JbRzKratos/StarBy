@@ -2,13 +2,11 @@
 
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
 import { getR2AssetUrl } from '@/lib/r2';
 
 export default function SignUpPage() {
-  const router = useRouter();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,8 +20,9 @@ export default function SignUpPage() {
 
     try {
       const supabase = createClient();
+      const cleanEmail = email.trim();
       const { data, error: authError } = await supabase.auth.signUp({
-        email,
+        email: cleanEmail,
         password,
         options: {
           data: {
@@ -39,8 +38,7 @@ export default function SignUpPage() {
       }
 
       if (data.session) {
-        router.push('/account');
-        router.refresh();
+        window.location.href = '/account';
       } else {
         setError('Account created! Please check your email to verify your registration.');
         setLoading(false);

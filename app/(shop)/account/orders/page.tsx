@@ -27,16 +27,16 @@ export default async function AccountOrdersPage() {
     };
   }>[] = [];
 
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/login?redirectTo=/account/orders');
+  }
+
   try {
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      redirect('/login');
-    }
-
     // Fetch real orders from database
     orders = await prisma.order.findMany({
       where: { userId: user.id },

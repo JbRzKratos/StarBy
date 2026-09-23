@@ -14,23 +14,14 @@ const CASHFREE_API_VERSION = '2025-01-01';
 function getCashfreeConfig() {
   const appId = process.env.CASHFREE_APP_ID?.trim();
   const secretKey = process.env.CASHFREE_SECRET_KEY?.trim();
-  const rawEnv = process.env.CASHFREE_ENVIRONMENT?.trim().toLowerCase();
 
   if (!appId || !secretKey) {
     throw new Error(
-      'Cashfree credentials missing in environment variables. Please configure CASHFREE_APP_ID and CASHFREE_SECRET_KEY in your Vercel Project Settings.',
+      'Cashfree credentials missing in environment variables. Please configure CASHFREE_APP_ID and CASHFREE_SECRET_KEY in your environment.',
     );
   }
 
-  // If credentials start with TEST, force sandbox regardless of typos in CASHFREE_ENVIRONMENT
-  const isTestKey = appId.startsWith('TEST');
-  const environment: 'sandbox' | 'production' =
-    isTestKey || rawEnv === 'sandbox'
-      ? 'sandbox'
-      : rawEnv === 'production'
-        ? 'production'
-        : 'sandbox';
-
+  const environment = getCashfreeEnvironment();
   const baseUrl =
     environment === 'production'
       ? 'https://api.cashfree.com/pg'
@@ -180,5 +171,27 @@ export function generatePublicOrderId(): string {
 // ─── Get Cashfree Environment Info (safe for client) ────────────────────────
 
 export function getCashfreeEnvironment(): 'sandbox' | 'production' {
-  return (process.env.CASHFREE_ENVIRONMENT as 'sandbox' | 'production') || 'sandbox';
+  const secretKey = (process.env.CASHFREE_SECRET_KEY || '').trim();
+  const appId = (process.env.CASHFREE_APP_ID || '').trim();
+  const rawEnv = (process.env.CASHFREE_ENVIRONMENT || '')
+    .split('#')[0]
+    .trim()
+    .toLowerCase()
+    .replace(/['"]/g, '');
+
+  // 1. Authoritative check on secret key prefix
+  if (secretKey.startsWith('cfsk_ma_prod_')) {
+    return 'production';
+  }
+  if (secretKey.startsWith('cfsk_ma_test_')) {
+    return 'sandbox';
+  }
+
+  // 2. Authoritative check on app ID prefix
+  if (appId.startsWith('TEST') || appId.startsWith('test_')) {
+    return 'sandbox';
+  }
+
+  // 3. Fallback to explicit CASHFREE_ENVIRONMENT variable
+  return rawEnv === 'production' ? 'production' : 'sandbox';
 }
