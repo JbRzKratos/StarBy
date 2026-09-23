@@ -6,7 +6,6 @@ import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { products } from '@/data/products';
 import { createClient } from '@/lib/supabase/client';
-import { load as loadCashfree } from '@cashfreepayments/cashfree-js';
 
 type Step = 'shipping' | 'payment' | 'review';
 
@@ -240,50 +239,49 @@ export default function CheckoutPage() {
           return;
         }
 
-        // Initialize Cashfree JS SDK — retry up to 2 times if SDK script fails to load
         const sdkMode = data.cashfreeEnvironment === 'production' ? 'production' : 'sandbox';
-        let cashfree;
-        let sdkLoadAttempts = 0;
-        const maxSdkAttempts = 2;
-        while (sdkLoadAttempts < maxSdkAttempts) {
-          try {
-            cashfree = await loadCashfree({ mode: sdkMode });
-            break;
-          } catch (sdkErr) {
-            sdkLoadAttempts++;
-            console.warn(`Cashfree SDK load attempt ${sdkLoadAttempts} failed:`, sdkErr);
-            if (sdkLoadAttempts >= maxSdkAttempts) {
-              // SDK failed — fall back to direct URL redirect using payment session
-              console.error('Cashfree SDK could not be loaded. Falling back to direct redirect.');
-              const cfPayUrl =
-                sdkMode === 'production'
-                  ? `https://payments.cashfree.com/order-pay/${data.paymentSessionId}`
-                  : `https://sandbox.cashfree.com/pg/view/sessions/${data.paymentSessionId}`;
-              window.location.href = cfPayUrl;
-              return;
-            }
-            // Wait 500ms before retrying
-            await new Promise((r) => setTimeout(r, 500));
+        const paymentSessionId = data.paymentSessionId;
+
+        // Direct redirect to Cashfree-hosted payment page (most reliable, no DOM script injection needed)
+        // This works for both production and sandbox environments.
+        const cfPayUrl =
+          sdkMode === 'production'
+            ? `https://payments.cashfree.com/order-pay/${paymentSessionId}`
+            : `https://sandbox.cashfree.com/pg/view/sessions/${paymentSessionId}`;
+
+        // Try Cashfree.js SDK first (preferred UX — inline checkout), but with a 6-second timeout
+        // If it hangs (script injection blocked or slow), fall back to direct redirect
+        let sdkLaunched = false;
+        const sdkTimeout = new Promise<void>((_, reject) =>
+          setTimeout(() => reject(new Error('SDK_TIMEOUT')), 6000),
+        );
+
+        const trySDKCheckout = async () => {
+          // Dynamically import so it doesn't block page load
+          const { load: loadCF } = await import('@cashfreepayments/cashfree-js');
+          const cf = await loadCF({ mode: sdkMode });
+          if (!cf) throw new Error('SDK_NULL');
+          sdkLaunched = true;
+          await cf.checkout({
+            paymentSessionId,
+            redirectTarget: '_self',
+          });
+        };
+
+        try {
+          await Promise.race([trySDKCheckout(), sdkTimeout]);
+        } catch (sdkErr) {
+          const sdkErrMsg = sdkErr instanceof Error ? sdkErr.message : String(sdkErr);
+          console.warn('Cashfree SDK failed/timed out, redirecting directly:', sdkErrMsg);
+          if (!sdkLaunched) {
+            window.location.href = cfPayUrl;
           }
         }
-
-        if (!cashfree) {
-          setCheckoutError('Payment gateway could not be initialized. Please try again.');
-          setLoading(false);
-          submittingRef.current = false;
-          return;
-        }
-
-        // Trigger Cashfree checkout redirect
-        await cashfree.checkout({
-          paymentSessionId: data.paymentSessionId,
-          redirectTarget: '_self',
-        });
       }
     } catch (err) {
       console.error('Checkout execution error:', err);
       const msg = err instanceof Error ? err.message : 'Unknown error';
-      if (msg.includes('Failed to load Cashfree')) {
+      if (msg.includes('Failed to load Cashfree') || msg.includes('SDK_TIMEOUT')) {
         setCheckoutError(
           'Payment gateway failed to load. Please disable any ad blockers, check your internet connection, and try again.',
         );
