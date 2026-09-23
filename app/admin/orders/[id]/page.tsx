@@ -59,9 +59,11 @@ export default async function OrderDetailPage({ params }: PageProps) {
       quantity: item.quantity,
       price: item.unitPrice ?? item.totalPrice / item.quantity,
       size: item.size || null,
+      customization: (item.customization as Record<string, unknown> | null) || null,
       orderCustomization: item.orderCustomization
         ? {
             designFileUrl: item.orderCustomization.designFileUrl,
+            previewFileUrl: item.orderCustomization.previewFileUrl,
             designFileName: item.orderCustomization.designFileName,
             printPosition: item.orderCustomization.printPosition,
             printInstructions: item.orderCustomization.printInstructions,

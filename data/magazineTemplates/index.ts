@@ -1,18 +1,14 @@
 import type { MagazineTemplate } from '@/types/magazine';
 
 export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
-{
+  {
     id: 'tpl_fashion_1',
     slug: 'fashion-magazine-1',
     name: 'Fashion Magazine 1',
     category: 'fashion',
     subcategory: 'Fashion Editorial',
     description: 'Custom template created from editorial layout',
-    styleTags: [
-      'editorial',
-      'magazine',
-      'fashion',
-    ],
+    styleTags: ['editorial', 'magazine', 'fashion'],
     badge: 'POPULAR',
     theme: {
       id: 'imported-theme',
@@ -402,7 +398,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 12.32,
               zIndex: 29,
             },
-            content: 'MEN\'S',
+            content: "MEN'S",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 33.3,
@@ -847,7 +843,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.02,
               zIndex: 25,
             },
-            content: 'THE EVOLUTION\nOF MEN\'S WEAR',
+            content: "THE EVOLUTION\nOF MEN'S WEAR",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 19.5,
@@ -1009,7 +1005,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 15.63,
               zIndex: 31,
             },
-            content: 'MEN\'S FASHION',
+            content: "MEN'S FASHION",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 14.3,
@@ -1231,7 +1227,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.28,
               zIndex: 22,
             },
-            content: 'Good style isn\'t about standing out.\nIt\'s about showing up - authentically.',
+            content: "Good style isn't about standing out.\nIt's about showing up - authentically.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 11.7,
@@ -1285,7 +1281,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 5.54,
               zIndex: 24,
             },
-            content: 'Summer has a way of distilling things down to what matters - light,\nmovement, and the quiet confidence of clothes that feel exactly\nright. In this issue, we explore that balance between ease and\nintention through the season\'s most compelling looks,\nconversations, and details.',
+            content:
+              "Summer has a way of distilling things down to what matters - light,\nmovement, and the quiet confidence of clothes that feel exactly\nright. In this issue, we explore that balance between ease and\nintention through the season's most compelling looks,\nconversations, and details.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 6.7,
@@ -1312,7 +1309,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 5.54,
               zIndex: 25,
             },
-            content: 'From tailored separates in natural textures to the return of refined\nsportswear, our stories celebrate versatility without compromise.\nWe speak with designers who are rethinking what modern\nmenswear can be, and we profile individuals who embody a distinct\npoint of view in everything they do.',
+            content:
+              'From tailored separates in natural textures to the return of refined\nsportswear, our stories celebrate versatility without compromise.\nWe speak with designers who are rethinking what modern\nmenswear can be, and we profile individuals who embody a distinct\npoint of view in everything they do.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 6.7,
@@ -1339,7 +1337,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.5,
               zIndex: 26,
             },
-            content: 'Thank you for being part of this journey. Our mission is simple: to\ninspire a more considered approach to style - season after season.',
+            content:
+              'Thank you for being part of this journey. Our mission is simple: to\ninspire a more considered approach to style - season after season.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 6.7,
@@ -1366,7 +1365,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.5,
               zIndex: 27,
             },
-            content: 'Here\'s to a summer well lived.',
+            content: "Here's to a summer well lived.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 6.7,
@@ -1784,7 +1783,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.12,
               zIndex: 21,
             },
-            content: 'LIGHTWEIGHT FABRICS,\nRELAXED TAILORING AND\nMODERN DETAILS DEFINE\nTHE SEASON\'S MOST\nCOMPELLING LOOKS.',
+            content:
+              "LIGHTWEIGHT FABRICS,\nRELAXED TAILORING AND\nMODERN DETAILS DEFINE\nTHE SEASON'S MOST\nCOMPELLING LOOKS.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.8,
@@ -1946,7 +1946,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.08,
               zIndex: 27,
             },
-            content: 'Subtle textures and natural\nweaves add depth and\ndimension to summer\nessentials.',
+            content:
+              'Subtle textures and natural\nweaves add depth and\ndimension to summer\nessentials.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 5.9,
@@ -2587,7 +2588,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.19,
               zIndex: 24,
             },
-            content: 'Clean lines and refined\ncraftsmanship. A timeless\ninvestment for work,\ntravel, and everything in\nbetween.',
+            content:
+              'Clean lines and refined\ncraftsmanship. A timeless\ninvestment for work,\ntravel, and everything in\nbetween.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.6,
@@ -2614,7 +2616,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.25,
               zIndex: 25,
             },
-            content: 'Understated silhouettes.\nModern edge. Essential\nprotection with effortless style.',
+            content:
+              'Understated silhouettes.\nModern edge. Essential\nprotection with effortless style.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.6,
@@ -3536,7 +3539,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.89,
               zIndex: 21,
             },
-            content: 'THE NEW CLASSICS ARE NOT ABOUT\nFOLLOWING TRENDS - THEY\'RE\nABOUT REFINING WHAT ENDURES.',
+            content:
+              "THE NEW CLASSICS ARE NOT ABOUT\nFOLLOWING TRENDS - THEY'RE\nABOUT REFINING WHAT ENDURES.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.5,
@@ -3563,7 +3567,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 10.69,
               zIndex: 22,
             },
-            content: 'These are the pieces you reach\nfor, season after season.\nTimeless silhouettes,\nexceptional fabrics, and\nconsidered details that elevate\nevery day.\nBuilt to last. Designed to adapt.\nMade to be worn your way.',
+            content:
+              'These are the pieces you reach\nfor, season after season.\nTimeless silhouettes,\nexceptional fabrics, and\nconsidered details that elevate\nevery day.\nBuilt to last. Designed to adapt.\nMade to be worn your way.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.6,
@@ -3617,7 +3622,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.52,
               zIndex: 24,
             },
-            content: 'THE DIFFERENCE IS IN THE DETAILS.\nPREMIUM MATERIALS. PRECISE\nFINISHING, AND QUIET CONFIDENCE.',
+            content:
+              'THE DIFFERENCE IS IN THE DETAILS.\nPREMIUM MATERIALS. PRECISE\nFINISHING, AND QUIET CONFIDENCE.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.6,
@@ -4378,7 +4384,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.5,
               zIndex: 27,
             },
-            content: 'The right details don\'t',
+            content: "The right details don't",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 10.0,
@@ -4621,7 +4627,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.11,
               zIndex: 36,
             },
-            content: 'It\'s the little things\nyou do consistently\nthat set you apart.',
+            content: "It's the little things\nyou do consistently\nthat set you apart.",
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 14.7,
@@ -5843,18 +5849,14 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
       },
     ],
   },
-{
+  {
     id: 'tpl_fashion_2',
     slug: 'fashion-magazine-2',
     name: 'Fashion Magazine 2',
     category: 'fashion',
     subcategory: 'Fashion Editorial',
     description: 'Custom template created from editorial layout',
-    styleTags: [
-      'editorial',
-      'magazine',
-      'fashion',
-    ],
+    styleTags: ['editorial', 'magazine', 'fashion'],
     badge: 'NEW',
     theme: {
       id: 'imported-theme',
@@ -6096,7 +6098,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.47,
               zIndex: 21,
             },
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non\nnunc ut est suscipit molestie eu a ante. Aenean vitae tempor\nante. Cras at ante lobortis, ultricies sem ac, dignissim leo. Morbi\nmauris tortor, molestie a tortor vel, viverra faucibus orci.',
+            content:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non\nnunc ut est suscipit molestie eu a ante. Aenean vitae tempor\nante. Cras at ante lobortis, ultricies sem ac, dignissim leo. Morbi\nmauris tortor, molestie a tortor vel, viverra faucibus orci.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 10.0,
@@ -6123,7 +6126,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 12.89,
               zIndex: 22,
             },
-            content: 'Quisque justo mauris, lacinia eget mattis eget, hendrerit vitae\ndiam. Nam sit amet pulvinar massa, eget mollis tellus. Integer\nvolutpat, sem sit amet cursus fringilla, nibh sapien eleifend\nneque, non dignissim ante elit consectetur justo. Sed blandit,\ntellus eu scelerisque fringilla, elit sem efficitur ipsum, lobortis\nporttitor lacus elit ut odio. Etiam at vehicula lectus. Mauris\ntristique ut nisl pretium luctus. Vestibulum porttitor fermentum\nligula laoreet ultrices. Nunc vitae tristique nisi, eu luctus sem.',
+            content:
+              'Quisque justo mauris, lacinia eget mattis eget, hendrerit vitae\ndiam. Nam sit amet pulvinar massa, eget mollis tellus. Integer\nvolutpat, sem sit amet cursus fringilla, nibh sapien eleifend\nneque, non dignissim ante elit consectetur justo. Sed blandit,\ntellus eu scelerisque fringilla, elit sem efficitur ipsum, lobortis\nporttitor lacus elit ut odio. Etiam at vehicula lectus. Mauris\ntristique ut nisl pretium luctus. Vestibulum porttitor fermentum\nligula laoreet ultrices. Nunc vitae tristique nisi, eu luctus sem.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 10.0,
@@ -6225,7 +6229,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.86,
               zIndex: 20,
             },
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed non nunc ut est suscipit molestie eu a ante.\nAenean vitae tempor ante.',
+            content:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed non nunc ut est suscipit molestie eu a ante.\nAenean vitae tempor ante.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.0,
@@ -6305,7 +6310,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.76,
               zIndex: 20,
             },
-            content: 'WHAT TODAY\'S LOOK?',
+            content: "WHAT TODAY'S LOOK?",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 35.0,
@@ -6893,7 +6898,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 16.09,
               zIndex: 22,
             },
-            content: 'Morbi eget turpis a orci ornare fringilla non\net orci. Pellentesque non dui in est finibus\nsemper. Phasellus lobortis risus sed ligula\nlobortis, et porttitor magna suscipit. Orci\nvarius natoque penatibus et magnis dis\nparturient montes, nascetur ridiculus mus.\nPhasellus a diam at velit rutrum lacinia.\nPhasellus at ipsum massa. Donec pretium\nlacus in tellus posuere, et venenatis enim\ntincidunt.',
+            content:
+              'Morbi eget turpis a orci ornare fringilla non\net orci. Pellentesque non dui in est finibus\nsemper. Phasellus lobortis risus sed ligula\nlobortis, et porttitor magna suscipit. Orci\nvarius natoque penatibus et magnis dis\nparturient montes, nascetur ridiculus mus.\nPhasellus a diam at velit rutrum lacinia.\nPhasellus at ipsum massa. Donec pretium\nlacus in tellus posuere, et venenatis enim\ntincidunt.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 10.0,
@@ -6920,7 +6926,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 14.49,
               zIndex: 23,
             },
-            content: 'Lorem ipsum dolor sit amet, consectetur\nadipiscing elit. Sed non nunc ut est suscipit\nmolestie eu a ante. Aenean vitae tempor ante.\nCras at ante lobortis, ultricies sem ac, dignissim\nleo. Morbi mauris tortor, molestie a tortor vel,\nviverra faucibus orci. Quisque justo mauris,\nlacinia eget mattis eget, hendrerit vitae diam.\nNam sit amet pulvinar massa, eget mollis\ntellus.',
+            content:
+              'Lorem ipsum dolor sit amet, consectetur\nadipiscing elit. Sed non nunc ut est suscipit\nmolestie eu a ante. Aenean vitae tempor ante.\nCras at ante lobortis, ultricies sem ac, dignissim\nleo. Morbi mauris tortor, molestie a tortor vel,\nviverra faucibus orci. Quisque justo mauris,\nlacinia eget mattis eget, hendrerit vitae diam.\nNam sit amet pulvinar massa, eget mollis\ntellus.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 10.0,
@@ -7322,7 +7329,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.86,
               zIndex: 22,
             },
-            content: 'Aliquam tincidunt quis mi euismod\nultrices. Quisque feugiat iaculis leo et\ninterdum.',
+            content:
+              'Aliquam tincidunt quis mi euismod\nultrices. Quisque feugiat iaculis leo et\ninterdum.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.0,
@@ -7478,7 +7486,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 19.3,
               zIndex: 22,
             },
-            content: 'Phasellus aliquet, elit sit amet\npellentesque mattis, mi libero\nmattis enim, et lacinia lacus\nsapien sit amet tellus. Donec\nelementum\negestas\naliquet.\nPhasellus congue interdum nibh,\nvitae bibendum ex egestas et.\nPhasellus in ullamcorper risus, ut\negestas\nerat.\nSuspendisse\npotenti. Curabitur sed magna\ntempus, vulputate magna vel,\nbibendum purus.',
+            content:
+              'Phasellus aliquet, elit sit amet\npellentesque mattis, mi libero\nmattis enim, et lacinia lacus\nsapien sit amet tellus. Donec\nelementum\negestas\naliquet.\nPhasellus congue interdum nibh,\nvitae bibendum ex egestas et.\nPhasellus in ullamcorper risus, ut\negestas\nerat.\nSuspendisse\npotenti. Curabitur sed magna\ntempus, vulputate magna vel,\nbibendum purus.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 10.0,
@@ -7610,18 +7619,14 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
       },
     ],
   },
-{
+  {
     id: 'tpl_girl_birthday_1',
     slug: 'girl-birthday-1',
     name: 'Girl Birthday Magazine 1',
     category: 'lifestyle',
     subcategory: 'Birthday & Celebration',
     description: 'Custom template created from editorial layout',
-    styleTags: [
-      'editorial',
-      'magazine',
-      'lifestyle',
-    ],
+    styleTags: ['editorial', 'magazine', 'lifestyle'],
     badge: 'NEW',
     theme: {
       id: 'imported-theme',
@@ -9430,7 +9435,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 19.85,
               zIndex: 20,
             },
-            content: 'WHO\'S\nWHO\'S',
+            content: "WHO'S\nWHO'S",
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 113.6,
@@ -9511,7 +9516,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 43.75,
               zIndex: 23,
             },
-            content: 'WHO\'S\nTHAT\nGIRL?',
+            content: "WHO'S\nTHAT\nGIRL?",
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 113.6,
@@ -10261,7 +10266,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.31,
               zIndex: 20,
             },
-            content: 'LIFE\'S\nHIGHLIGHTS',
+            content: "LIFE'S\nHIGHLIGHTS",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 21.9,
@@ -16560,18 +16565,14 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
       },
     ],
   },
-{
+  {
     id: 'tpl_lifestyle_1',
     slug: 'lifestyle-1',
     name: 'Lifestyle Magazine 1',
     category: 'lifestyle',
     subcategory: 'Lifestyle & Wellness',
     description: 'Custom template created from editorial layout',
-    styleTags: [
-      'editorial',
-      'magazine',
-      'lifestyle',
-    ],
+    styleTags: ['editorial', 'magazine', 'lifestyle'],
     badge: 'NEW',
     theme: {
       id: 'imported-theme',
@@ -17478,7 +17479,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.94,
               zIndex: 40,
             },
-            content: 'THE FUTURE OF FASHION IS CIRCULAR,\nEXPRESSIVE, AND DESIGNED FOR A LONGER LIFE.',
+            content:
+              'THE FUTURE OF FASHION IS CIRCULAR,\nEXPRESSIVE, AND DESIGNED FOR A LONGER LIFE.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 9.7,
@@ -17505,7 +17507,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.94,
               zIndex: 41,
             },
-            content: 'THE FUTURE OF FASHION IS CIRCULAR,\nEXPRESSIVE, AND DESIGNED FOR A LONGER LIFE.\nTHE FUTURE OF FASHION IS HERE',
+            content:
+              'THE FUTURE OF FASHION IS CIRCULAR,\nEXPRESSIVE, AND DESIGNED FOR A LONGER LIFE.\nTHE FUTURE OF FASHION IS HERE',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 9.7,
@@ -18735,7 +18738,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 13.82,
               zIndex: 21,
             },
-            content: 'WHAT\'S',
+            content: "WHAT'S",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 97.3,
@@ -19225,7 +19228,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 22,
             },
-            content: 'Letters from readers show how much they feel a connection\nwith your publication. Whether they\'re glowing reviews,\nhelpful feedback, or simple shoutouts, these readers taking\nthe time to write shows how much they care.',
+            content:
+              "Letters from readers show how much they feel a connection\nwith your publication. Whether they're glowing reviews,\nhelpful feedback, or simple shoutouts, these readers taking\nthe time to write shows how much they care.",
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19252,7 +19256,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 23,
             },
-            content: 'Show your appreciation by featuring their letters in your\nnext issue. They\'re sure to feel valued once they read it.',
+            content:
+              "Show your appreciation by featuring their letters in your\nnext issue. They're sure to feel valued once they read it.",
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19279,7 +19284,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 24,
             },
-            content: 'Reply to their letters sincerely, showing how much you\nvalue their opinion and are honored to receive it.',
+            content:
+              'Reply to their letters sincerely, showing how much you\nvalue their opinion and are honored to receive it.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19306,7 +19312,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 25,
             },
-            content: 'Reply to their letters sincerely, showing how much you value\ntheir opinion and are honored to receive it.',
+            content:
+              'Reply to their letters sincerely, showing how much you value\ntheir opinion and are honored to receive it.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19333,7 +19340,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 26,
             },
-            content: 'Letters from readers show how much they feel a connection\nwith your publication. Whether they\'re glowing reviews,\nhelpful feedback, or simple shoutouts, these readers taking\nthe time to write shows how much they care.',
+            content:
+              "Letters from readers show how much they feel a connection\nwith your publication. Whether they're glowing reviews,\nhelpful feedback, or simple shoutouts, these readers taking\nthe time to write shows how much they care.",
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19360,7 +19368,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 27,
             },
-            content: 'Show your appreciation by featuring their letters in your next\nissue. They\'re sure to feel valued once they read it.',
+            content:
+              "Show your appreciation by featuring their letters in your next\nissue. They're sure to feel valued once they read it.",
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19602,7 +19611,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 22,
             },
-            content: 'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
+            content:
+              'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19629,7 +19639,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 23,
             },
-            content: 'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19656,7 +19667,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 24,
             },
-            content: 'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
+            content:
+              'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19683,7 +19695,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 25,
             },
-            content: 'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
+            content:
+              'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19710,7 +19723,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 26,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -19737,7 +19751,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 27,
             },
-            content: 'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier\nto recognise pieces that deserve long-term use.',
+            content:
+              'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier\nto recognise pieces that deserve long-term use.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -20297,7 +20312,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 21,
             },
-            content: 'Influencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
+            content:
+              'Influencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -20405,7 +20421,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 25,
             },
-            content: 'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier',
+            content:
+              'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -20486,7 +20503,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 28,
             },
-            content: 'Restyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful',
+            content:
+              'Restyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -20642,7 +20660,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.48,
               zIndex: 20,
             },
-            content: 'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier\nto recognise pieces that deserve long-term use.',
+            content:
+              'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier\nto recognise pieces that deserve long-term use.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.6,
@@ -20669,7 +20688,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.01,
               zIndex: 21,
             },
-            content: 'A wardrobe can feel new without constant replacement.\nRestyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful\nchange.',
+            content:
+              'A wardrobe can feel new without constant replacement.\nRestyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful\nchange.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.6,
@@ -20696,7 +20716,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.48,
               zIndex: 22,
             },
-            content: 'What we wear carries memory and identity. Clothing can\nexpress confidence, connection, practicality, and the version\nof ourselves we are becoming.',
+            content:
+              'What we wear carries memory and identity. Clothing can\nexpress confidence, connection, practicality, and the version\nof ourselves we are becoming.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.6,
@@ -20723,7 +20744,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.48,
               zIndex: 23,
             },
-            content: 'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
+            content:
+              'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.6,
@@ -20750,7 +20772,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.48,
               zIndex: 24,
             },
-            content: 'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.6,
@@ -20777,7 +20800,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.96,
               zIndex: 25,
             },
-            content: 'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
+            content:
+              'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.6,
@@ -20804,7 +20828,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.48,
               zIndex: 26,
             },
-            content: 'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
+            content:
+              'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.6,
@@ -20831,7 +20856,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.48,
               zIndex: 27,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.6,
@@ -21095,7 +21121,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.58,
               zIndex: 24,
             },
-            content: 'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it\neasier to recognise pieces that deserve long-term use.',
+            content:
+              'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it\neasier to recognise pieces that deserve long-term use.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 9.7,
@@ -21251,7 +21278,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 20,
             },
-            content: 'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
+            content:
+              'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21278,7 +21306,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 21,
             },
-            content: 'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21305,7 +21334,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 22,
             },
-            content: 'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
+            content:
+              'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21332,7 +21362,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 23,
             },
-            content: 'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
+            content:
+              'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21359,7 +21390,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 24,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21413,7 +21445,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.94,
               zIndex: 26,
             },
-            content: 'Here, you can place a caption for the photo. It can be a\nshort description or it can credit the production team.',
+            content:
+              'Here, you can place a caption for the photo. It can be a\nshort description or it can credit the production team.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 9.7,
@@ -21574,7 +21607,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.98,
               zIndex: 22,
             },
-            content: 'What we wear carries memory and identity. Clothing can express confidence,\nconnection, practicality, and the version of ourselves we are becoming.',
+            content:
+              'What we wear carries memory and identity. Clothing can express confidence,\nconnection, practicality, and the version of ourselves we are becoming.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 9.7,
@@ -21601,7 +21635,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 23,
             },
-            content: 'The future of fashion will be judged not only by how it\nlooks, but by how thoughtfully it is made, worn, and\nrenewed.',
+            content:
+              'The future of fashion will be judged not only by how it\nlooks, but by how thoughtfully it is made, worn, and\nrenewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21628,7 +21663,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 24,
             },
-            content: 'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
+            content:
+              'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21655,7 +21691,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 25,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21682,7 +21719,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 26,
             },
-            content: 'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it\neasier to recognise pieces that deserve long-term use.',
+            content:
+              'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it\neasier to recognise pieces that deserve long-term use.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21709,7 +21747,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 27,
             },
-            content: 'A wardrobe can feel new without constant replacement.\nRestyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful\nchange.',
+            content:
+              'A wardrobe can feel new without constant replacement.\nRestyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful\nchange.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21736,7 +21775,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 28,
             },
-            content: 'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
+            content:
+              'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21763,7 +21803,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 29,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21928,7 +21969,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 20,
             },
-            content: 'A wardrobe can feel new without constant replacement.\nRestyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful\nchange.',
+            content:
+              'A wardrobe can feel new without constant replacement.\nRestyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful\nchange.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21955,7 +21997,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 21,
             },
-            content: 'What we wear carries memory and identity. Clothing can\nexpress confidence, connection, practicality, and the\nversion of ourselves we are becoming.',
+            content:
+              'What we wear carries memory and identity. Clothing can\nexpress confidence, connection, practicality, and the\nversion of ourselves we are becoming.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -21982,7 +22025,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 22,
             },
-            content: 'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
+            content:
+              'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22009,7 +22053,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 23,
             },
-            content: 'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22036,7 +22081,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 24,
             },
-            content: 'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
+            content:
+              'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22063,7 +22109,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 25,
             },
-            content: 'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
+            content:
+              'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22090,7 +22137,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 26,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22117,7 +22165,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 27,
             },
-            content: 'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier\nto recognise pieces that deserve long-term use.',
+            content:
+              'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier\nto recognise pieces that deserve long-term use.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22430,7 +22479,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.69,
               zIndex: 25,
             },
-            content: 'Circular design treats the end of one\nuse as the beginning of another.\nModular construction, recyclable\nmaterials, and take-back systems are\nexpanding what is possible.',
+            content:
+              'Circular design treats the end of one\nuse as the beginning of another.\nModular construction, recyclable\nmaterials, and take-back systems are\nexpanding what is possible.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22457,7 +22507,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 26,
             },
-            content: 'This issue meets makers and wearers\nwho see style as an evolving practice\nbuilt on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers\nwho see style as an evolving practice\nbuilt on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22484,7 +22535,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 27,
             },
-            content: 'This issue meets makers and wearers\nwho see style as an evolving practice\nbuilt on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers\nwho see style as an evolving practice\nbuilt on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22511,7 +22563,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 28,
             },
-            content: 'The future of fashion will be judged\nnot only by how it looks, but by how\nthoughtfully it is made, worn, and\nrenewed.',
+            content:
+              'The future of fashion will be judged\nnot only by how it looks, but by how\nthoughtfully it is made, worn, and\nrenewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22538,7 +22591,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 29,
             },
-            content: 'The future of fashion will be judged\nnot only by how it looks, but by how\nthoughtfully it is made, worn, and\nrenewed.',
+            content:
+              'The future of fashion will be judged\nnot only by how it looks, but by how\nthoughtfully it is made, worn, and\nrenewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22565,7 +22619,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.69,
               zIndex: 30,
             },
-            content: 'Fashion changes fastest when new\nideas meet real habits. Influencers,\ndesigners, and customers all shape\nwhich silhouettes, values, and ways of\nwearing gain momentum.',
+            content:
+              'Fashion changes fastest when new\nideas meet real habits. Influencers,\ndesigners, and customers all shape\nwhich silhouettes, values, and ways of\nwearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -22748,7 +22803,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.98,
               zIndex: 21,
             },
-            content: 'Fashion changes fastest when new\nideas meet real habits. Influencers,\ndesigners, and customers all shape\nwhich silhouettes, values, and ways\nof wearing gain momentum.',
+            content:
+              'Fashion changes fastest when new\nideas meet real habits. Influencers,\ndesigners, and customers all shape\nwhich silhouettes, values, and ways\nof wearing gain momentum.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 10.3,
@@ -22802,7 +22858,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 8.05,
               zIndex: 23,
             },
-            content: 'Putting a stop to fast fashion\nrequires better systems as well as\nbetter choices. Durability, repair,\nresale, responsible production, and\ntransparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion\nrequires better systems as well as\nbetter choices. Durability, repair,\nresale, responsible production, and\ntransparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 10.3,
@@ -22829,7 +22886,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 8.05,
               zIndex: 24,
             },
-            content: 'Passion for fashion can grow\nthrough knowledge. Understanding\nfabric, construction, and care makes\nit easier to recognise pieces that\ndeserve long-term use.',
+            content:
+              'Passion for fashion can grow\nthrough knowledge. Understanding\nfabric, construction, and care makes\nit easier to recognise pieces that\ndeserve long-term use.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 10.3,
@@ -22856,7 +22914,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 8.05,
               zIndex: 25,
             },
-            content: 'Passion for fashion can grow\nthrough knowledge. Understanding\nfabric, construction, and care makes\nit easier to recognise pieces that\ndeserve long-term use.',
+            content:
+              'Passion for fashion can grow\nthrough knowledge. Understanding\nfabric, construction, and care makes\nit easier to recognise pieces that\ndeserve long-term use.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 10.3,
@@ -22883,7 +22942,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 9.68,
               zIndex: 26,
             },
-            content: 'A wardrobe can feel new without\nconstant replacement. Restyling\nlayers, adjusting fit, adding colour,\nrepairing favourites, and swapping\nwith others can create meaningful\nchange.',
+            content:
+              'A wardrobe can feel new without\nconstant replacement. Restyling\nlayers, adjusting fit, adding colour,\nrepairing favourites, and swapping\nwith others can create meaningful\nchange.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 10.3,
@@ -23017,7 +23077,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.58,
               zIndex: 21,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well as better\nchoices. Durability, repair, resale, responsible production, and transparent\nlabour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well as better\nchoices. Durability, repair, resale, responsible production, and transparent\nlabour all have a role.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 9.7,
@@ -23044,7 +23105,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.69,
               zIndex: 22,
             },
-            content: 'What we wear carries memory and\nidentity. Clothing can express\nconfidence, connection, practicality,\nand the version of ourselves we are\nbecoming.',
+            content:
+              'What we wear carries memory and\nidentity. Clothing can express\nconfidence, connection, practicality,\nand the version of ourselves we are\nbecoming.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23071,7 +23133,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.69,
               zIndex: 23,
             },
-            content: 'Circular design treats the end of one\nuse as the beginning of another.\nModular construction, recyclable\nmaterials, and take-back systems are\nexpanding what is possible.',
+            content:
+              'Circular design treats the end of one\nuse as the beginning of another.\nModular construction, recyclable\nmaterials, and take-back systems are\nexpanding what is possible.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23098,7 +23161,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 24,
             },
-            content: 'This issue meets makers and wearers\nwho see style as an evolving practice\nbuilt on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers\nwho see style as an evolving practice\nbuilt on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23125,7 +23189,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 25,
             },
-            content: 'The future of fashion will be judged\nnot only by how it looks, but by how\nthoughtfully it is made, worn, and\nrenewed.',
+            content:
+              'The future of fashion will be judged\nnot only by how it looks, but by how\nthoughtfully it is made, worn, and\nrenewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23152,7 +23217,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 7.69,
               zIndex: 26,
             },
-            content: 'Fashion changes fastest when new\nideas meet real habits. Influencers,\ndesigners, and customers all shape\nwhich silhouettes, values, and ways of\nwearing gain momentum.',
+            content:
+              'Fashion changes fastest when new\nideas meet real habits. Influencers,\ndesigners, and customers all shape\nwhich silhouettes, values, and ways of\nwearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23303,7 +23369,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 20,
             },
-            content: 'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23330,7 +23397,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 21,
             },
-            content: 'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
+            content:
+              'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23357,7 +23425,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 22,
             },
-            content: 'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
+            content:
+              'Fashion changes fastest when new ideas meet real habits.\nInfluencers, designers, and customers all shape which\nsilhouettes, values, and ways of wearing gain momentum.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23384,7 +23453,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 23,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23728,7 +23798,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 20,
             },
-            content: 'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
+            content:
+              'Putting a stop to fast fashion requires better systems as well\nas better choices. Durability, repair, resale, responsible\nproduction, and transparent labour all have a role.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23755,7 +23826,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 21,
             },
-            content: 'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier\nto recognise pieces that deserve long-term use.',
+            content:
+              'Passion for fashion can grow through knowledge.\nUnderstanding fabric, construction, and care makes it easier\nto recognise pieces that deserve long-term use.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23782,7 +23854,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.13,
               zIndex: 22,
             },
-            content: 'A wardrobe can feel new without constant replacement.\nRestyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful\nchange.',
+            content:
+              'A wardrobe can feel new without constant replacement.\nRestyling layers, adjusting fit, adding colour, repairing\nfavourites, and swapping with others can create meaningful\nchange.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23809,7 +23882,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 23,
             },
-            content: 'What we wear carries memory and identity. Clothing can\nexpress confidence, connection, practicality, and the\nversion of ourselves we are becoming.',
+            content:
+              'What we wear carries memory and identity. Clothing can\nexpress confidence, connection, practicality, and the\nversion of ourselves we are becoming.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23836,7 +23910,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 24,
             },
-            content: 'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
+            content:
+              'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23863,7 +23938,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 25,
             },
-            content: 'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -23890,7 +23966,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.5,
               zIndex: 26,
             },
-            content: 'What we wear carries memory and identity. Clothing\ncan express confidence, connection, practicality, and\nthe version of ourselves we are becoming.',
+            content:
+              'What we wear carries memory and identity. Clothing\ncan express confidence, connection, practicality, and\nthe version of ourselves we are becoming.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 9.7,
@@ -24077,7 +24154,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 20,
             },
-            content: 'What we wear carries memory and identity. Clothing can\nexpress confidence, connection, practicality, and the\nversion of ourselves we are becoming.',
+            content:
+              'What we wear carries memory and identity. Clothing can\nexpress confidence, connection, practicality, and the\nversion of ourselves we are becoming.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -24104,7 +24182,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 21,
             },
-            content: 'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
+            content:
+              'Circular design treats the end of one use as the beginning of\nanother. Modular construction, recyclable materials, and\ntake-back systems are expanding what is possible.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -24131,7 +24210,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.57,
               zIndex: 22,
             },
-            content: 'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
+            content:
+              'This issue meets makers and wearers who see style as an\nevolving practice built on curiosity rather than constant\nconsumption.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -24158,7 +24238,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.01,
               zIndex: 23,
             },
-            content: 'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
+            content:
+              'The future of fashion will be judged not only by how it looks,\nbut by how thoughtfully it is made, worn, and renewed.',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 9.7,
@@ -24563,18 +24644,14 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
       },
     ],
   },
-{
+  {
     id: 'tpl_personal_man_1',
     slug: 'personal-man-1',
     name: 'Personal Man Magazine 1',
     category: 'mens-style',
-    subcategory: 'Men\'s Editorial',
+    subcategory: "Men's Editorial",
     description: 'Custom template created from editorial layout',
-    styleTags: [
-      'editorial',
-      'magazine',
-      'mens-style',
-    ],
+    styleTags: ['editorial', 'magazine', 'mens-style'],
     badge: 'TRENDING',
     theme: {
       id: 'imported-theme',
@@ -26219,7 +26296,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.91,
               zIndex: 21,
             },
-            content: 'Modern tailoring embraces ease. Lightweight\nfabrics, relaxed silhouettes, and tonal palettes\ncreate a new kind of elegance - one that\'s\nconfident without trying too hard.',
+            content:
+              "Modern tailoring embraces ease. Lightweight\nfabrics, relaxed silhouettes, and tonal palettes\ncreate a new kind of elegance - one that's\nconfident without trying too hard.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.3,
@@ -26735,7 +26813,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.54,
               zIndex: 21,
             },
-            content: 'INK ISN\'T DECORATION.\nIT\'S DECLARATION.',
+            content: "INK ISN'T DECORATION.\nIT'S DECLARATION.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.8,
@@ -26897,7 +26975,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 5.19,
               zIndex: 27,
             },
-            content: 'WHAT DOES INK MEAN TO YOU?\nIt\'s memory made visible. Every\npiece carries a chapter - some loud,\nsome quiet, all mine.',
+            content:
+              "WHAT DOES INK MEAN TO YOU?\nIt's memory made visible. Every\npiece carries a chapter - some loud,\nsome quiet, all mine.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.8,
@@ -26924,7 +27003,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 4.94,
               zIndex: 28,
             },
-            content: 'HOW DO YOU CHOOSE A DESIGN?\nInstinct first, research second.\nIt has to resonate long after\nthe moment passes.',
+            content:
+              'HOW DO YOU CHOOSE A DESIGN?\nInstinct first, research second.\nIt has to resonate long after\nthe moment passes.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.5,
@@ -26951,7 +27031,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 5.47,
               zIndex: 29,
             },
-            content: 'DOES IT CHANGE HOW YOU PRESENT\nYOURSELF?\nIt grounds me. It\'s not about showing out - it\'s\nabout showing up as\nwho I really am.',
+            content:
+              "DOES IT CHANGE HOW YOU PRESENT\nYOURSELF?\nIt grounds me. It's not about showing out - it's\nabout showing up as\nwho I really am.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 6.4,
@@ -26978,7 +27059,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 5.19,
               zIndex: 30,
             },
-            content: 'ANY ADVICE FOR SOMEONE\nCONSIDERING THEIR FIRST TATTOO?\nBe patient. Choose meaning over\nimpulse. The best ink ages with you.',
+            content:
+              'ANY ADVICE FOR SOMEONE\nCONSIDERING THEIR FIRST TATTOO?\nBe patient. Choose meaning over\nimpulse. The best ink ages with you.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.8,
@@ -27450,7 +27532,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 8.25,
               zIndex: 27,
             },
-            content: 'Presence is more than appearance.\nIt\'s compsure, conviction, and\nclarity of purpose. This is a study of\ncharacter  -  captured in a moment\nthat says everything without\nneeding to speak.',
+            content:
+              "Presence is more than appearance.\nIt's compsure, conviction, and\nclarity of purpose. This is a study of\ncharacter  -  captured in a moment\nthat says everything without\nneeding to speak.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.1,
@@ -27883,7 +27966,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 16.9,
               zIndex: 21,
             },
-            content: 'AS THE DAYS GROW\nLONGER, A NEW SENSE OF\nDIRECTION EMERGES. THIS\nSEASON IS DEFINED BY\nLIGHTER FABRICS, RELAXED\nTAILORING AND A PALETTE\nTHAT REFLECTS CLARITY\nAND CONFIDENCE.\nELEVATED ESSENTIALS.\nCONSIDERED DETAILS.\nTIMELESS APPEAL. THIS IS\nMODERN LUXURY.',
+            content:
+              'AS THE DAYS GROW\nLONGER, A NEW SENSE OF\nDIRECTION EMERGES. THIS\nSEASON IS DEFINED BY\nLIGHTER FABRICS, RELAXED\nTAILORING AND A PALETTE\nTHAT REFLECTS CLARITY\nAND CONFIDENCE.\nELEVATED ESSENTIALS.\nCONSIDERED DETAILS.\nTIMELESS APPEAL. THIS IS\nMODERN LUXURY.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.1,
@@ -28539,7 +28623,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 8.88,
               zIndex: 27,
             },
-            content: 'From wanting more - not for\nrecognition, but for freedom.\nFreedom to create, to choose,\nto build something that\noutlasts trends and time.\nI was never interested in\nfollowing a path.\nI wanted to design my own.',
+            content:
+              'From wanting more - not for\nrecognition, but for freedom.\nFreedom to create, to choose,\nto build something that\noutlasts trends and time.\nI was never interested in\nfollowing a path.\nI wanted to design my own.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 6.7,
@@ -28566,7 +28651,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 12.45,
               zIndex: 28,
             },
-            content: 'It\'s not a number, a title,\nor a headline.\nIt\'s waking up aligned\nwith your values.\nIt\'s having the impact\nyou set out to make.\nAnd it\'s staying grounded\nwhile everything around\nyou keeps moving.\nThat\'s the real win.',
+            content:
+              "It's not a number, a title,\nor a headline.\nIt's waking up aligned\nwith your values.\nIt's having the impact\nyou set out to make.\nAnd it's staying grounded\nwhile everything around\nyou keeps moving.\nThat's the real win.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.1,
@@ -28593,7 +28679,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 11.79,
               zIndex: 29,
             },
-            content: 'Purpose. Always.\nThere are distractions at\nevery level - but I\'ve\nlearned to filter the\nnoise.\nI revise my \'why\' often.\nIt reminds me that\neverything I do is part of\na bigger picture.\nThat keeps me steady.',
+            content:
+              "Purpose. Always.\nThere are distractions at\nevery level - but I've\nlearned to filter the\nnoise.\nI revise my 'why' often.\nIt reminds me that\neverything I do is part of\na bigger picture.\nThat keeps me steady.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 6.9,
@@ -28620,7 +28707,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 11.19,
               zIndex: 30,
             },
-            content: 'Invest in yourself first.\nNot just your skille - your\ncharacter, your mindset,\nyour resilience.\nThe world doesn\'t need\nmore followers.\nIt needs more leaders\nwith substance and soul.\nBe that person.',
+            content:
+              "Invest in yourself first.\nNot just your skille - your\ncharacter, your mindset,\nyour resilience.\nThe world doesn't need\nmore followers.\nIt needs more leaders\nwith substance and soul.\nBe that person.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.1,
@@ -28647,7 +28735,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.68,
               zIndex: 31,
             },
-            content: 'E N T R E P R E N E U R , C R E A T I V E , L E A D E R ,\nS H A P I N G C U L T U R E , I N S P I R I N G C H A N G E .',
+            content:
+              'E N T R E P R E N E U R , C R E A T I V E , L E A D E R ,\nS H A P I N G C U L T U R E , I N S P I R I N G C H A N G E .',
             textStyle: {
               fontFamily: 'Playfair Display, serif',
               fontSize: 7.8,
@@ -29168,7 +29257,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 3.97,
               zIndex: 22,
             },
-            content: 'Purposefully refined pieces\nthat move with intention\nand stand the test of time.',
+            content:
+              'Purposefully refined pieces\nthat move with intention\nand stand the test of time.',
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 7.1,
@@ -29785,7 +29875,8 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.7,
               zIndex: 23,
             },
-            content: 'TRUE STYLE GOES BEYOND\nAPPEARANCE. IT\'S FOUND IN\nINTENTION, DISCIPLINE AND\nTHE QUIET CONFIDENCE OF\nA LIFE WELL-LIVED.',
+            content:
+              "TRUE STYLE GOES BEYOND\nAPPEARANCE. IT'S FOUND IN\nINTENTION, DISCIPLINE AND\nTHE QUIET CONFIDENCE OF\nA LIFE WELL-LIVED.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 8.9,
@@ -30164,7 +30255,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 6.51,
               zIndex: 23,
             },
-            content: 'ISN\'T GIVEN.\nIT\'S CHOSEN.',
+            content: "ISN'T GIVEN.\nIT'S CHOSEN.",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 19.5,
@@ -30191,7 +30282,7 @@ export const MAGAZINE_TEMPLATES: MagazineTemplate[] = [
               height: 2.5,
               zIndex: 24,
             },
-            content: 'IT\'S THE QUIET DECISION TO SHOW UP,',
+            content: "IT'S THE QUIET DECISION TO SHOW UP,",
             textStyle: {
               fontFamily: 'Inter, sans-serif',
               fontSize: 9.6,

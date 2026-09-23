@@ -25,7 +25,7 @@ export default async function AdminSettingsPage() {
           : {
               id: 'new',
               storeName: 'Fregoro Studios',
-              contactEmail: 'contact@fregorostudios.com',
+              contactEmail: 'fregorostudios@gmail.com',
               taxRate: 18,
             }
       }

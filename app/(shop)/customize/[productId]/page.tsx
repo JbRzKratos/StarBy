@@ -18,13 +18,20 @@ function mapCategoryToProductType(categorySlug: string): ProductType | null {
     case 'hoodies':
       return 'hoodie';
     case 'posters':
+    case 'prints':
       return 'poster-single';
+    case 'split-posters':
+      return 'poster-split-3';
     case 'mugs':
+    case 'mugs-cups':
       return 'mug';
     case 'diaries':
+    case 'stationery':
+    case 'skins':
+    case 'accessories':
       return 'diary';
     default:
-      return null;
+      return 't-shirt';
   }
 }
 
@@ -36,31 +43,32 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
     notFound();
   }
 
-  const productType = mapCategoryToProductType(product.categorySlug);
+  const productType = mapCategoryToProductType(product.categorySlug) || 't-shirt';
 
-  if (!productType) {
-    notFound();
-  }
-
-  let mockupImageSrc = getR2AssetUrl('images/mockups/tee-black-front.png');
+  let mockupImageSrc =
+    product.variants?.[0]?.images?.[0] || getR2AssetUrl('images/mockups/tee-black-front.png');
   if (productType === 'hoodie') {
-    mockupImageSrc = getR2AssetUrl('images/mockups/hoodie-black-front.png');
+    mockupImageSrc =
+      product.variants?.[0]?.images?.[0] || getR2AssetUrl('images/mockups/hoodie-black-front.png');
   } else if (productType === 't-shirt') {
-    mockupImageSrc = getR2AssetUrl('images/mockups/tee-black-front.png');
+    mockupImageSrc =
+      product.variants?.[0]?.images?.[0] || getR2AssetUrl('images/mockups/tee-black-front.png');
   }
 
-  const defaultVariant = product.variants.find((v) => v.name.toLowerCase() === 'default');
+  const defaultVariant =
+    product.variants.find((v) => v.name.toLowerCase() === 'default') || product.variants[0];
   const price = defaultVariant ? defaultVariant.price : product.basePrice;
+  const variantId = defaultVariant?.id || 'default';
 
-  // Use simple customizer for cups, mugs, hoodies, etc.
-  if (productType === 'mug' || productType === 'hoodie') {
+  // Use simple customizer for cups, mugs, posters, stationery, etc.
+  if (productType !== 't-shirt' && productType !== 'hoodie') {
     return (
       <SimpleCustomizerLayout
         productType={productType}
         productId={product.id}
         productName={product.name}
         price={price}
-        variantId={defaultVariant?.id || 'default'}
+        variantId={variantId}
         mockupImageSrc={mockupImageSrc}
       />
     );

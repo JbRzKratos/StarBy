@@ -25,7 +25,11 @@ export default async function InvoicePage({ params }: { params: { id: string } }
   if (!order) return notFound();
 
   // Restrict to admin or the owner
-  if (user?.id !== order.userId && user?.email !== 'admin@fregorostudios.com') {
+  if (
+    user?.id !== order.userId &&
+    user?.email !== 'fregorostudios@gmail.com' &&
+    user?.email !== 'admin@fregorostudios.com'
+  ) {
     return notFound();
   }
 
@@ -85,7 +89,7 @@ export default async function InvoicePage({ params }: { params: { id: string } }
               Engineered Streetwear & Design Objects
             </p>
             <p className="text-xs text-slate-700 leading-relaxed">Bengaluru, Karnataka, India</p>
-            <p className="text-xs text-slate-700 leading-relaxed">support@fregorostudios.com</p>
+            <p className="text-xs text-slate-700 leading-relaxed">fregorostudios@gmail.com</p>
           </div>
         </div>
 

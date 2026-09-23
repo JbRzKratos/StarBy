@@ -36,6 +36,9 @@ export interface CartCustomization {
   fileName?: string | undefined;
   fileSizeMb?: number | undefined;
   binding?: string | undefined;
+  document?: unknown;
+  pagesData?: unknown;
+  [key: string]: unknown;
 }
 
 export interface CartItem {

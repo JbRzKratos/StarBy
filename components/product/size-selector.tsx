@@ -10,7 +10,7 @@ export function SizeSelector({ sizes, selected, onSelect }: SizeSelectorProps) {
       <span className="font-mono text-caption text-ash uppercase tracking-wider block mb-3">
         Size — {selected}
       </span>
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {sizes.map((size) => (
           <button
             key={size}

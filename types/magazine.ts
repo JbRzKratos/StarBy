@@ -383,19 +383,19 @@ export type ElementRole =
 export interface ElementWizardMeta {
   elementId: string;
   role: ElementRole;
-  label: string;           // Human-readable: "Cover Headline"
-  guidance?: string;       // Hint: "Keep under 60 chars for best fit"
-  maxChars?: number;       // Text character limit
+  label: string; // Human-readable: "Cover Headline"
+  guidance?: string; // Hint: "Keep under 60 chars for best fit"
+  maxChars?: number; // Text character limit
   minChars?: number;
   required?: boolean;
   recommendedAspectRatio?: string; // For images: "3:4", "16:9"
-  placeholder?: string;    // Input placeholder text
+  placeholder?: string; // Input placeholder text
 }
 
 /** Wizard schema for a single page */
 export interface PageWizardSchema {
   pageId: string;
-  pageLabel: string;       // "Cover", "Contents", "Feature Spread"
+  pageLabel: string; // "Cover", "Contents", "Feature Spread"
   elements: ElementWizardMeta[];
 }
 
@@ -410,4 +410,3 @@ export type WizardContentMap = Record<string, string>;
 
 /** Per-page completion status */
 export type WizardCompletionMap = Record<string, 'complete' | 'partial' | 'empty'>;
-

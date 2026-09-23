@@ -76,7 +76,7 @@ export async function dispatchNotification(
         results.push({
           channel: 'email',
           success: adminSent,
-          recipient: process.env.ADMIN_EMAIL || 'admin@fregorostudios.com',
+          recipient: process.env.ADMIN_EMAIL || 'fregorostudios@gmail.com',
         });
         break;
       }

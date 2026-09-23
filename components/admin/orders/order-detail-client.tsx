@@ -61,8 +61,11 @@ interface OrderDetailProps {
       quantity: number;
       price: number;
       size: string | null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      customization?: Record<string, any> | null;
       orderCustomization: {
         designFileUrl?: string | null;
+        previewFileUrl?: string | null;
         designFileName?: string | null;
         printPosition?: string | null;
         printInstructions?: string | null;
@@ -305,33 +308,227 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                   </div>
 
                   {/* Artwork / Customization info */}
-                  {item.orderCustomization && (
-                    <div className="bg-black/40 border border-white/5 rounded-lg p-3 text-xs space-y-1 mt-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-ash uppercase tracking-wider text-[10px]">
-                          Custom Artwork
+                  {(item.orderCustomization || item.customization) && (
+                    <div className="bg-black/40 border border-white/10 rounded-lg p-4 text-xs space-y-3 mt-2">
+                      <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                        <span className="font-semibold text-white uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-[#0057FF]" />
+                          Customer Customization & Uploads
                         </span>
-                        <span className="px-2 py-0.5 bg-blue-50 text-[#3B5EFF] rounded text-[10px] font-mono uppercase">
-                          {item.orderCustomization.productionStatus || 'Pending'}
-                        </span>
+                        {item.orderCustomization?.productionStatus && (
+                          <span className="px-2 py-0.5 bg-[#0057FF]/20 text-[#0057FF] border border-[#0057FF]/30 rounded text-[10px] font-mono uppercase">
+                            {item.orderCustomization.productionStatus}
+                          </span>
+                        )}
                       </div>
-                      {item.orderCustomization.designFileUrl && (
-                        <p>
+
+                      {/* Download Primary Artwork link if available */}
+                      {item.orderCustomization?.designFileUrl && (
+                        <div className="flex items-center justify-between p-2.5 bg-white/[0.03] border border-white/5 rounded-lg">
+                          <span className="text-white/80 font-mono text-[11px]">
+                            Primary Design / Artwork File
+                          </span>
                           <a
                             href={item.orderCustomization.designFileUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-[#3B5EFF] hover:underline font-mono"
+                            className="px-3 py-1 bg-[#0057FF] hover:bg-[#0046d5] text-white rounded text-[11px] font-mono font-medium transition-colors inline-flex items-center gap-1"
                           >
-                            Download Artwork: {item.orderCustomization.designFileName || 'File'} ↗
+                            Download Artwork ↗
                           </a>
-                        </p>
+                        </div>
                       )}
-                      {item.orderCustomization.printInstructions && (
-                        <p className="text-ash/80">
-                          <strong>Print Note:</strong> {item.orderCustomization.printInstructions}
-                        </p>
+
+                      {/* Instructions / Notes */}
+                      {(item.orderCustomization?.printInstructions ||
+                        item.orderCustomization?.customerNotes) && (
+                        <div className="space-y-1 bg-white/[0.02] p-2.5 rounded border border-white/5 font-mono text-[11px]">
+                          {item.orderCustomization?.printInstructions && (
+                            <p className="text-white/80">
+                              <strong className="text-white/50">Print Specs/Notes:</strong>{' '}
+                              {item.orderCustomization.printInstructions}
+                            </p>
+                          )}
+                          {item.orderCustomization?.customerNotes && (
+                            <p className="text-white/80">
+                              <strong className="text-white/50">Customer Notes:</strong>{' '}
+                              {item.orderCustomization.customerNotes}
+                            </p>
+                          )}
+                        </div>
                       )}
+
+                      {/* Magazine Details & Pages (if magazine item) */}
+                      {item.customization &&
+                        (item.customization.magazineTitle ||
+                          item.customization.pagesData ||
+                          item.customization.document) && (
+                          <div className="space-y-3 pt-1">
+                            <div className="p-3 bg-[#0057FF]/5 border border-[#0057FF]/20 rounded-lg space-y-1">
+                              <p className="font-semibold text-white text-xs">
+                                📖 {item.customization.magazineTitle || 'Custom Magazine'}
+                              </p>
+                              <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-white/60 font-mono">
+                                {item.customization.pageCount && (
+                                  <span>Pages: {String(item.customization.pageCount)}</span>
+                                )}
+                                {item.customization.paperWeight && (
+                                  <span>Paper: {String(item.customization.paperWeight)}</span>
+                                )}
+                                {item.customization.coverFinish && (
+                                  <span>Cover: {String(item.customization.coverFinish)}</span>
+                                )}
+                                {item.customization.bindingType && (
+                                  <span>Binding: {String(item.customization.bindingType)}</span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Render Pages List */}
+                            {Array.isArray(item.customization.pagesData) && (
+                              <div className="space-y-2">
+                                <p className="font-mono text-[10px] uppercase tracking-wider text-white/50 font-bold">
+                                  Page Contents & Uploaded Client Photos:
+                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 max-h-[420px] overflow-y-auto pr-1">
+                                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                  {item.customization.pagesData.map((page: any, pIdx: number) => (
+                                    <div
+                                      key={pIdx}
+                                      className="p-2.5 bg-white/[0.02] border border-white/5 rounded-lg space-y-2"
+                                    >
+                                      <div className="flex items-center justify-between border-b border-white/5 pb-1">
+                                        <span className="font-mono font-bold text-[10px] text-[#0057FF]">
+                                          Page {page.pageNumber || pIdx + 1}
+                                        </span>
+                                      </div>
+                                      {Array.isArray(page.elements) &&
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                        page.elements.map((el: any, elIdx: number) => (
+                                          <div key={elIdx} className="space-y-1 text-[11px]">
+                                            {el.type === 'image' && el.src && (
+                                              <div className="space-y-1.5 pt-1">
+                                                <div className="flex items-center justify-between">
+                                                  <span className="font-mono text-[10px] text-white/50">
+                                                    {el.label || 'Client Photo'}
+                                                  </span>
+                                                  <a
+                                                    href={el.src}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="text-[10px] text-[#0057FF] hover:underline font-mono font-medium"
+                                                  >
+                                                    Open / Download ↗
+                                                  </a>
+                                                </div>
+                                                {/* Thumbnail preview */}
+                                                <a
+                                                  href={el.src}
+                                                  target="_blank"
+                                                  rel="noreferrer"
+                                                  className="block relative aspect-video w-full rounded border border-white/10 overflow-hidden bg-black/40 group hover:border-[#0057FF]/50 transition-colors"
+                                                >
+                                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                  <img
+                                                    src={el.src}
+                                                    alt={el.label || 'Client upload'}
+                                                    className="w-full h-full object-contain"
+                                                  />
+                                                </a>
+                                              </div>
+                                            )}
+                                            {el.type === 'text' && el.text && (
+                                              <div className="p-1.5 bg-black/30 rounded border border-white/5">
+                                                <span className="font-mono text-[9px] text-white/40 uppercase block">
+                                                  {el.label || 'Text'}:
+                                                </span>
+                                                <p className="text-white/90 text-xs font-serif leading-snug">
+                                                  {el.text}
+                                                </p>
+                                              </div>
+                                            )}
+                                            {el.userInstructions && (
+                                              <p className="font-mono text-[10px] text-amber-300/80 bg-amber-500/10 px-1.5 py-0.5 rounded">
+                                                ✎ Preference: {el.userInstructions}
+                                              </p>
+                                            )}
+                                          </div>
+                                        ))}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                      {/* Other Customizer Designs (Front/Back) */}
+                      {item.customization &&
+                        (item.customization.frontDesignFileUrl ||
+                          item.customization.backDesignFileUrl) && (
+                          <div className="grid grid-cols-2 gap-2 pt-1">
+                            {item.customization.frontDesignFileUrl && (
+                              <div className="p-2 bg-white/[0.02] border border-white/5 rounded-lg space-y-1.5">
+                                <div className="flex items-center justify-between">
+                                  <span className="font-mono text-[10px] text-white/60">
+                                    Front Design
+                                  </span>
+                                  <a
+                                    href={item.customization.frontDesignFileUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-[10px] text-[#0057FF] hover:underline font-mono"
+                                  >
+                                    Download ↗
+                                  </a>
+                                </div>
+                                <a
+                                  href={item.customization.frontDesignFileUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="block aspect-square rounded border border-white/10 overflow-hidden bg-black/40"
+                                >
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={item.customization.frontDesignFileUrl}
+                                    alt="Front design"
+                                    className="w-full h-full object-contain"
+                                  />
+                                </a>
+                              </div>
+                            )}
+                            {item.customization.backDesignFileUrl && (
+                              <div className="p-2 bg-white/[0.02] border border-white/5 rounded-lg space-y-1.5">
+                                <div className="flex items-center justify-between">
+                                  <span className="font-mono text-[10px] text-white/60">
+                                    Back Design
+                                  </span>
+                                  <a
+                                    href={item.customization.backDesignFileUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-[10px] text-[#0057FF] hover:underline font-mono"
+                                  >
+                                    Download ↗
+                                  </a>
+                                </div>
+                                <a
+                                  href={item.customization.backDesignFileUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="block aspect-square rounded border border-white/10 overflow-hidden bg-black/40"
+                                >
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={item.customization.backDesignFileUrl}
+                                    alt="Back design"
+                                    className="w-full h-full object-contain"
+                                  />
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        )}
                     </div>
                   )}
                 </div>

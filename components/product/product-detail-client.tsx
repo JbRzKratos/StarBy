@@ -267,12 +267,20 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             ) : (
               <div className="flex flex-col sm:flex-row gap-3 mt-2">
                 {product.customizable ? (
-                  <Link
-                    href={`/customize/${product.id}`}
-                    className="w-full flex items-center justify-center py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
-                  >
-                    Customize Design
-                  </Link>
+                  <>
+                    <Link
+                      href={`/customize/${product.id}`}
+                      className="flex-1 flex items-center justify-center py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold"
+                    >
+                      Customize Design
+                    </Link>
+                    <button
+                      onClick={handleAddToCart}
+                      className="flex-1 py-3.5 border border-smoke/70 text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl hover:text-bone hover:bg-white/[0.03] transition-colors"
+                    >
+                      Add to Cart (Plain)
+                    </button>
+                  </>
                 ) : (
                   <button
                     onClick={handleAddToCart}

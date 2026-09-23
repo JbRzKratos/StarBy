@@ -111,11 +111,11 @@ function ReviewInner() {
       localStorage.setItem(`magazine-doc-${doc.id}`, JSON.stringify(doc));
 
       addItem({
-        productId: doc.id,
-        variantId: 'magazine-wizard',
+        productId: 'prod_test_magazine',
+        variantId: 'var_test_magazine_01',
         quantity: 1,
-        price: 1499,
-        name: template.name,
+        price: 1,
+        name: `Custom Magazine - ${template.name}`,
         image: template.coverImage,
         customization: {
           magazineId: doc.id,
@@ -125,6 +125,19 @@ function ReviewInner() {
           coverFinish: doc.coverFinish,
           bindingType: doc.bindingType,
           thumbnail: template.coverImage,
+          document: doc,
+          pagesData: populatedPages.map((p, idx) => ({
+            pageNumber: idx + 1,
+            elements: p.elements.map((el) => ({
+              id: el.id,
+              type: el.type,
+              name: el.name,
+              label: el.name,
+              text: el.type === 'text' ? el.content : '',
+              src: el.type === 'image' ? el.content : '',
+              userInstructions: (contentMap[`${el.id}__instructions`] as string) || '',
+            })),
+          })),
         },
       });
 

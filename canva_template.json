@@ -3,11 +3,7 @@
   "category": "fashion",
   "description": "Automatically extracted from Canva PDF.",
   "coverImage": "/templates/canva/page_0_bg.png",
-  "styleTags": [
-    "imported",
-    "canva",
-    "fashion"
-  ],
+  "styleTags": ["imported", "canva", "fashion"],
   "badge": "CANVA",
   "pages": [
     {

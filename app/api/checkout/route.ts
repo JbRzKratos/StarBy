@@ -196,11 +196,19 @@ export async function POST(request: Request) {
         : null;
 
       if (processedCustomization && typeof processedCustomization === 'object') {
-        const uploadKeys = ['designFileUrl', 'frontDesignFileUrl', 'backDesignFileUrl'];
+        const uploadKeys = [
+          'designFileUrl',
+          'frontDesignFileUrl',
+          'backDesignFileUrl',
+          'previewFileUrl',
+          'thumbnail',
+          'imageUrl',
+        ];
 
         for (const key of uploadKeys) {
           if (
             processedCustomization[key] &&
+            typeof processedCustomization[key] === 'string' &&
             processedCustomization[key].startsWith('data:image/')
           ) {
             try {
@@ -213,7 +221,7 @@ export async function POST(request: Request) {
 
                 const { objectKey } = await uploadBufferToR2(
                   buffer,
-                  `custom_${key}.png`,
+                  `custom_${item.productId}_${key}.png`,
                   contentType,
                 );
 
@@ -222,6 +230,69 @@ export async function POST(request: Request) {
             } catch (e) {
               console.error(`Error uploading ${key} to R2:`, e);
               // Fallback to storing base64 if R2 fails
+            }
+          }
+        }
+
+        // Upload custom magazine page images if present in pagesData
+        if (Array.isArray(processedCustomization.pagesData)) {
+          for (let pIdx = 0; pIdx < processedCustomization.pagesData.length; pIdx++) {
+            const page = processedCustomization.pagesData[pIdx];
+            if (Array.isArray(page.elements)) {
+              for (let elIdx = 0; elIdx < page.elements.length; elIdx++) {
+                const el = page.elements[elIdx];
+                if (el.src && typeof el.src === 'string' && el.src.startsWith('data:image/')) {
+                  try {
+                    const matches = el.src.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                    if (matches && matches.length === 3) {
+                      const contentType = matches[1];
+                      const base64Data = matches[2];
+                      const buffer = Buffer.from(base64Data, 'base64');
+                      const { objectKey } = await uploadBufferToR2(
+                        buffer,
+                        `magazine_${item.productId}_p${page.pageNumber || pIdx + 1}_el${elIdx}.png`,
+                        contentType,
+                      );
+                      el.src = getR2PublicUrl(objectKey);
+                    }
+                  } catch (e) {
+                    console.error('Error uploading magazine page element image to R2:', e);
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // Upload custom magazine images in document.pages if present
+        if (
+          processedCustomization.document &&
+          Array.isArray(processedCustomization.document.pages)
+        ) {
+          for (let pIdx = 0; pIdx < processedCustomization.document.pages.length; pIdx++) {
+            const page = processedCustomization.document.pages[pIdx];
+            if (Array.isArray(page.elements)) {
+              for (let elIdx = 0; elIdx < page.elements.length; elIdx++) {
+                const el = page.elements[elIdx];
+                if (el.src && typeof el.src === 'string' && el.src.startsWith('data:image/')) {
+                  try {
+                    const matches = el.src.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                    if (matches && matches.length === 3) {
+                      const contentType = matches[1];
+                      const base64Data = matches[2];
+                      const buffer = Buffer.from(base64Data, 'base64');
+                      const { objectKey } = await uploadBufferToR2(
+                        buffer,
+                        `magdoc_${item.productId}_p${pIdx + 1}_el${elIdx}.png`,
+                        contentType,
+                      );
+                      el.src = getR2PublicUrl(objectKey);
+                    }
+                  } catch (e) {
+                    console.error('Error uploading document page element image to R2:', e);
+                  }
+                }
+              }
             }
           }
         }
@@ -387,19 +458,85 @@ export async function POST(request: Request) {
       couponCode: couponCode?.toUpperCase() || null,
       estimatedDeliveryDate,
       items: {
-        create: validatedItems.map((item) => ({
-          productId: item.productId,
-          variantId: item.variantId,
-          productNameSnapshot: item.productNameSnapshot,
-          skuSnapshot: item.skuSnapshot,
-          quantity: item.quantity,
-          unitPrice: item.unitPrice,
-          totalPrice: item.totalPrice,
-          size: item.size,
-          customization: item.customization
-            ? (item.customization as Prisma.InputJsonValue)
-            : Prisma.JsonNull,
-        })),
+        create: validatedItems.map((item) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const cust = item.customization as Record<string, any> | null;
+          let designFileUrl: string | null = null;
+          let previewFileUrl: string | null = null;
+          let printInstructions: string | null = null;
+          let customerNotes: string | null = null;
+          let designFileName: string | null = null;
+
+          if (cust && typeof cust === 'object') {
+            designFileUrl =
+              cust.designFileUrl ||
+              cust.frontDesignFileUrl ||
+              cust.thumbnail ||
+              cust.imageUrl ||
+              null;
+            previewFileUrl =
+              cust.previewFileUrl || cust.thumbnail || cust.frontPreviewFileUrl || null;
+            printInstructions =
+              cust.printInstructions ||
+              (cust.bindingType
+                ? `${cust.bindingType} | ${cust.paperWeight || ''} | ${cust.coverFinish || ''}`.trim()
+                : null);
+            customerNotes = cust.customerNotes || cust.magazineTitle || cust.instructions || null;
+            designFileName =
+              cust.fileName ||
+              (cust.magazineTitle ? `${cust.magazineTitle}.pdf` : 'custom_artwork.png');
+
+            if (!designFileUrl && Array.isArray(cust.pagesData)) {
+              for (const p of cust.pagesData) {
+                const pageObj = p as Record<string, unknown>;
+                if (Array.isArray(pageObj?.elements)) {
+                  const found = pageObj.elements.find(
+                    (e) =>
+                      e &&
+                      typeof (e as Record<string, unknown>).src === 'string' &&
+                      ((e as Record<string, unknown>).src as string).startsWith('http'),
+                  );
+                  if (found) {
+                    designFileUrl = (found as Record<string, unknown>).src as string;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+
+          const hasCustomizationRecord = Boolean(
+            designFileUrl || printInstructions || customerNotes,
+          );
+
+          return {
+            productId: item.productId,
+            variantId: item.variantId,
+            productNameSnapshot: item.productNameSnapshot,
+            skuSnapshot: item.skuSnapshot,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+            totalPrice: item.totalPrice,
+            size: item.size,
+            customization: item.customization
+              ? (item.customization as Prisma.InputJsonValue)
+              : Prisma.JsonNull,
+            ...(hasCustomizationRecord
+              ? {
+                  orderCustomization: {
+                    create: {
+                      designFileUrl,
+                      previewFileUrl,
+                      designFileName,
+                      printInstructions,
+                      customerNotes,
+                      productionStatus: 'pending',
+                    },
+                  },
+                }
+              : {}),
+          };
+        }),
       },
       statusHistory: {
         create: {

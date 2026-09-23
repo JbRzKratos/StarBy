@@ -5,6 +5,9 @@ import { useCustomizerStore } from '@/lib/stores/customizer-store';
 import type { ProductType } from '@/lib/config/printSpecs';
 import { FabricCanvas } from './fabric-canvas';
 import { ControlPanel } from './control-panel';
+import { getR2AssetUrl } from '@/lib/r2';
+
+import { products } from '@/data/products';
 
 interface CustomizerLayoutProps {
   productType: ProductType;
@@ -29,29 +32,38 @@ export function CustomizerLayout({
     };
   }, [productType, productId, setProduct, reset]);
 
+  const currentProd = products.find((p) => p.id === productId);
+  const isOversized = currentProd?.categorySlug === 'oversized-tees';
+
   // Compute dynamic mockup src
   let finalMockupImageSrc = defaultMockupImageSrc;
   let requiresColorOverlay = false;
   let selectedHexColor = '';
 
   const colors: Record<string, string> = {
-    Black: '#000000',
+    Black: '#0E0E0F',
     White: '#FFFFFF',
-    'Cornflower Blue': '#6495ED',
-    'Light Pink': '#FFB6C1',
-    'Olive Green': '#556B2F',
+    'Olive Green': '#4B5320',
+    'C.Brown': '#4A2E1B',
+    Maroon: '#7B1123',
+    'Dusky Pink': '#C08081',
+    Beige: '#D4C5B9',
+    'Navy Blue': '#1B263B',
+    Violet: '#5B2C6F',
   };
 
   if (productType === 't-shirt' || productType === 'hoodie') {
-    const prefix = productType === 'hoodie' ? 'hoodie' : 'tee';
+    const prefix = productType === 'hoodie' ? 'hoodie' : isOversized ? 'oversized-tee' : 'tee';
 
     // Check if we have native images (black and white)
     if (selectedColor === 'Black' || selectedColor === 'White') {
       const colorKey = selectedColor.toLowerCase();
-      finalMockupImageSrc = `/images/mockups/${prefix}-${colorKey}-${selectedSide}.png`;
+      finalMockupImageSrc = getR2AssetUrl(
+        `images/mockups/${prefix}-${colorKey}-${selectedSide}.png`,
+      );
     } else {
       // Fallback to white and use color overlay
-      finalMockupImageSrc = `/images/mockups/${prefix}-white-${selectedSide}.png`;
+      finalMockupImageSrc = getR2AssetUrl(`images/mockups/${prefix}-white-${selectedSide}.png`);
       requiresColorOverlay = true;
       selectedHexColor = colors[selectedColor] || '#FFFFFF';
     }

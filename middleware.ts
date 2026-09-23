@@ -54,7 +54,8 @@ export async function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
 
     // Only fetch user on protected routes to prevent timeouts on public pages
-    const isProtectedRoute = path.startsWith('/account') || path.startsWith('/admin') || path.startsWith('/checkout');
+    const isProtectedRoute =
+      path.startsWith('/account') || path.startsWith('/admin') || path.startsWith('/checkout');
 
     if (isProtectedRoute) {
       const {

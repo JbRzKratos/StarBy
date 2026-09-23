@@ -74,21 +74,21 @@ const nextConfig = {
                 `default-src 'self'`,
                 // Scripts: self + inline/eval for Next.js + fabric.js (cdnjs) + cashfree/tawk
                 // blob: required for Three.js inline worker strings
-                `script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.cashfree.com https://embed.tawk.to https://va.tawk.to https://cdn.jsdelivr.net https://cdnjs.cloudflare.com`,
-                // Styles: self + inline (Tailwind/fabric) + Google Fonts + cdnjs + jsdelivr
-                `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com`,
-                // Fonts: self + Google Fonts CDN + data URIs
-                `font-src 'self' https://fonts.gstatic.com data:`,
-                // Images: self + data URIs + blob (canvas/Three.js) + Supabase + Unsplash + cdnjs + R2 + Drei assets
-                `img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://plus.unsplash.com https://*.tawk.to https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com https://*.r2.dev https://pub-*.r2.dev`,
+                `script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.cashfree.com https://embed.tawk.to https://va.tawk.to https://*.tawk.to https://tawk.link https://*.tawk.link https://cdn.jsdelivr.net https://cdnjs.cloudflare.com`,
+                // Styles: self + inline (Tailwind/fabric) + Google Fonts + cdnjs + jsdelivr + Tawk.to CSS
+                `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://embed.tawk.to https://*.tawk.to https://tawk.link https://*.tawk.link`,
+                // Fonts: self + Google Fonts CDN + data URIs + Tawk.to fonts
+                `font-src 'self' https://fonts.gstatic.com data: https://embed.tawk.to https://*.tawk.to https://tawk.link https://*.tawk.link`,
+                // Images: self + data URIs + blob (canvas/Three.js) + Supabase + Unsplash + cdnjs + R2 + Drei assets + Tawk.to avatars/assets
+                `img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://plus.unsplash.com https://*.tawk.to https://embed.tawk.to https://tawk.link https://*.tawk.link https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com https://*.r2.dev https://pub-*.r2.dev`,
                 // Fetch/XHR: self + Supabase + Cashfree + Tawk + cdnjs + Drei assets + Polyhaven + jsDelivr + R2
-                `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.cashfree.com https://sandbox.cashfree.com https://*.tawk.to wss://*.tawk.to https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com https://*.r2.dev https://pub-*.r2.dev ws://localhost:* http://localhost:*`,
+                `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.cashfree.com https://sandbox.cashfree.com https://*.tawk.to wss://*.tawk.to https://tawk.link https://*.tawk.link wss://*.tawk.link https://cdnjs.cloudflare.com https://raw.githack.com https://dl.polyhaven.org https://cdn.jsdelivr.net https://*.r2.cloudflarestorage.com https://*.r2.dev https://pub-*.r2.dev ws://localhost:* http://localhost:*`,
                 // iframes: Cashfree checkout + Tawk.to chat widget
-                `frame-src https://payments.cashfree.com https://checkout.cashfree.com https://sandbox.cashfree.com https://*.tawk.to`,
-                // Workers: self + blob for Three.js draco workers and fabric.js
-                `worker-src 'self' blob:`,
-                // Media: self + blob (canvas export)
-                `media-src 'self' blob:`,
+                `frame-src https://payments.cashfree.com https://checkout.cashfree.com https://sandbox.cashfree.com https://*.tawk.to https://embed.tawk.to`,
+                // Workers: self + blob for Three.js draco workers and fabric.js + Tawk.to workers
+                `worker-src 'self' blob: https://*.tawk.to https://embed.tawk.to`,
+                // Media: self + blob (canvas export) + Tawk notification chimes
+                `media-src 'self' blob: https://*.tawk.to https://embed.tawk.to https://tawk.link https://*.tawk.link`,
                 // Manifest
                 `manifest-src 'self'`,
                 // Object (PDF embeds etc): none

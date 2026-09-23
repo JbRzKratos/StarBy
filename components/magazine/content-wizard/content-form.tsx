@@ -220,6 +220,41 @@ function TextField({
   );
 }
 
+// ── Image Helper ─────────────────────────────────────────────────────────────
+
+function processImageFile(file: File): Promise<string> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 1920;
+        if (img.width > maxDim || img.height > maxDim) {
+          const scale = maxDim / Math.max(img.width, img.height);
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL(file.type || 'image/jpeg', 0.88));
+            return;
+          }
+        }
+        resolve(dataUrl);
+      };
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
+    };
+    reader.onerror = () => {
+      // Fallback
+      resolve('');
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 // ── Image Field ───────────────────────────────────────────────────────────────
 
 function ImageField({
@@ -235,22 +270,22 @@ function ImageField({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
-      const url = URL.createObjectURL(file);
-      onChange(url);
+      const dataUrl = await processImageFile(file);
+      if (dataUrl) onChange(dataUrl);
     },
     [onChange],
   );
 
   const handleDrop = useCallback(
-    (e: React.DragEvent) => {
+    async (e: React.DragEvent) => {
       e.preventDefault();
       const file = e.dataTransfer.files?.[0];
       if (!file || !file.type.startsWith('image/')) return;
-      const url = URL.createObjectURL(file);
-      onChange(url);
+      const dataUrl = await processImageFile(file);
+      if (dataUrl) onChange(dataUrl);
     },
     [onChange],
   );

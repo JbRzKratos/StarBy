@@ -12,7 +12,9 @@ export function FloatingActions() {
   const waRef = useRef<HTMLAnchorElement>(null);
 
   const isExcludedRoute =
-    pathname?.startsWith('/magazine/editor') || pathname?.startsWith('/admin');
+    pathname?.startsWith('/magazine/editor') ||
+    pathname?.startsWith('/magazine/content-wizard') ||
+    pathname?.startsWith('/admin');
 
   useEffect(() => {
     if (isExcludedRoute) return;

@@ -1,6 +1,9 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy');
+const DEFAULT_FROM = process.env.EMAIL_FROM || 'Fregoro Studios <onboarding@resend.dev>';
+const BUSINESS_EMAIL = 'fregorostudios@gmail.com';
+const ADMIN_RECIPIENT = process.env.ADMIN_EMAIL || BUSINESS_EMAIL;
 
 /** Prevent XSS by escaping HTML special characters in user-supplied strings */
 function escapeHtml(str: string): string {
@@ -27,10 +30,10 @@ export async function sendOrderConfirmationEmail(
   const safeOrderId = escapeHtml(orderId);
 
   try {
-    const fromAddress = process.env.EMAIL_FROM || 'Fregoro Studios <orders@fregorostudios.com>';
     await resend.emails.send({
-      from: fromAddress,
+      from: DEFAULT_FROM,
       to: [toEmail],
+      replyTo: BUSINESS_EMAIL,
       subject: `Order Confirmation - ${safeOrderId}`,
       html: `
         <!DOCTYPE html>
@@ -82,7 +85,7 @@ export async function sendOrderConfirmationEmail(
             
             <div style="padding: 30px; text-align: center; border-top: 1px solid rgba(245, 241, 234, 0.1); font-size: 13px; color: rgba(245, 241, 234, 0.4);">
               <p style="margin: 0 0 5px 0;">&copy; ${new Date().getFullYear()} Fregoro Studios. All rights reserved.</p>
-              <p style="margin: 0;">If you have any questions, reply to this email or visit our help center.</p>
+              <p style="margin: 0;">If you have any questions, reply to this email or reach us directly at <a href="mailto:${BUSINESS_EMAIL}" style="color: #0057FF; text-decoration: none;">${BUSINESS_EMAIL}</a>.</p>
             </div>
           </div>
         </body>
@@ -114,19 +117,20 @@ export async function sendContactEmail(
 
   try {
     await resend.emails.send({
-      from: 'Fregoro Studios Contact <contact@fregorostudios.com>',
-      to: ['admin@fregorostudios.com'],
+      from: DEFAULT_FROM,
+      to: [ADMIN_RECIPIENT],
       replyTo: email,
-      subject: `New Contact: ${safeSubject}`,
+      subject: `New Customer Query: ${safeSubject}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
-          <h2 style="color: #000;">New Contact Form Submission</h2>
+          <h2 style="color: #000;">New Contact Form Query</h2>
           <p><strong>Name:</strong> ${safeName}</p>
           <p><strong>Email:</strong> ${escapeHtml(email)}</p>
           <p><strong>Subject:</strong> ${safeSubject}</p>
           <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p style="margin: 0; white-space: pre-wrap;">${safeMessage}</p>
           </div>
+          <p style="color: #666; font-size: 13px;">Hit "Reply" in your email client to respond directly to ${escapeHtml(email)}.</p>
         </div>
       `,
     });
@@ -148,14 +152,15 @@ export async function sendContactAutoReply(toEmail: string, name: string) {
 
   try {
     await resend.emails.send({
-      from: 'Fregoro Studios Support <support@fregorostudios.com>',
+      from: DEFAULT_FROM,
       to: [toEmail],
+      replyTo: BUSINESS_EMAIL,
       subject: 'We got your message — Fregoro Studios Support',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
           <h2 style="color: #000;">Hey ${safeName}, we received your message!</h2>
           <p>Thanks for reaching out to Fregoro Studios. Our team will get back to you within 24–48 hours.</p>
-          <p>In the meantime, you can browse our collection or check your order status at <a href="https://fregoro.vercel.app" style="color: #0057FF;">fregorostudios.com</a>.</p>
+          <p>You can also reach us directly at <a href="mailto:${BUSINESS_EMAIL}" style="color: #0057FF;">${BUSINESS_EMAIL}</a>.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
           <p style="color: #888; font-size: 13px;">If you didn't submit this form, you can ignore this email.</p>
           <p>– The Fregoro Studios Team</p>
@@ -173,12 +178,10 @@ export async function sendAdminNewOrderEmail(orderId: string, total: number) {
   if (!process.env.RESEND_API_KEY) return false;
 
   try {
-    const fromAddress =
-      process.env.EMAIL_FROM || 'Fregoro Studios Orders <orders@fregorostudios.com>';
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@fregorostudios.com';
     await resend.emails.send({
-      from: fromAddress,
-      to: [adminEmail],
+      from: DEFAULT_FROM,
+      to: [ADMIN_RECIPIENT],
+      replyTo: BUSINESS_EMAIL,
       subject: `New Order Received - ${orderId}`,
       html: `
         <!DOCTYPE html>
@@ -217,7 +220,7 @@ export async function sendAdminNewOrderEmail(orderId: string, total: number) {
             </div>
             
             <div style="padding: 30px; text-align: center; border-top: 1px solid rgba(245, 241, 234, 0.1); font-size: 13px; color: rgba(245, 241, 234, 0.4);">
-              <p style="margin: 0;">Fregoro Studios Admin Automated Notification</p>
+              <p style="margin: 0;">Fregoro Studios Admin Notification · Sent to ${ADMIN_RECIPIENT}</p>
             </div>
           </div>
         </body>
@@ -243,11 +246,10 @@ export async function sendOrderShippedEmail(
   const safeName = escapeHtml(customerName);
 
   try {
-    const fromAddress =
-      process.env.EMAIL_FROM || 'Fregoro Studios Updates <updates@fregorostudios.com>';
     await resend.emails.send({
-      from: fromAddress,
+      from: DEFAULT_FROM,
       to: [toEmail],
+      replyTo: BUSINESS_EMAIL,
       subject: `Your Order ${orderId} has Shipped! 🚚`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
@@ -265,7 +267,7 @@ export async function sendOrderShippedEmail(
           `
               : ''
           }
-          <p>Thank you for shopping with us!</p>
+          <p>Thank you for shopping with us! If you need anything, simply reply to this email or write to <a href="mailto:${BUSINESS_EMAIL}">${BUSINESS_EMAIL}</a>.</p>
           <br />
           <p>Best regards,<br/>The Fregoro Studios Team</p>
         </div>
@@ -287,17 +289,16 @@ export async function sendOrderDeliveredEmail(
   const safeName = escapeHtml(customerName);
 
   try {
-    const fromAddress =
-      process.env.EMAIL_FROM || 'Fregoro Studios Updates <updates@fregorostudios.com>';
     await resend.emails.send({
-      from: fromAddress,
+      from: DEFAULT_FROM,
       to: [toEmail],
+      replyTo: BUSINESS_EMAIL,
       subject: `Your Order ${orderId} has been Delivered! 🎉`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
           <h2 style="color: #000;">Your order has arrived, ${safeName}!</h2>
           <p>Your order <strong>${orderId}</strong> has been marked as delivered.</p>
-          <p>We hope you love your purchase! If you have any questions or concerns, please contact our support team.</p>
+          <p>We hope you love your purchase! If you have any questions or feedback, simply reply to this email or contact us at <a href="mailto:${BUSINESS_EMAIL}">${BUSINESS_EMAIL}</a>.</p>
           <br />
           <p>Best regards,<br/>The Fregoro Studios Team</p>
         </div>

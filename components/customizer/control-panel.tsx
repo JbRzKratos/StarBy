@@ -1,9 +1,12 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { useCustomizerStore } from '@/lib/stores/customizer-store';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { Camera, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { products } from '@/data/products';
+import { SizeChartModal } from '@/components/product/size-chart-modal';
+import { SizeFinderModal } from '@/components/product/size-finder-modal';
 
 export function ControlPanel() {
   const {
@@ -18,6 +21,72 @@ export function ControlPanel() {
     setSelectedSide,
     exportPreviewFns,
   } = useCustomizerStore();
+
+  const currentProd = useMemo(() => products.find((p) => p.id === productId), [productId]);
+  const isHoodie = productType === 'hoodie' || currentProd?.categorySlug === 'hoodies';
+  const isAcidWash = Boolean(
+    currentProd?.slug.includes('acid') ||
+    currentProd?.name.toLowerCase().includes('acid') ||
+    currentProd?.tags.includes('acid-wash'),
+  );
+  const isOversized = currentProd?.categorySlug === 'oversized-tees';
+
+  const [selectedSize, setSelectedSize] = useState<string>('M');
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [showSizeFinder, setShowSizeFinder] = useState(false);
+
+  const availableSizes = useMemo(() => {
+    if (currentProd?.sizes && currentProd.sizes.length > 0) {
+      return currentProd.sizes;
+    }
+    return ['S', 'M', 'L', 'XL', 'XXL', '3XL'];
+  }, [currentProd]);
+
+  const colorPalette = useMemo(() => {
+    if (isHoodie) {
+      return [
+        { name: 'Black', hex: '#0E0E0F' },
+        { name: 'White', hex: '#FFFFFF' },
+      ];
+    }
+    if (isAcidWash) {
+      return [
+        { name: 'Black', hex: '#2B2B2B' },
+        { name: 'White', hex: '#EAEAEA' },
+        { name: 'Violet', hex: '#5B2C6F' },
+      ];
+    }
+    if (isOversized) {
+      return [
+        { name: 'White', hex: '#FFFFFF' },
+        { name: 'Black', hex: '#0E0E0F' },
+        { name: 'Dusky Pink', hex: '#C08081' },
+        { name: 'Beige', hex: '#D4C5B9' },
+        { name: 'Navy Blue', hex: '#1B263B' },
+      ];
+    }
+    // Regular T-shirts default
+    return [
+      { name: 'White', hex: '#FFFFFF' },
+      { name: 'Black', hex: '#0E0E0F' },
+      { name: 'Olive Green', hex: '#4B5320' },
+      { name: 'C.Brown', hex: '#4A2E1B' },
+      { name: 'Maroon', hex: '#7B1123' },
+    ];
+  }, [isHoodie, isAcidWash, isOversized]);
+
+  // Match the active variant to selected color
+  const matchingVariant = useMemo(() => {
+    if (!currentProd?.variants || currentProd.variants.length === 0) return null;
+    const colorNorm = selectedColor.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return (
+      currentProd.variants.find((v) => {
+        const vName = v.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const vColor = v.color.toLowerCase().replace(/[^a-z0-9]/g, '');
+        return vName.includes(colorNorm) || colorNorm.includes(vName) || vColor === colorNorm;
+      }) || currentProd.variants[0]
+    );
+  }, [currentProd, selectedColor]);
 
   const currentDesign = designs[selectedSide];
   const uploadedImage = currentDesign.url;
@@ -53,11 +122,16 @@ export function ControlPanel() {
     const frontPreviewUrl = exportPreviewFns.front ? exportPreviewFns.front() : null;
     const backPreviewUrl = exportPreviewFns.back ? exportPreviewFns.back() : null;
 
+    const variantToUse = activeVariant || matchingVariant;
+    const variantIdToUse = variantToUse?.id || 'default';
+    const variantPrice = variantToUse?.price ?? currentProd?.basePrice ?? 0;
+
     addItem({
       productId,
-      variantId: activeVariant?.id || 'default', // Fallback if no variant logic yet
+      variantId: variantIdToUse,
       quantity: 1,
-      price: activeVariant?.price || 0,
+      price: variantPrice,
+      size: selectedSize,
       customization: {
         frontDesignFileUrl: designs.front.url,
         frontPreviewFileUrl: frontPreviewUrl,
@@ -66,6 +140,7 @@ export function ControlPanel() {
         designFileUrl: designs.front.url || designs.back.url,
         previewFileUrl: frontPreviewUrl || backPreviewUrl,
         color: selectedColor,
+        size: selectedSize,
         printInstructions: instructions || 'No special instructions',
       },
     });
@@ -108,22 +183,85 @@ export function ControlPanel() {
 
           {/* Color Selection */}
           <div className="space-y-3">
-            <label className="block text-sm font-medium text-pearl">Color</label>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-pearl">
+                Color — <span className="text-bone font-semibold">{selectedColor}</span>
+              </label>
+              <span className="font-mono text-[10px] text-ash uppercase">
+                {isHoodie
+                  ? 'Hoodie'
+                  : isAcidWash
+                    ? 'Acid Wash'
+                    : isOversized
+                      ? 'Oversized'
+                      : 'Regular Fit'}
+              </span>
+            </div>
             <div className="flex gap-3 flex-wrap">
-              {[
-                { name: 'Black', hex: '#000000' },
-                { name: 'White', hex: '#FFFFFF' },
-                { name: 'Cornflower Blue', hex: '#6495ED' },
-                { name: 'Light Pink', hex: '#FFB6C1' },
-                { name: 'Olive Green', hex: '#556B2F' },
-              ].map((color) => (
+              {colorPalette.map((color) => {
+                const isSelected = selectedColor.toLowerCase() === color.name.toLowerCase();
+                const isWhite = color.hex.toLowerCase() === '#ffffff';
+                return (
+                  <button
+                    key={color.name}
+                    type="button"
+                    onClick={() => setSelectedColor(color.name)}
+                    className={`group relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-mono transition-all ${
+                      isSelected
+                        ? 'border-cobalt bg-cobalt/15 text-bone shadow-[0_0_10px_rgba(0,87,255,0.25)]'
+                        : 'border-white/10 bg-white/[0.02] text-pearl hover:border-white/25 hover:bg-white/[0.05]'
+                    }`}
+                  >
+                    <span
+                      className={`w-3.5 h-3.5 rounded-full inline-block border ${
+                        isWhite ? 'border-smoke' : 'border-transparent'
+                      }`}
+                      style={{ backgroundColor: color.hex }}
+                    />
+                    <span>{color.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Size Selection (S to 3XL) */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-pearl">
+                Size — <span className="text-bone font-semibold">{selectedSize}</span>
+              </label>
+              <div className="flex items-center gap-3">
                 <button
-                  key={color.name}
-                  onClick={() => setSelectedColor(color.name)}
-                  className={`w-10 h-10 rounded-full border-2 transition-all ${selectedColor === color.name ? 'border-cobalt scale-110' : 'border-[#F5F1EA]/20 hover:border-[#F5F1EA]/50'}`}
-                  style={{ backgroundColor: color.hex }}
-                  title={color.name}
-                />
+                  type="button"
+                  onClick={() => setShowSizeGuide(true)}
+                  className="font-mono text-[10px] text-pearl uppercase tracking-widest underline underline-offset-4 hover:text-bone transition-colors"
+                >
+                  Size Guide
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowSizeFinder(true)}
+                  className="font-mono text-[10px] text-cobalt uppercase tracking-widest underline underline-offset-4 hover:text-bone transition-colors"
+                >
+                  Find My Size →
+                </button>
+              </div>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {availableSizes.map((sz) => (
+                <button
+                  key={sz}
+                  type="button"
+                  onClick={() => setSelectedSize(sz)}
+                  className={`px-3 py-1.5 rounded-lg border font-mono text-xs transition-all ${
+                    selectedSize === sz
+                      ? 'border-cobalt bg-cobalt text-bone font-bold shadow-md shadow-cobalt/30'
+                      : 'border-white/10 bg-white/[0.02] text-pearl hover:border-white/25 hover:bg-white/[0.05]'
+                  }`}
+                >
+                  {sz}
+                </button>
               ))}
             </div>
           </div>
@@ -225,6 +363,20 @@ export function ControlPanel() {
           {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save & Continue'}
         </button>
       </div>
+
+      <SizeChartModal
+        isOpen={showSizeGuide}
+        onClose={() => setShowSizeGuide(false)}
+        category={
+          currentProd?.categorySlug ??
+          (isHoodie ? 'hoodies' : isOversized ? 'oversized-tees' : 'tees')
+        }
+      />
+      <SizeFinderModal
+        isOpen={showSizeFinder}
+        onClose={() => setShowSizeFinder(false)}
+        onSizeSelect={(sz) => setSelectedSize(sz)}
+      />
     </div>
   );
 }
