@@ -12,24 +12,41 @@ export type AdminUser = User & { isAdmin: boolean; isStaff: boolean };
  * Redirects otherwise.
  */
 export const requireStaff = cache(async (): Promise<AdminUser> => {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    const supabase = createClient();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-  if (!user) redirect('/login');
+    if (authError || !user) {
+      redirect('/login');
+    }
 
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+    const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
 
-  if (!dbUser || (dbUser.role !== 'ADMIN' && dbUser.role !== 'STAFF')) {
-    redirect('/');
+    if (!dbUser || (dbUser.role !== 'ADMIN' && dbUser.role !== 'STAFF')) {
+      redirect('/');
+    }
+
+    return {
+      ...dbUser,
+      isAdmin: dbUser.role === 'ADMIN',
+      isStaff: dbUser.role === 'STAFF',
+    };
+  } catch (error: unknown) {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'digest' in error &&
+      typeof (error as { digest?: string }).digest === 'string' &&
+      (error as { digest: string }).digest.startsWith('NEXT_REDIRECT')
+    ) {
+      throw error;
+    }
+    console.error('[AdminAuth] Error in requireStaff:', error);
+    redirect('/login');
   }
-
-  return {
-    ...dbUser,
-    isAdmin: dbUser.role === 'ADMIN',
-    isStaff: dbUser.role === 'STAFF',
-  };
 });
 
 /**
