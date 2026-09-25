@@ -5,7 +5,14 @@ console.log('Checking aspect ratios and physical dimensions across all layouts..
 let distortionCount = 0;
 
 FREGORO_LAYOUTS.forEach((layout) => {
-  const distortions: Array<{ slot: string; size: string; actualW: number; actualH: number; expectedW: number; expectedH: number }> = [];
+  const distortions: Array<{
+    slot: string;
+    size: string;
+    actualW: number;
+    actualH: number;
+    expectedW: number;
+    expectedH: number;
+  }> = [];
 
   layout.slots.forEach((s) => {
     const actualW = Math.round(s.width * layout.wallWidthMm);
@@ -28,9 +35,13 @@ FREGORO_LAYOUTS.forEach((layout) => {
 
   if (distortions.length > 0) {
     distortionCount += distortions.length;
-    console.log(`[DISTORTION] Layout "${layout.name}" (${layout.id}) has ${distortions.length} distorted slots:`);
+    console.log(
+      `[DISTORTION] Layout "${layout.name}" (${layout.id}) has ${distortions.length} distorted slots:`,
+    );
     distortions.forEach((d) => {
-      console.log(`   - ${d.slot} (${d.size}): is ${d.actualW}x${d.actualH}mm, expected ${d.expectedW}x${d.expectedH}mm (diff: ${d.actualW - d.expectedW}mm, ${d.actualH - d.expectedH}mm)`);
+      console.log(
+        `   - ${d.slot} (${d.size}): is ${d.actualW}x${d.actualH}mm, expected ${d.expectedW}x${d.expectedH}mm (diff: ${d.actualW - d.expectedW}mm, ${d.actualH - d.expectedH}mm)`,
+      );
     });
   }
 });

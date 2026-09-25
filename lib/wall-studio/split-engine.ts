@@ -29,7 +29,13 @@ export function calculatePanelSlice(
   panelIndex: number,
   totalPanels: number,
   currentSlot?: { x: number; y: number; width: number; height: number; panelIndex?: number | null },
-  groupSlots?: Array<{ x: number; y: number; width: number; height: number; panelIndex?: number | null }>,
+  groupSlots?: Array<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    panelIndex?: number | null;
+  }>,
 ): PanelSliceCoordinates {
   if (currentSlot && groupSlots && groupSlots.length > 0) {
     let minX = Infinity;

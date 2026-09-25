@@ -22,10 +22,23 @@ export async function POST(req: Request) {
     const signature = req.headers.get('x-webhook-signature') || '';
     const timestamp = req.headers.get('x-webhook-timestamp') || '';
 
-    // 1. Verify webhook signature
+    // 1. Verify webhook signature and timestamp freshness (replay attack prevention)
     if (!signature || !timestamp) {
       console.warn('Cashfree webhook: missing signature or timestamp headers');
-      return NextResponse.json({ error: 'Missing signature' }, { status: 401 });
+      return NextResponse.json({ error: 'Missing signature or timestamp' }, { status: 401 });
+    }
+
+    const webhookTime = parseInt(timestamp, 10);
+    if (!isNaN(webhookTime)) {
+      const now = Date.now();
+      // Support both epoch ms and epoch seconds
+      const timeMs = webhookTime > 1e11 ? webhookTime : webhookTime * 1000;
+      const diffMs = Math.abs(now - timeMs);
+      const MAX_AGE_MS = 5 * 60 * 1000; // 5 minutes
+      if (diffMs > MAX_AGE_MS) {
+        console.warn('Cashfree webhook: rejected expired timestamp (>5min)', { timestamp, diffMs });
+        return NextResponse.json({ error: 'Webhook timestamp expired' }, { status: 401 });
+      }
     }
 
     let isValid = false;

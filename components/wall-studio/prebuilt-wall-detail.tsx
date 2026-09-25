@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { PrebuiltWallProductData } from '@/lib/wall-studio/types';
 import { getLayoutById } from '@/lib/wall-studio/layouts-data';
@@ -91,9 +92,18 @@ export const PrebuiltWallDetail: React.FC<PrebuiltWallDetailProps> = ({ wall }) 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* LEFT: Finished Wall Images Showcase */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="relative aspect-16/10 w-full rounded-2xl overflow-hidden bg-black/80 border border-white/10 shadow-2xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={wall.heroImage} alt={wall.title} className="w-full h-full object-cover" />
+            <div
+              className="relative w-full rounded-2xl overflow-hidden bg-black/80 border border-white/10 shadow-2xl"
+              style={{ aspectRatio: '16/10' }}
+            >
+              <Image
+                src={wall.heroImage}
+                alt={wall.title}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-cover"
+              />
               <div className="absolute top-4 left-4 flex items-center gap-2">
                 <span className="text-[10px] font-mono uppercase tracking-widest bg-black/80 backdrop-blur-md text-[#3B5EFF] px-2.5 py-1 rounded-full border border-[#3B5EFF]/30 font-bold">
                   Ready-Made Wall Setup
@@ -106,12 +116,16 @@ export const PrebuiltWallDetail: React.FC<PrebuiltWallDetailProps> = ({ wall }) 
 
             {/* Room context photo if available */}
             {wall.roomPhoto && (
-              <div className="relative aspect-21/9 w-full rounded-xl overflow-hidden bg-black/60 border border-white/10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+              <div
+                className="relative w-full rounded-xl overflow-hidden bg-black/60 border border-white/10"
+                style={{ aspectRatio: '21/9' }}
+              >
+                <Image
                   src={wall.roomPhoto}
                   alt={`${wall.title} in living room`}
-                  className="w-full h-full object-cover filter brightness-90"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  className="object-cover filter brightness-90"
                 />
                 <span className="absolute bottom-3 left-4 text-[10px] font-mono text-white/70 bg-black/70 px-2.5 py-1 rounded backdrop-blur-md">
                   Exhibition Room Scale Preview

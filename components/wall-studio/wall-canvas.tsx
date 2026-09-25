@@ -52,8 +52,8 @@ export const WallCanvas: React.FC = () => {
       {/* Gallery floor baseboard shadow line */}
       <div className="absolute bottom-0 inset-x-0 h-14 bg-gradient-to-t from-black/50 via-black/20 to-transparent pointer-events-none border-t border-white/[0.04]" />
 
-      {/* Minimalist wall coverage indicator at bottom-left */}
-      <div className="absolute bottom-3 left-4 hidden sm:flex items-center gap-2 text-white/30 text-[11px] font-mono pointer-events-none z-10">
+      {/* Minimalist wall coverage indicator at bottom-left (desktop only) */}
+      <div className="absolute bottom-3 left-4 hidden md:flex items-center gap-2 text-white/30 text-[11px] font-mono pointer-events-none z-10">
         <Ruler className="w-3.5 h-3.5 text-[#3B5EFF]/60" />
         <span>{currentLayout.coverageLabel}</span>
       </div>
@@ -81,7 +81,6 @@ export const WallCanvas: React.FC = () => {
           maxWidth: '94%',
         }}
       >
-
         {/* Dimension Border Lines in Print Map Mode */}
         {viewMode === 'print-map' && (
           <div className="absolute -inset-6 border border-dashed border-[#3B5EFF]/40 pointer-events-none flex flex-col justify-between p-1 text-[10px] font-mono text-[#3B5EFF]">

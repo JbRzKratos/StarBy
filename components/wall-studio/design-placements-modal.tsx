@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { useWallStudioStore } from '@/lib/wall-studio/store';
 import { FREGORO_DESIGN_PLACEMENTS } from '@/lib/wall-studio/design-placements';
 import { X, Sparkles, Ruler, Check, Search, Trash2, ChevronRight } from 'lucide-react';
@@ -15,7 +16,9 @@ export const DesignPlacementsModal: React.FC = () => {
   } = useWallStudioStore();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFormatFilter, setSelectedFormatFilter] = useState<'all' | 'hybrid' | 'gallery'>('all');
+  const [selectedFormatFilter, setSelectedFormatFilter] = useState<'all' | 'hybrid' | 'gallery'>(
+    'all',
+  );
   const [selectedThemeFilter, setSelectedThemeFilter] = useState<string>('all');
 
   // Extract unique themes from placements
@@ -75,7 +78,8 @@ export const DesignPlacementsModal: React.FC = () => {
               Themed Wall Placements Library
             </h2>
             <p className="text-xs text-white/50 font-mono mt-0.5 max-w-2xl">
-              Art-directed wall art combining central multi-panel continuous splits with surrounding complementary prints. Select any placement to load onto your studio canvas.
+              Art-directed wall art combining central multi-panel continuous splits with surrounding
+              complementary prints. Select any placement to load onto your studio canvas.
             </p>
           </div>
 
@@ -196,12 +200,16 @@ export const DesignPlacementsModal: React.FC = () => {
                 className="group relative rounded-xl overflow-hidden bg-[#12141A] border border-white/10 hover:border-[#3B5EFF]/60 hover:shadow-xl hover:shadow-[#3B5EFF]/10 transition-all duration-300 flex flex-col"
               >
                 {/* Image Preview Banner (Zero overlapping badges) */}
-                <div className="relative w-full aspect-16/9 overflow-hidden bg-black/60">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                <div
+                  className="relative w-full overflow-hidden bg-black/60"
+                  style={{ aspectRatio: '16/9' }}
+                >
+                  <Image
                     src={placement.previewImageUrl}
                     alt={placement.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter brightness-90 group-hover:brightness-100"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105 filter brightness-90 group-hover:brightness-100"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#12141A] via-transparent to-black/30 pointer-events-none" />
 
@@ -254,7 +262,11 @@ export const DesignPlacementsModal: React.FC = () => {
                   {/* Mini Template Posters Preview Strip */}
                   <div className="mt-3 pt-3 border-t border-white/5">
                     <div className="flex items-center justify-between text-[10px] font-mono text-white/40 mb-1.5">
-                      <span>{placement.layoutId.startsWith('hybrid-') ? '✦ SPLIT + FRAME TEMPLATES' : 'TEMPLATE PREVIEW'}</span>
+                      <span>
+                        {placement.layoutId.startsWith('hybrid-')
+                          ? '✦ SPLIT + FRAME TEMPLATES'
+                          : 'TEMPLATE PREVIEW'}
+                      </span>
                       <span className="text-white/60">{placement.layoutSlug}</span>
                     </div>
 
@@ -265,11 +277,12 @@ export const DesignPlacementsModal: React.FC = () => {
                           title={sel.title}
                           className="relative w-8 h-10 rounded overflow-hidden border border-white/10 bg-black/50 shrink-0"
                         >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={sel.thumbnailUrl || sel.imageUrl}
-                            alt={sel.title}
-                            className="w-full h-full object-cover"
+                          <Image
+                            src={sel.thumbnailUrl || sel.imageUrl || ''}
+                            alt={sel.title || 'Artwork thumbnail'}
+                            fill
+                            sizes="32px"
+                            className="object-cover"
                           />
                         </div>
                       ))}

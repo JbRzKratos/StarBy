@@ -156,16 +156,16 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
         </div>
         <nav
           ref={navRef}
-          className={`pointer-events-auto w-full px-5 py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
+          className={`pointer-events-auto w-full px-3 sm:px-5 py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
         >
           <FregoroLogo textIsDark={textIsDark} size="sm" />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               onClick={() => setSearchOpen(true)}
               className={`transition-colors w-10 h-10 flex items-center justify-center ${
                 textIsDark
-                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  ? 'text-[#0A0A0A] hover:text-[#B45309]'
                   : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Search"
@@ -186,7 +186,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
               onClick={() => setWishlistOpen(true)}
               className={`relative transition-colors flex items-center justify-center w-11 h-11 ${
                 textIsDark
-                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  ? 'text-[#0A0A0A] hover:text-[#B45309]'
                   : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Open wishlist"
@@ -211,7 +211,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
               onClick={toggleCart}
               className={`relative transition-colors flex items-center justify-center w-11 h-11 ${
                 textIsDark
-                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  ? 'text-[#0A0A0A] hover:text-[#B45309]'
                   : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Open cart"
@@ -239,7 +239,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
               onClick={() => setIsOpen(true)}
               className={`relative transition-colors flex items-center justify-center w-11 h-11 ${
                 textIsDark
-                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  ? 'text-[#0A0A0A] hover:text-[#B45309]'
                   : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Open menu"
@@ -262,7 +262,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
       >
         <div
           ref={panelRef}
-          className="w-full max-w-sm h-full bg-[#0A0A0A] border-l border-[#F5F1EA]/10 p-6 flex flex-col justify-between overflow-y-auto"
+          className="w-full max-w-sm h-full h-[100dvh] max-h-[100dvh] bg-[#0A0A0A] border-l border-[#F5F1EA]/10 p-5 sm:p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] pt-[calc(1.5rem+env(safe-area-inset-top,0px))] flex flex-col justify-between overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           <div>
@@ -270,7 +270,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
               <span className="font-display text-xl font-bold text-[#F5F1EA]">Menu</span>
               <button
                 onClick={onClose}
-                className="w-8 h-8 flex items-center justify-center text-[#F5F1EA] hover:text-[#ED9518]"
+                className="w-11 h-11 flex items-center justify-center text-[#F5F1EA] hover:text-[#ED9518] transition-colors"
                 aria-label="Close menu"
               >
                 ✕

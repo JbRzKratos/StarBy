@@ -47,11 +47,11 @@ export const FregoroCuratorModal: React.FC = () => {
       role="dialog"
       aria-modal="true"
       aria-label="Fregoro Curator"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md"
     >
-      <div className="relative w-full max-w-xl bg-[#111216] border border-amber-500/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div className="relative w-full max-w-xl bg-[#111216] border border-amber-500/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] max-h-[90dvh]">
         {/* Header */}
-        <div className="p-5 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-amber-500/10 to-transparent">
+        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-amber-500/10 to-transparent shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300">
               <Sparkles className="w-4 h-4" />
@@ -69,14 +69,15 @@ export const FregoroCuratorModal: React.FC = () => {
           <button
             type="button"
             onClick={closeCuratorModal}
-            className="p-1.5 rounded-lg bg-white/5 text-white/60 hover:text-white transition-colors"
+            className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/5 text-white/60 hover:text-white transition-colors"
+            aria-label="Close curator modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Form Body */}
-        <div className="p-6 space-y-5 text-xs font-mono">
+        <div className="p-4 sm:p-6 space-y-5 text-xs font-mono overflow-y-auto flex-1 custom-scrollbar">
           {/* Step 1: Theme */}
           <div className="space-y-2">
             <label className="text-white/60 uppercase tracking-wider block">1. Select Theme</label>
@@ -179,11 +180,11 @@ export const FregoroCuratorModal: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-white/10 bg-black/60 flex items-center justify-between">
+        <div className="p-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] border-t border-white/10 bg-black/60 flex items-center justify-between shrink-0">
           <button
             type="button"
             onClick={closeCuratorModal}
-            className="text-xs text-white/50 hover:text-white font-mono"
+            className="text-xs text-white/50 hover:text-white font-mono min-h-[44px] px-2 flex items-center"
           >
             Cancel
           </button>
@@ -191,7 +192,7 @@ export const FregoroCuratorModal: React.FC = () => {
           <button
             type="button"
             onClick={handleGenerate}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-xs shadow-lg shadow-amber-500/20 hover:from-amber-400 hover:to-amber-500 transition-all font-mono"
+            className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-xs shadow-lg shadow-amber-500/20 hover:from-amber-400 hover:to-amber-500 transition-all font-mono min-h-[44px]"
           >
             <Wand2 className="w-3.5 h-3.5" />
             <span>Generate Curated Wall</span>

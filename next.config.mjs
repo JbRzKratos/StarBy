@@ -7,10 +7,12 @@ const nextConfig = {
   // Run with: npx next dev --turbopack
   // Or set NEXT_TURBOPACK=1 env variable
 
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
+
   images: {
-    // Disable Vercel image optimization — images are served directly from
-    // Cloudflare R2 (CDN) to avoid Vercel optimization charges.
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',

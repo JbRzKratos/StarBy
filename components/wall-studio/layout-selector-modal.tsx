@@ -10,7 +10,6 @@ export const LayoutSelectorModal: React.FC = () => {
     useWallStudioStore();
 
   const [activeTab, setActiveTab] = useState<'all' | 'hybrid' | 'gallery'>('all');
-  const [searchQuery, setSearchQuery] = useState('');
 
   // Curate to only pristine architectural layouts (filter out legacy duplicates)
   const curatedLayouts = useMemo(() => {
@@ -51,18 +50,9 @@ export const LayoutSelectorModal: React.FC = () => {
       // Tab filter
       if (activeTab === 'hybrid' && layout.category !== 'hybrid') return false;
       if (activeTab === 'gallery' && layout.category !== 'gallery') return false;
-
-      // Search query
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchesName = layout.name.toLowerCase().includes(q);
-        const matchesDesc = layout.description.toLowerCase().includes(q);
-        const matchesThemes = layout.recommendedThemes.some((t) => t.toLowerCase().includes(q));
-        return matchesName || matchesDesc || matchesThemes;
-      }
       return true;
     });
-  }, [curatedLayouts, activeTab, searchQuery]);
+  }, [curatedLayouts, activeTab]);
 
   if (!isLayoutSelectorOpen) return null;
 
@@ -71,11 +61,11 @@ export const LayoutSelectorModal: React.FC = () => {
       role="dialog"
       aria-modal="true"
       aria-label="Choose Wall Layout"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
     >
-      <div className="relative w-full max-w-5xl bg-[#0E0F13] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-5xl bg-[#0E0F13] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] max-h-[92dvh]">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-white/10 bg-black/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="p-3.5 sm:p-5 border-b border-white/10 bg-black/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-mono uppercase tracking-widest text-[#3B5EFF] font-bold">
@@ -85,55 +75,58 @@ export const LayoutSelectorModal: React.FC = () => {
                 {curatedLayouts.length} Formats
               </span>
             </div>
-            <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight mt-0.5">
+            <h2 className="text-base sm:text-xl font-bold text-white tracking-tight mt-0.5">
               Select Your Wall Format
             </h2>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Minimalist Segmented Tabs */}
-            <div className="flex items-center p-1 bg-black/60 rounded-xl border border-white/10 text-xs font-medium overflow-x-auto max-w-full">
-              <button
-                type="button"
-                onClick={() => setActiveTab('all')}
-                className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                  activeTab === 'all'
-                    ? 'bg-[#3B5EFF] text-white shadow font-semibold'
-                    : 'text-white/60 hover:text-white'
-                }`}
-              >
-                All
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('hybrid')}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                  activeTab === 'hybrid'
-                    ? 'bg-amber-500 text-white shadow font-semibold'
-                    : 'text-white/60 hover:text-white'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                <span>Split + Frame Combos</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('gallery')}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                  activeTab === 'gallery'
-                    ? 'bg-[#3B5EFF] text-white shadow font-semibold'
-                    : 'text-white/60 hover:text-white'
-                }`}
-              >
-                <Grid3X3 className="w-3.5 h-3.5" />
-                <span>Gallery Walls</span>
-              </button>
+          <div className="flex items-center gap-2.5">
+            {/* Minimalist Segmented Tabs with edge scroll affordance */}
+            <div className="relative flex-1 sm:flex-initial overflow-hidden">
+              <div className="flex items-center p-1 bg-black/60 rounded-xl border border-white/10 text-xs font-medium overflow-x-auto hide-scrollbar snap-x max-w-full">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('all')}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap min-h-[36px] flex items-center snap-start ${
+                    activeTab === 'all'
+                      ? 'bg-[#3B5EFF] text-white shadow font-semibold'
+                      : 'text-white/60 hover:text-white'
+                  }`}
+                >
+                  All
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('hybrid')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap min-h-[36px] snap-start ${
+                    activeTab === 'hybrid'
+                      ? 'bg-amber-500 text-white shadow font-semibold'
+                      : 'text-white/60 hover:text-white'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Split + Frame Combos</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('gallery')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap min-h-[36px] snap-start ${
+                    activeTab === 'gallery'
+                      ? 'bg-[#3B5EFF] text-white shadow font-semibold'
+                      : 'text-white/60 hover:text-white'
+                  }`}
+                >
+                  <Grid3X3 className="w-3.5 h-3.5" />
+                  <span>Gallery Walls</span>
+                </button>
+              </div>
             </div>
 
             <button
               type="button"
               onClick={closeLayoutSelector}
-              className="p-2 rounded-xl bg-white/5 text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0"
+              className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/5 text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0"
+              aria-label="Close layout selector"
             >
               <X className="w-5 h-5" />
             </button>
@@ -184,8 +177,8 @@ export const LayoutSelectorModal: React.FC = () => {
                             slot.splitGroupId
                               ? 'bg-[#3B5EFF]/30 border-[#3B5EFF] shadow-[0_0_8px_rgba(59,94,255,0.25)]'
                               : slot.slotType === 'hero'
-                              ? 'bg-amber-500/30 border-amber-400'
-                              : 'bg-white/15 border-white/30'
+                                ? 'bg-amber-500/30 border-amber-400'
+                                : 'bg-white/15 border-white/30'
                           }`}
                         />
                       );
@@ -207,14 +200,10 @@ export const LayoutSelectorModal: React.FC = () => {
                     <div className="flex items-center justify-between gap-2">
                       <span
                         className={`text-[9px] font-mono uppercase tracking-wider font-semibold ${
-                          layout.category === 'hybrid'
-                            ? 'text-amber-400'
-                            : 'text-emerald-400'
+                          layout.category === 'hybrid' ? 'text-amber-400' : 'text-emerald-400'
                         }`}
                       >
-                        {layout.category === 'hybrid'
-                          ? '✦ Split + Frames'
-                          : 'Gallery Wall'}
+                        {layout.category === 'hybrid' ? '✦ Split + Frames' : 'Gallery Wall'}
                       </span>
                       <div className="flex items-baseline gap-1.5 shrink-0">
                         <span className="text-sm font-bold text-white">₹{layout.basePrice}</span>
@@ -236,7 +225,9 @@ export const LayoutSelectorModal: React.FC = () => {
                   <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-white/50">
                     <span className="flex items-center gap-1.5">
                       <Layers className="w-3 h-3 text-[#3B5EFF]" />
-                      <span className="text-white/80 font-medium">{layout.physicalPrintCount} Prints</span>
+                      <span className="text-white/80 font-medium">
+                        {layout.physicalPrintCount} Prints
+                      </span>
                       <span className="text-white/40">({sizesList})</span>
                     </span>
 

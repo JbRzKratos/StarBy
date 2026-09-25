@@ -3,7 +3,7 @@ import { products as staticProducts } from '@/data/products';
 import { categories as staticCategories } from '@/data/categories';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fregoro.com';
 
   const productUrls: MetadataRoute.Sitemap = staticProducts.map((p) => ({
     url: `${baseUrl}/products/${p.categorySlug}/${p.slug}`,
@@ -24,6 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '',
     '/products/all',
     '/split-poster',
+    '/wall-studio',
+    '/wall',
+    '/magazine',
     '/studio',
     '/about',
     '/contact',

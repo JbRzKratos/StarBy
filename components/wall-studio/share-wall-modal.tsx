@@ -56,22 +56,23 @@ export const ShareWallModal: React.FC = () => {
       role="dialog"
       aria-modal="true"
       aria-label="Share Your Wall"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md"
     >
-      <div className="relative w-full max-w-md bg-[#111216] border border-white/10 rounded-2xl shadow-2xl p-6 space-y-4">
+      <div className="relative w-full max-w-md bg-[#111216] border border-white/10 rounded-2xl shadow-2xl p-5 sm:p-6 space-y-4 max-h-[90vh] max-h-[90dvh] overflow-y-auto">
         <div className="flex items-start justify-between">
           <div>
             <span className="text-[10px] font-mono uppercase tracking-widest text-[#3B5EFF] font-bold">
               Collaborative Wall
             </span>
-            <h2 className="text-lg font-bold text-white tracking-tight mt-0.5">
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight mt-0.5">
               Share Your Wall Design
             </h2>
           </div>
           <button
             type="button"
             onClick={closeShareModal}
-            className="p-1 rounded-lg bg-white/5 text-white/60 hover:text-white"
+            className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/5 text-white/60 hover:text-white transition-colors"
+            aria-label="Close share modal"
           >
             <X className="w-5 h-5" />
           </button>
@@ -87,24 +88,25 @@ export const ShareWallModal: React.FC = () => {
             type="button"
             disabled={isGenerating}
             onClick={handleGenerateShareLink}
-            className="w-full py-2.5 rounded-xl bg-[#3B5EFF] text-white font-semibold text-xs shadow-lg shadow-[#3B5EFF]/25 hover:bg-[#2B4EFF] flex items-center justify-center gap-2 transition-all font-mono"
+            className="w-full py-3 rounded-xl bg-[#3B5EFF] text-white font-semibold text-xs shadow-lg shadow-[#3B5EFF]/25 hover:bg-[#2B4EFF] flex items-center justify-center gap-2 transition-all font-mono min-h-[44px]"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>{isGenerating ? 'Generating Unique Link...' : 'Create Shareable Link'}</span>
           </button>
         ) : (
           <div className="space-y-3 pt-2">
-            <div className="flex items-center gap-2 p-2 bg-black/50 border border-white/10 rounded-xl">
+            <div className="flex items-center gap-2 p-1.5 bg-black/50 border border-white/10 rounded-xl">
               <input
                 type="text"
                 readOnly
                 value={shareUrl}
-                className="w-full bg-transparent text-xs text-white/90 font-mono focus:outline-none pl-1"
+                className="w-full bg-transparent text-xs text-white/90 font-mono focus:outline-none pl-2.5"
               />
               <button
                 type="button"
                 onClick={handleCopy}
-                className="p-2 rounded-lg bg-[#3B5EFF] text-white hover:bg-[#2B4EFF] transition-colors shrink-0"
+                className="w-11 h-11 flex items-center justify-center rounded-lg bg-[#3B5EFF] text-white hover:bg-[#2B4EFF] transition-colors shrink-0"
+                aria-label="Copy link"
               >
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               </button>

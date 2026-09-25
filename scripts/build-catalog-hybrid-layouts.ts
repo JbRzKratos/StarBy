@@ -1,4 +1,10 @@
-import type { WallLayoutData, WallSlot, WallSplitGroup, PosterSize, SlotOrientation } from '../lib/wall-studio/types';
+import type {
+  WallLayoutData,
+  WallSlot,
+  WallSplitGroup,
+  PosterSize,
+  SlotOrientation,
+} from '../lib/wall-studio/types';
 
 interface SlotSpec {
   id: string;
@@ -44,7 +50,10 @@ function round4(n: number): number {
 }
 
 export function compileLayout(def: LayoutDef, padX = 60, padY = 60): WallLayoutData {
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  let minX = Infinity,
+    maxX = -Infinity,
+    minY = Infinity,
+    maxY = -Infinity;
   for (const s of def.slots) {
     minX = Math.min(minX, s.xMm);
     maxX = Math.max(maxX, s.xMm + s.widthMm);
@@ -151,7 +160,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-stepped-triptych-flank-5',
         slug: 'hybrid-stepped-triptych-flank',
         name: 'Stepped Triptych Dual-Pillar',
-        description: 'Iconic 3-panel stepped split poster (6×9", 6×11", 6×9") flanked by dual vertical A4 museum pillars.',
+        description:
+          'Iconic 3-panel stepped split poster (6×9", 6×11", 6×9") flanked by dual vertical A4 museum pillars.',
         badge: 'Stepped Split Combo',
         category: 'hybrid',
         basePrice: 1699,
@@ -232,7 +242,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           slotIds: ['slot-stf5-split-1', 'slot-stf5-split-2', 'slot-stf5-split-3'],
           staggered: true,
         },
-      })
+      }),
     );
   }
 
@@ -279,7 +289,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-stepped-triptych-crown-7',
         slug: 'hybrid-stepped-triptych-crown',
         name: 'Stepped Triptych 13×19 Crown Showcase',
-        description: 'Continuous 3-panel stepped split crowned by an expansive 13×19" panorama header and framed with A4 prints.',
+        description:
+          'Continuous 3-panel stepped split crowned by an expansive 13×19" panorama header and framed with A4 prints.',
         badge: 'Crown Showcase',
         category: 'hybrid',
         basePrice: 2499,
@@ -382,7 +393,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           slotIds: ['slot-stc7-split-1', 'slot-stc7-split-2', 'slot-stc7-split-3'],
           staggered: true,
         },
-      })
+      }),
     );
   }
 
@@ -424,7 +435,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-stepped-wave-flank-9',
         slug: 'hybrid-stepped-wave-flank',
         name: 'Apex 5-Panel Stepped Wave Flank',
-        description: 'Signature 5-panel stepped wave split (reduced 50%) framed by dual stacked horizontal A5 gallery wings.',
+        description:
+          'Signature 5-panel stepped wave split (reduced 50%) framed by dual stacked horizontal A5 gallery wings.',
         badge: 'Stepped 5-Panel Signature',
         category: 'hybrid',
         basePrice: 2299,
@@ -559,7 +571,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           ],
           staggered: true,
         },
-      })
+      }),
     );
   }
 
@@ -611,7 +623,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-stepped-wave-heritage-11',
         slug: 'hybrid-stepped-wave-heritage',
         name: 'Stepped Wave Grand 13×19 Heritage',
-        description: 'Imperial 11-print showcase combining a 5-panel stepped wave with flagship 13×19" anchor pillars and A5 horizon frames.',
+        description:
+          'Imperial 11-print showcase combining a 5-panel stepped wave with flagship 13×19" anchor pillars and A5 horizon frames.',
         badge: 'Flagship Heritage',
         category: 'hybrid',
         basePrice: 3299,
@@ -768,7 +781,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           ],
           staggered: true,
         },
-      })
+      }),
     );
   }
 
@@ -795,7 +808,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-grid2x2-heritage-6',
         slug: 'hybrid-grid2x2-heritage',
         name: 'Heritage 2×2 Salon with 13×19 Pillars',
-        description: 'Harmonious 2×2 windowpane grid split of A5 panels flanked by dual statement 13×19" vertical posters.',
+        description:
+          'Harmonious 2×2 windowpane grid split of A5 panels flanked by dual statement 13×19" vertical posters.',
         badge: 'Curated Salon',
         category: 'hybrid',
         basePrice: 2199,
@@ -893,7 +907,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
             'slot-g2h6-split-4',
           ],
         },
-      })
+      }),
     );
   }
 
@@ -998,7 +1012,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         xMm: headerX,
         yMm: botY,
         label: 'Footer Base (A4)',
-      }
+      },
     );
 
     layouts.push(
@@ -1006,7 +1020,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-grid3x2-panoramic-10',
         slug: 'hybrid-grid3x2-panoramic',
         name: 'Mosaic 3×2 Grid Gallery',
-        description: '6-piece continuous mosaic grid (A6 panels) framed symmetrically by 4 surrounding A4 standard prints.',
+        description:
+          '6-piece continuous mosaic grid (A6 panels) framed symmetrically by 4 surrounding A4 standard prints.',
         badge: 'Mosaic Enclave',
         category: 'hybrid',
         basePrice: 2199,
@@ -1024,7 +1039,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A6',
           slotIds: splitSlotIds,
         },
-      })
+      }),
     );
   }
 
@@ -1103,7 +1118,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-grid3x3-matrix-11',
         slug: 'hybrid-grid3x3-matrix',
         name: 'Matrix 3×3 Core with 13×19 Guardians',
-        description: 'Immersive 9-panel matrix grid split anchored on both wings by towering 13×19" vertical monoliths.',
+        description:
+          'Immersive 9-panel matrix grid split anchored on both wings by towering 13×19" vertical monoliths.',
         badge: 'High Impact Matrix',
         category: 'hybrid',
         basePrice: 2899,
@@ -1121,7 +1137,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A6',
           slotIds: splitSlotIds,
         },
-      })
+      }),
     );
   }
 
@@ -1191,7 +1207,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-classic3-horizon-sandwich-9',
         slug: 'hybrid-classic3-horizon-sandwich',
         name: 'Horizon Sandwich Triptych',
-        description: 'Architectural grid aligning 3 central A4 triptych panels with upper and lower horizontal A5 companion rows.',
+        description:
+          'Architectural grid aligning 3 central A4 triptych panels with upper and lower horizontal A5 companion rows.',
         badge: 'Architectural Grid',
         category: 'hybrid',
         basePrice: 2399,
@@ -1209,7 +1226,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A4',
           slotIds: splitIds,
         },
-      })
+      }),
     );
   }
 
@@ -1311,7 +1328,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-classic4-cinema-8',
         slug: 'hybrid-classic4-cinema',
         name: 'Cinema-4 Widescreen Enclave',
-        description: 'Cinematic 4-panel split horizon crowned by dual horizontal A4s and flanked by vertical framing pillars.',
+        description:
+          'Cinematic 4-panel split horizon crowned by dual horizontal A4s and flanked by vertical framing pillars.',
         badge: 'Cinema Widescreen',
         category: 'hybrid',
         basePrice: 2299,
@@ -1329,7 +1347,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A5',
           slotIds: splitIds,
         },
-      })
+      }),
     );
   }
 
@@ -1432,7 +1450,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-classic5-grand-panorama-9',
         slug: 'hybrid-classic5-grand-panorama',
         name: 'Grand 5-Panel Panorama with 13×19 Wings',
-        description: 'Ultrawide 5-panel split artwork crowned by dual panoramic A3s and flanked by 13×19" grand monuments.',
+        description:
+          'Ultrawide 5-panel split artwork crowned by dual panoramic A3s and flanked by 13×19" grand monuments.',
         badge: 'Epic Ultrawide',
         category: 'hybrid',
         basePrice: 3499,
@@ -1450,7 +1469,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A5',
           slotIds: splitIds,
         },
-      })
+      }),
     );
   }
 
@@ -1539,7 +1558,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         xMm: rightFlankX,
         yMm: flankY + a4H + gap,
         label: 'Right Lower (A4)',
-      }
+      },
     );
 
     layouts.push(
@@ -1547,7 +1566,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-vertical3-totem-flank-7',
         slug: 'hybrid-vertical3-totem-flank',
         name: 'Vertical Totem Tower with Dual Flanks',
-        description: 'Tall 3-tier vertical split totem (stacked A4 horizontals) flanked symmetrically by dual vertical A4 columns.',
+        description:
+          'Tall 3-tier vertical split totem (stacked A4 horizontals) flanked symmetrically by dual vertical A4 columns.',
         badge: 'Vertical Totem',
         category: 'hybrid',
         basePrice: 2099,
@@ -1565,7 +1585,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A4',
           slotIds: splitIds,
         },
-      })
+      }),
     );
   }
 
@@ -1654,7 +1674,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         xMm: rightFlankX,
         yMm: flankY + a4H + gap,
         label: 'Right Lower (A4)',
-      }
+      },
     );
 
     layouts.push(
@@ -1662,7 +1682,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-vertical4-monolith-8',
         slug: 'hybrid-vertical4-monolith',
         name: 'Monolith 4-Tier Spire with Quad Flanks',
-        description: '4-tier stacked horizontal A5 vertical split column framed symmetrically by vertical A4 flanking wings.',
+        description:
+          '4-tier stacked horizontal A5 vertical split column framed symmetrically by vertical A4 flanking wings.',
         badge: 'Vertical Monolith',
         category: 'hybrid',
         basePrice: 2199,
@@ -1680,7 +1701,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A5',
           slotIds: splitIds,
         },
-      })
+      }),
     );
   }
 
@@ -1725,7 +1746,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-stepped-triptych-quadwing-9',
         slug: 'hybrid-stepped-triptych-quadwing',
         name: 'Stepped Triptych Salon Enclave',
-        description: 'Complete salon ensemble enclosing a 3-panel stepped split with dual A5 wings and A4 horizontal header/footer anchors.',
+        description:
+          'Complete salon ensemble enclosing a 3-panel stepped split with dual A5 wings and A4 horizontal header/footer anchors.',
         badge: 'Salon Enclave',
         category: 'hybrid',
         basePrice: 2499,
@@ -1850,7 +1872,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           slotIds: ['slot-stq9-split-1', 'slot-stq9-split-2', 'slot-stq9-split-3'],
           staggered: true,
         },
-      })
+      }),
     );
   }
 
@@ -1888,7 +1910,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-grid2x2-windowpane-8',
         slug: 'hybrid-grid2x2-windowpane',
         name: 'Windowpane 2×2 Surrounded Salon',
-        description: 'Landscape 2×2 grid split in A5 surrounded on all 4 cardinal directions by curated A4 standard frames.',
+        description:
+          'Landscape 2×2 grid split in A5 surrounded on all 4 cardinal directions by curated A4 standard frames.',
         badge: 'Surrounded Salon',
         category: 'hybrid',
         basePrice: 2299,
@@ -2008,7 +2031,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
             'slot-g2w8-split-4',
           ],
         },
-      })
+      }),
     );
   }
 
@@ -2039,7 +2062,8 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         id: 'hybrid-classic3-cinema-a3-7',
         slug: 'hybrid-classic3-cinema-a3',
         name: 'Grand Cinema A3 Triptych with A5 Wings',
-        description: 'Large-format A3 triptych split artwork flanked symmetrically by vertical A5 gallery wings.',
+        description:
+          'Large-format A3 triptych split artwork flanked symmetrically by vertical A5 gallery wings.',
         badge: 'Grand Triptych',
         category: 'hybrid',
         basePrice: 2599,
@@ -2141,7 +2165,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A3',
           slotIds: splitIds,
         },
-      })
+      }),
     );
   }
 
@@ -2253,7 +2277,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
         xMm: rightFlankX,
         yMm: flankY + a5H * 2 + gap * 2,
         label: 'Right Pillar Base (A6)',
-      }
+      },
     );
 
     layouts.push(
@@ -2279,7 +2303,7 @@ export function generateAllCatalogHybridLayouts(): WallLayoutData[] {
           physicalSize: 'A6',
           slotIds: splitIds,
         },
-      })
+      }),
     );
   }
 

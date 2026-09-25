@@ -34,7 +34,8 @@ export function TawkToWidget() {
   const isExcluded = Boolean(
     pathname?.startsWith('/magazine/editor') ||
     pathname?.startsWith('/magazine/content-wizard') ||
-    pathname?.startsWith('/admin'),
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/wall-studio'),
   );
 
   const isExcludedRef = useRef(isExcluded);
@@ -122,7 +123,7 @@ export function TawkToWidget() {
     <>
       <Script
         id="tawk-to-init"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             window.Tawk_API = window.Tawk_API || {};
@@ -132,7 +133,7 @@ export function TawkToWidget() {
       />
       <Script
         id="tawk-to-script"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         src={`https://embed.tawk.to/${propertyId}/${widgetId}`}
         crossOrigin="anonymous"
         onLoad={syncWidgetVisibility}

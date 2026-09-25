@@ -499,5 +499,6 @@ export const useWallStudioStore = create<WallStudioState & WallStudioActions>()(
         }),
       },
     ),
+    { name: 'WallStudioStore', enabled: process.env.NODE_ENV === 'development' },
   ),
 );

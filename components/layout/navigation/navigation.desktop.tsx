@@ -97,7 +97,7 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
               href={link.href}
               className={`font-mono text-caption uppercase tracking-widest font-bold transition-colors whitespace-nowrap ${
                 textIsDark
-                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  ? 'text-[#0A0A0A] hover:text-[#B45309]'
                   : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
             >
@@ -113,7 +113,7 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
             <span
               className={`font-mono text-caption font-bold uppercase tracking-widest flex items-center gap-1 transition-colors ${
                 textIsDark
-                  ? 'text-[#0A0A0A] group-hover:text-[#ED9518]'
+                  ? 'text-[#0A0A0A] group-hover:text-[#B45309]'
                   : 'text-[#F5F1EA] group-hover:text-[#ED9518]'
               }`}
             >
@@ -139,7 +139,7 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
             onClick={() => setSearchOpen(true)}
             className={`transition-colors w-10 h-10 flex items-center justify-center ${
               textIsDark
-                ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                ? 'text-[#0A0A0A] hover:text-[#B45309]'
                 : 'text-[#F5F1EA] hover:text-[#ED9518]'
             }`}
             aria-label="Search"
@@ -190,7 +190,7 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
               href="/account"
               className={`transition-colors flex items-center justify-center w-10 h-10 hidden sm:flex ${
                 textIsDark
-                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  ? 'text-[#0A0A0A] hover:text-[#B45309]'
                   : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
               aria-label="Account"
@@ -212,7 +212,7 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
               href="/login"
               className={`hidden sm:block font-mono text-caption font-bold uppercase tracking-widest transition-colors ml-2 ${
                 textIsDark
-                  ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                  ? 'text-[#0A0A0A] hover:text-[#B45309]'
                   : 'text-[#F5F1EA] hover:text-[#ED9518]'
               }`}
             >
@@ -225,7 +225,7 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
             onClick={toggleCart}
             className={`relative transition-colors flex items-center justify-center w-10 h-10 ${
               textIsDark
-                ? 'text-[#0A0A0A] hover:text-[#ED9518]'
+                ? 'text-[#0A0A0A] hover:text-[#B45309]'
                 : 'text-[#F5F1EA] hover:text-[#ED9518]'
             }`}
             aria-label="Open cart"

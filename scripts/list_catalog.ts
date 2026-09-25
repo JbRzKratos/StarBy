@@ -13,7 +13,7 @@ async function run() {
   products.forEach((p) => {
     const varPrices = p.variants.map((v) => `${v.name}: ₹${v.price}`).join('; ');
     console.log(
-      ` - [${p.categorySlug}] ${p.id} | "${p.name}" | basePrice: ₹${p.basePrice} | variants: [${varPrices}]`
+      ` - [${p.categorySlug}] ${p.id} | "${p.name}" | basePrice: ₹${p.basePrice} | variants: [${varPrices}]`,
     );
   });
 }

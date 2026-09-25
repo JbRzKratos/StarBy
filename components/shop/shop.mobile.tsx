@@ -170,21 +170,25 @@ export function ShopMobile({ category, products }: { category: string; products:
           )}
         </div>
 
-        {/* Scrollable Category Tabs */}
-        <div className="px-5 pb-3 flex items-center gap-6 overflow-x-auto hide-scrollbar snap-x scroll-px-5">
-          {SHOP_CATEGORIES.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => handleTabClick(tab.id)}
-              className={`font-mono text-[10px] uppercase tracking-widest whitespace-nowrap snap-start transition-colors ${
-                activeTab === tab.id
-                  ? 'text-bone border-b border-bone pb-1'
-                  : 'text-pearl pb-1 border-b border-transparent'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Scrollable Category Tabs with Edge Fade Scroll Affordance */}
+        <div className="relative">
+          <div className="px-5 pb-2 flex items-center gap-6 overflow-x-auto hide-scrollbar snap-x snap-proximity scroll-smooth scroll-px-5 pr-8">
+            {SHOP_CATEGORIES.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabClick(tab.id)}
+                className={`font-mono text-[10px] uppercase tracking-widest whitespace-nowrap snap-start transition-colors min-h-[40px] flex items-center ${
+                  activeTab === tab.id
+                    ? 'text-bone border-b-2 border-bone'
+                    : 'text-pearl border-b-2 border-transparent'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          {/* Subtle right-edge fade gradient cue */}
+          <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-charcoal to-transparent" />
         </div>
       </header>
 
@@ -245,7 +249,7 @@ export function ShopMobile({ category, products }: { category: string; products:
         onClick={() => setIsFilterOpen(false)}
       />
       <div
-        className={`fixed bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto hide-scrollbar bg-graphite border-t border-smoke/20 z-50 rounded-t-3xl p-6 pb-12 transition-transform duration-400 ease-out ${
+        className={`fixed bottom-0 left-0 right-0 max-h-[85vh] max-h-[85dvh] overflow-y-auto hide-scrollbar bg-graphite border-t border-smoke/20 z-50 rounded-t-3xl p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] transition-transform duration-400 ease-out ${
           isFilterOpen
             ? 'translate-y-0 pointer-events-auto'
             : 'translate-y-full pointer-events-none'
@@ -256,7 +260,7 @@ export function ShopMobile({ category, products }: { category: string; products:
           <h2 className="font-display text-2xl">Filter & Sort</h2>
           <button
             onClick={() => setIsFilterOpen(false)}
-            className="w-8 h-8 rounded-full bg-smoke flex items-center justify-center text-bone hover:bg-ash transition-colors"
+            className="w-11 h-11 rounded-full bg-smoke flex items-center justify-center text-bone hover:bg-ash transition-colors"
             aria-label="Close filters"
           >
             ✕

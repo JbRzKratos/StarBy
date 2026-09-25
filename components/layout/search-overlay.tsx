@@ -117,11 +117,11 @@ export function SearchOverlay() {
       role="dialog"
       aria-modal="true"
       aria-label="Search products"
-      className="fixed inset-0 z-[160] hidden flex-col bg-charcoal/95 backdrop-blur-md"
+      className="fixed inset-0 z-[160] hidden flex-col bg-charcoal/95 backdrop-blur-md h-full h-[100dvh] max-h-[100dvh] overflow-hidden"
     >
-      <div className="w-full max-w-[var(--container-max)] mx-auto px-[var(--section-px)] py-6 md:py-12 flex flex-col h-full">
+      <div className="w-full max-w-[var(--container-max)] mx-auto px-4 sm:px-[var(--section-px)] pt-[calc(1.5rem+env(safe-area-inset-top,0px))] pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] md:py-12 flex flex-col h-full">
         {/* Search input row */}
-        <div className="flex items-center gap-4 mb-6 md:mb-8">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 md:mb-8">
           <svg
             className="w-6 h-6 text-pearl shrink-0"
             fill="none"
@@ -148,7 +148,7 @@ export function SearchOverlay() {
           <button
             onClick={() => setSearchOpen(false)}
             aria-label="Close search"
-            className="flex-shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#1A1A1E] border border-[#F5F1EA]/20 text-[#F5F1EA]/70 hover:text-white hover:border-white/50 hover:bg-[#2A2A2F] transition-all duration-200 group"
+            className="flex-shrink-0 flex items-center justify-center gap-2 px-3.5 py-2 min-h-[44px] min-w-[44px] rounded-full bg-[#1A1A1E] border border-[#F5F1EA]/20 text-[#F5F1EA]/70 hover:text-white hover:border-white/50 hover:bg-[#2A2A2F] transition-all duration-200 group"
           >
             <span className="font-mono text-[10px] uppercase tracking-widest font-bold hidden sm:inline text-[#F5F1EA]/50 group-hover:text-white">
               ESC
@@ -175,9 +175,9 @@ export function SearchOverlay() {
             <button
               key={cat}
               onClick={() => setSelectedCategory((prev) => (prev === cat ? null : cat))}
-              className={`px-3 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-widest border transition-all ${
+              className={`px-3 py-1.5 min-h-[36px] flex items-center rounded-full font-mono text-[11px] uppercase tracking-widest border transition-all ${
                 selectedCategory === cat
-                  ? 'bg-cobalt border-cobalt text-bone'
+                  ? 'bg-cobalt border-cobalt text-bone font-bold'
                   : 'bg-transparent border-smoke/40 text-pearl hover:border-pearl hover:text-bone'
               }`}
             >

@@ -129,10 +129,10 @@ export async function generatePresignedUploadUrl(
   userId: string,
   fileName: string,
   contentType: string,
+  expiresIn = 180, // Secure 3-minute expiry for production Vercel direct uploads
 ): Promise<PresignedUploadResult> {
   const client = getR2Client();
   const bucket = getBucketName();
-  const expiresIn = 3600; // 1 hour
 
   // Generate secure, non-guessable object key
   const timestamp = Date.now();

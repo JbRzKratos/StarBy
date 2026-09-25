@@ -46,7 +46,7 @@ export const WallStudioEditor: React.FC = () => {
   }, [searchParams, setLayout, themeFill]);
 
   return (
-    <div className="relative w-full h-screen pt-0 bg-[#090A0C] text-white flex flex-col overflow-hidden">
+    <div className="relative w-full h-[100dvh] pt-0 bg-[#090A0C] text-white flex flex-col overflow-hidden">
       {/* ─── STREAMLINED MINIMALIST STUDIO HEADER ─── */}
       <WallToolbar />
 

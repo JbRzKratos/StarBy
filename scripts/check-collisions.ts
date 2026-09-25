@@ -5,7 +5,8 @@ console.log('Testing total layouts:', FREGORO_LAYOUTS.length);
 let totalCollisions = 0;
 
 FREGORO_LAYOUTS.forEach((layout) => {
-  const collisions: Array<{ slotA: string; slotB: string; overlapX: number; overlapY: number }> = [];
+  const collisions: Array<{ slotA: string; slotB: string; overlapX: number; overlapY: number }> =
+    [];
   const slots = layout.slots;
 
   for (let i = 0; i < slots.length; i++) {
@@ -41,7 +42,9 @@ FREGORO_LAYOUTS.forEach((layout) => {
 
   if (collisions.length > 0) {
     totalCollisions += collisions.length;
-    console.log(`[COLLISION] Layout "${layout.name}" (${layout.id}) has ${collisions.length} overlapping slot pairs:`);
+    console.log(
+      `[COLLISION] Layout "${layout.name}" (${layout.id}) has ${collisions.length} overlapping slot pairs:`,
+    );
     collisions.forEach((c) => {
       console.log(`   - ${c.slotA} overlaps ${c.slotB} by ${c.overlapX}mm x ${c.overlapY}mm`);
     });

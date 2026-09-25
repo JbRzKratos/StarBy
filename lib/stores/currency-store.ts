@@ -20,6 +20,6 @@ export const useCurrencyStore = create<CurrencyState & CurrencyActions>()(
       }),
       { name: 'starby-currency' },
     ),
-    { name: 'CurrencyStore' },
+    { name: 'CurrencyStore', enabled: process.env.NODE_ENV === 'development' },
   ),
 );

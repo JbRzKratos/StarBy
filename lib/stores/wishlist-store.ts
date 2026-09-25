@@ -80,6 +80,6 @@ export const useWishlistStore = create<WishlistState & WishlistActions>()(
       }),
       { name: 'starby-wishlist' },
     ),
-    { name: 'WishlistStore' },
+    { name: 'WishlistStore', enabled: process.env.NODE_ENV === 'development' },
   ),
 );

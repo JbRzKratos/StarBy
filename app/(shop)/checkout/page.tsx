@@ -285,7 +285,7 @@ export default function CheckoutPage() {
         <h1 className="font-display text-display-lg font-bold text-bone mb-8">Checkout</h1>
 
         {/* Step indicator */}
-        <div className="flex items-center gap-4 mb-12">
+        <div className="flex items-center gap-2 sm:gap-4 mb-8 sm:mb-12">
           {steps.map((s, i) => (
             <button
               key={s}
@@ -296,10 +296,12 @@ export default function CheckoutPage() {
                   setStep(s);
                 }
               }}
-              className={`flex items-center gap-2 ${step === s ? 'text-cobalt' : 'text-ash'}`}
+              className={`flex items-center gap-2 min-h-[44px] min-w-[44px] p-1.5 rounded-lg transition-colors ${
+                step === s ? 'text-cobalt font-bold' : 'text-ash hover:text-pearl'
+              }`}
             >
               <span
-                className={`w-8 h-8 rounded-full border font-mono text-caption flex items-center justify-center ${
+                className={`w-8 h-8 rounded-full border font-mono text-caption flex items-center justify-center shrink-0 ${
                   step === s ? 'border-cobalt bg-cobalt/10 text-cobalt' : 'border-smoke text-ash'
                 }`}
               >
@@ -333,7 +335,7 @@ export default function CheckoutPage() {
               </div>
             )}
             {step === 'shipping' && (
-              <div className="bg-graphite border border-smoke rounded-lg p-6 md:p-8">
+              <div className="bg-graphite border border-smoke rounded-lg p-4 sm:p-6 md:p-8">
                 <h2 className="font-display text-display-sm font-bold text-bone mb-6">
                   Shipping Address
                 </h2>
@@ -443,7 +445,7 @@ export default function CheckoutPage() {
             )}
 
             {step === 'payment' && (
-              <div className="bg-graphite border border-smoke rounded-lg p-6 md:p-8">
+              <div className="bg-graphite border border-smoke rounded-lg p-4 sm:p-6 md:p-8">
                 <h2 className="font-display text-display-sm font-bold text-bone mb-6">
                   Payment Method
                 </h2>
@@ -517,7 +519,7 @@ export default function CheckoutPage() {
             )}
 
             {step === 'review' && (
-              <div className="bg-graphite border border-smoke rounded-lg p-6 md:p-8">
+              <div className="bg-graphite border border-smoke rounded-lg p-4 sm:p-6 md:p-8">
                 <h2 className="font-display text-display-sm font-bold text-bone mb-6">
                   Review Order
                 </h2>

@@ -9,7 +9,8 @@ interface FregoroLogoProps {
   variant?: 'full' | 'mark' | 'text';
   textIsDark?: boolean;
   size?: 'sm' | 'md' | 'lg';
-  href?: string;
+  href?: string | null;
+  disableLink?: boolean;
 }
 
 export function FregoroLogo({
@@ -18,6 +19,7 @@ export function FregoroLogo({
   textIsDark = false,
   size = 'md',
   href = '/',
+  disableLink = false,
 }: FregoroLogoProps) {
   const sizeClasses = {
     sm: {
@@ -80,7 +82,7 @@ export function FregoroLogo({
     </span>
   );
 
-  if (href) {
+  if (href && !disableLink) {
     return (
       <Link
         href={href}

@@ -91,9 +91,9 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
       <div className="absolute inset-0 bg-charcoal/80 backdrop-blur-sm" onClick={onClose} />
 
       {/* Sheet */}
-      <div className="relative z-10 w-full sm:max-w-lg bg-graphite border border-smoke/60 rounded-t-3xl sm:rounded-2xl p-6 pb-10 sm:pb-6 shadow-2xl">
+      <div className="relative z-10 w-full sm:max-w-lg bg-graphite border border-smoke/60 rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] sm:pb-6 shadow-2xl max-h-[90vh] max-h-[90dvh] overflow-y-auto custom-scrollbar">
         {/* Handle */}
-        <div className="w-10 h-1 bg-smoke rounded-full mx-auto mb-6 sm:hidden" />
+        <div className="w-10 h-1 bg-smoke rounded-full mx-auto mb-5 sm:hidden" />
 
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -103,7 +103,7 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-smoke/30 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/60 transition-colors"
+            className="w-11 h-11 rounded-full bg-smoke/30 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/60 transition-colors"
             aria-label="Close size finder"
           >
             <svg

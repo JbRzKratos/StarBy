@@ -72,8 +72,8 @@ export function FloatingActions() {
 
   return (
     <>
-      {/* Scroll to Top - Bottom Right */}
-      <div className="floating-scroll-top-btn fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-[90] flex flex-col gap-4">
+      {/* Scroll to Top - Bottom Right (elevated on mobile to prevent collision with chat widget) */}
+      <div className="floating-scroll-top-btn fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] right-4 sm:bottom-24 sm:right-6 z-[90] flex flex-col gap-4">
         <button
           ref={scrollTopRef}
           onClick={scrollToTop}
@@ -98,7 +98,7 @@ export function FloatingActions() {
       </div>
 
       {/* WhatsApp Floating Button - Bottom Left */}
-      <div className="floating-whatsapp-btn fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-[90]">
+      <div className="floating-whatsapp-btn fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] left-4 sm:bottom-6 sm:left-6 z-[90]">
         <Link
           href={
             process.env.NEXT_PUBLIC_WHATSAPP_NUMBER

@@ -94,60 +94,43 @@ export const WallSummaryBar: React.FC = () => {
 
   return (
     <>
-      <div className="relative z-30 w-full bg-black/90 backdrop-blur-xl border-t border-white/10 px-4 md:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-4">
-        {/* ─── LEFT: PHYSICAL PRINTS VS LOGICAL ARTWORKS SPEC ─── */}
-        <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between sm:justify-start">
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-white tracking-tight">
-                {currentLayout.name}
-              </span>
-              <span className="text-[10px] font-mono text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/5">
-                {currentLayout.coverageLabel}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-white/60">
-              {currentLayout.category === 'split' ? (
-                <>
-                  <span className="text-white font-semibold">
-                    {currentLayout.physicalPrintCount}-Panel Continuous Split
-                  </span>
-                  <span>•</span>
-                  <span className="text-[#3B5EFF] font-semibold">
-                    {filledLogicalCount > 0 ? 'Artwork Loaded' : 'Select Artwork'}
-                  </span>
-                </>
-              ) : currentLayout.category === 'hybrid' ? (
-                <>
-                  <span className="text-amber-400 font-semibold flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-amber-300" />
-                    Split + Frames
-                  </span>
-                  <span>•</span>
-                  <span className="text-white font-semibold">
-                    {filledLogicalCount} / {totalLogicalCount} Artworks
-                  </span>
-                  <span>•</span>
-                  <span className="text-[#3B5EFF] font-semibold">
-                    {currentLayout.physicalPrintCount} Prints
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="text-white font-semibold">
-                    {filledLogicalCount} / {totalLogicalCount} Artworks Selected
-                  </span>
-                  <span>•</span>
-                  <span className="text-[#3B5EFF] font-semibold">
-                    {currentLayout.physicalPrintCount} Prints
-                  </span>
-                </>
-              )}
-            </div>
+      <div className="relative z-30 w-full bg-[#0A0B0E]/95 backdrop-blur-xl border-t border-white/10 px-3 sm:px-4 md:px-8 py-2.5 md:py-3.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] md:pb-3.5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 md:gap-4 shrink-0 select-none">
+        {/* ─── TIER 1 (mobile) / LEFT (desktop): SPEC & LAYOUT INFO ─── */}
+        <div className="flex items-center justify-between md:justify-start gap-2 sm:gap-4 min-w-0">
+          <div className="min-w-0 flex items-center gap-2">
+            <span className="text-xs sm:text-sm font-bold text-white tracking-tight truncate max-w-[130px] xs:max-w-[170px] sm:max-w-[240px] md:max-w-none leading-snug">
+              {currentLayout.name}
+            </span>
+            <span className="text-[10px] font-mono text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10 shrink-0">
+              {currentLayout.coverageLabel}
+            </span>
           </div>
 
-          {/* Size breakdown pill badges */}
-          <div className="hidden lg:flex items-center gap-1.5 font-mono text-[11px]">
+          {/* Subtitle / Artwork fill status badge */}
+          <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono shrink-0">
+            {currentLayout.category === 'split' ? (
+              <span className="text-white/80 bg-white/[0.06] border border-white/10 px-2 py-0.5 rounded">
+                {currentLayout.physicalPrintCount}-Panel Split
+              </span>
+            ) : currentLayout.category === 'hybrid' ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded hidden xs:inline-flex items-center gap-1">
+                  <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+                  Split + Frames
+                </span>
+                <span className="text-white/80 bg-white/[0.06] border border-white/10 px-2 py-0.5 rounded">
+                  {filledLogicalCount}/{totalLogicalCount} Artworks
+                </span>
+              </div>
+            ) : (
+              <span className="text-white/80 bg-white/[0.06] border border-white/10 px-2 py-0.5 rounded">
+                {filledLogicalCount}/{totalLogicalCount} Artworks
+              </span>
+            )}
+          </div>
+
+          {/* Size breakdown pill badges on desktop only */}
+          <div className="hidden lg:flex items-center gap-1.5 font-mono text-[11px] shrink-0">
             {Object.entries(pricing.sizeCounts).map(([size, count]) => {
               if (count === 0) return null;
               return (
@@ -162,36 +145,37 @@ export const WallSummaryBar: React.FC = () => {
           </div>
         </div>
 
-        {/* ─── RIGHT: DYNAMIC PRICE & ADD TO CART ─── */}
-        <div className="flex items-center justify-between sm:justify-end gap-5 w-full sm:w-auto">
+        {/* ─── TIER 2 (mobile) / RIGHT (desktop): PRICE & ADD TO CART CTA ─── */}
+        <div className="flex items-center justify-between md:justify-end gap-3 sm:gap-4 shrink-0 pt-0.5 md:pt-0">
           {/* Price display with savings */}
-          <div className="text-right">
-            <div className="flex items-baseline gap-2 justify-end">
-              <span className="text-xl md:text-2xl font-extrabold text-white tracking-tight">
+          <div className="text-left md:text-right shrink-0">
+            <div className="flex items-baseline gap-1.5 justify-start md:justify-end leading-tight">
+              <span className="text-lg sm:text-xl md:text-2xl font-black text-white tracking-tight">
                 ₹{pricing.finalPrice.toLocaleString('en-IN')}
               </span>
               {pricing.compareAtPrice > pricing.finalPrice && (
-                <span className="text-xs text-white/40 line-through font-mono">
+                <span className="text-[11px] sm:text-xs text-white/40 line-through font-mono">
                   ₹{pricing.compareAtPrice.toLocaleString('en-IN')}
                 </span>
               )}
             </div>
             {pricing.totalSavings > 0 && (
-              <span className="text-[10px] font-mono text-emerald-400 block font-semibold">
+              <span className="text-[9px] sm:text-[10px] font-mono text-emerald-400 font-semibold block leading-tight mt-1">
                 Save ₹{pricing.totalSavings.toLocaleString('en-IN')} (Pack Discount)
               </span>
             )}
           </div>
 
-          {/* Add to Cart CTA */}
+          {/* Add to Cart CTA (44px min height touch target) */}
           <button
             type="button"
             disabled={isAdding}
             onClick={handleAddToCart}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#3B5EFF] hover:bg-[#2B4EFF] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#3B5EFF]/25 transition-all duration-200 hover:scale-[1.02] active:scale-95 shrink-0"
+            className="flex-1 md:flex-initial max-w-[210px] md:max-w-none min-h-[44px] flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-[#3B5EFF] hover:bg-[#2B4EFF] active:scale-95 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#3B5EFF]/25 transition-all duration-150 whitespace-nowrap"
           >
-            <ShoppingBag className="w-4 h-4" />
-            <span>Add Wall to Cart</span>
+            <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+            <span className="md:hidden">Add to Cart</span>
+            <span className="hidden md:inline">Add Wall to Cart</span>
           </button>
         </div>
       </div>

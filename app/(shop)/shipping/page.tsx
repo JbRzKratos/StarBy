@@ -1,42 +1,18 @@
-'use client';
+import type { Metadata } from 'next';
+import { ShippingTiersTable } from '@/components/shop/shipping-tiers-table';
 
-import { usePrice } from '@/lib/hooks/usePrice';
-
-// Metadata must be in a separate layout.tsx or a server component if using 'use client'
-// For this page, we will just use a generic title tag from the root layout,
-// or we could split this into a server layout and client page.
-// Given the simplicity, we'll just omit the export const metadata here for now since it's a client component.
+export const metadata: Metadata = {
+  title: 'Shipping & Delivery | Fregoro Studios',
+  description:
+    'Every Fregoro Studios product is made on demand, packed with care, and shipped to your door. Review our domestic and global shipping timelines and rates.',
+  openGraph: {
+    title: 'Shipping & Delivery | Fregoro Studios',
+    description:
+      'Learn about Fregoro Studios production times, domestic express delivery, and worldwide shipping.',
+  },
+};
 
 export default function ShippingPage() {
-  const { formatPrice } = usePrice();
-
-  const shippingTiers = [
-    {
-      region: 'Domestic (India)',
-      standard: '3-5 days',
-      express: '1-2 days',
-      free: `${formatPrice(999)}+`,
-    },
-    {
-      region: 'Asia Pacific',
-      standard: '7-10 days',
-      express: '3-5 days',
-      free: `${formatPrice(2499)}+`,
-    },
-    {
-      region: 'Europe & Americas',
-      standard: '10-14 days',
-      express: '5-7 days',
-      free: `${formatPrice(3999)}+`,
-    },
-    {
-      region: 'Rest of World',
-      standard: '12-18 days',
-      express: '7-10 days',
-      free: `${formatPrice(4999)}+`,
-    },
-  ];
-
   return (
     <main className="pt-36 md:pt-40 pb-20">
       <div className="section-container max-w-4xl">
@@ -51,37 +27,8 @@ export default function ShippingPage() {
           </p>
         </div>
 
-        {/* Shipping table */}
-        <div className="overflow-x-auto mb-12">
-          <table className="w-full min-w-[600px]">
-            <thead>
-              <tr className="border-b border-smoke">
-                <th className="text-left py-4 font-mono text-caption text-ash uppercase tracking-widest">
-                  Region
-                </th>
-                <th className="text-left py-4 font-mono text-caption text-ash uppercase tracking-widest">
-                  Standard
-                </th>
-                <th className="text-left py-4 font-mono text-caption text-ash uppercase tracking-widest">
-                  Express
-                </th>
-                <th className="text-left py-4 font-mono text-caption text-ash uppercase tracking-widest">
-                  Free Above
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {shippingTiers.map((tier) => (
-                <tr key={tier.region} className="border-b border-smoke/50">
-                  <td className="py-4 font-display text-body-md text-bone">{tier.region}</td>
-                  <td className="py-4 font-mono text-body-sm text-pearl">{tier.standard}</td>
-                  <td className="py-4 font-mono text-body-sm text-pearl">{tier.express}</td>
-                  <td className="py-4 font-mono text-body-sm text-cobalt">{tier.free}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {/* Shipping table client component with dynamic currency support */}
+        <ShippingTiersTable />
 
         {/* Policies */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

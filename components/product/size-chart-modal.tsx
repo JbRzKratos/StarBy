@@ -128,18 +128,18 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-modal bg-charcoal/85 backdrop-blur-md hidden items-center justify-center p-4 opacity-0"
+      className="fixed inset-0 z-modal bg-charcoal/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 opacity-0"
       onClick={onClose}
     >
       <div
         ref={contentRef}
-        className="w-full max-w-xl bg-graphite border border-smoke/70 p-6 md:p-8 rounded-2xl relative shadow-2xl overflow-hidden"
+        className="w-full max-w-xl bg-graphite border border-smoke/70 p-4 sm:p-6 md:p-8 rounded-2xl relative shadow-2xl overflow-y-auto max-h-[90vh] max-h-[90dvh] custom-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
+        {/* Close Button (44x44px) */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 w-8 h-8 rounded-full bg-smoke/30 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/60 transition-colors"
+          className="absolute top-3.5 right-3.5 sm:top-6 sm:right-6 w-11 h-11 rounded-full bg-smoke/30 flex items-center justify-center text-pearl hover:text-bone hover:bg-smoke/60 transition-colors"
           aria-label="Close"
         >
           <svg
@@ -158,7 +158,7 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
         </button>
 
         {/* Header & Unit Switcher */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pr-10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pr-12">
           <div>
             <h2 className="font-display text-2xl text-bone">{chartTitle}</h2>
             <p className="font-mono text-xs text-ash mt-1">Selling sizes: S to 3XL</p>

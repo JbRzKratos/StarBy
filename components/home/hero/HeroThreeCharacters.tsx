@@ -19,8 +19,8 @@ export function HeroThreeCharacters({ priority = true, className = '' }: HeroThr
           src={getR2AssetUrl('images/hero-three-models.png')}
           alt="Fregoro Studios Hero Models - Three Men in Navy Blue Suits"
           fill
-          quality={100}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 1200px, (max-width: 1536px) 1600px, 2000px"
+          quality={85}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, (max-width: 1536px) 85vw, 1440px"
           priority={priority}
           className="object-contain object-bottom"
           draggable={false}

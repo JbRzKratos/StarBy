@@ -131,6 +131,6 @@ export const useCartStore = create<CartState & CartActions>()(
         partialize: (state) => ({ items: state.items }),
       },
     ),
-    { name: 'CartStore' },
+    { name: 'CartStore', enabled: process.env.NODE_ENV === 'development' },
   ),
 );

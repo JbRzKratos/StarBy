@@ -66,29 +66,81 @@ export const CustomImageModal: React.FC = () => {
       // Local preview & image dimensions
       const objectUrl = URL.createObjectURL(file);
       const img = new Image();
-      img.onload = () => {
-        setPixelDimensions({ width: img.naturalWidth, height: img.naturalHeight });
-        setPreviewSrc(objectUrl);
-      };
-      img.src = objectUrl;
-
-      // Upload in background to R2 API
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('physicalSize', currentSlot?.size || 'A3');
-      formData.append('isSplit', isSplit ? 'true' : 'false');
-      formData.append('panelCount', String(panelCount));
-
-      const res = await fetch('/api/wall-studio/upload', {
-        method: 'POST',
-        body: formData,
+      await new Promise<void>((resolve) => {
+        img.onload = () => {
+          setPixelDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+          setPreviewSrc(objectUrl);
+          resolve();
+        };
+        img.onerror = () => resolve();
+        img.src = objectUrl;
       });
 
-      const data = await res.json();
-      if (data.success && data.publicUrl) {
-        setPreviewSrc(data.publicUrl);
-        if (data.pixelWidth && data.pixelHeight) {
-          setPixelDimensions({ width: data.pixelWidth, height: data.pixelHeight });
+      // 1. Request presigned URL from server (bypasses Vercel 4.5MB payload limit)
+      const presignRes = await fetch('/api/wall-studio/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'presign',
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size,
+          physicalSize: currentSlot?.size || 'A3',
+          isSplit,
+          panelCount,
+          pixelWidth: img.naturalWidth || 2400,
+          pixelHeight: img.naturalHeight || 1800,
+        }),
+      });
+
+      if (presignRes.ok) {
+        const data = await presignRes.json();
+        if (data.success && data.uploadUrl) {
+          // Direct PUT to Cloudflare R2
+          try {
+            const r2Put = await fetch(data.uploadUrl, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': file.type,
+              },
+              body: file,
+            });
+
+            if (r2Put.ok && data.publicUrl) {
+              setPreviewSrc(data.publicUrl);
+              if (data.pixelWidth && data.pixelHeight) {
+                setPixelDimensions({ width: data.pixelWidth, height: data.pixelHeight });
+              }
+              return;
+            }
+          } catch (r2Err) {
+            console.warn(
+              'Direct R2 PUT failed (likely CORS or network), keeping local preview:',
+              r2Err,
+            );
+          }
+        }
+      }
+
+      // 2. Fallback for smaller files if presigned failed
+      if (file.size <= 4 * 1024 * 1024) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('physicalSize', currentSlot?.size || 'A3');
+        formData.append('isSplit', isSplit ? 'true' : 'false');
+        formData.append('panelCount', String(panelCount));
+
+        const res = await fetch('/api/wall-studio/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (data.success && data.publicUrl) {
+          setPreviewSrc(data.publicUrl);
+          if (data.pixelWidth && data.pixelHeight) {
+            setPixelDimensions({ width: data.pixelWidth, height: data.pixelHeight });
+          }
         }
       }
     } catch (err: unknown) {
@@ -178,7 +230,10 @@ export const CustomImageModal: React.FC = () => {
           ) : (
             /* Interactive Cropping & Split Preview Viewport */
             <div className="space-y-4">
-              <div className="relative w-full aspect-16/10 bg-black/90 rounded-xl overflow-hidden border border-white/15 flex items-center justify-center">
+              <div
+                className="relative w-full bg-black/90 rounded-xl overflow-hidden border border-white/15 flex items-center justify-center"
+                style={{ aspectRatio: '16/10' }}
+              >
                 {/* Print Safe Area dashed guide */}
                 <div className="absolute inset-4 border border-dashed border-white/25 pointer-events-none z-20 flex items-start justify-end p-1.5">
                   <span className="text-[8px] font-mono text-white/40 bg-black/60 px-1 py-0.5 rounded">
