@@ -13,6 +13,11 @@ export function NavigationClient({ variant = 'solid' }: NavigationProps) {
 
   // ONLY the homepage ('/') can ever use a hero navbar (transparent with dark text).
   // All other pages must strictly use a solid dark navbar with white text.
+  // Wall Studio provides its own dedicated full-bleed studio toolbar to prevent double headers
+  if (pathname?.startsWith('/wall-studio')) {
+    return null;
+  }
+
   const effectiveVariant = pathname === '/' ? variant : 'solid';
 
   return (

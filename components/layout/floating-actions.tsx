@@ -14,7 +14,8 @@ export function FloatingActions() {
   const isExcludedRoute =
     pathname?.startsWith('/magazine/editor') ||
     pathname?.startsWith('/magazine/content-wizard') ||
-    pathname?.startsWith('/admin');
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/wall-studio');
 
   useEffect(() => {
     if (isExcludedRoute) return;

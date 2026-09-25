@@ -7,6 +7,8 @@ import { Prisma } from '@prisma/client';
 import { sendOrderConfirmationEmail, sendAdminNewOrderEmail } from '@/lib/email';
 import { createCashfreeOrder, generatePublicOrderId, getCashfreeEnvironment } from '@/lib/cashfree';
 import { uploadBufferToR2, getR2PublicUrl } from '@/lib/r2';
+import { getLayoutById, FREGORO_LAYOUTS } from '@/lib/wall-studio/layouts-data';
+import { calculateWallPrice } from '@/lib/wall-studio/pricing';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -161,6 +163,45 @@ export async function POST(request: Request) {
     }> = [];
 
     for (const item of items) {
+      // ──── Check if this is a Fregoro Wall Studio Product ────
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const customData = item.customization as any;
+      if (
+        customData?.isWallProduct ||
+        item.productId.startsWith('wall_') ||
+        item.productId.startsWith('prebuilt_')
+      ) {
+        const layoutSlug = customData?.layoutSlug || customData?.layoutId || 'stepped-hero-05';
+        const layout = getLayoutById(layoutSlug) || FREGORO_LAYOUTS[4];
+
+        // Recalculate price deterministically on the server (never trust client)
+        const serverPricing = calculateWallPrice(layout, customData?.selections || {});
+        const unitPrice = serverPricing.finalPrice;
+        const totalItemPrice = unitPrice * item.quantity;
+        subtotal += totalItemPrice;
+
+        const productNameSnapshot = customData?.layoutName
+          ? `${customData.layoutName} Wall Setup (${layout.physicalPrintCount} Prints)`
+          : `${layout.name} Wall Setup (${layout.physicalPrintCount} Prints)`;
+        const skuSnapshot = `${layout.slug}-v${layout.version}`;
+
+        // Clone and upload any custom photo uploads to R2 if needed
+        const processedCustomization = customData ? JSON.parse(JSON.stringify(customData)) : null;
+
+        validatedItems.push({
+          productId: item.productId,
+          variantId: item.variantId || 'default',
+          quantity: item.quantity,
+          unitPrice,
+          totalPrice: totalItemPrice,
+          size: layout.coverageLabel,
+          customization: processedCustomization,
+          productNameSnapshot,
+          skuSnapshot,
+        });
+        continue;
+      }
+
       const product = productMap.get(item.productId);
       if (!product) {
         return NextResponse.json(

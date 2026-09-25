@@ -10,6 +10,7 @@ import {
   updateOrderInternalNotes,
   updateOrderTracking,
 } from '@/app/admin/lib/actions';
+import { WallProductionManifest } from './wall-production-manifest';
 
 type OrderStatus = 'placed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
 
@@ -323,6 +324,14 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                           </span>
                         )}
                       </div>
+
+                      {/* Fregoro Wall Studio Production Manifest */}
+                      {item.customization?.isWallProduct && (
+                        <WallProductionManifest
+                          orderId={order.publicOrderId || order.id}
+                          customization={item.customization}
+                        />
+                      )}
 
                       {/* Download Primary Artwork link if available */}
                       {item.orderCustomization?.designFileUrl && (

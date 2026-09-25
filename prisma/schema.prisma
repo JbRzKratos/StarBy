@@ -1,14 +1,12 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-// ─── Catalogue (editable by admin, served to public) ─────────────────────────
 
 model Category {
   id           String   @id @default(cuid())
@@ -19,76 +17,65 @@ model Category {
   productCount Int      @default(0)
   featured     Boolean  @default(false)
   gradient     String
-  image        String?  // R2 URL
+  image        String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
 model Product {
-  id           String           @id @default(cuid())
-  slug         String           @unique
-  name         String
-  tagline      String
-  description  String
-  categorySlug String
-  basePrice    Float
-  customizable Boolean          @default(false)
-  tags         String[]
-  featured     Boolean          @default(false)
-  sizes        String[]
-  variants     ProductVariant[]
-  reviews      Review[]
+  id            String           @id @default(cuid())
+  slug          String           @unique
+  name          String
+  tagline       String
+  description   String
+  categorySlug  String
+  basePrice     Float
+  customizable  Boolean          @default(false)
+  tags          String[]
+  featured      Boolean          @default(false)
+  sizes         String[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  variants      ProductVariant[]
+  reviews       Review[]
   wishlistItems WishlistItem[]
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
 }
 
 model ProductVariant {
   id               String   @id @default(cuid())
   productId        String
-  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   name             String
   color            String
   colorHex         String
   price            Float
-  images           String[] // R2 URLs
+  images           String[]
   inStock          Boolean  @default(true)
-  stockQuantity    Int      @default(0)
   reorderThreshold Int      @default(5)
-}
-
-// ─── User & Auth ─────────────────────────────────────────────────────────────
-
-enum Role {
-  CUSTOMER
-  STAFF
-  ADMIN
+  stockQuantity    Int      @default(0)
+  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id        String   @id
-  email     String   @unique
-  fullName  String?
-  phone     String?
-  role      Role     @default(CUSTOMER)
-  notes     String?  // staff-only CRM notes
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id            String             @id
+  email         String             @unique
+  fullName      String?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  role          Role               @default(CUSTOMER)
+  notes         String?
+  phone         String?
   addresses     Address[]
-  orders        Order[]
   designs       CustomizerDesign[]
+  orders        Order[]
   reviews       Review[]
-  wishlistItems WishlistItem[]
   files         StoredFile[]
+  wishlistItems WishlistItem[]
 }
 
 model Address {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   name      String
-  phone     String?
   street    String
   city      String
   state     String
@@ -96,65 +83,63 @@ model Address {
   country   String   @default("India")
   isDefault Boolean  @default(false)
   createdAt DateTime @default(now())
+  phone     String?
   updatedAt DateTime @default(now()) @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// ─── Orders ──────────────────────────────────────────────────────────────────
-
 model Order {
-  id                      String   @id @default(cuid())
-  publicOrderId           String?  @unique
+  id                      String               @id @default(cuid())
   userId                  String?
-  user                    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  subtotal                Float    @default(0)
-  discount                Float?   @default(0)
-  shippingFee             Float    @default(0)
-  tax                     Float    @default(0)
   total                   Float
-  currency                String   @default("INR")
-  status                  String   @default("pending_payment")
-  paymentStatus           String   @default("pending")
-  paymentProvider         String?
-  paymentGatewayOrderId   String?
-  paymentGatewayPaymentId String?
+  status                  String               @default("pending_payment")
+  paymentStatus           String               @default("pending")
   shippingAddress         Json
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
   couponCode              String?
+  discount                Float?               @default(0)
   estimatedDeliveryDate   DateTime?
-  shippingMethod          String?  @default("standard")
+  shippingMethod          String?              @default("standard")
+  internalNotes           String?
+  carrier                 String?
   trackingNumber          String?
   trackingUrl             String?
-  carrier                 String?
-  internalNotes           String?
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
-
-  items         OrderItem[]
-  statusHistory OrderStatusHistory[]
-  files         StoredFile[]
+  currency                String               @default("INR")
+  paymentGatewayOrderId   String?
+  paymentGatewayPaymentId String?
+  paymentProvider         String?
+  publicOrderId           String?              @unique
+  shippingFee             Float                @default(0)
+  subtotal                Float                @default(0)
+  tax                     Float                @default(0)
+  user                    User?                @relation(fields: [userId], references: [id])
+  items                   OrderItem[]
+  statusHistory           OrderStatusHistory[]
+  files                   StoredFile[]
 }
 
 model OrderItem {
-  id                  String   @id @default(cuid())
+  id                  String              @id @default(cuid())
   orderId             String
-  order               Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId           String
   variantId           String
-  productNameSnapshot String?
-  skuSnapshot         String?
   quantity            Int
-  price               Float?   @default(0)
-  unitPrice           Float    @default(0)
-  totalPrice          Float    @default(0)
+  price               Float?              @default(0)
   size                String?
   customization       Json?
+  createdAt           DateTime            @default(now())
+  productNameSnapshot String?
+  skuSnapshot         String?
+  totalPrice          Float               @default(0)
+  unitPrice           Float               @default(0)
   orderCustomization  OrderCustomization?
-  createdAt           DateTime @default(now())
+  order               Order               @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model OrderCustomization {
   id                String    @id @default(cuid())
   orderItemId       String    @unique
-  orderItem         OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
   designFileUrl     String?
   designFileKey     String?
   designFileName    String?
@@ -167,47 +152,42 @@ model OrderCustomization {
   productionStatus  String    @default("pending")
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now()) @updatedAt
+  orderItem         OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
 }
 
 model OrderStatusHistory {
   id        String   @id @default(cuid())
   orderId   String
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   oldStatus String?
   newStatus String
   changedBy String?
   note      String?
   createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
-// ─── Webhook Idempotency ──────────────────────────────────────────────────────
-
 model WebhookEvent {
-  id           String   @id @default(cuid())
-  provider     String
-  eventId      String
-  eventType    String
-  orderId      String?
-  payload      Json?
-  processedAt  DateTime @default(now())
+  id          String   @id @default(cuid())
+  provider    String
+  eventId     String
+  eventType   String
+  orderId     String?
+  payload     Json?
+  processedAt DateTime @default(now())
 
   @@unique([provider, eventId])
 }
 
-// ─── Customizer Designs ───────────────────────────────────────────────────────
-
 model CustomizerDesign {
   id          String   @id @default(cuid())
   userId      String?
-  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   productId   String
   canvasState Json
   previewUrl  String?
   title       String?  @default("My Design")
   createdAt   DateTime @default(now())
+  user        User?    @relation(fields: [userId], references: [id])
 }
-
-// ─── Coupons ─────────────────────────────────────────────────────────────────
 
 model Coupon {
   id               String    @id @default(cuid())
@@ -217,14 +197,12 @@ model Coupon {
   isActive         Boolean   @default(true)
   expiresAt        DateTime?
   maxUses          Int?
-  perCustomerLimit Int?
-  minOrderValue    Float?    @default(0)
   usageCount       Int       @default(0)
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+  minOrderValue    Float?    @default(0)
+  perCustomerLimit Int?
 }
-
-// ─── Reviews & Wishlist ───────────────────────────────────────────────────────
 
 model Review {
   id        String   @id @default(cuid())
@@ -232,46 +210,42 @@ model Review {
   title     String?
   text      String?
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model WishlistItem {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, productId])
 }
 
-// ─── Store Config (admin-editable) ───────────────────────────────────────────
-
 model StoreSettings {
-  id           String   @id @default("singleton")
-  storeName    String   @default("StarBy")
-  contactEmail String   @default("")
-  logoUrl      String?
-  taxRate      Float    @default(0)
-  newOrderEmail Boolean @default(true)
-  updatedAt    DateTime @updatedAt
+  id            String   @id @default("singleton")
+  storeName     String   @default("StarBy")
+  contactEmail  String   @default("")
+  logoUrl       String?
+  taxRate       Float    @default(0)
+  newOrderEmail Boolean  @default(true)
+  updatedAt     DateTime @updatedAt
 }
 
 model ShippingZone {
   id        String   @id @default(cuid())
   name      String
   states    String[]
-  rateType  String   // 'flat' | 'per_item'
+  rateType  String
   rateValue Float
   createdAt DateTime @default(now())
 }
-
-// ─── Newsletter ───────────────────────────────────────────────────────────────
 
 model NewsletterSubscriber {
   id        String   @id @default(cuid())
@@ -279,16 +253,12 @@ model NewsletterSubscriber {
   createdAt DateTime @default(now())
 }
 
-// ─── File Storage Metadata (Cloudflare R2) ────────────────────────────────────
-
 model StoredFile {
   id               String   @id @default(cuid())
   ownerUserId      String?
-  user             User?    @relation(fields: [ownerUserId], references: [id], onDelete: SetNull)
   orderId          String?
-  order            Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
   orderItemId      String?
-  fileType         String   // 'customer_design' | 'production_artwork' | 'invoice' | 'proof'
+  fileType         String
   storageProvider  String   @default("cloudflare_r2")
   bucket           String
   objectKey        String   @unique
@@ -299,8 +269,184 @@ model StoredFile {
   metadata         Json?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  order            Order?   @relation(fields: [orderId], references: [id])
+  user             User?    @relation(fields: [ownerUserId], references: [id])
 
   @@index([ownerUserId])
   @@index([orderId])
   @@index([fileType])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model CustomerWallPhoto {
+  id        String   @id
+  userId    String?
+  wallId    String?
+  imageUrl  String
+  caption   String?
+  approved  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model CustomizationTemplate {
+  id          String @id
+  productId   String @unique
+  mockupImage String
+  printArea   Json
+  blendMode   String @default("source-over")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model DeviceSkinTemplate {
+  id           String   @id
+  name         String
+  brand        String
+  type         String
+  aspectRatio  Float
+  borderRadius Float
+  cameraModule Json?
+  logoCutout   Json?
+  sPenSilo     Boolean  @default(false)
+  confidence   String
+  notes        String?
+  createdAt    DateTime @default(now())
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model PosterArtwork {
+  id                String   @id
+  title             String
+  slug              String   @unique
+  artist            String?  @default("Fregoro Studio")
+  description       String?
+  themeSlug         String
+  category          String   @default("art")
+  subcategory       String?
+  tags              String[]
+  orientation       String   @default("portrait")
+  availableSizes    String[]
+  productType       String   @default("poster")
+  isSplitCompatible Boolean  @default(false)
+  heroCompatible    Boolean  @default(true)
+  supportCompatible Boolean  @default(true)
+  dominantColor     String?
+  secondaryColor    String?
+  brightness        String?  @default("mid")
+  mood              String?  @default("cinematic")
+  imageUrl          String
+  thumbnailUrl      String?
+  price             Float    @default(99)
+  status            String   @default("published")
+  featured          Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime
+
+  @@index([category])
+  @@index([orientation])
+  @@index([themeSlug])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model PrebuiltWallProduct {
+  id             String   @id
+  slug           String   @unique
+  title          String
+  tagline        String
+  description    String
+  themeSlug      String
+  layoutId       String
+  basePrice      Float
+  compareAtPrice Float?
+  heroImage      String
+  roomPhoto      String?
+  presetSlots    Json
+  material       String   @default("280 GSM Archival Matte Paper with Giclée Inks")
+  whatsIncluded  String[]
+  featured       Boolean  @default(false)
+  rating         Float    @default(4.9)
+  reviewCount    Int      @default(28)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model SavedWall {
+  id            String   @id
+  userId        String?
+  title         String   @default("My Wall")
+  layoutId      String
+  layoutVersion Int      @default(1)
+  slotsData     Json
+  previewUrl    String?
+  isPublic      Boolean  @default(false)
+  shareCode     String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime
+
+  @@index([shareCode])
+  @@index([userId])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model WallLayout {
+  id                   String   @id
+  name                 String
+  slug                 String   @unique
+  description          String
+  badge                String?
+  wallWidthMm          Int      @default(1600)
+  wallHeightMm         Int      @default(1050)
+  coverageLabel        String   @default("160 × 105 cm")
+  physicalPrintCount   Int      @default(5)
+  logicalArtworkCount  Int      @default(5)
+  recommendedRoom      String?  @default("Living Room / Feature Wall")
+  recommendedWallWidth String?  @default("2.0 – 2.5 m")
+  recommendedThemes    String[]
+  basePrice            Float    @default(699)
+  compareAtPrice       Float?
+  slots                Json
+  splitGroups          Json?
+  published            Boolean  @default(true)
+  version              Int      @default(1)
+  previewImage         String?
+  sortOrder            Int      @default(0)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model WallLayoutVersion {
+  id           String   @id
+  layoutId     String
+  version      Int
+  slots        Json
+  splitGroups  Json?
+  wallWidthMm  Int
+  wallHeightMm Int
+  createdAt    DateTime @default(now())
+
+  @@unique([layoutId, version])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model WallTheme {
+  id           String   @id
+  slug         String   @unique
+  name         String
+  tagline      String?
+  description  String?
+  accentColor  String?  @default("#3B5EFF")
+  gradient     String?
+  previewImage String?
+  featured     Boolean  @default(false)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  STAFF
 }

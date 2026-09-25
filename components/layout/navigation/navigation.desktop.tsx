@@ -14,8 +14,9 @@ import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const navLinks = [
   { href: '/products/all', label: 'Shop All' },
-  { href: '/magazine', label: 'Magazine' },
+  { href: '/wall-studio', label: 'Wall Studio' },
   { href: '/split-poster', label: 'Split Posters' },
+  { href: '/magazine', label: 'Magazine' },
   { href: '/studio', label: 'Studio' },
   { href: '/faq', label: 'FAQ' },
 ];
@@ -46,10 +47,11 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
   // Text is dark ONLY at scroll 0 on the landing page (which has a cream background)
   const textIsDark = isLandingPage && !isScrolled;
 
-  // Background is transparent at scroll 0 on ALL pages. When scrolled (>60px), solid black on all pages.
-  const navClasses = isScrolled
-    ? 'bg-[#0E0E10] text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl'
-    : 'bg-transparent border-b border-transparent';
+  const isWallStudio = pathname?.startsWith('/wall-studio');
+  const navClasses =
+    isScrolled || isWallStudio
+      ? 'bg-[#0E0E10] text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl'
+      : 'bg-transparent border-b border-transparent';
 
   useEffect(() => {
     setMounted(true);

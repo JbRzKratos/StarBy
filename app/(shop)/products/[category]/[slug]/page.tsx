@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getProductBySlug } from '@/data/products';
 import { ProductDetailClient } from '@/components/product/product-detail-client';
+import { getPrebuiltWallBySlug } from '@/lib/wall-studio/prebuilt-walls-data';
+import { PrebuiltWallDetail } from '@/components/wall-studio/prebuilt-wall-detail';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 
@@ -9,6 +11,14 @@ interface ProductPageProps {
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const prebuilt = getPrebuiltWallBySlug(params.slug);
+  if (prebuilt) {
+    return {
+      title: `${prebuilt.title} — Fregoro Wall Studio`,
+      description: prebuilt.description,
+    };
+  }
+
   const product = getProductBySlug(params.slug);
   return {
     title: product?.name ?? 'Product',
@@ -17,6 +27,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  // Check if this is a prebuilt theme wall setup
+  const prebuilt = getPrebuiltWallBySlug(params.slug);
+  if (prebuilt) {
+    return <PrebuiltWallDetail wall={prebuilt} />;
+  }
+
   const product = getProductBySlug(params.slug);
   if (!product) return notFound();
 

@@ -16,9 +16,10 @@ import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const menuLinks = [
   { href: '/', label: 'Home' },
+  { href: '/wall-studio', label: 'Wall Studio' },
   { href: '/products/all', label: 'Shop All' },
-  { href: '/magazine', label: 'Magazine Studio' },
   { href: '/split-poster', label: 'Split Posters' },
+  { href: '/magazine', label: 'Magazine Studio' },
   { href: '/account', label: 'My Account' },
   { href: '/studio', label: 'Studio' },
   { href: '/faq', label: 'FAQ & Shipping' },
@@ -104,10 +105,11 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
   // Determine styles based on route and scroll
   const textIsDark = isLandingPage && !isScrolledState;
 
-  // Background is transparent at scroll 0 on ALL pages. When scrolled (>60px), solid black on all pages.
-  const navClasses = isScrolledState
-    ? 'bg-[#0E0E10] text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl'
-    : 'bg-transparent border-b border-transparent';
+  const isWallStudio = pathname?.startsWith('/wall-studio');
+  const navClasses =
+    isScrolledState || isWallStudio
+      ? 'bg-[#0E0E10] text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl'
+      : 'bg-transparent border-b border-transparent';
 
   // Menu Drawer Animation
   useGSAP(

@@ -287,17 +287,30 @@ export function CartDrawer() {
                       </div>
 
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-caption text-ash mb-4">
-                        <span className="uppercase tracking-wider">{displayVariantName}</span>
-                        {item.customization && (
+                        {item.customization?.isWallProduct ? (
                           <>
+                            <span className="text-[#3B5EFF] font-bold uppercase tracking-wider">
+                              Wall Studio ({String(item.customization.physicalPrintCount || 15)}{' '}
+                              Prints)
+                            </span>
                             <span className="w-1 h-1 rounded-full bg-smoke" />
-                            <span>Customized</span>
+                            <span>{String(item.customization.coverageLabel || item.size)}</span>
                           </>
-                        )}
-                        {item.size && (
+                        ) : (
                           <>
-                            <span className="w-1 h-1 rounded-full bg-smoke" />
-                            <span>Size: {item.size}</span>
+                            <span className="uppercase tracking-wider">{displayVariantName}</span>
+                            {item.customization && (
+                              <>
+                                <span className="w-1 h-1 rounded-full bg-smoke" />
+                                <span>Customized</span>
+                              </>
+                            )}
+                            {item.size && (
+                              <>
+                                <span className="w-1 h-1 rounded-full bg-smoke" />
+                                <span>Size: {item.size}</span>
+                              </>
+                            )}
                           </>
                         )}
                       </div>
@@ -339,12 +352,23 @@ export function CartDrawer() {
                         </button>
                       </div>
 
-                      <button
-                        onClick={() => removeItem(item.productId, item.variantId, item.size)}
-                        className="font-mono text-caption text-pearl/70 hover:text-ember uppercase tracking-widest transition-colors flex items-center gap-2 underline decoration-smoke/50 hover:decoration-ember underline-offset-4"
-                      >
-                        <span>Remove</span>
-                      </button>
+                      <div className="flex items-center gap-3">
+                        {Boolean((item.customization as Record<string, any>)?.isWallProduct) && (
+                          <Link
+                            href={`/wall-studio?layout=${(item.customization as Record<string, any>)?.layoutSlug || 'stepped-hero'}`}
+                            onClick={() => setCartOpen(false)}
+                            className="font-mono text-caption text-[#3B5EFF] hover:underline uppercase tracking-wider"
+                          >
+                            Edit in Studio ↗
+                          </Link>
+                        )}
+                        <button
+                          onClick={() => removeItem(item.productId, item.variantId, item.size)}
+                          className="font-mono text-caption text-pearl/70 hover:text-ember uppercase tracking-widest transition-colors flex items-center gap-2 underline decoration-smoke/50 hover:decoration-ember underline-offset-4"
+                        >
+                          <span>Remove</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -265,29 +265,43 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                {product.customizable ? (
-                  <>
-                    <Link
-                      href={`/customize/${product.id}`}
-                      className="flex-1 flex items-center justify-center py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold"
-                    >
-                      Customize Design
-                    </Link>
+              <div className="flex flex-col gap-3 mt-2">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  {product.customizable ? (
+                    <>
+                      <Link
+                        href={`/customize/${product.id}`}
+                        className="flex-1 flex items-center justify-center py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold"
+                      >
+                        Customize Design
+                      </Link>
+                      <button
+                        onClick={handleAddToCart}
+                        className="flex-1 py-3.5 border border-smoke/70 text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl hover:text-bone hover:bg-white/[0.03] transition-colors"
+                      >
+                        Add to Cart (Plain)
+                      </button>
+                    </>
+                  ) : (
                     <button
                       onClick={handleAddToCart}
-                      className="flex-1 py-3.5 border border-smoke/70 text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl hover:text-bone hover:bg-white/[0.03] transition-colors"
+                      className="w-full py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
                     >
-                      Add to Cart (Plain)
+                      Add to Cart
                     </button>
-                  </>
-                ) : (
-                  <button
-                    onClick={handleAddToCart}
-                    className="w-full py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors"
+                  )}
+                </div>
+
+                {/* Build A Wall Around This Button for Posters & Split Posters */}
+                {(product.categorySlug === 'posters' ||
+                  product.categorySlug === 'split-posters') && (
+                  <Link
+                    href={`/wall-studio?theme=${product.tags?.[0] || 'all'}&poster=${product.id}`}
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500/15 via-[#3B5EFF]/20 to-amber-500/15 border border-amber-400/40 hover:border-amber-300 text-white font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all font-bold group"
                   >
-                    Add to Cart
-                  </button>
+                    <span className="text-amber-400 text-sm">✦</span>
+                    <span>Build A Wall Around This</span>
+                  </Link>
                 )}
               </div>
             )}

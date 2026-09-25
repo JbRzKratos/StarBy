@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const footerLinks = {
@@ -30,8 +31,13 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const pathname = usePathname();
   const [newsletterMsg, setNewsletterMsg] = useState<{ text: string; ok: boolean } | null>(null);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
+
+  if (pathname?.startsWith('/wall-studio')) {
+    return null;
+  }
 
   return (
     <footer className="border-t border-[#F5F1EA]/10 bg-[#0E0E10] text-[#F5F1EA]">
