@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getCashfreeOrderStatus } from '@/lib/cashfree';
+import { getCashfreeOrderStatus, getCashfreeOrderPayments } from '@/lib/cashfree';
 import { dispatchNotification } from '@/lib/notifications';
 
 /**
@@ -8,7 +8,7 @@ import { dispatchNotification } from '@/lib/notifications';
  *
  * Called by the frontend after the Cashfree checkout flow completes.
  * The frontend sends the cashfreeOrderId; we verify the payment status
- * by calling the Cashfree GET /orders/:orderId API server-side.
+ * by inspecting Cashfree order status and payment attempts server-side.
  *
  * We NEVER trust the client's claim that payment succeeded.
  * The webhook (POST /api/webhooks/cashfree) is the primary source of truth;
@@ -17,7 +17,7 @@ import { dispatchNotification } from '@/lib/notifications';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { cashfreeOrderId } = body;
+    const { cashfreeOrderId, attempt = 0 } = body;
 
     if (!cashfreeOrderId || typeof cashfreeOrderId !== 'string') {
       return NextResponse.json(
@@ -49,52 +49,89 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: 'Order not found' }, { status: 404 });
     }
 
-    // 2. If already paid, return success immediately (idempotent)
+    // 2. If already marked paid in DB, return success immediately (idempotent)
     if (order.paymentStatus === 'paid') {
       return NextResponse.json({
         success: true,
         message: 'Payment already verified',
         orderId: order.id,
         publicOrderId: order.publicOrderId,
+        amount: order.total,
         status: 'paid',
       });
     }
 
-    // 3. Verify payment status via Cashfree API (server-to-server)
-    let cfStatus;
-    try {
-      const lookupOrderId = order.paymentGatewayOrderId || order.publicOrderId || cashfreeOrderId;
-      cfStatus = await getCashfreeOrderStatus(lookupOrderId);
-    } catch (err) {
-      console.error('Cashfree status check failed:', err);
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            'Unable to verify payment status. The webhook will update your order automatically.',
-          orderId: order.id,
-          publicOrderId: order.publicOrderId,
-          status: 'pending',
-        },
-        { status: 202 },
-      );
+    // If order was already marked failed / cancelled in DB by webhook
+    if (order.paymentStatus === 'failed' || order.status === 'cancelled') {
+      return NextResponse.json({
+        success: false,
+        message: 'Payment was cancelled or could not be completed.',
+        orderId: order.id,
+        publicOrderId: order.publicOrderId,
+        status: 'failed',
+        failureType: 'cancelled',
+      });
     }
 
-    // 4. Handle Cashfree order status
-    if (cfStatus.order_status === 'PAID') {
-      // Mark as paid
+    // 3. Verify payment status via Cashfree APIs (order status + payment attempts)
+    const lookupOrderId = order.paymentGatewayOrderId || order.publicOrderId || cashfreeOrderId;
+
+    const [cfStatusResult, paymentsResult] = await Promise.allSettled([
+      getCashfreeOrderStatus(lookupOrderId),
+      getCashfreeOrderPayments(lookupOrderId),
+    ]);
+
+    const cfStatus = cfStatusResult.status === 'fulfilled' ? cfStatusResult.value : null;
+    const payments = paymentsResult.status === 'fulfilled' ? paymentsResult.value : [];
+
+    // Helper to safely mark order as cancelled if unpaid
+    const cancelOrderIfUnpaid = async (note: string) => {
+      try {
+        const fresh = await prisma.order.findUnique({
+          where: { id: order.id },
+          select: { paymentStatus: true, status: true },
+        });
+        if (fresh && fresh.paymentStatus !== 'paid') {
+          await prisma.order.update({
+            where: { id: order.id },
+            data: {
+              paymentStatus: 'failed',
+              status: 'cancelled',
+            },
+          });
+          await prisma.orderStatusHistory.create({
+            data: {
+              orderId: order.id,
+              oldStatus: fresh.status,
+              newStatus: 'cancelled',
+              changedBy: 'system',
+              note,
+            },
+          });
+        }
+      } catch (err) {
+        console.error('Failed to mark order as cancelled:', err);
+      }
+    };
+
+    // 4. Check if payment succeeded
+    const isPaidInOrder = cfStatus?.order_status === 'PAID';
+    const successfulPayment = payments.find((p) => p.payment_status === 'SUCCESS');
+
+    if (isPaidInOrder || successfulPayment) {
+      const paymentId =
+        successfulPayment?.cf_payment_id?.toString() || cfStatus?.cf_order_id?.toString() || null;
+
       await prisma.$transaction(async (tx) => {
-        // Update order
         await tx.order.update({
           where: { id: order.id },
           data: {
             paymentStatus: 'paid',
-            paymentGatewayPaymentId: cfStatus.cf_order_id?.toString() || null,
+            paymentGatewayPaymentId: paymentId,
             status: 'placed',
           },
         });
 
-        // Record status history
         await tx.orderStatusHistory.create({
           data: {
             orderId: order.id,
@@ -105,7 +142,6 @@ export async function POST(request: Request) {
           },
         });
 
-        // Decrement stock for each item
         for (const item of order.items) {
           if (item.variantId && item.variantId !== 'default') {
             await tx.productVariant.updateMany({
@@ -115,7 +151,6 @@ export async function POST(request: Request) {
           }
         }
 
-        // Increment coupon usage
         if (order.couponCode) {
           await tx.coupon.update({
             where: { code: order.couponCode },
@@ -152,8 +187,7 @@ export async function POST(request: Request) {
           discount: order.discount,
           couponCode: order.couponCode,
           paymentMethod: order.paymentProvider || 'Cashfree',
-          paymentGatewayPaymentId:
-            order.paymentGatewayPaymentId || cfStatus.cf_order_id?.toString() || undefined,
+          paymentGatewayPaymentId: paymentId || undefined,
           paymentStatus: 'paid',
           shippingAddress: address,
           items: mappedItems,
@@ -168,45 +202,103 @@ export async function POST(request: Request) {
         message: 'Payment verified successfully',
         orderId: order.id,
         publicOrderId: order.publicOrderId,
+        amount: order.total,
         status: 'paid',
       });
-    } else if (cfStatus.order_status === 'ACTIVE') {
-      // Payment is still pending
-      return NextResponse.json({
-        success: true,
-        message: 'Payment is being processed',
-        orderId: order.id,
-        publicOrderId: order.publicOrderId,
-        status: 'pending',
-      });
-    } else {
-      // EXPIRED or TERMINATED
-      await prisma.order.update({
-        where: { id: order.id },
-        data: {
-          paymentStatus: 'failed',
-          status: 'cancelled',
-        },
-      });
+    }
 
-      await prisma.orderStatusHistory.create({
-        data: {
+    // 5. Inspect specific payment attempts from Cashfree
+    const latestPayment = payments.length > 0 ? payments[payments.length - 1] : null;
+
+    if (latestPayment) {
+      if (latestPayment.payment_status === 'USER_DROPPED') {
+        await cancelOrderIfUnpaid('User cancelled payment during checkout');
+        return NextResponse.json({
+          success: false,
+          status: 'failed',
+          failureType: 'cancelled',
+          message: 'Payment was cancelled. No amount was debited from your account.',
           orderId: order.id,
-          oldStatus: order.status,
-          newStatus: 'cancelled',
-          changedBy: 'system',
-          note: `Payment ${cfStatus.order_status.toLowerCase()} via Cashfree`,
-        },
-      });
+          publicOrderId: order.publicOrderId,
+        });
+      }
 
+      if (latestPayment.payment_status === 'CANCELLED') {
+        await cancelOrderIfUnpaid('Payment was cancelled');
+        return NextResponse.json({
+          success: false,
+          status: 'failed',
+          failureType: 'cancelled',
+          message:
+            'Payment was cancelled. If any amount was debited, it will be refunded automatically within 3-5 business days.',
+          orderId: order.id,
+          publicOrderId: order.publicOrderId,
+        });
+      }
+
+      if (latestPayment.payment_status === 'FAILED' || latestPayment.payment_status === 'VOID') {
+        const failureReason =
+          latestPayment.error_details?.error_description ||
+          latestPayment.payment_message ||
+          'Payment attempt failed or was declined by your bank/UPI provider.';
+
+        await cancelOrderIfUnpaid(`Payment failed: ${failureReason}`);
+        return NextResponse.json({
+          success: false,
+          status: 'failed',
+          failureType: 'declined',
+          message: failureReason,
+          orderId: order.id,
+          publicOrderId: order.publicOrderId,
+        });
+      }
+
+      if (latestPayment.payment_status === 'PENDING') {
+        return NextResponse.json({
+          success: true,
+          status: 'pending',
+          message: 'Payment is awaiting confirmation from your bank or UPI provider.',
+          orderId: order.id,
+          publicOrderId: order.publicOrderId,
+        });
+      }
+    }
+
+    // 6. Check overall Cashfree order status
+    if (cfStatus && cfStatus.order_status !== 'ACTIVE' && cfStatus.order_status !== 'PAID') {
+      await cancelOrderIfUnpaid(`Cashfree order ${cfStatus.order_status.toLowerCase()}`);
       return NextResponse.json({
         success: false,
-        message: 'Payment failed or expired. Please try again.',
+        status: 'failed',
+        failureType: 'expired',
+        message: 'Payment session expired or was terminated. Please retry checkout.',
         orderId: order.id,
         publicOrderId: order.publicOrderId,
-        status: 'failed',
       });
     }
+
+    // 7. Cashfree order is ACTIVE but no payment was completed (customer returned without paying)
+    if (attempt >= 1) {
+      await cancelOrderIfUnpaid('No payment completed; customer exited checkout');
+      return NextResponse.json({
+        success: false,
+        status: 'failed',
+        failureType: 'cancelled',
+        message: 'No payment was completed. The checkout session was cancelled or closed.',
+        orderId: order.id,
+        publicOrderId: order.publicOrderId,
+      });
+    }
+
+    // For attempt === 0, give Cashfree 1 brief poll opportunity (in case of slight network latency)
+    return NextResponse.json({
+      success: true,
+      status: 'pending',
+      isAwaitingPayment: true,
+      message: 'Checking for payment confirmation...',
+      orderId: order.id,
+      publicOrderId: order.publicOrderId,
+    });
   } catch (error) {
     console.error('Verify payment error:', error);
     return NextResponse.json(

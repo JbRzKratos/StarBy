@@ -93,6 +93,26 @@ export async function createCashfreeOrder(
   return response.json() as Promise<CashfreeOrderResponse>;
 }
 
+export interface CashfreePaymentEntity {
+  cf_payment_id?: string | number;
+  order_id?: string;
+  entity?: string;
+  payment_currency?: string;
+  payment_amount?: number;
+  payment_time?: string;
+  payment_completion_time?: string;
+  payment_status: 'SUCCESS' | 'FAILED' | 'PENDING' | 'USER_DROPPED' | 'CANCELLED' | 'VOID' | string;
+  payment_message?: string;
+  payment_group?: string;
+  payment_method?: Record<string, unknown>;
+  error_details?: {
+    error_code?: string;
+    error_description?: string;
+    error_reason?: string;
+    error_source?: string;
+  };
+}
+
 // ─── Get Order Status (Server-side verification) ────────────────────────────
 
 export async function getCashfreeOrderStatus(orderId: string): Promise<CashfreePaymentStatus> {
@@ -105,6 +125,7 @@ export async function getCashfreeOrderStatus(orderId: string): Promise<CashfreeP
       'x-client-secret': secretKey,
       'x-api-version': CASHFREE_API_VERSION,
     },
+    cache: 'no-store',
   });
 
   if (!response.ok) {
@@ -113,6 +134,30 @@ export async function getCashfreeOrderStatus(orderId: string): Promise<CashfreeP
   }
 
   return response.json() as Promise<CashfreePaymentStatus>;
+}
+
+// ─── Get Order Payments (All transaction attempts) ──────────────────────────
+
+export async function getCashfreeOrderPayments(orderId: string): Promise<CashfreePaymentEntity[]> {
+  const { appId, secretKey, baseUrl } = getCashfreeConfig();
+
+  const response = await fetch(`${baseUrl}/orders/${orderId}/payments`, {
+    method: 'GET',
+    headers: {
+      'x-client-id': appId,
+      'x-client-secret': secretKey,
+      'x-api-version': CASHFREE_API_VERSION,
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.warn(`Cashfree order payments check failed ${response.status}: ${errorText}`);
+    return [];
+  }
+
+  return response.json() as Promise<CashfreePaymentEntity[]>;
 }
 
 // ─── Webhook Signature Verification ─────────────────────────────────────────

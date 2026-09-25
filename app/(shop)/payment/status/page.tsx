@@ -11,8 +11,12 @@ function PaymentStatusContent() {
   const router = useRouter();
   const clearCart = useCartStore((s) => s.clearCart);
 
-  const orderId = searchParams.get('order_id');
+  const orderId =
+    searchParams.get('order_id') || searchParams.get('orderId') || searchParams.get('cf_order_id');
   const [status, setStatus] = useState<'verifying' | 'paid' | 'pending' | 'failed'>('verifying');
+  const [failureType, setFailureType] = useState<'cancelled' | 'declined' | 'expired' | 'error'>(
+    'error',
+  );
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [orderDetails, setOrderDetails] = useState<{
     orderId?: string;
@@ -23,47 +27,67 @@ function PaymentStatusContent() {
   useEffect(() => {
     if (!orderId) {
       setStatus('failed');
+      setFailureType('error');
       setErrorMessage('No order reference found in payment response.');
+      return;
+    }
+
+    // Check if Cashfree return URL query parameters explicitly indicate drop/cancellation
+    const txStatus = (
+      searchParams.get('txStatus') ||
+      searchParams.get('payment_status') ||
+      ''
+    ).toUpperCase();
+    if (txStatus === 'CANCELLED' || txStatus === 'USER_DROPPED') {
+      setStatus('failed');
+      setFailureType('cancelled');
+      setErrorMessage(
+        'Payment was cancelled. Your cart has been kept intact so you can retry whenever ready.',
+      );
       return;
     }
 
     let isMounted = true;
     let pollCount = 0;
-    const maxPolls = 5;
+    const maxPolls = 2; // At most 2 checks (~5s total), no 18-second endless wait
 
     async function checkPayment() {
       try {
         const res = await fetch('/api/verify-payment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cashfreeOrderId: orderId }),
+          body: JSON.stringify({ cashfreeOrderId: orderId, attempt: pollCount }),
         });
 
         const data = await res.json();
 
         if (!isMounted) return;
 
-        if (data.success && data.status === 'paid') {
+        if (data.status === 'paid' || (data.success && data.status === 'paid')) {
           setStatus('paid');
           setOrderDetails({
             orderId: data.orderId,
             publicOrderId: data.publicOrderId,
             amount: data.amount,
           });
-          // Clear cart on successful payment
+          // ONLY clear cart on verified payment
           clearCart();
+        } else if (data.status === 'failed' || (!data.success && data.status !== 'pending')) {
+          setStatus('failed');
+          setFailureType(data.failureType || 'declined');
+          setErrorMessage(data.message || 'Payment was cancelled or could not be completed.');
+          // NOTE: Do NOT clear cart on failed/cancelled payment so user can retry
         } else if (data.status === 'pending') {
           if (pollCount < maxPolls) {
             pollCount++;
-            setTimeout(checkPayment, 3000);
+            setTimeout(checkPayment, 2500);
           } else {
-            setStatus('pending');
-            setOrderDetails({
-              orderId: data.orderId,
-              publicOrderId: data.publicOrderId,
-              amount: data.amount,
-            });
-            clearCart();
+            // Reached max polls with no confirmed payment, conclude transaction was not completed
+            setStatus('failed');
+            setFailureType('cancelled');
+            setErrorMessage(
+              'No payment confirmation was received from Cashfree. Your cart has been kept intact so you can retry checkout.',
+            );
           }
         } else {
           setStatus('failed');
@@ -73,7 +97,9 @@ function PaymentStatusContent() {
         if (!isMounted) return;
         console.error('Payment verification error:', err);
         setStatus('failed');
-        setErrorMessage('Network error while verifying payment status.');
+        setErrorMessage(
+          'Network error while verifying payment status. Please check your connection.',
+        );
       }
     }
 
@@ -82,7 +108,7 @@ function PaymentStatusContent() {
     return () => {
       isMounted = false;
     };
-  }, [orderId, clearCart]);
+  }, [orderId, searchParams, clearCart]);
 
   return (
     <main className="min-h-screen bg-[#0A0A0A] text-[#F5F1EA] pt-36 md:pt-44 pb-24 flex items-center justify-center px-4 sm:px-6">
@@ -106,6 +132,21 @@ function PaymentStatusContent() {
             <p className="font-mono text-xs text-[#F5F1EA]/40">
               Please do not refresh or close this window.
             </p>
+            <div className="pt-2 border-t border-white/5">
+              <button
+                type="button"
+                onClick={() => {
+                  setStatus('failed');
+                  setFailureType('cancelled');
+                  setErrorMessage(
+                    'You cancelled or exited payment. Your cart has been saved so you can retry whenever you are ready.',
+                  );
+                }}
+                className="font-mono text-xs text-[#F5F1EA]/50 hover:text-[#F5F1EA] underline underline-offset-4 transition-colors"
+              >
+                Cancelled or closed payment window? Click here to return
+              </button>
+            </div>
           </div>
         )}
 
@@ -264,14 +305,16 @@ function PaymentStatusContent() {
             </div>
             <div>
               <span className="font-mono text-xs text-rose-400 font-bold uppercase tracking-[0.25em] block mb-2">
-                Transaction Incomplete
+                {failureType === 'cancelled' ? 'Payment Cancelled' : 'Transaction Incomplete'}
               </span>
               <h1 className="font-display text-3xl font-black uppercase tracking-tight text-[#F5F1EA]">
-                Payment Failed
+                {failureType === 'cancelled' ? 'Payment Cancelled' : 'Payment Failed'}
               </h1>
               <p className="font-mono text-sm text-[#F5F1EA]/70 mt-3 leading-relaxed">
                 {errorMessage ||
-                  'The payment was cancelled or declined by your bank. If amount was debited, it will be refunded within 3-5 days.'}
+                  (failureType === 'cancelled'
+                    ? 'The payment was cancelled or closed before completion. No amount was debited. Your items are still safely saved in your cart.'
+                    : 'The payment was declined or could not be completed by your bank. If amount was debited, it will be refunded within 3-5 business days.')}
               </p>
             </div>
 
@@ -280,7 +323,7 @@ function PaymentStatusContent() {
                 onClick={() => router.push('/checkout')}
                 className="flex-1 bg-[#0057FF] hover:bg-[#0046CC] text-[#F5F1EA] font-mono text-xs font-bold uppercase tracking-[0.2em] py-4 rounded-lg transition-all text-center"
               >
-                Retry Payment
+                Retry Checkout
               </button>
               <Link
                 href="/cart"
