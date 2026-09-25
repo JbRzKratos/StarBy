@@ -38,6 +38,18 @@ export interface CartCustomization {
   binding?: string | undefined;
   document?: unknown;
   pagesData?: unknown;
+
+  // Wall Studio fields
+  isWallProduct?: boolean | undefined;
+  layoutName?: string | undefined;
+  layoutSlug?: string | undefined;
+  layoutId?: string | undefined;
+  physicalPrintCount?: number | undefined;
+  coverageLabel?: string | undefined;
+  frameMaterial?: string | undefined;
+  finishType?: string | undefined;
+  slotsData?: unknown;
+
   [key: string]: unknown;
 }
 

@@ -307,9 +307,9 @@ export function CartDrawer() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                          {Boolean((item.customization as Record<string, any>)?.isWallProduct) && (
+                          {Boolean(item.customization?.isWallProduct) && (
                             <Link
-                              href={`/wall-studio?layout=${(item.customization as Record<string, any>)?.layoutSlug || 'stepped-hero'}`}
+                              href={`/wall-studio?layout=${item.customization?.layoutSlug || 'stepped-hero'}`}
                               onClick={() => setCartOpen(false)}
                               className="font-mono text-[10px] text-[#3B5EFF] hover:underline uppercase tracking-wider"
                             >
@@ -581,9 +581,9 @@ export function CartDrawer() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                          {Boolean((item.customization as Record<string, any>)?.isWallProduct) && (
+                          {Boolean(item.customization?.isWallProduct) && (
                             <Link
-                              href={`/wall-studio?layout=${(item.customization as Record<string, any>)?.layoutSlug || 'stepped-hero'}`}
+                              href={`/wall-studio?layout=${item.customization?.layoutSlug || 'stepped-hero'}`}
                               onClick={() => setCartOpen(false)}
                               className="font-mono text-caption text-[#3B5EFF] hover:underline uppercase tracking-wider"
                             >

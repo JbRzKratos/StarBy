@@ -3,10 +3,49 @@
 import { useState } from 'react';
 import { Download, CheckCircle2, Layers, FileJson } from 'lucide-react';
 
+interface CustomizationSlot {
+  id: string;
+  slotType?: string;
+  size?: string;
+  orientation?: string;
+  physicalWidthMm?: number;
+  physicalHeightMm?: number;
+  splitGroupId?: string;
+  panelIndex?: number;
+  panelCount?: number;
+}
+
+interface CustomizationSelection {
+  poster?: {
+    title?: string;
+    imageUrl?: string;
+    thumbnailUrl?: string;
+    size?: string;
+    orientation?: string;
+    theme?: string;
+  };
+  customImage?: {
+    url?: string;
+    crop?: Record<string, unknown> | null;
+  };
+  splitGroupId?: string;
+  panelIndex?: number;
+}
+
 interface WallProductionManifestProps {
   orderId: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  customization: any;
+  customization?: {
+    isWallProduct?: boolean;
+    layoutId?: string;
+    layoutName?: string;
+    layoutVersion?: number;
+    physicalPrintCount?: number;
+    logicalArtworkCount?: number;
+    coverageLabel?: string;
+    selections?: Record<string, CustomizationSelection>;
+    slots?: CustomizationSlot[];
+    [key: string]: unknown;
+  } | null;
 }
 
 export function WallProductionManifest({ orderId, customization }: WallProductionManifestProps) {
@@ -28,7 +67,6 @@ export function WallProductionManifest({ orderId, customization }: WallProductio
   } = customization;
 
   // Build the list of physical prints from slots & selections
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const printsList: Array<{
     panelNumber: number;
     slotId: string;
@@ -43,14 +81,13 @@ export function WallProductionManifest({ orderId, customization }: WallProductio
     panelIndex?: number;
     panelCount?: number;
     isCustomUpload: boolean;
-    crop?: any;
+    crop?: Record<string, unknown> | null;
     theme?: string;
   }> = [];
 
   // If slots array exists in customization snapshot:
   if (Array.isArray(slots) && slots.length > 0) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    slots.forEach((slot: any, idx: number) => {
+    slots.forEach((slot, idx) => {
       const sel = selections[slot.id];
       const isCustom = Boolean(sel?.customImage);
       const artwork = sel?.poster;

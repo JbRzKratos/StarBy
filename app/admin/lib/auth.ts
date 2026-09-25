@@ -39,10 +39,12 @@ export const requireStaff = cache(async (): Promise<AdminUser> => {
       error &&
       typeof error === 'object' &&
       'digest' in error &&
-      typeof (error as { digest?: string }).digest === 'string' &&
-      (error as { digest: string }).digest.startsWith('NEXT_REDIRECT')
+      typeof (error as { digest?: string }).digest === 'string'
     ) {
-      throw error;
+      const digest = (error as { digest: string }).digest;
+      if (digest.startsWith('NEXT_REDIRECT') || digest === 'DYNAMIC_SERVER_USAGE') {
+        throw error;
+      }
     }
     console.error('[AdminAuth] Error in requireStaff:', error);
     redirect('/login');

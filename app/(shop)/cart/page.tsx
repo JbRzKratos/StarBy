@@ -112,29 +112,24 @@ export default function CartPage() {
                     <div className="flex-1 flex flex-col justify-between">
                       <div className="flex justify-between items-start gap-4">
                         <div>
-                          {(item.customization as any)?.isWallProduct ? (
+                          {item.customization?.isWallProduct ? (
                             <div className="space-y-1">
                               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#0057FF]/20 border border-[#0057FF]/30 text-[#0057FF] text-[10px] font-mono font-bold uppercase tracking-wider">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#0057FF] animate-pulse" />
                                 Wall Studio Setup
                               </span>
                               <h3 className="font-display text-lg sm:text-xl font-bold uppercase tracking-tight text-[#F5F1EA]">
-                                {String((item.customization as any).layoutName || displayName)}
+                                {item.customization.layoutName || displayName}
                               </h3>
                               <p className="font-mono text-xs text-[#F5F1EA]/70">
                                 <strong className="text-white">
-                                  {Number((item.customization as any).physicalPrintCount || 15)}{' '}
-                                  Physical Prints
+                                  {item.customization.physicalPrintCount || 15} Physical Prints
                                 </strong>{' '}
                                 · Coverage:{' '}
-                                {String(
-                                  (item.customization as any).coverageLabel ||
-                                    item.size ||
-                                    '160 × 105 cm',
-                                )}
+                                {item.customization.coverageLabel || item.size || '160 × 105 cm'}
                               </p>
                               <Link
-                                href={`/wall-studio?layout=${(item.customization as any).layoutSlug || (item.customization as any).layoutId || 'stepped-hero'}`}
+                                href={`/wall-studio?layout=${item.customization.layoutSlug || item.customization.layoutId || 'stepped-hero'}`}
                                 className="inline-flex items-center gap-1 text-[11px] font-mono text-[#0057FF] hover:underline pt-1"
                               >
                                 ✎ Edit Wall Composition →

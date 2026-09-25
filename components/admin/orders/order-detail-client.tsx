@@ -11,6 +11,21 @@ import {
   updateOrderTracking,
 } from '@/app/admin/lib/actions';
 import { WallProductionManifest } from './wall-production-manifest';
+interface MagazineElementSummary {
+  type?: string;
+  src?: string;
+  text?: string;
+  content?: string;
+  name?: string;
+  label?: string;
+  [key: string]: unknown;
+}
+
+interface MagazinePageSummary {
+  pageNumber?: number;
+  elements?: MagazineElementSummary[];
+  [key: string]: unknown;
+}
 
 type OrderStatus = 'placed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
 
@@ -592,10 +607,9 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
 
                             {/* Render customer page images and text */}
                             {(() => {
-                              const pages =
-                                item.customization.pagesData ||
+                              const pages = (item.customization.pagesData ||
                                 item.customization.document?.pages ||
-                                [];
+                                []) as MagazinePageSummary[];
                               if (!Array.isArray(pages) || pages.length === 0) return null;
 
                               return (
@@ -604,13 +618,11 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                                     Customer Uploaded Assets & Text per Page:
                                   </span>
                                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
-                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                    {pages.map((p: any, pIdx: number) => {
+                                    {pages.map((p, pIdx) => {
                                       const pageNum = p.pageNumber || pIdx + 1;
-                                      const elements = p.elements || [];
-                                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                      const elements: MagazineElementSummary[] = p.elements || [];
                                       const images = elements.filter(
-                                        (el: any) =>
+                                        (el) =>
                                           (el.src &&
                                             typeof el.src === 'string' &&
                                             el.src.trim() !== '') ||
@@ -618,9 +630,8 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                                             typeof el.content === 'string' &&
                                             el.type === 'image'),
                                       );
-                                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                       const texts = elements.filter(
-                                        (el: any) =>
+                                        (el) =>
                                           (el.text &&
                                             typeof el.text === 'string' &&
                                             el.text.trim() !== '') ||
@@ -644,9 +655,8 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                                           {/* Images */}
                                           {images.length > 0 && (
                                             <div className="flex flex-wrap gap-2 pt-1">
-                                              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                              {images.map((img: any, iIdx: number) => {
-                                                const src = img.src || img.content;
+                                              {images.map((img, iIdx) => {
+                                                const src = (img.src || img.content) as string;
                                                 return (
                                                   <div key={iIdx} className="space-y-1">
                                                     <a
@@ -682,9 +692,8 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                                           {/* Texts */}
                                           {texts.length > 0 && (
                                             <div className="space-y-1 pt-1">
-                                              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                              {texts.map((t: any, tIdx: number) => {
-                                                const textVal = t.text || t.content;
+                                              {texts.map((t, tIdx) => {
+                                                const textVal = (t.text || t.content) as string;
                                                 return (
                                                   <div
                                                     key={tIdx}
