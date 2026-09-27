@@ -282,7 +282,9 @@ export function AdminBulkOrdersClient({ initialOrders }: AdminBulkOrdersClientPr
           <div>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
+              onChange={(e) =>
+                setSortBy(e.target.value as 'newest' | 'oldest' | 'delivery' | 'quantity')
+              }
               className="w-full bg-charcoal border border-smoke/40 focus:border-cobalt px-3 py-2 text-xs font-mono text-bone rounded-lg outline-none cursor-pointer"
             >
               <option value="newest">Sort: Newest First</option>

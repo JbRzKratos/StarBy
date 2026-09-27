@@ -36,6 +36,9 @@ export default async function AdminBulkOrderDetailPage({ params }: PageProps) {
       messages: {
         orderBy: { createdAt: 'asc' },
       },
+      emailEvents: {
+        orderBy: { createdAt: 'desc' },
+      },
     },
   });
 

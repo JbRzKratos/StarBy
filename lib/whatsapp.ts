@@ -19,6 +19,7 @@ export function getWhatsappLink(message: string): string {
 
 export interface BulkOrderSummaryForWhatsApp {
   requestId?: string;
+  customerName?: string;
   orderType?: string;
   companyName?: string;
   eventName?: string;
@@ -31,44 +32,32 @@ export interface BulkOrderSummaryForWhatsApp {
 }
 
 export function formatBulkOrderWhatsappMessage(summary: BulkOrderSummaryForWhatsApp): string {
-  const lines: string[] = [
-    'Hi Fregoro Studios, I am interested in a bulk custom apparel order.',
-    '',
-  ];
+  const lines: string[] = ['Hi Fregoro Studios,', '', 'I have submitted a bulk order request.', ''];
 
   if (summary.requestId) {
-    lines.push(`• Request ID: ${summary.requestId}`);
+    lines.push(`Request ID: ${summary.requestId}`);
   }
-  if (summary.orderType) {
-    lines.push(`• Order Type: ${summary.orderType}`);
+  if (summary.customerName) {
+    lines.push(`Customer: ${summary.customerName}`);
   }
   if (summary.companyName) {
-    lines.push(`• Company / Organization: ${summary.companyName}`);
+    lines.push(`Company: ${summary.companyName}`);
   }
-  if (summary.eventName) {
-    lines.push(`• Purpose / Event: ${summary.eventName}`);
+  if (summary.orderType) {
+    lines.push(`Order Type: ${summary.orderType}`);
   }
   if (summary.apparelTypes && summary.apparelTypes.length > 0) {
-    lines.push(`• Apparel: ${summary.apparelTypes.join(', ')}`);
-  }
-  if (summary.colours && summary.colours.length > 0) {
-    lines.push(`• Colours: ${summary.colours.join(', ')}`);
+    lines.push(`Apparel: ${summary.apparelTypes.join(', ')}`);
   }
   if (summary.totalQuantity && summary.totalQuantity > 0) {
-    lines.push(`• Total Quantity: ${summary.totalQuantity} pcs`);
-  }
-  if (summary.printingMethod) {
-    lines.push(`• Printing: ${summary.printingMethod}`);
+    lines.push(`Quantity: ${summary.totalQuantity}`);
   }
   if (summary.requiredDate) {
-    lines.push(`• Required Date: ${summary.requiredDate}`);
-  }
-  if (summary.city) {
-    lines.push(`• City: ${summary.city}`);
+    lines.push(`Required Date: ${summary.requiredDate}`);
   }
 
   lines.push('');
-  lines.push('I would like to discuss this order and receive a quotation.');
+  lines.push("I'd like to discuss the order with your team.");
 
   return lines.join('\n');
 }

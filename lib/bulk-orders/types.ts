@@ -247,3 +247,175 @@ export interface BulkOrderFormState {
   };
   contactPreference: 'whatsapp' | 'phone' | 'email';
 }
+
+export interface BulkOrderQuoteItemData {
+  id: string;
+  apparelType: string;
+  unitPrice: number;
+  quantity: number;
+  totalPrice: number;
+  fabric?: string | null;
+  printingMethod?: string | null;
+}
+
+export interface BulkOrderQuoteData {
+  id: string;
+  version: number;
+  status: string;
+  currency: string;
+  subtotal: number;
+  garmentPrice?: number | null;
+  printingPrice?: number | null;
+  printCost?: number;
+  setupFee?: number;
+  packagingFee?: number;
+  urgencyFee?: number;
+  shippingFee?: number;
+  discount?: number;
+  taxAmount?: number;
+  tax?: number;
+  totalAmount?: number;
+  total?: number;
+  estimatedDays?: number | null;
+  validUntil?: string | null;
+  expiresAt?: string | Date | null;
+  acceptedAt?: string | Date | null;
+  notes?: string | null;
+  rejectionReason?: string | null;
+  paymentGatewayPaymentId?: string | null;
+  paidAt?: string | Date | null;
+  createdAt: string | Date;
+  items?: BulkOrderQuoteItemData[];
+}
+
+export interface BulkOrderMessageData {
+  id: string;
+  sender?: string;
+  senderRole?: string | null;
+  senderName?: string | null;
+  message?: string;
+  content?: string;
+  attachments?: string | null;
+  createdAt: string | Date;
+}
+
+export interface BulkOrderItemData {
+  id: string;
+  apparelType: string;
+  fabric?: string | null;
+  gsm?: string | null;
+  branding?: string | null;
+  packaging?: string | null;
+  packagingNotes?: string | null;
+  notes?: string | null;
+  printingMethod?: string | null;
+  printingPlacements: string[] | string;
+  designNotes?: string | null;
+  totalQuantity: number;
+  sizeColorMatrix?: unknown;
+  colorRows?: Array<{ color: string; hex?: string; sizes: Record<string, number> }>;
+}
+
+export interface BulkOrderArtworkData {
+  id: string;
+  placement: string;
+  label?: string | null;
+  fileUrl: string;
+  fileName: string;
+  fileType: string;
+  fileSize?: number | null;
+  printSize?: string | null;
+  customDimensions?: string | null;
+  dimensionsMm?: string | null;
+  notes?: string | null;
+  status?: string | null;
+  reviewStatus?: string | null;
+  reviewNotes?: string | null;
+}
+
+export interface BulkOrderActivityLogData {
+  id: string;
+  action: string;
+  actorRole?: string;
+  actorName?: string;
+  details?: string | null;
+  createdAt: string | Date;
+}
+
+export interface BulkOrderStatusHistoryData {
+  id?: string;
+  oldStatus?: string | null;
+  newStatus: string;
+  reason?: string | null;
+  note?: string | null;
+  changedBy?: string | null;
+  createdAt: string | Date;
+}
+
+export interface BulkOrderAddressData {
+  name?: string;
+  company?: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  zip?: string;
+  country?: string;
+  [key: string]: unknown;
+}
+
+export interface BulkOrderEmailEventData {
+  id: string;
+  type: string;
+  recipient: string;
+  subject: string;
+  providerMessageId?: string | null;
+  status: string;
+  error?: string | null;
+  createdAt: string | Date;
+}
+
+export interface BulkOrderDetailData {
+  id: string;
+  requestNumber: string;
+  orderType: string;
+  eventName?: string | null;
+  companyName?: string | null;
+  contactName: string;
+  phone: string;
+  email: string;
+  status: string;
+  estimatedQuantity?: number | null;
+  totalQuantity?: number;
+  requiredDeliveryDate?: string | Date | null;
+  eventDate?: string | Date | null;
+  isUrgent: boolean;
+  websiteOrSocial?: string | null;
+  budgetRange?: string | null;
+  customerNotes?: string | null;
+  notes?: string | null;
+  printingMethodPreference?: string | null;
+  generalDesignNotes?: string | null;
+  brandingOption?: string | null;
+  brandingNotes?: string | null;
+  packagingOption?: string | null;
+  packagingNotes?: string | null;
+  shippingMethod?: string | null;
+  fulfillmentMethod?: string | null;
+  deliveryAddress?: unknown;
+  shippingAddress?: unknown;
+  contactPreference?: string | null;
+  internalNotes?: string | null;
+  adminNotes?: string | null;
+  assignedTo?: string | null;
+  targetPricePerUnit?: number | null;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  items: BulkOrderItemData[];
+  artworks: BulkOrderArtworkData[];
+  quotes: BulkOrderQuoteData[];
+  messages: BulkOrderMessageData[];
+  activityLogs?: BulkOrderActivityLogData[];
+  statusHistory?: BulkOrderStatusHistoryData[];
+  emailEvents?: BulkOrderEmailEventData[];
+}

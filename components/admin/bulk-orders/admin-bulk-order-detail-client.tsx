@@ -20,17 +20,27 @@ import {
   Send,
   CreditCard,
 } from 'lucide-react';
-import { STATUS_LABELS, type ArtworkReviewStatus } from '@/lib/bulk-orders/types';
+import {
+  STATUS_LABELS,
+  type ArtworkReviewStatus,
+  type BulkOrderDetailData,
+  type BulkOrderItemData,
+  type BulkOrderArtworkData,
+  type BulkOrderQuoteData,
+  type BulkOrderMessageData,
+  type BulkOrderStatusHistoryData,
+  type BulkOrderAddressData,
+} from '@/lib/bulk-orders/types';
 import { formatAdminToCustomerWhatsappMessage, getWhatsappLink } from '@/lib/whatsapp';
 
 interface AdminBulkOrderDetailClientProps {
-  request: any;
+  request: BulkOrderDetailData;
 }
 
 export function AdminBulkOrderDetailClient({
   request: initialRequest,
 }: AdminBulkOrderDetailClientProps) {
-  const [request, setRequest] = useState<any>(initialRequest);
+  const [request, setRequest] = useState<BulkOrderDetailData>(initialRequest);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [statusNote, setStatusNote] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>(initialRequest.status);
@@ -55,13 +65,42 @@ export function AdminBulkOrderDetailClient({
   );
   const [validDays, setValidDays] = useState<number>(14);
   const [isCreatingQuote, setIsCreatingQuote] = useState(false);
+  const [isRetryingEmail, setIsRetryingEmail] = useState(false);
+  const [emailRetryMsg, setEmailRetryMsg] = useState<{ text: string; isError?: boolean } | null>(
+    null,
+  );
+
+  const handleRetryEmail = async () => {
+    setIsRetryingEmail(true);
+    setEmailRetryMsg(null);
+    try {
+      const res = await fetch(`/api/admin/bulk-orders/${request.id}/retry-email`, {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setEmailRetryMsg({
+          text: `Notification resent: Admin ${data.adminEmailSent ? 'Sent' : 'Failed'}, Customer ${data.customerEmailSent ? 'Sent' : 'Failed'}`,
+        });
+      } else {
+        setEmailRetryMsg({
+          text: data.message || 'Failed to resend email.',
+          isError: true,
+        });
+      }
+    } catch {
+      setEmailRetryMsg({ text: 'Network error while retrying email.', isError: true });
+    } finally {
+      setIsRetryingEmail(false);
+    }
+  };
 
   // Artwork status updates
   const [artworkStatuses, setArtworkStatuses] = useState<Record<string, ArtworkReviewStatus>>(
     () => {
       const map: Record<string, ArtworkReviewStatus> = {};
-      request.artworks?.forEach((a: any) => {
-        map[a.id] = a.status;
+      request.artworks?.forEach((a: BulkOrderArtworkData) => {
+        map[a.id] = (a.reviewStatus || a.status || 'received') as ArtworkReviewStatus;
       });
       return map;
     },
@@ -116,8 +155,11 @@ export function AdminBulkOrderDetailClient({
       setAlert({ type: 'success', text: `Status updated to ${selectedStatus}` });
       setStatusNote('');
       await refreshData();
-    } catch (err: any) {
-      setAlert({ type: 'error', text: err.message || 'Status update failed' });
+    } catch (err: unknown) {
+      setAlert({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Status update failed',
+      });
     } finally {
       setIsUpdatingStatus(false);
     }
@@ -141,8 +183,11 @@ export function AdminBulkOrderDetailClient({
       }
       setArtworkStatuses((prev) => ({ ...prev, [artworkId]: newStatus }));
       setAlert({ type: 'success', text: `Artwork marked as ${newStatus}` });
-    } catch (err: any) {
-      setAlert({ type: 'error', text: err.message || 'Failed to update artwork' });
+    } catch (err: unknown) {
+      setAlert({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Failed to update artwork',
+      });
     } finally {
       setUpdatingArtworkId(null);
     }
@@ -190,8 +235,11 @@ export function AdminBulkOrderDetailClient({
         text: `Quote v${nextVersion} created and sent to customer (Total: ₹${quoteTotal.toLocaleString('en-IN')})!`,
       });
       await refreshData();
-    } catch (err: any) {
-      setAlert({ type: 'error', text: err.message || 'Failed to create quote' });
+    } catch (err: unknown) {
+      setAlert({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Failed to create quote',
+      });
     } finally {
       setIsCreatingQuote(false);
     }
@@ -222,8 +270,11 @@ export function AdminBulkOrderDetailClient({
       setMarkNeedMoreInfo(false);
       setAlert({ type: 'success', text: 'Message posted to customer portal.' });
       await refreshData();
-    } catch (err: any) {
-      setAlert({ type: 'error', text: err.message || 'Failed to post message' });
+    } catch (err: unknown) {
+      setAlert({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Failed to post message',
+      });
     } finally {
       setIsSendingMessage(false);
     }
@@ -370,8 +421,13 @@ export function AdminBulkOrderDetailClient({
             </div>
 
             <div className="space-y-6">
-              {request.items?.map((item: any, idx: number) => {
-                const colorRows = (item.colorRows as any[]) || [];
+              {request.items?.map((item: BulkOrderItemData, idx: number) => {
+                const colorRows =
+                  (item.colorRows as Array<{
+                    color: string;
+                    hex?: string;
+                    sizes: Record<string, number>;
+                  }>) || [];
                 const itemTotal = colorRows.reduce(
                   (sum, r) =>
                     sum +
@@ -442,10 +498,10 @@ export function AdminBulkOrderDetailClient({
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-smoke/20">
-                            {colorRows.map((row: any, rIdx: number) => {
+                            {colorRows.map((row, rIdx: number) => {
                               const sizes = row.sizes || {};
                               const rowTotal = Object.values(sizes).reduce(
-                                (sum: number, q: any) => sum + (Number(q) || 0),
+                                (sum: number, q: unknown) => sum + (Number(q) || 0),
                                 0,
                               );
                               return (
@@ -495,7 +551,7 @@ export function AdminBulkOrderDetailClient({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {request.artworks?.map((art: any) => (
+              {request.artworks?.map((art: BulkOrderArtworkData) => (
                 <div
                   key={art.id}
                   className="border border-smoke/30 rounded-lg p-4 bg-charcoal space-y-3"
@@ -505,7 +561,9 @@ export function AdminBulkOrderDetailClient({
                       {art.placement}
                     </span>
                     <select
-                      value={artworkStatuses[art.id] || art.status}
+                      value={
+                        artworkStatuses[art.id] || art.reviewStatus || art.status || 'received'
+                      }
                       onChange={(e) =>
                         handleUpdateArtworkStatus(art.id, e.target.value as ArtworkReviewStatus)
                       }
@@ -523,6 +581,7 @@ export function AdminBulkOrderDetailClient({
                     <div className="relative aspect-video rounded bg-black/40 border border-smoke/40 overflow-hidden flex items-center justify-center">
                       {art.fileType?.includes('image') ||
                       art.fileName?.match(/\.(png|jpe?g|webp|svg)$/i) ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img
                           src={art.fileUrl}
                           alt={art.fileName}
@@ -573,7 +632,8 @@ export function AdminBulkOrderDetailClient({
 
               {latestQuote && (
                 <span className="font-mono text-xs px-2.5 py-1 rounded bg-cobalt/20 text-cobalt border border-cobalt/40 font-bold">
-                  Active: v{latestQuote.version} (₹{latestQuote.total.toLocaleString('en-IN')})
+                  Active: v{latestQuote.version} (₹
+                  {(latestQuote.total || latestQuote.totalAmount || 0).toLocaleString('en-IN')})
                 </span>
               )}
             </div>
@@ -749,14 +809,15 @@ export function AdminBulkOrderDetailClient({
                   Quote Version History:
                 </span>
                 <div className="space-y-2">
-                  {request.quotes.map((q: any) => (
+                  {request.quotes.map((q: BulkOrderQuoteData) => (
                     <div
                       key={q.id}
                       className="bg-charcoal p-3 rounded border border-smoke/20 flex items-center justify-between text-xs font-mono"
                     >
                       <div className="space-y-0.5">
                         <span className="font-bold text-bone">
-                          Version {q.version} — ₹{q.total.toLocaleString('en-IN')}
+                          Version {q.version} — ₹
+                          {(q.total || q.totalAmount || 0).toLocaleString('en-IN')}
                         </span>
                         <span className="text-[10px] text-pearl block">
                           Created {new Date(q.createdAt).toLocaleDateString('en-IN')} • Status:{' '}
@@ -764,7 +825,8 @@ export function AdminBulkOrderDetailClient({
                         </span>
                       </div>
                       <span className="text-pearl text-[10px]">
-                        Valid till {new Date(q.expiresAt).toLocaleDateString('en-IN')}
+                        Valid till{' '}
+                        {q.expiresAt ? new Date(q.expiresAt).toLocaleDateString('en-IN') : 'N/A'}
                       </span>
                     </div>
                   ))}
@@ -814,6 +876,97 @@ export function AdminBulkOrderDetailClient({
             </div>
           </div>
 
+          {/* Email Notifications & Delivery Status (Sections 26 & 62) */}
+          <div className="bg-graphite border border-smoke/40 rounded-xl p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-display text-base font-bold uppercase tracking-tight text-bone flex items-center gap-2">
+                <Mail className="w-4 h-4 text-cobalt" />
+                <span>Email Notifications</span>
+              </h3>
+              <button
+                type="button"
+                disabled={isRetryingEmail}
+                onClick={handleRetryEmail}
+                className="px-2.5 py-1 rounded bg-smoke/30 hover:bg-smoke/50 text-[11px] font-mono font-bold uppercase tracking-wider text-pearl hover:text-white transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                {isRetryingEmail ? 'Retrying...' : 'Retry Email'}
+              </button>
+            </div>
+
+            {emailRetryMsg && (
+              <div
+                className={`p-2.5 rounded text-xs font-mono ${
+                  emailRetryMsg.isError
+                    ? 'bg-rose-950/40 border border-rose-500/30 text-rose-300'
+                    : 'bg-emerald-950/40 border border-emerald-500/30 text-emerald-300'
+                }`}
+              >
+                {emailRetryMsg.text}
+              </div>
+            )}
+
+            {(() => {
+              const adminEvt = request.emailEvents?.find((e) => e.type === 'bulk_admin');
+              const customerEvt = request.emailEvents?.find((e) => e.type === 'bulk_customer');
+
+              const getBadge = (evt?: typeof adminEvt) => {
+                if (!evt) {
+                  return (
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-smoke/20 text-pearl/60">
+                      Pending
+                    </span>
+                  );
+                }
+                if (evt.status === 'sent' || evt.status === 'delivered') {
+                  return (
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      Sent
+                    </span>
+                  );
+                }
+                if (evt.status === 'bounced') {
+                  return (
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                      Bounced
+                    </span>
+                  );
+                }
+                return (
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                    Failed
+                  </span>
+                );
+              };
+
+              return (
+                <div className="space-y-2 text-xs font-mono">
+                  <div className="flex items-center justify-between p-2.5 rounded bg-charcoal/60 border border-smoke/20">
+                    <div>
+                      <span className="text-bone font-medium block">Admin Notification</span>
+                      <span className="text-[10px] text-pearl/50">fregorostudios@gmail.com</span>
+                    </div>
+                    {getBadge(adminEvt)}
+                  </div>
+
+                  <div className="flex items-center justify-between p-2.5 rounded bg-charcoal/60 border border-smoke/20">
+                    <div>
+                      <span className="text-bone font-medium block">Customer Confirmation</span>
+                      <span className="text-[10px] text-pearl/50">{request.email}</span>
+                    </div>
+                    {getBadge(customerEvt)}
+                  </div>
+
+                  {(adminEvt?.error || customerEvt?.error) && (
+                    <div className="p-2 rounded bg-rose-950/20 border border-rose-500/20 text-[11px] text-rose-300 space-y-1">
+                      {adminEvt?.error && <p>Admin: {adminEvt.error}</p>}
+                      {customerEvt?.error && <p>Customer: {customerEvt.error}</p>}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+
           {/* Delivery & Schedule */}
           <div className="bg-graphite border border-smoke/40 rounded-xl p-5 space-y-4">
             <h3 className="font-display text-base font-bold uppercase tracking-tight text-bone flex items-center gap-2">
@@ -823,28 +976,44 @@ export function AdminBulkOrderDetailClient({
 
             <div className="space-y-2 text-xs font-mono text-pearl">
               <p>
-                Method: <strong className="text-bone uppercase">{request.fulfillmentMethod}</strong>
+                Method:{' '}
+                <strong className="text-bone uppercase">
+                  {request.fulfillmentMethod || request.shippingMethod || 'delivery'}
+                </strong>
               </p>
-              {request.fulfillmentMethod === 'delivery' && request.deliveryAddress ? (
-                <div className="bg-charcoal p-2.5 rounded border border-smoke/30 text-bone space-y-0.5">
-                  <p>{request.deliveryAddress.street}</p>
-                  <p>
-                    {request.deliveryAddress.city}, {request.deliveryAddress.state} -{' '}
-                    {request.deliveryAddress.pincode}
-                  </p>
-                </div>
-              ) : (
-                <p className="text-bone">Self-Pickup at Chennai Production Hub</p>
-              )}
+              {(() => {
+                const rawAddr = request.deliveryAddress || request.shippingAddress;
+                const addr: BulkOrderAddressData | null =
+                  typeof rawAddr === 'object' && rawAddr !== null
+                    ? (rawAddr as BulkOrderAddressData)
+                    : null;
+                const isDelivery =
+                  (request.fulfillmentMethod || request.shippingMethod || 'delivery') ===
+                  'delivery';
+
+                if (isDelivery && addr) {
+                  return (
+                    <div className="bg-charcoal p-2.5 rounded border border-smoke/30 text-bone space-y-0.5">
+                      <p>{addr.street}</p>
+                      <p>
+                        {addr.city}, {addr.state} - {addr.pincode || addr.zip}
+                      </p>
+                    </div>
+                  );
+                }
+                return <p className="text-bone">Self-Pickup at Chennai Production Hub</p>;
+              })()}
               <div className="pt-2 border-t border-smoke/20">
                 <p>
                   Target Delivery Date:{' '}
                   <strong className="text-bone">
-                    {new Date(request.requiredDeliveryDate).toLocaleDateString('en-IN', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })}
+                    {request.requiredDeliveryDate
+                      ? new Date(request.requiredDeliveryDate).toLocaleDateString('en-IN', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })
+                      : 'Flexible'}
                   </strong>
                 </p>
                 {request.eventDate && (
@@ -857,12 +1026,14 @@ export function AdminBulkOrderDetailClient({
           </div>
 
           {/* Customer Special Notes */}
-          {request.notes && (
+          {(request.notes || request.customerNotes) && (
             <div className="bg-graphite border border-smoke/40 rounded-xl p-5 space-y-2">
               <h4 className="font-display text-sm font-bold uppercase text-bone">
                 Customer Notes / Instructions:
               </h4>
-              <p className="text-xs font-mono text-pearl italic">&quot;{request.notes}&quot;</p>
+              <p className="text-xs font-mono text-pearl italic">
+                &quot;{request.notes || request.customerNotes}&quot;
+              </p>
             </div>
           )}
 
@@ -880,7 +1051,7 @@ export function AdminBulkOrderDetailClient({
                 </p>
               )}
 
-              {request.messages?.map((msg: any) => (
+              {request.messages?.map((msg: BulkOrderMessageData) => (
                 <div
                   key={msg.id}
                   className={`p-3 rounded-lg text-xs font-mono space-y-1 ${
@@ -946,7 +1117,7 @@ export function AdminBulkOrderDetailClient({
             </h3>
 
             <div className="space-y-3 relative pl-4 border-l border-smoke/30">
-              {request.statusHistory?.map((h: any, idx: number) => (
+              {request.statusHistory?.map((h: BulkOrderStatusHistoryData, idx: number) => (
                 <div key={h.id || idx} className="space-y-0.5 text-xs font-mono relative">
                   <div className="w-2 h-2 rounded-full bg-cobalt absolute -left-[21px] top-1" />
                   <div className="flex items-center justify-between text-[10px]">

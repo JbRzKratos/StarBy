@@ -62,6 +62,8 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
   const [isLoadingCatalog, setIsLoadingCatalog] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [confirmedAccuracy, setConfirmedAccuracy] = useState(false);
+  const [emailDeliveryWarning, setEmailDeliveryWarning] = useState(false);
   const [submittedRequest, setSubmittedRequest] = useState<{
     requestId: string;
     requestNumber: string;
@@ -422,11 +424,13 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
           return { ...prev, artworks: [...prev.artworks, newArt] };
         }
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Artwork upload error:', err);
-      setSubmitError(
-        err.message || 'Failed to upload artwork file. Please check file format and size.',
-      );
+      const msg =
+        err instanceof Error
+          ? err.message
+          : 'Failed to upload artwork file. Please check file format and size.';
+      setSubmitError(msg);
     } finally {
       setIsUploading(null);
     }
@@ -442,6 +446,13 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
   // ─── Form Submission ───────────────────────────────────────────────────────
 
   const handleSubmit = async () => {
+    if (!confirmedAccuracy) {
+      setSubmitError(
+        'Please check the confirmation box to verify that your order requirements and artwork are correct before submitting.',
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -458,6 +469,10 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
         throw new Error(data.message || 'Failed to submit quote request');
       }
 
+      if (data.emailStatus && data.emailStatus.customerSent === false) {
+        setEmailDeliveryWarning(true);
+      }
+
       // Clear draft
       try {
         localStorage.removeItem(STORAGE_KEY);
@@ -471,9 +486,11 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
       if (formRef.current) {
         formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Submit quote request error:', err);
-      setSubmitError(err.message || 'Something went wrong while submitting your request.');
+      const msg =
+        err instanceof Error ? err.message : 'Something went wrong while submitting your request.';
+      setSubmitError(msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -483,6 +500,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
   const whatsappPrefilledUrl = getWhatsappLink(
     formatBulkOrderWhatsappMessage({
       requestId: submittedRequest?.requestNumber,
+      customerName: formData.contactName,
       orderType: formData.orderType,
       companyName: formData.companyName,
       eventName: formData.eventName,
@@ -497,7 +515,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
     }),
   );
 
-  // ─── Render Success Confirmation ───────────────────────────────────────────
+  // ─── Render Success Confirmation (Section 31) ──────────────────────────────
 
   if (submittedRequest) {
     return (
@@ -509,21 +527,20 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
 
           <div className="space-y-2">
             <span className="font-mono text-xs font-bold text-emerald-400 tracking-[0.25em] uppercase block">
-              Quote Request Created
+              Request Received
             </span>
             <h2 className="font-display text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
-              We&apos;ve Received Your Request!
+              YOUR REQUEST IS IN
             </h2>
-            <p className="text-sm sm:text-base text-pearl/70 max-w-lg mx-auto font-sans leading-relaxed">
-              Thanks <strong className="text-white">{formData.contactName}</strong>! Our production
-              and pricing specialists are reviewing your requirements and will generate an official
-              itemized quotation.
+            <p className="text-sm sm:text-base text-pearl/80 max-w-lg mx-auto font-sans leading-relaxed">
+              Thanks, <strong className="text-white">{formData.contactName}</strong>. We&apos;ve
+              received your bulk order requirements.
             </p>
           </div>
 
           <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 max-w-md mx-auto text-left space-y-3 font-mono text-xs">
             <div className="flex justify-between items-center pb-2 border-b border-white/5">
-              <span className="text-pearl/50 uppercase">Request Reference</span>
+              <span className="text-pearl/50 uppercase">Request ID</span>
               <span className="text-[#3B5EFF] font-bold text-sm tracking-wider">
                 {submittedRequest.requestNumber}
               </span>
@@ -548,10 +565,18 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
           </div>
 
-          <p className="text-xs text-pearl/50 font-sans max-w-md mx-auto">
-            You will receive quotation alerts on WhatsApp and email. You can also view live status
-            updates or accept your quote through your request link.
-          </p>
+          <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4 max-w-md mx-auto text-center space-y-2">
+            <p className="text-xs text-pearl/80 font-sans leading-relaxed">
+              We&apos;ve received your artwork and order details. Our team will review your request
+              and get back to you on WhatsApp within 24 hours.
+            </p>
+            {emailDeliveryWarning && (
+              <p className="text-[11px] text-amber-300 font-mono">
+                ✦ Your request was received. Our confirmation email is currently delayed. You can
+                still contact us on WhatsApp.
+              </p>
+            )}
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-4 max-w-md mx-auto">
             <a
@@ -561,7 +586,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               className="flex-1 py-3.5 px-6 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-black font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#25D366]/20"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>Talk On WhatsApp</span>
+              <span>CHAT ON WHATSAPP</span>
             </a>
 
             <Link
@@ -569,7 +594,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               className="flex-1 py-3.5 px-6 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] text-white font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2"
             >
               <Eye className="w-4 h-4" />
-              <span>View Request</span>
+              <span>VIEW REQUEST</span>
             </Link>
           </div>
 
@@ -578,7 +603,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               href="/products/all"
               className="text-xs font-mono text-pearl/50 hover:text-white uppercase tracking-wider underline decoration-white/20 hover:decoration-white transition-colors"
             >
-              Continue Browsing Store
+              CONTINUE SHOPPING
             </Link>
           </div>
         </div>
@@ -1070,14 +1095,14 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { id: 'front_only', label: 'Front Only' },
-                  { id: 'back_only', label: 'Back Only' },
-                  { id: 'front_back', label: 'Front + Back' },
+                  { id: 'front_only' as const, label: 'Front Only' },
+                  { id: 'back_only' as const, label: 'Back Only' },
+                  { id: 'front_back' as const, label: 'Front + Back' },
                 ].map((mode) => (
                   <button
                     key={mode.id}
                     type="button"
-                    onClick={() => setPrintPlacementMode(mode.id as any)}
+                    onClick={() => setPrintPlacementMode(mode.id)}
                     className={`py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all ${
                       printPlacementMode === mode.id
                         ? 'bg-[#3B5EFF] border-[#3B5EFF] text-white shadow-lg shadow-[#3B5EFF]/20'
@@ -1789,14 +1814,14 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { id: 'whatsapp', label: 'WhatsApp (Fastest)' },
-                  { id: 'phone', label: 'Phone Call' },
-                  { id: 'email', label: 'Email' },
+                  { id: 'whatsapp' as const, label: 'WhatsApp (Fastest)' },
+                  { id: 'phone' as const, label: 'Phone Call' },
+                  { id: 'email' as const, label: 'Email' },
                 ].map((cp) => (
                   <button
                     key={cp.id}
                     type="button"
-                    onClick={() => setFormData((p) => ({ ...p, contactPreference: cp.id as any }))}
+                    onClick={() => setFormData((p) => ({ ...p, contactPreference: cp.id }))}
                     className={`py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all ${
                       formData.contactPreference === cp.id
                         ? 'bg-[#3B5EFF] border-[#3B5EFF] text-white shadow-md shadow-[#3B5EFF]/20'
@@ -1854,21 +1879,21 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                 Step 06 / 06
               </span>
               <h2 className="font-display text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-                Review Your Bulk Order
+                REVIEW YOUR REQUEST
               </h2>
               <p className="text-xs sm:text-sm text-pearl/70 font-sans">
-                Please double-check all details below. You can submit directly for a quote or
-                discuss live on WhatsApp.
+                Please double-check all details below. Once verified, submit your request to receive
+                an official itemized quotation and digital proofing.
               </p>
             </div>
 
             {/* Summary Grid */}
             <div className="space-y-4 text-xs font-mono">
-              {/* Order Info Section */}
+              {/* 01. Customer & Order Details */}
               <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">
                   <span className="font-display text-sm font-bold uppercase text-white">
-                    01. Order & Contact Details
+                    01. Customer &amp; Order Details
                   </span>
                   <button
                     type="button"
@@ -1895,10 +1920,8 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                     <span className="text-white font-bold">{formData.phone}</span>
                   </div>
                   <div>
-                    <span className="text-pearl/40 block text-[10px] uppercase">Target Date</span>
-                    <span className="text-white font-bold">
-                      {formData.requiredDeliveryDate || 'Flexible'}
-                    </span>
+                    <span className="text-pearl/40 block text-[10px] uppercase">Email</span>
+                    <span className="text-white font-bold">{formData.email}</span>
                   </div>
                   {formData.companyName && (
                     <div>
@@ -1908,10 +1931,24 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   )}
                   {formData.eventName && (
                     <div>
-                      <span className="text-pearl/40 block text-[10px] uppercase">Event</span>
+                      <span className="text-pearl/40 block text-[10px] uppercase">Event Name</span>
                       <span className="text-white">{formData.eventName}</span>
                     </div>
                   )}
+                  <div>
+                    <span className="text-pearl/40 block text-[10px] uppercase">Required Date</span>
+                    <span className="text-white font-bold">
+                      {formData.requiredDeliveryDate || 'Flexible'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-pearl/40 block text-[10px] uppercase">
+                      Contact Preference
+                    </span>
+                    <span className="text-[#25D366] font-bold uppercase">
+                      {formData.contactPreference}
+                    </span>
+                  </div>
                   {formData.isUrgent && (
                     <div className="text-amber-400 font-bold col-span-2">
                       ⚡ Urgent / Priority Order Flagged
@@ -1920,11 +1957,11 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                 </div>
               </div>
 
-              {/* Apparel & Quantities Section */}
+              {/* 02. Apparel, Colours & Exact Size Matrix */}
               <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">
                   <span className="font-display text-sm font-bold uppercase text-white">
-                    02. Apparel & Size Breakdown ({grandTotalQuantity} Pieces Total)
+                    02. Apparel &amp; Size Quantities ({grandTotalQuantity} Pieces Total)
                   </span>
                   <button
                     type="button"
@@ -1939,36 +1976,53 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   {formData.items.map((item, idx) => (
                     <div
                       key={idx}
-                      className="p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-2"
+                      className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-3"
                     >
                       <div className="flex justify-between items-center text-white font-bold">
-                        <span>{item.apparelType}</span>
-                        <span className="text-amber-400">{item.totalQuantity} pcs</span>
+                        <span className="text-sm">
+                          #{idx + 1}. {item.apparelType}
+                        </span>
+                        <span className="text-amber-400 font-mono text-sm">
+                          {item.totalQuantity} PCS
+                        </span>
                       </div>
                       <div className="text-[11px] text-pearl/60">
-                        Fabric: {item.fabric || 'Default'} · Print: {item.printingMethod}
+                        Fabric: {item.fabric || 'Studio Standard'} · GSM: {item.gsm || '240 GSM'} ·
+                        Print Method: {item.printingMethod}
                       </div>
 
-                      <div className="pt-2 space-y-1">
+                      {/* Exact Size/Color Table */}
+                      <div className="space-y-2 pt-1">
                         {item.sizeColorMatrix.map((r, rIdx) => (
                           <div
                             key={rIdx}
-                            className="flex justify-between text-[11px] text-pearl/80"
+                            className="p-2.5 rounded-lg bg-white/[0.02] border border-white/5 space-y-1.5"
                           >
-                            <span className="flex items-center gap-1.5">
-                              <span
-                                className="w-2.5 h-2.5 rounded-full inline-block"
-                                style={{ backgroundColor: r.colorHex || '#121214' }}
-                              />
-                              {r.colorName}:
-                            </span>
-                            <span>
+                            <div className="flex justify-between items-center">
+                              <span className="flex items-center gap-2 font-bold text-white uppercase text-[11px]">
+                                <span
+                                  className="w-3 h-3 rounded-full border border-white/20 inline-block shrink-0"
+                                  style={{ backgroundColor: r.colorHex || '#121214' }}
+                                />
+                                {r.colorName}
+                              </span>
+                              <span className="text-amber-400 font-bold font-mono">
+                                Total: {r.total}
+                              </span>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2 text-[11px]">
                               {Object.entries(r.quantities || {})
                                 .filter(([_, q]) => q > 0)
-                                .map(([sz, q]) => `${sz}:${q}`)
-                                .join(' · ')}{' '}
-                              ({r.total} pcs)
-                            </span>
+                                .map(([sz, q]) => (
+                                  <span
+                                    key={sz}
+                                    className="px-2 py-0.5 rounded bg-black/60 border border-white/10 text-pearl/90"
+                                  >
+                                    <strong className="text-white">{sz}:</strong> {q}
+                                  </span>
+                                ))}
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -1977,46 +2031,71 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                 </div>
               </div>
 
-              {/* Artworks Section */}
+              {/* 03. Artwork & Placements (Replace / Remove actions) */}
               <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">
                   <span className="font-display text-sm font-bold uppercase text-white">
-                    03. Artwork & Placements ({formData.artworks.length} Files)
+                    03. Artwork Dossier ({formData.artworks.length} Files)
                   </span>
                   <button
                     type="button"
                     onClick={() => handleProceedToStep(3)}
                     className="text-[#3B5EFF] hover:underline uppercase text-[11px]"
                   >
-                    Edit ↗
+                    Edit / Add ↗
                   </button>
                 </div>
 
                 {formData.artworks.length === 0 ? (
                   <p className="text-pearl/50 text-xs">
-                    No files uploaded yet. You can submit your artwork now or share it directly over
-                    WhatsApp.
+                    No files uploaded directly. You can submit your artwork now or share it directly
+                    over WhatsApp.
                   </p>
                 ) : (
-                  <div className="flex flex-wrap gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {formData.artworks.map((art, aIdx) => (
                       <div
                         key={aIdx}
-                        className="p-2.5 rounded-xl bg-black/40 border border-white/10 flex items-center gap-2.5"
+                        className="p-3 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between gap-3"
                       >
-                        <div className="w-10 h-10 rounded-lg bg-black border border-white/10 overflow-hidden flex items-center justify-center">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={art.fileUrl}
-                            alt={art.label || ''}
-                            className="max-h-full max-w-full object-contain"
-                          />
-                        </div>
-                        <div>
-                          <div className="font-bold text-white uppercase text-[11px]">
-                            {art.label}
+                        <div className="flex items-center gap-3 overflow-hidden">
+                          <div className="w-12 h-12 rounded-lg bg-black border border-white/10 overflow-hidden flex items-center justify-center shrink-0">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={art.fileUrl}
+                              alt={art.label || ''}
+                              className="max-h-full max-w-full object-contain"
+                            />
                           </div>
-                          <div className="text-[10px] text-pearl/50">{art.fileName}</div>
+                          <div className="overflow-hidden">
+                            <div className="font-bold text-white uppercase text-[11px]">
+                              {art.label || art.placement}
+                            </div>
+                            <div className="text-[10px] text-pearl/50 truncate max-w-[150px]">
+                              {art.fileName}
+                            </div>
+                            <div className="text-[10px] text-pearl/40">
+                              {art.dimensionsMm || art.printSize || 'Standard'}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => handleProceedToStep(3)}
+                            className="text-[10px] text-[#3B5EFF] hover:underline uppercase"
+                          >
+                            Replace
+                          </button>
+                          <span className="text-white/20">|</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveArtwork(art.placement)}
+                            className="text-[10px] text-rose-400 hover:text-rose-300 uppercase"
+                          >
+                            Remove
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -2024,11 +2103,11 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                 )}
               </div>
 
-              {/* Delivery Section */}
-              <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
+              {/* 04. Packaging, Branding & Delivery */}
+              <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">
                   <span className="font-display text-sm font-bold uppercase text-white">
-                    04. Delivery Destination
+                    04. Packaging, Branding &amp; Delivery
                   </span>
                   <button
                     type="button"
@@ -2039,34 +2118,89 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   </button>
                 </div>
 
-                <div className="text-pearl/80 text-xs leading-relaxed">
-                  {formData.shippingMethod === 'pickup' ? (
-                    <div>Pickup at Fregoro Studios Production Facility</div>
-                  ) : (
-                    <div>
-                      {formData.deliveryAddress.name}
-                      {formData.deliveryAddress.company && ` · ${formData.deliveryAddress.company}`}
-                      <br />
-                      {formData.deliveryAddress.street}, {formData.deliveryAddress.city},{' '}
-                      {formData.deliveryAddress.state} - {formData.deliveryAddress.zip}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-pearl/80">
+                  <div>
+                    <span className="text-pearl/40 block text-[10px] uppercase">
+                      Packaging Option
+                    </span>
+                    <span className="text-white">
+                      {PACKAGING_OPTIONS.find((p) => p.id === formData.packagingOption)?.label ||
+                        formData.packagingOption}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-pearl/40 block text-[10px] uppercase">
+                      Custom Labels &amp; Branding
+                    </span>
+                    <span className="text-white">
+                      {BRANDING_OPTIONS.find((b) => b.id === formData.brandingOption)?.label ||
+                        formData.brandingOption}
+                    </span>
+                  </div>
+                  <div className="sm:col-span-2 pt-1 border-t border-white/5">
+                    <span className="text-pearl/40 block text-[10px] uppercase">
+                      Delivery Destination ({formData.shippingMethod})
+                    </span>
+                    {formData.shippingMethod === 'pickup' ? (
+                      <span className="text-white">
+                        Self-Pickup at Fregoro Studios Production Facility (Chennai)
+                      </span>
+                    ) : (
+                      <span className="text-white leading-relaxed block">
+                        {formData.deliveryAddress.name}
+                        {formData.deliveryAddress.company &&
+                          ` (${formData.deliveryAddress.company})`}
+                        <br />
+                        {formData.deliveryAddress.street}, {formData.deliveryAddress.city},{' '}
+                        {formData.deliveryAddress.state} - {formData.deliveryAddress.zip},{' '}
+                        {formData.deliveryAddress.country}
+                      </span>
+                    )}
+                  </div>
+                  {formData.customerNotes && (
+                    <div className="sm:col-span-2 pt-1 border-t border-white/5">
+                      <span className="text-pearl/40 block text-[10px] uppercase">
+                        Customer Notes &amp; Special Instructions
+                      </span>
+                      <span className="text-pearl/90 italic">{formData.customerNotes}</span>
                     </div>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Submission Actions */}
-            <div className="pt-6 space-y-3">
+            {/* Legal / Confirmation Checkbox (Section 53) */}
+            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10 flex items-start gap-3">
+              <input
+                id="confirmAccuracy"
+                type="checkbox"
+                checked={confirmedAccuracy}
+                onChange={(e) => setConfirmedAccuracy(e.target.checked)}
+                className="mt-1 w-4 h-4 rounded border-white/20 text-[#3B5EFF] focus:ring-[#3B5EFF] bg-black/40 cursor-pointer"
+              />
+              <label
+                htmlFor="confirmAccuracy"
+                className="text-xs text-pearl leading-relaxed cursor-pointer select-none"
+              >
+                <strong className="text-white block mb-0.5">
+                  Confirmation &amp; Accuracy Verification
+                </strong>
+                I confirm that the information and artwork provided above are correct.
+              </label>
+            </div>
+
+            {/* Submission Actions (Section 21) */}
+            <div className="pt-2 space-y-3">
               <div className="flex flex-col sm:flex-row gap-4">
                 {/* Submit Request Button */}
                 <button
                   type="button"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !confirmedAccuracy || grandTotalQuantity === 0}
                   onClick={handleSubmit}
-                  className="flex-1 py-4 px-6 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] disabled:opacity-50 text-white font-mono text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-[#3B5EFF]/25 transition-all cursor-pointer"
+                  className="flex-1 py-4 px-6 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] disabled:opacity-40 disabled:cursor-not-allowed text-white font-mono text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-[#3B5EFF]/25 transition-all cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
-                  <span>{isSubmitting ? 'Creating Quote Request...' : 'Submit Quote Request'}</span>
+                  <span>{isSubmitting ? 'Submitting your request...' : 'SUBMIT BULK REQUEST'}</span>
                 </button>
 
                 {/* Talk to WhatsApp Direct Button */}

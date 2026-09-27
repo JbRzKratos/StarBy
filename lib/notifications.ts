@@ -24,7 +24,8 @@ export type NotificationEvent =
   | 'ORDER_SHIPPED'
   | 'ORDER_OUT_FOR_DELIVERY'
   | 'ORDER_DELIVERED'
-  | 'ORDER_CANCELLED';
+  | 'ORDER_CANCELLED'
+  | 'BULK_ORDER_REQUESTED';
 
 export interface NotificationPayload {
   orderId: string;
@@ -32,6 +33,9 @@ export interface NotificationPayload {
   customerName: string;
   customerEmail?: string | null | undefined;
   customerPhone?: string | null | undefined;
+  totalQuantity?: number | undefined;
+  orderType?: string | undefined;
+  companyName?: string | undefined;
   total?: number | undefined;
   subtotal?: number | undefined;
   shippingFee?: number | undefined;

@@ -22,7 +22,15 @@ import {
   Mail,
   User,
 } from 'lucide-react';
-import { STATUS_LABELS } from '@/lib/bulk-orders/types';
+import {
+  STATUS_LABELS,
+  type BulkOrderDetailData,
+  type BulkOrderItemData,
+  type BulkOrderArtworkData,
+  type BulkOrderMessageData,
+  type BulkOrderStatusHistoryData,
+  type BulkOrderAddressData,
+} from '@/lib/bulk-orders/types';
 import { getWhatsappLink } from '@/lib/whatsapp';
 
 interface CustomerRequestViewProps {
@@ -34,7 +42,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
   const searchParams = useSearchParams();
   const paidParam = searchParams.get('paid');
 
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<BulkOrderDetailData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -65,8 +73,8 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
         throw new Error(json.message || 'Bulk request not found');
       }
       setData(json.request);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load request details');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load request details');
     } finally {
       setIsLoading(false);
     }
@@ -108,8 +116,11 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
         text: 'Quote accepted! You can now proceed to secure payment.',
       });
       await fetchRequest();
-    } catch (err: any) {
-      setActionAlert({ type: 'error', text: err.message || 'Error accepting quote' });
+    } catch (err: unknown) {
+      setActionAlert({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Error accepting quote',
+      });
     } finally {
       setIsAccepting(false);
     }
@@ -137,8 +148,11 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
       } else {
         throw new Error('Payment gateway session could not be established');
       }
-    } catch (err: any) {
-      setActionAlert({ type: 'error', text: err.message || 'Payment initiation failed' });
+    } catch (err: unknown) {
+      setActionAlert({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Payment initiation failed',
+      });
       setIsPaying(false);
     }
   };
@@ -146,7 +160,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
   // Handle Request Changes
   const handleSubmitRevision = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!revisionNotes.trim()) return;
+    if (!revisionNotes.trim() || !data?.id) return;
     setIsSubmittingRevision(true);
     try {
       const res = await fetch(`/api/bulk-orders/${data.id}`, {
@@ -168,8 +182,11 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
         text: 'Changes requested. Our team will revise your quote and update you.',
       });
       await fetchRequest();
-    } catch (err: any) {
-      setActionAlert({ type: 'error', text: err.message || 'Failed to submit revision request' });
+    } catch (err: unknown) {
+      setActionAlert({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Failed to submit revision request',
+      });
     } finally {
       setIsSubmittingRevision(false);
     }
@@ -195,8 +212,11 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
       }
       setReplyMessage('');
       await fetchRequest();
-    } catch (err: any) {
-      setActionAlert({ type: 'error', text: err.message || 'Failed to send message' });
+    } catch (err: unknown) {
+      setActionAlert({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Failed to send message',
+      });
     } finally {
       setIsSendingMessage(false);
     }
@@ -214,7 +234,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
         phone: data.phone,
         email: data.email,
         contactPreference: data.contactPreference,
-        items: data.items.map((item: any) => ({
+        items: data.items.map((item: BulkOrderItemData) => ({
           apparelType: item.apparelType,
           printingMethod: item.printingMethod,
           fabric: item.fabric,
@@ -225,7 +245,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
           notes: item.notes,
           colorRows: item.colorRows,
         })),
-        artworks: data.artworks.map((art: any) => ({
+        artworks: data.artworks.map((art: BulkOrderArtworkData) => ({
           placement: art.placement,
           fileUrl: art.fileUrl,
           fileName: art.fileName,
@@ -390,11 +410,13 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
               <span>
                 Required by:{' '}
                 <strong className="text-white">
-                  {new Date(data.requiredDeliveryDate).toLocaleDateString('en-IN', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  })}
+                  {data.requiredDeliveryDate
+                    ? new Date(data.requiredDeliveryDate).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })
+                    : 'Flexible'}
                 </strong>
               </span>
             </p>
@@ -452,15 +474,17 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
                     Price Quotation
                   </span>
                   <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-white">
-                    ₹{latestQuote.total.toLocaleString('en-IN')}
+                    ₹{(latestQuote.total || latestQuote.totalAmount || 0).toLocaleString('en-IN')}
                   </h3>
                   <p className="text-xs text-pearl font-mono">
                     All inclusive (Manufacturing, printing, and delivery). Valid until{' '}
-                    {new Date(latestQuote.expiresAt).toLocaleDateString('en-IN', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
+                    {latestQuote.expiresAt
+                      ? new Date(latestQuote.expiresAt).toLocaleDateString('en-IN', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })
+                      : '14 days'}
                     .
                   </p>
                 </div>
@@ -470,61 +494,63 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
                   <div className="flex justify-between text-pearl">
                     <span>Garment Manufacturing ({data.totalQuantity} pcs)</span>
                     <span className="text-white">
-                      ₹{latestQuote.garmentPrice.toLocaleString('en-IN')}
+                      ₹{(latestQuote.garmentPrice || 0).toLocaleString('en-IN')}
                     </span>
                   </div>
                   <div className="flex justify-between text-pearl">
                     <span>Printing & Execution</span>
                     <span className="text-white">
-                      ₹{latestQuote.printingPrice.toLocaleString('en-IN')}
+                      ₹{(latestQuote.printingPrice || 0).toLocaleString('en-IN')}
                     </span>
                   </div>
-                  {latestQuote.setupFee > 0 && (
+                  {(latestQuote.setupFee || 0) > 0 && (
                     <div className="flex justify-between text-pearl">
                       <span>Screen / Artwork Setup Fee</span>
                       <span className="text-white">
-                        ₹{latestQuote.setupFee.toLocaleString('en-IN')}
+                        ₹{(latestQuote.setupFee || 0).toLocaleString('en-IN')}
                       </span>
                     </div>
                   )}
-                  {latestQuote.packagingFee > 0 && (
+                  {(latestQuote.packagingFee || 0) > 0 && (
                     <div className="flex justify-between text-pearl">
                       <span>Custom Packaging</span>
                       <span className="text-white">
-                        ₹{latestQuote.packagingFee.toLocaleString('en-IN')}
+                        ₹{(latestQuote.packagingFee || 0).toLocaleString('en-IN')}
                       </span>
                     </div>
                   )}
                   <div className="flex justify-between text-pearl">
                     <span>Shipping & Logistics</span>
                     <span className="text-white">
-                      {latestQuote.shippingFee === 0
+                      {(latestQuote.shippingFee || 0) === 0
                         ? 'FREE'
-                        : `₹${latestQuote.shippingFee.toLocaleString('en-IN')}`}
+                        : `₹${(latestQuote.shippingFee || 0).toLocaleString('en-IN')}`}
                     </span>
                   </div>
-                  {latestQuote.urgencyFee > 0 && (
+                  {(latestQuote.urgencyFee || 0) > 0 && (
                     <div className="flex justify-between text-amber-400">
                       <span>Rush Production Surcharge</span>
-                      <span>+₹{latestQuote.urgencyFee.toLocaleString('en-IN')}</span>
+                      <span>+₹{(latestQuote.urgencyFee || 0).toLocaleString('en-IN')}</span>
                     </div>
                   )}
-                  {latestQuote.discount > 0 && (
+                  {(latestQuote.discount || 0) > 0 && (
                     <div className="flex justify-between text-emerald-400">
                       <span>Volume Discount</span>
-                      <span>-₹{latestQuote.discount.toLocaleString('en-IN')}</span>
+                      <span>-₹{(latestQuote.discount || 0).toLocaleString('en-IN')}</span>
                     </div>
                   )}
-                  {latestQuote.tax > 0 && (
+                  {(latestQuote.tax || latestQuote.taxAmount || 0) > 0 && (
                     <div className="flex justify-between text-pearl">
                       <span>GST (Applicable Taxes)</span>
-                      <span className="text-white">₹{latestQuote.tax.toLocaleString('en-IN')}</span>
+                      <span className="text-white">
+                        ₹{(latestQuote.tax || latestQuote.taxAmount || 0).toLocaleString('en-IN')}
+                      </span>
                     </div>
                   )}
                   <div className="flex justify-between text-sm font-bold text-white pt-2 border-t border-white/10">
                     <span>Final Approved Total</span>
                     <span className="text-[#3B5EFF]">
-                      ₹{latestQuote.total.toLocaleString('en-IN')}
+                      ₹{(latestQuote.total || latestQuote.totalAmount || 0).toLocaleString('en-IN')}
                     </span>
                   </div>
                 </div>
@@ -626,8 +652,13 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
               </h3>
 
               <div className="space-y-6">
-                {data.items?.map((item: any, idx: number) => {
-                  const colorRows = (item.colorRows as any[]) || [];
+                {data.items?.map((item: BulkOrderItemData, idx: number) => {
+                  const colorRows =
+                    (item.colorRows as Array<{
+                      color: string;
+                      hex?: string;
+                      sizes: Record<string, number>;
+                    }>) || [];
                   const totalItemQty = colorRows.reduce(
                     (sum, row) =>
                       sum +
@@ -698,10 +729,10 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
-                              {colorRows.map((row: any, rIdx: number) => {
+                              {colorRows.map((row, rIdx: number) => {
                                 const sizes = row.sizes || {};
                                 const rowTotal = Object.values(sizes).reduce(
-                                  (sum: number, q: any) => sum + (Number(q) || 0),
+                                  (sum: number, q: unknown) => sum + (Number(q) || 0),
                                   0,
                                 );
                                 return (
@@ -752,7 +783,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {data.artworks?.map((art: any, aIdx: number) => (
+                {data.artworks?.map((art: BulkOrderArtworkData, aIdx: number) => (
                   <div
                     key={art.id || aIdx}
                     className="border border-white/10 rounded-xl p-4 bg-[#0F0F0F] space-y-3"
@@ -778,6 +809,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
                       <div className="relative aspect-video rounded-lg overflow-hidden bg-black/50 border border-white/10 flex items-center justify-center">
                         {art.fileType?.includes('image') ||
                         art.fileName?.match(/\.(png|jpe?g|webp|svg)$/i) ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
                           <img
                             src={art.fileUrl}
                             alt={art.fileName}
@@ -827,7 +859,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
                   </p>
                 )}
 
-                {data.messages?.map((msg: any) => (
+                {data.messages?.map((msg: BulkOrderMessageData) => (
                   <div
                     key={msg.id}
                     className={`p-4 rounded-xl space-y-1.5 text-xs font-mono ${
@@ -919,29 +951,44 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
 
               <div className="space-y-2 text-xs font-mono text-pearl">
                 <p>
-                  Method: <strong className="text-white uppercase">{data.fulfillmentMethod}</strong>
+                  Method:{' '}
+                  <strong className="text-white uppercase">
+                    {data.fulfillmentMethod || data.shippingMethod || 'delivery'}
+                  </strong>
                 </p>
-                {data.fulfillmentMethod === 'delivery' && data.deliveryAddress ? (
-                  <div className="bg-[#0F0F0F] p-3 rounded-lg border border-white/10 space-y-1 text-white">
-                    <p>{data.deliveryAddress.street}</p>
-                    <p>
-                      {data.deliveryAddress.city}, {data.deliveryAddress.state} -{' '}
-                      {data.deliveryAddress.pincode}
-                    </p>
-                    <p>{data.deliveryAddress.country || 'India'}</p>
-                  </div>
-                ) : (
-                  <p className="text-white">Customer Self-Pickup at Fregoro Chennai Hub.</p>
-                )}
+                {(() => {
+                  const rawAddr = data.deliveryAddress || data.shippingAddress;
+                  const addr: BulkOrderAddressData | null =
+                    typeof rawAddr === 'object' && rawAddr !== null
+                      ? (rawAddr as BulkOrderAddressData)
+                      : null;
+                  const isDelivery =
+                    (data.fulfillmentMethod || data.shippingMethod || 'delivery') === 'delivery';
+
+                  if (isDelivery && addr) {
+                    return (
+                      <div className="bg-[#0F0F0F] p-3 rounded-lg border border-white/10 space-y-1 text-white">
+                        <p>{addr.street}</p>
+                        <p>
+                          {addr.city}, {addr.state} - {addr.pincode || addr.zip}
+                        </p>
+                        <p>{addr.country || 'India'}</p>
+                      </div>
+                    );
+                  }
+                  return <p className="text-white">Customer Self-Pickup at Fregoro Chennai Hub.</p>;
+                })()}
                 <div className="pt-2 border-t border-white/10">
                   <p>
                     Target Date:{' '}
                     <strong className="text-white">
-                      {new Date(data.requiredDeliveryDate).toLocaleDateString('en-IN', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
+                      {data.requiredDeliveryDate
+                        ? new Date(data.requiredDeliveryDate).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                          })
+                        : 'Flexible'}
                     </strong>
                   </p>
                 </div>
@@ -956,7 +1003,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
               </h4>
 
               <div className="space-y-3 relative pl-4 border-l border-white/15">
-                {data.statusHistory?.map((h: any, idx: number) => (
+                {data.statusHistory?.map((h: BulkOrderStatusHistoryData, idx: number) => (
                   <div key={h.id || idx} className="space-y-0.5 text-xs font-mono relative">
                     <div className="w-2 h-2 rounded-full bg-[#3B5EFF] absolute -left-[21px] top-1" />
                     <div className="flex items-center justify-between text-[11px]">

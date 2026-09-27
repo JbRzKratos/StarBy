@@ -716,77 +716,30 @@ export async function sendContactEmail(
   email: string,
   subject: string,
   message: string,
+  phone?: string | null,
+  company?: string | null,
 ) {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn('RESEND_API_KEY not configured, skipping contact email from:', email);
-    return false;
-  }
-
-  const safeName = escapeHtml(name);
-  const safeSubject = escapeHtml(subject);
-  const safeMessage = escapeHtml(message);
-
-  try {
-    await resend.emails.send({
-      from: DEFAULT_FROM,
-      to: [ADMIN_RECIPIENT],
-      replyTo: email,
-      subject: `New Customer Query: ${safeSubject}`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
-          <h2 style="color: #000;">New Contact Form Query</h2>
-          <p><strong>Name:</strong> ${safeName}</p>
-          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-          <p><strong>Subject:</strong> ${safeSubject}</p>
-          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0; white-space: pre-wrap;">${safeMessage}</p>
-          </div>
-          <p style="color: #666; font-size: 13px;">Hit "Reply" in your email client to respond directly to ${escapeHtml(email)}.</p>
-        </div>
-      `,
-    });
-
-    return true;
-  } catch (error) {
-    console.error('Failed to send contact email:', error);
-    return false;
-  }
+  const { sendContactSubmission } = await import('./email/emailService');
+  const res = await sendContactSubmission({
+    name,
+    email,
+    subject,
+    message,
+    phone,
+    company,
+  });
+  return res.adminEmailSent;
 }
 
 export async function sendContactAutoReply(toEmail: string, name: string) {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn('RESEND_API_KEY not configured, skipping auto-reply to:', toEmail);
-    return false;
-  }
-
-  const safeName = escapeHtml(name);
-
-  try {
-    await resend.emails.send({
-      from: DEFAULT_FROM,
-      to: [toEmail],
-      replyTo: BUSINESS_EMAIL,
-      subject: 'We got your message — Fregoro Studios Support',
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
-          <h2 style="color: #000;">Hey ${safeName}, we received your message!</h2>
-          <p>Thanks for reaching out to Fregoro Studios. Our team will get back to you within 24–48 hours.</p>
-          <p>You can also reach us directly at <a href="mailto:${BUSINESS_EMAIL}" style="color: #0057FF;">${BUSINESS_EMAIL}</a>.</p>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
-          <p style="color: #888; font-size: 12px; line-height: 1.5;">
-            ${BUSINESS_ADDRESS_NAME}<br />
-            ${BUSINESS_FULL_ADDRESS}
-          </p>
-          <p style="color: #888; font-size: 12px;">If you didn't submit this form, you can ignore this email.</p>
-          <p>– The Fregoro Studios Team</p>
-        </div>
-      `,
-    });
-    return true;
-  } catch (error) {
-    console.error('Failed to send contact auto-reply:', error);
-    return false;
-  }
+  const { sendContactSubmission } = await import('./email/emailService');
+  const res = await sendContactSubmission({
+    name,
+    email: toEmail,
+    subject: 'Contact Enquiry',
+    message: '',
+  });
+  return res.customerEmailSent;
 }
 
 export async function sendOrderShippedEmail(

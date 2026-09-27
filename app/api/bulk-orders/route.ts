@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import { dispatchNotification } from '@/lib/notifications';
+import { sendBulkOrderSubmission } from '@/lib/email/emailService';
 import type { BulkOrderFormState } from '@/lib/bulk-orders/types';
 
 export const dynamic = 'force-dynamic';
@@ -284,22 +285,57 @@ export async function POST(request: Request) {
       return created;
     });
 
-    // 3. Dispatch notification asynchronously (non-blocking)
+    // 3. Dispatch bulk order transactional emails (Admin + Customer)
+    let emailStatus = { adminSent: false, customerSent: false };
     try {
-      await dispatchNotification(
-        'BULK_ORDER_REQUESTED' as any,
-        {
-          orderId: newRequest.id,
-          publicOrderId: newRequest.requestNumber,
-          customerName: newRequest.contactName,
-          customerEmail: newRequest.email,
-          customerPhone: newRequest.phone,
-          totalQuantity: grandTotalQuantity,
-          orderType: newRequest.orderType,
-          companyName: newRequest.companyName || undefined,
-          createdAt: newRequest.createdAt.toISOString(),
-        } as any,
-      );
+      const emailResult = await sendBulkOrderSubmission({
+        id: newRequest.id,
+        requestNumber: newRequest.requestNumber,
+        orderType: newRequest.orderType,
+        companyName: newRequest.companyName,
+        eventName: newRequest.eventName,
+        contactName: newRequest.contactName,
+        phone: newRequest.phone,
+        email: newRequest.email,
+        totalQuantity: grandTotalQuantity,
+        requiredDeliveryDate: newRequest.requiredDeliveryDate,
+        eventDate: newRequest.eventDate,
+        isUrgent: newRequest.isUrgent,
+        customerNotes: newRequest.customerNotes,
+        shippingMethod: newRequest.shippingMethod,
+        shippingAddress: body.deliveryAddress
+          ? JSON.parse(JSON.stringify(body.deliveryAddress))
+          : null,
+        packagingPreference: newRequest.packagingPreference,
+        packagingNotes: newRequest.packagingNotes,
+        customLabelOption: newRequest.customLabelOption,
+        customLabelNotes: newRequest.customLabelNotes,
+        contactPreference: newRequest.contactPreference,
+        createdAt: newRequest.createdAt,
+        items: body.items,
+        artworks: body.artworks,
+      });
+      emailStatus = {
+        adminSent: emailResult.adminEmailSent,
+        customerSent: emailResult.customerEmailSent,
+      };
+    } catch (emailErr) {
+      console.error('[BulkOrder API] Email dispatch error (non-fatal):', emailErr);
+    }
+
+    // 4. Dispatch multi-channel notification (non-blocking)
+    try {
+      await dispatchNotification('BULK_ORDER_REQUESTED', {
+        orderId: newRequest.id,
+        publicOrderId: newRequest.requestNumber,
+        customerName: newRequest.contactName,
+        customerEmail: newRequest.email,
+        customerPhone: newRequest.phone,
+        totalQuantity: grandTotalQuantity,
+        orderType: newRequest.orderType,
+        companyName: newRequest.companyName || undefined,
+        createdAt: newRequest.createdAt.toISOString(),
+      });
     } catch (notifErr) {
       console.warn('Bulk notification dispatch error (non-fatal):', notifErr);
     }
@@ -309,6 +345,7 @@ export async function POST(request: Request) {
       requestId: newRequest.id,
       requestNumber: newRequest.requestNumber,
       message: 'Quote request submitted successfully',
+      emailStatus,
     });
   } catch (error) {
     console.error('Error submitting bulk order request:', error);

@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getCashfreeOrderStatus, getCashfreeOrderPayments } from '@/lib/cashfree';
+import {
+  getCashfreeOrderStatus,
+  getCashfreeOrderPayments,
+  type CashfreePaymentEntity,
+} from '@/lib/cashfree';
 import { dispatchNotification } from '@/lib/notifications';
 
 /**
@@ -75,7 +79,7 @@ export async function POST(request: Request) {
 
         const isOrderPaid = cfStatus?.order_status === 'PAID';
         const successfulPayment = Array.isArray(payments)
-          ? payments.find((p: any) => p.payment_status === 'SUCCESS')
+          ? payments.find((p: CashfreePaymentEntity) => p.payment_status === 'SUCCESS')
           : null;
 
         if (isOrderPaid || successfulPayment) {
