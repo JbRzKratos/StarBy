@@ -14,6 +14,7 @@ import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const navLinks = [
   { href: '/products/all', label: 'Shop All' },
+  { href: '/bulk-orders', label: 'Bulk & Custom Orders' },
   { href: '/wall-studio', label: 'Wall Studio' },
   { href: '/split-poster', label: 'Split Posters' },
   { href: '/magazine', label: 'Magazine' },

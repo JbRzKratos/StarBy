@@ -46,6 +46,88 @@ export async function POST(request: Request) {
     });
 
     if (!order) {
+      // Check if this is a bulk order payment
+      const bulkQuote = await prisma.bulkOrderQuote.findFirst({
+        where: { paymentGatewayOrderId: cashfreeOrderId },
+        include: { request: true },
+      });
+
+      if (bulkQuote) {
+        if (bulkQuote.status === 'paid' || bulkQuote.request.status === 'paid') {
+          return NextResponse.json({
+            success: true,
+            message: 'Bulk order payment already verified',
+            requestId: bulkQuote.requestId,
+            requestNumber: bulkQuote.request.requestNumber,
+            amount: bulkQuote.total,
+            status: 'paid',
+            isBulkOrder: true,
+          });
+        }
+
+        const [cfStatusResult, paymentsResult] = await Promise.allSettled([
+          getCashfreeOrderStatus(cashfreeOrderId),
+          getCashfreeOrderPayments(cashfreeOrderId),
+        ]);
+
+        const cfStatus = cfStatusResult.status === 'fulfilled' ? cfStatusResult.value : null;
+        const payments = paymentsResult.status === 'fulfilled' ? paymentsResult.value : [];
+
+        const isOrderPaid = cfStatus?.order_status === 'PAID';
+        const successfulPayment = Array.isArray(payments)
+          ? payments.find((p: any) => p.payment_status === 'SUCCESS')
+          : null;
+
+        if (isOrderPaid || successfulPayment) {
+          const cfPaymentId = successfulPayment?.cf_payment_id?.toString() || null;
+          await prisma.$transaction(async (tx) => {
+            await tx.bulkOrderQuote.update({
+              where: { id: bulkQuote.id },
+              data: {
+                status: 'paid',
+                paymentGatewayPaymentId: cfPaymentId,
+                paidAt: new Date(),
+              },
+            });
+
+            await tx.bulkOrderRequest.update({
+              where: { id: bulkQuote.requestId },
+              data: {
+                status: 'paid',
+              },
+            });
+
+            await tx.bulkOrderStatusHistory.create({
+              data: {
+                requestId: bulkQuote.requestId,
+                oldStatus: bulkQuote.request.status,
+                newStatus: 'paid',
+                changedBy: 'Payment Verification API',
+                note: `Payment of ₹${bulkQuote.total.toLocaleString('en-IN')} verified. Order queued for production.`,
+              },
+            });
+          });
+
+          return NextResponse.json({
+            success: true,
+            message: 'Bulk order payment verified successfully',
+            requestId: bulkQuote.requestId,
+            requestNumber: bulkQuote.request.requestNumber,
+            amount: bulkQuote.total,
+            status: 'paid',
+            isBulkOrder: true,
+          });
+        }
+
+        return NextResponse.json({
+          success: false,
+          message: 'Payment has not been completed yet.',
+          requestId: bulkQuote.requestId,
+          status: 'pending',
+          isBulkOrder: true,
+        });
+      }
+
       return NextResponse.json({ success: false, message: 'Order not found' }, { status: 404 });
     }
 

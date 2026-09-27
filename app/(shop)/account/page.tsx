@@ -19,12 +19,16 @@ export default async function AccountPage() {
   let orderCount = 0;
   let addressCount = 0;
   let designCount = 0;
+  let bulkCount = 0;
 
   try {
     // Fetch counts from DB
     orderCount = await prisma.order.count({ where: { userId: user.id } });
     addressCount = await prisma.address.count({ where: { userId: user.id } });
     designCount = await prisma.customizerDesign.count({ where: { userId: user.id } });
+    bulkCount = await prisma.bulkOrderRequest.count({
+      where: { OR: [{ userId: user.id }, { email: user.email }] },
+    });
   } catch (err) {
     console.warn('Error fetching account counts:', err);
   }
@@ -57,7 +61,7 @@ export default async function AccountPage() {
         </div>
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           <Link
             href="/account/orders"
             className="group bg-graphite border border-smoke/40 hover:border-cobalt p-8 rounded-lg transition-all duration-300 flex flex-col justify-between h-48"
@@ -114,6 +118,26 @@ export default async function AccountPage() {
               <span className="font-mono text-2xl font-bold text-bone">{designCount}</span>
               <span className="font-mono text-caption text-pearl group-hover:translate-x-1 transition-transform">
                 View Designs →
+              </span>
+            </div>
+          </Link>
+
+          <Link
+            href="/account/bulk-orders"
+            className="group bg-graphite border border-smoke/40 hover:border-cobalt p-8 rounded-lg transition-all duration-300 flex flex-col justify-between h-48"
+          >
+            <div>
+              <span className="font-mono text-caption text-pearl uppercase tracking-widest block mb-2">
+                B2B & Teams
+              </span>
+              <h3 className="font-display text-3xl text-bone group-hover:text-cobalt transition-colors">
+                Bulk Orders
+              </h3>
+            </div>
+            <div className="flex items-center justify-between pt-4 border-t border-smoke/20">
+              <span className="font-mono text-2xl font-bold text-bone">{bulkCount}</span>
+              <span className="font-mono text-caption text-pearl group-hover:translate-x-1 transition-transform">
+                View Quotes →
               </span>
             </div>
           </Link>

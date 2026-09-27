@@ -70,6 +70,7 @@ model User {
   reviews       Review[]
   files         StoredFile[]
   wishlistItems WishlistItem[]
+  bulkOrders    BulkOrderRequest[]
 }
 
 model Address {
@@ -450,3 +451,130 @@ enum Role {
   ADMIN
   STAFF
 }
+
+model BulkOrderRequest {
+  id                    String                   @id @default(cuid())
+  requestNumber         String                   @unique
+  userId                String?
+  orderType             String                   // Corporate, College, School, Event, Sports Team, Wedding, Birthday, Festival, Brand Merchandise, Creator Merchandise, Club / Community, Other
+  eventName             String?
+  companyName           String?
+  contactName           String
+  phone                 String
+  email                 String
+  estimatedQuantity     Int?
+  totalQuantity         Int                      @default(0)
+  requiredDeliveryDate  DateTime?
+  eventDate             DateTime?
+  isUrgent              Boolean                  @default(false)
+  websiteOrSocial       String?
+  budgetRange           String?
+  contactPreference     String                   @default("whatsapp") // whatsapp, phone, email
+  customerNotes         String?
+  shippingMethod        String                   @default("delivery") // delivery, pickup
+  shippingAddress       Json?
+  packagingPreference   String?                  // individual, bulk, custom, no_preference
+  packagingNotes        String?
+  customLabelOption     String?                  // none, neck_label, woven_label, printed_label, custom_packaging, hang_tags, stickers, other
+  customLabelNotes      String?
+  status                String                   @default("new") // new, under_review, need_more_info, quote_sent, customer_reviewing, approved, payment_pending, paid, production, quality_check, packed, shipped, completed, cancelled
+  adminNotes            String?
+  user                  User?                    @relation(fields: [userId], references: [id])
+  items                 BulkOrderItem[]
+  artworks              BulkOrderArtwork[]
+  quotes                BulkOrderQuote[]
+  messages              BulkOrderMessage[]
+  statusHistory         BulkOrderStatusHistory[]
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+
+  @@index([requestNumber])
+  @@index([userId])
+  @@index([status])
+}
+
+model BulkOrderItem {
+  id                 String           @id @default(cuid())
+  requestId          String
+  request            BulkOrderRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  apparelType        String           // e.g. "Oversized T-Shirt", "Regular Fit T-Shirt", "Hoodie"
+  productId          String?
+  fabric             String?          // e.g. "100% Combed Cotton", "240 GSM"
+  gsm                String?
+  printingMethod     String?          // DTF, Screen Printing, Sublimation, Embroidery, Vinyl, Not Sure, Recommend for me
+  printingPlacements String[]         // ['front', 'back', 'sleeve_left', etc.]
+  designNotes        String?
+  totalQuantity      Int              @default(0)
+  sizeColorMatrix    Json             // Array of { colorName: string, colorHex?: string, quantities: Record<string, number>, total: number }
+  createdAt          DateTime         @default(now())
+}
+
+model BulkOrderArtwork {
+  id           String           @id @default(cuid())
+  requestId    String
+  request      BulkOrderRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  placement    String           // front, back, sleeve_left, sleeve_right, chest_logo, neck_label, other
+  label        String?
+  fileUrl      String
+  fileKey      String?
+  fileName     String
+  fileType     String
+  fileSize     Int?
+  printSize    String?          // Small, Medium, Large, Oversized, Custom
+  dimensionsMm String?          // e.g. "300 × 400 mm"
+  notes        String?
+  status       String           @default("received") // received, needs_revision, approved, rejected
+  adminNotes   String?
+  createdAt    DateTime         @default(now())
+}
+
+model BulkOrderQuote {
+  id                      String           @id @default(cuid())
+  requestId               String
+  request                 BulkOrderRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  version                 Int              @default(1)
+  status                  String           @default("sent") // draft, sent, accepted, rejected, expired, superseded
+  garmentPrice            Float            @default(0)
+  printingPrice           Float            @default(0)
+  setupFee                Float            @default(0)
+  packagingFee            Float            @default(0)
+  shippingFee             Float            @default(0)
+  urgencyFee              Float            @default(0)
+  otherFees               Float            @default(0)
+  subtotal                Float            @default(0)
+  discount                Float            @default(0)
+  tax                     Float            @default(0)
+  total                   Float            @default(0)
+  currency                String           @default("INR")
+  notes                   String?
+  lineItems               Json?
+  expiresAt               DateTime?
+  acceptedAt              DateTime?
+  paidAt                  DateTime?
+  paymentGatewayOrderId   String?
+  paymentGatewayPaymentId String?
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
+}
+
+model BulkOrderStatusHistory {
+  id        String           @id @default(cuid())
+  requestId String
+  request   BulkOrderRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  oldStatus String?
+  newStatus String
+  changedBy String           @default("system")
+  note      String?
+  createdAt DateTime         @default(now())
+}
+
+model BulkOrderMessage {
+  id         String           @id @default(cuid())
+  requestId  String
+  request    BulkOrderRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  sender     String           // admin, customer
+  senderName String?
+  message    String
+  createdAt  DateTime         @default(now())
+}
+

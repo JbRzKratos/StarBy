@@ -106,6 +106,57 @@ export async function POST(req: Request) {
     });
 
     if (!order) {
+      // Check if this payment corresponds to a Bulk Order Request quote
+      const bulkQuote = await prisma.bulkOrderQuote.findFirst({
+        where: { paymentGatewayOrderId: cfOrderId },
+        include: { request: true },
+      });
+
+      if (bulkQuote) {
+        const paymentStatus = paymentData?.payment_status || orderData?.order_status;
+        if (paymentStatus === 'SUCCESS' || paymentStatus === 'PAID') {
+          await prisma.$transaction(async (tx) => {
+            await tx.bulkOrderQuote.update({
+              where: { id: bulkQuote.id },
+              data: {
+                status: 'paid',
+                paymentGatewayPaymentId: paymentData?.cf_payment_id?.toString() || null,
+                paidAt: new Date(),
+              },
+            });
+
+            await tx.bulkOrderRequest.update({
+              where: { id: bulkQuote.requestId },
+              data: {
+                status: 'paid',
+              },
+            });
+
+            await tx.bulkOrderStatusHistory.create({
+              data: {
+                requestId: bulkQuote.requestId,
+                oldStatus: bulkQuote.request.status,
+                newStatus: 'paid',
+                changedBy: 'Cashfree Webhook',
+                note: `Payment of ₹${bulkQuote.total.toLocaleString('en-IN')} verified (CF Payment ID: ${paymentData?.cf_payment_id || 'verified'}). Order queued for production.`,
+              },
+            });
+
+            await tx.webhookEvent.create({
+              data: {
+                provider: 'cashfree',
+                eventId,
+                eventType,
+                orderId: null,
+                payload: payload,
+              },
+            });
+          });
+
+          return NextResponse.json({ received: true, bulkOrderProcessed: true });
+        }
+      }
+
       console.warn(`Cashfree webhook: order not found for cf_order_id=${cfOrderId}`);
       // Still record the event so we don't reprocess
       await prisma.webhookEvent.create({

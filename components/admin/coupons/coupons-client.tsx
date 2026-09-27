@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { createCoupon, updateCoupon, deleteCoupon } from '@/app/admin/lib/actions';
+import { CustomDatePicker } from '@/components/ui/custom-date-picker';
 
 interface CouponRow {
   id: string;
@@ -175,14 +176,11 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
               />
             </div>
             <div>
-              <label className="text-caption font-mono uppercase tracking-widest text-ash block mb-2">
-                Expiry Date
-              </label>
-              <input
-                type="date"
-                value={form.expiresAt}
-                onChange={(e) => setForm({ ...form, expiresAt: e.target.value })}
-                className={inputClass}
+              <CustomDatePicker
+                label="Expiry Date"
+                value={form.expiresAt || ''}
+                onChange={(dateStr) => setForm({ ...form, expiresAt: dateStr })}
+                placeholder="Select expiry date"
               />
             </div>
             <div>
