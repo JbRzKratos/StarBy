@@ -17,7 +17,14 @@ export function BulkOrderLanding() {
 
   const scrollToForm = () => {
     if (formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const headerOffset = isMobile ? 105 : 90;
+      const elementTop = formRef.current.getBoundingClientRect().top;
+      const targetY = elementTop + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: Math.max(0, targetY),
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -77,7 +84,7 @@ export function BulkOrderLanding() {
       <UseCaseCards onSelectType={handleSelectUseCase} />
 
       {/* 4. Interactive Order Request Builder Form */}
-      <div ref={formRef} id="order-builder" className="scroll-mt-24 relative z-20">
+      <div ref={formRef} id="order-builder" className="scroll-mt-28 md:scroll-mt-36 relative z-20">
         <BulkOrderForm initialOrderType={selectedType} />
       </div>
 

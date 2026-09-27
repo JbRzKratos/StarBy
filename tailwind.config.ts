@@ -145,7 +145,7 @@ const config: Config = {
     },
     screens: {
       xs: '375px', // Mobile M
-      sm: '425px', // Mobile L
+      sm: '640px', // Standard Tablet portrait / Phablet (prevents mobile phone congestion)
       md: '768px', // Tablet
       lg: '1024px', // Desktop
       xl: '1440px', // Large Desktop

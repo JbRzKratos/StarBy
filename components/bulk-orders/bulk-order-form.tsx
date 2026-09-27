@@ -623,10 +623,10 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
   ];
 
   return (
-    <div ref={formRef} className="max-w-5xl mx-auto px-4 sm:px-6 py-12 md:py-20 relative z-20">
+    <div ref={formRef} className="max-w-5xl mx-auto px-3.5 sm:px-6 py-8 md:py-16 relative z-20">
       {/* Progress Header */}
-      <div className="mb-10">
-        <div className="flex items-center justify-between pb-4 border-b border-white/10 overflow-x-auto scrollbar-none">
+      <div className="mb-6 sm:mb-10">
+        <div className="-mx-3.5 px-3.5 sm:mx-0 sm:px-0 flex items-center gap-1.5 sm:gap-2 pb-3.5 border-b border-white/10 overflow-x-auto scrollbar-none">
           {STEPS_NAV.map((s) => {
             const isActive = currentStep === s.num;
             const isCompleted = currentStep > s.num;
@@ -639,7 +639,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   if (s.num < currentStep) handleProceedToStep(s.num);
                 }}
                 disabled={s.num > currentStep}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap shrink-0 transition-colors ${
                   isActive
                     ? 'bg-[#3B5EFF] text-white shadow-lg shadow-[#3B5EFF]/20'
                     : isCompleted
@@ -672,15 +672,15 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
       )}
 
       {/* Step Contents */}
-      <div className="bg-[#121214] border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-md relative z-20">
+      <div className="bg-[#121214] border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 shadow-2xl backdrop-blur-md relative z-20">
         {/* ──────────────── STEP 1: ORDER DETAILS ──────────────── */}
         {currentStep === 1 && (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div className="space-y-1">
               <span className="font-mono text-xs text-[#3B5EFF] uppercase font-bold tracking-widest block">
                 Step 01 / 06
               </span>
-              <h2 className="font-display text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+              <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-white">
                 Tell Us About Your Order
               </h2>
               <p className="text-xs sm:text-sm text-pearl/70 font-sans">
@@ -693,7 +693,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               <label className="block text-xs font-mono text-pearl/70 uppercase tracking-wider font-semibold">
                 What Type Of Order Is This? *
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3">
                 {BULK_ORDER_TYPES.map((type) => {
                   const isSelected = formData.orderType === type;
                   return (
@@ -701,13 +701,13 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                       key={type}
                       type="button"
                       onClick={() => setFormData((p) => ({ ...p, orderType: type }))}
-                      className={`p-3 rounded-xl border text-left font-mono text-xs font-medium tracking-wide transition-all ${
+                      className={`p-3 sm:p-3.5 rounded-xl border text-left font-mono text-xs font-semibold tracking-wide transition-all min-h-[48px] flex items-center ${
                         isSelected
                           ? 'bg-[#3B5EFF] border-[#3B5EFF] text-white shadow-md shadow-[#3B5EFF]/25'
                           : 'bg-white/[0.03] border-white/10 text-pearl/80 hover:bg-white/[0.07] hover:text-white'
                       }`}
                     >
-                      {type}
+                      <span className="line-clamp-2 leading-tight">{type}</span>
                     </button>
                   );
                 })}
@@ -715,7 +715,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
 
             {/* Event Name & Company */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
               <div className="space-y-2">
                 <label className="block text-xs font-mono text-pearl/70 uppercase tracking-wider font-semibold">
                   Purpose / Event Name
@@ -725,7 +725,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   placeholder="e.g. Annual Tech Symposium, Summer Fest"
                   value={formData.eventName}
                   onChange={(e) => setFormData((p) => ({ ...p, eventName: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
                 />
               </div>
 
@@ -738,13 +738,13 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   placeholder="e.g. Acme Tech Pvt Ltd, Loyola College"
                   value={formData.companyName}
                   onChange={(e) => setFormData((p) => ({ ...p, companyName: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
                 />
               </div>
             </div>
 
-            {/* Contact Person, Phone, Email */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {/* Contact Person, Phone, Email (Full width stacked on mobile, 3 columns on desktop) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
               <div className="space-y-2">
                 <label className="block text-xs font-mono text-pearl/70 uppercase tracking-wider font-semibold">
                   Contact Person *
@@ -755,7 +755,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   placeholder="Your full name"
                   value={formData.contactName}
                   onChange={(e) => setFormData((p) => ({ ...p, contactName: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
                 />
               </div>
 
@@ -769,7 +769,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   placeholder="e.g. 9876543210"
                   value={formData.phone}
                   onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
                 />
               </div>
 
@@ -783,13 +783,13 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   placeholder="you@company.com"
                   value={formData.email}
                   onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
                 />
               </div>
             </div>
 
             {/* Target Delivery Date & Urgent Toggle */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-2">
               <div className="space-y-2">
                 <CustomDatePicker
                   label="When Do You Need The Order Delivered?"
@@ -810,11 +810,11 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                 <label className="block text-xs font-mono text-pearl/70 uppercase tracking-wider font-semibold mb-2">
                   Is This An Urgent / Fast-Track Order?
                 </label>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2.5 sm:gap-3">
                   <button
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, isUrgent: false }))}
-                    className={`flex-1 py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-colors ${
+                    className={`flex-1 py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-colors text-center flex items-center justify-center ${
                       !formData.isUrgent
                         ? 'bg-white/10 border-white/30 text-white'
                         : 'bg-white/[0.02] border-white/10 text-pearl/60 hover:text-white'
@@ -825,7 +825,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   <button
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, isUrgent: true }))}
-                    className={`flex-1 py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-colors ${
+                    className={`flex-1 py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-colors text-center flex items-center justify-center ${
                       formData.isUrgent
                         ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
                         : 'bg-white/[0.02] border-white/10 text-pearl/60 hover:text-white'
@@ -843,7 +843,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
 
             {/* Optional Budget & Website */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-2">
               <div>
                 <CustomSelect
                   label="Approximate Budget (Optional)"
@@ -863,7 +863,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   placeholder="https://..."
                   value={formData.websiteOrSocial}
                   onChange={(e) => setFormData((p) => ({ ...p, websiteOrSocial: e.target.value }))}
-                  className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
+                  className="w-full px-4 py-3 sm:py-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-pearl/30 text-sm focus:outline-none focus:border-[#3B5EFF] transition-colors"
                 />
               </div>
             </div>
@@ -873,7 +873,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               <button
                 type="button"
                 onClick={() => handleProceedToStep(2)}
-                className="px-8 py-4 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
+                className="w-full sm:w-auto px-8 py-3.5 sm:py-4 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
               >
                 <span>Continue To Apparel</span>
                 <ArrowRight className="w-4 h-4" />
@@ -914,7 +914,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   </p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {formData.items.map((item, idx) => (
                     <div
                       key={idx}
@@ -953,14 +953,14 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   Loading catalog garments...
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {apparelCatalog.map((apparel) => {
                     const isSelected = formData.items.some((i) => i.apparelType === apparel.name);
 
                     return (
                       <div
                         key={apparel.id}
-                        className={`p-5 rounded-2xl border text-left flex flex-col justify-between transition-all ${
+                        className={`p-4 sm:p-5 rounded-2xl border text-left flex flex-col justify-between transition-all ${
                           isSelected
                             ? 'bg-[#3B5EFF]/10 border-[#3B5EFF]'
                             : 'bg-white/[0.02] border-white/10 hover:border-white/20'
@@ -1049,11 +1049,11 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
 
             {/* Nav Buttons */}
-            <div className="pt-6 flex justify-between">
+            <div className="pt-6 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => handleProceedToStep(1)}
-                className="px-6 py-3.5 rounded-xl border border-white/10 hover:bg-white/5 text-pearl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl border border-white/10 hover:bg-white/5 text-pearl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -1063,7 +1063,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                 type="button"
                 onClick={() => handleProceedToStep(3)}
                 disabled={formData.items.length === 0}
-                className="px-8 py-3.5 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] disabled:opacity-50 disabled:cursor-not-allowed text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
+                className="px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] disabled:opacity-50 disabled:cursor-not-allowed text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
               >
                 <span>Continue To Artwork</span>
                 <ArrowRight className="w-4 h-4" />
@@ -1093,7 +1093,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               <label className="block text-xs font-mono text-pearl/70 uppercase tracking-wider font-semibold">
                 Print Placements *
               </label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                 {[
                   { id: 'front_only' as const, label: 'Front Only' },
                   { id: 'back_only' as const, label: 'Back Only' },
@@ -1103,7 +1103,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                     key={mode.id}
                     type="button"
                     onClick={() => setPrintPlacementMode(mode.id)}
-                    className={`py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all ${
+                    className={`py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all text-center flex items-center justify-center ${
                       printPlacementMode === mode.id
                         ? 'bg-[#3B5EFF] border-[#3B5EFF] text-white shadow-lg shadow-[#3B5EFF]/20'
                         : 'bg-white/[0.03] border-white/10 text-pearl/70 hover:text-white'
@@ -1318,7 +1318,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
 
             {/* Printing Method & Notes */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-white/5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-4 border-t border-white/5">
               <div className="space-y-2">
                 <CustomSelect
                   label="Preferred Printing Method"
@@ -1350,11 +1350,11 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
 
             {/* Nav Buttons */}
-            <div className="pt-6 flex justify-between">
+            <div className="pt-6 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => handleProceedToStep(2)}
-                className="px-6 py-3.5 rounded-xl border border-white/10 hover:bg-white/5 text-pearl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl border border-white/10 hover:bg-white/5 text-pearl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -1363,7 +1363,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               <button
                 type="button"
                 onClick={() => handleProceedToStep(4)}
-                className="px-8 py-3.5 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
+                className="px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
               >
                 <span>Continue To Sizes & Matrix</span>
                 <ArrowRight className="w-4 h-4" />
@@ -1402,10 +1402,10 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                 return (
                   <div
                     key={itemIdx}
-                    className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-6"
+                    className="p-4 sm:p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-6"
                   >
                     {/* Item Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-3">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-white/10 gap-3">
                       <div>
                         <div className="flex items-center gap-2">
                           <h3 className="font-display text-lg sm:text-xl font-bold uppercase text-white">
@@ -1421,7 +1421,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                       </div>
 
                       {/* Fabric Grade Selector */}
-                      <div className="sm:w-64">
+                      <div className="w-full md:w-64">
                         <CustomSelect
                           label="Fabric Specification"
                           value={
@@ -1441,7 +1441,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                     </div>
 
                     {/* Size Matrix Table */}
-                    <div className="overflow-x-auto">
+                    <div className="-mx-2 sm:mx-0 px-2 sm:px-0 overflow-x-auto scrollbar-thin">
                       <table className="w-full text-left font-mono text-xs">
                         <thead>
                           <tr className="border-b border-white/10 text-pearl/50 uppercase">
@@ -1560,7 +1560,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
 
             {/* Branding, Packaging & Labeling Options */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-white/10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-4 border-t border-white/10">
               <div className="space-y-2">
                 <CustomSelect
                   label="Custom Branding & Labeling (Optional)"
@@ -1616,11 +1616,11 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
 
             {/* Nav Buttons */}
-            <div className="pt-6 flex justify-between">
+            <div className="pt-6 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => handleProceedToStep(3)}
-                className="px-6 py-3.5 rounded-xl border border-white/10 hover:bg-white/5 text-pearl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl border border-white/10 hover:bg-white/5 text-pearl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -1630,7 +1630,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                 type="button"
                 onClick={() => handleProceedToStep(5)}
                 disabled={grandTotalQuantity <= 0}
-                className="px-8 py-3.5 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] disabled:opacity-50 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
+                className="px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] disabled:opacity-50 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
               >
                 <span>Continue To Delivery</span>
                 <ArrowRight className="w-4 h-4" />
@@ -1660,7 +1660,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               <label className="block text-xs font-mono text-pearl/70 uppercase tracking-wider font-semibold">
                 Fulfillment Method
               </label>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 <button
                   type="button"
                   onClick={() => setFormData((p) => ({ ...p, shippingMethod: 'delivery' }))}
@@ -1698,7 +1698,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             {/* Delivery Address Fields */}
             {formData.shippingMethod === 'delivery' && (
               <div className="space-y-4 pt-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="block text-xs font-mono text-pearl/70 uppercase font-semibold">
                       Recipient / Company Contact *
@@ -1737,7 +1737,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                   <div className="space-y-1.5">
                     <label className="block text-xs font-mono text-pearl/70 uppercase font-semibold">
                       City *
@@ -1812,7 +1812,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               <label className="block text-xs font-mono text-pearl/70 uppercase tracking-wider font-semibold">
                 How Would You Like Us To Contact You? *
               </label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                 {[
                   { id: 'whatsapp' as const, label: 'WhatsApp (Fastest)' },
                   { id: 'phone' as const, label: 'Phone Call' },
@@ -1822,7 +1822,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                     key={cp.id}
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, contactPreference: cp.id }))}
-                    className={`py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all ${
+                    className={`py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all text-center flex items-center justify-center ${
                       formData.contactPreference === cp.id
                         ? 'bg-[#3B5EFF] border-[#3B5EFF] text-white shadow-md shadow-[#3B5EFF]/20'
                         : 'bg-white/[0.03] border-white/10 text-pearl/70 hover:text-white'
@@ -1849,11 +1849,11 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
             </div>
 
             {/* Nav Buttons */}
-            <div className="pt-6 flex justify-between">
+            <div className="pt-6 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => handleProceedToStep(4)}
-                className="px-6 py-3.5 rounded-xl border border-white/10 hover:bg-white/5 text-pearl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl border border-white/10 hover:bg-white/5 text-pearl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -1862,7 +1862,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
               <button
                 type="button"
                 onClick={() => handleProceedToStep(6)}
-                className="px-8 py-3.5 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
+                className="px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-[#3B5EFF] hover:bg-[#2b4be6] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-[#3B5EFF]/20 cursor-pointer"
               >
                 <span>Review & Submit</span>
                 <ArrowRight className="w-4 h-4" />
@@ -1904,7 +1904,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-pearl/70">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-pearl/70">
                   <div>
                     <span className="text-pearl/40 block text-[10px] uppercase">Order Type</span>
                     <span className="text-white font-bold">{formData.orderType}</span>
@@ -1921,7 +1921,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   </div>
                   <div>
                     <span className="text-pearl/40 block text-[10px] uppercase">Email</span>
-                    <span className="text-white font-bold">{formData.email}</span>
+                    <span className="text-white font-bold break-all">{formData.email}</span>
                   </div>
                   {formData.companyName && (
                     <div>
@@ -2052,7 +2052,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                     over WhatsApp.
                   </p>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {formData.artworks.map((art, aIdx) => (
                       <div
                         key={aIdx}
@@ -2118,7 +2118,7 @@ export function BulkOrderForm({ initialOrderType }: BulkOrderFormProps) {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-pearl/80">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-pearl/80">
                   <div>
                     <span className="text-pearl/40 block text-[10px] uppercase">
                       Packaging Option
