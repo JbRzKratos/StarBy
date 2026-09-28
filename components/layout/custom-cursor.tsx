@@ -117,6 +117,31 @@ export function CustomCursor() {
       }
     };
 
+    const onCustomHover = (e: Event) => {
+      if (window.innerWidth < 768) return;
+      const customEv = e as CustomEvent<{ isInteractive?: boolean }>;
+      const isInteractive = !!customEv.detail?.isInteractive;
+      if (isInteractive && !isHovering) {
+        isHovering = true;
+        gsap.to(cursor, {
+          scale: 1.5,
+          backgroundColor: '#ffffff',
+          borderColor: 'transparent',
+          duration: 0.3,
+        });
+        gsap.to(dot, { scale: 0, duration: 0.3 });
+      } else if (!isInteractive && isHovering) {
+        isHovering = false;
+        gsap.to(cursor, {
+          scale: 1,
+          backgroundColor: 'transparent',
+          borderColor: 'rgba(255, 255, 255, 0.5)',
+          duration: 0.3,
+        });
+        gsap.to(dot, { scale: 1, duration: 0.3 });
+      }
+    };
+
     try {
       // Set initial position off-screen
       gsap.set(cursor, { xPercent: -50, yPercent: -50, x: -100, y: -100 });
@@ -134,6 +159,7 @@ export function CustomCursor() {
       window.addEventListener('mouseover', onMouseOver, { passive: true });
       window.addEventListener('mousedown', onMouseDown, { passive: true });
       window.addEventListener('mouseup', onMouseUp, { passive: true });
+      window.addEventListener('custom-cursor-hover', onCustomHover);
     } catch (err) {
       console.error('[CustomCursor] Failed to initialize:', err);
       return;
@@ -147,6 +173,7 @@ export function CustomCursor() {
       window.removeEventListener('mouseover', onMouseOver);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('custom-cursor-hover', onCustomHover);
       gsap.killTweensOf([cursor, dot]);
     };
   }, []);

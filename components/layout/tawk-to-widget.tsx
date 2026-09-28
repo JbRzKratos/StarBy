@@ -13,10 +13,16 @@ interface TawkApi {
   ) => void;
   onLoad?: () => void;
   onLoaded?: () => void;
+  onChatMaximized?: () => void;
+  onChatMinimized?: () => void;
+  onChatHidden?: () => void;
+  onChatStarted?: () => void;
+  onStatusChange?: (status: string) => void;
   isChatMaximized?: () => boolean;
   maximize?: () => void;
   minimize?: () => void;
   toggle?: () => void;
+  [key: string]: unknown;
 }
 
 declare global {
@@ -35,7 +41,10 @@ export function TawkToWidget() {
     pathname?.startsWith('/magazine/editor') ||
     pathname?.startsWith('/magazine/content-wizard') ||
     pathname?.startsWith('/admin') ||
-    pathname?.startsWith('/wall-studio'),
+    pathname?.startsWith('/wall-studio') ||
+    pathname?.startsWith('/customize') ||
+    pathname?.includes('/customize') ||
+    (typeof document !== 'undefined' && document.body?.classList?.contains('mockup-studio-active')),
   );
 
   const isExcludedRef = useRef(isExcluded);
@@ -44,16 +53,33 @@ export function TawkToWidget() {
   const syncWidgetVisibility = () => {
     if (typeof window === 'undefined') return;
     const api = window.Tawk_API;
-    if (!api) return;
+    const shouldExclude =
+      isExcludedRef.current ||
+      Boolean(typeof document !== 'undefined' && document.body?.classList?.contains('mockup-studio-active'));
 
-    try {
-      if (isExcludedRef.current) {
-        api.hideWidget?.();
-      } else {
-        api.showWidget?.();
+    if (api) {
+      try {
+        if (shouldExclude) {
+          api.hideWidget?.();
+          api.minimize?.();
+        } else {
+          api.showWidget?.();
+        }
+      } catch {
+        // Ignore if Tawk_API is not fully mounted yet
       }
-    } catch {
-      // Ignore if Tawk_API is not fully mounted yet
+    }
+
+    if (shouldExclude) {
+      try {
+        document.querySelectorAll('iframe[src*="tawk.to"], [id*="tawk"], [class*="tawk"]').forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          htmlEl.style.setProperty('display', 'none', 'important');
+          htmlEl.style.setProperty('visibility', 'hidden', 'important');
+        });
+      } catch {
+        /* ignore */
+      }
     }
   };
 
@@ -91,6 +117,24 @@ export function TawkToWidget() {
         }
       }
       syncWidgetVisibility();
+    };
+
+    const prevOnChatMaximized = window.Tawk_API.onChatMaximized;
+    window.Tawk_API.onChatMaximized = function () {
+      if (typeof prevOnChatMaximized === 'function') {
+        try {
+          prevOnChatMaximized();
+        } catch {
+          // Ignore
+        }
+      }
+      if (
+        isExcludedRef.current ||
+        (typeof document !== 'undefined' && document.body?.classList?.contains('mockup-studio-active'))
+      ) {
+        window.Tawk_API?.minimize?.();
+        window.Tawk_API?.hideWidget?.();
+      }
     };
 
     // Initial sync

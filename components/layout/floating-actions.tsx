@@ -15,7 +15,8 @@ export function FloatingActions() {
     pathname?.startsWith('/magazine/editor') ||
     pathname?.startsWith('/magazine/content-wizard') ||
     pathname?.startsWith('/admin') ||
-    pathname?.startsWith('/wall-studio');
+    pathname?.startsWith('/wall-studio') ||
+    pathname?.startsWith('/customize');
 
   useEffect(() => {
     if (isExcludedRoute) return;

@@ -47,8 +47,8 @@ const nextConfig = {
     const securityHeaders = [
       // Prevent MIME-type sniffing
       { key: 'X-Content-Type-Options', value: 'nosniff' },
-      // Block iframe embedding (clickjacking protection)
-      { key: 'X-Frame-Options', value: 'DENY' },
+      // Allow same-origin iframe embedding for the clothing mockup studio; block cross-origin (clickjacking protection)
+      { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
       // Legacy XSS filter for older browsers
       { key: 'X-XSS-Protection', value: '1; mode=block' },
       // Only send origin on cross-origin requests
@@ -99,6 +99,8 @@ const nextConfig = {
                 `base-uri 'self'`,
                 // Form action: allow submitting payment session to Cashfree checkout endpoints
                 `form-action 'self' https://api.cashfree.com https://sandbox.cashfree.com https://payments.cashfree.com https://*.cashfree.com`,
+                // Frame ancestors: allow same-origin iframe embedding for the clothing mockup studio
+                `frame-ancestors 'self'`,
               ].join('; '),
             },
           ]
@@ -125,6 +127,36 @@ const nextConfig = {
       {
         // Cache fonts permanently (they never change)
         source: '/fonts/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache 3D garment assets (GLB models, PBR textures, HDR environment)
+        source: '/3d-assets/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache 2D mockup assets (designs, backgrounds, gobos)
+        source: '/(designs|backgrounds|gobo)/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache the clothing mockup studio built assets (content-hashed JS/CSS)
+        source: '/tools/clothing-mockup/assets/:path*',
         headers: [
           {
             key: 'Cache-Control',

@@ -233,6 +233,43 @@
     opacity: 0 !important;
     pointer-events: none !important;
   }
+
+  /* ── Clothing Mockup Studio active ────────────────────────────────────────
+   * When the 2D+3D garment editor is mounted, hide the site Footer and all
+   * floating widgets so the studio occupies the full viewport below the nav.
+   * The body class is toggled by ClothingMockupIframe via useEffect.
+   */
+  body.mockup-studio-active .host-navigation-bar,
+  body.mockup-studio-active [data-host-nav],
+  body.mockup-studio-active nav.pointer-events-auto,
+  body.mockup-studio-active footer,
+  body.mockup-studio-active #tawk-default-container,
+  body.mockup-studio-active #tawk-bubble-container,
+  body.mockup-studio-active .tawk-min-container,
+  body.mockup-studio-active .tawk-button,
+  body.mockup-studio-active .tawk-badge,
+  body.mockup-studio-active [id*='tawk' i],
+  body.mockup-studio-active iframe[src*='tawk.to'],
+  body.mockup-studio-active iframe[title*='chat' i],
+  body.mockup-studio-active iframe[title*='tawk' i],
+  body.mockup-studio-active div:has(> iframe[src*='tawk.to']),
+  body.mockup-studio-active div:has(iframe[src*='tawk.to']),
+  body.mockup-studio-active div[class*='tawk'],
+  body.mockup-studio-active [class*='tawk'],
+  body.mockup-studio-active .widget-visible,
+  body.mockup-studio-active .fixed.bottom-4.left-4,
+  body.mockup-studio-active .fixed.bottom-6.left-6,
+  body.mockup-studio-active .fixed.bottom-20.right-4,
+  body.mockup-studio-active .fixed.bottom-24.right-6,
+  body.mockup-studio-active .floating-whatsapp-btn,
+  body.mockup-studio-active .floating-scroll-top-btn,
+  body.mockup-studio-active nextjs-portal,
+  body.mockup-studio-active [data-nextjs-toast] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 }
 
 @layer components {
@@ -311,3 +348,34 @@
     background: rgba(59, 94, 255, 0.5);
   }
 }
+
+/* ── Highest-Priority Tawk.to & Floating Widget Suppression in Mockup Studio ── */
+body.mockup-studio-active div:has(> iframe[src*="tawk.to"]),
+body.mockup-studio-active div:has(iframe[src*="tawk.to"]),
+body.mockup-studio-active iframe[src*="tawk.to"],
+body.mockup-studio-active iframe[title*="chat" i],
+body.mockup-studio-active iframe[title*="tawk" i],
+body.mockup-studio-active #tawk-default-container,
+body.mockup-studio-active #tawk-bubble-container,
+body.mockup-studio-active .tawk-min-container,
+body.mockup-studio-active .tawk-button,
+body.mockup-studio-active .tawk-badge,
+body.mockup-studio-active [id*="tawk" i],
+body.mockup-studio-active [class*="tawk" i],
+body.mockup-studio-active .widget-visible {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0) !important;
+  clip-path: inset(100%) !important;
+  width: 0 !important;
+  height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  position: fixed !important;
+  bottom: -99999px !important;
+  right: -99999px !important;
+  z-index: -99999 !important;
+}
+

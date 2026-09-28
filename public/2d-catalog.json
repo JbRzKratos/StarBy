@@ -1,0 +1,682 @@
+[
+  {
+    "name": "Heavyweight floating tee — Shaka Wear",
+    "mockup_id": 36,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/36.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2855469
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/36_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5430247
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/37.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2802301
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/37_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5530952
+      }
+    }
+  },
+  {
+    "name": "Floating tee — Gildan 5000",
+    "mockup_id": 34,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/34.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3040247
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/34_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 4851539
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/35.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3125940
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/35_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5622800
+      }
+    }
+  },
+  {
+    "name": "Floating tee — Bella+Canvas 3001",
+    "mockup_id": 32,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/32.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3349948
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/32_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5700993
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/33.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3140472
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/33_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5788088
+      }
+    }
+  },
+  {
+    "name": "Floating heavy tee — AS Colour 5080",
+    "mockup_id": 30,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/30.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2909755
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/30_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5056912
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/31.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2949482
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/31_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5322410
+      }
+    }
+  },
+  {
+    "name": "Floating tee — LA Apparel 1801",
+    "mockup_id": 28,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/28.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3128396
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/28_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5392483
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/29.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3232173
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/29_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 2,
+        "alpha_channel": false,
+        "bytes": 5842861
+      }
+    }
+  },
+  {
+    "name": "Regular fit tee",
+    "mockup_id": 24,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/24.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3165072
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/24_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8919555
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/25.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2904116
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/25_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8688387
+      }
+    }
+  },
+  {
+    "name": "Vintage streetwear tee",
+    "mockup_id": 22,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/22.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3723508
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/22_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 9466319
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/23.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3940038
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/23_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8959054
+      }
+    }
+  },
+  {
+    "name": "Boxy fit tee",
+    "mockup_id": 20,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/20.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3397987
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/20_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 9088858
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/21.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3344741
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/21_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 10025965
+      }
+    }
+  },
+  {
+    "name": "Oversized heavyweight tee",
+    "mockup_id": 18,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/18.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3474115
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/18_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8469034
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/19.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3628207
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/19_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8305049
+      }
+    }
+  },
+  {
+    "name": "Flat lay sweatshirt — LA Apparel HF07",
+    "mockup_id": 16,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/16.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2996485
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/16_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8737426
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/17.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2973694
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/17_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 9424970
+      }
+    }
+  },
+  {
+    "name": "Flat lay hoodie — LA Apparel HF10",
+    "mockup_id": 14,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/14.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3294284
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/14_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8585566
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/15.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3289191
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/15_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8154337
+      }
+    }
+  },
+  {
+    "name": "Oversized distressed flat lay tee",
+    "mockup_id": 11,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/11.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3146611
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/11_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8653535
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/12.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3126343
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/12_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8631781
+      }
+    }
+  },
+  {
+    "name": "Flat lay tee — Shaka Wear",
+    "mockup_id": 9,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/9.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3287266
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/9_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8329535
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/10.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3233299
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/10_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 7905031
+      }
+    }
+  },
+  {
+    "name": "Flat lay tee — Gildan 5000",
+    "mockup_id": 7,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/7.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3277314
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/7_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8327813
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/8.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3159213
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/8_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8099878
+      }
+    }
+  },
+  {
+    "name": "Flat lay tee — Bella+Canvas 3001",
+    "mockup_id": 5,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/5.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3522430
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/5_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 7940320
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/6.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3451016
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/6_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8149493
+      }
+    }
+  },
+  {
+    "name": "Flat lay tee — AS Colour 5080",
+    "mockup_id": 3,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/3.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3289359
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/3_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8107940
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/4.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 3249826
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/4_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8717790
+      }
+    }
+  },
+  {
+    "name": "Flat lay tee — LA Apparel 1801",
+    "mockup_id": 1,
+    "front": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/1.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2734750
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/1_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 8174002
+      }
+    },
+    "back": {
+      "garment": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/2.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 2782668
+      },
+      "shadow": {
+        "path": "public-assets/virtualthreads2d.sfo3.cdn.digitaloceanspaces.com/designs/2_shadow.png",
+        "width": 2048,
+        "height": 2048,
+        "png_color_type": 6,
+        "alpha_channel": true,
+        "bytes": 7955889
+      }
+    }
+  }
+]

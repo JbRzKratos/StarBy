@@ -1,14 +1,14 @@
 # Dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 
-# Next.js Build Output
-/.next/
-/out/
-/build
-/dist
+# Next.js & Subproject Build Output
+.next/
+out/
+build/
+dist/
 
 # Environment Variables (NEVER commit secrets to Git)
 .env
@@ -21,6 +21,8 @@
 .env.production
 .env.test
 .env.staging
+!.env.example
+!.env*.example
 
 # Cloudflare & Edge Deployments
 .open-next/
@@ -28,7 +30,7 @@
 .worker-next/
 
 # Testing & Coverage
-/coverage
+coverage/
 
 # Vercel
 .vercel
@@ -46,6 +48,10 @@ pnpm-debug.log*
 # System & OS Files
 .DS_Store
 Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
 *.pem
 *.key
 *.cert
@@ -78,6 +84,8 @@ tmp/
 temp/
 .tempmediaStorage/
 *.log
+.agents/scratch/
+.gemini/
 
 # ─── Cloudflare R2 Assets (served from CDN, not committed to git) ────────────
 # These files live in R2. Run `python scripts/upload_to_r2.py` to upload them.
@@ -97,3 +105,21 @@ temp/
 /public/3d models/
 /public/templates/
 /public/*.pdf
+
+# ─── Clothing Mockup Feature Assets (served from CDN / local public) ────────
+# Heavy 3D/2D asset binaries (~710 MB total) — keep out of git repository
+/public/3d-assets/
+/public/designs/
+/public/backgrounds/
+/public/gobo/
+Clothing-Mockup-Feature/assets/
+
+# Subproject dependencies and build caches
+Clothing-Mockup-Feature/app/node_modules/
+Clothing-Mockup-Feature/app/dist/
+
+# ─── Note: Production Mockup App & Catalog ──────────────────────────────────
+# Do NOT ignore /public/tools/clothing-mockup/ (1.2 MB compiled app)
+# or /public/2d-catalog.json (20 KB). They must be tracked so production
+# deployments (e.g. Vercel) can serve the iframe customizer without 404s.
+
