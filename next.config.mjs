@@ -142,6 +142,10 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
         ],
       },
       {
@@ -151,6 +155,10 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
           },
         ],
       },
@@ -163,6 +171,31 @@ const nextConfig = {
             value: 'public, max-age=31536000, immutable',
           },
         ],
+      },
+    ];
+  },
+
+  async rewrites() {
+    const r2Base =
+      process.env.NEXT_PUBLIC_R2_PUBLIC_URL ||
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev';
+
+    return [
+      {
+        source: '/3d-assets/:path*',
+        destination: `${r2Base}/3d-assets/:path*`,
+      },
+      {
+        source: '/designs/:path*',
+        destination: `${r2Base}/designs/:path*`,
+      },
+      {
+        source: '/backgrounds/:path*',
+        destination: `${r2Base}/backgrounds/:path*`,
+      },
+      {
+        source: '/gobo/:path*',
+        destination: `${r2Base}/gobo/:path*`,
       },
     ];
   },
