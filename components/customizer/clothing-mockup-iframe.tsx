@@ -16,7 +16,13 @@ import React, { useState, useEffect } from 'react';
  *    can hide the floating widgets and footer.
  */
 
-const NAV_HEIGHT = 60; // matches host nav py-3.5 + content (~60px)
+interface WindowWithTawk {
+  Tawk_API?: {
+    hideWidget?: () => void;
+    minimize?: () => void;
+    showWidget?: () => void;
+  };
+}
 
 export function ClothingMockupIframe() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +34,7 @@ export function ClothingMockupIframe() {
     document.body.classList.add('mockup-studio-active');
 
     const suppressTawk = () => {
-      const win = window as any;
+      const win = window as unknown as WindowWithTawk;
       try {
         win.Tawk_API?.hideWidget?.();
         win.Tawk_API?.minimize?.();
@@ -64,7 +70,11 @@ export function ClothingMockupIframe() {
           htmlEl.style.setProperty('z-index', '-99999', 'important');
 
           // If it's an iframe, also hide its immediate parent container if fixed/absolute
-          if (htmlEl.tagName === 'IFRAME' && htmlEl.parentElement && htmlEl.parentElement !== document.body) {
+          if (
+            htmlEl.tagName === 'IFRAME' &&
+            htmlEl.parentElement &&
+            htmlEl.parentElement !== document.body
+          ) {
             const parent = htmlEl.parentElement;
             parent.style.setProperty('display', 'none', 'important');
             parent.style.setProperty('visibility', 'hidden', 'important');
@@ -93,7 +103,7 @@ export function ClothingMockupIframe() {
       clearInterval(interval);
       observer.disconnect();
       document.body.classList.remove('mockup-studio-active');
-      const win = window as any;
+      const win = window as unknown as WindowWithTawk;
       try {
         win.Tawk_API?.showWidget?.();
       } catch {
@@ -114,7 +124,7 @@ export function ClothingMockupIframe() {
             clientX: e.data.clientX + rect.left,
             clientY: e.data.clientY + rect.top,
             bubbles: true,
-          })
+          }),
         );
       }
     };
@@ -161,20 +171,20 @@ export function ClothingMockupIframe() {
                 clientX: e.clientX + rect.left,
                 clientY: e.clientY + rect.top,
                 bubbles: true,
-              })
+              }),
             );
 
             const target = e.target as HTMLElement | null;
             const isInteractive = !!target?.closest(
-              'button, a, input, select, textarea, [role="button"], .interactive, .nav-tab-btn, .side-btn, .header-btn, .btn-card-subtle'
+              'button, a, input, select, textarea, [role="button"], .interactive, .nav-tab-btn, .side-btn, .header-btn, .btn-card-subtle',
             );
             window.dispatchEvent(
               new CustomEvent('custom-cursor-hover', {
                 detail: { isInteractive },
-              })
+              }),
             );
           },
-          { passive: true }
+          { passive: true },
         );
 
         win.addEventListener('mousedown', () => {
@@ -210,9 +220,7 @@ export function ClothingMockupIframe() {
             <p className="text-sm font-semibold tracking-wider text-[#F5F1EA]/80 uppercase font-mono">
               Loading Mockup Studio
             </p>
-            <p className="text-xs text-[#F5F1EA]/30 font-mono">
-              Initialising 3D engine…
-            </p>
+            <p className="text-xs text-[#F5F1EA]/30 font-mono">Initialising 3D engine…</p>
           </div>
 
           {/* Subtle pulse bar */}

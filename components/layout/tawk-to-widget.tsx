@@ -55,7 +55,10 @@ export function TawkToWidget() {
     const api = window.Tawk_API;
     const shouldExclude =
       isExcludedRef.current ||
-      Boolean(typeof document !== 'undefined' && document.body?.classList?.contains('mockup-studio-active'));
+      Boolean(
+        typeof document !== 'undefined' &&
+        document.body?.classList?.contains('mockup-studio-active'),
+      );
 
     if (api) {
       try {
@@ -72,11 +75,13 @@ export function TawkToWidget() {
 
     if (shouldExclude) {
       try {
-        document.querySelectorAll('iframe[src*="tawk.to"], [id*="tawk"], [class*="tawk"]').forEach((el) => {
-          const htmlEl = el as HTMLElement;
-          htmlEl.style.setProperty('display', 'none', 'important');
-          htmlEl.style.setProperty('visibility', 'hidden', 'important');
-        });
+        document
+          .querySelectorAll('iframe[src*="tawk.to"], [id*="tawk"], [class*="tawk"]')
+          .forEach((el) => {
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.setProperty('display', 'none', 'important');
+            htmlEl.style.setProperty('visibility', 'hidden', 'important');
+          });
       } catch {
         /* ignore */
       }
@@ -130,7 +135,8 @@ export function TawkToWidget() {
       }
       if (
         isExcludedRef.current ||
-        (typeof document !== 'undefined' && document.body?.classList?.contains('mockup-studio-active'))
+        (typeof document !== 'undefined' &&
+          document.body?.classList?.contains('mockup-studio-active'))
       ) {
         window.Tawk_API?.minimize?.();
         window.Tawk_API?.hideWidget?.();

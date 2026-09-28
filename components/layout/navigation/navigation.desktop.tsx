@@ -79,7 +79,10 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] flex flex-col pointer-events-none host-navigation-bar" data-host-nav>
+    <div
+      className="fixed top-0 left-0 right-0 z-[100] flex flex-col pointer-events-none host-navigation-bar"
+      data-host-nav
+    >
       <div className="pointer-events-auto">
         <OfferBannerDesktop />
       </div>
