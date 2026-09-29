@@ -93,6 +93,11 @@ interface DragSession {
   screenCenterY: number;
   dist0: number;
   angleOffset: number;
+  invUx?: number;
+  invUy?: number;
+  invVx?: number;
+  invVy?: number;
+  invDet?: number;
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -137,16 +142,6 @@ function getLayerUVSize(layer: ArtworkLayer3D, imgAspect: number, garmentConfig?
   return { uvW: baseSpan, uvH: baseSpan / imgAspect };
 }
 
-function uvHitsLayer(u: number, v: number, layer: ArtworkLayer3D, imgAspect: number, garmentConfig?: Garment3DConfig): boolean {
-  const center = getLayerUV(layer, garmentConfig);
-  const { uvW, uvH } = getLayerUVSize(layer, imgAspect, garmentConfig);
-  const dx = u - center.u;
-  const dy = v - center.v;
-  const rad = -(layer.rotation * Math.PI) / 180;
-  const lx = dx * Math.cos(rad) - dy * Math.sin(rad);
-  const ly = dx * Math.sin(rad) + dy * Math.cos(rad);
-  return Math.abs(lx) <= uvW / 2 + 0.02 && Math.abs(ly) <= uvH / 2 + 0.02;
-}
 
 // ─── Fast UV Vertex Spatial Hash Index ────────────────────────────────────────
 
@@ -436,6 +431,22 @@ function hitHandle(handles: HandleRect[], px: number, py: number): HandleRect | 
   return null;
 }
 
+/** Fast 2D point-in-polygon test (Jordan curve theorem) */
+function isPointInPolygon(px: number, py: number, corners: Array<{ x: number; y: number }>): boolean {
+  if (!corners || corners.length < 3) return false;
+  let inside = false;
+  const n = corners.length;
+  for (let i = 0, j = n - 1; i < n; j = i++) {
+    const xi = corners[i].x;
+    const yi = corners[i].y;
+    const xj = corners[j].x;
+    const yj = corners[j].y;
+    const intersect = yi > py !== yj > py && px < ((xj - xi) * (py - yi)) / (yj - yi + 1e-9) + xi;
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
 /** Draw all transform handles onto the overlay canvas. */
 function drawTransformHandles(
   ctx: CanvasRenderingContext2D,
@@ -645,11 +656,35 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
   // Live layer state during drag (NOT committed to React until pointer-up).
   const liveLayerRef = useRef<ArtworkLayer3D | null>(null);
 
-  // Cursor style — updated from tick(), propagated to React via direct DOM mutation.
+  // Wrapper div ref for cursor styling
   const cursorEl = useRef<HTMLDivElement | null>(null);
 
   // Hover hit for cursor
   const lastHoverHitRef = useRef<'handle' | 'layer' | 'none'>('none');
+
+  // Direct DOM cursor styling helper
+  const setCursorStyle = (style: string) => {
+    if (cursorEl.current) {
+      cursorEl.current.style.cursor = style;
+    }
+    const sm = sceneManagerRef.current;
+    if (sm?.renderer?.domElement) {
+      sm.renderer.domElement.style.cursor = style;
+    }
+    if (containerRef.current) {
+      containerRef.current.style.cursor = style;
+    }
+  };
+
+  // Inform parent custom cursor of interactive hover
+  const notifyCursorHover = (isInteractive: boolean) => {
+    try {
+      window.dispatchEvent(new CustomEvent('custom-cursor-hover', { detail: { isInteractive } }));
+      if (window.parent && window.parent !== window) {
+        window.parent.dispatchEvent(new CustomEvent('custom-cursor-hover', { detail: { isInteractive } }));
+      }
+    } catch (_) {}
+  };
 
   // ── Raycasting ────────────────────────────────────────────────────────────
 
@@ -678,21 +713,6 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         }
       }
       return { u: hit.uv.x, v: hit.uv.y };
-    }
-    return null;
-  };
-
-  const findLayerAtUV = (u: number, v: number): ArtworkLayer3D | null => {
-    const layers = artworkLayersRef.current;
-    const imageCache: Map<string, HTMLImageElement> =
-      (compositorRef.current as any)?.imageCache ?? new Map();
-    for (let i = layers.length - 1; i >= 0; i--) {
-      const layer = layers[i];
-      if ((layer.placementMode ?? 'atlas') !== 'atlas') continue;
-      if (layer.opacity <= 0) continue;
-      const img = imageCache.get(layer.imageUrl);
-      const imgAspect = img && img.naturalHeight > 0 ? img.naturalWidth / img.naturalHeight : 1;
-      if (uvHitsLayer(u, v, layer, imgAspect, garmentConfigRef.current)) return layer;
     }
     return null;
   };
@@ -731,6 +751,26 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     );
   };
 
+  const getLayerScreenInfo = (layer: ArtworkLayer3D): { handlesResult: ComputedHandlesResult } | null => {
+    const sm = sceneManagerRef.current;
+    if (!sm) return null;
+    const rect = sm.renderer.domElement.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return null;
+    const imgAspect = getImgAspectForLayer(layer);
+    const handlesResult = computeHandles(
+      layer,
+      imgAspect,
+      rect,
+      uvLookupRef.current,
+      garmentMeshRef.current,
+      sm.camera,
+      garmentConfigRef.current,
+      true
+    );
+    if (!handlesResult) return null;
+    return { handlesResult };
+  };
+
   // ── Tick-level transform computation ──────────────────────────────────────
 
   const processDragInTick = () => {
@@ -750,11 +790,27 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     let updates: Partial<ArtworkLayer3D> = {};
 
     if (session.state === 'moving') {
-      // ── Move: UV delta on garment surface ───────────────────────────────
-      const uv = raycastGarmentUV(clientX, clientY);
-      if (!uv) return; // hold last valid
-      const deltaU = uv.u - session.uvX0;
-      const deltaV = uv.v - session.uvY0;
+      // ── Move: instantaneous screen-to-UV mapping (ZERO 3D raycasting = ZERO lag!) ────
+      let deltaU = 0;
+      let deltaV = 0;
+      const dx = clientX - session.clientX0;
+      const dy = clientY - session.clientY0;
+
+      if (
+        session.invDet !== undefined &&
+        session.invUx !== undefined &&
+        session.invUy !== undefined &&
+        session.invVx !== undefined &&
+        session.invVy !== undefined
+      ) {
+        deltaU = (session.invVy * dx - session.invVx * dy) * session.invDet;
+        deltaV = (-session.invUy * dx + session.invUx * dy) * session.invDet;
+      } else {
+        const rect = sm.renderer.domElement.getBoundingClientRect();
+        deltaU = dx / (rect.width * 0.4 || 1);
+        deltaV = dy / (rect.height * 0.4 || 1);
+      }
+
       const newU = THREE.MathUtils.clamp(session.u0 + deltaU, -0.5, 1.5);
       const newV = THREE.MathUtils.clamp(session.v0 + deltaV, -0.5, 1.5);
       updates = {
@@ -973,39 +1029,85 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         }
       }
 
-      // ── Check artwork hit ────────────────────────────────────────────────
-      const uv = raycastGarmentUV(e.clientX, e.clientY);
-      if (uv) {
-        const hitLayer = findLayerAtUV(uv.u, uv.v);
-        if (hitLayer) {
+      // ── Check artwork hit in 2D screen space (ZERO 3D raycasting = ZERO lag!) ────
+      if (sm) {
+        const rect = sm.renderer.domElement.getBoundingClientRect();
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+        const layers = artworkLayersRef.current;
+        let hitLayer: ArtworkLayer3D | null = null;
+        let hitHandlesResult: ComputedHandlesResult | null = null;
+
+        // Check selected layer first
+        if (selId) {
+          const selHandles = getSelectedLayerHandles();
+          if (selHandles && selHandles.isFacing && isPointInPolygon(px, py, selHandles.corners)) {
+            hitLayer = layers.find((l) => l.id === selId) || null;
+            hitHandlesResult = selHandles;
+          }
+        }
+
+        // Check other layers from top to bottom
+        if (!hitLayer) {
+          for (let i = layers.length - 1; i >= 0; i--) {
+            const layer = layers[i];
+            if (layer.id === selId) continue;
+            if ((layer.placementMode ?? 'atlas') !== 'atlas' || layer.opacity <= 0) continue;
+            const info = getLayerScreenInfo(layer);
+            if (info && info.handlesResult.isFacing && isPointInPolygon(px, py, info.handlesResult.corners)) {
+              hitLayer = layer;
+              hitHandlesResult = info.handlesResult;
+              break;
+            }
+          }
+        }
+
+        if (hitLayer && hitHandlesResult) {
           hideInstruction();
           if (selId !== hitLayer.id) {
             onSelectLayerRef.current?.(hitLayer.id);
           }
           const { u: lu, v: lv } = getLayerUV(hitLayer, garmentConfigRef.current);
-          const { uvW, uvH } = getLayerUVSize(hitLayer, getImgAspectForLayer(hitLayer), garmentConfigRef.current);
-          const handlesResult = getSelectedLayerHandles();
-          const screenCenterX = handlesResult ? handlesResult.center.x : 0;
-          const screenCenterY = handlesResult ? handlesResult.center.y : 0;
+          const { uvW, uvH } = getLayerUVSize(hitLayer, hitHandlesResult.imgAspect, garmentConfigRef.current);
+          const screenCenterX = hitHandlesResult.center.x;
+          const screenCenterY = hitHandlesResult.center.y;
+
+          // Compute screen-to-UV mapping matrix for instantaneous, zero-lag drag
+          const dUV = 0.01;
+          const cProj = projectUVToScreen(lu, lv, uvLookupRef.current, garmentMeshRef.current, sm.camera, rect, true);
+          const uProj = projectUVToScreen(lu + dUV, lv, uvLookupRef.current, garmentMeshRef.current, sm.camera, rect, true);
+          const vProj = projectUVToScreen(lu, lv + dUV, uvLookupRef.current, garmentMeshRef.current, sm.camera, rect, true);
+
+          const Ux = (uProj.screenX - cProj.screenX) / dUV;
+          const Uy = (uProj.screenY - cProj.screenY) / dUV;
+          const Vx = (vProj.screenX - cProj.screenX) / dUV;
+          const Vy = (vProj.screenY - cProj.screenY) / dUV;
+          const det = Ux * Vy - Uy * Vx;
+          const hasGoodMatrix = Math.abs(det) > 100;
 
           dragSessionRef.current = {
             state: 'moving',
             layerId: hitLayer.id,
             clientX0: e.clientX,
             clientY0: e.clientY,
-            uvX0: uv.u,
-            uvY0: uv.v,
+            uvX0: lu,
+            uvY0: lv,
             u0: lu,
             v0: lv,
             uvWidth0: uvW,
             uvHeight0: uvH,
             scale0: hitLayer.scale,
             rotation0: hitLayer.rotation,
-            imgAspect: getImgAspectForLayer(hitLayer),
+            imgAspect: hitHandlesResult.imgAspect,
             screenCenterX,
             screenCenterY,
             dist0: 0,
             angleOffset: 0,
+            invUx: hasGoodMatrix ? Ux : undefined,
+            invUy: hasGoodMatrix ? Uy : undefined,
+            invVx: hasGoodMatrix ? Vx : undefined,
+            invVy: hasGoodMatrix ? Vy : undefined,
+            invDet: hasGoodMatrix ? 1 / det : undefined,
           };
           interactionStateRef.current = 'moving';
           liveLayerRef.current = { ...hitLayer };
@@ -1032,40 +1134,61 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         return;
       }
 
-      // Skip hover hit-testing while the user is orbiting / panning the camera.
-      // OrbitControls captures the pointer, and raycasting a 74K-vertex mesh on
-      // every pointer move during orbit is the single biggest source of jitter.
+      // Skip hover hit-testing while orbiting / panning
       const sm = sceneManagerRef.current;
       if (sm && sm.isPointerDown) return;
 
-      // Hover: detect hit for cursor style (only when pointer is free)
+      // Hover: detect hit for cursor style (ZERO 3D raycasting = ZERO lag!)
       if (interactionStateRef.current === 'idle' || interactionStateRef.current === 'selected') {
+        const domEl = sm?.renderer.domElement;
+        if (!domEl) return;
+        const rect = domEl.getBoundingClientRect();
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+
+        // 1. Check selected layer handles
         const selId = selectedLayerIdRef.current;
-        if (selId && sm) {
+        if (selId) {
           const handlesResult = getSelectedLayerHandles();
           if (handlesResult && handlesResult.isFacing) {
-            const rect = sm.renderer.domElement.getBoundingClientRect();
-            const px = e.clientX - rect.left;
-            const py = e.clientY - rect.top;
             const hit = hitHandle(handlesResult.handles, px, py);
             if (hit) {
               lastHoverHitRef.current = 'handle';
               setCursorStyle(hit.type === 'rotate' ? 'grab' : 'nwse-resize');
+              notifyCursorHover(true);
+              return;
+            }
+            if (isPointInPolygon(px, py, handlesResult.corners)) {
+              lastHoverHitRef.current = 'layer';
+              setCursorStyle('grab');
+              notifyCursorHover(true);
               return;
             }
           }
         }
-        const uv = raycastGarmentUV(e.clientX, e.clientY);
-        if (uv) {
-          const hitLayer = findLayerAtUV(uv.u, uv.v);
-          if (hitLayer) {
+
+        // 2. Check other artwork layers (facing camera)
+        const layers = artworkLayersRef.current;
+        let hitAnyLayer = false;
+        for (let i = layers.length - 1; i >= 0; i--) {
+          const layer = layers[i];
+          if (layer.id === selId) continue;
+          if ((layer.placementMode ?? 'atlas') !== 'atlas' || layer.opacity <= 0) continue;
+          const info = getLayerScreenInfo(layer);
+          if (info && info.handlesResult.isFacing && isPointInPolygon(px, py, info.handlesResult.corners)) {
             lastHoverHitRef.current = 'layer';
             setCursorStyle('grab');
-            return;
+            notifyCursorHover(true);
+            hitAnyLayer = true;
+            break;
           }
         }
-        lastHoverHitRef.current = 'none';
-        setCursorStyle('default');
+
+        if (!hitAnyLayer) {
+          lastHoverHitRef.current = 'none';
+          setCursorStyle('default');
+          notifyCursorHover(false);
+        }
       }
     };
 
@@ -1115,6 +1238,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       pendingPointerRef.current = null;
       sceneManagerRef.current && (sceneManagerRef.current.controls.enabled = true);
       setCursorStyle('default');
+      notifyCursorHover(false);
 
       try { domEl.releasePointerCapture(e.pointerId); } catch (_) {}
     };
@@ -1124,21 +1248,33 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         finishDrag(e);
         return;
       }
-      // Click (no drag) — panel selection
+      // Click (no drag) — selection
       const dx = e.clientX - downInfo.x;
       const dy = e.clientY - downInfo.y;
       const dt = performance.now() - downInfo.time;
       if (Math.hypot(dx, dy) < 6 && dt < 450) {
-        const uv = raycastGarmentUV(e.clientX, e.clientY);
-        if (uv) {
-          // Check artwork first
-          const hitLayer = findLayerAtUV(uv.u, uv.v);
-          if (hitLayer) {
-            onSelectLayerRef.current?.(hitLayer.id);
+        const sm = sceneManagerRef.current;
+        if (!sm) return;
+        const rect = sm.renderer.domElement.getBoundingClientRect();
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+
+        // Check if an artwork layer was clicked
+        const layers = artworkLayersRef.current;
+        for (let i = layers.length - 1; i >= 0; i--) {
+          const layer = layers[i];
+          if ((layer.placementMode ?? 'atlas') !== 'atlas' || layer.opacity <= 0) continue;
+          const info = getLayerScreenInfo(layer);
+          if (info && info.handlesResult.isFacing && isPointInPolygon(px, py, info.handlesResult.corners)) {
+            onSelectLayerRef.current?.(layer.id);
             interactionStateRef.current = 'selected';
             return;
           }
-          // Then panel
+        }
+
+        // Only raycast 3D if clicked outside all artwork layers (e.g. to select garment panel)
+        const uv = raycastGarmentUV(e.clientX, e.clientY);
+        if (uv) {
           const panel = findPanelAtUV(garmentConfigRef.current.id, uv.u, uv.v);
           if (panel) {
             onSelectPanelRef.current?.(
@@ -1147,6 +1283,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
             return;
           }
         }
+
         // Clicked empty space — deselect layer
         if (selectedLayerIdRef.current) {
           onSelectLayerRef.current?.(null);
@@ -1250,10 +1387,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Cursor style helper (direct DOM mutation — no React re-render) ──────────
-  const setCursorStyle = (style: string) => {
-    if (cursorEl.current) cursorEl.current.style.cursor = style;
-  };
+
 
   // 2. Garment Model Switch
   useEffect(() => {

@@ -162,36 +162,55 @@ export const App: React.FC = () => {
   // Cursor bridging when embedded in host site (e.g. StarBy Next.js app)
   useEffect(() => {
     if (typeof window === 'undefined' || !window.parent || window.parent === window) return;
+    if ((window as any).__parentCursorBridgeActive) return;
 
-    const forwardMouseMove = (e: MouseEvent) => {
+    let pendingMove: MouseEvent | null = null;
+    let rafId: number | null = null;
+    let lastInteractive: boolean | null = null;
+
+    const forwardMove = () => {
+      rafId = null;
+      if (!pendingMove) return;
       try {
         const frameEl = window.frameElement;
         const rect = frameEl ? frameEl.getBoundingClientRect() : { left: 0, top: 0 };
         const parentEvent = new MouseEvent('mousemove', {
-          clientX: e.clientX + rect.left,
-          clientY: e.clientY + rect.top,
+          clientX: pendingMove.clientX + rect.left,
+          clientY: pendingMove.clientY + rect.top,
           bubbles: true,
         });
         window.parent.dispatchEvent(parentEvent);
-
-        const target = e.target as HTMLElement | null;
-        const isInteractive = !!target?.closest(
-          'button, a, input, select, textarea, [role="button"], .clickable, .nav-tab-btn, .side-btn, .header-btn, .btn-card-subtle'
-        );
-        window.parent.dispatchEvent(
-          new CustomEvent('custom-cursor-hover', {
-            detail: { isInteractive },
-          })
-        );
       } catch {
         window.parent.postMessage(
           {
             type: 'CUSTOM_CURSOR_MOVE',
-            clientX: e.clientX,
-            clientY: e.clientY,
+            clientX: pendingMove.clientX,
+            clientY: pendingMove.clientY,
           },
           '*'
         );
+      }
+    };
+
+    const forwardMouseMove = (e: MouseEvent) => {
+      pendingMove = e;
+      if (rafId === null) {
+        rafId = requestAnimationFrame(forwardMove);
+      }
+
+      const target = e.target as HTMLElement | null;
+      const isInteractive = !!target?.closest(
+        'button, a, input, select, textarea, [role="button"], .clickable, .nav-tab-btn, .side-btn, .header-btn, .btn-card-subtle'
+      );
+      if (isInteractive !== lastInteractive) {
+        lastInteractive = isInteractive;
+        try {
+          window.parent.dispatchEvent(
+            new CustomEvent('custom-cursor-hover', {
+              detail: { isInteractive },
+            })
+          );
+        } catch {}
       }
     };
 
@@ -212,6 +231,7 @@ export const App: React.FC = () => {
     window.addEventListener('mouseup', forwardMouseUp, { passive: true });
 
     return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', forwardMouseMove);
       window.removeEventListener('mousedown', forwardMouseDown);
       window.removeEventListener('mouseup', forwardMouseUp);

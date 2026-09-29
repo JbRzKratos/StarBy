@@ -162,27 +162,44 @@ export function ClothingMockupIframe() {
 
       // 2. Direct same-origin event forwarding for buttery smooth 60fps tracking
       if (win) {
+        (win as any).__parentCursorBridgeActive = true;
+        let pendingMove: MouseEvent | null = null;
+        let rafId: number | null = null;
+        let lastInteractive: boolean | null = null;
+
+        const forwardMove = () => {
+          rafId = null;
+          if (!pendingMove || !iframeRef.current) return;
+          const rect = iframeRef.current.getBoundingClientRect();
+          window.dispatchEvent(
+            new MouseEvent('mousemove', {
+              clientX: pendingMove.clientX + rect.left,
+              clientY: pendingMove.clientY + rect.top,
+              bubbles: true,
+            }),
+          );
+        };
+
         win.addEventListener(
           'mousemove',
           (e: MouseEvent) => {
-            const rect = iframe.getBoundingClientRect();
-            window.dispatchEvent(
-              new MouseEvent('mousemove', {
-                clientX: e.clientX + rect.left,
-                clientY: e.clientY + rect.top,
-                bubbles: true,
-              }),
-            );
+            pendingMove = e;
+            if (rafId === null) {
+              rafId = requestAnimationFrame(forwardMove);
+            }
 
             const target = e.target as HTMLElement | null;
             const isInteractive = !!target?.closest(
               'button, a, input, select, textarea, [role="button"], .interactive, .nav-tab-btn, .side-btn, .header-btn, .btn-card-subtle',
             );
-            window.dispatchEvent(
-              new CustomEvent('custom-cursor-hover', {
-                detail: { isInteractive },
-              }),
-            );
+            if (isInteractive !== lastInteractive) {
+              lastInteractive = isInteractive;
+              window.dispatchEvent(
+                new CustomEvent('custom-cursor-hover', {
+                  detail: { isInteractive },
+                }),
+              );
+            }
           },
           { passive: true },
         );
