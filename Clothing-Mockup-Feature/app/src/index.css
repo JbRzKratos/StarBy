@@ -1790,13 +1790,33 @@ input:checked+.toggle-slider:before {
   border-color: #3B5EFF;
 }
 
-.camera-view-full { display: inline; }
-.camera-view-short { display: none; }
-.camera-anim-full { display: inline; }
-.camera-anim-short { display: none; }
-.quick-action-full { display: inline; }
-.quick-action-short { display: none; }
-.desktop-only-preset-uv { display: inline-flex; }
+.camera-view-full {
+  display: inline;
+}
+
+.camera-view-short {
+  display: none;
+}
+
+.camera-anim-full {
+  display: inline;
+}
+
+.camera-anim-short {
+  display: none;
+}
+
+.quick-action-full {
+  display: inline;
+}
+
+.quick-action-short {
+  display: none;
+}
+
+.desktop-only-preset-uv {
+  display: inline-flex;
+}
 
 @media (max-width: 900px) {
   .desktop-only-preset-uv {
@@ -1997,7 +2017,7 @@ input:checked+.toggle-slider:before {
   }
 
   /* ── Slide-Up Bottom Sheet Drawer (Pops up from bottom, not full screen) ── */
-  .workspace-body > .drawer-panel:not(.mobile-sheet-open) {
+  .workspace-body>.drawer-panel:not(.mobile-sheet-open) {
     display: none !important;
   }
 
