@@ -23,7 +23,7 @@ export const DrawerProject: React.FC<DrawerProjectProps> = ({
   };
 
   return (
-    <div className="drawer-panel">
+    <div className="drawer-inner-content">
       <div className="drawer-header">
         <div className="drawer-title">Project & State</div>
       </div>

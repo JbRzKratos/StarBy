@@ -72,7 +72,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
   };
 
   return (
-    <div className="drawer-panel">
+    <div className="drawer-inner-content">
       <div className="drawer-header">
         <div className="drawer-title">Artwork & Prints</div>
         <span style={{ fontSize: '11px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'capitalize' }}>

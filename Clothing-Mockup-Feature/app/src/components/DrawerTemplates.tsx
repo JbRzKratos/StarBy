@@ -23,7 +23,7 @@ export const DrawerTemplates: React.FC<DrawerTemplatesProps> = ({
   );
 
   return (
-    <div className="drawer-panel">
+    <div className="drawer-inner-content">
       <div className="drawer-header">
         <div className="drawer-title">Garment Catalog</div>
         <span style={{ fontSize: '11px', color: 'var(--text-dim)', fontWeight: 600 }}>

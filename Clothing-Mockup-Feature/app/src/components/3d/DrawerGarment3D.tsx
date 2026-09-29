@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Shirt, Check, Search } from 'lucide-react';
 import { GARMENT_3D_CATALOG } from '../../engine/3d/registry';
 import type { Garment3DConfig } from '../../types/threeD';
@@ -69,7 +69,17 @@ export const DrawerGarment3D: React.FC<DrawerGarment3DProps> = ({
       </div>
 
       {/* Category Pills */}
-      <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px' }}>
+      <div
+        className="category-pills-bar"
+        style={{
+          display: 'flex',
+          gap: '6px',
+          overflowX: 'auto',
+          paddingBottom: '4px',
+          scrollbarWidth: 'none',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
         {categories.map((c) => (
           <button
             key={c.id}
@@ -94,13 +104,13 @@ export const DrawerGarment3D: React.FC<DrawerGarment3DProps> = ({
 
       {/* Garments Grid */}
       <div
+        className="garments-3d-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
           gap: '12px',
-          overflowY: 'auto',
-          maxHeight: 'calc(100vh - 240px)',
           paddingRight: '4px',
+          paddingBottom: '32px',
         }}
       >
         {filteredGarments.map((garment) => {

@@ -144,7 +144,9 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
   // Asynchronously render static base scene into offscreen buffer with race-condition protection
   const updateBaseScene = useCallback(async () => {
     const renderId = ++renderIdRef.current;
-    setIsLoading(true);
+    if (!baseCanvasRef.current) {
+      setIsLoading(true);
+    }
 
     if (!baseCanvasRef.current) {
       baseCanvasRef.current = document.createElement('canvas');
@@ -215,7 +217,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
       const canvas = canvasRef.current;
       const baseCanvas = baseCanvasRef.current;
 
-      if (canvas && baseCanvas && !isBaseDirtyRef.current) {
+      if (canvas && baseCanvas) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
           ctx.clearRect(0, 0, 2048, 2048);
@@ -250,31 +252,31 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
     return () => cancelAnimationFrame(animId);
   }, [templateId, activeSide, garmentColor, warp, background, lighting, layers, selectedLayerId, snapGuides]);
 
-  // Convert mouse screen coordinates to 2048x2048 garment canvas coordinates
+  // Convert screen coordinates to 2048x2048 garment canvas coordinates using real DOM bounding rect
   const screenToGarmentCoords = useCallback(
     (screenX: number, screenY: number): { x: number; y: number } => {
-      const container = containerRef.current;
-      if (!container) return { x: 0, y: 0 };
-      const rect = container.getBoundingClientRect();
+      const canvas = canvasRef.current;
+      if (!canvas) return { x: 0, y: 0 };
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return { x: 0, y: 0 };
 
-      const cx = rect.width / 2 + pan.x;
-      const cy = rect.height / 2 + pan.y;
-
-      const size = Math.min(rect.width, rect.height) * 0.9 * zoom;
-      const originX = cx - size / 2;
-      const originY = cy - size / 2;
-
-      const gx = ((screenX - rect.left - originX) / size) * 2048;
-      const gy = ((screenY - rect.top - originY) / size) * 2048;
+      const gx = ((screenX - rect.left) / rect.width) * 2048;
+      const gy = ((screenY - rect.top) / rect.height) * 2048;
 
       return { x: gx, y: gy };
     },
-    [pan, zoom]
+    []
   );
 
-  // Hit test handles and layer bounding box
+  // Hit test handles and layer bounding box with screen-pixel adaptive touch targets
   const hitTest = useCallback(
     (gx: number, gy: number): { mode: DragMode; layerId?: string } => {
+      const canvas = canvasRef.current;
+      const cRect = canvas?.getBoundingClientRect();
+      const scaleFactor = cRect && cRect.width > 0 ? cRect.width / 2048 : 0.2;
+      // Ensure corner and rotation handles have at least a 30px screen-space hit target
+      const handleHitRadius = Math.max(30 / scaleFactor, 36);
+
       if (selectedLayer && selectedLayer.visible && !selectedLayer.locked) {
         const rad = (selectedLayer.rotation * Math.PI) / 180.0;
         const cosT = Math.cos(rad);
@@ -292,15 +294,14 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
         const halfH = dispH / 2;
 
         const rotHandleDist = Math.hypot(lx, ly - (-halfH - 24));
-        if (rotHandleDist <= 20) {
+        if (rotHandleDist <= handleHitRadius) {
           return { mode: 'rotate', layerId: selectedLayer.id };
         }
 
-        const cornerRadius = 18;
-        if (Math.hypot(lx - (-halfW), ly - (-halfH)) <= cornerRadius) return { mode: 'scale-tl', layerId: selectedLayer.id };
-        if (Math.hypot(lx - halfW, ly - (-halfH)) <= cornerRadius) return { mode: 'scale-tr', layerId: selectedLayer.id };
-        if (Math.hypot(lx - (-halfW), ly - halfH) <= cornerRadius) return { mode: 'scale-bl', layerId: selectedLayer.id };
-        if (Math.hypot(lx - halfW, ly - halfH) <= cornerRadius) return { mode: 'scale-br', layerId: selectedLayer.id };
+        if (Math.hypot(lx - (-halfW), ly - (-halfH)) <= handleHitRadius) return { mode: 'scale-tl', layerId: selectedLayer.id };
+        if (Math.hypot(lx - halfW, ly - (-halfH)) <= handleHitRadius) return { mode: 'scale-tr', layerId: selectedLayer.id };
+        if (Math.hypot(lx - (-halfW), ly - halfH) <= handleHitRadius) return { mode: 'scale-bl', layerId: selectedLayer.id };
+        if (Math.hypot(lx - halfW, ly - halfH) <= handleHitRadius) return { mode: 'scale-br', layerId: selectedLayer.id };
 
         if (Math.abs(lx) <= halfW && Math.abs(ly) <= halfH) {
           return { mode: 'move', layerId: selectedLayer.id };
@@ -333,7 +334,8 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
     [selectedLayer, layers]
   );
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handlePointerDown = (e: React.PointerEvent) => {
+    // Middle click, space key, or alt key triggers viewport pan
     if (e.button === 1 || isSpacePressedRef.current || (e.button === 0 && e.altKey)) {
       setDragMode('pan');
       dragRef.current = {
@@ -343,8 +345,14 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
         panStartX: pan.x,
         panStartY: pan.y,
       };
+      try {
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      } catch {}
       return;
     }
+
+    // Only respond to primary click / touch
+    if (e.button !== 0) return;
 
     const { x: gx, y: gy } = screenToGarmentCoords(e.clientX, e.clientY);
     const hit = hitTest(gx, gy);
@@ -367,6 +375,9 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
         panStartX: pan.x,
         panStartY: pan.y,
       };
+      try {
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      } catch {}
     } else {
       if (e.target === canvasRef.current || e.target === containerRef.current) {
         if (selectedLayerId) {
@@ -380,12 +391,15 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
             panStartX: pan.x,
             panStartY: pan.y,
           };
+          try {
+            (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+          } catch {}
         }
       }
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handlePointerMove = (e: React.PointerEvent) => {
     if (!dragMode) return;
 
     if (dragMode === 'pan') {
@@ -422,8 +436,8 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
       setSnapGuides(guides);
       onUpdateLayer(selectedLayer.id, { x: Math.round(nextX), y: Math.round(nextY) });
     } else if (dragMode === 'rotate') {
-      const dx = currentGarment.x - selectedLayer.x;
-      const dy = currentGarment.y - selectedLayer.y;
+      const dx = currentGarment.x - dragRef.current.layerStartX;
+      const dy = currentGarment.y - dragRef.current.layerStartY;
       let angle = (Math.atan2(dy, dx) * 180.0) / Math.PI + 90;
       if (Math.abs(angle) < 4) angle = 0;
       if (Math.abs(angle - 90) < 4) angle = 90;
@@ -433,12 +447,12 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
       onUpdateLayer(selectedLayer.id, { rotation: Math.round(angle) });
     } else if (dragMode.startsWith('scale')) {
       const initialDist = Math.hypot(
-        startGarment.x - selectedLayer.x,
-        startGarment.y - selectedLayer.y
+        startGarment.x - dragRef.current.layerStartX,
+        startGarment.y - dragRef.current.layerStartY
       );
       const currentDist = Math.hypot(
-        currentGarment.x - selectedLayer.x,
-        currentGarment.y - selectedLayer.y
+        currentGarment.x - dragRef.current.layerStartX,
+        currentGarment.y - dragRef.current.layerStartY
       );
 
       if (initialDist > 5) {
@@ -455,7 +469,10 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
     }
   };
 
-  const handleMouseUp = () => {
+  const handlePointerUp = (e: React.PointerEvent) => {
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+    } catch {}
     if (dragMode && dragMode !== 'pan') {
       onCommitHistory();
     }
@@ -483,10 +500,12 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
       ref={containerRef}
       id="viewport-container"
       className={`canvas-viewport ${dragMode === 'pan' ? 'panning' : ''}`}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
       onWheel={handleWheel}
+      style={{ touchAction: 'none' }}
     >
       {/* Front / Back View Orientation Badge with One-Click Flip */}
       <button
@@ -625,6 +644,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
         style={{
           transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom * 0.45})`,
           transformOrigin: 'center center',
+          touchAction: 'none',
         }}
       />
 

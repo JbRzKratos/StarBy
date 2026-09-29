@@ -293,6 +293,13 @@ body {
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
 }
 
+.drawer-inner-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
 .drawer-header {
   padding: 18px 20px 14px 20px;
   border-bottom: 1px solid var(--border-subtle);
@@ -325,6 +332,9 @@ body {
   align-items: center;
   justify-content: center;
   cursor: default;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .canvas-viewport.panning {
@@ -340,6 +350,9 @@ body {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
   border-radius: var(--radius-sm);
   transition: box-shadow 0.2s ease;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Floating Viewport Overlay Toolbar */
@@ -886,7 +899,7 @@ input:checked+.toggle-slider:before {
 /* ============================================================
    RESPONSIVE — TABLET (≤ 900px)
    ============================================================ */
-@media (max-width: 900px) {
+@media (min-width: 769px) and (max-width: 900px) {
   .drawer-panel {
     position: absolute;
     top: 0;
@@ -1165,50 +1178,7 @@ input:checked+.toggle-slider:before {
     gap: 6px;
   }
 
-  /* ---- DRAWER PANEL — bottom sheet ---- */
-  .drawer-panel {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: auto;
-    width: 100%;
-    height: auto;
-    max-height: 72vh;
-    border-right: none;
-    border-top: 1px solid var(--border-medium);
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.6);
-    z-index: 45;
-    animation: slideUpSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    padding-bottom: calc(var(--mobile-nav-h) + var(--safe-bottom) + 10px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
 
-  .drawer-panel::before {
-    content: '';
-    display: block;
-    width: 36px;
-    height: 4px;
-    background: var(--border-medium);
-    border-radius: 2px;
-    margin: 10px auto 0;
-    flex-shrink: 0;
-  }
-
-  .drawer-header {
-    padding: 12px 16px 10px 16px;
-    position: sticky;
-    top: 0;
-    background: var(--bg-panel);
-    z-index: 1;
-  }
-
-  .drawer-content {
-    padding: 14px 16px;
-    gap: 16px;
-  }
 
   /* ---- BOTTOM NAVIGATION BAR (Visible on mobile) ---- */
   .mobile-bottom-nav {
@@ -1351,15 +1321,6 @@ input:checked+.toggle-slider:before {
     max-width: 96%;
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  .mobile-drawer-backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 38;
-    animation: fadeIn 0.2s ease-out;
   }
 
   /* Mobile Full-Screen UV Editor */
@@ -1918,30 +1879,112 @@ input:checked+.toggle-slider:before {
     font-weight: 600;
   }
 
-  /* ── Slide-Up Bottom Sheet Drawer ───────────────────────────────────── */
-  .drawer-panel {
-    display: none;
+  /* ── Slide-Up Bottom Sheet Drawer (Pops up from bottom, not full screen) ── */
+  .workspace-body > .drawer-panel:not(.mobile-sheet-open) {
+    display: none !important;
   }
 
   .drawer-panel.mobile-sheet-open {
     display: flex !important;
-    flex-direction: column;
-    position: absolute;
-    bottom: 56px;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-height: 48vh;
-    border-radius: 20px 20px 0 0;
-    border-right: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-    background: rgba(14, 18, 26, 0.98);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    z-index: 35;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
-    animation: drawerSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow: hidden;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: auto !important;
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: auto !important;
+    max-height: 48vh !important;
+    border-radius: 20px 20px 0 0 !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-bottom: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.18) !important;
+    background: rgba(13, 17, 26, 0.88) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    z-index: 50 !important;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+    animation: drawerSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    overflow: hidden !important;
+  }
+
+  /* Scrollable container inside mobile sheet — flexes properly and scrolls smoothly */
+  .mobile-sheet-open .drawer-panel-scroll {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    background: transparent !important;
+    padding-bottom: 24px !important;
+  }
+
+  /* Inner containers flow naturally without being constrained or hidden */
+  .mobile-sheet-open .drawer-panel,
+  .mobile-sheet-open .drawer-inner-content,
+  .mobile-sheet-open .drawer-content {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    position: static !important;
+  }
+
+  /* Hide duplicate inner desktop headers in mobile sheet since mobile-sheet-header is already shown */
+  .mobile-sheet-open .drawer-header {
+    display: none !important;
+  }
+
+  .mobile-sheet-open .drawer-content {
+    padding: 10px 14px 20px 14px !important;
+    gap: 12px !important;
+    background: transparent !important;
+  }
+
+  /* 3D Garments Grid on Mobile — 2 equal columns with clean gap */
+  .mobile-sheet-open .garments-3d-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding-bottom: 16px !important;
+  }
+
+  /* Catalog Grid on Mobile */
+  .mobile-sheet-open .catalog-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding-bottom: 16px !important;
+  }
+
+  .mobile-sheet-open .catalog-card {
+    background: rgba(22, 28, 42, 0.65) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .mobile-sheet-open .catalog-card.active {
+    border-color: var(--accent) !important;
+    background: rgba(59, 94, 255, 0.22) !important;
+    box-shadow: 0 0 14px rgba(59, 94, 255, 0.35) !important;
+  }
+
+  .mobile-sheet-open .control-group {
+    background: rgba(22, 28, 42, 0.55) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: var(--radius-md);
+    padding: 12px;
+  }
+
+  .mobile-sheet-open .hex-input-row {
+    background: rgba(22, 28, 42, 0.65) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
   }
 
   @keyframes drawerSlideUp {
@@ -1962,7 +2005,9 @@ input:checked+.toggle-slider:before {
     align-items: center;
     padding: 8px 16px 6px 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(20, 26, 38, 0.7);
+    background: rgba(20, 26, 40, 0.60);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     flex-shrink: 0;
   }
 
@@ -2011,21 +2056,11 @@ input:checked+.toggle-slider:before {
     position: absolute;
     inset: 0;
     bottom: 56px;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     z-index: 30;
-    animation: fadeIn 0.15s ease-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
+    pointer-events: auto;
   }
 
   /* ── 3D Viewport Controls on Mobile ─────────────────────────────────── */

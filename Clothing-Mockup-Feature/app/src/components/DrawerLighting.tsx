@@ -36,7 +36,7 @@ export const DrawerLighting: React.FC<DrawerLightingProps> = ({
   };
 
   return (
-    <div className="drawer-panel">
+    <div className="drawer-inner-content">
       <div className="drawer-header">
         <div className="drawer-title">Background & Lighting</div>
       </div>

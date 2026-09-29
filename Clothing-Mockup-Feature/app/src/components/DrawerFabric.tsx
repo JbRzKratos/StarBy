@@ -12,7 +12,7 @@ export const DrawerFabric: React.FC<DrawerFabricProps> = ({
   onUpdateWarp,
 }) => {
   return (
-    <div className="drawer-panel">
+    <div className="drawer-inner-content">
       <div className="drawer-header">
         <div className="drawer-title">Fabric Warp & Shading</div>
       </div>

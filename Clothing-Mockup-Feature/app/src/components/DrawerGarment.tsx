@@ -28,7 +28,7 @@ export const DrawerGarment: React.FC<DrawerGarmentProps> = ({
   onColorChange,
 }) => {
   return (
-    <div className="drawer-panel">
+    <div className="drawer-inner-content">
       <div className="drawer-header">
         <div className="drawer-title">Garment Color</div>
         <div
