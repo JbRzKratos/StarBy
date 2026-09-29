@@ -3,7 +3,7 @@ import type { CatalogTemplate } from '../types/mockup';
 
 export const CATALOG: CatalogTemplate[] = rawCatalog as unknown as CatalogTemplate[];
 
-export const DEFAULT_TEMPLATE_ID = 18; // Oversized heavyweight tee (Front 18, Back 19)
+export const DEFAULT_TEMPLATE_ID = 36; // Heavyweight floating tee — Shaka Wear (ID #36)
 
 export function getTemplateById(id: number): CatalogTemplate {
   const found = CATALOG.find(t => t.mockup_id === id);

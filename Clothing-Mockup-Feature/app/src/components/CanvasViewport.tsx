@@ -116,6 +116,104 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
 
   const selectedLayer = layers.find((l) => l.id === selectedLayerId);
 
+  // Zoom & Pan state refs for non-stale callbacks and pinch gestures
+  const zoomRef = useRef(zoom);
+  const panRef = useRef(pan);
+  useEffect(() => {
+    zoomRef.current = zoom;
+  }, [zoom]);
+  useEffect(() => {
+    panRef.current = pan;
+  }, [pan]);
+
+  // Pointer tracking for multi-touch pinch
+  const activePointersRef = useRef<Map<number, { clientX: number; clientY: number }>>(new Map());
+  const pinchStartRef = useRef<{
+    dist: number;
+    zoom: number;
+    pan: { x: number; y: number };
+    center: { x: number; y: number };
+  } | null>(null);
+  const isTouchPinchingRef = useRef(false);
+
+  // Mobile two-finger pinch-to-zoom and pan support with non-passive touch listeners
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let touchStartDist = 0;
+    let touchStartZoom = 1.0;
+    let touchStartPan = { x: 0, y: 0 };
+    let touchStartCenter = { x: 0, y: 0 };
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        isTouchPinchingRef.current = true;
+        setDragMode(null);
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        touchStartDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+        touchStartZoom = zoomRef.current;
+        touchStartPan = { ...panRef.current };
+        touchStartCenter = {
+          x: (t1.clientX + t2.clientX) / 2,
+          y: (t1.clientY + t2.clientY) / 2,
+        };
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && isTouchPinchingRef.current) {
+        e.preventDefault();
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        const currentDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+        const currentCenter = {
+          x: (t1.clientX + t2.clientX) / 2,
+          y: (t1.clientY + t2.clientY) / 2,
+        };
+
+        if (touchStartDist > 8) {
+          const ratio = currentDist / touchStartDist;
+          const nextZoom = Math.max(0.25, Math.min(3.5, touchStartZoom * ratio));
+          const dx = currentCenter.x - touchStartCenter.x;
+          const dy = currentCenter.y - touchStartCenter.y;
+
+          setZoom(nextZoom);
+          setPan({
+            x: touchStartPan.x + dx,
+            y: touchStartPan.y + dy,
+          });
+        }
+      }
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) {
+        isTouchPinchingRef.current = false;
+      }
+    };
+
+    const onGesture = (e: Event) => e.preventDefault();
+
+    container.addEventListener('touchstart', onTouchStart, { passive: false });
+    container.addEventListener('touchmove', onTouchMove, { passive: false });
+    container.addEventListener('touchend', onTouchEnd, { passive: false });
+    container.addEventListener('touchcancel', onTouchEnd, { passive: false });
+    container.addEventListener('gesturestart', onGesture as EventListener, { passive: false });
+    container.addEventListener('gesturechange', onGesture as EventListener, { passive: false });
+
+    return () => {
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchmove', onTouchMove);
+      container.removeEventListener('touchend', onTouchEnd);
+      container.removeEventListener('touchcancel', onTouchEnd);
+      container.removeEventListener('gesturestart', onGesture as EventListener);
+      container.removeEventListener('gesturechange', onGesture as EventListener);
+    };
+  }, [setZoom, setPan]);
+
   // Start background preloader for gobo frames
   useEffect(() => {
     assetManager.startGoboPreloader();
@@ -335,6 +433,26 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
   );
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    activePointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+
+    // Multi-touch pinch detection
+    if (activePointersRef.current.size >= 2) {
+      setDragMode(null);
+      const pts = Array.from(activePointersRef.current.values());
+      const dist = Math.hypot(pts[0].clientX - pts[1].clientX, pts[0].clientY - pts[1].clientY);
+      const center = {
+        x: (pts[0].clientX + pts[1].clientX) / 2,
+        y: (pts[0].clientY + pts[1].clientY) / 2,
+      };
+      pinchStartRef.current = {
+        dist,
+        zoom: zoomRef.current,
+        pan: { ...panRef.current },
+        center,
+      };
+      return;
+    }
+
     // Middle click, space key, or alt key triggers viewport pan
     if (e.button === 1 || isSpacePressedRef.current || (e.button === 0 && e.altKey)) {
       setDragMode('pan');
@@ -400,6 +518,36 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
+    if (activePointersRef.current.has(e.pointerId)) {
+      activePointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+    }
+
+    if (isTouchPinchingRef.current) return;
+
+    if (activePointersRef.current.size >= 2 && pinchStartRef.current) {
+      const pts = Array.from(activePointersRef.current.values());
+      const currentDist = Math.hypot(pts[0].clientX - pts[1].clientX, pts[0].clientY - pts[1].clientY);
+      const currentCenter = {
+        x: (pts[0].clientX + pts[1].clientX) / 2,
+        y: (pts[0].clientY + pts[1].clientY) / 2,
+      };
+
+      if (pinchStartRef.current.dist > 8) {
+        const scaleRatio = currentDist / pinchStartRef.current.dist;
+        const nextZoom = Math.max(0.25, Math.min(3.5, pinchStartRef.current.zoom * scaleRatio));
+
+        const deltaX = currentCenter.x - pinchStartRef.current.center.x;
+        const deltaY = currentCenter.y - pinchStartRef.current.center.y;
+
+        setZoom(nextZoom);
+        setPan({
+          x: pinchStartRef.current.pan.x + deltaX,
+          y: pinchStartRef.current.pan.y + deltaY,
+        });
+      }
+      return;
+    }
+
     if (!dragMode) return;
 
     if (dragMode === 'pan') {
@@ -470,14 +618,32 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
+    activePointersRef.current.delete(e.pointerId);
+    if (activePointersRef.current.size < 2) {
+      pinchStartRef.current = null;
+    }
+
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
     } catch {}
-    if (dragMode && dragMode !== 'pan') {
-      onCommitHistory();
+
+    if (activePointersRef.current.size === 0) {
+      if (dragMode && dragMode !== 'pan') {
+        onCommitHistory();
+      }
+      setDragMode(null);
+      setSnapGuides({});
+    } else if (activePointersRef.current.size === 1) {
+      const remaining = Array.from(activePointersRef.current.values())[0];
+      dragRef.current = {
+        ...dragRef.current,
+        startX: remaining.clientX,
+        startY: remaining.clientY,
+        panStartX: panRef.current.x,
+        panStartY: panRef.current.y,
+      };
+      setDragMode('pan');
     }
-    setDragMode(null);
-    setSnapGuides({});
   };
 
   const handleWheel = (e: React.WheelEvent) => {

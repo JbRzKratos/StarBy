@@ -462,103 +462,56 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       )}
 
       {/* Floating Top Camera Presets Bar */}
+      {/* Camera View Switcher Preset Bar */}
       <div
+        id="camera-presets-bar"
         className="camera-presets-bar"
-        style={{
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '5px',
-          background: 'rgba(15, 20, 30, 0.85)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          padding: '5px 8px',
-          borderRadius: '24px',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.45)',
-          zIndex: 10,
-          maxWidth: 'calc(100% - 20px)',
-          overflowX: 'auto',
-          WebkitOverflowScrolling: 'touch',
-        }}
       >
-        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', padding: '0 4px', flexShrink: 0 }}>
+        <span className="camera-presets-label">
           Views:
         </span>
         {(['front', 'back', 'left', 'right', 'threeQuarter'] as CameraPreset3D[]).map((p) => (
           <button
             key={p}
             onClick={() => onCameraPresetChange(p)}
-            style={{
-              flexShrink: 0,
-              background: cameraPreset === p ? 'var(--accent, #3B5EFF)' : 'transparent',
-              color: cameraPreset === p ? '#fff' : 'var(--text-main, #fff)',
-              border: 'none',
-              borderRadius: '16px',
-              padding: '4px 10px',
-              fontSize: '12px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              textTransform: 'capitalize',
-              transition: 'all 0.15s ease',
-            }}
+            className={`camera-preset-btn ${cameraPreset === p ? 'active' : ''}`}
+            title={`View ${p === 'threeQuarter' ? '3/4 Angle' : p}`}
           >
-            {p === 'threeQuarter' ? '3/4 View' : p}
+            {p === 'threeQuarter' ? (
+              <>
+                <span className="camera-view-full">3/4 View</span>
+                <span className="camera-view-short">3/4</span>
+              </>
+            ) : (
+              p
+            )}
           </button>
         ))}
 
-        <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)', margin: '0 2px', flexShrink: 0 }} />
+        <div className="camera-preset-divider" />
 
         {/* Turntable Auto-Rotate Toggle */}
         <button
           onClick={onTurntableToggle}
           title="Toggle Turntable 360° Auto-Rotate"
-          style={{
-            flexShrink: 0,
-            background: isTurntable ? 'rgba(59, 94, 255, 0.25)' : 'transparent',
-            color: isTurntable ? '#7B9EFF' : 'var(--text-muted)',
-            border: isTurntable ? '1px solid #3B5EFF' : '1px solid transparent',
-            borderRadius: '16px',
-            padding: '4px 8px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            fontSize: '12px',
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
+          className={`camera-preset-btn camera-preset-turntable ${isTurntable ? 'active' : ''}`}
         >
           <RotateCw size={13} className={isTurntable ? 'spin-slow' : ''} />
           <span>360°</span>
         </button>
 
-        <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)', margin: '0 2px', flexShrink: 0 }} />
+        <div className="camera-preset-divider" />
 
         {/* Animate Garment Toggle */}
         <button
           id="toggle-animation-btn"
           onClick={onAnimatedToggle}
           title={isAnimated ? 'Disable Animation (Restore Static Neutral Pose)' : 'Enable Skeletal Animation'}
-          style={{
-            flexShrink: 0,
-            background: isAnimated ? 'linear-gradient(135deg, #3B5EFF, #2645E0)' : 'rgba(255, 255, 255, 0.08)',
-            color: '#fff',
-            border: isAnimated ? '1px solid #7B9EFF' : '1px solid rgba(255, 255, 255, 0.12)',
-            borderRadius: '16px',
-            padding: '4px 10px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            fontSize: '12px',
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
-          }}
+          className={`camera-preset-btn camera-preset-animate ${isAnimated ? 'active' : ''}`}
         >
           <Activity size={13} />
-          <span>{isAnimated ? 'Animating' : 'Animate'}</span>
+          <span className="camera-anim-full">{isAnimated ? 'Animating' : 'Animate'}</span>
+          <span className="camera-anim-short">{isAnimated ? 'Anim' : 'Motion'}</span>
         </button>
 
         {onToggleUvEditor && (
@@ -566,21 +519,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
             id="toggle-uv-editor-btn"
             onClick={onToggleUvEditor}
             title={isUvEditorOpen ? 'Hide 2D UV Editor' : 'Show 2D UV Editor'}
-            style={{
-              flexShrink: 0,
-              background: isUvEditorOpen ? 'rgba(59, 94, 255, 0.25)' : 'rgba(255, 255, 255, 0.08)',
-              color: isUvEditorOpen ? '#7B9EFF' : '#fff',
-              border: isUvEditorOpen ? '1px solid #3B5EFF' : '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: '16px',
-              padding: '4px 10px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              fontSize: '12px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-            }}
+            className={`camera-preset-btn camera-preset-uv desktop-only-preset-uv ${isUvEditorOpen ? 'active' : ''}`}
           >
             <Layers size={13} />
             <span>UV Editor</span>
@@ -593,7 +532,8 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         {onAddArtworkFromFile && (
           <label className="quick-action-pill quick-action-upload" title="Upload custom graphic to 3D model">
             <Upload size={14} />
-            <span>Upload Design</span>
+            <span className="quick-action-full">Upload Design</span>
+            <span className="quick-action-short">Upload</span>
             <input
               type="file"
               accept="image/png,image/jpeg,image/webp,image/svg+xml"
@@ -692,7 +632,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
           {/* Action Selectors & Speeds */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px' }}>
             {/* 6 Actions */}
-            <div style={{ display: 'flex', gap: '4px' }}>
+            <div style={{ display: 'flex', gap: '4px', overflowX: 'auto', scrollbarWidth: 'none', maxWidth: '100%', WebkitOverflowScrolling: 'touch' }}>
               {(['IDLE', 'WALK', 'DANCE', 'RUN', 'FIGHTER', 'STRUT'] as AnimationActionName[]).map((act) => (
                 <button
                   key={act}

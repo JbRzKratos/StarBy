@@ -1687,6 +1687,123 @@ input:checked+.toggle-slider:before {
   }
 }
 
+/* ── 3D Viewport Controls & Camera Preset Bar Base Styles ───────────── */
+.camera-presets-bar {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(15, 20, 30, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 5px 10px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  z-index: 10;
+  max-width: calc(100% - 24px);
+  width: max-content;
+  box-sizing: border-box;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.camera-presets-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.camera-preset-btn {
+  flex-shrink: 0;
+  background: transparent;
+  color: var(--text-main, #ffffff);
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: capitalize;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  line-height: 1;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.camera-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.camera-preset-btn.active {
+  background: var(--accent, #3B5EFF);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(59, 94, 255, 0.4);
+}
+
+.camera-preset-divider {
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+
+.camera-preset-turntable.active {
+  background: rgba(59, 94, 255, 0.25);
+  color: #7B9EFF;
+  border: 1px solid #3B5EFF;
+}
+
+.camera-preset-animate {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.camera-preset-animate.active {
+  background: linear-gradient(135deg, #3B5EFF, #2645E0);
+  color: #fff;
+  border: 1px solid #7B9EFF;
+  box-shadow: 0 2px 8px rgba(59, 94, 255, 0.4);
+}
+
+.camera-preset-uv {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.camera-preset-uv.active {
+  background: rgba(59, 94, 255, 0.25);
+  color: #7B9EFF;
+  border-color: #3B5EFF;
+}
+
+.camera-view-full { display: inline; }
+.camera-view-short { display: none; }
+.camera-anim-full { display: inline; }
+.camera-anim-short { display: none; }
+.quick-action-full { display: inline; }
+.quick-action-short { display: none; }
+.desktop-only-preset-uv { display: inline-flex; }
+
+@media (max-width: 900px) {
+  .desktop-only-preset-uv {
+    display: none !important;
+  }
+}
+
 @media (max-width: 900px) and (min-width: 769px) {
   .uv-editor-panel {
     width: 320px;
@@ -2064,16 +2181,21 @@ input:checked+.toggle-slider:before {
   }
 
   /* ── 3D Viewport Controls on Mobile ─────────────────────────────────── */
+  .desktop-only-preset-uv {
+    display: none !important;
+  }
+
   .camera-presets-bar {
-    top: 10px !important;
-    padding: 4px 8px !important;
-    gap: 4px !important;
-    max-width: calc(100% - 16px) !important;
-    background: rgba(14, 18, 26, 0.88) !important;
+    top: 8px !important;
+    padding: 3px 6px !important;
+    gap: 3px !important;
+    max-width: calc(100% - 10px) !important;
+    background: rgba(14, 18, 26, 0.92) !important;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
     border: 1px solid rgba(255, 255, 255, 0.14) !important;
     border-radius: 20px !important;
+    overflow-x: auto;
     scrollbar-width: none;
   }
 
@@ -2081,10 +2203,49 @@ input:checked+.toggle-slider:before {
     display: none;
   }
 
-  .camera-presets-bar button {
-    padding: 3px 8px !important;
+  .camera-presets-label {
+    display: none !important;
+  }
+
+  .camera-preset-btn {
+    padding: 3px 6px !important;
     font-size: 11px !important;
     border-radius: 12px !important;
+    gap: 3px !important;
+  }
+
+  .camera-view-full {
+    display: none !important;
+  }
+
+  .camera-view-short {
+    display: inline !important;
+  }
+
+  .camera-anim-full {
+    display: none !important;
+  }
+
+  .camera-anim-short {
+    display: inline !important;
+  }
+
+  .camera-preset-divider {
+    height: 12px !important;
+    margin: 0 1px !important;
+  }
+
+  .viewport-quick-actions,
+  .viewport-2d-floating-actions {
+    top: 42px !important;
+    right: 8px !important;
+    gap: 6px !important;
+  }
+
+  .quick-action-pill {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    border-radius: 16px !important;
   }
 
   .animation-control-bar {
@@ -2134,5 +2295,68 @@ input:checked+.toggle-slider:before {
   .uv-header-title-text {
     font-size: 13px !important;
     font-weight: 700 !important;
+  }
+
+  .uv-canvas-toolbar {
+    bottom: 8px !important;
+    padding: 3px 6px !important;
+    gap: 3px !important;
+    max-width: calc(100% - 16px) !important;
+  }
+
+  .uv-tool-btn {
+    padding: 3px 6px !important;
+    font-size: 10px !important;
+  }
+}
+
+/* ── Narrow Mobile Devices (< 480px) ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .uv-tool-btn span {
+    display: none !important;
+  }
+
+  .uv-panel-item-name {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ── Extra-Small Mobile Devices (< 380px) ────────────────────────────── */
+@media (max-width: 380px) {
+  .camera-presets-bar {
+    top: 6px !important;
+    padding: 2px 4px !important;
+    gap: 2px !important;
+    border-radius: 16px !important;
+    max-width: calc(100% - 6px) !important;
+  }
+
+  .camera-preset-btn {
+    padding: 2px 4px !important;
+    font-size: 10px !important;
+    border-radius: 8px !important;
+    gap: 2px !important;
+  }
+
+  .camera-preset-divider {
+    height: 10px !important;
+    margin: 0 1px !important;
+  }
+
+  .quick-action-pill {
+    padding: 4px 7px !important;
+    font-size: 10px !important;
+    gap: 3px !important;
+  }
+
+  .quick-action-full {
+    display: none !important;
+  }
+
+  .quick-action-short {
+    display: inline !important;
   }
 }

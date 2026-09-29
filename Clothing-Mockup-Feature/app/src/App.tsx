@@ -61,7 +61,7 @@ export const App: React.FC = () => {
       color: '#222222',
     },
     lighting: {
-      amount: 25,
+      amount: 60,
       brightness: 3,
       contrast: 3,
       animated: true,
@@ -96,9 +96,9 @@ export const App: React.FC = () => {
   const [project3D, setProject3D] = useState<ProjectState3D>({
     version: 1,
     id: 'default-3d-project',
-    name: 'Fitted T-Shirt Mockup',
+    name: 'Regular T-Shirt Mockup',
     updatedAt: new Date().toISOString(),
-    garmentId: 'fitted-t-shirt',
+    garmentId: 'regular-t-shirt',
     garmentColor: '#ffffff',
     roughness: 0.85,
     metalness: 0.0,
@@ -939,7 +939,7 @@ export const App: React.FC = () => {
                             garmentColor: '#ffffff',
                             warp: { enabled: true, strength: 2.0, blendFactor: 0.50 },
                             background: { type: 'concrete1', color: '#222222' },
-                            lighting: { amount: 25, brightness: 3, contrast: 3, animated: false, frameIndex: 0 },
+                            lighting: { amount: 60, brightness: 3, contrast: 3, animated: true, frameIndex: 0 },
                             front: { layers: [], selectedLayerId: null },
                             back: { layers: [], selectedLayerId: null },
                           });
