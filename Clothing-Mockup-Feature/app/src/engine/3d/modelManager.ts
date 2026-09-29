@@ -14,6 +14,100 @@ export interface LoadedGarmentModel {
   bones: THREE.Bone[];
 }
 
+/**
+ * Classifies garment mesh vertices into outer shell (0.0) vs inner lining (1.0).
+ *
+ * Garment models (Marvelous Designer / Clo3D / Blender solidify exports) are constructed
+ * with an outer fabric shell and an inner fabric lining that share identical UV coordinates.
+ * By classifying each vertex as outer (0.0) or inner (1.0), the garment material shader
+ * can restrict user uploaded artwork exclusively to the outside of the clothing, while
+ * keeping the interior clean with realistic base fabric and authentic fold shading.
+ */
+export function classifyGarmentMeshGeometry(geometry: THREE.BufferGeometry): Float32Array {
+  const pos = geometry.attributes.position;
+  const norm = geometry.attributes.normal;
+  const uv = geometry.attributes.uv;
+  if (!pos || !norm || !uv) {
+    return new Float32Array(pos ? pos.count : 0);
+  }
+
+  const count = pos.count;
+  const isInner = new Float32Array(count);
+  isInner.fill(-1); // -1 = unclassified
+
+  // Step 1: Group vertices by UV coordinate (quantized to 4 decimal places)
+  const uvMap = new Map<string, number[]>();
+  for (let i = 0; i < count; i++) {
+    const key = `${Math.round(uv.getX(i) * 10000)}_${Math.round(uv.getY(i) * 10000)}`;
+    let list = uvMap.get(key);
+    if (!list) {
+      list = [];
+      uvMap.set(key, list);
+    }
+    list.push(i);
+  }
+
+  // Step 2: Compare pairs sharing UV coordinates across fabric thickness
+  const pA = new THREE.Vector3();
+  const pB = new THREE.Vector3();
+  const nA = new THREE.Vector3();
+  const nB = new THREE.Vector3();
+  const dir = new THREE.Vector3();
+
+  for (const list of uvMap.values()) {
+    if (list.length === 2) {
+      const iA = list[0];
+      const iB = list[1];
+      pA.set(pos.getX(iA), pos.getY(iA), pos.getZ(iA));
+      pB.set(pos.getX(iB), pos.getY(iB), pos.getZ(iB));
+      nA.set(norm.getX(iA), norm.getY(iA), norm.getZ(iA));
+      nB.set(norm.getX(iB), norm.getY(iB), norm.getZ(iB));
+
+      dir.subVectors(pA, pB);
+      const dotA = dir.dot(nA);
+      const dotB = dir.dot(nB);
+
+      if (dotA > 0 && dotB < 0) {
+        isInner[iA] = 0.0;
+        isInner[iB] = 1.0;
+      } else if (dotA < 0 && dotB > 0) {
+        isInner[iA] = 1.0;
+        isInner[iB] = 0.0;
+      }
+    }
+  }
+
+  // Step 3: Propagate classification across connected triangles to resolve seams & cuffs
+  const index = geometry.index;
+  if (index) {
+    for (let pass = 0; pass < 5; pass++) {
+      let changed = false;
+      for (let t = 0; t < index.count; t += 3) {
+        const i0 = index.getX(t);
+        const i1 = index.getX(t + 1);
+        const i2 = index.getX(t + 2);
+        const v0 = isInner[i0];
+        const v1 = isInner[i1];
+        const v2 = isInner[i2];
+
+        if (v0 === -1 && v1 !== -1 && v1 === v2) { isInner[i0] = v1; changed = true; }
+        if (v1 === -1 && v0 !== -1 && v0 === v2) { isInner[i1] = v0; changed = true; }
+        if (v2 === -1 && v0 !== -1 && v0 === v1) { isInner[i2] = v0; changed = true; }
+      }
+      if (!changed) break;
+    }
+  }
+
+  // Step 4: Any remaining seam edge vertices default to outer (0.0)
+  for (let i = 0; i < count; i++) {
+    if (isInner[i] === -1) {
+      isInner[i] = 0.0;
+    }
+  }
+
+  return isInner;
+}
+
 export class ModelManager3D {
   private loader: GLTFLoader;
   private currentModel: LoadedGarmentModel | null = null;
@@ -128,6 +222,29 @@ export class ModelManager3D {
         console.log('[ModelManager3D] Garment fallback selected:', gMesh.name);
       }
     }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Compute and assign aInner attribute so shader isolates artwork
+    // to the outer garment surface while preserving inner fabric.
+    // ─────────────────────────────────────────────────────────────────
+    const targetMesh = garmentMesh as THREE.Mesh | THREE.SkinnedMesh | null;
+    if (targetMesh && targetMesh.geometry) {
+      if (!targetMesh.geometry.attributes.aInner) {
+        const isInnerArray = classifyGarmentMeshGeometry(targetMesh.geometry);
+        targetMesh.geometry.setAttribute('aInner', new THREE.BufferAttribute(isInnerArray, 1));
+      }
+    }
+
+    // Ensure all meshes sharing garmentMaterial have the attribute
+    sceneClone.traverse((child) => {
+      if (((child as THREE.SkinnedMesh).isSkinnedMesh || (child as THREE.Mesh).isMesh) && (child as THREE.Mesh).geometry) {
+        const m = child as THREE.Mesh;
+        if (m.material === materialManager.getGarmentMaterial() && !m.geometry.attributes.aInner) {
+          const arr = new Float32Array(m.geometry.attributes.position ? m.geometry.attributes.position.count : 0);
+          m.geometry.setAttribute('aInner', new THREE.BufferAttribute(arr, 1));
+        }
+      }
+    });
 
     // Ensure ModelPosition is at origin
     if (positionNode) {

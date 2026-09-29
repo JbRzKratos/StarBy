@@ -22,6 +22,12 @@ export class TextureCompositor3D {
   private diffuseMaskCanvas: HTMLCanvasElement;
   private diffuseMaskCtx: CanvasRenderingContext2D;
 
+  // Clean base fabric canvas & texture (garment color + diffuse folds, NO artwork)
+  // Used exclusively by the inner shell of garments so artwork only appears on the outside
+  private baseCanvas: HTMLCanvasElement;
+  private baseCtx: CanvasRenderingContext2D;
+  private baseTexture: THREE.CanvasTexture;
+
   // WebGL 3D Surface Projector Subsystem
   private renderer: THREE.WebGLRenderer | null = null;
   private garmentMesh: THREE.Mesh | THREE.SkinnedMesh | null = null;
@@ -35,6 +41,14 @@ export class TextureCompositor3D {
   private pixelBuffer: Uint8Array | null = null;
   private projMeshCenter: THREE.Vector3 = new THREE.Vector3();
   private threeTextureCache: Map<string, THREE.CanvasTexture | THREE.Texture> = new Map();
+
+  // ── Drag preview cache ─────────────────────────────────────────────────────
+  // During live artwork dragging we composite background layers once into
+  // dragCacheCanvas, then per-frame we only blit the cache + the one moving
+  // layer. This reduces a 16 MB full-atlas redraw to a single drawImage call.
+  private dragCacheCanvas: HTMLCanvasElement | null = null;
+  private dragCacheCtx: CanvasRenderingContext2D | null = null;
+  private draggingLayerId: string | null = null;
 
   constructor(resolution = 2048) {
     this.resolution = resolution;
@@ -80,7 +94,37 @@ export class TextureCompositor3D {
     this.texture.magFilter = THREE.LinearFilter;
     this.texture.colorSpace = THREE.SRGBColorSpace;
 
+    // Clean base fabric canvas (garment color + diffuse fold shading, NO artwork)
+    this.baseCanvas = document.createElement('canvas');
+    this.baseCanvas.width = resolution;
+    this.baseCanvas.height = resolution;
+    const baseCtx = this.baseCanvas.getContext('2d', { willReadFrequently: false });
+    if (!baseCtx) throw new Error('Failed to create base canvas context');
+    this.baseCtx = baseCtx;
+    this.baseCtx.imageSmoothingEnabled = true;
+    this.baseCtx.imageSmoothingQuality = 'high';
+
+    this.baseTexture = new THREE.CanvasTexture(this.baseCanvas);
+    this.baseTexture.flipY = false;
+    this.baseTexture.wrapS = THREE.ClampToEdgeWrapping;
+    this.baseTexture.wrapT = THREE.ClampToEdgeWrapping;
+    this.baseTexture.generateMipmaps = true;
+    this.baseTexture.minFilter = THREE.LinearMipmapLinearFilter;
+    this.baseTexture.magFilter = THREE.LinearFilter;
+    this.baseTexture.colorSpace = THREE.SRGBColorSpace;
+
     this.initProjectorSubsystem();
+
+    // Lazy-allocate drag cache canvas (same resolution as compositor)
+    this.dragCacheCanvas = document.createElement('canvas');
+    this.dragCacheCanvas.width = resolution;
+    this.dragCacheCanvas.height = resolution;
+    const dragCtx = this.dragCacheCanvas.getContext('2d', { willReadFrequently: false });
+    if (dragCtx) {
+      dragCtx.imageSmoothingEnabled = true;
+      dragCtx.imageSmoothingQuality = 'high';
+      this.dragCacheCtx = dragCtx;
+    }
   }
 
   private initProjectorSubsystem(): void {
@@ -196,6 +240,10 @@ export class TextureCompositor3D {
     return this.texture;
   }
 
+  public getBaseTexture(): THREE.CanvasTexture {
+    return this.baseTexture;
+  }
+
   public getCanvas(): HTMLCanvasElement {
     return this.canvas;
   }
@@ -281,6 +329,11 @@ export class TextureCompositor3D {
       ctx.drawImage(this.diffuseImage, 0, 0, width, height);
       ctx.globalCompositeOperation = 'source-over';
     }
+
+    // ── Step 2b: Snapshot clean base fabric for inner garment surfaces (NO artwork)
+    this.baseCtx.clearRect(0, 0, width, height);
+    this.baseCtx.drawImage(this.canvas, 0, 0, width, height);
+    this.baseTexture.needsUpdate = true;
 
     // ── Step 3: Isolated Artwork Pass ────────────────────────────────────────
     const activeLayers = artworkLayers.filter((l) => l.opacity > 0);
@@ -469,11 +522,14 @@ export class TextureCompositor3D {
       }
 
       // 2. Setup Projector Camera & Matrix
+      const effScale = layer.scale || 1.0;
+      const sX = proj.sizeX * effScale;
+      const sY = proj.sizeY * effScale;
       const pCam = new THREE.OrthographicCamera(
-        -proj.sizeX / 2,
-        proj.sizeX / 2,
-        proj.sizeY / 2,
-        -proj.sizeY / 2,
+        -sX / 2,
+        sX / 2,
+        sY / 2,
+        -sY / 2,
         0.1,
         proj.depth || 10.0
       );
@@ -522,15 +578,14 @@ export class TextureCompositor3D {
       );
       this.renderer.setRenderTarget(prevTarget);
 
-      let nonZero = 0;
-      for (let i = 3; i < this.pixelBuffer.length; i += 64) {
-        if (this.pixelBuffer[i] > 0) nonZero++;
-      }
-      console.log('[ProjectorRender]', layer.name, 'nonZeroPixelsSample:', nonZero, 'meshCenter:', this.projMeshCenter.toArray());
-
       // 5. Transfer to 2D Canvas
+      // WebGL readPixels returns rows bottom-to-top; flip vertically to match canvas top-to-bottom
       const imgData = this.projCtx.createImageData(width, height);
-      imgData.data.set(this.pixelBuffer);
+      for (let y = 0; y < height; y++) {
+        const srcRow = (height - 1 - y) * width * 4;
+        const dstRow = y * width * 4;
+        imgData.data.set(this.pixelBuffer.subarray(srcRow, srcRow + width * 4), dstRow);
+      }
       this.projCtx.putImageData(imgData, 0, 0);
 
       // 6. Draw projected islands onto artwork canvas
@@ -709,8 +764,163 @@ export class TextureCompositor3D {
     }
   }
 
+  // ── Drag Preview API ────────────────────────────────────────────────────────
+
+  /**
+   * Begin a drag preview for the given layer ID.
+   * Composites all layers EXCEPT the dragging one into dragCacheCanvas.
+   * Must be called once when dragging starts.
+   */
+  public beginDragPreview(
+    layerId: string,
+    garmentColor: string,
+    artworkLayers: ArtworkLayer3D[],
+    garmentConfig: Garment3DConfig,
+    _activeRegionId?: string
+  ): void {
+    this.draggingLayerId = layerId;
+
+    if (!this.dragCacheCanvas || !this.dragCacheCtx) return;
+
+    const { width, height } = this.dragCacheCanvas;
+    const cCtx = this.dragCacheCtx;
+
+    cCtx.clearRect(0, 0, width, height);
+    cCtx.globalCompositeOperation = 'source-over';
+    cCtx.globalAlpha = 1.0;
+    cCtx.fillStyle = garmentColor;
+    cCtx.fillRect(0, 0, width, height);
+
+    if (this.diffuseImage) {
+      cCtx.globalCompositeOperation = 'multiply';
+      cCtx.globalAlpha = 1.0;
+      cCtx.drawImage(this.diffuseImage, 0, 0, width, height);
+      cCtx.globalCompositeOperation = 'source-over';
+    }
+
+    // Composite all layers except the dragging one
+    const otherLayers = artworkLayers.filter((l) => l.id !== layerId && l.opacity > 0);
+
+    if (otherLayers.length > 0) {
+      const artCtx = this.artworkCtx;
+      artCtx.clearRect(0, 0, width, height);
+      artCtx.globalCompositeOperation = 'source-over';
+      artCtx.globalAlpha = 1.0;
+
+      const regionsMap = new Map<string, PrintableRegion3D>();
+      garmentConfig.regions.forEach((r: PrintableRegion3D) => regionsMap.set(r.id, r));
+
+      for (const layer of otherLayers) {
+        const img = this.imageCache.get(layer.imageUrl);
+        if (!img || !img.complete || img.naturalWidth === 0) continue;
+        const mode = layer.placementMode || 'atlas';
+        if (mode === 'surface') {
+          this.renderSurfaceProjection(layer, img, artCtx);
+        } else if (mode === 'atlas') {
+          this.renderAtlasLayer(layer, img, artCtx, width, height);
+        } else {
+          this.renderRegionLayer(layer, img, artCtx, garmentConfig, regionsMap, width, height);
+        }
+      }
+
+      if (this.diffuseImage) {
+        const maskCtx = this.diffuseMaskCtx;
+        maskCtx.clearRect(0, 0, width, height);
+        maskCtx.globalCompositeOperation = 'source-over';
+        maskCtx.globalAlpha = 1.0;
+        maskCtx.drawImage(this.diffuseImage, 0, 0, width, height);
+        maskCtx.globalCompositeOperation = 'destination-in';
+        maskCtx.drawImage(this.artworkCanvas, 0, 0, width, height);
+        artCtx.save();
+        artCtx.globalCompositeOperation = 'multiply';
+        artCtx.globalAlpha = 0.42;
+        artCtx.drawImage(this.diffuseMaskCanvas, 0, 0, width, height);
+        artCtx.restore();
+      }
+
+      cCtx.globalCompositeOperation = 'source-over';
+      cCtx.globalAlpha = 1.0;
+      cCtx.drawImage(this.artworkCanvas, 0, 0, width, height);
+    }
+  }
+
+  /**
+   * Update drag preview with the current layer state.
+   * Blits the cached background then draws only the moving layer.
+   * Very cheap — called every frame during dragging.
+   */
+  public updateDragPreview(layer: ArtworkLayer3D): void {
+    if (!this.dragCacheCanvas || !this.dragCacheCtx) return;
+    const img = this.imageCache.get(layer.imageUrl);
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+
+    const { width, height } = this.canvas;
+    const ctx = this.ctx;
+
+    // 1. Stamp cached background (garment base + other layers)
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1.0;
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(this.dragCacheCanvas, 0, 0);
+
+    // 2. Draw only the moving layer
+    const artCtx = this.artworkCtx;
+    artCtx.clearRect(0, 0, width, height);
+    artCtx.globalCompositeOperation = 'source-over';
+    artCtx.globalAlpha = 1.0;
+
+    const mode = layer.placementMode || 'atlas';
+    if (mode === 'atlas') {
+      this.renderAtlasLayer(layer, img, artCtx, width, height);
+    } else if (mode === 'region') {
+      // For region mode, we need the garment config — re-use the full composite
+      // path as a fallback rather than staling it.
+      artCtx.drawImage(this.dragCacheCanvas, 0, 0);
+    }
+
+    // 3. Light fold-modulation on just this layer (optional — costs one extra drawImage)
+    if (this.diffuseImage) {
+      const maskCtx = this.diffuseMaskCtx;
+      maskCtx.clearRect(0, 0, width, height);
+      maskCtx.globalCompositeOperation = 'source-over';
+      maskCtx.globalAlpha = 1.0;
+      maskCtx.drawImage(this.diffuseImage, 0, 0, width, height);
+      maskCtx.globalCompositeOperation = 'destination-in';
+      maskCtx.drawImage(this.artworkCanvas, 0, 0, width, height);
+      artCtx.save();
+      artCtx.globalCompositeOperation = 'multiply';
+      artCtx.globalAlpha = 0.42;
+      artCtx.drawImage(this.diffuseMaskCanvas, 0, 0, width, height);
+      artCtx.restore();
+    }
+
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1.0;
+    ctx.drawImage(this.artworkCanvas, 0, 0, width, height);
+
+    this.texture.needsUpdate = true;
+  }
+
+  /**
+   * End drag preview and run a full composite to settle the final state.
+   */
+  public endDragPreview(
+    garmentColor: string,
+    artworkLayers: ArtworkLayer3D[],
+    garmentConfig: Garment3DConfig,
+    activeRegionId?: string
+  ): void {
+    this.draggingLayerId = null;
+    this.composite(garmentColor, artworkLayers, garmentConfig, activeRegionId, false);
+  }
+
+  public isDragging(): boolean {
+    return this.draggingLayerId !== null;
+  }
+
   public dispose(): void {
     this.texture.dispose();
+    this.baseTexture.dispose();
     this.imageCache.clear();
     this.threeTextureCache.forEach((t) => t.dispose());
     this.threeTextureCache.clear();

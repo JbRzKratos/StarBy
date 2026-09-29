@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
 import type { CameraPreset3D, LightingConfig3D } from '../../types/threeD';
 
 export class SceneManager3D {
@@ -15,7 +15,7 @@ export class SceneManager3D {
   private rimLight: THREE.DirectionalLight;
   private ambientLight: THREE.AmbientLight;
   private shadowPlane: THREE.Mesh;
-  private rgbeLoader: RGBELoader;
+  private hdrLoader: HDRLoader;
 
   private currentTarget: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
   private currentDistance = 7.5;
@@ -24,6 +24,13 @@ export class SceneManager3D {
 
   private isTurntable = false;
   private turntableSpeed = 0.5; // rad/s
+
+  // Pre-allocated vectors for turntable (avoid per-frame heap allocations)
+  private _turntableOffset = new THREE.Vector3();
+  private _turntableAxis = new THREE.Vector3(0, 1, 0);
+
+  /** True while a pointer button is held down on the canvas (orbit / pan / zoom active) */
+  public isPointerDown = false;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -63,6 +70,12 @@ export class SceneManager3D {
 
     container.appendChild(this.renderer.domElement);
     this.renderer.domElement.style.touchAction = 'none';
+
+    // Track pointer down state so Viewport3D can skip hover raycasting during orbit
+    this.renderer.domElement.addEventListener('pointerdown', () => { this.isPointerDown = true; });
+    this.renderer.domElement.addEventListener('pointerup', () => { this.isPointerDown = false; });
+    this.renderer.domElement.addEventListener('pointercancel', () => { this.isPointerDown = false; });
+    this.renderer.domElement.addEventListener('pointerleave', () => { this.isPointerDown = false; });
 
     // 4. OrbitControls
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -154,13 +167,13 @@ export class SceneManager3D {
     this.scene.add(contactPlane);
 
     // 7. HDR Environment Map
-    this.rgbeLoader = new RGBELoader();
+    this.hdrLoader = new HDRLoader();
     this.loadHDR('/3d-assets/environment.hdr');
   }
 
   public async loadHDR(hdrUrl: string): Promise<void> {
     try {
-      const texture = await this.rgbeLoader.loadAsync(hdrUrl);
+      const texture = await this.hdrLoader.loadAsync(hdrUrl);
       texture.mapping = THREE.EquirectangularReflectionMapping;
       this.scene.environment = texture;
       this.scene.environmentIntensity = 0.7;
@@ -275,12 +288,12 @@ export class SceneManager3D {
       }
     }
 
-    // Turntable auto-rotate
+    // Turntable auto-rotate (zero-allocation path)
     if (this.isTurntable) {
       const rotAngle = this.turntableSpeed * delta;
-      const offset = this.camera.position.clone().sub(this.controls.target);
-      offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotAngle);
-      this.camera.position.copy(this.controls.target).add(offset);
+      this._turntableOffset.copy(this.camera.position).sub(this.controls.target);
+      this._turntableOffset.applyAxisAngle(this._turntableAxis, rotAngle);
+      this.camera.position.copy(this.controls.target).add(this._turntableOffset);
     }
 
     this.controls.update();

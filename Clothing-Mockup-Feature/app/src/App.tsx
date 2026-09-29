@@ -38,6 +38,7 @@ import { DrawerExport3D } from './components/3d/DrawerExport3D';
 import { DrawerProject3D } from './components/3d/DrawerProject3D';
 import { UVCanvasEditor3D } from './components/3d/UVCanvasEditor3D';
 import type { SceneManager3D } from './engine/3d/sceneManager';
+import type { TextureCompositor3D } from './engine/3d/textureCompositor';
 import * as THREE from 'three';
 
 export const App: React.FC = () => {
@@ -138,6 +139,8 @@ export const App: React.FC = () => {
   );
   const [garmentMesh3D, setGarmentMesh3D] = useState<THREE.Mesh | THREE.SkinnedMesh | null>(null);
   const sceneManager3DRef = useRef<SceneManager3D | null>(null);
+  // Compositor ref — needed to pass to the high-res exporter
+  const compositor3DRef = useRef<TextureCompositor3D | null>(null);
 
   // Active Sidebar Tab
   const [activeTab, setActiveTab] = useState<SidebarTab>('color3d');
@@ -576,10 +579,29 @@ export const App: React.FC = () => {
     setSelectedLayerId3D(layer.id);
   };
 
+  // Auto-select latest artwork layer when added if none selected
+  useEffect(() => {
+    if (!selectedLayerId3D && project3D.artworkLayers.length > 0) {
+      setSelectedLayerId3D(project3D.artworkLayers[project3D.artworkLayers.length - 1].id);
+    }
+  }, [project3D.artworkLayers.length]);
+
   const handleUpdateLayer3D = (id: string, updates: Partial<ArtworkLayer3D>) => {
     setProject3D((prev) => ({
       ...prev,
-      artworkLayers: prev.artworkLayers.map((l) => (l.id === id ? { ...l, ...updates } : l)),
+      artworkLayers: prev.artworkLayers.map((l) => {
+        if (l.id !== id) return l;
+        const merged = { ...l, ...updates };
+        if (updates.scale !== undefined && updates.uvWidth === undefined) {
+          merged.uvWidth = parseFloat((0.35 * updates.scale).toFixed(5));
+          if (!merged.lockAspectRatio && merged.uvHeight !== undefined) {
+            merged.uvHeight = parseFloat((0.35 * updates.scale).toFixed(5));
+          }
+        } else if (updates.uvWidth !== undefined && updates.scale === undefined) {
+          merged.scale = parseFloat((updates.uvWidth / 0.35).toFixed(5));
+        }
+        return merged;
+      }),
     }));
   };
 
@@ -622,21 +644,32 @@ export const App: React.FC = () => {
 
   const handleAddArtworkFromFile3D = (file: File) => {
     const url = URL.createObjectURL(file);
+    const region = currentGarmentConfig3D.regions.find((r) => r.id === project3D.activeRegionId) || currentGarmentConfig3D.regions[0];
+    const u = region ? region.uvCenter[0] : 0.25;
+    const v = region ? region.uvCenter[1] : 0.63;
+    const baseW = region ? region.uvSpan[0] : 0.35;
+    const scale = 0.85;
+    const uvW = parseFloat((baseW * scale).toFixed(4));
+    const uvH = parseFloat((baseW * scale).toFixed(4));
+
     const newLayer: ArtworkLayer3D = {
       id: `layer-${Date.now()}`,
       name: file.name.replace(/\.[^/.]+$/, ''),
-      regionId: project3D.activeRegionId,
+      regionId: region?.id || 'front',
       imageUrl: url,
+      placementMode: 'atlas',
+      u,
+      v,
+      uvWidth: uvW,
+      uvHeight: uvH,
       offsetX: 0,
       offsetY: 0,
-      scale: 0.85,
+      scale,
       rotation: 0,
       opacity: 1.0,
+      lockAspectRatio: true,
     };
     handleAddArtwork3D(newLayer);
-    if (isMobile) {
-      setIsUvEditorOpen(true);
-    }
   };
 
   const activeTemplate2D = getTemplateById(project2D.templateId);
@@ -840,6 +873,7 @@ export const App: React.FC = () => {
                     {activeTab === 'export3d' && (
                       <DrawerExport3D
                         sceneManager={sceneManager3DRef.current}
+                        compositor={compositor3DRef.current}
                         garmentName={currentGarmentConfig3D.name}
                       />
                     )}
@@ -964,6 +998,7 @@ export const App: React.FC = () => {
               metalness={project3D.metalness}
               artworkLayers={project3D.artworkLayers}
               activeRegionId={project3D.activeRegionId}
+              selectedLayerId={selectedLayerId3D}
               selectedPanelId={selectedPanelId3D}
               isAnimated={project3D.isAnimated}
               currentAction={project3D.currentAction}
@@ -1011,9 +1046,12 @@ export const App: React.FC = () => {
               onToggleUvEditor={() => setIsUvEditorOpen(!isUvEditorOpen)}
               onAddArtworkFromFile={handleAddArtworkFromFile3D}
               onSelectPanel={setSelectedPanelId3D}
+              onSelectLayer={setSelectedLayerId3D}
+              onUpdateLayer={handleUpdateLayer3D}
               onModelLoaded={(mesh) => setGarmentMesh3D(mesh)}
-              onSceneReady={(sm) => {
+              onSceneReady={(sm, compositor) => {
                 sceneManager3DRef.current = sm;
+                compositor3DRef.current = compositor;
               }}
             />
 

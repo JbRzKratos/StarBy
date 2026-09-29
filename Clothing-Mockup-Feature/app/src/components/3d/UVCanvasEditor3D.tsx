@@ -948,11 +948,22 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
     interactionModeRef.current = 'none';
   };
 
-  const handleWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
-    e.preventDefault();
-    const factor = e.deltaY < 0 ? 1.12 : 0.89;
-    setZoom((z) => THREE.MathUtils.clamp(z * factor, 0.5, 6.0));
-  };
+  // Non-passive wheel listener for smooth zooming without browser passive listener warnings
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.12 : 0.89;
+      setZoom((z) => THREE.MathUtils.clamp(z * factor, 0.5, 6.0));
+    };
+
+    canvas.addEventListener('wheel', onWheel, { passive: false });
+    return () => {
+      canvas.removeEventListener('wheel', onWheel);
+    };
+  }, []);
 
   // Preset Navigation
   const handleFitRegion = (regionId: string) => {
@@ -1118,7 +1129,6 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
-              onWheel={handleWheel}
             />
 
             {/* Empty state overlay when no artwork uploaded yet */}

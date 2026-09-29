@@ -197,10 +197,17 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
 
     const onGesture = (e: Event) => e.preventDefault();
 
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+      setZoom((prev) => Math.max(0.3, Math.min(3.5, prev * zoomFactor)));
+    };
+
     container.addEventListener('touchstart', onTouchStart, { passive: false });
     container.addEventListener('touchmove', onTouchMove, { passive: false });
     container.addEventListener('touchend', onTouchEnd, { passive: false });
     container.addEventListener('touchcancel', onTouchEnd, { passive: false });
+    container.addEventListener('wheel', onWheel, { passive: false });
     container.addEventListener('gesturestart', onGesture as EventListener, { passive: false });
     container.addEventListener('gesturechange', onGesture as EventListener, { passive: false });
 
@@ -209,6 +216,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
       container.removeEventListener('touchmove', onTouchMove);
       container.removeEventListener('touchend', onTouchEnd);
       container.removeEventListener('touchcancel', onTouchEnd);
+      container.removeEventListener('wheel', onWheel);
       container.removeEventListener('gesturestart', onGesture as EventListener);
       container.removeEventListener('gesturechange', onGesture as EventListener);
     };
@@ -646,12 +654,6 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
     }
   };
 
-  const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
-    setZoom((prev) => Math.max(0.3, Math.min(3.5, prev * zoomFactor)));
-  };
-
   const resInfo = selectedLayer
     ? checkEffectiveResolution(
         selectedLayer.naturalWidth,
@@ -670,7 +672,6 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      onWheel={handleWheel}
       style={{ touchAction: 'none' }}
     >
       {/* Front / Back View Orientation Badge with One-Click Flip */}

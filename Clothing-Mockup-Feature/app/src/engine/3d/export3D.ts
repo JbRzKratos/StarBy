@@ -1,11 +1,15 @@
 import * as THREE from 'three';
 import type { SceneManager3D } from './sceneManager';
+import type { TextureCompositor3D } from './textureCompositor';
+
+export type ExportResolutionPreset = 'standard' | 'high';
 
 export interface ExportStillOptions {
   view: 'current' | 'front' | 'back';
   transparent: boolean;
-  width?: number;
-  height?: number;
+  resolution?: ExportResolutionPreset; // 'standard' = 2048px, 'high' = 4096px
+  width?: number;   // explicit override (ignored if resolution is set)
+  height?: number;  // explicit override (ignored if resolution is set)
   filename?: string;
 }
 
@@ -16,58 +20,209 @@ export interface ExportVideoOptions {
   onProgress?: (progress: number) => void;
 }
 
+/** Maximum texture dimension safely supported by most devices. */
+const MAX_SAFE_TEXTURE = 4096;
+
+function resolveExportDimensions(
+  options: ExportStillOptions,
+  renderer: THREE.WebGLRenderer
+): { exportW: number; exportH: number } {
+  // Determine the long-edge target from preset
+  const longEdge =
+    options.resolution === 'high'
+      ? 4096
+      : options.resolution === 'standard'
+      ? 2048
+      : options.width ?? 2048;
+
+  // Clamp to GPU limit
+  const maxDim = Math.min(
+    longEdge,
+    MAX_SAFE_TEXTURE,
+    renderer.capabilities.maxTextureSize || MAX_SAFE_TEXTURE
+  );
+
+  // Preserve the current viewport aspect ratio
+  const vp = renderer.getSize(new THREE.Vector2());
+  const aspect = vp.x > 0 && vp.y > 0 ? vp.x / vp.y : 1;
+
+  let exportW: number;
+  let exportH: number;
+
+  if (aspect >= 1) {
+    exportW = maxDim;
+    exportH = Math.round(maxDim / aspect);
+  } else {
+    exportH = maxDim;
+    exportW = Math.round(maxDim * aspect);
+  }
+
+  // Ensure both dims are even (required by some encoders)
+  exportW = exportW % 2 === 0 ? exportW : exportW - 1;
+  exportH = exportH % 2 === 0 ? exportH : exportH - 1;
+
+  return { exportW, exportH };
+}
+
 export class Export3DManager {
   private isRecording = false;
   private mediaRecorder: MediaRecorder | null = null;
   private cancelRecordingFlag = false;
+  private isExportingStill = false;
 
+  /**
+   * Export a high-resolution still PNG by rendering into an off-screen
+   * WebGLRenderTarget at the requested output size.
+   *
+   * The visible preview canvas is NEVER stretched or enlarged.
+   * All scene state (camera, lighting, artwork, materials) is preserved.
+   * Selection outlines and editor chrome do NOT appear in the output because
+   * they are drawn on an HTML overlay, not in the WebGL scene.
+   */
   public async exportStillPNG(
     sceneManager: SceneManager3D,
-    options: ExportStillOptions
+    options: ExportStillOptions,
+    compositor?: TextureCompositor3D
   ): Promise<string> {
+    if (this.isExportingStill) {
+      throw new Error('Export already in progress');
+    }
+    this.isExportingStill = true;
+
     const { renderer, scene, camera, controls } = sceneManager;
 
-    // Save previous camera and background states
-    const prevPosition = camera.position.clone();
-    const prevTarget = controls.target.clone();
-    const prevBackground = scene.background;
+    // ── 1. Resolve output dimensions ────────────────────────────────────────
+    const { exportW, exportH } = resolveExportDimensions(options, renderer);
+
+    // ── 2. Save current renderer / camera state ──────────────────────────────
+    const prevRenderTarget = renderer.getRenderTarget();
     const prevClearColor = new THREE.Color();
     const prevClearAlpha = renderer.getClearAlpha();
     renderer.getClearColor(prevClearColor);
+    const prevBackground = scene.background;
 
-    // Apply view preset
+    const prevCameraPosition = camera.position.clone();
+    const prevControlsTarget = controls.target.clone();
+    const prevCameraAspect = camera.aspect;
+    const prevCameraFov = camera.fov;
+
+    // ── 3. Optionally snap to a preset camera view ───────────────────────────
     if (options.view === 'front') {
       sceneManager.setCameraPreset('front');
+      // Flush the lerp immediately by calling update multiple times
+      for (let i = 0; i < 60; i++) {
+        sceneManager.update(1 / 30);
+      }
     } else if (options.view === 'back') {
       sceneManager.setCameraPreset('back');
+      for (let i = 0; i < 60; i++) {
+        sceneManager.update(1 / 30);
+      }
     }
 
-    // Apply transparency
+    // ── 4. Apply export-time transparency setting ───────────────────────────
     if (options.transparent) {
       scene.background = null;
       renderer.setClearColor(0x000000, 0);
     }
 
-    // Force an immediate render
-    controls.update();
+    // ── 5. If compositor is provided, ensure texture is at full resolution ──
+    // The compositor already works at 2048 internally; we just ensure its
+    // current composite is up to date (it should be, but we trigger needsUpdate)
+    if (compositor) {
+      compositor.getTexture().needsUpdate = true;
+      compositor.getBaseTexture().needsUpdate = true;
+    }
+
+    // ── 6. Create off-screen render target at export resolution ─────────────
+    const exportTarget = new THREE.WebGLRenderTarget(exportW, exportH, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat,
+      type: THREE.UnsignedByteType,
+      generateMipmaps: false,
+      samples: renderer.capabilities.isWebGL2 ? 4 : 0, // MSAA if available
+    });
+
+    // ── 7. Adjust camera aspect for export dimensions ────────────────────────
+    camera.aspect = exportW / exportH;
+    camera.updateProjectionMatrix();
+
+    // ── 8. Render scene into the off-screen render target ───────────────────
+    renderer.setRenderTarget(exportTarget);
+    renderer.setSize(exportW, exportH, false); // false = don't update CSS
+    renderer.setClearColor(
+      options.transparent ? 0x000000 : prevClearColor,
+      options.transparent ? 0 : prevClearAlpha
+    );
+    renderer.clear();
     renderer.render(scene, camera);
 
-    // Capture PNG data URL
-    const dataUrl = renderer.domElement.toDataURL('image/png');
+    // ── 9. Read pixels from GPU into a Uint8Array ────────────────────────────
+    const pixelBuffer = new Uint8Array(exportW * exportH * 4);
+    renderer.readRenderTargetPixels(exportTarget, 0, 0, exportW, exportH, pixelBuffer);
 
-    // Restore previous state
-    camera.position.copy(prevPosition);
-    controls.target.copy(prevTarget);
+    // ── 10. Restore renderer state ──────────────────────────────────────────
+    renderer.setRenderTarget(prevRenderTarget);
+    const vp = new THREE.Vector2();
+    renderer.getSize(vp);
+    renderer.setSize(vp.x, vp.y, false);
     scene.background = prevBackground;
     renderer.setClearColor(prevClearColor, prevClearAlpha);
+
+    camera.position.copy(prevCameraPosition);
+    controls.target.copy(prevControlsTarget);
+    camera.aspect = prevCameraAspect;
+    camera.fov = prevCameraFov;
+    camera.updateProjectionMatrix();
     controls.update();
+
+    // Restore a clean preview frame
     renderer.render(scene, camera);
 
-    // Trigger download
-    const filename = options.filename || `mockup-3d-${options.view}-${Date.now()}.png`;
+    // ── 11. Dispose temporary render target ─────────────────────────────────
+    exportTarget.dispose();
+
+    // ── 12. Blit the pixel buffer into a canvas and encode to PNG ───────────
+    // WebGL's coordinate origin is bottom-left; we flip vertically here.
+    const offscreen = document.createElement('canvas');
+    offscreen.width = exportW;
+    offscreen.height = exportH;
+    const ctx = offscreen.getContext('2d');
+    if (!ctx) {
+      this.isExportingStill = false;
+      throw new Error('Could not create 2D canvas context for PNG encoding');
+    }
+
+    const imageData = ctx.createImageData(exportW, exportH);
+
+    // Flip Y: WebGL origin is bottom-left, ImageData origin is top-left
+    for (let y = 0; y < exportH; y++) {
+      const srcRow = (exportH - 1 - y) * exportW * 4;
+      const dstRow = y * exportW * 4;
+      imageData.data.set(pixelBuffer.subarray(srcRow, srcRow + exportW * 4), dstRow);
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+
+    // ── 13. Encode and download ──────────────────────────────────────────────
+    const dataUrl = offscreen.toDataURL('image/png');
+
+    const filename =
+      options.filename || `mockup-3d-${options.view}-${exportW}x${exportH}-${Date.now()}.png`;
     this.downloadFile(dataUrl, filename);
 
+    console.info(
+      `[Export3D] PNG exported: ${exportW}×${exportH}px (${options.resolution ?? 'custom'}), ` +
+      `transparent=${options.transparent}, view=${options.view}`
+    );
+
+    this.isExportingStill = false;
     return dataUrl;
+  }
+
+  public getIsExportingStill(): boolean {
+    return this.isExportingStill;
   }
 
   public async recordAnimationVideo(
@@ -95,12 +250,12 @@ export class Export3DManager {
       }
     }
 
-    const stream = canvas.captureStream(options.fps);
+    const stream = (canvas as HTMLCanvasElement & { captureStream(fps: number): MediaStream }).captureStream(options.fps);
     const recordedChunks: Blob[] = [];
 
     const recorder = new MediaRecorder(stream, {
       mimeType,
-      videoBitsPerSecond: 6000000, // 6 Mbps high quality
+      videoBitsPerSecond: 8000000, // 8 Mbps
     });
     this.mediaRecorder = recorder;
 
@@ -180,5 +335,9 @@ export class Export3DManager {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    // For object URLs, revoke after a brief delay
+    if (url.startsWith('blob:')) {
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
   }
 }

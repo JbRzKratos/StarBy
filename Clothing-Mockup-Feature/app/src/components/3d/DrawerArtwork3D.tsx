@@ -516,15 +516,23 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px' }}>
               <span>Graphic Scale</span>
-              <span>{Math.round(selectedLayer.scale * 100)}%</span>
+              <span>{Math.round((selectedLayer.scale ?? (selectedLayer.uvWidth ? selectedLayer.uvWidth / 0.35 : 1.0)) * 100)}%</span>
             </div>
             <input
               type="range"
               min={0.15}
               max={3.0}
               step={0.05}
-              value={selectedLayer.scale}
-              onChange={(e) => onUpdateLayer(selectedLayer.id, { scale: parseFloat(e.target.value) })}
+              value={selectedLayer.scale ?? (selectedLayer.uvWidth ? selectedLayer.uvWidth / 0.35 : 1.0)}
+              onChange={(e) => {
+                const newScale = parseFloat(e.target.value);
+                const newUvW = parseFloat((0.35 * newScale).toFixed(4));
+                onUpdateLayer(selectedLayer.id, {
+                  scale: newScale,
+                  uvWidth: newUvW,
+                  uvHeight: selectedLayer.lockAspectRatio !== false ? undefined : newUvW,
+                });
+              }}
               style={{ width: '100%', accentColor: '#3B5EFF' }}
             />
           </div>

@@ -19,8 +19,20 @@ export class MaterialManager3D {
     uMicroNormalRepeat: { value: new THREE.Vector2(28.0, 28.0) },
   };
 
+  private defaultBaseTexture: THREE.DataTexture;
+  private baseMapUniform: {
+    uBaseMap: { value: THREE.Texture };
+  };
+
   constructor() {
     this.textureLoader = new THREE.TextureLoader();
+
+    const whitePixel = new Uint8Array([255, 255, 255, 255]);
+    this.defaultBaseTexture = new THREE.DataTexture(whitePixel, 1, 1, THREE.RGBAFormat);
+    this.defaultBaseTexture.needsUpdate = true;
+    this.baseMapUniform = {
+      uBaseMap: { value: this.defaultBaseTexture },
+    };
 
     // Default matte garment material — no textures until setupGarmentMaterials is called.
     // roughness=0.85 matches cotton fabric (reference Principled BSDF roughness ~0.82).
@@ -32,20 +44,42 @@ export class MaterialManager3D {
       shadowSide: THREE.FrontSide,
     });
 
-    // Inject fabric microdetail weave blending into the standard normal map chunk.
-    // Uses Whiteout Normal Blending to combine the macro garment normal map
-    // (large wrinkles, seams, and folds) with the fine micro-normal fabric weave.
+    // Inject fabric microdetail weave blending and inner-shell fabric isolation.
+    // Inner fabric surfaces (vInner > 0.5) sample uBaseMap (clean garment fabric + folds, NO artwork),
+    // ensuring uploaded graphics only appear on the outside of the clothing.
     this.garmentMaterial.onBeforeCompile = (shader) => {
       shader.uniforms.uMicroNormalMap = this.microNormalUniforms.uMicroNormalMap;
       shader.uniforms.uMicroNormalScale = this.microNormalUniforms.uMicroNormalScale;
       shader.uniforms.uMicroNormalRepeat = this.microNormalUniforms.uMicroNormalRepeat;
+      shader.uniforms.uBaseMap = this.baseMapUniform.uBaseMap;
+
+      shader.vertexShader =
+        'attribute float aInner;\n' +
+        'varying float vInner;\n' +
+        shader.vertexShader.replace(
+          '#include <uv_vertex>',
+          '#include <uv_vertex>\n       vInner = aInner;'
+        );
 
       shader.fragmentShader =
         '#define USE_MICRO_NORMAL\n' +
         'uniform sampler2D uMicroNormalMap;\n' +
         'uniform vec2 uMicroNormalScale;\n' +
         'uniform vec2 uMicroNormalRepeat;\n' +
+        'uniform sampler2D uBaseMap;\n' +
+        'varying float vInner;\n' +
         shader.fragmentShader;
+
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <map_fragment>',
+        `#ifdef USE_MAP
+           vec4 sampledDiffuseColor = (vInner > 0.5) ? texture2D( uBaseMap, vMapUv ) : texture2D( map, vMapUv );
+           #ifdef DECODE_VIDEO_TEXTURE
+             sampledDiffuseColor = sRGBTransferEOTF( sampledDiffuseColor );
+           #endif
+           diffuseColor *= sampledDiffuseColor;
+         #endif`
+      );
 
       shader.fragmentShader = shader.fragmentShader.replace(
         'mapN.xy *= normalScale;',
@@ -62,7 +96,7 @@ export class MaterialManager3D {
     };
 
     // Ensure Three.js tracks custom shader program compilation
-    this.garmentMaterial.customProgramCacheKey = () => 'garment_material_micro_normal_v2';
+    this.garmentMaterial.customProgramCacheKey = () => 'garment_material_micro_normal_inner_v3';
 
     // Clean neutral material for inner collar / neck tags
     this.neckTagMaterial = new THREE.MeshStandardMaterial({
@@ -130,6 +164,7 @@ export class MaterialManager3D {
     // ─────────────────────────────────────────────────────────────────────────
     this.garmentMaterial.map = compositor.getTexture();
     this.garmentMaterial.map.needsUpdate = true;
+    this.baseMapUniform.uBaseMap.value = compositor.getBaseTexture();
 
     // 2. Load Normal Map (garment wrinkle/seam normals)
     if (garmentConfig.textures.normal) {
@@ -227,6 +262,7 @@ export class MaterialManager3D {
   public dispose(): void {
     this.garmentMaterial.dispose();
     this.neckTagMaterial.dispose();
+    this.defaultBaseTexture.dispose();
     this.textureCache.forEach((tex) => tex.dispose());
     this.textureCache.clear();
     this.microNormalTexture = null;
