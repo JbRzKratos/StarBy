@@ -19,7 +19,7 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
   {
     "id": "art-bik-01",
     "slug": "valentino-rossi-vr46-monster-energy-yamaha-motogp-01",
-    "title": "Valentino Rossi VR46 — Monster Energy Yamaha MotoGP",
+    "title": "Valentino Rossi VR46 \u2014 Monster Energy Yamaha MotoGP",
     "themeSlug": "bikes",
     "category": "split",
     "tags": [
@@ -50,7 +50,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/3 Split Poster.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/3 Split Poster.webp",
     "price": 499,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "19:11"
   },
   {
     "id": "art-act-01",
@@ -88,7 +89,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Cinematic Warm-Toned Editorial Portrait Collage.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Cinematic Warm-Toned Editorial Portrait Collage.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-01",
@@ -126,7 +128,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Aquaman_Arthur_Curry_standing_on_an_ancient_und_9702bef8-0b0a-43d5-92d4-7d33104ca1da.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Aquaman_Arthur_Curry_standing_on_an_ancient_und_9702bef8-0b0a-43d5-92d4-7d33104ca1da.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-02",
@@ -164,7 +167,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Aquaman_Arthur_Curry_standing_on_an_ancient_und_a69eed75-a95e-4a29-be79-03515df2078f.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Aquaman_Arthur_Curry_standing_on_an_ancient_und_a69eed75-a95e-4a29-be79-03515df2078f.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-03",
@@ -201,7 +205,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Aquaman_Arthur_Curry_standing_on_ruins_of_an_en_f4267bbd-1130-4a7f-89e3-34c8f9ff7cbd.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Aquaman_Arthur_Curry_standing_on_ruins_of_an_en_f4267bbd-1130-4a7f-89e3-34c8f9ff7cbd.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-04",
@@ -239,7 +244,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Batman_standing_alone_on_a_rain_soaked_gothic_r_c46d574d-e4ce-4dea-abdd-eb59f01017eb.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Batman_standing_alone_on_a_rain_soaked_gothic_r_c46d574d-e4ce-4dea-abdd-eb59f01017eb.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-05",
@@ -277,7 +283,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Batman_standing_on_Gothams_highest_rooftop_duri_33c23a87-b982-4d38-a47f-af0c820e944e.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Batman_standing_on_Gothams_highest_rooftop_duri_33c23a87-b982-4d38-a47f-af0c820e944e.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-06",
@@ -315,7 +322,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Batman_standing_on_Gothams_highest_rooftop_duri_5a4b1772-f989-4685-8b56-7bfe20260052.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Batman_standing_on_Gothams_highest_rooftop_duri_5a4b1772-f989-4685-8b56-7bfe20260052.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-bre-01",
@@ -351,7 +359,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Breaking_bad_poster__Heisenberg_4k__cinematic_04f519ad-fef4-4a0a-89f3-fbd338b6a00f_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Breaking_bad_poster__Heisenberg_4k__cinematic_04f519ad-fef4-4a0a-89f3-fbd338b6a00f_0.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bre-02",
@@ -387,7 +396,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Breaking_bad_poster__Heisenberg_4k__cinematic_04f519ad-fef4-4a0a-89f3-fbd338b6a00f_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Breaking_bad_poster__Heisenberg_4k__cinematic_04f519ad-fef4-4a0a-89f3-fbd338b6a00f_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bre-03",
@@ -423,7 +433,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Breaking_bad_poster__Heisenberg_4k__cinematic_l_aa40d1ae-a8d8-4dd0-bc02-af9c6387f2b4.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Breaking_bad_poster__Heisenberg_4k__cinematic_l_aa40d1ae-a8d8-4dd0-bc02-af9c6387f2b4.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-07",
@@ -459,7 +470,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Collector_poster_of_DC_Batman_standing_on_a_sle_e0d863b9-e3e4-42e3-a0f8-70893deb0d7e.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Collector_poster_of_DC_Batman_standing_on_a_sle_e0d863b9-e3e4-42e3-a0f8-70893deb0d7e.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-cut-01",
@@ -498,7 +510,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Cute_golden_retriever_and_doberman_playing_toge_02929b18-72f6-420d-926c-27494867aed6.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Cute_golden_retriever_and_doberman_playing_toge_02929b18-72f6-420d-926c-27494867aed6.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-08",
@@ -536,7 +549,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Cyborg_Victor_Stone_standing_center_left_in_a_w_aa812f45-f2c8-483f-8590-55aa8ca1fc86.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Cyborg_Victor_Stone_standing_center_left_in_a_w_aa812f45-f2c8-483f-8590-55aa8ca1fc86.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-09",
@@ -574,7 +588,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Cyborg_Victor_Stone_standing_inside_a_futuristi_1bed943a-1641-450f-ad66-1e4e2cf4ee41.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Cyborg_Victor_Stone_standing_inside_a_futuristi_1bed943a-1641-450f-ad66-1e4e2cf4ee41.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-10",
@@ -612,12 +627,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Cyborg_Victor_Stone_standing_inside_a_futuristi_8c294b64-6180-44ff-b0db-5704961094c0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Cyborg_Victor_Stone_standing_inside_a_futuristi_8c294b64-6180-44ff-b0db-5704961094c0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-01",
     "slug": "miles-morales-brooklyn-rooftop-leap-01",
-    "title": "Miles Morales — Brooklyn Rooftop Leap",
+    "title": "Miles Morales \u2014 Brooklyn Rooftop Leap",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -646,12 +662,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Miles_Morales_Marvels_Spider_Man_game_character_0b07a660-89c2-4834-87e3-a122a2e93ec6.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Miles_Morales_Marvels_Spider_Man_game_character_0b07a660-89c2-4834-87e3-a122a2e93ec6.webp",
     "price": 499,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-02",
     "slug": "iron-man-mark-lxxxv-repulsor-surge-02",
-    "title": "Spider-Gwen — Multiverse Skyline",
+    "title": "Spider-Gwen \u2014 Multiverse Skyline",
     "themeSlug": "marvel",
     "category": "character",
     "tags": [
@@ -680,12 +697,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runL5ssYe0WJpg_Vertical_Spider_Gwen_9503e0a3-bbe1-4d50-a9dc-b37c52c8297b_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runL5ssYe0WJpg_Vertical_Spider_Gwen_9503e0a3-bbe1-4d50-a9dc-b37c52c8297b_2.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-03",
     "slug": "spider-man-manhattan-web-swing-03",
-    "title": "Black Panther — Wakanda Forever Sovereign",
+    "title": "Black Panther \u2014 Wakanda Forever Sovereign",
     "themeSlug": "marvel",
     "category": "character",
     "tags": [
@@ -714,7 +732,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runY21KNpPYf1M_Vertical_cinematic_Bla_c3240574-5285-456b-8261-2908e554887f.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runY21KNpPYf1M_Vertical_cinematic_Bla_c3240574-5285-456b-8261-2908e554887f.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-04",
@@ -748,7 +767,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_01b218b8-b37f-4427-b7ba-6873d3abeef4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_01b218b8-b37f-4427-b7ba-6873d3abeef4_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-02",
@@ -782,7 +802,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_020f3c8d-2ab8-4204-9f8b-892b2d4e6a86_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_020f3c8d-2ab8-4204-9f8b-892b2d4e6a86_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-01",
@@ -816,12 +837,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_03066147-eeb0-4085-83b7-a5a30c6e4f2a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_03066147-eeb0-4085-83b7-a5a30c6e4f2a_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-kol-01",
     "slug": "leo-thalapathy-vijay-bloody-sweet-totem-01",
-    "title": "Leo Thalapathy Vijay — Bloody Sweet Totem",
+    "title": "Leo Thalapathy Vijay \u2014 Bloody Sweet Totem",
     "themeSlug": "kollywood",
     "category": "split",
     "tags": [
@@ -851,7 +873,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_0467d325-ba0b-418b-ab83-3bf9bf5366c3_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_0467d325-ba0b-418b-ab83-3bf9bf5366c3_3.webp",
     "price": 499,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "4:17"
   },
   {
     "id": "art-f1-01",
@@ -885,7 +908,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_050f5402-2073-42ee-929e-02d5f990344c_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_050f5402-2073-42ee-929e-02d5f990344c_2.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-05",
@@ -919,7 +943,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_054dfa75-6223-462c-8b31-770a1e77433f_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_054dfa75-6223-462c-8b31-770a1e77433f_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-06",
@@ -953,7 +978,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_0765ae3d-d4e9-4697-bfab-0283593ead45_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_0765ae3d-d4e9-4697-bfab-0283593ead45_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-07",
@@ -987,12 +1013,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_07a93d9a-1df9-4199-b165-e854558dc172_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_07a93d9a-1df9-4199-b165-e854558dc172_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-08",
     "slug": "deadpool-chimichanga-crosshairs-08",
-    "title": "Wolverine — Berserker Rage Claws",
+    "title": "Wolverine \u2014 Berserker Rage Claws",
     "themeSlug": "marvel",
     "category": "character",
     "tags": [
@@ -1021,12 +1048,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runsG5_2I_kgUI_Highly_detailed_vertic_9f8bc212-9164-4563-ba2e-9bc40e8dd4dc.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runsG5_2I_kgUI_Highly_detailed_vertic_9f8bc212-9164-4563-ba2e-9bc40e8dd4dc.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-09",
     "slug": "miles-morales-cyber-drip-grid-matrix-09",
-    "title": "Miles Morales — Cyber Drip Grid Matrix",
+    "title": "Miles Morales \u2014 Cyber Drip Grid Matrix",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -1055,7 +1083,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runjIB1HESLF4k_Vertical_cinematic_col_d0f7d9e2-7f17-4aa3-8761-78a5332ac694.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runjIB1HESLF4k_Vertical_cinematic_col_d0f7d9e2-7f17-4aa3-8761-78a5332ac694.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-10",
@@ -1089,7 +1118,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_0e8fb9b0-bfae-4ab8-8d90-f3be8fe39ac8_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_0e8fb9b0-bfae-4ab8-8d90-f3be8fe39ac8_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ben-01",
@@ -1123,7 +1153,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_0ed50979-4868-430c-a342-82ab9cf1965e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_0ed50979-4868-430c-a342-82ab9cf1965e_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-11",
@@ -1157,7 +1188,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_11135493-7df8-4fab-9294-96f607bd430e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_11135493-7df8-4fab-9294-96f607bd430e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-01",
@@ -1191,7 +1223,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1182bc79-808e-4df6-a867-968d578238aa_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1182bc79-808e-4df6-a867-968d578238aa_2.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-12",
@@ -1225,12 +1258,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_12b8b3a1-7a0a-4d37-a2d8-16062284bd9a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_12b8b3a1-7a0a-4d37-a2d8-16062284bd9a_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-13",
     "slug": "spider-man-vs-venom-symbiote-duality-13",
-    "title": "Spider-Man vs Venom — Symbiote Duality",
+    "title": "Spider-Man vs Venom \u2014 Symbiote Duality",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -1260,7 +1294,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_14b9a2cc-0d91-43f3-a299-36b138754a76_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_14b9a2cc-0d91-43f3-a299-36b138754a76_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "19:11"
   },
   {
     "id": "art-mar-14",
@@ -1294,7 +1329,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_14cd9547-dc13-492e-b51a-119ea69f9c01_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_14cd9547-dc13-492e-b51a-119ea69f9c01_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-02",
@@ -1328,7 +1364,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_15337296-fe72-42c3-8a2a-c2e28bda3231_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_15337296-fe72-42c3-8a2a-c2e28bda3231_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-15",
@@ -1362,7 +1399,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_17284d72-b95a-4b22-bd03-2bd2679b0dd8_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_17284d72-b95a-4b22-bd03-2bd2679b0dd8_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-16",
@@ -1396,12 +1434,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1848b642-39e9-4c49-8019-11a7705cef12_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1848b642-39e9-4c49-8019-11a7705cef12_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-17",
     "slug": "daredevil-hell-s-kitchen-rooftop-17",
-    "title": "Daredevil Hell’s Kitchen Rooftop",
+    "title": "Daredevil Hell\u2019s Kitchen Rooftop",
     "themeSlug": "marvel",
     "category": "character",
     "tags": [
@@ -1430,12 +1469,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_19b7fb61-0ae1-4c6e-a7ab-f11224e72746_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_19b7fb61-0ae1-4c6e-a7ab-f11224e72746_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-ani-02",
     "slug": "zenitsu-agatsuma-thunder-flash-grid-02",
-    "title": "Zenitsu Agatsuma — Thunder Flash Grid",
+    "title": "Zenitsu Agatsuma \u2014 Thunder Flash Grid",
     "themeSlug": "anime",
     "category": "split",
     "tags": [
@@ -1464,7 +1504,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_19f3439c-b06b-4e11-8fa1-b4ccaa5eb1eb_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_19f3439c-b06b-4e11-8fa1-b4ccaa5eb1eb_3.webp",
     "price": 499,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-ani-03",
@@ -1498,7 +1539,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1a2b6fba-c7bf-4c5d-a62d-1b055f0eaf21_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1a2b6fba-c7bf-4c5d-a62d-1b055f0eaf21_2.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ben-02",
@@ -1532,12 +1574,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1a2bd31c-5d92-49a0-8ae1-58cf1a756c2a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1a2bd31c-5d92-49a0-8ae1-58cf1a756c2a_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-foo-01",
     "slug": "cristiano-ronaldo-iconic-cr7-stance-01",
-    "title": "Cristiano Ronaldo — Iconic CR7 Stance",
+    "title": "Cristiano Ronaldo \u2014 Iconic CR7 Stance",
     "themeSlug": "football",
     "category": "scene",
     "tags": [
@@ -1566,7 +1609,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1b102247-3b6c-400b-9aee-1d94535166db_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1b102247-3b6c-400b-9aee-1d94535166db_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-18",
@@ -1600,12 +1644,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1dce19e7-69ee-4a5c-81c7-d451aafcf766_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1dce19e7-69ee-4a5c-81c7-d451aafcf766_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-19",
     "slug": "spider-man-crimson-sky-grid-matrix-19",
-    "title": "Spider-Man — Crimson Sky Grid Matrix",
+    "title": "Spider-Man \u2014 Crimson Sky Grid Matrix",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -1633,7 +1678,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1e308c45-07b5-430a-922b-10d00800e03e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1e308c45-07b5-430a-922b-10d00800e03e_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-dc-11",
@@ -1667,7 +1713,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1e79dae8-dcae-4767-af3c-804e4c469c6b_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_1e79dae8-dcae-4767-af3c-804e4c469c6b_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-foo-02",
@@ -1701,12 +1748,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_20459b93-118d-48ae-beca-2187be959d00_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_20459b93-118d-48ae-beca-2187be959d00_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-20",
     "slug": "spider-man-vs-venom-half-half-symbiote-20",
-    "title": "Spider-Man vs Venom — Half & Half Symbiote",
+    "title": "Spider-Man vs Venom \u2014 Half & Half Symbiote",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -1735,7 +1783,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2097d66e-d042-46a0-a7ac-2fa51c635caf_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2097d66e-d042-46a0-a7ac-2fa51c635caf_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-ben-03",
@@ -1769,7 +1818,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_232fcc30-da3c-449e-9075-7a0cd85ae73b_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_232fcc30-da3c-449e-9075-7a0cd85ae73b_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-02",
@@ -1803,7 +1853,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_236deb75-7ec3-4377-b765-652cbcea0e24_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_236deb75-7ec3-4377-b765-652cbcea0e24_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-21",
@@ -1837,12 +1888,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_26232886-8ccb-440c-8fc6-30e97e306a6e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_26232886-8ccb-440c-8fc6-30e97e306a6e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-12",
     "slug": "metropolis-solar-guardian-12",
-    "title": "The Batman — Gotham Rain Nocturne Totem",
+    "title": "The Batman \u2014 Gotham Rain Nocturne Totem",
     "themeSlug": "dc",
     "category": "split",
     "tags": [
@@ -1871,7 +1923,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "4:17"
   },
   {
     "id": "art-gam-02",
@@ -1905,7 +1958,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_27e20688-82d0-458c-b807-ddfed14cde0a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_27e20688-82d0-458c-b807-ddfed14cde0a_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-22",
@@ -1939,7 +1993,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_29430c55-aea1-4017-934c-837b05fc4253_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_29430c55-aea1-4017-934c-837b05fc4253_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-01",
@@ -1973,7 +2028,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2949b909-0642-40a9-aea2-61d433fda437_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2949b909-0642-40a9-aea2-61d433fda437_2.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-03",
@@ -2007,7 +2063,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2a518b7d-4223-48a5-9663-50e24b345a5c_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2a518b7d-4223-48a5-9663-50e24b345a5c_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-23",
@@ -2041,12 +2098,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2ccdeb8e-a0a9-4beb-be59-859de0709614_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2ccdeb8e-a0a9-4beb-be59-859de0709614_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-ani-04",
     "slug": "son-goku-ultra-instinct-power-surge-grid-04",
-    "title": "Son Goku — Ultra Instinct Power Surge Grid",
+    "title": "Son Goku \u2014 Ultra Instinct Power Surge Grid",
     "themeSlug": "anime",
     "category": "split",
     "tags": [
@@ -2076,7 +2134,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2e482216-5195-4826-bbf0-e35c334e56c1_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2e482216-5195-4826-bbf0-e35c334e56c1_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-gam-03",
@@ -2110,7 +2169,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2f924c16-836d-4729-bd75-ea2f9a585a99_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2f924c16-836d-4729-bd75-ea2f9a585a99_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-24",
@@ -2144,12 +2204,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3184c38a-f033-499d-9e0e-710114b49f26_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3184c38a-f033-499d-9e0e-710114b49f26_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-25",
     "slug": "carnage-crimson-symphony-chaos-25",
-    "title": "Carnage — Crimson Symphony Chaos",
+    "title": "Carnage \u2014 Crimson Symphony Chaos",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -2178,7 +2239,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_32ccfd78-8de2-4e97-b388-a36b14513597_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_32ccfd78-8de2-4e97-b388-a36b14513597_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-26",
@@ -2212,7 +2274,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_332e8ad7-146f-4118-86f3-33b5fc41d0dc_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_332e8ad7-146f-4118-86f3-33b5fc41d0dc_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-03",
@@ -2246,12 +2309,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_354ed7d0-3690-4d5e-9c00-90e1dc4b7eb2_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_354ed7d0-3690-4d5e-9c00-90e1dc4b7eb2_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-kol-02",
     "slug": "thalapathy-vijay-leo-bloody-sweet-02",
-    "title": "Thalapathy Vijay — Leo Bloody Sweet",
+    "title": "Thalapathy Vijay \u2014 Leo Bloody Sweet",
     "themeSlug": "kollywood",
     "category": "scene",
     "tags": [
@@ -2280,7 +2344,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_35a61e93-2d77-4c3d-8a79-a5a945c16cc7_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_35a61e93-2d77-4c3d-8a79-a5a945c16cc7_2.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-27",
@@ -2314,7 +2379,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_36604453-3640-4ee0-a28f-638fcae91746_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_36604453-3640-4ee0-a28f-638fcae91746_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-28",
@@ -2348,7 +2414,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3749bd01-36ae-45b2-856b-b05aec5c2501_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3749bd01-36ae-45b2-856b-b05aec5c2501_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-04",
@@ -2382,7 +2449,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3787a4ce-29dc-4929-bb6d-f228feac30b2_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3787a4ce-29dc-4929-bb6d-f228feac30b2_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-29",
@@ -2416,12 +2484,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_37b07404-f94d-4cfc-aa0d-f53a633d4f86_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_37b07404-f94d-4cfc-aa0d-f53a633d4f86_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-05",
     "slug": "yamaha-yzf-r1-midnight-throttle-grid-05",
-    "title": "Yamaha YZF-R1 — Midnight Throttle Grid",
+    "title": "Yamaha YZF-R1 \u2014 Midnight Throttle Grid",
     "themeSlug": "bikes",
     "category": "split",
     "tags": [
@@ -2450,7 +2519,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_39003d15-4b4d-4e81-92b2-bc69e2ba9518_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_39003d15-4b4d-4e81-92b2-bc69e2ba9518_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-mar-30",
@@ -2484,7 +2554,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3b1b2152-7929-4ae3-897f-8e10b93241ac_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3b1b2152-7929-4ae3-897f-8e10b93241ac_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-cut-02",
@@ -2518,7 +2589,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3be59cc5-bc82-4c11-babd-7dbe356a7471_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3be59cc5-bc82-4c11-babd-7dbe356a7471_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-31",
@@ -2552,12 +2624,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3c07f96c-3e8c-4b54-b1fb-8b7e075a3e52_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3c07f96c-3e8c-4b54-b1fb-8b7e075a3e52_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-car-02",
     "slug": "toyota-supra-mk4-smoke-drift-horizon-02",
-    "title": "Toyota Supra MK4 — Smoke Drift Horizon",
+    "title": "Toyota Supra MK4 \u2014 Smoke Drift Horizon",
     "themeSlug": "cars",
     "category": "split",
     "tags": [
@@ -2587,7 +2660,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3d45351d-0d64-4e6c-91eb-a97f774dea00_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3d45351d-0d64-4e6c-91eb-a97f774dea00_2.webp",
     "price": 499,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-bik-06",
@@ -2621,7 +2695,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3fb25802-1817-4b25-aa08-23d8ea809530_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3fb25802-1817-4b25-aa08-23d8ea809530_1.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-car-03",
@@ -2655,7 +2730,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4167ceb2-24b6-48a1-bdf9-b808b32589b4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4167ceb2-24b6-48a1-bdf9-b808b32589b4_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-32",
@@ -2689,7 +2765,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_42a4c410-2274-4951-9b16-29ae6e78fef4_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_42a4c410-2274-4951-9b16-29ae6e78fef4_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-33",
@@ -2723,7 +2800,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_443d9942-3c74-4c71-8364-8472762104e4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_443d9942-3c74-4c71-8364-8472762104e4_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-foo-03",
@@ -2757,12 +2835,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4494fc24-3629-4655-a4f4-b8245caa2069_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4494fc24-3629-4655-a4f4-b8245caa2069_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-34",
     "slug": "doctor-doom-emerald-sanctum-sovereign-34",
-    "title": "Doctor Doom — Emerald Sanctum Sovereign",
+    "title": "Doctor Doom \u2014 Emerald Sanctum Sovereign",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -2791,12 +2870,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_464fc527-9263-4433-a1af-d9667399d90b_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_464fc527-9263-4433-a1af-d9667399d90b_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-f1-03",
     "slug": "oscar-piastri-81-mclaren-f1-papaya-totem-03",
-    "title": "Oscar Piastri #81 — McLaren F1 Papaya Totem",
+    "title": "Oscar Piastri #81 \u2014 McLaren F1 Papaya Totem",
     "themeSlug": "f1",
     "category": "split",
     "tags": [
@@ -2826,7 +2906,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_47766b5f-d39c-4ff9-b07e-3efa6f0d92ca_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_47766b5f-d39c-4ff9-b07e-3efa6f0d92ca_3.webp",
     "price": 499,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "4:17"
   },
   {
     "id": "art-ben-04",
@@ -2860,7 +2941,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_48384dd3-d62c-4b65-ae64-bc85733b7166_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_48384dd3-d62c-4b65-ae64-bc85733b7166_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-04",
@@ -2894,7 +2976,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4aa6f6f3-74be-4c15-8fdb-30cbce44131a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4aa6f6f3-74be-4c15-8fdb-30cbce44131a_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-35",
@@ -2928,12 +3011,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4ad13b66-a2d5-41e3-9789-44c38a90d3a8_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4ad13b66-a2d5-41e3-9789-44c38a90d3a8_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-car-05",
     "slug": "n-rburgring-apex-strike-05",
-    "title": "Nürburgring Apex Strike",
+    "title": "N\u00fcrburgring Apex Strike",
     "themeSlug": "cars",
     "category": "scene",
     "tags": [
@@ -2962,7 +3046,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4b058df6-75d8-4795-9621-ffd0fa220ca4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4b058df6-75d8-4795-9621-ffd0fa220ca4_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ben-05",
@@ -2996,7 +3081,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4b6089da-b3d7-458e-acd6-32de12bd49b9_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4b6089da-b3d7-458e-acd6-32de12bd49b9_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-07",
@@ -3030,7 +3116,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4d8df1e7-bea0-4a56-bde8-18064a4a9ff2_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4d8df1e7-bea0-4a56-bde8-18064a4a9ff2_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-04",
@@ -3064,12 +3151,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4dc25727-e30d-4877-ae03-87dffc57ee9d_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4dc25727-e30d-4877-ae03-87dffc57ee9d_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-08",
     "slug": "yamaha-yzf-r1-red-horizon-wheelie-08",
-    "title": "Yamaha YZF-R1 — Red Horizon Wheelie",
+    "title": "Yamaha YZF-R1 \u2014 Red Horizon Wheelie",
     "themeSlug": "bikes",
     "category": "split",
     "tags": [
@@ -3099,12 +3187,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4e9f906e-5ba9-4c0a-8e81-079251a6d5a3_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_4e9f906e-5ba9-4c0a-8e81-079251a6d5a3_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-kol-03",
     "slug": "superstar-rajinikanth-hukum-jailer-03",
-    "title": "Superstar Rajinikanth — Hukum Jailer",
+    "title": "Superstar Rajinikanth \u2014 Hukum Jailer",
     "themeSlug": "kollywood",
     "category": "scene",
     "tags": [
@@ -3133,12 +3222,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_53e83025-8fe7-47b9-97c6-2b7008d703d1_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_53e83025-8fe7-47b9-97c6-2b7008d703d1_2.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-05",
     "slug": "formula-1-monolith-studio-apex-architecture-05",
-    "title": "Formula 1 Monolith — Studio Apex Architecture",
+    "title": "Formula 1 Monolith \u2014 Studio Apex Architecture",
     "themeSlug": "f1",
     "category": "split",
     "tags": [
@@ -3168,7 +3258,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_554cf690-7426-4f50-bffe-662919a384d4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_554cf690-7426-4f50-bffe-662919a384d4_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "4:17"
   },
   {
     "id": "art-mar-36",
@@ -3202,12 +3293,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_55540d98-9b90-41a3-a188-3073c490de90_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_55540d98-9b90-41a3-a188-3073c490de90_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mus-01",
     "slug": "n-w-a-straight-outta-compton-street-legends-01",
-    "title": "N.W.A — Straight Outta Compton Street Legends",
+    "title": "N.W.A \u2014 Straight Outta Compton Street Legends",
     "themeSlug": "music",
     "category": "split",
     "tags": [
@@ -3238,7 +3330,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_555c7e77-26be-4c91-a2d2-0490194489c4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_555c7e77-26be-4c91-a2d2-0490194489c4_3.webp",
     "price": 499,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-37",
@@ -3272,7 +3365,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_56368a19-eade-43cb-8582-068e1c323ba7_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_56368a19-eade-43cb-8582-068e1c323ba7_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-car-06",
@@ -3306,7 +3400,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_56d64f58-3490-40db-8ca8-dc30952d5c4f_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_56d64f58-3490-40db-8ca8-dc30952d5c4f_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-38",
@@ -3340,7 +3435,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_574b789c-8195-4a2e-9922-d5cc281ac5b0_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_574b789c-8195-4a2e-9922-d5cc281ac5b0_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-39",
@@ -3374,12 +3470,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_578cde75-7092-45ff-a7a9-73ae6693e42a_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_578cde75-7092-45ff-a7a9-73ae6693e42a_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-bik-09",
     "slug": "valentino-rossi-46-motogp-apex-predator-09",
-    "title": "Valentino Rossi 46 — MotoGP Apex Predator",
+    "title": "Valentino Rossi 46 \u2014 MotoGP Apex Predator",
     "themeSlug": "bikes",
     "category": "split",
     "tags": [
@@ -3409,7 +3506,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_57b3b9cc-7042-4119-af90-2fc57f8b5a90_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_57b3b9cc-7042-4119-af90-2fc57f8b5a90_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-40",
@@ -3443,12 +3541,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_57f70adc-1e86-4ce1-ad32-f916d3a27dbb_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_57f70adc-1e86-4ce1-ad32-f916d3a27dbb_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-41",
     "slug": "carnage-bloodfire-chaos-grid-matrix-41",
-    "title": "Carnage — Bloodfire Chaos Grid Matrix",
+    "title": "Carnage \u2014 Bloodfire Chaos Grid Matrix",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -3477,7 +3576,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5899a9ef-29d2-4340-8649-c0426f0a0739_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5899a9ef-29d2-4340-8649-c0426f0a0739_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-gam-01",
@@ -3511,7 +3611,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_589b1ee8-6839-46cf-85e0-d063de25f709_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_589b1ee8-6839-46cf-85e0-d063de25f709_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-04",
@@ -3545,7 +3646,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_58e79a03-559f-4cd8-b8b3-d581d6c55d63_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_58e79a03-559f-4cd8-b8b3-d581d6c55d63_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-02",
@@ -3579,7 +3681,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_598ca0cc-63f6-4cb9-97b4-97e30e305cf0_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_598ca0cc-63f6-4cb9-97b4-97e30e305cf0_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-gam-04",
@@ -3613,12 +3716,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_59946b89-9551-40ba-95de-daa715acb06e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_59946b89-9551-40ba-95de-daa715acb06e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-net-01",
     "slug": "tommy-shelby-birmingham-shadows-grid-01",
-    "title": "Tommy Shelby — Birmingham Shadows Grid",
+    "title": "Tommy Shelby \u2014 Birmingham Shadows Grid",
     "themeSlug": "netflix-series",
     "category": "split",
     "tags": [
@@ -3648,7 +3752,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5ae2ffe7-a3ae-4656-9452-3dd6b7a7347a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5ae2ffe7-a3ae-4656-9452-3dd6b7a7347a_3.webp",
     "price": 499,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-cut-03",
@@ -3682,7 +3787,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5c0f941b-458c-4480-951f-6b30661118c7_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5c0f941b-458c-4480-951f-6b30661118c7_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-05",
@@ -3716,7 +3822,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5e3346c4-7a6e-4a7f-8ca9-c919c25298ea_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5e3346c4-7a6e-4a7f-8ca9-c919c25298ea_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-06",
@@ -3750,7 +3857,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5e72e1db-79d7-4e40-a029-85d926261eb0_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5e72e1db-79d7-4e40-a029-85d926261eb0_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-07",
@@ -3784,12 +3892,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5e98340b-6d56-4820-a631-2af02bcb9fe7_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5e98340b-6d56-4820-a631-2af02bcb9fe7_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-42",
     "slug": "miles-morales-neon-cyber-drip-hoodie-42",
-    "title": "Miles Morales — Neon Cyber Drip Hoodie",
+    "title": "Miles Morales \u2014 Neon Cyber Drip Hoodie",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -3818,7 +3927,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5f3cb948-d4cb-464b-8016-3e27715c0d05_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5f3cb948-d4cb-464b-8016-3e27715c0d05_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-gam-03",
@@ -3852,12 +3962,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5f5eb6b3-7596-49c5-b6b2-77b9524e5423_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5f5eb6b3-7596-49c5-b6b2-77b9524e5423_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-43",
     "slug": "moon-knight-crescent-reflection-totem-43",
-    "title": "Moon Knight — Crescent Reflection Totem",
+    "title": "Moon Knight \u2014 Crescent Reflection Totem",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -3886,7 +3997,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5fdcd808-60a4-4883-8404-e8365a139b7f_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_5fdcd808-60a4-4883-8404-e8365a139b7f_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "4:17"
   },
   {
     "id": "art-mus-02",
@@ -3920,7 +4032,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6074eafc-d3b9-4115-81ad-a655e1e7a1c7_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6074eafc-d3b9-4115-81ad-a655e1e7a1c7_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-05",
@@ -3954,7 +4067,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_61001e20-71f4-4d2a-9895-92588897c915_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_61001e20-71f4-4d2a-9895-92588897c915_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mus-03",
@@ -3988,7 +4102,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6120baee-e5ab-42db-8b8a-e19a382d85b2_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6120baee-e5ab-42db-8b8a-e19a382d85b2_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-06",
@@ -4022,7 +4137,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_65278e54-4bbe-46a8-a777-f1bc9e1f6515_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_65278e54-4bbe-46a8-a777-f1bc9e1f6515_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-07",
@@ -4056,7 +4172,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_65ace32d-6f76-4f1a-9dca-d07645ae382f_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_65ace32d-6f76-4f1a-9dca-d07645ae382f_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-gam-08",
@@ -4090,7 +4207,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_67514a71-b2d1-4591-bb50-10b8e4b56751_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_67514a71-b2d1-4591-bb50-10b8e4b56751_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-09",
@@ -4124,7 +4242,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_69042dbe-f1c7-4184-961d-0127931a1327_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_69042dbe-f1c7-4184-961d-0127931a1327_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-05",
@@ -4158,7 +4277,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_69ef2457-73d1-4546-b10d-7473f04557f4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_69ef2457-73d1-4546-b10d-7473f04557f4_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-44",
@@ -4192,7 +4312,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6a140b3a-d77a-4387-b7b1-2b1774169c90_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6a140b3a-d77a-4387-b7b1-2b1774169c90_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-07",
@@ -4226,7 +4347,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6a842b65-ecd4-4643-b37f-333b2e7ebb49_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6a842b65-ecd4-4643-b37f-333b2e7ebb49_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-06",
@@ -4260,12 +4382,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6a8ea070-e841-4bcc-944d-a9a48987dc8a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6a8ea070-e841-4bcc-944d-a9a48987dc8a_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-f1-06",
     "slug": "max-verstappen-33-oracle-red-bull-racing-f1-06",
-    "title": "Max Verstappen 33 — Oracle Red Bull Racing F1",
+    "title": "Max Verstappen 33 \u2014 Oracle Red Bull Racing F1",
     "themeSlug": "f1",
     "category": "split",
     "tags": [
@@ -4295,7 +4418,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6ab69d04-87e0-44e5-81be-be7a90302496_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6ab69d04-87e0-44e5-81be-be7a90302496_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "19:11"
   },
   {
     "id": "art-mar-45",
@@ -4329,7 +4453,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6acc7a69-ebec-4f7a-9270-48a20980ddd8_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6acc7a69-ebec-4f7a-9270-48a20980ddd8_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-46",
@@ -4363,12 +4488,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6b4cd8c9-3d31-4ef7-a18f-622591839dc9_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6b4cd8c9-3d31-4ef7-a18f-622591839dc9_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-07",
     "slug": "cyberpunk-gunner-neon-red-ronin-07",
-    "title": "Cyberpunk Gunner — Neon Red Ronin",
+    "title": "Cyberpunk Gunner \u2014 Neon Red Ronin",
     "themeSlug": "anime",
     "category": "split",
     "tags": [
@@ -4397,7 +4523,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6c09ca1e-4c3a-40db-8457-33e43905aabd_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6c09ca1e-4c3a-40db-8457-33e43905aabd_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-car-08",
@@ -4431,7 +4558,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6d80d886-ff2e-453a-b97f-d9973e26ccc8_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6d80d886-ff2e-453a-b97f-d9973e26ccc8_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-07",
@@ -4465,7 +4593,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6dab3d75-60de-4bc8-a79f-91658a3a01bb_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6dab3d75-60de-4bc8-a79f-91658a3a01bb_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-cut-04",
@@ -4499,7 +4628,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6e4107ec-46f6-4694-a0da-44aaa0f6409d_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_6e4107ec-46f6-4694-a0da-44aaa0f6409d_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-47",
@@ -4533,7 +4663,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_70b2e248-fe63-4a55-9009-b3be53d1d770_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_70b2e248-fe63-4a55-9009-b3be53d1d770_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-48",
@@ -4567,12 +4698,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_71527d44-dcfc-4624-b76e-24ceca8c5645_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_71527d44-dcfc-4624-b76e-24ceca8c5645_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-49",
     "slug": "doctor-doom-latverian-throne-grid-49",
-    "title": "Doctor Doom — Latverian Throne Grid",
+    "title": "Doctor Doom \u2014 Latverian Throne Grid",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -4600,7 +4732,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_739fcda2-456a-4fbe-b140-9018138b2f5a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_739fcda2-456a-4fbe-b140-9018138b2f5a_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-f1-08",
@@ -4634,7 +4767,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_73bb54f7-e606-488d-8e74-213203786dfc_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_73bb54f7-e606-488d-8e74-213203786dfc_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-act-08",
@@ -4668,7 +4802,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7443ca89-732b-4f15-b401-2efced62fc9e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7443ca89-732b-4f15-b401-2efced62fc9e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-08",
@@ -4702,7 +4837,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_74f62b39-2e77-4d7d-9136-00aa22d607ca_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_74f62b39-2e77-4d7d-9136-00aa22d607ca_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-13",
@@ -4736,7 +4872,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7531be03-1c4c-4d8e-b924-7d69e39ad185_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7531be03-1c4c-4d8e-b924-7d69e39ad185_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-cri-01",
@@ -4770,7 +4907,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7611c4e0-5e52-41da-b574-13e5d5494c5a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7611c4e0-5e52-41da-b574-13e5d5494c5a_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-04",
@@ -4804,7 +4942,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_76a71e77-61a2-45e2-ae57-06d5f65e46ba_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_76a71e77-61a2-45e2-ae57-06d5f65e46ba_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-09",
@@ -4838,7 +4977,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7786236f-4543-4d44-ba7f-7b5e94f918be_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7786236f-4543-4d44-ba7f-7b5e94f918be_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-50",
@@ -4872,7 +5012,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_77b26bc5-dfab-482b-b652-a292a31681da_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_77b26bc5-dfab-482b-b652-a292a31681da_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-51",
@@ -4906,7 +5047,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_77e627ab-03f7-4f07-980d-81d06fc3ab05_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_77e627ab-03f7-4f07-980d-81d06fc3ab05_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-foo-04",
@@ -4940,7 +5082,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7914041c-1d00-4edf-9e30-9bd8edfd4639_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7914041c-1d00-4edf-9e30-9bd8edfd4639_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-52",
@@ -4974,12 +5117,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7923961b-4902-484c-b4bb-a430da885c3b_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7923961b-4902-484c-b4bb-a430da885c3b_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-14",
     "slug": "the-joker-throne-of-chaos-gotham-arkham-14",
-    "title": "The Joker — Throne of Chaos Gotham Arkham",
+    "title": "The Joker \u2014 Throne of Chaos Gotham Arkham",
     "themeSlug": "dc",
     "category": "split",
     "tags": [
@@ -5009,7 +5153,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7a96d29f-220e-44f0-97d1-cc2a7096708f_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7a96d29f-220e-44f0-97d1-cc2a7096708f_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-53",
@@ -5043,7 +5188,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7c848a25-aab3-41c3-99bd-32f6146227fc_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7c848a25-aab3-41c3-99bd-32f6146227fc_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-10",
@@ -5077,7 +5223,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7d2ec21e-10dd-4c13-95c9-6654e13ff611_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7d2ec21e-10dd-4c13-95c9-6654e13ff611_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-act-11",
@@ -5111,7 +5258,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_806bf413-ea6c-4baa-8780-32ffde3a04a1_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_806bf413-ea6c-4baa-8780-32ffde3a04a1_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-net-02",
@@ -5145,7 +5293,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_859b57d4-c721-4960-afde-7abdfc446640_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_859b57d4-c721-4960-afde-7abdfc446640_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ben-06",
@@ -5179,7 +5328,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_85e25fea-43bd-4dbd-9dce-cc663e2ac849_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_85e25fea-43bd-4dbd-9dce-cc663e2ac849_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-10",
@@ -5213,12 +5363,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_86d44777-5d70-4914-b7f1-c85a7cd7827a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_86d44777-5d70-4914-b7f1-c85a7cd7827a_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-54",
     "slug": "spider-man-venom-split-face-grid-matrix-54",
-    "title": "Spider-Man & Venom — Split Face Grid Matrix",
+    "title": "Spider-Man & Venom \u2014 Split Face Grid Matrix",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -5247,7 +5398,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_87b422a5-0502-4254-a066-f733dc0af620_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_87b422a5-0502-4254-a066-f733dc0af620_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-gam-11",
@@ -5281,7 +5433,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_88dc5d62-3663-480b-a88f-5bdbc7b97c89_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_88dc5d62-3663-480b-a88f-5bdbc7b97c89_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-10",
@@ -5315,7 +5468,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_88eec596-826e-4c1d-adeb-38f940cd8195_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_88eec596-826e-4c1d-adeb-38f940cd8195_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-55",
@@ -5349,12 +5503,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8946b481-1fc7-49bb-807a-a5332cc9b5cd_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8946b481-1fc7-49bb-807a-a5332cc9b5cd_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-kol-04",
     "slug": "thala-ajith-mankatha-billa-swag-04",
-    "title": "Thala Ajith — Mankatha Billa Swag",
+    "title": "Thala Ajith \u2014 Mankatha Billa Swag",
     "themeSlug": "kollywood",
     "category": "scene",
     "tags": [
@@ -5383,7 +5538,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8a3f18f6-8d7d-485b-a37a-4c58cb6e42a8_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8a3f18f6-8d7d-485b-a37a-4c58cb6e42a8_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-gam-05",
@@ -5417,7 +5573,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8b503400-c669-4a67-9af7-5498c820d457_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8b503400-c669-4a67-9af7-5498c820d457_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-cri-02",
@@ -5451,7 +5608,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8c6da5ff-1356-4767-bd02-3be07edc2819_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8c6da5ff-1356-4767-bd02-3be07edc2819_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-12",
@@ -5485,7 +5643,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8cf7dc94-2969-40bf-ace4-2bd1fa2e7f3e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8cf7dc94-2969-40bf-ace4-2bd1fa2e7f3e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-ben-07",
@@ -5519,7 +5678,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8ebf346b-38b2-4d17-9ccd-a2483e9ca3c0_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_8ebf346b-38b2-4d17-9ccd-a2483e9ca3c0_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-09",
@@ -5553,7 +5713,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_916967b5-18ee-47e2-a5d4-f54c63547636_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_916967b5-18ee-47e2-a5d4-f54c63547636_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-56",
@@ -5587,7 +5748,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_91c1cea4-d37b-4193-a275-09d2bc4bd1ff_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_91c1cea4-d37b-4193-a275-09d2bc4bd1ff_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-57",
@@ -5621,7 +5783,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9214c0a1-3448-4c40-9323-d32c22647151_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9214c0a1-3448-4c40-9323-d32c22647151_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-09",
@@ -5655,7 +5818,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_925e0deb-53ad-4bc0-83a9-1b89e46c11cd_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_925e0deb-53ad-4bc0-83a9-1b89e46c11cd_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-13",
@@ -5689,7 +5853,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_940fea38-abf6-4f49-b133-8bd49677167f_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_940fea38-abf6-4f49-b133-8bd49677167f_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-12",
@@ -5723,7 +5888,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_951a9890-2b8b-4935-8fed-20c5a5adeac9_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_951a9890-2b8b-4935-8fed-20c5a5adeac9_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-09",
@@ -5757,12 +5923,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_95c75804-76a2-424e-8212-7652ad578994_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_95c75804-76a2-424e-8212-7652ad578994_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-kol-05",
     "slug": "ulaganayagan-kamal-haasan-vikram-rolex-05",
-    "title": "Ulaganayagan Kamal Haasan — Vikram Rolex",
+    "title": "Ulaganayagan Kamal Haasan \u2014 Vikram Rolex",
     "themeSlug": "kollywood",
     "category": "scene",
     "tags": [
@@ -5791,7 +5958,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_96cbccda-7b42-4489-8fe0-ef2b1e053d75_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_96cbccda-7b42-4489-8fe0-ef2b1e053d75_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-14",
@@ -5825,7 +5993,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_973e7301-b1e8-47d5-8832-38cf47acde76_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_973e7301-b1e8-47d5-8832-38cf47acde76_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-15",
@@ -5859,12 +6028,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9761e0f3-8c73-4553-be25-3622120e316a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9761e0f3-8c73-4553-be25-3622120e316a_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-15",
     "slug": "the-batman-gotham-rain-nocturne-totem-15",
-    "title": "The Batman — Gotham Rain Nocturne Totem",
+    "title": "The Batman \u2014 Gotham Rain Nocturne Totem",
     "themeSlug": "dc",
     "category": "split",
     "tags": [
@@ -5894,7 +6064,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "4:17"
   },
   {
     "id": "art-f1-10",
@@ -5928,7 +6099,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9875c703-1af8-432e-87a9-7a65d66ea5bf_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9875c703-1af8-432e-87a9-7a65d66ea5bf_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-kol-06",
@@ -5962,7 +6134,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_99c23007-5e6b-49ee-88b9-a0cda6a08f9e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_99c23007-5e6b-49ee-88b9-a0cda6a08f9e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-net-03",
@@ -5996,7 +6169,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9b32ff14-f7da-483a-8e03-4d87eda118c2_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9b32ff14-f7da-483a-8e03-4d87eda118c2_2.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-11",
@@ -6030,7 +6204,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9e826962-3572-4aa7-a66f-f67bf0a9f733_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9e826962-3572-4aa7-a66f-f67bf0a9f733_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-foo-05",
@@ -6064,7 +6239,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a2e44c11-657a-4a43-afd0-5d40a6115d83_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a2e44c11-657a-4a43-afd0-5d40a6115d83_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mus-04",
@@ -6098,7 +6274,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a4cd54e2-db8e-435d-9113-b62bde5ac45b_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a4cd54e2-db8e-435d-9113-b62bde5ac45b_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-58",
@@ -6132,12 +6309,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a524fa2e-cd28-4a0a-a205-57516f4019a4_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a524fa2e-cd28-4a0a-a205-57516f4019a4_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-59",
     "slug": "spider-man-rooftop-crimson-horizon-59",
-    "title": "Spider-Man — Rooftop Crimson Horizon",
+    "title": "Spider-Man \u2014 Rooftop Crimson Horizon",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -6166,7 +6344,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a585620d-73c0-4f03-b936-2d5bb1213093_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a585620d-73c0-4f03-b936-2d5bb1213093_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-bik-11",
@@ -6200,7 +6379,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a59c728f-fea0-44fb-ab6e-3d40a2f6a78e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a59c728f-fea0-44fb-ab6e-3d40a2f6a78e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mus-05",
@@ -6234,7 +6414,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a6e12e90-4ded-4b23-9d9d-133e728f0aea_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a6e12e90-4ded-4b23-9d9d-133e728f0aea_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-10",
@@ -6268,7 +6449,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a80daa3f-fd9b-4217-a726-59dbfcba2bc8_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a80daa3f-fd9b-4217-a726-59dbfcba2bc8_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-gam-16",
@@ -6302,7 +6484,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a93cee5e-254e-4d01-9dd1-6dc694e9e29e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a93cee5e-254e-4d01-9dd1-6dc694e9e29e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-17",
@@ -6336,12 +6519,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a93fcdb9-95bf-48f9-b30e-2ae395061a95_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a93fcdb9-95bf-48f9-b30e-2ae395061a95_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-16",
     "slug": "justice-league-united-snyder-cut-grid-16",
-    "title": "Justice League United — Snyder Cut Grid",
+    "title": "Justice League United \u2014 Snyder Cut Grid",
     "themeSlug": "dc",
     "category": "split",
     "tags": [
@@ -6369,7 +6553,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a94469bc-11fa-4c89-bbcb-48f8dfaec9e7_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_a94469bc-11fa-4c89-bbcb-48f8dfaec9e7_1.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-f1-12",
@@ -6403,12 +6588,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ab7e6367-5aa0-46ad-8c37-8c1f58e76ad9_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ab7e6367-5aa0-46ad-8c37-8c1f58e76ad9_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-12",
     "slug": "yamaha-yzf-r1-highway-sunset-wheelie-12",
-    "title": "Yamaha YZF-R1 — Highway Sunset Wheelie",
+    "title": "Yamaha YZF-R1 \u2014 Highway Sunset Wheelie",
     "themeSlug": "bikes",
     "category": "split",
     "tags": [
@@ -6439,7 +6625,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ac21a646-6e09-4c8f-a023-2d83dd1a4777_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ac21a646-6e09-4c8f-a023-2d83dd1a4777_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "19:11"
   },
   {
     "id": "art-mar-60",
@@ -6473,7 +6660,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ae2a5a45-67de-4cf7-81b9-168740e580d4_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ae2a5a45-67de-4cf7-81b9-168740e580d4_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-kol-07",
@@ -6507,7 +6695,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_aeabff0f-4178-42e7-a82b-022cf944b6ac_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_aeabff0f-4178-42e7-a82b-022cf944b6ac_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-61",
@@ -6541,7 +6730,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_af07153c-f89c-48d7-bf20-37bbfaa97c19_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_af07153c-f89c-48d7-bf20-37bbfaa97c19_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-ben-08",
@@ -6575,12 +6765,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b0638156-a68e-4d95-b4a7-ca9b4414a21e_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b0638156-a68e-4d95-b4a7-ca9b4414a21e_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mus-06",
     "slug": "n-w-a-compton-street-syndicate-grid-06",
-    "title": "N.W.A — Compton Street Syndicate Grid",
+    "title": "N.W.A \u2014 Compton Street Syndicate Grid",
     "themeSlug": "music",
     "category": "split",
     "tags": [
@@ -6609,12 +6800,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b21b5b01-3d39-4567-bd5d-5e4c9527da8c_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b21b5b01-3d39-4567-bd5d-5e4c9527da8c_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-mar-62",
     "slug": "kingpin-fisk-hell-s-kitchen-grip-62",
-    "title": "Kingpin Fisk Hell’s Kitchen Grip",
+    "title": "Kingpin Fisk Hell\u2019s Kitchen Grip",
     "themeSlug": "marvel",
     "category": "character",
     "tags": [
@@ -6643,7 +6835,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b2934643-777d-47c6-ba21-ae34539d3dbe_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b2934643-777d-47c6-ba21-ae34539d3dbe_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-cri-03",
@@ -6677,7 +6870,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b312703a-63bc-4a6d-b9d0-7dd39da5f545_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b312703a-63bc-4a6d-b9d0-7dd39da5f545_3.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ben-09",
@@ -6711,7 +6905,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b63a9aae-30d7-4372-b882-dbcabfee0def_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b63a9aae-30d7-4372-b882-dbcabfee0def_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-13",
@@ -6745,7 +6940,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b9d0b1f6-00fc-4d94-bdfe-0ca4e28824ea_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b9d0b1f6-00fc-4d94-bdfe-0ca4e28824ea_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-11",
@@ -6779,7 +6975,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b9fbe9fa-d0b1-4847-be06-0c88b6ac01cf_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_b9fbe9fa-d0b1-4847-be06-0c88b6ac01cf_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-12",
@@ -6813,12 +7010,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bb2361fa-3cfb-4690-a9ef-4c8d9a4e17ea_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bb2361fa-3cfb-4690-a9ef-4c8d9a4e17ea_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-bik-13",
     "slug": "valentino-rossi-46-motogp-grid-matrix-13",
-    "title": "Valentino Rossi — 46 MotoGP Grid Matrix",
+    "title": "Valentino Rossi \u2014 46 MotoGP Grid Matrix",
     "themeSlug": "bikes",
     "category": "split",
     "tags": [
@@ -6847,7 +7045,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bc263fe9-879b-4dc1-9784-1ad565dc07b0_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bc263fe9-879b-4dc1-9784-1ad565dc07b0_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-mar-63",
@@ -6881,7 +7080,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bcf7d10a-e9eb-4a6d-b070-8541a0ffa445_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bcf7d10a-e9eb-4a6d-b070-8541a0ffa445_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-cut-05",
@@ -6915,7 +7115,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bd511195-049c-4616-bba4-3618cfb20c36_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bd511195-049c-4616-bba4-3618cfb20c36_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-64",
@@ -6949,12 +7150,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bd9d8a74-e83c-4af9-bc59-0c429d9fea09_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bd9d8a74-e83c-4af9-bc59-0c429d9fea09_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-14",
     "slug": "brad-binder-33-red-bull-ktm-factory-racing-14",
-    "title": "Brad Binder 33 — Red Bull KTM Factory Racing",
+    "title": "Brad Binder 33 \u2014 Red Bull KTM Factory Racing",
     "themeSlug": "bikes",
     "category": "split",
     "tags": [
@@ -6985,7 +7187,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_be093dbe-ae15-4afb-97fd-ffcfd78b1cdc_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_be093dbe-ae15-4afb-97fd-ffcfd78b1cdc_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "19:11"
   },
   {
     "id": "art-gam-06",
@@ -7019,7 +7222,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bed563c3-a851-46d5-9fb0-3d08e01566ba_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bed563c3-a851-46d5-9fb0-3d08e01566ba_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-65",
@@ -7053,7 +7257,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bf3ebed5-5342-4751-88a1-3f7f3b4c4a5d_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bf3ebed5-5342-4751-88a1-3f7f3b4c4a5d_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-car-10",
@@ -7087,12 +7292,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bf462388-2c3a-42f7-a5a0-3736ddeebd72_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_bf462388-2c3a-42f7-a5a0-3736ddeebd72_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-ani-13",
     "slug": "son-goku-ultra-instinct-divine-aura-13",
-    "title": "Son Goku — Ultra Instinct Divine Aura",
+    "title": "Son Goku \u2014 Ultra Instinct Divine Aura",
     "themeSlug": "anime",
     "category": "split",
     "tags": [
@@ -7121,12 +7327,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c054f7e5-5ed5-453d-8f54-8497cff5c7f5_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c054f7e5-5ed5-453d-8f54-8497cff5c7f5_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-66",
     "slug": "moon-knight-lunar-shrine-grid-66",
-    "title": "Moon Knight — Lunar Shrine Grid",
+    "title": "Moon Knight \u2014 Lunar Shrine Grid",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -7154,7 +7361,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c184aa54-cafc-4c89-9e27-f2018bd55fed_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c184aa54-cafc-4c89-9e27-f2018bd55fed_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-car-11",
@@ -7188,7 +7396,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c48ca84d-0bc5-4e28-8e15-c1c1d810c439_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c48ca84d-0bc5-4e28-8e15-c1c1d810c439_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-67",
@@ -7222,12 +7431,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c4b1caa5-b510-4b7c-9d69-55286c1ef85b_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c4b1caa5-b510-4b7c-9d69-55286c1ef85b_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-net-04",
     "slug": "thomas-shelby-peaky-blinders-crimson-noir-04",
-    "title": "Thomas Shelby — Peaky Blinders Crimson Noir",
+    "title": "Thomas Shelby \u2014 Peaky Blinders Crimson Noir",
     "themeSlug": "netflix-series",
     "category": "split",
     "tags": [
@@ -7258,7 +7468,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c500f4a2-3ca8-471c-86fb-5b78ea8ecc81_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c500f4a2-3ca8-471c-86fb-5b78ea8ecc81_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "44:21"
   },
   {
     "id": "art-kol-08",
@@ -7292,7 +7503,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c5e2ce4e-22f7-45e5-ba59-4c3b5feae6b6_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c5e2ce4e-22f7-45e5-ba59-4c3b5feae6b6_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-12",
@@ -7326,7 +7538,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c66ff12a-082b-42a4-b542-46d59cce902b_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_c66ff12a-082b-42a4-b542-46d59cce902b_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-68",
@@ -7360,7 +7573,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ca7e6113-8a90-4673-b74d-f45faaf1b1fc_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ca7e6113-8a90-4673-b74d-f45faaf1b1fc_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-69",
@@ -7394,7 +7608,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_cbda878e-6d5b-4113-8316-f03681ab7a1f_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_cbda878e-6d5b-4113-8316-f03681ab7a1f_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-70",
@@ -7428,7 +7643,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_cbe710c3-376e-4f6a-9214-69685522dea4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_cbe710c3-376e-4f6a-9214-69685522dea4_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-71",
@@ -7462,7 +7678,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d069e191-afd5-4ee3-a77e-a98f4192c7e7_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d069e191-afd5-4ee3-a77e-a98f4192c7e7_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-18",
@@ -7496,7 +7713,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d0acf74c-8b54-4bbe-affa-124e21fdf287_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d0acf74c-8b54-4bbe-affa-124e21fdf287_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-cri-04",
@@ -7530,7 +7748,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d149f1db-0759-45e3-82b1-c9340a908ac7_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d149f1db-0759-45e3-82b1-c9340a908ac7_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mus-07",
@@ -7564,12 +7783,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d1a8794a-d7c3-4665-a62a-f55756c730d4_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d1a8794a-d7c3-4665-a62a-f55756c730d4_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-72",
     "slug": "moon-knight-full-moon-temple-of-khonshu-72",
-    "title": "Moon Knight — Full Moon Temple of Khonshu",
+    "title": "Moon Knight \u2014 Full Moon Temple of Khonshu",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -7598,7 +7818,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d341b804-8cf4-4e00-8112-a3fbdf7dda49_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d341b804-8cf4-4e00-8112-a3fbdf7dda49_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-73",
@@ -7632,12 +7853,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d49ef690-c477-4ac0-b933-d8ca752fe3db_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d49ef690-c477-4ac0-b933-d8ca752fe3db_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-gam-19",
     "slug": "simon-ghost-riley-warzone-night-vision-grid-19",
-    "title": "Simon Ghost Riley — Warzone Night Vision Grid",
+    "title": "Simon Ghost Riley \u2014 Warzone Night Vision Grid",
     "themeSlug": "gamers",
     "category": "split",
     "tags": [
@@ -7666,7 +7888,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d4b9b6a3-dbf1-444c-8c1d-6435e6a08d01_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d4b9b6a3-dbf1-444c-8c1d-6435e6a08d01_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-ani-14",
@@ -7700,7 +7923,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d5c33377-a013-4ede-8372-dcf370c8bb72_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d5c33377-a013-4ede-8372-dcf370c8bb72_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-14",
@@ -7734,7 +7958,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d5fffc32-34f1-4bd1-ad70-2d516b3ae5eb_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d5fffc32-34f1-4bd1-ad70-2d516b3ae5eb_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-74",
@@ -7768,7 +7993,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d669c9d5-ae26-4c44-b73b-19628f9b5d9b_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d669c9d5-ae26-4c44-b73b-19628f9b5d9b_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-13",
@@ -7802,7 +8028,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d693da19-cbff-47c3-a697-e3bba89b340b_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d693da19-cbff-47c3-a697-e3bba89b340b_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-75",
@@ -7836,7 +8063,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d6e40d3f-af8c-43cb-86f8-a6477c39e477_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d6e40d3f-af8c-43cb-86f8-a6477c39e477_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-76",
@@ -7870,7 +8098,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d7799b79-c519-4783-a13a-d9883c8a3a2b_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d7799b79-c519-4783-a13a-d9883c8a3a2b_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-f1-13",
@@ -7904,7 +8133,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d8c8b071-657f-4f05-bec8-82a5a490bfc2_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d8c8b071-657f-4f05-bec8-82a5a490bfc2_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-15",
@@ -7938,7 +8168,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d9190587-ee02-4f84-a2a4-35f6e709a459_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d9190587-ee02-4f84-a2a4-35f6e709a459_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-20",
@@ -7972,7 +8203,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_da3de689-c8c7-41a1-ada0-421c943d2acf_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_da3de689-c8c7-41a1-ada0-421c943d2acf_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-kol-09",
@@ -8006,7 +8238,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_da3ee3b9-3a93-4986-8756-d0364f4c3adb_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_da3ee3b9-3a93-4986-8756-d0364f4c3adb_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-77",
@@ -8040,7 +8273,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_da58697a-eba8-418e-a4a9-381e6630869c_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_da58697a-eba8-418e-a4a9-381e6630869c_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-f1-14",
@@ -8074,7 +8308,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dadbd30a-2569-40c5-b93f-4aa2180c980d_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dadbd30a-2569-40c5-b93f-4aa2180c980d_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-15",
@@ -8108,7 +8343,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dbe8fd4e-569e-4183-9e1d-b25d6c59fe1d_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dbe8fd4e-569e-4183-9e1d-b25d6c59fe1d_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-78",
@@ -8142,7 +8378,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dd59a698-c852-4fbe-9206-474b540b9318_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dd59a698-c852-4fbe-9206-474b540b9318_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ben-10",
@@ -8176,7 +8413,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dd8e2330-f61f-43ea-9ea6-1812e341e3e0_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dd8e2330-f61f-43ea-9ea6-1812e341e3e0_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-79",
@@ -8210,7 +8448,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dde67ac3-0931-41cb-96a2-556883419a83_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_dde67ac3-0931-41cb-96a2-556883419a83_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-17",
@@ -8244,7 +8483,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_de8281ac-be76-402b-a05d-459b64b4aeaf_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_de8281ac-be76-402b-a05d-459b64b4aeaf_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-80",
@@ -8278,7 +8518,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_df4a9d44-1b4e-43ca-84d7-dd53d2c65482_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_df4a9d44-1b4e-43ca-84d7-dd53d2c65482_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-81",
@@ -8312,7 +8553,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e05c4696-0f17-4ed0-9940-06cbc9946586_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e05c4696-0f17-4ed0-9940-06cbc9946586_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-kol-10",
@@ -8346,12 +8588,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e39bf4c2-5ad3-4fbc-9bb6-e467254c8d62_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e39bf4c2-5ad3-4fbc-9bb6-e467254c8d62_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ani-16",
     "slug": "cyberpunk-gunner-neon-assassin-grid-16",
-    "title": "Cyberpunk Gunner — Neon Assassin Grid",
+    "title": "Cyberpunk Gunner \u2014 Neon Assassin Grid",
     "themeSlug": "anime",
     "category": "split",
     "tags": [
@@ -8379,12 +8622,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e3c3d4af-921f-4639-a653-f4759c6485a7_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e3c3d4af-921f-4639-a653-f4759c6485a7_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-mar-82",
     "slug": "miles-morales-web-slinger-grid-matrix-82",
-    "title": "Miles Morales — Web Slinger Grid Matrix",
+    "title": "Miles Morales \u2014 Web Slinger Grid Matrix",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -8413,7 +8657,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e69997dd-3599-471a-ae39-34d73389a95c_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e69997dd-3599-471a-ae39-34d73389a95c_1.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-mar-83",
@@ -8447,7 +8692,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e9076e51-aa3a-4953-81e4-bf9eb99358b5_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e9076e51-aa3a-4953-81e4-bf9eb99358b5_0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-84",
@@ -8481,7 +8727,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e9c6b79f-afee-4739-87e8-f4d35278cecd_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e9c6b79f-afee-4739-87e8-f4d35278cecd_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-ben-11",
@@ -8515,12 +8762,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e9ee602e-51ce-4140-8f35-3ed81714829c_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_e9ee602e-51ce-4140-8f35-3ed81714829c_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-18",
     "slug": "the-joker-arkham-chaos-grid-matrix-18",
-    "title": "The Joker — Arkham Chaos Grid Matrix",
+    "title": "The Joker \u2014 Arkham Chaos Grid Matrix",
     "themeSlug": "dc",
     "category": "split",
     "tags": [
@@ -8549,7 +8797,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ea843d67-c173-4556-bfe9-fe34fcc25182_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ea843d67-c173-4556-bfe9-fe34fcc25182_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-act-16",
@@ -8583,12 +8832,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_eb8c42e9-53b5-4e7b-97c9-11294c795e40_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_eb8c42e9-53b5-4e7b-97c9-11294c795e40_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-14",
     "slug": "toyota-supra-jdm-drift-master-grid-14",
-    "title": "Toyota Supra — JDM Drift Master Grid",
+    "title": "Toyota Supra \u2014 JDM Drift Master Grid",
     "themeSlug": "cars",
     "category": "split",
     "tags": [
@@ -8617,7 +8867,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ecff18b4-fb76-4237-9b23-996bfdfef59f_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ecff18b4-fb76-4237-9b23-996bfdfef59f_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:16"
   },
   {
     "id": "art-car-15",
@@ -8651,7 +8902,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ee47c828-646e-4b79-96eb-8f56d5dd65ce_1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ee47c828-646e-4b79-96eb-8f56d5dd65ce_1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-17",
@@ -8685,12 +8937,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_eef1f95d-51a6-4251-816a-0c1bb011749e_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_eef1f95d-51a6-4251-816a-0c1bb011749e_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-act-18",
     "slug": "samantha-ruth-prabhu-glamour-neon-glow-18",
-    "title": "Samantha Ruth Prabhu — Glamour Neon Glow",
+    "title": "Samantha Ruth Prabhu \u2014 Glamour Neon Glow",
     "themeSlug": "actress",
     "category": "split",
     "tags": [
@@ -8720,12 +8973,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ef9c2920-e7ec-4d5d-8ef9-638716a339a0_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ef9c2920-e7ec-4d5d-8ef9-638716a339a0_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "44:21"
   },
   {
     "id": "art-gam-21",
     "slug": "simon-ghost-riley-call-of-duty-recon-warfare-21",
-    "title": "Simon Ghost Riley — Call of Duty Recon Warfare",
+    "title": "Simon Ghost Riley \u2014 Call of Duty Recon Warfare",
     "themeSlug": "gamers",
     "category": "split",
     "tags": [
@@ -8755,7 +9009,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f0134bff-f4ac-4ae8-89ff-3ce9931423a3_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f0134bff-f4ac-4ae8-89ff-3ce9931423a3_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-85",
@@ -8789,12 +9044,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f040028f-60a3-4008-b0fa-47fe7d80b217_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f040028f-60a3-4008-b0fa-47fe7d80b217_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-ani-17",
     "slug": "zenitsu-agatsuma-thunder-breathing-first-form-17",
-    "title": "Zenitsu Agatsuma — Thunder Breathing First Form",
+    "title": "Zenitsu Agatsuma \u2014 Thunder Breathing First Form",
     "themeSlug": "anime",
     "category": "split",
     "tags": [
@@ -8823,12 +9079,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f0e741c6-5002-4435-82bd-821d0775f64c_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f0e741c6-5002-4435-82bd-821d0775f64c_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-ani-18",
     "slug": "majin-vegeta-bones-ego-dbz-totem-18",
-    "title": "Majin Vegeta — Bones & Ego DBZ Totem",
+    "title": "Majin Vegeta \u2014 Bones & Ego DBZ Totem",
     "themeSlug": "anime",
     "category": "split",
     "tags": [
@@ -8858,12 +9115,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f207d352-eac7-448d-8cbb-316249c59d74_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f207d352-eac7-448d-8cbb-316249c59d74_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "4:17"
   },
   {
     "id": "art-dc-19",
     "slug": "justice-league-united-the-snyder-cut-mosaic-19",
-    "title": "Justice League United — The Snyder Cut Mosaic",
+    "title": "Justice League United \u2014 The Snyder Cut Mosaic",
     "themeSlug": "dc",
     "category": "split",
     "tags": [
@@ -8893,7 +9151,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f61f0072-7fe7-4ef3-b41a-d23c864377ab_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f61f0072-7fe7-4ef3-b41a-d23c864377ab_2.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-car-16",
@@ -8927,7 +9186,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f63b2cbb-4a27-4b18-8974-d605c93e5777_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f63b2cbb-4a27-4b18-8974-d605c93e5777_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-15",
@@ -8961,12 +9221,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f6ae585a-c982-400d-9001-60c3d6d2111c_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f6ae585a-c982-400d-9001-60c3d6d2111c_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-net-05",
     "slug": "tommy-shelby-crimson-cigarette-smoke-05",
-    "title": "Tommy Shelby — Crimson Cigarette Smoke",
+    "title": "Tommy Shelby \u2014 Crimson Cigarette Smoke",
     "themeSlug": "netflix-series",
     "category": "split",
     "tags": [
@@ -8996,7 +9257,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f6d2b7b4-1da2-42d1-bac5-2995e6d9dfed_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f6d2b7b4-1da2-42d1-bac5-2995e6d9dfed_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-86",
@@ -9030,12 +9292,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f96081f3-c739-4d5d-aa3c-4fb735732bdd_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f96081f3-c739-4d5d-aa3c-4fb735732bdd_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-87",
     "slug": "avengers-flame-secret-wars-monolith-totem-87",
-    "title": "Avengers Flame — Secret Wars Monolith Totem",
+    "title": "Avengers Flame \u2014 Secret Wars Monolith Totem",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -9064,7 +9327,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_fae96407-9882-40c4-88f9-4bbd5a06d434_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_fae96407-9882-40c4-88f9-4bbd5a06d434_3.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "4:17"
   },
   {
     "id": "art-mar-88",
@@ -9098,12 +9362,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_fb4ca803-32a0-4914-aa0c-8080dc48ac9c_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_fb4ca803-32a0-4914-aa0c-8080dc48ac9c_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-89",
     "slug": "doctor-doom-iron-man-multiverse-collision-89",
-    "title": "Doctor Doom & Iron Man — Multiverse Collision",
+    "title": "Doctor Doom & Iron Man \u2014 Multiverse Collision",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -9132,7 +9397,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_fd4db6f1-8ed7-4564-a0e1-9899e8c1824a_0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_fd4db6f1-8ed7-4564-a0e1-9899e8c1824a_0.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-90",
@@ -9166,12 +9432,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_fe2c6c11-21de-4631-b5b4-05a518327e96_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_fe2c6c11-21de-4631-b5b4-05a518327e96_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-cri-05",
     "slug": "lord-s-balcony-reverie-05",
-    "title": "Lord’s Balcony Reverie",
+    "title": "Lord\u2019s Balcony Reverie",
     "themeSlug": "cricket",
     "category": "scene",
     "tags": [
@@ -9200,7 +9467,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ff3156e1-1a08-4154-9373-1f0324e770fd_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ff3156e1-1a08-4154-9373-1f0324e770fd_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-91",
@@ -9234,7 +9502,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ff387e8d-55bf-4025-b7a9-2211b9635c6a_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ff387e8d-55bf-4025-b7a9-2211b9635c6a_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-92",
@@ -9268,7 +9537,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ff7d19ad-4293-44fe-8945-953444bd1886_3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ff7d19ad-4293-44fe-8945-953444bd1886_3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-20",
@@ -9306,7 +9576,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hal_Jordan_as_Green_Lantern_standing_on_a_colos_b2294557-b323-4fd1-8194-d5b42a556fbc.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hal_Jordan_as_Green_Lantern_standing_on_a_colos_b2294557-b323-4fd1-8194-d5b42a556fbc.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-21",
@@ -9344,7 +9615,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hal_Jordan_as_Green_Lantern_standing_on_a_colos_ec9a9558-eb6e-4e27-b903-5090e10b6f84.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hal_Jordan_as_Green_Lantern_standing_on_a_colos_ec9a9558-eb6e-4e27-b903-5090e10b6f84.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-22",
@@ -9382,7 +9654,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hal_Jordan_as_Green_Lantern_standing_on_an_alie_b040cbba-ece7-420e-932f-81ed91a06813.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hal_Jordan_as_Green_Lantern_standing_on_an_alie_b040cbba-ece7-420e-932f-81ed91a06813.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-23",
@@ -9420,7 +9693,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hal_Jordan_as_Green_Lantern_standing_on_an_alie_b3ffda1b-7c75-45b7-9d29-692ce5106d57.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hal_Jordan_as_Green_Lantern_standing_on_an_alie_b3ffda1b-7c75-45b7-9d29-692ce5106d57.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-24",
@@ -9458,7 +9732,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Harley_Quinn_Gothams_antihero_alone_in_a_desert_cfe2104f-f62c-4852-9d28-16aeb6bdbf59.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Harley_Quinn_Gothams_antihero_alone_in_a_desert_cfe2104f-f62c-4852-9d28-16aeb6bdbf59.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-25",
@@ -9496,7 +9771,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Harley_Quinn_Gothams_antihero_alone_in_a_desert_f820851b-f356-4539-afeb-4973a6d862a6.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Harley_Quinn_Gothams_antihero_alone_in_a_desert_f820851b-f356-4539-afeb-4973a6d862a6.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-26",
@@ -9534,7 +9810,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Harley_Quinn_antihero_walking_through_an_abando_8cd86667-17f2-4c19-9451-ef3cd2099233.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Harley_Quinn_antihero_walking_through_an_abando_8cd86667-17f2-4c19-9451-ef3cd2099233.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-car-17",
@@ -9570,7 +9847,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Horizontal_cinematic_automotive_poster_1970_Dod_1c0fd255-a9c2-456a-b2a3-ecc95ce06d1e.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Horizontal_cinematic_automotive_poster_1970_Dod_1c0fd255-a9c2-456a-b2a3-ecc95ce06d1e.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-car-18",
@@ -9606,7 +9884,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Horizontal_full_bleed_poster_titled_SCULPTED_BY_ec741164-534b-4fae-a472-786c813bdb71.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Horizontal_full_bleed_poster_titled_SCULPTED_BY_ec741164-534b-4fae-a472-786c813bdb71.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-car-19",
@@ -9641,7 +9920,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Horizontal_widescreen_luxury_collector_poster.__9eb3d414-3162-4d69-bed2-3459e9f95374.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Horizontal_widescreen_luxury_collector_poster.__9eb3d414-3162-4d69-bed2-3459e9f95374.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-27",
@@ -9679,12 +9959,13 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hyper_realistic_live_action_Batman_in_a_grounde_bf178dca-168c-46e9-8095-9a28417bb7d0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hyper_realistic_live_action_Batman_in_a_grounde_bf178dca-168c-46e9-8095-9a28417bb7d0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-93",
     "slug": "miles-morales-brooklyn-rooftop-leap-93",
-    "title": "Miles Morales — Brooklyn Rooftop Leap",
+    "title": "Miles Morales \u2014 Brooklyn Rooftop Leap",
     "themeSlug": "marvel",
     "category": "split",
     "tags": [
@@ -9713,7 +9994,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Miles_Morales_Marvels_Spider_Man_game_character_0b07a660-89c2-4834-87e3-a122a2e93ec6.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Miles_Morales_Marvels_Spider_Man_game_character_0b07a660-89c2-4834-87e3-a122a2e93ec6.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-dc-28",
@@ -9751,7 +10033,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Nightwing_Dick_Grayson_moving_silently_across_B_08b9cf7a-ef8b-4e7d-a014-7f1999348517.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Nightwing_Dick_Grayson_moving_silently_across_B_08b9cf7a-ef8b-4e7d-a014-7f1999348517.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-29",
@@ -9789,7 +10072,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Nightwing_Dick_Grayson_photorealistic_live_acti_01fbf319-fd19-4a49-b01c-80e6a0a7e272.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Nightwing_Dick_Grayson_photorealistic_live_acti_01fbf319-fd19-4a49-b01c-80e6a0a7e272.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-30",
@@ -9827,7 +10111,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Nightwing_Dick_Grayson_photorealistic_live_acti_d591d7b4-b8f2-42d7-9a13-904d5ddbc2ff.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Nightwing_Dick_Grayson_photorealistic_live_acti_d591d7b4-b8f2-42d7-9a13-904d5ddbc2ff.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-31",
@@ -9863,7 +10148,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Photorealistic_Superman_standing_powerfully_on__6b74a56a-f723-4432-8026-8ff80a7837fb.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Photorealistic_Superman_standing_powerfully_on__6b74a56a-f723-4432-8026-8ff80a7837fb.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-32",
@@ -9899,7 +10185,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Photorealistic_Superman_standing_powerfully_on__bd398bfd-b101-43f7-b70b-f04bd53fc349.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Photorealistic_Superman_standing_powerfully_on__bd398bfd-b101-43f7-b70b-f04bd53fc349.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-33",
@@ -9937,7 +10224,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Superman_flying_above_Metropolis_at_golden_sunr_81844379-b5da-47ac-af53-0895a15853fb.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Superman_flying_above_Metropolis_at_golden_sunr_81844379-b5da-47ac-af53-0895a15853fb.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-34",
@@ -9975,7 +10263,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Superman_flying_above_Metropolis_at_golden_sunr_8b8c73fc-6d9e-46ec-bb03-8396844accfe.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Superman_flying_above_Metropolis_at_golden_sunr_8b8c73fc-6d9e-46ec-bb03-8396844accfe.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-35",
@@ -10014,7 +10303,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Flash_Barry_Allen_running_directly_toward_t_9ae37d25-a486-4da5-8062-fd488263f30b.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Flash_Barry_Allen_running_directly_toward_t_9ae37d25-a486-4da5-8062-fd488263f30b.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-36",
@@ -10053,7 +10343,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Flash_Barry_Allen_running_directly_toward_t_9b9cd172-927e-4f00-b1e9-c73194d70357.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Flash_Barry_Allen_running_directly_toward_t_9b9cd172-927e-4f00-b1e9-c73194d70357.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-37",
@@ -10091,7 +10382,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Joker_Gothams_criminal_mastermind_standing__cbcbf2e0-3bf9-4fae-8648-34be22acd16e.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Joker_Gothams_criminal_mastermind_standing__cbcbf2e0-3bf9-4fae-8648-34be22acd16e.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-38",
@@ -10130,7 +10422,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Joker_standing_alone_inside_a_decaying_aban_39bd9ab7-ee07-4c9f-ab25-eeb9fba64b16.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Joker_standing_alone_inside_a_decaying_aban_39bd9ab7-ee07-4c9f-ab25-eeb9fba64b16.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-39",
@@ -10169,7 +10462,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Joker_standing_alone_inside_a_decaying_aban_61592a9f-53a2-4074-b6eb-e7f950b7c6e8.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_The_Joker_standing_alone_inside_a_decaying_aban_61592a9f-53a2-4074-b6eb-e7f950b7c6e8.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-sco-01",
@@ -10208,7 +10502,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Vertical_full_body_portrait_Scooby_Doo_and_yout_210dfc1f-5099-44c8-9dc8-e09f924c1498.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Vertical_full_body_portrait_Scooby_Doo_and_yout_210dfc1f-5099-44c8-9dc8-e09f924c1498.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-40",
@@ -10246,7 +10541,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_standing_on_a_massive_2003b4a2-8f6b-44c1-bc03-7304dad6ba73.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_standing_on_a_massive_2003b4a2-8f6b-44c1-bc03-7304dad6ba73.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-41",
@@ -10284,7 +10580,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_standing_on_a_massive_3317a129-340b-4f6c-be8b-0461e6fc6941.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_standing_on_a_massive_3317a129-340b-4f6c-be8b-0461e6fc6941.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-42",
@@ -10322,7 +10619,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_standing_on_a_massive_afa63291-3708-4148-9c27-bba6faa4238e.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_standing_on_a_massive_afa63291-3708-4148-9c27-bba6faa4238e.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-43",
@@ -10360,7 +10658,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_standing_on_a_massive_c4985612-a18e-46d7-bc41-5403cec4ff95.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_standing_on_a_massive_c4985612-a18e-46d7-bc41-5403cec4ff95.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-44",
@@ -10399,7 +10698,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_walking_through_ancie_cc70fc26-111e-42d6-a4bd-2dd29b82a65a.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Wonder_Woman_Diana_Prince_walking_through_ancie_cc70fc26-111e-42d6-a4bd-2dd29b82a65a.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-94",
@@ -10432,7 +10732,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run0ZgSg9Dp_CY_Horizontal_widescreen__43da94fd-bfe2-4e4c-bee6-5349c1b05319.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run0ZgSg9Dp_CY_Horizontal_widescreen__43da94fd-bfe2-4e4c-bee6-5349c1b05319.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-gam-22",
@@ -10465,7 +10766,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run0pisximvH0c_Vertical_monochrome_Re_1de71cc4-fa3e-40d7-9691-f35a9cf23181.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run0pisximvH0c_Vertical_monochrome_Re_1de71cc4-fa3e-40d7-9691-f35a9cf23181.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-23",
@@ -10498,7 +10800,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run0pisximvH0c_Vertical_monochrome_Re_acc8a03f-b964-49b4-b24e-a122b1dd0f1b.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run0pisximvH0c_Vertical_monochrome_Re_acc8a03f-b964-49b4-b24e-a122b1dd0f1b.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-20",
@@ -10531,7 +10834,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run2mrG1fFHZB8_Vertical_minimalist_lu_0919986a-4554-4ae3-a3c5-74aa634e10c1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run2mrG1fFHZB8_Vertical_minimalist_lu_0919986a-4554-4ae3-a3c5-74aa634e10c1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dis-01",
@@ -10565,7 +10869,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run2nxmw9ehuZw_Vertical_playful_selfi_59c30736-4344-42fd-955b-7d6dd9c510f6.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run2nxmw9ehuZw_Vertical_playful_selfi_59c30736-4344-42fd-955b-7d6dd9c510f6.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-45",
@@ -10599,7 +10904,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run5hkcGxmj8xo_Vertical_cinematic_Won_ce65593a-a698-4833-94cb-737c947bcf9f.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run5hkcGxmj8xo_Vertical_cinematic_Won_ce65593a-a698-4833-94cb-737c947bcf9f.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-foo-06",
@@ -10633,7 +10939,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run9slvJzDFOQ0_Vertical_Neymar_Jr._fo_de0f7adc-6656-4076-872f-5028e07841da.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run9slvJzDFOQ0_Vertical_Neymar_Jr._fo_de0f7adc-6656-4076-872f-5028e07841da.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dis-02",
@@ -10667,7 +10974,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run9yYmRLguB2Y_Vertical_cinematic_ext_3c3688c2-0341-4318-88db-d73bccaa205c.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run9yYmRLguB2Y_Vertical_cinematic_ext_3c3688c2-0341-4318-88db-d73bccaa205c.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-24",
@@ -10700,7 +11008,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runBfZXlbOjBdI_Horizontal_widescreen__4d930794-2ed4-450a-bc13-36b81df4ad77.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runBfZXlbOjBdI_Horizontal_widescreen__4d930794-2ed4-450a-bc13-36b81df4ad77.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-95",
@@ -10733,7 +11042,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runCNnwDPFUARM_Horizontal_widescreen__6b97f533-4721-48b4-9e57-848396f9c8c8.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runCNnwDPFUARM_Horizontal_widescreen__6b97f533-4721-48b4-9e57-848396f9c8c8.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dis-03",
@@ -10766,7 +11076,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runCS_cUwZUAns_Horizontal_widescreen__7e981674-bf77-42fc-a5fe-ff13e4ebf9f9.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runCS_cUwZUAns_Horizontal_widescreen__7e981674-bf77-42fc-a5fe-ff13e4ebf9f9.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-46",
@@ -10799,7 +11110,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runEBfdv_7ky6Y_Horizontal_widescreen__a8d2ae1c-71c4-403f-a492-ebf942d91cc5.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runEBfdv_7ky6Y_Horizontal_widescreen__a8d2ae1c-71c4-403f-a492-ebf942d91cc5.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-int-01",
@@ -10832,7 +11144,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runEjNnDUIpLVc_Horizontal_widescreen__6d115fe0-69c6-4498-ad71-192034c6dada.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runEjNnDUIpLVc_Horizontal_widescreen__6d115fe0-69c6-4498-ad71-192034c6dada.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-96",
@@ -10868,7 +11181,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runErU-E_bUViY_Vertical_cinematic_ful_70989ae3-5747-4eca-b747-6b26831c90e5.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runErU-E_bUViY_Vertical_cinematic_ful_70989ae3-5747-4eca-b747-6b26831c90e5.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-16",
@@ -10902,7 +11216,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runFikcRCu2K-8_Cinematic_horizontal_m_675c9fba-08c7-4189-8246-124bfb08ff28.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runFikcRCu2K-8_Cinematic_horizontal_m_675c9fba-08c7-4189-8246-124bfb08ff28.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-foo-07",
@@ -10937,7 +11252,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runG25g_z6Q4W4_Vertical_editorial_foo_d62aabd1-0abf-4a75-ae4e-e07f1584f7e5.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runG25g_z6Q4W4_Vertical_editorial_foo_d62aabd1-0abf-4a75-ae4e-e07f1584f7e5.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-97",
@@ -10970,7 +11286,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runGjywkUvDn00_Cinematic_photorealist_adb4d939-3001-4b9d-944f-306feb1a226d.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runGjywkUvDn00_Cinematic_photorealist_adb4d939-3001-4b9d-944f-306feb1a226d.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-car-21",
@@ -11004,7 +11321,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runHsYvR18cPdc_Vertical_cinematic_aut_3aba6aae-4ef3-4da3-951b-f7738ea4682a.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runHsYvR18cPdc_Vertical_cinematic_aut_3aba6aae-4ef3-4da3-951b-f7738ea4682a.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-98",
@@ -11037,7 +11355,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runJKrLKFDPSw8_Horizontal_widescreen__7de1f4c7-4043-46df-b57b-824f7e74aca2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runJKrLKFDPSw8_Horizontal_widescreen__7de1f4c7-4043-46df-b57b-824f7e74aca2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-99",
@@ -11070,7 +11389,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runJdwVEJ6C9RA_Horizontal_widescreen__537b9fdc-0801-4b9b-bb59-2757e7634891.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runJdwVEJ6C9RA_Horizontal_widescreen__537b9fdc-0801-4b9b-bb59-2757e7634891.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-100",
@@ -11104,7 +11424,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runL5ssYe0WJpg_Vertical_Spider_Gwen_9503e0a3-bbe1-4d50-a9dc-b37c52c8297b_2.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runL5ssYe0WJpg_Vertical_Spider_Gwen_9503e0a3-bbe1-4d50-a9dc-b37c52c8297b_2.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-22",
@@ -11137,7 +11458,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runOEm8jOyNB20_Cinematic_widescreen_a_d77a7e09-5a9e-437d-a281-c29dbec64e3f.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runOEm8jOyNB20_Cinematic_widescreen_a_d77a7e09-5a9e-437d-a281-c29dbec64e3f.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-sco-02",
@@ -11171,7 +11493,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runP1ZqPNUQbJ0_Vertical_portrait_Shag_854f9dd5-5562-4891-aa6a-9c180bec24b4.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runP1ZqPNUQbJ0_Vertical_portrait_Shag_854f9dd5-5562-4891-aa6a-9c180bec24b4.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-47",
@@ -11206,7 +11529,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runPoM2V3frZX4_Widescreen_Justice_Lea_0fd4b7c7-4a17-40a9-904e-a0ead317b8eb.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runPoM2V3frZX4_Widescreen_Justice_Lea_0fd4b7c7-4a17-40a9-904e-a0ead317b8eb.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-dc-48",
@@ -11239,7 +11563,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runQIu1IptoKGY_Horizontal_widescreen__7e2dc2e3-4f94-473a-9669-2eb6469cc0e7.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runQIu1IptoKGY_Horizontal_widescreen__7e2dc2e3-4f94-473a-9669-2eb6469cc0e7.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-dis-04",
@@ -11274,7 +11599,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runQgim7u7YKAc_Vertical_full_body_por_68ebea2e-6e0f-40ae-8409-b8917377bcd6.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runQgim7u7YKAc_Vertical_full_body_por_68ebea2e-6e0f-40ae-8409-b8917377bcd6.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-49",
@@ -11308,7 +11634,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runQzpNsFexowI_Widescreen_cinematic_B_00a61d35-7ae7-4158-8fa7-fb2d109bb5f5.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runQzpNsFexowI_Widescreen_cinematic_B_00a61d35-7ae7-4158-8fa7-fb2d109bb5f5.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-bik-15",
@@ -11341,7 +11668,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runTZIgXF9nSfI_Horizontal_widescreen__17da1dec-4b0d-44ac-8503-eb1389638aa5.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runTZIgXF9nSfI_Horizontal_widescreen__17da1dec-4b0d-44ac-8503-eb1389638aa5.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-bik-16",
@@ -11374,7 +11702,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runTZIgXF9nSfI_Horizontal_widescreen__a17284ca-608a-4df0-8d5e-7a9d810498fb.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runTZIgXF9nSfI_Horizontal_widescreen__a17284ca-608a-4df0-8d5e-7a9d810498fb.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-sco-03",
@@ -11407,7 +11736,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runUR5dw0qi9ls_Vertical_illustrated_S_80d89c8f-4b69-4170-87aa-45d18aaa0164.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runUR5dw0qi9ls_Vertical_illustrated_S_80d89c8f-4b69-4170-87aa-45d18aaa0164.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-50",
@@ -11440,7 +11770,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runWJLNQKcm-Ek_Horizontal_widescreen__a422f132-5976-4def-884f-66a1d99aeb60.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runWJLNQKcm-Ek_Horizontal_widescreen__a422f132-5976-4def-884f-66a1d99aeb60.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-101",
@@ -11475,7 +11806,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runWrx_Zau-uhI_Horizontal_cinematic_M_a975d918-4e6e-4298-b378-cce3e04e2242.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runWrx_Zau-uhI_Horizontal_cinematic_M_a975d918-4e6e-4298-b378-cce3e04e2242.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-102",
@@ -11509,7 +11841,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runY21KNpPYf1M_Vertical_cinematic_Bla_c3240574-5285-456b-8261-2908e554887f.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runY21KNpPYf1M_Vertical_cinematic_Bla_c3240574-5285-456b-8261-2908e554887f.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-51",
@@ -11542,7 +11875,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runYASIpfaJYuY_Horizontal_widescreen__567424f4-cefb-4572-9570-040b1091e1eb.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runYASIpfaJYuY_Horizontal_widescreen__567424f4-cefb-4572-9570-040b1091e1eb.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-103",
@@ -11575,7 +11909,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runZ0dmi7twE9o_Horizontal_cinematic_w_91cb588b-86cf-4450-ad90-cff10ecc47db.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runZ0dmi7twE9o_Horizontal_cinematic_w_91cb588b-86cf-4450-ad90-cff10ecc47db.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-104",
@@ -11608,7 +11943,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runZD99htTTLMQ_Horizontal_widescreen__f7593fb2-7d87-4ee1-b454-912b2801a7b1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runZD99htTTLMQ_Horizontal_widescreen__f7593fb2-7d87-4ee1-b454-912b2801a7b1.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-105",
@@ -11642,7 +11978,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runZJm6ouNPBSk_Vertical_semi_realisti_dccdeca1-38e8-4058-86e2-f7217e57fd61.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runZJm6ouNPBSk_Vertical_semi_realisti_dccdeca1-38e8-4058-86e2-f7217e57fd61.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-sco-04",
@@ -11678,7 +12015,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run_YLU1fLQMkQ_Vertical_cinematic_Sco_45614037-18bf-4ce4-94c4-069f69376ae3.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.run_YLU1fLQMkQ_Vertical_cinematic_Sco_45614037-18bf-4ce4-94c4-069f69376ae3.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-52",
@@ -11711,7 +12049,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runaYLQzeBffZQ_Minimalist_widescreen__988d0c6b-da82-40ca-8583-66fd1e9b7328.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runaYLQzeBffZQ_Minimalist_widescreen__988d0c6b-da82-40ca-8583-66fd1e9b7328.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-106",
@@ -11745,7 +12084,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runb8pWTmztb-U_Cinematic_photorealist_3f1fbbc4-2ed9-455d-822a-46c8d894ff23.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runb8pWTmztb-U_Cinematic_photorealist_3f1fbbc4-2ed9-455d-822a-46c8d894ff23.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-107",
@@ -11778,7 +12118,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runcuJrCpk2Crw_Horizontal_widescreen__9660163f-c3f8-4d20-a6ab-939bcc6a8d99.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runcuJrCpk2Crw_Horizontal_widescreen__9660163f-c3f8-4d20-a6ab-939bcc6a8d99.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-f1-17",
@@ -11812,7 +12153,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runeu-Ge15yzDE_Horizontal_widescreen__cdad0369-40d0-4c68-b977-e32947c9c9e0.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runeu-Ge15yzDE_Horizontal_widescreen__cdad0369-40d0-4c68-b977-e32947c9c9e0.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-mar-108",
@@ -11845,7 +12187,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runfNGdpgAz5AM_Horizontal_widescreen__f6e6c1bc-e844-4374-9eb8-c4459e7dfba1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runfNGdpgAz5AM_Horizontal_widescreen__f6e6c1bc-e844-4374-9eb8-c4459e7dfba1.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-dc-53",
@@ -11878,7 +12221,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runfx04pWQ20GQ_Horizontal_widescreen__055214ab-dba5-42a3-8c01-9bdcf15f222e.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runfx04pWQ20GQ_Horizontal_widescreen__055214ab-dba5-42a3-8c01-9bdcf15f222e.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-int-02",
@@ -11912,7 +12256,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.rungONWBax6ud8_Vertical_sci_fi_collec_ecdd35b5-819d-43bf-97a0-4108e9f2d2b1.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.rungONWBax6ud8_Vertical_sci_fi_collec_ecdd35b5-819d-43bf-97a0-4108e9f2d2b1.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-net-06",
@@ -11945,7 +12290,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runhN8HHckwMtM_Horizontal_widescreen__46343113-95ae-4e1d-b187-ef145ae189f7.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runhN8HHckwMtM_Horizontal_widescreen__46343113-95ae-4e1d-b187-ef145ae189f7.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-mar-109",
@@ -11979,7 +12325,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runjIB1HESLF4k_Vertical_cinematic_col_d0f7d9e2-7f17-4aa3-8761-78a5332ac694.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runjIB1HESLF4k_Vertical_cinematic_col_d0f7d9e2-7f17-4aa3-8761-78a5332ac694.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-sco-05",
@@ -12015,7 +12362,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runjRsaeaP9eDY_Full_body_vertical_stu_53286109-7a25-4895-bd90-0a73cdf581b9.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runjRsaeaP9eDY_Full_body_vertical_stu_53286109-7a25-4895-bd90-0a73cdf581b9.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-sco-06",
@@ -12049,7 +12397,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runjTPJhI0SL80_Vertical_cinematic_clo_0959c778-2977-4059-87b7-c0a0663ba5f8.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runjTPJhI0SL80_Vertical_cinematic_clo_0959c778-2977-4059-87b7-c0a0663ba5f8.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-int-03",
@@ -12083,7 +12432,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runkds4G4KXSeU_Vertical_cinematic_sci_bf5c658a-25f4-4757-96d8-58bf565fe1ff.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runkds4G4KXSeU_Vertical_cinematic_sci_bf5c658a-25f4-4757-96d8-58bf565fe1ff.webp",
     "price": 199,
-    "featured": true
+    "featured": true,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-110",
@@ -12117,7 +12467,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runlkPCMjAfDJE_Photorealistic_cinemat_425af8a9-207c-4bb6-8cbb-d9f0b4b8f36b.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runlkPCMjAfDJE_Photorealistic_cinemat_425af8a9-207c-4bb6-8cbb-d9f0b4b8f36b.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-int-04",
@@ -12151,7 +12502,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runoAJS1CdbERc_Vertical_surreal_cinem_42d69284-f887-450f-81cd-a11524116b0f.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runoAJS1CdbERc_Vertical_surreal_cinem_42d69284-f887-450f-81cd-a11524116b0f.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dis-05",
@@ -12185,7 +12537,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runoG2FcCblqq8_Vertical_epic_fantasy__7f906a86-714a-443d-8f1d-2a703fdeca96.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runoG2FcCblqq8_Vertical_epic_fantasy__7f906a86-714a-443d-8f1d-2a703fdeca96.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-car-23",
@@ -12219,7 +12572,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runpatPirUODMU_Vertical_cinematic_Nee_f8b839c1-af3a-4043-8bd8-dd8a0bab75cb.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runpatPirUODMU_Vertical_cinematic_Nee_f8b839c1-af3a-4043-8bd8-dd8a0bab75cb.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-dc-54",
@@ -12253,7 +12607,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runrw58JgX0jMc_Vertical_cinematic_Won_f4c52eb7-5a26-4569-8aef-5c1d678898e6.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runrw58JgX0jMc_Vertical_cinematic_Won_f4c52eb7-5a26-4569-8aef-5c1d678898e6.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-111",
@@ -12289,7 +12644,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runsG5_2I_kgUI_Highly_detailed_vertic_9f8bc212-9164-4563-ba2e-9bc40e8dd4dc.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runsG5_2I_kgUI_Highly_detailed_vertic_9f8bc212-9164-4563-ba2e-9bc40e8dd4dc.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-foo-08",
@@ -12322,7 +12678,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runsXu1yu4OP7g_Vertical_football_coll_639a2172-917a-4472-a9a7-4ac29b6f850e.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runsXu1yu4OP7g_Vertical_football_coll_639a2172-917a-4472-a9a7-4ac29b6f850e.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-25",
@@ -12357,7 +12714,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runxGxji7OAWWU_Vertical_Red_Dead_Rede_d38ae7e2-f574-43ce-9e6b-214ee6c09e50.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runxGxji7OAWWU_Vertical_Red_Dead_Rede_d38ae7e2-f574-43ce-9e6b-214ee6c09e50.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-foo-09",
@@ -12390,7 +12748,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runxTJlQO9T_TU_Horizontal_widescreen__ee5bd94e-a23a-4d2c-9f19-ba6ca77645a8.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runxTJlQO9T_TU_Horizontal_widescreen__ee5bd94e-a23a-4d2c-9f19-ba6ca77645a8.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-kol-11",
@@ -12424,7 +12783,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runybVbI8jUIvY_Vertical_Tamil_cinema__d18ed667-21fd-4993-b5a9-4c93bbbf6c40.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_httpss.mj.runybVbI8jUIvY_Vertical_Tamil_cinema__d18ed667-21fd-4993-b5a9-4c93bbbf6c40.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-gam-26",
@@ -12463,7 +12823,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Game On, World Off_ Neon Planetary Interface.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Game On, World Off_ Neon Planetary Interface.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-17",
@@ -12500,7 +12861,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/KTM RC 200_ Race-Bred Precision.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/KTM RC 200_ Race-Bred Precision.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-f1-18",
@@ -12535,7 +12897,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Max Verstappen_ Give a Sh_t.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Max Verstappen_ Give a Sh_t.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-foo-10",
@@ -12571,7 +12934,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Ronaldo_ The Iconic Football Legend.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Ronaldo_ The Iconic Football Legend.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-ani-19",
@@ -12613,7 +12977,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/T shirt Design Fregoro_Studios_Extend_the_existing_background_into_the_empty_3a555ac7-7e1f-4b6c-ae83-a5290ca301ec_2Upscalled-standard v2-10521w.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/T shirt Design Fregoro_Studios_Extend_the_existing_background_into_the_empty_3a555ac7-7e1f-4b6c-ae83-a5290ca301ec_2Upscalled-standard v2-10521w.webp",
     "price": 499,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "17:8"
   },
   {
     "id": "art-kol-12",
@@ -12650,7 +13015,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Unfinished Love_ A Cinematic Musical Collage.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Unfinished Love_ A Cinematic Musical Collage.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-bik-18",
@@ -12687,7 +13053,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Valentino Rossi Neon Racing Legend.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Valentino Rossi Neon Racing Legend.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   },
   {
     "id": "art-gam-27",
@@ -12722,7 +13089,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/midjourney-editor-1790959233325.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/midjourney-editor-1790959233325.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "5:7"
   },
   {
     "id": "art-mar-112",
@@ -12757,7 +13125,8 @@ export const FREGORO_ARTWORKS: PosterArtworkData[] = [
     "imageUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/midjourney-editor-1791023798134.webp",
     "thumbnailUrl": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/midjourney-editor-1791023798134.webp",
     "price": 199,
-    "featured": false
+    "featured": false,
+    "aspectRatio": "7:5"
   }
 ];
 

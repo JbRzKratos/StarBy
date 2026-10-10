@@ -16,18 +16,17 @@ export const FREGORO_PREBUILT_WALLS: PrebuiltWallProductData[] = [
     description:
       'A commanding 15-print tribute to the Dark Knight. Features a continuous 3-panel A3 Stepped Hero centerpiece of Gotham’s skyline, framed by shadow portraits, iconic Bat-insignias, and high-contrast typography.',
     themeSlug: 'dc',
-    layoutId: 'hybrid-stepped-triptych-flank-5',
+    layoutId: 'hybrid-vertical3-totem-flank-7',
     basePrice: 1699,
     compareAtPrice: 2299,
     heroImage:
-      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hyper_realistic_live_action_Batman_in_a_grounde_bf178dca-168c-46e9-8095-9a28417bb7d0.webp',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
     roomPhoto:
       'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
     material: '280 GSM Museum Archival Fine Art Matte Paper with Giclée Pigment Inks',
     whatsIncluded: [
-      '3 × A3 Stepped Split Panels (Continuous Gotham Panorama)',
-      '6 × A4 Supporting Artworks (Character & Architecture)',
-      '6 × A5 High-Density Accent & Typography Prints',
+      '3 × Continuous Vertical Stacked Totem Panels (Gotham Nocturne 4:17 Totem)',
+      '4 × A4 Museum Flank Artworks (Portrait 5:7 Studies)',
       'Fregoro Precision Laser Hanging Template with 20mm Spacing Guides',
       'Damage-Free Ultra-Hold Adhesive Hanging Strips (No Drilling Needed)',
       'Numbered Assembly Certificate & Print Manifest',
@@ -36,54 +35,54 @@ export const FREGORO_PREBUILT_WALLS: PrebuiltWallProductData[] = [
     rating: 4.95,
     reviewCount: 42,
     presetSelections: {
-      'slot-stf5-split-1': {
-        slotId: 'slot-stf5-split-1',
-        artworkId: 'art-dc-01',
+      'slot-v3t7-split-1': {
+        slotId: 'slot-v3t7-split-1',
+        artworkId: 'art-dc-12',
         title: 'The Batman — Gotham Rain Nocturne Totem',
         imageUrl:
           'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
-        splitGroupId: 'split-stf5-hero',
+        splitGroupId: 'split-v3t7-hero',
         panelIndex: 0,
-        physicalSize: 'A3',
+        physicalSize: 'A4',
         price: 349,
       },
-      'slot-stf5-split-2': {
-        slotId: 'slot-stf5-split-2',
-        artworkId: 'art-dc-01',
+      'slot-v3t7-split-2': {
+        slotId: 'slot-v3t7-split-2',
+        artworkId: 'art-dc-12',
         title: 'The Batman — Gotham Rain Nocturne Totem',
         imageUrl:
           'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
-        splitGroupId: 'split-stf5-hero',
+        splitGroupId: 'split-v3t7-hero',
         panelIndex: 1,
-        physicalSize: 'A3',
+        physicalSize: 'A4',
         price: 349,
       },
-      'slot-stf5-split-3': {
-        slotId: 'slot-stf5-split-3',
-        artworkId: 'art-dc-01',
+      'slot-v3t7-split-3': {
+        slotId: 'slot-v3t7-split-3',
+        artworkId: 'art-dc-12',
         title: 'The Batman — Gotham Rain Nocturne Totem',
         imageUrl:
           'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
-        splitGroupId: 'split-stf5-hero',
+        splitGroupId: 'split-v3t7-hero',
         panelIndex: 2,
-        physicalSize: 'A3',
+        physicalSize: 'A4',
         price: 349,
       },
-      'slot-stf5-left-a4': {
-        slotId: 'slot-stf5-left-a4',
-        artworkId: 'art-dc-02',
-        title: 'Batman — The Dark Knight of Gotham',
+      'slot-v3t7-left-top': {
+        slotId: 'slot-v3t7-left-top',
+        artworkId: 'art-dc-04',
+        title: 'Batman Standing Alone On A Rain Soaked Gothic Rooftop',
         imageUrl:
-          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hyper_realistic_live_action_Batman_in_a_grounde_bf178dca-168c-46e9-8095-9a28417bb7d0.webp',
+          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Batman_standing_alone_on_a_rain_soaked_gothic_ro_163b2d12-ca6a-4933-bfdf-eb79ba7d9a3b.webp',
         physicalSize: 'A4',
         price: 199,
       },
-      'slot-stf5-right-a4': {
-        slotId: 'slot-stf5-right-a4',
-        artworkId: 'art-dc-03',
-        title: 'The Joker — Throne of Chaos Gotham Arkham',
+      'slot-v3t7-right-top': {
+        slotId: 'slot-v3t7-right-top',
+        artworkId: 'art-dc-11',
+        title: 'Gotham Rooftop Sentinel',
         imageUrl:
-          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7a96d29f-220e-44f0-97d1-cc2a7096708f_3.webp',
+          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_93ff646e-b6a3-4b95-a419-756ef249e083_2.webp',
         physicalSize: 'A4',
         price: 199,
       },
@@ -125,7 +124,7 @@ export const FREGORO_PREBUILT_WALLS: PrebuiltWallProductData[] = [
     description:
       'Immerse your space in battlefield intensity. Features a continuous panoramic split of Simon Ghost Riley, surrounded by combat loadouts and night-vision tactical reconnaissance.',
     themeSlug: 'gamers',
-    layoutId: 'hybrid-stepped-wave-flank-9',
+    layoutId: 'hybrid-classic5-grand-panorama-9',
     basePrice: 1799,
     compareAtPrice: 2399,
     heroImage:
@@ -134,7 +133,7 @@ export const FREGORO_PREBUILT_WALLS: PrebuiltWallProductData[] = [
       'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d4b9b6a3-dbf1-444c-8c1d-6435e6a08d01_3.webp',
     material: '280 GSM Matte Archival Paper with High-Vibrancy Neon Gamut Inks',
     whatsIncluded: [
-      '5 × A3 Stepped Wave Ghost Recon Centerpiece',
+      '5 × A3 Ultrawide Panorama Ghost Recon Centerpiece (17:8 Ratio)',
       '4 × A4 Tactical Weapon & Operative Supporting Prints',
       'Fregoro Magnetic Levitation Hanging System',
     ],

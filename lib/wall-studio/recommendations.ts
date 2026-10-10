@@ -1,10 +1,16 @@
 import type { WallLayoutData, WallSlot, SlotSelection, PosterArtworkData } from './types';
 import { FREGORO_ARTWORKS } from './artworks-data';
+import {
+  getSlotPosterRule,
+  getArtworkAspectRatio,
+  isArtworkCompatibleWithSlot,
+} from './ratio-rules';
 
 export type ShuffleScope = 'all' | 'hero' | 'supporting' | 'outer' | 'A4' | 'A5';
 
 /**
- * Returns prioritized artworks for a specific slot based on role, orientation, and theme.
+ * Returns prioritized artworks for a specific slot based on strict aspect-ratio rules,
+ * layout role, orientation, and theme affinity.
  */
 export function getSlotRecommendations(
   slot: WallSlot,
@@ -20,45 +26,46 @@ export function getSlotRecommendations(
     }
   });
 
+  const rule = getSlotPosterRule(slot, layout);
   const isSplitPanel = !!slot.splitGroupId;
 
-  const scored = FREGORO_ARTWORKS.map((art) => {
-    let score = 0;
+  // 1. Filter candidates strictly by compatibility rules
+  const eligibleArtworks = FREGORO_ARTWORKS.filter((art) =>
+    isArtworkCompatibleWithSlot(art, slot, layout),
+  );
 
-    // 1. Split Panel Slot: must favor split-compatible artwork
+  // 2. Score eligible candidates
+  const scored = eligibleArtworks.map((art) => {
+    let score = 0;
+    const ratio = getArtworkAspectRatio(art);
+    const isPrimaryRatio = rule.primaryRatios.includes(ratio);
+
+    // Primary aspect ratio match receives the highest weighting
+    if (isPrimaryRatio) {
+      score += 200;
+    }
+
+    // Role-specific matching
     if (isSplitPanel) {
       if (art.isSplitCompatible) score += 50;
-      else score -= 30;
-    } else {
-      // Non-split slot
-      if (art.isSplitCompatible) score -= 15; // Save panoramas for split slots
-    }
-
-    // 2. Orientation match
-    if (isSplitPanel) {
-      // Split heroes look best with landscape or wide artworks
-      if (art.orientation === 'landscape') score += 30;
-    } else {
-      if (art.orientation === slot.orientation) score += 40;
-      else score -= 40; // Penalize wrong orientation
-    }
-
-    // 3. Slot Role match
-    if (slot.slotType === 'hero' || slot.slotType === 'hero-panel') {
       if (art.heroCompatible) score += 30;
-      if (art.productType === 'minimal' || art.productType === 'quote') score -= 20;
-    } else if (slot.slotType === 'support') {
-      if (art.supportCompatible) score += 25;
-    } else if (slot.slotType === 'accent') {
-      if (art.productType === 'quote' || art.productType === 'minimal') score += 20;
+    } else {
+      if (slot.slotType === 'hero' || slot.slotType === 'hero-panel') {
+        if (art.heroCompatible) score += 30;
+        if (art.productType === 'minimal' || art.productType === 'quote') score -= 20;
+      } else if (slot.slotType === 'support') {
+        if (art.supportCompatible) score += 25;
+      } else if (slot.slotType === 'accent') {
+        if (art.productType === 'quote' || art.productType === 'minimal') score += 20;
+      }
     }
 
-    // 4. Theme affinity
+    // Theme affinity
     if (themeSlug && themeSlug !== 'all') {
-      if (art.themeSlug === themeSlug) score += 60;
+      if (art.themeSlug === themeSlug) score += 80;
     }
 
-    // 5. Existing wall color harmony
+    // Existing wall color harmony
     const existingColors = Object.values(currentSelections)
       .map((s) =>
         s.artworkId ? FREGORO_ARTWORKS.find((a) => a.id === s.artworkId)?.dominantColor : null,
@@ -66,10 +73,10 @@ export function getSlotRecommendations(
       .filter(Boolean) as string[];
 
     if (existingColors.includes(art.dominantColor || '')) {
-      score += 10;
+      score += 15;
     }
 
-    // 6. Heavily penalize duplicate artworks on non-split slots
+    // Penalize duplicate artworks on non-split slots
     if (!isSplitPanel && usedArtworkIds.has(art.id)) {
       score -= 100;
     }
@@ -83,7 +90,8 @@ export function getSlotRecommendations(
 /**
  * One-Tap Theme Fill: Fills all unlocked slots with thematic artworks.
  * Never overrides locked slots. Avoids duplicate artwork across slots.
- * Connects split groups to a single continuous panoramic artwork.
+ * Connects split groups to a single continuous panoramic artwork strictly matching
+ * the required aspect ratio (44:21 for stepped 5, 19:11 for stepped 3, 17:8 for classic, etc.)
  */
 export function oneTapThemeFill(
   layout: WallLayoutData,
@@ -101,24 +109,33 @@ export function oneTapThemeFill(
     }
   });
 
-  // 1. Handle Split Groups First (Assign 1 cohesive artwork across all panels)
+  // 1. Handle Split Groups First (Assign 1 cohesive artwork across all panels matching ratio rule)
   layout.splitGroups.forEach((splitGroup) => {
-    // Check if any panel is locked
     const anyLocked = splitGroup.slotIds.some((id) => newSelections[id]?.isLocked);
     if (anyLocked) return;
 
-    // Find best split-compatible artwork for this theme
-    let splitArt = FREGORO_ARTWORKS.find(
-      (a) => a.themeSlug === themeSlug && a.isSplitCompatible && !usedArtworkIds.has(a.id),
+    const firstSlot = layout.slots.find((s) => s.id === splitGroup.slotIds[0]);
+    if (!firstSlot) return;
+
+    // Filter candidates strictly matching compatibility for this split group
+    const splitCandidates = FREGORO_ARTWORKS.filter((a) =>
+      isArtworkCompatibleWithSlot(a, firstSlot, layout),
+    );
+
+    let splitArt = splitCandidates.find(
+      (a) => a.themeSlug === themeSlug && !usedArtworkIds.has(a.id),
     );
     if (!splitArt) {
-      splitArt = FREGORO_ARTWORKS.find((a) => a.isSplitCompatible && !usedArtworkIds.has(a.id));
+      splitArt = splitCandidates.find((a) => a.themeSlug === themeSlug);
     }
     if (!splitArt) {
-      splitArt = FREGORO_ARTWORKS.find((a) => a.isSplitCompatible) || FREGORO_ARTWORKS[0];
+      splitArt = splitCandidates.find((a) => !usedArtworkIds.has(a.id));
+    }
+    if (!splitArt) {
+      splitArt = splitCandidates[0] || FREGORO_ARTWORKS[0];
     }
 
-    const selectedArt = splitArt || FREGORO_ARTWORKS[0];
+    const selectedArt = splitArt;
     usedArtworkIds.add(selectedArt.id);
 
     splitGroup.slotIds.forEach((slotId, pIndex) => {
@@ -140,11 +157,10 @@ export function oneTapThemeFill(
 
   // 2. Fill Remaining Unlocked Slots
   layout.slots.forEach((slot) => {
-    // Skip if already filled in split group or locked
     if (slot.splitGroupId && newSelections[slot.id]?.artworkId) return;
     if (newSelections[slot.id]?.isLocked) return;
 
-    // Get recommendations for this slot
+    // Get recommendations for this slot (strictly filtered by ratio)
     const candidates = getSlotRecommendations(slot, layout, newSelections, themeSlug);
     const chosen = candidates.find((c) => !usedArtworkIds.has(c.id)) || candidates[0];
 
@@ -215,11 +231,19 @@ export function shuffleWall(
       const anyLocked = splitGroup.slotIds.some((id) => newSelections[id]?.isLocked);
       if (anyLocked) return;
 
+      const firstSlot = layout.slots.find((s) => s.id === splitGroup.slotIds[0]);
+      if (!firstSlot) return;
+
       const candidates = FREGORO_ARTWORKS.filter(
-        (a) => a.isSplitCompatible && (!themeSlug || a.themeSlug === themeSlug),
+        (a) =>
+          isArtworkCompatibleWithSlot(a, firstSlot, layout) &&
+          (!themeSlug || themeSlug === 'all' || a.themeSlug === themeSlug),
       );
+
       const pool =
-        candidates.length > 0 ? candidates : FREGORO_ARTWORKS.filter((a) => a.isSplitCompatible);
+        candidates.length > 0
+          ? candidates
+          : FREGORO_ARTWORKS.filter((a) => isArtworkCompatibleWithSlot(a, firstSlot, layout));
       const chosen = pool[Math.floor(Math.random() * pool.length)];
 
       if (chosen) {

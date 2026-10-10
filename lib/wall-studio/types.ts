@@ -143,6 +143,15 @@ export interface WallLayoutData {
 
 export type WallLayout = WallLayoutData;
 
+export type PosterAspectRatio =
+  | '5:7'
+  | '7:5'
+  | '19:11'
+  | '44:21'
+  | '17:8'
+  | '4:17'
+  | '17:16';
+
 /**
  * Poster Artwork Metadata
  */
@@ -157,6 +166,7 @@ export interface PosterArtworkData {
   subcategory?: string;
   tags: string[];
   orientation: SlotOrientation;
+  aspectRatio?: PosterAspectRatio;
   availableSizes: PosterSize[];
   productType: string; // 'poster' | 'split' | 'quote' | 'minimal'
   isSplitCompatible: boolean;
