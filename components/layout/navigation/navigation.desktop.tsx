@@ -45,8 +45,9 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
   const [isScrolled, setIsScrolled] = useState(false);
 
   const isLandingPage = pathname === '/';
-  // Text is dark ONLY at scroll 0 on the landing page (which has a cream background)
-  const textIsDark = isLandingPage && !isScrolled;
+  // Text is dark ONLY at scroll 0 on the landing page (cream background)
+  // Guard with `mounted` to avoid CLS during server/client hydration mismatch
+  const textIsDark = mounted && isLandingPage && !isScrolled;
 
   const isWallStudio = pathname?.startsWith('/wall-studio');
   const navClasses =

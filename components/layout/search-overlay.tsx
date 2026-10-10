@@ -14,8 +14,12 @@ const CATEGORY_LABELS: Record<string, string> = {
   hoodies: 'Hoodies',
   posters: 'Posters',
   'split-posters': 'Split Posters',
+  'mugs-cups': 'Cups & Mugs',
+  stationery: 'Stationery',
+  accessories: 'Accessories',
+  'wall-studio': 'Wall Studio',
   skins: 'Skins',
-  mugs: 'Mugs',
+  magazine: 'Magazine',
 };
 
 const ALL_CATEGORIES = Object.keys(CATEGORY_LABELS);
@@ -25,7 +29,7 @@ function scoreProduct(p: Product, q: string): number {
   if (p.name.toLowerCase().startsWith(lq)) return 4;
   if (p.name.toLowerCase().includes(lq)) return 3;
   if (p.categorySlug.includes(lq)) return 2;
-  if (p.tags.some((t) => t.toLowerCase().includes(lq))) return 1;
+  if (p.tags && p.tags.some((t) => t.toLowerCase().includes(lq))) return 1;
   return 0;
 }
 
@@ -39,7 +43,24 @@ export function SearchOverlay() {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[]>(products);
   const { formatPrice } = usePrice();
+
+  // Load live products from DB on first open so full catalogue (including all posters) is searchable
+  useEffect(() => {
+    if (isOpen && allProducts.length <= products.length) {
+      fetch('/api/products')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && Array.isArray(data.products) && data.products.length > 0) {
+            setAllProducts(data.products);
+          }
+        })
+        .catch((err) => {
+          console.warn('[search-overlay] Error fetching live products, using fallback:', err);
+        });
+    }
+  }, [isOpen, allProducts.length]);
 
   // Debounce the query by 250ms
   useEffect(() => {
@@ -86,7 +107,7 @@ export function SearchOverlay() {
 
   const results = useMemo(() => {
     const q = debouncedQuery.trim();
-    let filtered = products;
+    let filtered = allProducts;
 
     // Category filter
     if (selectedCategory) {
@@ -103,13 +124,13 @@ export function SearchOverlay() {
     }
 
     return filtered;
-  }, [debouncedQuery, selectedCategory]);
+  }, [debouncedQuery, selectedCategory, allProducts]);
 
   const hasFilters = !!selectedCategory || debouncedQuery.trim() !== '';
   const isEmpty = debouncedQuery.trim() !== '' && results.length === 0;
 
-  // Top 6 for compact view, full list when scrolling
-  const displayResults = results.slice(0, 18);
+  // Show top results with responsive scroll
+  const displayResults = results.slice(0, 24);
 
   return (
     <div
@@ -234,7 +255,7 @@ export function SearchOverlay() {
                       {CATEGORY_LABELS[cat]}
                     </span>
                     <p className="font-mono text-[11px] text-pearl mt-1">
-                      {products.filter((p) => p.categorySlug === cat).length} products
+                      {allProducts.filter((p) => p.categorySlug === cat).length} products
                     </p>
                   </button>
                 ))}

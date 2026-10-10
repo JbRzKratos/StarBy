@@ -12,7 +12,7 @@ const footerLinks = {
     { href: '/magazine', label: 'Magazine Studio' },
     { href: '/products/hoodies', label: 'Hoodies' },
     { href: '/products/mugs-cups', label: 'Cups & Mugs' },
-    { href: '/products/skins', label: 'Device Skins' },
+    { href: '/products/skins', label: 'Device Skins ↗', badge: 'Soon' },
     { href: '/products/posters', label: 'Posters' },
     { href: '/split-poster', label: 'Split Posters' },
   ],
@@ -127,9 +127,14 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[#F5F1EA]/70 hover:text-[#0057FF] transition-colors"
+                    className="inline-flex items-center gap-2 text-[#F5F1EA]/70 hover:text-[#0057FF] transition-colors"
                   >
-                    {link.label}
+                    <span>{link.label}</span>
+                    {'badge' in link && link.badge && (
+                      <span className="px-1.5 py-0.5 bg-[#ED9518]/10 text-[#ED9518] border border-[#ED9518]/30 rounded text-[8px] uppercase tracking-wider font-bold">
+                        {link.badge}
+                      </span>
+                    )}
                   </Link>
                 </li>
               ))}

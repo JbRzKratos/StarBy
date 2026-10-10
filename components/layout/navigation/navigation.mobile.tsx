@@ -16,12 +16,12 @@ import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const menuLinks = [
   { href: '/', label: 'Home' },
-  { href: '/bulk-orders', label: 'Bulk & Custom Orders' },
-  { href: '/wall-studio', label: 'Wall Studio' },
   { href: '/products/all', label: 'Shop All' },
+  { href: '/products/posters', label: 'Posters' },
   { href: '/split-poster', label: 'Split Posters' },
+  { href: '/wall-studio', label: 'Wall Studio' },
+  { href: '/bulk-orders', label: 'Bulk & Custom Orders' },
   { href: '/magazine', label: 'Magazine Studio' },
-  { href: '/account', label: 'My Account' },
   { href: '/studio', label: 'Studio' },
   { href: '/faq', label: 'FAQ & Shipping' },
   { href: '/contact', label: 'Contact' },
@@ -104,7 +104,8 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
   }, []);
 
   // Determine styles based on route and scroll
-  const textIsDark = isLandingPage && !isScrolledState;
+  // Guard with `mounted` to avoid CLS during server/client hydration mismatch
+  const textIsDark = mounted && isLandingPage && !isScrolledState;
 
   const isWallStudio = pathname?.startsWith('/wall-studio');
   const navClasses =

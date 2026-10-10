@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { products } from '@/data/products';
@@ -12,6 +13,7 @@ type Step = 'shipping' | 'payment' | 'review';
 export default function CheckoutPage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>('shipping');
+  const [mounted, setMounted] = useState(false);
   const cartItems = useCartStore((s) => s.items);
   const clearCart = useCartStore((s) => s.clearCart);
   const totalPrice = useCartStore((s) => s.items.reduce((sum, i) => sum + i.price * i.quantity, 0));
@@ -45,8 +47,9 @@ export default function CheckoutPage() {
   const steps: Step[] = ['shipping', 'payment', 'review'];
   const finalTotal = Math.max(0, totalPrice - discountAmount);
 
-  // Pre-fill email from authenticated user session
+  // Pre-fill email from authenticated user session & mark mounted
   useEffect(() => {
+    setMounted(true);
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
       if (data.user?.email) {
@@ -278,6 +281,39 @@ export default function CheckoutPage() {
       submittingRef.current = false;
     }
   };
+
+  if (mounted && cartItems.length === 0) {
+    return (
+      <main className="pt-36 md:pt-40 pb-20">
+        <div className="section-container max-w-lg mx-auto text-center py-16 px-6 bg-graphite border border-smoke/40 rounded-2xl">
+          <div className="w-16 h-16 bg-white/5 border border-smoke/40 rounded-full flex items-center justify-center mx-auto mb-6 text-ash">
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            >
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+              <path d="M3 6h18" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+          </div>
+          <h1 className="font-display text-display-sm font-bold text-bone mb-3">Your Bag is Empty</h1>
+          <p className="font-mono text-body-sm text-pearl mb-8">
+            Please add items to your cart before proceeding to checkout.
+          </p>
+          <Link
+            href="/products/all"
+            className="inline-block px-8 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest font-bold rounded-lg hover:bg-cobalt/90 transition-colors shadow-lg shadow-cobalt/20"
+          >
+            Explore Catalog →
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="pt-36 md:pt-40 pb-20">
@@ -540,10 +576,13 @@ export default function CheckoutPage() {
                     {cartItems.map((item, i) => {
                       const product = products.find((p) => p.id === item.productId);
                       const variant = product?.variants.find((v) => v.id === item.variantId);
+                      const itemName =
+                        item.name || product?.name || item.productId.replace(/[-_]/g, ' ');
+                      const variantName = item.variant || variant?.name;
                       return (
                         <li key={i} className="font-mono text-caption text-pearl">
-                          {product?.name ?? item.productId}
-                          {variant ? ` — ${variant.name}` : ''}
+                          <span className="capitalize">{itemName}</span>
+                          {variantName ? ` — ${variantName}` : ''}
                           {item.size ? ` (${item.size})` : ''} × {item.quantity}
                         </li>
                       );

@@ -12,7 +12,8 @@ import { StudioTeaser } from '@/components/home/studio-teaser';
 import { Testimonials } from '@/components/home/testimonials';
 import { getLiveProducts } from '@/lib/services/products-service';
 
-export const dynamic = 'force-dynamic';
+// ISR: serve cached homepage for up to 60s, then regenerate in background
+export const revalidate = 60;
 
 export default async function HomePage() {
   const liveProducts = await getLiveProducts();

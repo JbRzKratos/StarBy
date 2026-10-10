@@ -2,10 +2,12 @@
 
 import { useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
+import { getR2AssetUrl } from '@/lib/r2';
 
-const panelColors = ['#C45D3E', '#3B5EFF', '#D8D0C8', '#1A1A1E', '#F5F1EA', '#2A2A2F'];
+
 
 export function SplitPosterTeaser() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -68,17 +70,27 @@ export function SplitPosterTeaser() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
           {/* Visual */}
           <div className="flex justify-center">
-            <div ref={panelsRef} className="flex gap-2 cursor-pointer" data-cursor-hover>
+            <div ref={panelsRef} className="flex gap-1.5 cursor-pointer select-none" data-cursor-hover>
               {Array.from({ length: panelCount }).map((_, i) => (
                 <div
                   key={i}
-                  className="rounded-sm shadow-elevated transition-shadow hover:shadow-glow"
-                  style={{
-                    width: `${240 / panelCount}px`,
-                    height: '280px',
-                    background: `linear-gradient(180deg, ${panelColors[i % panelColors.length]}, ${panelColors[(i + 1) % panelColors.length]})`,
-                  }}
-                />
+                  className="relative overflow-hidden rounded-sm shadow-elevated flex-shrink-0"
+                  style={{ width: `${280 / panelCount}px`, height: '320px' }}
+                >
+                  <div
+                    className="absolute inset-0"
+                    style={{ width: `${panelCount * (280 / panelCount)}px`, left: `-${i * (280 / panelCount)}px` }}
+                  >
+                    <Image
+                      src={getR2AssetUrl('images/hero/posters.webp')}
+                      alt={`Split poster panel ${i + 1}`}
+                      fill
+                      unoptimized
+                      className="object-cover"
+                      sizes="280px"
+                    />
+                  </div>
+                </div>
               ))}
             </div>
           </div>

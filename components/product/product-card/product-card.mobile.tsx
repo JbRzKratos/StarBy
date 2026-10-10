@@ -1,8 +1,12 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/data/products';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { getR2AssetUrl } from '@/lib/r2';
 
 interface ProductCardProps {
   product: Product;
@@ -12,9 +16,13 @@ export function ProductCardMobile({ product }: ProductCardProps) {
   const toggleWishlist = useWishlistStore((state) => state.toggleItem);
   const isWishlisted = useWishlistStore((state) => state.hasItem(product.id));
   const { formatPrice } = usePrice();
+  const [imgError, setImgError] = useState(false);
 
+  const fallbackImg = getR2AssetUrl('images/hero/posters.webp');
   const isComingSoon = product.categorySlug === 'skins';
   const variant = product.variants[0];
+  const primaryImg = variant?.images?.[0] || fallbackImg;
+  const imgSrc = imgError ? fallbackImg : primaryImg;
   const href = isComingSoon
     ? '/products/skins'
     : `/products/${product.categorySlug}/${product.slug}`;
@@ -32,16 +40,15 @@ export function ProductCardMobile({ product }: ProductCardProps) {
                 : 'linear-gradient(145deg, #1A1A1E, #2A2A2F)',
             }}
           >
-            {variant?.images?.[0] && (
-              <Image
-                src={variant.images[0]}
-                alt={product.name}
-                fill
-                unoptimized
-                className="object-cover"
-                sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
-              />
-            )}
+            <Image
+              src={imgSrc}
+              alt={product.name}
+              fill
+              unoptimized
+              onError={() => setImgError(true)}
+              className="object-cover"
+              sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
+            />
           </div>
 
           {/* Tags */}

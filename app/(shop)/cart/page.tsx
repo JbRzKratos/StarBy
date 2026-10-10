@@ -80,9 +80,14 @@ export default function CartPage() {
               {items.map((item) => {
                 const product = products.find((p) => p.id === item.productId);
                 const variant = product?.variants.find((v) => v.id === item.variantId);
-                const displayName = product?.name ?? item.productId.replace(/-/g, ' ');
-                const displayVariant = variant?.name ?? item.variantId.replace(/-/g, ' ');
+                const displayName =
+                  item.name ?? product?.name ?? item.productId.replace(/[-_]/g, ' ');
+                const displayVariant =
+                  item.variant ?? variant?.name ?? item.variantId.replace(/[-_]/g, ' ');
                 const displayImage =
+                  item.image ??
+                  item.customization?.previewFileUrl ??
+                  item.customization?.thumbnail ??
                   item.customization?.imageUrl ??
                   variant?.images[0] ??
                   product?.variants[0]?.images[0];

@@ -6,6 +6,8 @@ import Image from 'next/image';
 import type { Product } from '@/data/products';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { getR2AssetUrl } from '@/lib/r2';
+import { useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
@@ -18,9 +20,13 @@ export function ProductCardDesktop({ product }: ProductCardProps) {
   const toggleWishlist = useWishlistStore((state) => state.toggleItem);
   const isWishlisted = useWishlistStore((state) => state.hasItem(product.id));
   const { formatPrice } = usePrice();
+  const [imgError, setImgError] = useState(false);
 
+  const fallbackImg = getR2AssetUrl('images/hero/posters.webp');
   const isComingSoon = product.categorySlug === 'skins';
   const variant = product.variants[0];
+  const primaryImg = variant?.images?.[0] || fallbackImg;
+  const imgSrc = imgError ? fallbackImg : primaryImg;
   const href = isComingSoon
     ? '/products/skins'
     : `/products/${product.categorySlug}/${product.slug}`;
@@ -31,16 +37,15 @@ export function ProductCardDesktop({ product }: ProductCardProps) {
         {/* Image area */}
         <div className="relative overflow-hidden rounded-2xl mb-4 aspect-[3/4] bg-smoke/5 border border-transparent group-hover:border-smoke/20 transition-colors">
           <div ref={mockupRef} className="w-full h-full relative">
-            {variant?.images?.[0] && (
-              <Image
-                src={variant.images[0]}
-                alt={product.name}
-                fill
-                unoptimized
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
-              />
-            )}
+            <Image
+              src={imgSrc}
+              alt={product.name}
+              fill
+              unoptimized
+              onError={() => setImgError(true)}
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
+            />
           </div>
 
           {/* Tags */}

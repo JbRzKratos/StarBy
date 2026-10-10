@@ -172,67 +172,8 @@
     pointer-events: none !important;
   }
 
-  /* Hide floating widgets (Tawk.to chat & WhatsApp) when any drawer or modal, AR, admin, or magazine editor is open */
-  body:has([data-magazine-editor]) #tawk-default-container,
-  body:has([data-magazine-editor]) .tawk-min-container,
-  body:has([data-magazine-editor]) iframe[title*='chat' i],
-  body:has([data-magazine-editor]) iframe[title*='tawk' i],
-  body:has([data-magazine-editor]) div[class*='tawk'],
-  body:has([data-magazine-editor]) [class*='tawk'],
-  body:has([data-magazine-editor]) .fixed.bottom-4.left-4,
-  body:has([data-magazine-editor]) .fixed.bottom-6.left-6,
-  body:has([data-magazine-editor]) .fixed.bottom-20.right-4,
-  body:has([data-magazine-editor]) .fixed.bottom-24.right-6,
-  body:has([data-magazine-editor]) .floating-whatsapp-btn,
-  body:has([data-magazine-editor]) .floating-scroll-top-btn,
-  body.magazine-editor-active #tawk-default-container,
-  body.magazine-editor-active .tawk-min-container,
-  body.magazine-editor-active iframe[title*='chat' i],
-  body.magazine-editor-active iframe[title*='tawk' i],
-  body.magazine-editor-active div[class*='tawk'],
-  body.magazine-editor-active [class*='tawk'],
-  body.magazine-editor-active .fixed.bottom-4.left-4,
-  body.magazine-editor-active .fixed.bottom-6.left-6,
-  body.magazine-editor-active .fixed.bottom-20.right-4,
-  body.magazine-editor-active .fixed.bottom-24.right-6,
-  body.magazine-editor-active .floating-whatsapp-btn,
-  body.magazine-editor-active .floating-scroll-top-btn,
-  body[style*='overflow: hidden'] .fixed.bottom-4.left-4,
-  body[style*='overflow: hidden'] .fixed.bottom-6.left-6,
-  body[style*='overflow: hidden'] .fixed.bottom-20.right-4,
-  body[style*='overflow: hidden'] .fixed.bottom-24.right-6,
-  body.mobile-drawer-open .fixed.bottom-4.left-4,
-  body.mobile-drawer-open .fixed.bottom-6.left-6,
-  body.mobile-drawer-open .fixed.bottom-20.right-4,
-  body.mobile-drawer-open .fixed.bottom-24.right-6,
-  body.mobile-drawer-open #tawk-default-container,
-  body.mobile-drawer-open .tawk-min-container,
-  body.mobile-drawer-open iframe[title*='chat' i],
-  body.mobile-drawer-open iframe[title*='tawk' i],
-  body.mobile-drawer-open div[class*='tawk'],
-  body.ar-active .fixed.bottom-4.left-4,
-  body.ar-active .fixed.bottom-6.left-6,
-  body.ar-active .fixed.bottom-20.right-4,
-  body.ar-active .fixed.bottom-24.right-6,
-  body.ar-active #tawk-default-container,
-  body.ar-active .tawk-min-container,
-  body.ar-active iframe[title*='chat' i],
-  body.ar-active iframe[title*='tawk' i],
-  body.ar-active div[class*='tawk'],
-  .admin-root #tawk-default-container,
-  .admin-root .tawk-min-container,
-  .admin-root iframe[title*='chat' i],
-  .admin-root iframe[title*='tawk' i],
-  .admin-root div[class*='tawk'],
-  .admin-root .fixed.bottom-4.left-4,
-  .admin-root .fixed.bottom-6.left-6,
-  .admin-root .fixed.bottom-20.right-4,
-  .admin-root .fixed.bottom-24.right-6 {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
+  /* Floating widget (WhatsApp + Tawk.to) suppression is handled by
+   * the high-specificity un-layered ruleset at the bottom of this file. */
 
   /* ── Clothing Mockup Studio active ────────────────────────────────────────
    * When the 2D+3D garment editor is mounted, hide the site Footer and all

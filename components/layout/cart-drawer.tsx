@@ -206,10 +206,10 @@ export function CartDrawer() {
               {items.map((item, index) => {
                 const product = products.find((p) => p.id === item.productId);
                 const variant = product?.variants.find((v) => v.id === item.variantId);
-                const displayName = product ? product.name : item.productId.replace('-', ' ');
-                const displayVariantName = variant
-                  ? variant.name
-                  : item.variantId.replace('-', ' ');
+                const displayName =
+                  item.name || (product ? product.name : item.productId.replace(/[-_]/g, ' '));
+                const displayVariantName =
+                  item.variant || (variant ? variant.name : item.variantId.replace(/[-_]/g, ' '));
 
                 return (
                   <div
@@ -476,10 +476,10 @@ export function CartDrawer() {
               {items.map((item, index) => {
                 const product = products.find((p) => p.id === item.productId);
                 const variant = product?.variants.find((v) => v.id === item.variantId);
-                const displayName = product ? product.name : item.productId.replace('-', ' ');
-                const displayVariantName = variant
-                  ? variant.name
-                  : item.variantId.replace('-', ' ');
+                const displayName =
+                  item.name || (product ? product.name : item.productId.replace(/[-_]/g, ' '));
+                const displayVariantName =
+                  item.variant || (variant ? variant.name : item.variantId.replace(/[-_]/g, ' '));
 
                 return (
                   <div

@@ -123,6 +123,17 @@ export const categories: Category[] = [
     image:
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
   },
+  {
+    slug: 'wall-studio',
+    name: 'Wall Studio',
+    tagline: 'Signature gallery compositions.',
+    description:
+      'Prebuilt multi-frame curated art compositions and physical gallery arrangements.',
+    productCount: 27,
+    featured: true,
+    gradient: 'linear-gradient(135deg, #1A1A24 0%, #0057FF 100%)',
+    image: getR2AssetUrl('images/hero/split_posters.webp'),
+  },
 ];
 
 export function getCategoryBySlug(slug: string): Category | undefined {

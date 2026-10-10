@@ -87,9 +87,7 @@ export function ShopDesktop({ category, products }: { category: string; products
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
-    if (tabId !== 'diy') {
-      router.push(`/products/${tabId}`, { scroll: false });
-    }
+    router.push(`/products/${tabId}`, { scroll: false });
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {

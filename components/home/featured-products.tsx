@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { products, type Product } from '@/data/products';
@@ -249,14 +248,21 @@ export function FeaturedProducts({ initialProducts }: { initialProducts?: Produc
                   </div>
 
                   <div className="relative aspect-square w-full my-2 flex items-center justify-center overflow-hidden rounded-xl bg-[#16161A]/50">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      unoptimized
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-contain p-4 transition-transform duration-700 group-hover:scale-105"
-                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div
+                        className="w-full h-full"
+                        style={{
+                          background: `radial-gradient(ellipse at 60% 40%, ${['#1a1a2e','#16213e','#0f3460','#1a1a2e','#2d1b4e','#1a2634'][SKIN_PREVIEWS.indexOf(item) % 6]} 0%, #0a0a0c 100%)`,
+                        }}
+                      />
+                    </div>
+                    <div className="relative z-10 flex flex-col items-center gap-3">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ED9518" strokeWidth="1" opacity="0.6">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                        <line x1="12" y1="18" x2="12.01" y2="18" />
+                      </svg>
+                      <span className="font-mono text-[9px] text-[#F5F1EA]/30 uppercase tracking-widest">Preview Soon</span>
+                    </div>
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-[#F5F1EA]/5 space-y-1">

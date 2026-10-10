@@ -64,12 +64,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
   // Compute real stock status: in stock if at least one variant has inStock: true
   const isInStock = product.variants.some((v) => v.inStock !== false);
 
+  const rawImg = product.variants?.[0]?.images?.[0];
+  const productImageUrl = rawImg
+    ? rawImg.startsWith('http')
+      ? rawImg
+      : `${baseUrl}${rawImg.startsWith('/') ? '' : '/'}${rawImg}`
+    : '';
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: product.variants?.[0]?.images?.[0] ? `${baseUrl}${product.variants[0].images[0]}` : '',
+    image: productImageUrl,
     offers: {
       '@type': 'Offer',
       url: productUrl,
