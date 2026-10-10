@@ -10,8 +10,13 @@ import { FeaturedProducts } from '@/components/home/featured-products';
 import { SplitPosterTeaser } from '@/components/home/split-poster-teaser';
 import { StudioTeaser } from '@/components/home/studio-teaser';
 import { Testimonials } from '@/components/home/testimonials';
+import { getLiveProducts } from '@/lib/services/products-service';
 
-export default function HomePage() {
+export const dynamic = 'force-dynamic';
+
+export default async function HomePage() {
+  const liveProducts = await getLiveProducts();
+
   return (
     <>
       <Navigation variant="hero" />
@@ -22,7 +27,7 @@ export default function HomePage() {
         <p className="sr-only">Fregoro Studios — Engineered Streetwear &amp; Design Objects</p>
         <Hero />
         <TrustBadges />
-        <FeaturedProducts />
+        <FeaturedProducts initialProducts={liveProducts} />
         <BentoGrid />
         <SplitPosterTeaser />
         <StudioTeaser />

@@ -58,7 +58,7 @@ export const WallSummaryBar: React.FC = () => {
     const heroImage =
       (heroSlot && selections[heroSlot.id]?.imageUrl) ||
       Object.values(selections)[0]?.imageUrl ||
-      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80';
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/3 Split Poster.webp';
 
     addItem({
       productId: `wall_${currentLayout.slug}`,

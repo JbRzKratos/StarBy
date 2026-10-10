@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/lib/stores/cart-store';
@@ -20,6 +20,20 @@ export default function UploadPdfPortalPage() {
   const [paperWeight, setPaperWeight] = useState('170gsm-silk');
   const [binding, setBinding] = useState('saddle-stitch');
   const [quantity, setQuantity] = useState(1);
+  const [livePrice, setLivePrice] = useState<number>(649);
+
+  useEffect(() => {
+    fetch('/api/products/prices', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.variants?.['v_mag_16p']?.price) {
+          setLivePrice(data.variants['v_mag_16p'].price);
+        } else if (data?.products?.['prod_mag_01']) {
+          setLivePrice(data.products['prod_mag_01']);
+        }
+      })
+      .catch((err) => console.warn('Could not fetch live PDF print price:', err));
+  }, []);
 
   const handleFileChange = (uploadedFile: File) => {
     if (uploadedFile.type !== 'application/pdf' && !uploadedFile.name.endsWith('.pdf')) {
@@ -53,7 +67,7 @@ export default function UploadPdfPortalPage() {
       productId: 'prod_mag_01',
       variantId: 'v_mag_16p',
       name: `FREGORO Print Order · ${file.name}`,
-      price: 649,
+      price: livePrice,
       image:
         'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80',
       quantity,

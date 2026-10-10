@@ -20,6 +20,8 @@ export interface OrderItem {
   orderCustomization?: {
     designFileUrl?: string | null;
     designFileName?: string | null;
+    previewFileUrl?: string | null;
+    printInstructions?: string | null;
     productionStatus?: string;
   } | null;
 }
@@ -332,6 +334,23 @@ export function OrderManagerClient({ orders }: OrderManagerClientProps) {
                                             View Artwork (
                                             {item.orderCustomization.designFileName || 'File'})
                                           </a>
+                                        </p>
+                                      )}
+                                      {item.orderCustomization?.previewFileUrl && (
+                                        <p className="mt-0.5">
+                                          <a
+                                            href={item.orderCustomization.previewFileUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="text-blue-400 text-caption underline"
+                                          >
+                                            View 3D Mockup ↗
+                                          </a>
+                                        </p>
+                                      )}
+                                      {item.orderCustomization?.printInstructions && (
+                                        <p className="mt-1 text-[11px] text-amber-300/80 bg-amber-500/10 px-1.5 py-0.5 rounded font-mono">
+                                          Notes: {item.orderCustomization.printInstructions}
                                         </p>
                                       )}
                                     </div>

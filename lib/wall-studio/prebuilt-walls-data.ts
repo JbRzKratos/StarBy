@@ -4,6 +4,7 @@ import type { PrebuiltWallProductData } from './types';
  * PREBUILT THEMED WALL PRODUCTS
  *
  * Ready-made walls for direct checkout or one-click "Customize This Wall" inside Wall Studio.
+ * All preview images and preset selections sourced from local print masters in https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/.
  */
 
 export const FREGORO_PREBUILT_WALLS: PrebuiltWallProductData[] = [
@@ -15,13 +16,13 @@ export const FREGORO_PREBUILT_WALLS: PrebuiltWallProductData[] = [
     description:
       'A commanding 15-print tribute to the Dark Knight. Features a continuous 3-panel A3 Stepped Hero centerpiece of Gotham’s skyline, framed by shadow portraits, iconic Bat-insignias, and high-contrast typography.',
     themeSlug: 'dc',
-    layoutId: 'stepped-hero-05',
+    layoutId: 'hybrid-stepped-triptych-flank-5',
     basePrice: 1699,
     compareAtPrice: 2299,
     heroImage:
-      'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=1200&q=85',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hyper_realistic_live_action_Batman_in_a_grounde_bf178dca-168c-46e9-8095-9a28417bb7d0.webp',
     roomPhoto:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
     material: '280 GSM Museum Archival Fine Art Matte Paper with Giclée Pigment Inks',
     whatsIncluded: [
       '3 × A3 Stepped Split Panels (Continuous Gotham Panorama)',
@@ -35,190 +36,106 @@ export const FREGORO_PREBUILT_WALLS: PrebuiltWallProductData[] = [
     rating: 4.95,
     reviewCount: 42,
     presetSelections: {
-      'slot-sh-hero-1': {
-        slotId: 'slot-sh-hero-1',
+      'slot-stf5-split-1': {
+        slotId: 'slot-stf5-split-1',
         artworkId: 'art-dc-01',
-        title: 'The Dark Knight: Gotham Watchtower (Left)',
+        title: 'The Batman — Gotham Rain Nocturne Totem',
         imageUrl:
-          'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=1800&q=85',
-        splitGroupId: 'split-sh-hero',
+          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
+        splitGroupId: 'split-stf5-hero',
         panelIndex: 0,
         physicalSize: 'A3',
         price: 349,
       },
-      'slot-sh-hero-2': {
-        slotId: 'slot-sh-hero-2',
+      'slot-stf5-split-2': {
+        slotId: 'slot-stf5-split-2',
         artworkId: 'art-dc-01',
-        title: 'The Dark Knight: Gotham Watchtower (Center)',
+        title: 'The Batman — Gotham Rain Nocturne Totem',
         imageUrl:
-          'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=1800&q=85',
-        splitGroupId: 'split-sh-hero',
+          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
+        splitGroupId: 'split-stf5-hero',
         panelIndex: 1,
         physicalSize: 'A3',
         price: 349,
       },
-      'slot-sh-hero-3': {
-        slotId: 'slot-sh-hero-3',
+      'slot-stf5-split-3': {
+        slotId: 'slot-stf5-split-3',
         artworkId: 'art-dc-01',
-        title: 'The Dark Knight: Gotham Watchtower (Right)',
+        title: 'The Batman — Gotham Rain Nocturne Totem',
         imageUrl:
-          'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=1800&q=85',
-        splitGroupId: 'split-sh-hero',
+          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_9776c4f2-ec7d-46df-b71b-7b83937385ca_3.webp',
+        splitGroupId: 'split-stf5-hero',
         panelIndex: 2,
         physicalSize: 'A3',
         price: 349,
       },
-      'slot-sh-sup-1': {
-        slotId: 'slot-sh-sup-1',
+      'slot-stf5-left-a4': {
+        slotId: 'slot-stf5-left-a4',
         artworkId: 'art-dc-02',
-        title: 'Vengeance in the Shadows',
+        title: 'Batman — The Dark Knight of Gotham',
         imageUrl:
-          'https://images.unsplash.com/photo-1531259683007-016a7b628fc3?auto=format&fit=crop&w=1200&q=85',
+          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Hyper_realistic_live_action_Batman_in_a_grounde_bf178dca-168c-46e9-8095-9a28417bb7d0.webp',
         physicalSize: 'A4',
         price: 199,
       },
-      'slot-sh-sup-2': {
-        slotId: 'slot-sh-sup-2',
+      'slot-stf5-right-a4': {
+        slotId: 'slot-stf5-right-a4',
         artworkId: 'art-dc-03',
-        title: 'Why So Serious Monochrome',
+        title: 'The Joker — Throne of Chaos Gotham Arkham',
         imageUrl:
-          'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=85',
+          'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_7a96d29f-220e-44f0-97d1-cc2a7096708f_3.webp',
         physicalSize: 'A4',
-        price: 149,
-      },
-      'slot-sh-sup-4': {
-        slotId: 'slot-sh-sup-4',
-        artworkId: 'art-qte-01',
-        title: 'MEMENTO MORI // VIRTUE IS SUFFICIENT',
-        imageUrl:
-          'https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?auto=format&fit=crop&w=1200&q=85',
-        physicalSize: 'A5',
-        price: 149,
+        price: 199,
       },
     },
   },
   {
     id: 'prebuilt-porsche-cinema',
-    slug: 'porsche-911-gt3-rs-cinema-wall',
-    title: 'Porsche 911 GT3 RS Cinema Setup',
+    slug: 'toyota-supra-jdm-smoke-drift-wall',
+    title: 'Toyota Supra MK4 Smoke Drift Cinema Setup',
     tagline: '13-Piece Wide Trackside Telemetry Wall',
     description:
-      'Engineered for entertainment & media setups. A seamless 5-piece continuous A3 horizontal split capturing the Porsche 911 GT3 RS in mid-apex, flanked by tachometer telemetry charts and Weissach package detail studies.',
+      'Engineered for entertainment & media setups. A seamless multi-piece continuous split capturing the Toyota Supra MK4 in mid-drift smoke, flanked by JDM performance studies.',
     themeSlug: 'cars',
-    layoutId: 'cinema-07',
+    layoutId: 'hybrid-classic3-horizon-sandwich-9',
     basePrice: 1899,
     compareAtPrice: 2499,
     heroImage:
-      'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=85',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3d45351d-0d64-4e6c-91eb-a97f774dea00_2.webp',
     roomPhoto:
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=85',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_ecff18b4-fb76-4237-9b23-996bfdfef59f_3.webp',
     material: '280 GSM Lustre Anti-Glare Archival Paper with UltraChrome HD Pigments',
     whatsIncluded: [
-      '5 × A3 Wide Horizontal Split Panels (Continuous GT3 RS Apex Panorama)',
-      '4 × A4 Flanking Supporting Prints (Ferrari F40 & Telemetry Specs)',
-      '4 × A5 Cockpit & Gauge Accent Artworks',
+      '3 × A3 Wide Horizontal Split Panels (Continuous Supra Drift Panorama)',
+      '4 × A4 Flanking Supporting Prints (Supercar Telemetry Specs)',
+      '2 × A5 Cockpit & Gauge Accent Artworks',
       'Fregoro Zero-Gap Precision Wall Alignment Rail Template',
       'Commercial-Grade Mounting Hardware',
     ],
     featured: true,
     rating: 4.98,
     reviewCount: 38,
-    presetSelections: {
-      'slot-cn-h1': {
-        slotId: 'slot-cn-h1',
-        artworkId: 'art-car-01',
-        title: 'Porsche 911 GT3 RS (Panel 1)',
-        imageUrl:
-          'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1800&q=85',
-        splitGroupId: 'split-cn-hero',
-        panelIndex: 0,
-        physicalSize: 'A3',
-        price: 349,
-      },
-      'slot-cn-h2': {
-        slotId: 'slot-cn-h2',
-        artworkId: 'art-car-01',
-        title: 'Porsche 911 GT3 RS (Panel 2)',
-        imageUrl:
-          'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1800&q=85',
-        splitGroupId: 'split-cn-hero',
-        panelIndex: 1,
-        physicalSize: 'A3',
-        price: 349,
-      },
-      'slot-cn-h3': {
-        slotId: 'slot-cn-h3',
-        artworkId: 'art-car-01',
-        title: 'Porsche 911 GT3 RS (Panel 3)',
-        imageUrl:
-          'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1800&q=85',
-        splitGroupId: 'split-cn-hero',
-        panelIndex: 2,
-        physicalSize: 'A3',
-        price: 349,
-      },
-      'slot-cn-h4': {
-        slotId: 'slot-cn-h4',
-        artworkId: 'art-car-01',
-        title: 'Porsche 911 GT3 RS (Panel 4)',
-        imageUrl:
-          'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1800&q=85',
-        splitGroupId: 'split-cn-hero',
-        panelIndex: 3,
-        physicalSize: 'A3',
-        price: 349,
-      },
-      'slot-cn-h5': {
-        slotId: 'slot-cn-h5',
-        artworkId: 'art-car-01',
-        title: 'Porsche 911 GT3 RS (Panel 5)',
-        imageUrl:
-          'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1800&q=85',
-        splitGroupId: 'split-cn-hero',
-        panelIndex: 4,
-        physicalSize: 'A3',
-        price: 349,
-      },
-      'slot-cn-l1': {
-        slotId: 'slot-cn-l1',
-        artworkId: 'art-car-02',
-        title: 'Ferrari F40 Twin-Turbo Louvers',
-        imageUrl:
-          'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=1200&q=85',
-        physicalSize: 'A4',
-        price: 199,
-      },
-      'slot-cn-r1': {
-        slotId: 'slot-cn-r1',
-        artworkId: 'art-car-03',
-        title: '9000 RPM Telemetry Blueprint',
-        imageUrl:
-          'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=85',
-        physicalSize: 'A4',
-        price: 149,
-      },
-    },
+    presetSelections: {},
   },
   {
     id: 'prebuilt-cyberpunk-night-city',
-    slug: 'night-city-cyberpunk-large-hero',
-    title: 'Night City 2099 Cyberpunk Setup',
-    tagline: '15-Piece Panoramic Cybernetic Wall',
+    slug: 'cod-warzone-ghost-recon-setup',
+    title: 'Call of Duty Warzone Ghost Tactical Setup',
+    tagline: '15-Piece Tactical Warfare Battlefield Wall',
     description:
-      'Immerse your space in the neon rain of Night City. Features an ultra-wide panoramic cityscape split with floating glitch glyphs, samurai katana portraits, and retro arcade typography.',
-    themeSlug: 'gaming',
-    layoutId: 'large-hero-04',
+      'Immerse your space in battlefield intensity. Features a continuous panoramic split of Simon Ghost Riley, surrounded by combat loadouts and night-vision tactical reconnaissance.',
+    themeSlug: 'gamers',
+    layoutId: 'hybrid-stepped-wave-flank-9',
     basePrice: 1799,
     compareAtPrice: 2399,
     heroImage:
-      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=85',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_f0134bff-f4ac-4ae8-89ff-3ce9931423a3_3.webp',
     roomPhoto:
-      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=85',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_d4b9b6a3-dbf1-444c-8c1d-6435e6a08d01_3.webp',
     material: '280 GSM Matte Archival Paper with High-Vibrancy Neon Gamut Inks',
     whatsIncluded: [
-      '3 × A3 Panoramic Night City Split Centerpiece',
-      '4 × A4 Ronin & Katana Supporting Prints',
-      '8 × A5 Cyberpunk Glitch & Tech Accents',
+      '5 × A3 Stepped Wave Ghost Recon Centerpiece',
+      '4 × A4 Tactical Weapon & Operative Supporting Prints',
       'Fregoro Magnetic Levitation Hanging System',
     ],
     featured: true,
@@ -227,29 +144,29 @@ export const FREGORO_PREBUILT_WALLS: PrebuiltWallProductData[] = [
     presetSelections: {},
   },
   {
-    id: 'prebuilt-bauhaus-core',
-    slug: 'bauhaus-minimal-core-wall',
-    title: 'Bauhaus Minimal Core Setup',
-    tagline: '5-Piece Pure Geometric Elegance',
+    id: 'prebuilt-spider-man-symbiote',
+    slug: 'spider-man-venom-symbiote-setup',
+    title: 'Spider-Man vs Venom Symbiote Duality Setup',
+    tagline: 'Signature 5-Piece Stepped Split Hero',
     description:
-      'For minimalist interiors that demand quiet power. A monolithic 3-panel continuous A3 Bauhaus arch split framed by brutalist concrete architectural studies.',
-    themeSlug: 'minimal',
-    layoutId: 'core-14',
-    basePrice: 999,
-    compareAtPrice: 1399,
+      'The eternal struggle between Peter Parker and the Venom symbiote. High-contrast split panels with raw comic ink and explosive dynamic composition.',
+    themeSlug: 'marvel',
+    layoutId: 'hybrid-stepped-triptych-flank-5',
+    basePrice: 1599,
+    compareAtPrice: 2199,
     heroImage:
-      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=85',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_14b9a2cc-0d91-43f3-a299-36b138754a76_3.webp',
     roomPhoto:
-      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85',
-    material: '310 GSM Hahnemühle German Etching Textured Rag',
+      'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2097d66e-d042-46a0-a7ac-2fa51c635caf_3.webp',
+    material: '310 GSM Fine Art Archival Giclée Cotton Rag',
     whatsIncluded: [
-      '3 × A3 Continuous Minimalist Split Panels',
-      '2 × A4 Brutalist Concrete Architectural Studies',
-      'Architectural Hanging Kit with White-Glove Handling Cotton Gloves',
+      '3 × Continuous Stepped Symbiote Split Panels',
+      '2 × A4 Iron Man & Captain America Museum Flanks',
+      'Laser Alignment Template & Damage-Free Strips',
     ],
     featured: true,
     rating: 4.97,
-    reviewCount: 26,
+    reviewCount: 45,
     presetSelections: {},
   },
 ];

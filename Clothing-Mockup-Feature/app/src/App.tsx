@@ -7,7 +7,7 @@ import type {
 import { DEFAULT_TEMPLATE_ID, getTemplateById } from './data/catalog';
 import { Header } from './components/Header';
 import { SidebarTabs, type SidebarTab } from './components/SidebarTabs';
-import { X } from 'lucide-react';
+import { X, SlidersHorizontal, ChevronUp } from 'lucide-react';
 import { DrawerTemplates } from './components/DrawerTemplates';
 import { DrawerArtwork } from './components/DrawerArtwork';
 import { DrawerGarment } from './components/DrawerGarment';
@@ -18,6 +18,7 @@ import { CanvasViewport } from './components/CanvasViewport';
 import { ExportModal } from './components/ExportModal';
 import { assetManager } from './engine/assetManager';
 import { compositor } from './engine/compositor';
+import { exportManager } from './engine/exportManager';
 import { validateArtworkFile } from './engine/validation';
 import { persistenceManager } from './engine/persistence';
 
@@ -37,6 +38,8 @@ import { DrawerLighting3D } from './components/3d/DrawerLighting3D';
 import { DrawerExport3D } from './components/3d/DrawerExport3D';
 import { DrawerProject3D } from './components/3d/DrawerProject3D';
 import { UVCanvasEditor3D } from './components/3d/UVCanvasEditor3D';
+import { AddToCartModal3D } from './components/3d/AddToCartModal3D';
+import { Export3DManager } from './engine/3d/export3D';
 import type { SceneManager3D } from './engine/3d/sceneManager';
 import type { TextureCompositor3D } from './engine/3d/textureCompositor';
 import * as THREE from 'three';
@@ -80,6 +83,11 @@ export const App: React.FC = () => {
 
   const activeLightingFrameRef = useRef(0);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isAddToCartOpen, setIsAddToCartOpen] = useState(false);
+  const [isCapturingCartSnapshots, setIsCapturingCartSnapshots] = useState(false);
+  const [cartFrontSnapshot, setCartFrontSnapshot] = useState<string | null>(null);
+  const [cartBackSnapshot, setCartBackSnapshot] = useState<string | null>(null);
+  const [export3DManager] = useState(() => new Export3DManager());
   const [uploadWarning, setUploadWarning] = useState<string | null>(null);
 
   // 2D Viewport zoom & pan
@@ -692,6 +700,151 @@ export const App: React.FC = () => {
     handleAddArtwork3D(newLayer);
   };
 
+  const handleOpenAddToCart = async () => {
+    setIsAddToCartOpen(true);
+    setIsCapturingCartSnapshots(true);
+    setCartFrontSnapshot(null);
+    setCartBackSnapshot(null);
+
+    try {
+      if (mode === '3d' && sceneManager3DRef.current) {
+        // High-resolution snap of both front and back views
+        const frontData = await export3DManager.captureSnapshotDataUrl(
+          sceneManager3DRef.current,
+          {
+            view: 'front',
+            transparent: false,
+            resolution: 'standard',
+          },
+          compositor3DRef.current ?? undefined
+        );
+        setCartFrontSnapshot(frontData);
+
+        const backData = await export3DManager.captureSnapshotDataUrl(
+          sceneManager3DRef.current,
+          {
+            view: 'back',
+            transparent: false,
+            resolution: 'standard',
+          },
+          compositor3DRef.current ?? undefined
+        );
+        setCartBackSnapshot(backData);
+      } else {
+        // 2D mode: render composite canvases for front and back
+        const frontCanvas = await exportManager.renderSideCanvas(project2D, 'front', {
+          scope: 'current',
+          dimensions: '2048x2048',
+          transparentBg: false,
+          includeShadow: true,
+        });
+        setCartFrontSnapshot(frontCanvas.toDataURL('image/png'));
+
+        const backCanvas = await exportManager.renderSideCanvas(project2D, 'back', {
+          scope: 'current',
+          dimensions: '2048x2048',
+          transparentBg: false,
+          includeShadow: true,
+        });
+        setCartBackSnapshot(backCanvas.toDataURL('image/png'));
+      }
+    } catch (err) {
+      console.error('[App] Failed to capture cart mockups:', err);
+    } finally {
+      setIsCapturingCartSnapshots(false);
+    }
+  };
+
+  const handleConfirmAddToCart = (data: {
+    size: string;
+    quantity: number;
+    printInstructions: string;
+  }) => {
+    let frontDesignUrl: string | null = null;
+    let backDesignUrl: string | null = null;
+    const uploadedArtworks: { name: string; url: string; side: string }[] = [];
+
+    if (mode === '3d') {
+      project3D.artworkLayers.forEach((l) => {
+        const isBack =
+          l.regionId === 'back' ||
+          l.regionId?.toLowerCase().includes('back') ||
+          (l.u !== undefined && l.u >= 0.5);
+        const side = isBack ? 'back' : 'front';
+        uploadedArtworks.push({
+          name: l.name || 'Artwork',
+          url: l.imageUrl,
+          side,
+        });
+        if (isBack && !backDesignUrl) {
+          backDesignUrl = l.imageUrl;
+        } else if (!isBack && !frontDesignUrl) {
+          frontDesignUrl = l.imageUrl;
+        }
+      });
+
+      if (!frontDesignUrl && project3D.artworkLayers.length > 0) {
+        frontDesignUrl = project3D.artworkLayers[0].imageUrl;
+      }
+    } else {
+      if (project2D.front.layers.length > 0) {
+        frontDesignUrl = project2D.front.layers[0].src;
+        project2D.front.layers.forEach((l) =>
+          uploadedArtworks.push({ name: l.name, url: l.src, side: 'front' })
+        );
+      }
+      if (project2D.back.layers.length > 0) {
+        backDesignUrl = project2D.back.layers[0].src;
+        project2D.back.layers.forEach((l) =>
+          uploadedArtworks.push({ name: l.name, url: l.src, side: 'back' })
+        );
+      }
+    }
+
+    const primaryDesignFileUrl = frontDesignUrl || backDesignUrl || null;
+    const garmentName = mode === '3d' ? currentGarmentConfig3D.name : activeTemplate2D.name;
+    const garmentId = mode === '3d' ? project3D.garmentId : project2D.templateId;
+    const garmentColor = mode === '3d' ? project3D.garmentColor : project2D.garmentColor;
+
+    const payload = {
+      garmentId,
+      garmentName,
+      garmentColor,
+      size: data.size,
+      quantity: data.quantity,
+      price: 999,
+      frontPreviewUrl: cartFrontSnapshot,
+      backPreviewUrl: cartBackSnapshot,
+      previewFileUrl: cartFrontSnapshot || cartBackSnapshot,
+      frontDesignFileUrl: frontDesignUrl,
+      backDesignFileUrl: backDesignUrl,
+      designFileUrl: primaryDesignFileUrl,
+      uploadedArtworks,
+      printInstructions: data.printInstructions,
+      customerNotes: data.printInstructions,
+      mode,
+    };
+
+    // Send to parent host window (Next.js StarBy app)
+    if (typeof window !== 'undefined') {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage(
+          {
+            type: 'ADD_CLOTHING_MOCKUP_TO_CART',
+            payload,
+          },
+          '*'
+        );
+      } else {
+        window.dispatchEvent(
+          new CustomEvent('ADD_CLOTHING_MOCKUP_TO_CART', {
+            detail: payload,
+          })
+        );
+      }
+    }
+  };
+
   const activeTemplate2D = getTemplateById(project2D.templateId);
 
   return (
@@ -758,6 +911,7 @@ export const App: React.FC = () => {
             camera: { ...prev.camera, preset },
           }));
         }}
+        onOpenAddToCart={handleOpenAddToCart}
       />
 
       {/* Main Workspace Body */}
@@ -1008,6 +1162,20 @@ export const App: React.FC = () => {
           );
         })()}
 
+        {/* Floating button to bring slide panel back when hidden */}
+        {isMobile && !mobileDrawerOpen && activeTab !== 'uv3d' && (
+          <button
+            type="button"
+            className="mobile-floating-reopen-btn"
+            onClick={() => setMobileDrawerOpen(true)}
+            aria-label="Open settings panel"
+          >
+            <ChevronUp size={15} className="reopen-chevron-icon" />
+            <SlidersHorizontal size={14} />
+            <span>Open {getDrawerTitle(activeTab, mode)}</span>
+          </button>
+        )}
+
         {/* Center Viewport and Right 2D UV Editor */}
         {mode === '3d' ? (
           <>
@@ -1143,6 +1311,19 @@ export const App: React.FC = () => {
             frameIndex: activeLightingFrameRef.current,
           },
         }}
+      />
+
+      {/* 3D & 2D Add to Cart & Mockup Review Modal */}
+      <AddToCartModal3D
+        isOpen={isAddToCartOpen}
+        onClose={() => setIsAddToCartOpen(false)}
+        garmentName={mode === '3d' ? currentGarmentConfig3D.name : activeTemplate2D.name}
+        garmentColor={mode === '3d' ? project3D.garmentColor : project2D.garmentColor}
+        frontSnapshotUrl={cartFrontSnapshot}
+        backSnapshotUrl={cartBackSnapshot}
+        artworkLayers={project3D.artworkLayers}
+        isGeneratingSnapshots={isCapturingCartSnapshots}
+        onConfirmAddToCart={handleConfirmAddToCart}
       />
     </div>
   );

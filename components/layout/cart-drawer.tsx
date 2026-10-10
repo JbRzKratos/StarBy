@@ -29,6 +29,7 @@ export function CartDrawer() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
+    void useCartStore.getState().syncPrices();
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && useCartStore.getState().isOpen) {

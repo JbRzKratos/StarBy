@@ -140,15 +140,15 @@ const PLACEMENT_DEFINITIONS: PlacementDef[] = [
     title: 'Night City: Neon Horizon Wave',
     tagline: '9-Piece Stepped Wave Split & Cyberpunk Megacity',
     description:
-      'Atmospheric cyberpunk composition with a 5-panel stepped wave split of Night City’s skyscrapers, flanked by Elden Ring Erdtree and Ghost of Tsushima portraits.',
-    themeSlug: 'gaming',
+      'Atmospheric gaming composition with a 5-panel stepped wave split of Call of Duty Warzone Recon, flanked by Red Dead Redemption and cyberpunk character art.',
+    themeSlug: 'gamers',
     themeName: 'Gaming / Cyberpunk',
     layoutId: 'hybrid-stepped-wave-flank-9',
     accentColor: '#00E5FF',
     badge: 'Stepped Wave Flank',
-    splitArtTheme: 'gaming',
+    splitArtTheme: 'gamers',
     splitArtIndex: 0,
-    surroundTheme: 'gaming',
+    surroundTheme: 'gamers',
   },
   {
     id: 'placement-stepped-heritage-twin-vigilantes',
@@ -156,31 +156,31 @@ const PLACEMENT_DEFINITIONS: PlacementDef[] = [
     title: 'Twin Vigilantes: Gotham & Manhattan Heritage',
     tagline: '11-Piece Grand Heritage with 13×19" Monoliths',
     description:
-      'Monumental 11-print crossover featuring a central 5-panel stepped wave split framed by dual 13×19" vertical monoliths of Batman Noir and Spider-Man, with 4 A5 horizon frames.',
+      'Monumental 11-print crossover featuring a central 5-panel stepped wave split framed by dual 13×19" vertical monoliths of Batman and Miles Morales, with 4 A5 horizon frames.',
     themeSlug: 'dc',
     themeName: 'DC & Marvel / Crossover',
     layoutId: 'hybrid-stepped-wave-heritage-11',
     accentColor: '#7C4DFF',
     badge: 'Grand Heritage',
-    splitArtTheme: 'dc',
+    splitArtTheme: 'marvel',
     splitArtIndex: 0,
-    surroundTheme: 'marvel',
+    surroundTheme: 'dc',
   },
   {
     id: 'placement-grid2x2-nordic-minimal',
     slug: 'grid2x2-nordic-minimal-6',
-    title: 'Nordic Horizon: 2×2 Salon with 13×19 Pillars',
-    tagline: '6-Piece Architectural Grid & Monumental Anchors',
+    title: 'Cosmic Horizon: Interstellar 2×2 Salon',
+    tagline: '6-Piece Deep Space Grid & Monumental Anchors',
     description:
-      'Serene Scandinavian design featuring a 2×2 windowpane grid split of minimalist architectural photography flanked by dual flagship 13×19" monochrome prints.',
-    themeSlug: 'minimal',
-    themeName: 'Minimalist / Architecture',
+      'Sublime sci-fi design featuring a 2×2 windowpane grid split of Gargantua Event Horizon flanked by dual flagship 13×19" deep space exploration prints.',
+    themeSlug: 'interstellar',
+    themeName: 'Interstellar / Deep Space',
     layoutId: 'hybrid-grid2x2-heritage-6',
-    accentColor: '#E0E0E0',
+    accentColor: '#4A90E2',
     badge: 'Curated Salon',
-    splitArtTheme: 'minimal',
+    splitArtTheme: 'interstellar',
     splitArtIndex: 0,
-    surroundTheme: 'minimal',
+    surroundTheme: 'interstellar',
   },
   {
     id: 'placement-grid3x2-neon-nexus',
@@ -188,15 +188,15 @@ const PLACEMENT_DEFINITIONS: PlacementDef[] = [
     title: 'Neon Nexus: 3×2 Mosaic Grid Enclave',
     tagline: '10-Piece Continuous Mosaic Grid with Framing A4s',
     description:
-      'Detailed 6-panel mosaic grid split (A6 panels) framed on all four sides by curated high-definition gaming and cyberpunk concept art.',
-    themeSlug: 'gaming',
-    themeName: 'Gaming / Concept Art',
+      'Detailed 6-panel mosaic grid split (A6 panels) framed on all four sides by curated high-definition gaming and concept art.',
+    themeSlug: 'gamers',
+    themeName: 'Gamers / Concept Art',
     layoutId: 'hybrid-grid3x2-panoramic-10',
     accentColor: '#FF0055',
     badge: 'Mosaic Enclave',
-    splitArtTheme: 'gaming',
+    splitArtTheme: 'gamers',
     splitArtIndex: 0,
-    surroundTheme: 'gaming',
+    surroundTheme: 'gamers',
   },
   {
     id: 'placement-grid3x3-gargantua-matrix',
@@ -205,14 +205,14 @@ const PLACEMENT_DEFINITIONS: PlacementDef[] = [
     tagline: '11-Piece High-Impact 9-Panel Core with 13×19" Guardians',
     description:
       'Breathtaking 3×3 matrix grid continuous split depicting deep space and gravitational horizons, safeguarded on both wings by towering 13×19" vertical sci-fi monuments.',
-    themeSlug: 'cinema',
+    themeSlug: 'interstellar',
     themeName: 'Cinema & Sci-Fi',
     layoutId: 'hybrid-grid3x3-matrix-11',
     accentColor: '#00F0FF',
     badge: 'High Impact Matrix',
-    splitArtTheme: 'cars',
+    splitArtTheme: 'interstellar',
     splitArtIndex: 0,
-    surroundTheme: 'minimal',
+    surroundTheme: 'interstellar',
   },
   {
     id: 'placement-classic3-monaco-sandwich',
@@ -284,15 +284,15 @@ const PLACEMENT_DEFINITIONS: PlacementDef[] = [
     title: 'Night City: Megabuilding Monolith',
     tagline: '8-Piece 4-Tier Vertical Spire with Flanking Columns',
     description:
-      'Futuristic vertical composition featuring a 4-tier stacked horizontal A5 continuous split framed by 4 vertical A4 portraits of cybernetic characters.',
-    themeSlug: 'gaming',
-    themeName: 'Cyberpunk & Gaming',
+      'Futuristic gaming composition featuring a 4-tier stacked horizontal continuous split framed by vertical A4 portraits of cybernetic legends.',
+    themeSlug: 'gamers',
+    themeName: 'Cyberpunk & Gamers',
     layoutId: 'hybrid-vertical4-monolith-8',
     accentColor: '#00E676',
     badge: 'Vertical Monolith',
-    splitArtTheme: 'gaming',
+    splitArtTheme: 'gamers',
     splitArtIndex: 0,
-    surroundTheme: 'gaming',
+    surroundTheme: 'gamers',
   },
   {
     id: 'placement-stepped-gotham-salon-enclave',
@@ -313,18 +313,18 @@ const PLACEMENT_DEFINITIONS: PlacementDef[] = [
   {
     id: 'placement-grid2x2-zen-windowpane',
     slug: 'grid2x2-zen-windowpane-8',
-    title: 'Zen Horizon: 2×2 Surrounded Windowpane',
+    title: 'MotoGP Apex: 2×2 Windowpane Salon',
     tagline: '8-Piece Landscape Grid Enclosed by Symmetrical Frames',
     description:
-      'Harmonious 2×2 landscape grid split enclosed on all four cardinal directions by A4 portrait and landscape gallery frames.',
-    themeSlug: 'minimal',
-    themeName: 'Minimalist & Zen Nature',
+      'High-adrenaline 2×2 landscape grid split enclosed on all four cardinal directions by MotoGP and superbike gallery frames.',
+    themeSlug: 'bikes',
+    themeName: 'MotoGP & Superbikes',
     layoutId: 'hybrid-grid2x2-windowpane-8',
-    accentColor: '#8D6E63',
+    accentColor: '#F0FF00',
     badge: 'Surrounded Salon',
-    splitArtTheme: 'minimal',
+    splitArtTheme: 'bikes',
     splitArtIndex: 0,
-    surroundTheme: 'minimal',
+    surroundTheme: 'bikes',
   },
   {
     id: 'placement-classic3-silverstone-triptych',
@@ -345,18 +345,18 @@ const PLACEMENT_DEFINITIONS: PlacementDef[] = [
   {
     id: 'placement-vertical5-neotokyo-spire',
     slug: 'vertical5-neotokyo-spire-11',
-    title: 'Neo-Tokyo Rain: 5-Tier High-Rise Spire',
-    tagline: '11-Piece High-Rise Spire with Towering Gallery Columns',
+    title: 'Peaky Blinders & Crime Noir: 5-Tier Spire',
+    tagline: '11-Piece High-Rise Spire with Peaky Blinders & Crime Drama',
     description:
-      'Architectural vertical statement wall featuring a 5-tier stacked split spire framed by towering 3-piece vertical columns.',
-    themeSlug: 'gaming',
-    themeName: 'Cyberpunk & Neo-Tokyo',
+      'Architectural vertical statement wall featuring Thomas Shelby and Peaky Blinders crime noir prints framed by towering portrait gallery columns.',
+    themeSlug: 'netflix-series',
+    themeName: 'Peaky Blinders & Crime Drama',
     layoutId: 'hybrid-vertical5-spire-11',
-    accentColor: '#D500F9',
+    accentColor: '#E50914',
     badge: 'High-Rise Spire',
-    splitArtTheme: 'gaming',
+    splitArtTheme: 'netflix-series',
     splitArtIndex: 0,
-    surroundTheme: 'gaming',
+    surroundTheme: 'netflix-series',
   },
 ];
 
@@ -374,49 +374,240 @@ const ALL_PLACEMENTS = PLACEMENT_DEFINITIONS.map((def) => {
   const selections: Record<string, SlotSelection> = {};
   let surroundCounter = 0;
 
-  layout.slots.forEach((slot) => {
-    if (slot.splitGroupId) {
-      // Split slot
-      selections[slot.id] = {
-        slotId: slot.id,
-        artworkId: splitArt.id,
-        title: splitArt.title,
-        imageUrl: splitArt.imageUrl,
-        thumbnailUrl: splitArt.thumbnailUrl,
-        splitGroupId: slot.splitGroupId,
-        panelIndex: slot.panelIndex ?? null,
-        physicalSize: slot.size,
-        price: splitArt.price,
-      };
-    } else {
-      // Individual surrounding slot
-      // Pick matching orientation if possible
-      let chosen = surroundArtPool.find(
-        (a) =>
-          a.orientation === slot.orientation &&
-          !Object.values(selections).some((s) => s.artworkId === a.id),
-      );
-      if (!chosen) {
-        chosen = surroundArtPool[surroundCounter % surroundArtPool.length];
-      }
-      if (!chosen) {
-        chosen = generalPool[surroundCounter % generalPool.length];
-      }
-      surroundCounter++;
+  if (def.id === 'placement-stepped-gotham-nocturne') {
+    const splitBatman = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('9776c4f2')) || splitArt;
+    const batmanLeft = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('33c23a87')) || FREGORO_ARTWORKS[0];
+    const batmanRight = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('c46d574d')) || FREGORO_ARTWORKS[1];
 
-      selections[slot.id] = {
-        slotId: slot.id,
-        artworkId: chosen.id,
-        title: chosen.title,
-        imageUrl: chosen.imageUrl,
-        thumbnailUrl: chosen.thumbnailUrl,
-        splitGroupId: null,
-        panelIndex: null,
-        physicalSize: slot.size,
-        price: chosen.price,
-      };
-    }
-  });
+    layout.slots.forEach((slot) => {
+      if (slot.splitGroupId) {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: splitBatman.id,
+          title: splitBatman.title,
+          imageUrl: splitBatman.imageUrl,
+          thumbnailUrl: splitBatman.thumbnailUrl,
+          splitGroupId: slot.splitGroupId,
+          panelIndex: slot.panelIndex ?? null,
+          physicalSize: slot.size,
+          price: splitBatman.price,
+        };
+      } else if (slot.id === 'slot-stf5-left-a4') {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: batmanLeft.id,
+          title: batmanLeft.title,
+          imageUrl: batmanLeft.imageUrl,
+          thumbnailUrl: batmanLeft.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: batmanLeft.price,
+        };
+      } else {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: batmanRight.id,
+          title: batmanRight.title,
+          imageUrl: batmanRight.imageUrl,
+          thumbnailUrl: batmanRight.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: batmanRight.price,
+        };
+      }
+    });
+  } else if (def.id === 'placement-stepped-avengers-midtown') {
+    const splitSpider = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('14b9a2cc')) || splitArt;
+    const milesLeft = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('0b07a660')) || FREGORO_ARTWORKS[0];
+    const gwenRight = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('9503e0a3')) || FREGORO_ARTWORKS[1];
+
+    layout.slots.forEach((slot) => {
+      if (slot.splitGroupId) {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: splitSpider.id,
+          title: splitSpider.title,
+          imageUrl: splitSpider.imageUrl,
+          thumbnailUrl: splitSpider.thumbnailUrl,
+          splitGroupId: slot.splitGroupId,
+          panelIndex: slot.panelIndex ?? null,
+          physicalSize: slot.size,
+          price: splitSpider.price,
+        };
+      } else if (slot.id === 'slot-stf5-left-a4') {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: milesLeft.id,
+          title: milesLeft.title,
+          imageUrl: milesLeft.imageUrl,
+          thumbnailUrl: milesLeft.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: milesLeft.price,
+        };
+      } else {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: gwenRight.id,
+          title: gwenRight.title,
+          imageUrl: gwenRight.imageUrl,
+          thumbnailUrl: gwenRight.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: gwenRight.price,
+        };
+      }
+    });
+  } else if (def.id === 'placement-stepped-heritage-twin-vigilantes') {
+    const batmanArch = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('33c23a87')) || FREGORO_ARTWORKS[0];
+    const dodgeArch = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('1c0fd255')) || FREGORO_ARTWORKS[1];
+    const splitSpider = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('14b9a2cc')) || splitArt;
+    const milesTop = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('0b07a660')) || FREGORO_ARTWORKS[2];
+    const gwenTop = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('9503e0a3')) || FREGORO_ARTWORKS[3];
+    const wolverineBot = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('9f8bc212')) || FREGORO_ARTWORKS[4];
+    const supermanBot = FREGORO_ARTWORKS.find((a) => a.imageUrl.includes('81844379')) || FREGORO_ARTWORKS[5];
+
+    layout.slots.forEach((slot) => {
+      if (slot.splitGroupId) {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: splitSpider.id,
+          title: splitSpider.title,
+          imageUrl: splitSpider.imageUrl,
+          thumbnailUrl: splitSpider.thumbnailUrl,
+          splitGroupId: slot.splitGroupId,
+          panelIndex: slot.panelIndex ?? null,
+          physicalSize: slot.size,
+          price: splitSpider.price,
+        };
+      } else if (slot.id === 'slot-swh11-arch-left') {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: batmanArch.id,
+          title: batmanArch.title,
+          imageUrl: batmanArch.imageUrl,
+          thumbnailUrl: batmanArch.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: batmanArch.price,
+        };
+      } else if (slot.id === 'slot-swh11-arch-right') {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: dodgeArch.id,
+          title: dodgeArch.title,
+          imageUrl: dodgeArch.imageUrl,
+          thumbnailUrl: dodgeArch.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: dodgeArch.price,
+        };
+      } else if (slot.id === 'slot-swh11-top-1') {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: milesTop.id,
+          title: milesTop.title,
+          imageUrl: milesTop.imageUrl,
+          thumbnailUrl: milesTop.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: milesTop.price,
+        };
+      } else if (slot.id === 'slot-swh11-top-2') {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: gwenTop.id,
+          title: gwenTop.title,
+          imageUrl: gwenTop.imageUrl,
+          thumbnailUrl: gwenTop.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: gwenTop.price,
+        };
+      } else if (slot.id === 'slot-swh11-bot-1') {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: wolverineBot.id,
+          title: wolverineBot.title,
+          imageUrl: wolverineBot.imageUrl,
+          thumbnailUrl: wolverineBot.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: wolverineBot.price,
+        };
+      } else if (slot.id === 'slot-swh11-bot-2') {
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: supermanBot.id,
+          title: supermanBot.title,
+          imageUrl: supermanBot.imageUrl,
+          thumbnailUrl: supermanBot.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: supermanBot.price,
+        };
+      }
+    });
+  } else {
+    layout.slots.forEach((slot) => {
+      if (slot.splitGroupId) {
+        // Split slot
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: splitArt.id,
+          title: splitArt.title,
+          imageUrl: splitArt.imageUrl,
+          thumbnailUrl: splitArt.thumbnailUrl,
+          splitGroupId: slot.splitGroupId,
+          panelIndex: slot.panelIndex ?? null,
+          physicalSize: slot.size,
+          price: splitArt.price,
+        };
+      } else {
+        // Individual surrounding slot
+        // Pick matching orientation if possible
+        let chosen = surroundArtPool.find(
+          (a) =>
+            a.orientation === slot.orientation &&
+            !Object.values(selections).some((s) => s.artworkId === a.id),
+        );
+        if (!chosen) {
+          chosen = surroundArtPool.find(
+            (a) => !Object.values(selections).some((s) => s.artworkId === a.id),
+          );
+        }
+        if (!chosen) {
+          chosen = surroundArtPool[surroundCounter % surroundArtPool.length];
+        }
+        if (!chosen) {
+          chosen = generalPool[surroundCounter % generalPool.length];
+        }
+        surroundCounter++;
+
+        selections[slot.id] = {
+          slotId: slot.id,
+          artworkId: chosen.id,
+          title: chosen.title,
+          imageUrl: chosen.imageUrl,
+          thumbnailUrl: chosen.thumbnailUrl,
+          splitGroupId: null,
+          panelIndex: null,
+          physicalSize: slot.size,
+          price: chosen.price,
+        };
+      }
+    });
+  }
 
   return {
     id: def.id,

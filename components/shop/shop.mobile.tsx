@@ -12,6 +12,11 @@ import { usePrice } from '@/lib/hooks/usePrice';
 function MobileProductCard({ product, index }: { product: Product; index: number }) {
   const { formatPrice } = usePrice();
   const isComingSoon = product.categorySlug === 'skins';
+  const [imgError, setImgError] = useState(false);
+
+  const fallbackImg = getR2AssetUrl('images/hero/posters.webp');
+  const primaryImg = product.variants[0]?.images?.[0] || fallbackImg;
+  const imgSrc = imgError ? fallbackImg : primaryImg;
 
   return (
     <Link
@@ -23,13 +28,14 @@ function MobileProductCard({ product, index }: { product: Product; index: number
       className="group flex flex-col gap-0 col-span-1"
     >
       {/* Standard Hover Image wrapper */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-smoke/5 rounded-xl border border-transparent active:border-smoke/40 transition-colors">
+      <div className="relative aspect-[3/4] overflow-hidden bg-[#16161A] rounded-xl border border-white/5 active:border-smoke/40 transition-colors">
         <Image
-          src={product.variants[0]?.images?.[0] || getR2AssetUrl('images/hero/hoodies.webp')}
+          src={imgSrc}
           alt={product.name}
           fill
-          priority={index < 4}
-          className="object-cover transition-transform duration-700 active:scale-105"
+          unoptimized
+          priority={index < 6}
+          className="object-cover transition-transform duration-500 active:scale-105"
           sizes="(max-width: 768px) 50vw"
         />
       </div>

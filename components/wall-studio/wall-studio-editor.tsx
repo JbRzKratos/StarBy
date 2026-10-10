@@ -17,7 +17,25 @@ import { WallSummaryBar } from './wall-summary-bar';
 
 export const WallStudioEditor: React.FC = () => {
   const searchParams = useSearchParams();
-  const { setLayout, themeFill } = useWallStudioStore();
+  const { setLayout, themeFill, syncLayoutPrices } = useWallStudioStore();
+
+  // Fetch live layout base prices from PostgreSQL in real-time
+  useEffect(() => {
+    async function fetchLivePrices() {
+      try {
+        const res = await fetch('/api/products/prices', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.wallLayouts) {
+            syncLayoutPrices(data.wallLayouts);
+          }
+        }
+      } catch (err) {
+        console.warn('Could not sync wall studio live prices:', err);
+      }
+    }
+    fetchLivePrices();
+  }, [syncLayoutPrices]);
 
   // Handle URL query parameters (e.g. ?layout=stepped-grand or ?prebuilt=batman-archive or ?theme=cars)
   useEffect(() => {

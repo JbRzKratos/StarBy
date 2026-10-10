@@ -35,9 +35,13 @@ function mapCategoryToProductType(categorySlug: string): ProductType | null {
   }
 }
 
+import { getLiveProductBySlug } from '@/lib/services/products-service';
+
 export default async function CustomizePage({ params }: CustomizePageProps) {
-  // Use static product data — no DB query needed for catalogue
-  const product = products.find((p) => p.id === params.productId);
+  // Fetch live product from DB to ensure real-time admin pricing reflection
+  const product =
+    (await getLiveProductBySlug(params.productId)) ||
+    products.find((p) => p.id === params.productId || p.slug === params.productId);
 
   if (!product || !product.customizable) {
     notFound();

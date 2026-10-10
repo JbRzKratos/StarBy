@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useCartStore, type CartItem } from '@/lib/stores/cart-store';
 
 /**
  * ClothingMockupIframe
@@ -112,7 +113,7 @@ export function ClothingMockupIframe() {
     };
   }, []);
 
-  // PostMessage coordinate listener fallback
+  // PostMessage coordinate listener and cart bridge
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       if (e.data && e.data.type === 'CUSTOM_CURSOR_MOVE') {
@@ -127,9 +128,81 @@ export function ClothingMockupIframe() {
           }),
         );
       }
+
+      if (e.data && e.data.type === 'ADD_CLOTHING_MOCKUP_TO_CART') {
+        const payload = e.data.payload;
+        if (!payload) return;
+
+        const executeAdd = async () => {
+          let resolvedPrice = payload.price;
+          if (typeof resolvedPrice !== 'number' || resolvedPrice <= 0) {
+            try {
+              const res = await fetch('/api/products/prices?id=prod_test_tees', { cache: 'no-store' });
+              if (res.ok) {
+                const data = await res.json();
+                if (data.success && typeof data.product?.basePrice === 'number') {
+                  resolvedPrice = data.product.basePrice;
+                }
+              }
+            } catch {
+              resolvedPrice = 999;
+            }
+          }
+
+          const cartItem: CartItem = {
+            productId: 'prod_test_tees',
+            variantId: `mockup-3d-${payload.garmentId || 'tee'}-${String(payload.garmentColor || 'white').replace(/[^a-z0-9]/gi, '')}`,
+            name: `Custom ${payload.garmentName || 'T-Shirt'}`,
+            variant: `${payload.garmentColor || 'Custom'} / ${payload.size || 'L'}`,
+            quantity: payload.quantity || 1,
+            price: resolvedPrice || 999,
+            size: payload.size || 'L',
+            image: payload.frontPreviewUrl || payload.previewFileUrl || undefined,
+            customization: {
+              garment: payload.garmentName,
+              color: payload.garmentColor,
+              size: payload.size,
+              frontDesignFileUrl: payload.frontDesignFileUrl || null,
+              backDesignFileUrl: payload.backDesignFileUrl || null,
+              designFileUrl:
+                payload.designFileUrl ||
+                payload.frontDesignFileUrl ||
+                payload.backDesignFileUrl ||
+                null,
+              frontPreviewFileUrl: payload.frontPreviewUrl || null,
+              backPreviewFileUrl: payload.backPreviewUrl || null,
+              previewFileUrl: payload.previewFileUrl || payload.frontPreviewUrl || null,
+              printPosition: 'Custom 3D Studio Mockup',
+              printInstructions: payload.printInstructions || 'Custom 3D Studio Placement',
+              customerNotes: payload.customerNotes || payload.printInstructions || null,
+              uploadedArtworks: payload.uploadedArtworks || [],
+              is3dMockup: true,
+            },
+          };
+
+          useCartStore.getState().addItem(cartItem);
+          useCartStore.getState().setCartOpen(true);
+        };
+
+        void executeAdd();
+      }
     };
+
+    const handleCustomEvent = (e: Event) => {
+      const customEvt = e as CustomEvent;
+      if (customEvt.detail) {
+        handleMessage({
+          data: { type: 'ADD_CLOTHING_MOCKUP_TO_CART', payload: customEvt.detail },
+        } as MessageEvent);
+      }
+    };
+
     window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
+    window.addEventListener('ADD_CLOTHING_MOCKUP_TO_CART', handleCustomEvent);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      window.removeEventListener('ADD_CLOTHING_MOCKUP_TO_CART', handleCustomEvent);
+    };
   }, []);
 
   const handleIframeLoad = () => {

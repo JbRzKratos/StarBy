@@ -77,6 +77,7 @@ interface CartActions {
   clearCart: () => void;
   toggleCart: () => void;
   setCartOpen: (open: boolean) => void;
+  syncPrices: () => Promise<void>;
   totalItems: () => number;
   totalPrice: () => number;
 }
@@ -131,8 +132,62 @@ export const useCartStore = create<CartState & CartActions>()(
           })),
 
         clearCart: () => set({ items: [] }),
-        toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
-        setCartOpen: (open) => set({ isOpen: open }),
+        toggleCart: () => {
+          const next = !get().isOpen;
+          if (next) void get().syncPrices();
+          set({ isOpen: next });
+        },
+        setCartOpen: (open) => {
+          if (open) void get().syncPrices();
+          set({ isOpen: open });
+        },
+
+        syncPrices: async () => {
+          const currentItems = get().items;
+          if (currentItems.length === 0) return;
+          try {
+            const res = await fetch('/api/products/prices', { cache: 'no-store' });
+            if (!res.ok) return;
+            const data = await res.json();
+            if (!data?.success) return;
+
+            let changed = false;
+            const updated = currentItems.map((item) => {
+              let livePrice: number | undefined;
+
+              // Check variants first
+              if (item.variantId && data.variants?.[item.variantId]) {
+                livePrice = data.variants[item.variantId].price;
+              } else if (item.productId && data.products?.[item.productId]) {
+                livePrice = data.products[item.productId];
+              }
+
+              // Also check wall layouts and prebuilt setups for live pricing
+              if (item.customization?.isWallProduct || item.productId.startsWith('wall_') || item.productId.startsWith('prebuilt_')) {
+                const layoutSlug = (item.customization?.layoutSlug as string) || (item.customization?.layoutId as string);
+                if (layoutSlug && data.wallLayouts?.[layoutSlug] !== undefined) {
+                  livePrice = data.wallLayouts[layoutSlug];
+                } else if (item.productId && data.products?.[item.productId] !== undefined) {
+                  livePrice = data.products[item.productId];
+                } else if (layoutSlug && data.prebuiltWalls?.[layoutSlug] !== undefined) {
+                  livePrice = data.prebuiltWalls[layoutSlug];
+                }
+              }
+
+              if (typeof livePrice === 'number' && livePrice !== item.price && livePrice >= 0) {
+                changed = true;
+                return { ...item, price: livePrice };
+              }
+              return item;
+            });
+
+            if (changed) {
+              set({ items: updated });
+            }
+          } catch (err) {
+            console.warn('[CartStore] syncPrices error:', err);
+          }
+        },
 
         totalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
         totalPrice: () => get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),

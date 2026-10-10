@@ -8,9 +8,10 @@
 import { products as staticProducts, type Product } from '@/data/products';
 import { categories as staticCategories, type Category } from '@/data/categories';
 import { deviceModels as staticDeviceModels, type DeviceModel } from '@/data/devices';
+import { getLiveProducts } from './products-service';
 
 export async function getProductsFromDB(): Promise<Product[]> {
-  return staticProducts;
+  return getLiveProducts();
 }
 
 export async function getCategoriesFromDB(): Promise<Category[]> {

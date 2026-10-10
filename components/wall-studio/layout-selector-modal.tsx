@@ -6,7 +6,7 @@ import { FREGORO_LAYOUTS } from '@/lib/wall-studio/layouts-data';
 import { X, Check, Layers, Ruler, Grid3X3, Sparkles } from 'lucide-react';
 
 export const LayoutSelectorModal: React.FC = () => {
-  const { isLayoutSelectorOpen, currentLayout, closeLayoutSelector, setLayout } =
+  const { isLayoutSelectorOpen, currentLayout, closeLayoutSelector, setLayout, layoutPrices } =
     useWallStudioStore();
 
   const [activeTab, setActiveTab] = useState<'all' | 'hybrid' | 'gallery'>('all');
@@ -206,12 +206,22 @@ export const LayoutSelectorModal: React.FC = () => {
                         {layout.category === 'hybrid' ? '✦ Split + Frames' : 'Gallery Wall'}
                       </span>
                       <div className="flex items-baseline gap-1.5 shrink-0">
-                        <span className="text-sm font-bold text-white">₹{layout.basePrice}</span>
-                        {layout.compareAtPrice && (
-                          <span className="text-xs text-white/40 line-through font-mono">
-                            ₹{layout.compareAtPrice}
-                          </span>
-                        )}
+                        {(() => {
+                          const effectivePrice =
+                            layoutPrices[layout.slug] ?? layoutPrices[layout.id] ?? layout.basePrice;
+                          const effectiveCompareAt =
+                            layout.compareAtPrice ?? Math.round(effectivePrice * 1.35);
+                          return (
+                            <>
+                              <span className="text-sm font-bold text-white">₹{effectivePrice}</span>
+                              {effectiveCompareAt > effectivePrice && (
+                                <span className="text-xs text-white/40 line-through font-mono">
+                                  ₹{effectiveCompareAt}
+                                </span>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
 

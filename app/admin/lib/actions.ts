@@ -100,8 +100,135 @@ export async function updateOrderTracking(
 }
 
 // ═══════════════════════════════════════
-// PRODUCTS
+// PRODUCTS & PRICING
 // ═══════════════════════════════════════
+
+/**
+ * Update product base price.
+ * STRICT SECURITY: ONLY ADMIN access users can change product prices.
+ */
+export async function updateProductPrice(
+  productId: string,
+  newBasePrice: number,
+  syncVariants: boolean = false,
+) {
+  // Enforce ADMIN role check (throws if not admin)
+  await assertAdmin();
+
+  if (typeof newBasePrice !== 'number' || isNaN(newBasePrice) || newBasePrice < 0) {
+    throw new Error('Invalid price: must be a positive number or zero.');
+  }
+
+  const sanitized = Math.round(newBasePrice * 100) / 100;
+
+  const updatedProduct = await prisma.product.update({
+    where: { id: productId },
+    data: { basePrice: sanitized },
+    include: { variants: true },
+  });
+
+  // Optionally propagate base price to variants (e.g. if single variant or requested)
+  if (syncVariants) {
+    await prisma.productVariant.updateMany({
+      where: { productId },
+      data: { price: sanitized },
+    });
+  }
+
+  // Synchronize with Wall Studio tables if this is a Wall Studio layout or Prebuilt Wall
+  if (updatedProduct.categorySlug === 'wall-studio' || productId.startsWith('wall_')) {
+    const layoutSlug = updatedProduct.slug.replace(/^wall-layout-/, '').replace(/^wall_/, '');
+    const cleanId = productId.replace(/^wall_/, '');
+    try {
+      await prisma.wallLayout.updateMany({
+        where: {
+          OR: [
+            { slug: layoutSlug },
+            { id: cleanId },
+            { id: productId },
+            { slug: updatedProduct.slug },
+          ],
+        },
+        data: { basePrice: sanitized },
+      });
+    } catch (e) {
+      console.warn('Could not update wallLayout in sync:', e);
+    }
+  }
+
+  if (updatedProduct.categorySlug === 'wall-studio' || productId.startsWith('prebuilt_')) {
+    const prebuiltSlug = updatedProduct.slug.replace(/^prebuilt-wall-/, '').replace(/^prebuilt_/, '');
+    const cleanId = productId.replace(/^prebuilt_/, '');
+    try {
+      await prisma.prebuiltWallProduct.updateMany({
+        where: {
+          OR: [
+            { slug: prebuiltSlug },
+            { id: cleanId },
+            { id: productId },
+            { slug: updatedProduct.slug },
+          ],
+        },
+        data: { basePrice: sanitized },
+      });
+    } catch (e) {
+      console.warn('Could not update prebuiltWallProduct in sync:', e);
+    }
+  }
+
+  // Bust cache across entire storefront and admin paths
+  revalidatePath('/admin/products');
+  revalidatePath(`/admin/products/${productId}/edit`);
+  revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/wall-studio');
+  revalidatePath('/api/wall-studio/layouts');
+  revalidatePath('/split-poster');
+  revalidatePath('/magazine');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/cart');
+  revalidatePath('/checkout');
+  revalidatePath('/', 'layout');
+
+  return { success: true, basePrice: sanitized, product: updatedProduct };
+}
+
+/**
+ * Update product variant price.
+ * STRICT SECURITY: ONLY ADMIN access users can change variant prices.
+ */
+export async function updateVariantPrice(variantId: string, newPrice: number) {
+  // Enforce ADMIN role check (throws if not admin)
+  await assertAdmin();
+
+  if (typeof newPrice !== 'number' || isNaN(newPrice) || newPrice < 0) {
+    throw new Error('Invalid price: must be a positive number or zero.');
+  }
+
+  const sanitized = Math.round(newPrice * 100) / 100;
+
+  const updatedVariant = await prisma.productVariant.update({
+    where: { id: variantId },
+    data: { price: sanitized },
+  });
+
+  revalidatePath('/admin/products');
+  revalidatePath(`/admin/products/${updatedVariant.productId}/edit`);
+  revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/wall-studio');
+  revalidatePath('/api/wall-studio/layouts');
+  revalidatePath('/split-poster');
+  revalidatePath('/magazine');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/cart');
+  revalidatePath('/checkout');
+  revalidatePath('/', 'layout');
+
+  return { success: true, price: sanitized, variant: updatedVariant };
+}
 
 export async function toggleVariantStock(variantId: string, inStock: boolean) {
   await assertStaff();
@@ -110,9 +237,12 @@ export async function toggleVariantStock(variantId: string, inStock: boolean) {
 }
 
 export async function deleteProduct(productId: string) {
-  await assertStaff();
+  await assertAdmin();
   await prisma.product.delete({ where: { id: productId } });
   revalidatePath('/admin/products');
+  revalidatePath('/products');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/', 'layout');
 }
 
 export async function createProduct(data: {
@@ -127,10 +257,31 @@ export async function createProduct(data: {
   tags: string[];
   sizes: string[];
 }) {
-  await assertStaff();
-  const product = await prisma.product.create({ data });
+  await assertAdmin();
+  const product = await prisma.product.create({
+    data: {
+      ...data,
+      variants: {
+        create: [
+          {
+            name: 'Standard',
+            color: 'Default',
+            colorHex: '#0E0E0F',
+            price: data.basePrice,
+            images: [],
+            inStock: true,
+            stockQuantity: 100,
+            reorderThreshold: 5,
+          },
+        ],
+      },
+    },
+    include: { variants: true },
+  });
   revalidatePath('/admin/products');
   revalidatePath('/products');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/', 'layout');
   return product;
 }
 
@@ -149,10 +300,19 @@ export async function updateProduct(
     sizes?: string[];
   },
 ) {
-  await assertStaff();
+  // Price changes strictly require admin access
+  if (data.basePrice !== undefined) {
+    await assertAdmin();
+  } else {
+    await assertStaff();
+  }
   await prisma.product.update({ where: { id: productId }, data });
   revalidatePath('/admin/products');
+  revalidatePath(`/admin/products/${productId}/edit`);
   revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/', 'layout');
 }
 
 export async function createVariant(data: {
@@ -166,9 +326,11 @@ export async function createVariant(data: {
   stockQuantity: number;
   reorderThreshold: number;
 }) {
-  await assertStaff();
+  await assertAdmin();
   await prisma.productVariant.create({ data });
   revalidatePath(`/admin/products/${data.productId}/edit`);
+  revalidatePath('/admin/products');
+  revalidatePath('/products');
 }
 
 export async function updateVariant(
@@ -183,15 +345,24 @@ export async function updateVariant(
     reorderThreshold?: number;
   },
 ) {
-  await assertStaff();
-  await prisma.productVariant.update({ where: { id: variantId }, data });
+  // Price changes strictly require admin access
+  if (data.price !== undefined) {
+    await assertAdmin();
+  } else {
+    await assertStaff();
+  }
+  const variant = await prisma.productVariant.update({ where: { id: variantId }, data });
   revalidatePath('/admin/products');
+  revalidatePath(`/admin/products/${variant.productId}/edit`);
+  revalidatePath('/products');
+  revalidatePath('/', 'layout');
 }
 
 export async function deleteVariant(variantId: string) {
-  await assertStaff();
+  await assertAdmin();
   await prisma.productVariant.delete({ where: { id: variantId } });
   revalidatePath('/admin/products');
+  revalidatePath('/products');
 }
 
 // ═══════════════════════════════════════

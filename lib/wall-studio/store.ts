@@ -28,6 +28,7 @@ interface WallStudioState {
   roomScene: RoomSceneId;
   customRoomImageUrl: string | null;
   pricing: PriceBreakdown;
+  layoutPrices: Record<string, number>;
 
   // History for Undo/Redo
   history: Array<Record<string, SlotSelection>>;
@@ -44,6 +45,7 @@ interface WallStudioState {
 
 interface WallStudioActions {
   setLayout: (layoutIdOrSlug: string, presetSelections?: Record<string, SlotSelection>) => void;
+  syncLayoutPrices: (prices: Record<string, number>) => void;
   setActiveSlot: (slotId: string | null) => void;
   setActiveTheme: (themeSlug: string) => void;
   setViewMode: (mode: StudioViewMode) => void;
@@ -116,6 +118,7 @@ export const useWallStudioStore = create<WallStudioState & WallStudioActions>()(
           roomScene: 'modern-living',
           customRoomImageUrl: null,
           pricing: initialPricing,
+          layoutPrices: {},
 
           history: [initialSelections],
           historyIndex: 0,
@@ -127,8 +130,38 @@ export const useWallStudioStore = create<WallStudioState & WallStudioActions>()(
           isShareModalOpen: false,
           isPlacementsModalOpen: false,
 
+          syncLayoutPrices: (prices: Record<string, number>) => {
+            const { currentLayout, selections } = get();
+            const livePrice = prices[currentLayout.slug] ?? prices[currentLayout.id];
+            const updatedLayout =
+              livePrice !== undefined
+                ? {
+                    ...currentLayout,
+                    basePrice: livePrice,
+                    compareAtPrice: Math.round(livePrice * 1.35),
+                  }
+                : currentLayout;
+            const updatedPricing = calculateWallPrice(updatedLayout, selections);
+            set({
+              layoutPrices: prices,
+              currentLayout: updatedLayout,
+              pricing: updatedPricing,
+            });
+          },
+
           setLayout: (layoutIdOrSlug, presetSelections) => {
-            const nextLayout = getLayoutById(layoutIdOrSlug) || INITIAL_LAYOUT;
+            const rawLayout = getLayoutById(layoutIdOrSlug) || INITIAL_LAYOUT;
+            const { layoutPrices } = get();
+            const livePrice = layoutPrices[rawLayout.slug] ?? layoutPrices[rawLayout.id];
+            const nextLayout =
+              livePrice !== undefined
+                ? {
+                    ...rawLayout,
+                    basePrice: livePrice,
+                    compareAtPrice: Math.round(livePrice * 1.35),
+                  }
+                : rawLayout;
+
             let newSelections: Record<string, SlotSelection> = {};
 
             if (presetSelections && Object.keys(presetSelections).length > 0) {
@@ -491,12 +524,26 @@ export const useWallStudioStore = create<WallStudioState & WallStudioActions>()(
         };
       },
       {
-        name: 'fregoro-wall-studio-v6',
+        name: 'fregoro-wall-studio-v7',
         partialize: (state) => ({
           currentLayout: state.currentLayout,
           selections: state.selections,
           cleanWallColor: state.cleanWallColor,
         }),
+        onRehydrateStorage: () => (state) => {
+          if (!state) return;
+          const badGuids = ['013309f5', '0055e015', '015720d7', '26de273e', '0afe6ec5', '0bcd7e53'];
+          const hasBadImages = Object.values(state.selections || {}).some((s) =>
+            badGuids.some((bg) => s?.imageUrl?.includes(bg)),
+          );
+          if (hasBadImages) {
+            const matching =
+              FREGORO_DESIGN_PLACEMENTS.find((p) => p.layoutId === state.currentLayout?.id) ||
+              FREGORO_DESIGN_PLACEMENTS[0];
+            state.selections = { ...matching.selections };
+            state.pricing = calculateWallPrice(state.currentLayout, state.selections);
+          }
+        },
       },
     ),
     { name: 'WallStudioStore', enabled: process.env.NODE_ENV === 'development' },

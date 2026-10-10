@@ -10,6 +10,7 @@ import {
   Maximize2,
   FolderOpen,
   Save,
+  ShoppingBag,
 } from 'lucide-react';
 import type { GarmentSide } from '../types/mockup';
 
@@ -33,6 +34,7 @@ interface HeaderProps {
   onSaveProject: () => void;
   onLoadProject: () => void;
   onCameraPreset3D?: (preset: 'front' | 'back' | 'threeQuarter') => void;
+  onOpenAddToCart?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -55,6 +57,7 @@ export const Header: React.FC<HeaderProps> = ({
   onSaveProject,
   onLoadProject,
   onCameraPreset3D,
+  onOpenAddToCart,
 }) => {
   return (
     <header className="app-header">
@@ -224,6 +227,20 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="export-text-full">{mode === '3d' ? 'Export 3D' : 'Export Mockup'}</span>
           <span className="export-text-mobile">Export</span>
         </button>
+
+        {/* Add to Cart Button */}
+        {onOpenAddToCart && (
+          <button
+            id="btn-add-to-cart"
+            className="header-btn btn-add-to-cart"
+            onClick={onOpenAddToCart}
+            title="Review 3D Mockup & Add to Bag"
+          >
+            <ShoppingBag size={15} />
+            <span className="cart-text-full">Add to Bag</span>
+            <span className="cart-text-mobile">Bag</span>
+          </button>
+        )}
       </div>
     </header>
   );

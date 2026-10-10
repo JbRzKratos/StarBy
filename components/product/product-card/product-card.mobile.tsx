@@ -37,6 +37,7 @@ export function ProductCardMobile({ product }: ProductCardProps) {
                 src={variant.images[0]}
                 alt={product.name}
                 fill
+                unoptimized
                 className="object-cover"
                 sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
               />

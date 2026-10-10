@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
-import { getProductBySlug } from '@/data/products';
+import { getLiveProductBySlug } from '@/lib/services/products-service';
 import { ProductDetailClient } from '@/components/product/product-detail-client';
 import { getPrebuiltWallBySlug } from '@/lib/wall-studio/prebuilt-walls-data';
 import { PrebuiltWallDetail } from '@/components/wall-studio/prebuilt-wall-detail';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
 
 interface ProductPageProps {
   params: { category: string; slug: string };
@@ -19,7 +21,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     };
   }
 
-  const product = getProductBySlug(params.slug);
+  const product = await getLiveProductBySlug(params.slug);
   return {
     title: product?.name ?? 'Product',
     description: product?.description ?? 'Fregoro Studios premium product.',
@@ -33,7 +35,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     return <PrebuiltWallDetail wall={prebuilt} />;
   }
 
-  const product = getProductBySlug(params.slug);
+  const product = await getLiveProductBySlug(params.slug);
   if (!product) return notFound();
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';

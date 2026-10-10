@@ -45,7 +45,8 @@ const SKIN_PREVIEWS = [
   },
 ];
 
-export function FeaturedProducts() {
+export function FeaturedProducts({ initialProducts }: { initialProducts?: Product[] } = {}) {
+  const productList = initialProducts || products;
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState('all');
@@ -73,20 +74,40 @@ export function FeaturedProducts() {
     { scope: sectionRef, dependencies: [activeTab] },
   );
 
+  // Filter out test items (basePrice === 1 are test/dummy products)
+  const realProducts = productList.filter((p) => p.basePrice > 1);
+
   let filtered: Product[] = [];
   if (activeTab === 'all') {
-    filtered = products.filter((p) => p.featured && p.categorySlug !== 'skins').slice(0, 8);
+    // Prioritize: posters first, then split-posters, then other categories
+    const postersFeatured = realProducts.filter((p) => p.featured && p.categorySlug === 'posters').slice(0, 4);
+    const otherFeatured = realProducts
+      .filter((p) => p.featured && p.categorySlug !== 'skins' && p.categorySlug !== 'posters')
+      .slice(0, 4);
+    filtered = [...postersFeatured, ...otherFeatured].slice(0, 8);
+    // Fallback if still empty
+    if (filtered.length === 0) {
+      filtered = realProducts.filter((p) => p.categorySlug !== 'skins').slice(0, 8);
+    }
   } else if (activeTab === 'hoodies') {
-    filtered = products
+    filtered = realProducts
       .filter((p) => p.categorySlug === 'hoodies' || p.categorySlug === 'tees')
       .slice(0, 8);
+  } else if (activeTab === 'posters') {
+    // Show featured posters first, then any posters
+    const featuredPosters = realProducts.filter((p) => p.featured && p.categorySlug === 'posters');
+    if (featuredPosters.length >= 4) {
+      filtered = featuredPosters.slice(0, 8);
+    } else {
+      filtered = realProducts.filter((p) => p.categorySlug === 'posters').slice(0, 8);
+    }
   } else if (activeTab !== 'skins') {
-    filtered = products.filter((p) => p.categorySlug === activeTab).slice(0, 8);
+    filtered = realProducts.filter((p) => p.categorySlug === activeTab).slice(0, 8);
   }
 
   // Fallback if empty and not skins
   if (filtered.length === 0 && activeTab !== 'skins') {
-    filtered = products.filter((p) => p.categorySlug !== 'skins').slice(0, 8);
+    filtered = realProducts.filter((p) => p.categorySlug !== 'skins').slice(0, 8);
   }
 
   const handleWaitlist = async (e: React.FormEvent) => {
@@ -232,6 +253,7 @@ export function FeaturedProducts() {
                       src={item.image}
                       alt={item.name}
                       fill
+                      unoptimized
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       className="object-contain p-4 transition-transform duration-700 group-hover:scale-105"
                     />

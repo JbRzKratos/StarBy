@@ -556,6 +556,90 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                           </div>
                         )}
 
+                      {/* 3D Mockup Placement Visuals (Front & Back) */}
+                      {item.customization &&
+                        (item.customization.frontPreviewFileUrl ||
+                          item.customization.backPreviewFileUrl ||
+                          item.orderCustomization?.previewFileUrl) && (
+                          <div className="space-y-2 pt-1 border-t border-white/5 mt-2">
+                            <span className="font-mono text-[10px] text-white/50 uppercase tracking-wider font-bold block">
+                              3D Studio Garment Mockups (Placement Reference):
+                            </span>
+                            <div className="grid grid-cols-2 gap-2">
+                              {(item.customization.frontPreviewFileUrl ||
+                                item.orderCustomization?.previewFileUrl) && (
+                                <div className="p-2 bg-white/[0.02] border border-[#0057FF]/30 rounded-lg space-y-1.5">
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-mono text-[10px] text-blue-400 font-semibold">
+                                      Front 3D Mockup
+                                    </span>
+                                    <a
+                                      href={
+                                        (item.customization.frontPreviewFileUrl as string) ||
+                                        (item.orderCustomization?.previewFileUrl as string)
+                                      }
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="text-[10px] text-[#0057FF] hover:underline font-mono"
+                                    >
+                                      View Full ↗
+                                    </a>
+                                  </div>
+                                  <a
+                                    href={
+                                      (item.customization.frontPreviewFileUrl as string) ||
+                                      (item.orderCustomization?.previewFileUrl as string)
+                                    }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="block aspect-square rounded border border-white/10 overflow-hidden bg-black/60"
+                                  >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                      src={
+                                        (item.customization.frontPreviewFileUrl as string) ||
+                                        (item.orderCustomization?.previewFileUrl as string)
+                                      }
+                                      alt="Front 3D mockup proof"
+                                      className="w-full h-full object-contain"
+                                    />
+                                  </a>
+                                </div>
+                              )}
+                              {item.customization.backPreviewFileUrl && (
+                                <div className="p-2 bg-white/[0.02] border border-[#0057FF]/30 rounded-lg space-y-1.5">
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-mono text-[10px] text-blue-400 font-semibold">
+                                      Back 3D Mockup
+                                    </span>
+                                    <a
+                                      href={item.customization.backPreviewFileUrl as string}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="text-[10px] text-[#0057FF] hover:underline font-mono"
+                                    >
+                                      View Full ↗
+                                    </a>
+                                  </div>
+                                  <a
+                                    href={item.customization.backPreviewFileUrl as string}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="block aspect-square rounded border border-white/10 overflow-hidden bg-black/60"
+                                  >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                      src={item.customization.backPreviewFileUrl as string}
+                                      alt="Back 3D mockup proof"
+                                      className="w-full h-full object-contain"
+                                    />
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
                       {/* Editorial Magazine Customer Data & Uploaded Images */}
                       {item.customization &&
                         (item.customization.magazineTitle ||

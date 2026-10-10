@@ -8,6 +8,7 @@ import {
   updateProduct,
   createVariant,
   deleteVariant,
+  updateVariantPrice,
 } from '@/app/admin/lib/actions';
 
 interface CategoryOption {
@@ -386,15 +387,39 @@ export function ProductFormClient({
               <span className="text-sm text-bone/90 flex-1">
                 {v.name} — {v.color}
               </span>
-              <span className="text-xs text-ash/60">₹{v.price}</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-ash/80">₹</span>
+                <input
+                  type="number"
+                  min={0}
+                  step="any"
+                  defaultValue={v.price}
+                  onBlur={async (e) => {
+                    const p = parseFloat(e.target.value);
+                    if (!isNaN(p) && p >= 0 && p !== v.price) {
+                      try {
+                        await updateVariantPrice(v.id, p);
+                        setVariants((prev) =>
+                          prev.map((item) => (item.id === v.id ? { ...item, price: p } : item)),
+                        );
+                        show(`Variant price updated to ₹${p}`, 'success');
+                      } catch (err: unknown) {
+                        const msg = err instanceof Error ? err.message : 'Failed to update price';
+                        show(msg, 'error');
+                      }
+                    }
+                  }}
+                  className="w-20 px-2 py-1 text-xs bg-black/60 border border-white/20 rounded text-bone font-mono focus:border-[#3B5EFF] focus:outline-none"
+                />
+              </div>
               <span
-                className={`text-xs font-medium ${v.inStock ? 'text-green-700' : 'text-red-600'}`}
+                className={`text-xs font-medium ${v.inStock ? 'text-green-500' : 'text-red-400'}`}
               >
                 {v.inStock ? `${v.stockQuantity} in stock` : 'Out of stock'}
               </span>
               <button
                 onClick={() => handleDeleteVariant(v.id)}
-                className="text-xs text-red-500 hover:text-red-700 ml-2"
+                className="text-xs text-red-400 hover:text-red-300 ml-2"
               >
                 Remove
               </button>

@@ -1040,68 +1040,132 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
   };
 
   return (
-    <aside className={`uv-editor-panel ${isOpen ? 'open' : 'collapsed'}`}>
-      {/* Header bar with toggle and mobile return */}
-      <div className="uv-editor-header">
-        <div className="uv-header-title">
-          {/* Mobile Back / Done button */}
-          {(onClose || onToggleOpen) && (
-            <button
-              type="button"
-              className="uv-mobile-done-btn"
-              onClick={() => {
-                if (onClose) onClose();
-                else if (onToggleOpen) onToggleOpen();
-              }}
-              title="Return to 3D Garment Viewport"
-            >
-              <ArrowLeft size={16} />
-              <span>Back to 3D</span>
-            </button>
-          )}
+    <aside
+      className={`uv-editor-panel ${isOpen ? 'open' : 'collapsed'}`}
+      onClick={!isOpen ? onToggleOpen : undefined}
+      role={!isOpen ? 'button' : undefined}
+      tabIndex={!isOpen ? 0 : undefined}
+      onKeyDown={
+        !isOpen
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onToggleOpen?.();
+              }
+            }
+          : undefined
+      }
+      title={!isOpen ? 'Click to expand UV Editor' : undefined}
+      aria-label={!isOpen ? 'Expand UV Editor' : undefined}
+    >
+      {!isOpen ? (
+        <div className="uv-collapsed-strip" onClick={onToggleOpen}>
+          {/* Dedicated Expand Button at Top */}
+          <button
+            type="button"
+            className="uv-collapsed-expand-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleOpen?.();
+            }}
+            title="Expand UV Editor (2D Placement)"
+            aria-label="Expand UV Editor"
+          >
+            <ChevronLeft size={20} />
+          </button>
 
-          <Layers size={16} className="text-accent uv-desktop-only-icon" />
-          <span className="uv-header-title-text">Full UV Atlas Editor</span>
-          <span className="badge badge-accent">Live 3D Sync</span>
+          {/* Floating Pill Handle extending into the 3D viewport */}
+          <button
+            type="button"
+            className="uv-floating-expand-pill"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleOpen?.();
+            }}
+            title="Open UV Placement Editor"
+            aria-label="Open UV Placement Editor"
+          >
+            <ChevronLeft size={14} />
+            <span>UV Editor</span>
+          </button>
+
+          {/* Icon */}
+          <div className="uv-collapsed-icon-wrap" title="UV Placement Editor">
+            <Layers size={18} className="text-accent" />
+          </div>
+
+          {/* Vertical Rotated Text */}
+          <div className="uv-collapsed-vertical-text">
+            <span>UV EDITOR</span>
+          </div>
+
+          {/* Subtle Bottom Chevron Hint */}
+          <div className="uv-collapsed-bottom-hint">
+            <ChevronLeft size={16} />
+          </div>
         </div>
+      ) : (
+        <>
+          {/* Header bar with toggle and mobile return */}
+          <div className="uv-editor-header">
+            <div className="uv-header-title">
+              {/* Mobile Back / Done button */}
+              {(onClose || onToggleOpen) && (
+                <button
+                  type="button"
+                  className="uv-mobile-done-btn"
+                  onClick={() => {
+                    if (onClose) onClose();
+                    else if (onToggleOpen) onToggleOpen();
+                  }}
+                  title="Return to 3D Garment Viewport"
+                >
+                  <ArrowLeft size={16} />
+                  <span>Back to 3D</span>
+                </button>
+              )}
 
-        <div className="uv-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {onAddArtwork && (
-            <label
-              className="uv-upload-header-btn"
-              title="Upload custom graphic or print"
-            >
-              <Upload size={14} />
-              <span>Upload Design</span>
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp,image/svg+xml"
-                style={{ display: 'none' }}
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file && onAddArtwork) {
-                    onAddArtwork(file);
-                  }
-                  e.target.value = '';
-                }}
-              />
-            </label>
-          )}
+              <Layers size={16} className="text-accent uv-desktop-only-icon" />
+              <span className="uv-header-title-text">Full UV Atlas Editor</span>
+              <span className="badge badge-accent">Live 3D Sync</span>
+            </div>
 
-          {onToggleOpen && (
-            <button
-              className="btn-icon-subtle uv-desktop-toggle-btn"
-              onClick={onToggleOpen}
-              title={isOpen ? 'Collapse UV Editor' : 'Expand UV Editor'}
-            >
-              {isOpen ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-            </button>
-          )}
-        </div>
-      </div>
+            <div className="uv-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {onAddArtwork && (
+                <label
+                  className="uv-upload-header-btn"
+                  title="Upload custom graphic or print"
+                >
+                  <Upload size={14} />
+                  <span>Upload Design</span>
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file && onAddArtwork) {
+                        onAddArtwork(file);
+                      }
+                      e.target.value = '';
+                    }}
+                  />
+                </label>
+              )}
 
-      {isOpen && (
-        <div className="uv-editor-content">
+              {onToggleOpen && (
+                <button
+                  className="btn-icon-subtle uv-desktop-toggle-btn"
+                  onClick={onToggleOpen}
+                  title="Collapse UV Editor"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="uv-editor-content">
           {/* Region & Atlas Tabs */}
           <div className="uv-region-tabs">
             <button
@@ -1517,8 +1581,9 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
             </div>
           )}
         </div>
-      )}
-    </aside>
-  );
+      </>
+    )}
+  </aside>
+);
 };
 

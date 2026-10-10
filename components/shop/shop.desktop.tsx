@@ -13,6 +13,11 @@ import { getR2AssetUrl } from '@/lib/r2';
 function DesktopProductCard({ product, index }: { product: Product; index: number }) {
   const { formatPrice } = usePrice();
   const isComingSoon = product.categorySlug === 'skins';
+  const [imgError, setImgError] = useState(false);
+
+  const fallbackImg = getR2AssetUrl('images/hero/posters.webp');
+  const primaryImg = product.variants[0]?.images?.[0] || fallbackImg;
+  const imgSrc = imgError ? fallbackImg : primaryImg;
 
   return (
     <Link
@@ -25,13 +30,14 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
       style={{ perspective: '1000px' }}
     >
       {/* Standard Hover Image wrapper */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-smoke/5 rounded-xl border border-transparent group-hover:border-smoke/40 transition-colors duration-300">
+      <div className="relative aspect-[3/4] overflow-hidden bg-[#16161A] rounded-xl border border-white/5 group-hover:border-smoke/40 transition-colors duration-300">
         <Image
-          src={product.variants[0]?.images?.[0] || getR2AssetUrl('images/hero/hoodies.webp')}
+          src={imgSrc}
           alt={product.name}
           fill
-          priority={index < 4}
-          className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-105"
+          unoptimized
+          priority={index < 8}
+          className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-105"
           sizes="(max-width: 1024px) 33vw, 25vw"
         />
 
@@ -45,7 +51,7 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
 
       {/* Name / price below card */}
       <div className="flex flex-col gap-1 mt-4">
-        <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-cobalt transition-colors">
+        <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-cobalt transition-colors truncate">
           {product.name}
         </h3>
         <p className="font-display text-lg text-pearl">{formatPrice(product.basePrice)}</p>

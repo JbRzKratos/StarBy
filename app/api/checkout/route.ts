@@ -174,8 +174,29 @@ export async function POST(request: Request) {
         const layoutSlug = customData?.layoutSlug || customData?.layoutId || 'stepped-hero-05';
         const layout = getLayoutById(layoutSlug) || FREGORO_LAYOUTS[4];
 
+        // Fetch live DB base price configured by admin in real-time
+        const dbLayout = await prisma.wallLayout.findFirst({
+          where: {
+            OR: [
+              { slug: layoutSlug },
+              { id: layoutSlug },
+              { slug: layout.slug },
+              { id: layout.id },
+            ],
+          },
+          select: { basePrice: true, compareAtPrice: true },
+        });
+
+        const effectiveLayout = dbLayout
+          ? {
+              ...layout,
+              basePrice: dbLayout.basePrice,
+              compareAtPrice: dbLayout.compareAtPrice ?? Math.round(dbLayout.basePrice * 1.35),
+            }
+          : layout;
+
         // Recalculate price deterministically on the server (never trust client)
-        const serverPricing = calculateWallPrice(layout, customData?.selections || {});
+        const serverPricing = calculateWallPrice(effectiveLayout, customData?.selections || {});
         const unitPrice = serverPricing.finalPrice;
         const totalItemPrice = unitPrice * item.quantity;
         subtotal += totalItemPrice;
@@ -215,37 +236,42 @@ export async function POST(request: Request) {
 
       if (item.variantId && item.variantId !== 'default') {
         const variant = variantMap.get(item.variantId);
-        if (!variant) {
+        if (variant) {
+          if (!variant.inStock) {
+            return NextResponse.json(
+              {
+                success: false,
+                message: `"${product.name} — ${variant.name}" is currently out of stock.`,
+              },
+              { status: 409 },
+            );
+          }
+          // If finite inventory is tracked (> 0) and product is not made-to-order
+          if (
+            !product.customizable &&
+            variant.stockQuantity > 0 &&
+            variant.stockQuantity < item.quantity
+          ) {
+            return NextResponse.json(
+              {
+                success: false,
+                message: `Only ${variant.stockQuantity} of "${product.name} — ${variant.name}" available. You requested ${item.quantity}.`,
+              },
+              { status: 409 },
+            );
+          }
+          unitPrice = variant.price;
+          skuSnapshot = variant.id; // Use variant ID as SKU for now
+        } else if (item.variantId.startsWith('mockup-3d-') || customData?.is3dMockup) {
+          // 3D custom garment mockup uses live basePrice set by admin
+          unitPrice = product.basePrice;
+          skuSnapshot = item.variantId;
+        } else {
           return NextResponse.json(
             { success: false, message: `Variant "${item.variantId}" not found.` },
             { status: 400 },
           );
         }
-        if (!variant.inStock) {
-          return NextResponse.json(
-            {
-              success: false,
-              message: `"${product.name} — ${variant.name}" is currently out of stock.`,
-            },
-            { status: 409 },
-          );
-        }
-        // If finite inventory is tracked (> 0) and product is not made-to-order
-        if (
-          !product.customizable &&
-          variant.stockQuantity > 0 &&
-          variant.stockQuantity < item.quantity
-        ) {
-          return NextResponse.json(
-            {
-              success: false,
-              message: `Only ${variant.stockQuantity} of "${product.name} — ${variant.name}" available. You requested ${item.quantity}.`,
-            },
-            { status: 409 },
-          );
-        }
-        unitPrice = variant.price;
-        skuSnapshot = variant.id; // Use variant ID as SKU for now
       }
 
       const totalItemPrice = unitPrice * item.quantity;

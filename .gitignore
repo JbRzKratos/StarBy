@@ -105,6 +105,9 @@ temp/
 /public/3d models/
 /public/templates/
 /public/*.pdf
+/public/Posters/
+/public/Single Posters/
+!/public/Single Posters/_catalog/
 
 # ─── Clothing Mockup Feature Assets (served from CDN / local public) ────────
 # Heavy 3D/2D asset binaries (~710 MB total) — keep out of git repository

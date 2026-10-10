@@ -20,6 +20,20 @@ function ReviewInner() {
 
   const [contentMap, setContentMap] = useState<WizardContentMap>({});
   const [isAdding, setIsAdding] = useState(false);
+  const [liveMagPrice, setLiveMagPrice] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch('/api/products/prices', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.products?.['prod_test_magazine'] !== undefined) {
+          setLiveMagPrice(data.products['prod_test_magazine']);
+        } else if (data?.products?.['fregoro-custom-magazine'] !== undefined) {
+          setLiveMagPrice(data.products['fregoro-custom-magazine']);
+        }
+      })
+      .catch((err) => console.warn('Could not fetch live magazine price:', err));
+  }, []);
 
   useEffect(() => {
     const saved = sessionStorage.getItem(`wizard-review-${templateId}`);
@@ -78,6 +92,11 @@ function ReviewInner() {
     [] as { page: string; label: string }[],
   );
 
+  const isFirstFashionMagazine =
+    template.id === 'tpl_fashion_1' ||
+    template.slug === 'fashion-magazine-1' ||
+    template.name.toLowerCase().includes('fashion magazine 1');
+
   const handleAddToCart = async () => {
     setIsAdding(true);
     try {
@@ -110,19 +129,16 @@ function ReviewInner() {
 
       localStorage.setItem(`magazine-doc-${doc.id}`, JSON.stringify(doc));
 
-      const isFirstFashionMagazine =
-        template.id === 'tpl_fashion_1' ||
-        template.slug === 'fashion-magazine-1' ||
-        template.name.toLowerCase().includes('fashion magazine 1');
+      const finalPrice = isFirstFashionMagazine ? 1 : (liveMagPrice ?? 499);
 
       addItem({
         productId: 'prod_test_magazine',
         variantId: 'var_test_magazine_01',
         quantity: 1,
-        price: isFirstFashionMagazine ? 1 : 499,
+        price: finalPrice,
         name: isFirstFashionMagazine
           ? `Fashion Magazine 1 (Test ₹1) · ${template.name}`
-          : `Custom Magazine · ${template.name}`,
+          : `Custom Magazine (₹${finalPrice}) · ${template.name}`,
         image: template.coverImage,
         customization: {
           magazineId: doc.id,
@@ -394,7 +410,7 @@ function ReviewInner() {
                   Adding...
                 </span>
               ) : (
-                'Add to Cart & Order →'
+                `Add to Cart & Order (₹${isFirstFashionMagazine ? 1 : (liveMagPrice ?? 499)}) →`
               )}
             </button>
           </div>

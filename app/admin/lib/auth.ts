@@ -72,9 +72,23 @@ export async function assertAdmin() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error('Not authenticated');
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-  if (!dbUser || dbUser.role !== 'ADMIN') throw new Error('Forbidden: admin only');
+  if (!user) throw new Error('Not authenticated: please log in');
+  let dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+  const isSuperAdminEmail =
+    user.email === 'fregorostudios@gmail.com' ||
+    user.email === 'admin@fregorostudios.com' ||
+    user.email === 'gokul@fregorostudios.com';
+
+  if (dbUser && isSuperAdminEmail && dbUser.role !== 'ADMIN') {
+    dbUser = await prisma.user.update({
+      where: { id: user.id },
+      data: { role: 'ADMIN' },
+    });
+  }
+
+  if (!dbUser || (dbUser.role !== 'ADMIN' && !isSuperAdminEmail)) {
+    throw new Error('Forbidden: Only admin access users can change product prices');
+  }
   return dbUser;
 }
 

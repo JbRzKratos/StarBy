@@ -11,6 +11,7 @@ export interface ExportStillOptions {
   width?: number;   // explicit override (ignored if resolution is set)
   height?: number;  // explicit override (ignored if resolution is set)
   filename?: string;
+  download?: boolean; // if false, returns dataUrl without downloading file
 }
 
 export interface ExportVideoOptions {
@@ -107,17 +108,17 @@ export class Export3DManager {
     const prevCameraFov = camera.fov;
 
     // ── 3. Optionally snap to a preset camera view ───────────────────────────
-    if (options.view === 'front') {
-      sceneManager.setCameraPreset('front');
-      // Flush the lerp immediately by calling update multiple times
-      for (let i = 0; i < 60; i++) {
-        sceneManager.update(1 / 30);
+    if (options.view === 'front' || options.view === 'back') {
+      sceneManager.setCameraPreset(options.view);
+      const anySm = sceneManager as any;
+      if (anySm.targetCameraPos && anySm.targetControlsTarget) {
+        camera.position.copy(anySm.targetCameraPos);
+        controls.target.copy(anySm.targetControlsTarget);
+        anySm.targetCameraPos = null;
+        anySm.targetControlsTarget = null;
       }
-    } else if (options.view === 'back') {
-      sceneManager.setCameraPreset('back');
-      for (let i = 0; i < 60; i++) {
-        sceneManager.update(1 / 30);
-      }
+      controls.update();
+      camera.updateProjectionMatrix();
     }
 
     // ── 4. Apply export-time transparency setting ───────────────────────────
@@ -210,7 +211,9 @@ export class Export3DManager {
 
     const filename =
       options.filename || `mockup-3d-${options.view}-${exportW}x${exportH}-${Date.now()}.png`;
-    this.downloadFile(dataUrl, filename);
+    if (options.download !== false) {
+      this.downloadFile(dataUrl, filename);
+    }
 
     console.info(
       `[Export3D] PNG exported: ${exportW}×${exportH}px (${options.resolution ?? 'custom'}), ` +
@@ -223,6 +226,21 @@ export class Export3DManager {
 
   public getIsExportingStill(): boolean {
     return this.isExportingStill;
+  }
+
+  public async captureSnapshotDataUrl(
+    sceneManager: SceneManager3D,
+    options: Omit<ExportStillOptions, 'download'>,
+    compositor?: TextureCompositor3D
+  ): Promise<string> {
+    return this.exportStillPNG(
+      sceneManager,
+      {
+        ...options,
+        download: false,
+      },
+      compositor
+    );
   }
 
   public async recordAnimationVideo(

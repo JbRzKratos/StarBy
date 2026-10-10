@@ -7,6 +7,8 @@ import { gsap } from '@/lib/gsap-config';
 import { SplitPosterPanel } from '../split-poster-panel';
 import { ArRoomPreview } from '../ar-room-preview';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { useCartStore } from '@/lib/stores/cart-store';
+import { useEffect } from 'react';
 import { ErrorBoundary } from '@/components/error-boundary';
 
 type LayoutStyle = 'classic' | 'stepped' | 'grid';
@@ -34,11 +36,86 @@ export function SplitPosterVisualizerMobile() {
   });
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [arOpen, setArOpen] = useState(false);
+  const [splitPrices, setSplitPrices] = useState<Record<string, number>>({});
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { formatPrice } = usePrice();
+  const addItem = useCartStore((s) => s.addItem);
+  const setCartOpen = useCartStore((s) => s.setCartOpen);
+
+  // Fetch live split poster prices from DB
+  useEffect(() => {
+    fetch('/api/products/prices', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.products) setSplitPrices(data.products);
+      })
+      .catch((err) => console.warn('Could not fetch live split prices:', err));
+  }, []);
+
+  const currentSplitProduct = useMemo(() => {
+    if (layoutStyle === 'stepped') {
+      if (panelCount === 5) {
+        return {
+          id: 'prod_split_stepped_5',
+          slug: 'stepped-5-split-poster',
+          name: '5-Stepped Split Poster (44:21 Continuous Art)',
+          defaultPrice: 999,
+        };
+      }
+      return {
+        id: 'prod_split_stepped_3',
+        slug: 'stepped-3-split-poster',
+        name: '3-Stepped Split Poster (19:11 Continuous Art)',
+        defaultPrice: 599,
+      };
+    }
+    if (layoutStyle === 'grid') {
+      return {
+        id: 'prod_split_grid_matrix',
+        slug: 'grid-matrix-split-poster',
+        name: `Grid ${gridConfig.cols}×${gridConfig.rows} Multi-Panel Split Poster`,
+        defaultPrice: 699,
+      };
+    }
+    return {
+      id: 'prod_split_classic_triptych',
+      slug: 'classic-horizon-split-poster',
+      name: `Classic ${panelCount}-Panel Horizon Split Poster`,
+      defaultPrice: 649,
+    };
+  }, [layoutStyle, panelCount, gridConfig]);
+
+  const currentPrice = useMemo(() => {
+    return (
+      splitPrices[currentSplitProduct.id] ??
+      splitPrices[currentSplitProduct.slug] ??
+      currentSplitProduct.defaultPrice
+    );
+  }, [splitPrices, currentSplitProduct]);
+
+  const handleOrderPrint = () => {
+    addItem({
+      productId: currentSplitProduct.id,
+      variantId: `var_${currentSplitProduct.slug}_default`,
+      name: `${currentSplitProduct.name} (${uploadedImage ? 'Custom Artwork' : 'Continuous Gallery'})`,
+      price: currentPrice,
+      quantity: 1,
+      image: uploadedImage || 'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/3 Split Poster.webp',
+      customization: {
+        isSplitPoster: true,
+        layoutStyle,
+        orientation,
+        panelCount,
+        gridConfig,
+        uploadedImage,
+        previewFileUrl: uploadedImage || 'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/posters/3 Split Poster.webp',
+      },
+    });
+    setCartOpen(true);
+  };
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -361,8 +438,11 @@ export function SplitPosterVisualizerMobile() {
           </svg>
           View in Your Room
         </button>
-        <button className="px-10 py-4 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors rounded-lg shrink-0">
-          Order Print — {formatPrice(129 + (panelsData.length - 2) * 50)}
+        <button
+          onClick={handleOrderPrint}
+          className="px-10 py-4 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors rounded-lg shrink-0 cursor-pointer shadow-lg shadow-cobalt/20"
+        >
+          Order Print — {formatPrice(currentPrice)}
         </button>
       </div>
 
