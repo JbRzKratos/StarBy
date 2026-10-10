@@ -6,8 +6,7 @@
  * 2. CURATED GALLERY WALLS: Harmonious collections of distinct artworks.
  */
 
-import type { SlotSelection, PosterSize } from './types';
-import { FREGORO_ARTWORKS } from './artworks-data';
+import type { SlotSelection } from './types';
 
 export interface DesignPlacement {
   id: string;

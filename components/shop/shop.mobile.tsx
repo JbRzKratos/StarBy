@@ -37,6 +37,7 @@ function MobileProductCard({ product, index }: { product: Product; index: number
           priority={index < 6}
           className="object-cover transition-transform duration-500 active:scale-105"
           sizes="(max-width: 768px) 50vw"
+          onError={() => setImgError(true)}
         />
       </div>
 

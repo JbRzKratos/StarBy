@@ -235,7 +235,8 @@ export function ClothingMockupIframe() {
 
       // 2. Direct same-origin event forwarding for buttery smooth 60fps tracking
       if (win) {
-        (win as any).__parentCursorBridgeActive = true;
+        (win as Window & { __parentCursorBridgeActive?: boolean }).__parentCursorBridgeActive =
+          true;
         let pendingMove: MouseEvent | null = null;
         let rafId: number | null = null;
         let lastInteractive: boolean | null = null;

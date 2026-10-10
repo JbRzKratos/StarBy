@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     if (productId || slug) {
       const product = await prisma.product.findFirst({
-        where: productId ? { id: productId } : { slug: slug! },
+        where: productId ? { id: productId } : { slug: slug ?? '' },
         include: { variants: true },
       });
 

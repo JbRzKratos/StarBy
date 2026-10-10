@@ -1,5 +1,4 @@
 import type { WallLayoutData } from './types';
-import { PHYSICAL_SIZES_MM } from './types';
 
 /**
  * ARCHITECTURALLY ENGINEERED FREGORO SIGNATURE LAYOUTS

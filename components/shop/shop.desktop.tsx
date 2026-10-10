@@ -39,6 +39,7 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
           priority={index < 8}
           className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-105"
           sizes="(max-width: 1024px) 33vw, 25vw"
+          onError={() => setImgError(true)}
         />
 
         {/* Hover overlay with button */}
