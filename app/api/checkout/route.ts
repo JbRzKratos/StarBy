@@ -147,8 +147,8 @@ export async function POST(request: Request) {
     let dbVariants: { id: string; productId: string; price: number; inStock: boolean; stockQuantity: number; name: string }[] = [];
     let dbWallLayouts: { id: string; slug: string; basePrice: number; compareAtPrice: number | null }[] = [];
 
-    try {
-      [dbProducts, dbVariants, dbWallLayouts] = await Promise.all([
+    const fetchCatalogData = async () => {
+      return await Promise.all([
         prisma.product.findMany({
           where: { id: { in: productIds } },
           select: { id: true, name: true, basePrice: true, customizable: true },
@@ -178,15 +178,26 @@ export async function POST(request: Request) {
             })
           : Promise.resolve([]),
       ]);
-    } catch (dbQueryErr) {
-      console.error('Database query error in checkout:', dbQueryErr);
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Database connection error during checkout. Please try again.',
-        },
-        { status: 500 },
-      );
+    };
+
+    try {
+      [dbProducts, dbVariants, dbWallLayouts] = await fetchCatalogData();
+    } catch (firstErr) {
+      console.warn('Initial DB catalog query failed, attempting reconnect and retry...', firstErr);
+      try {
+        await prisma.$connect().catch(() => {});
+        [dbProducts, dbVariants, dbWallLayouts] = await fetchCatalogData();
+      } catch (retryErr) {
+        console.error('Database query error in checkout (after retry):', retryErr);
+        const errMsg = retryErr instanceof Error ? retryErr.message : String(retryErr);
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Database connection error during checkout (${errMsg}). Please try again.`,
+          },
+          { status: 500 },
+        );
+      }
     }
 
     // Build lookup maps
@@ -727,11 +738,22 @@ export async function POST(request: Request) {
       orderId = newOrder.id;
       createdOrderDate = newOrder.createdAt;
     } catch (dbError) {
-      console.error('Final DB order creation error:', dbError);
-      return NextResponse.json(
-        { success: false, message: 'Failed to create order in database.' },
-        { status: 500 },
-      );
+      console.warn('First order creation DB attempt failed, attempting reconnect and retry...', dbError);
+      try {
+        await prisma.$connect().catch(() => {});
+        const newOrder = await prisma.order.create({
+          data: createOrderData(userId),
+        });
+        orderId = newOrder.id;
+        createdOrderDate = newOrder.createdAt;
+      } catch (retryDbError) {
+        console.error('Final DB order creation error (after retry):', retryDbError);
+        const errMsg = retryDbError instanceof Error ? retryDbError.message : String(retryDbError);
+        return NextResponse.json(
+          { success: false, message: `Failed to create order in database: ${errMsg}` },
+          { status: 500 },
+        );
+      }
     }
 
     // 11. ──── COD post-order side effects ────
