@@ -317,7 +317,7 @@ const dummyProducts = [
     customizable: true,
     tags: ['featured', 'test'],
     featured: true,
-    sizes: ['A3', 'A4'],
+    sizes: ['A6 (4.1" x 5.8")', 'A5 (5.8" x 8.3")', 'A4 (8.3" x 11.7")', 'A3 (11.7" x 16.5")', '13" x 19" (Studio)'],
     variants: [
       {
         id: 'var_test_posters_01',

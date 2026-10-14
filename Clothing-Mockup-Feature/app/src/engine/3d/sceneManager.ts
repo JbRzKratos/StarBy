@@ -56,11 +56,8 @@ export class SceneManager3D {
       preserveDrawingBuffer: true,
     });
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(
-      isMobile
-        ? Math.min(window.devicePixelRatio || 1, 1.5)
-        : Math.min(window.devicePixelRatio || 1, 2)
-    );
+    // Clamping devicePixelRatio to 1.5 keeps edges ultra-sharp while avoiding 4x fillrate overhead on 2x/Retina screens
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     // ACESFilmic gives rich contrast and filmic response without clipping whites
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 0.92;
@@ -97,7 +94,7 @@ export class SceneManager3D {
     this.keyLight = new THREE.DirectionalLight(0xfff8f0, 0.95);
     this.keyLight.position.set(3, 7, 5);
     this.keyLight.castShadow = true;
-    const shadowMapDim = isMobile ? 1024 : 2048;
+    const shadowMapDim = 1024;
     this.keyLight.shadow.mapSize.width = shadowMapDim;
     this.keyLight.shadow.mapSize.height = shadowMapDim;
     this.keyLight.shadow.camera.near = 1.0;

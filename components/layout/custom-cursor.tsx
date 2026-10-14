@@ -146,12 +146,27 @@ export function CustomCursor() {
       }
     };
 
+    let pendingCursorX: number | null = null;
+    let pendingCursorY: number | null = null;
+    let cursorRafId: number | null = null;
+
+    const flushCursorPosition = () => {
+      cursorRafId = null;
+      if (pendingCursorX !== null && pendingCursorY !== null) {
+        showCursor();
+        xToCursor?.(pendingCursorX);
+        yToCursor?.(pendingCursorY);
+        xToDot?.(pendingCursorX);
+        yToDot?.(pendingCursorY);
+      }
+    };
+
     const updateCursorPosition = (clientX: number, clientY: number) => {
-      showCursor();
-      xToCursor?.(clientX);
-      yToCursor?.(clientY);
-      xToDot?.(clientX);
-      yToDot?.(clientY);
+      pendingCursorX = clientX;
+      pendingCursorY = clientY;
+      if (cursorRafId === null) {
+        cursorRafId = requestAnimationFrame(flushCursorPosition);
+      }
     };
 
     // ── Step 5: Event Handlers ───────────────────────────────────────────────
@@ -293,7 +308,17 @@ export function CustomCursor() {
             doc.head?.appendChild(styleEl);
           }
 
-          // 3. Iframe move handler with coordinate translation
+          // 3. Iframe move handler with RAF throttling & coordinate translation
+          let iframeMoveRaf: number | null = null;
+          let lastIframeX = 0;
+          let lastIframeY = 0;
+
+          const flushIframeMove = () => {
+            iframeMoveRaf = null;
+            const rect = iframe.getBoundingClientRect();
+            updateCursorPosition(lastIframeX + rect.left, lastIframeY + rect.top);
+          };
+
           const onIframeMove = (e: MouseEvent | PointerEvent) => {
             if ((e as PointerEvent).pointerType === 'touch') {
               hideCursor();
@@ -301,10 +326,11 @@ export function CustomCursor() {
             }
             if (window.innerWidth < 768) return;
 
-            const rect = iframe.getBoundingClientRect();
-            const clientX = e.clientX + rect.left;
-            const clientY = e.clientY + rect.top;
-            updateCursorPosition(clientX, clientY);
+            lastIframeX = e.clientX;
+            lastIframeY = e.clientY;
+            if (iframeMoveRaf === null) {
+              iframeMoveRaf = requestAnimationFrame(flushIframeMove);
+            }
           };
 
           const onIframeDown = (e: MouseEvent | PointerEvent) => {
@@ -349,7 +375,6 @@ export function CustomCursor() {
           };
 
           win.addEventListener('pointermove', onIframeMove, { passive: true });
-          win.addEventListener('mousemove', onIframeMove, { passive: true });
           win.addEventListener('pointerdown', onIframeDown, { passive: true });
           win.addEventListener('mousedown', onIframeDown, { passive: true });
           win.addEventListener('pointerup', onIframeUp, { passive: true });
@@ -358,8 +383,8 @@ export function CustomCursor() {
 
           iframeCleanups.push(() => {
             try {
+              if (iframeMoveRaf !== null) cancelAnimationFrame(iframeMoveRaf);
               win.removeEventListener('pointermove', onIframeMove);
-              win.removeEventListener('mousemove', onIframeMove);
               win.removeEventListener('pointerdown', onIframeDown);
               win.removeEventListener('mousedown', onIframeDown);
               win.removeEventListener('pointerup', onIframeUp);
@@ -449,7 +474,7 @@ export function CustomCursor() {
       window.removeEventListener('blur', hideCursor);
       window.removeEventListener('focus', showCursor);
       document.removeEventListener('mouseleave', hideCursor);
-      document.removeEventListener('mouseenter', showCursor);
+      if (cursorRafId !== null) cancelAnimationFrame(cursorRafId);
       iframeCleanups.forEach((fn) => fn());
       gsap.killTweensOf([cursor, dot]);
     };

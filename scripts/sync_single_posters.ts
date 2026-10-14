@@ -282,7 +282,7 @@ export async function syncSinglePostersToDatabase() {
           description: `Museum-grade ${item.category} fine art poster. Printed on 300 GSM heavyweight archival stock with fade-resistant pigment inks. Vibrant contrast, razor-sharp details, and gallery-grade finish.`,
           tags,
           featured: isFeatured,
-          sizes: ['A4 (8.3" x 11.7")', 'A3 (11.7" x 16.5")', 'A2 (16.5" x 23.4")', '13" x 19" (Studio)'],
+          sizes: ['A6 (4.1" x 5.8")', 'A5 (5.8" x 8.3")', 'A4 (8.3" x 11.7")', 'A3 (11.7" x 16.5")', '13" x 19" (Studio)'],
         },
       });
 
@@ -307,7 +307,7 @@ export async function syncSinglePostersToDatabase() {
           customizable: true,
           featured: isFeatured,
           tags,
-          sizes: ['A4 (8.3" x 11.7")', 'A3 (11.7" x 16.5")', 'A2 (16.5" x 23.4")', '13" x 19" (Studio)'],
+          sizes: ['A6 (4.1" x 5.8")', 'A5 (5.8" x 8.3")', 'A4 (8.3" x 11.7")', 'A3 (11.7" x 16.5")', '13" x 19" (Studio)'],
           variants: {
             create: [
               {

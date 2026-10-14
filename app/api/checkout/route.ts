@@ -143,37 +143,51 @@ export async function POST(request: Request) {
       ),
     );
 
-    const [dbProducts, dbVariants, dbWallLayouts] = await Promise.all([
-      prisma.product.findMany({
-        where: { id: { in: productIds } },
-        select: { id: true, name: true, basePrice: true, customizable: true },
-      }),
-      variantIds.length > 0
-        ? prisma.productVariant.findMany({
-            where: { id: { in: variantIds } },
-            select: {
-              id: true,
-              productId: true,
-              price: true,
-              inStock: true,
-              stockQuantity: true,
-              name: true,
-            },
-          })
-        : Promise.resolve([]),
-      // Batch-fetch all wall layouts referenced in this cart in one round-trip
-      wallLayoutKeys.length > 0
-        ? prisma.wallLayout.findMany({
-            where: {
-              OR: [
-                { slug: { in: wallLayoutKeys } },
-                { id: { in: wallLayoutKeys } },
-              ],
-            },
-            select: { id: true, slug: true, basePrice: true, compareAtPrice: true },
-          })
-        : Promise.resolve([]),
-    ]);
+    let dbProducts: { id: string; name: string; basePrice: number; customizable: boolean }[] = [];
+    let dbVariants: { id: string; productId: string; price: number; inStock: boolean; stockQuantity: number; name: string }[] = [];
+    let dbWallLayouts: { id: string; slug: string; basePrice: number; compareAtPrice: number | null }[] = [];
+
+    try {
+      [dbProducts, dbVariants, dbWallLayouts] = await Promise.all([
+        prisma.product.findMany({
+          where: { id: { in: productIds } },
+          select: { id: true, name: true, basePrice: true, customizable: true },
+        }),
+        variantIds.length > 0
+          ? prisma.productVariant.findMany({
+              where: { id: { in: variantIds } },
+              select: {
+                id: true,
+                productId: true,
+                price: true,
+                inStock: true,
+                stockQuantity: true,
+                name: true,
+              },
+            })
+          : Promise.resolve([]),
+        wallLayoutKeys.length > 0
+          ? prisma.wallLayout.findMany({
+              where: {
+                OR: [
+                  { slug: { in: wallLayoutKeys } },
+                  { id: { in: wallLayoutKeys } },
+                ],
+              },
+              select: { id: true, slug: true, basePrice: true, compareAtPrice: true },
+            })
+          : Promise.resolve([]),
+      ]);
+    } catch (dbQueryErr) {
+      console.error('Database query error in checkout:', dbQueryErr);
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Database connection error during checkout. Please try again.',
+        },
+        { status: 500 },
+      );
+    }
 
     // Build lookup maps
     const productMap = new Map(dbProducts.map((p) => [p.id, p]));
@@ -530,21 +544,36 @@ export async function POST(request: Request) {
             ? `${siteUrl}/api/webhooks/cashfree`
             : undefined;
 
+        // Clean customer_id for Cashfree API: alphanumeric, min 3 chars, max 80 chars
+        const rawCustId = userId || `guest_${cleanPhone || Date.now()}`;
+        const cleanCustId = rawCustId.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80) || `cust_${Date.now()}`;
+
+        // Clean customer name for Cashfree API: min 3 chars
+        const rawName = (address.name || 'Valued Customer').trim().replace(/[^a-zA-Z0-9 ._-]/g, '');
+        const cleanName = rawName.length >= 3 ? rawName.slice(0, 90) : 'Valued Customer';
+
+        // Clean customer email
+        const rawEmail = (address.email || '').trim().toLowerCase();
+        const cleanEmail = rawEmail.includes('@') ? rawEmail : 'customer@fregorostudios.com';
+
+        // Clean order amount: Cashfree requires minimum ₹1.00
+        const orderAmount = Math.max(1, Math.round(totalAmount * 100) / 100);
+
         const cfOrder = await createCashfreeOrder({
           order_id: cfOrderId,
-          order_amount: Math.round(totalAmount * 100) / 100, // Cashfree expects amount in rupees, not paise
+          order_amount: orderAmount,
           order_currency: 'INR',
           customer_details: {
-            customer_id: userId || `guest_${cleanPhone || Date.now()}`,
-            customer_name: address.name || 'Valued Customer',
-            customer_email: address.email,
+            customer_id: cleanCustId,
+            customer_name: cleanName,
+            customer_email: cleanEmail,
             customer_phone: cleanPhone,
           },
           order_meta: {
             return_url: returnUrl,
             ...(notifyUrl ? { notify_url: notifyUrl } : {}),
           },
-          order_note: `Fregoro Studios Order ${publicOrderId}`,
+          order_note: `Fregoro Studios Order ${publicOrderId}`.slice(0, 200),
         });
 
         paymentGatewayOrderId = cfOrderId;
@@ -774,9 +803,14 @@ export async function POST(request: Request) {
       isCod,
     });
   } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
     console.error('Checkout error:', error);
     return NextResponse.json(
-      { success: false, message: 'Internal server error during checkout.' },
+      {
+        success: false,
+        message: errorMsg || 'Internal server error during checkout.',
+        detail: errorMsg,
+      },
       { status: 500 },
     );
   }

@@ -143,6 +143,9 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string>(() => {
+    if (product.categorySlug === 'posters' && product.sizes?.includes('A4 (8.3" x 11.7")')) {
+      return 'A4 (8.3" x 11.7")';
+    }
     const initial = product.sizes?.[0] ?? 'L';
     return initial === 'XXL' ? '2XL' : initial;
   });
@@ -620,11 +623,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         isOpen={sizeChart}
         onClose={() => setSizeChart(false)}
         category={
-          selectedGarmentId === 'oversized-t-shirt'
-            ? 'oversized'
-            : selectedGarmentId === 'hoodie'
-            ? 'hoodies'
-            : 'tees'
+          isApparel
+            ? selectedGarmentId === 'oversized-t-shirt'
+              ? 'oversized'
+              : selectedGarmentId === 'hoodie'
+              ? 'hoodies'
+              : 'tees'
+            : product.categorySlug
         }
       />
       {isClothingModalOpen && clothingDesign && (

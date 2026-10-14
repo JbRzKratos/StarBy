@@ -125,11 +125,15 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
     return `${(inches * 2.54).toFixed(1)} cm`;
   };
 
-  const chartTitle = isHoodie
-    ? 'Hoodies Size Guide'
-    : isOversized
-      ? 'Oversized Tees Size Guide'
-      : 'T-Shirt Size Guide';
+  const chartTitle = isPoster
+    ? 'Posters Size Guide'
+    : isMug
+      ? 'Mugs Size Guide'
+      : isHoodie
+        ? 'Hoodies Size Guide'
+        : isOversized
+          ? 'Oversized Tees Size Guide'
+          : 'T-Shirt Size Guide';
 
   return createPortal(
     <div
@@ -167,7 +171,13 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pr-12">
           <div>
             <h2 className="font-display text-2xl text-bone">{chartTitle}</h2>
-            <p className="font-mono text-xs text-ash mt-1">Selling sizes: S to 3XL</p>
+            <p className="font-mono text-xs text-ash mt-1">
+              {isPoster
+                ? 'Available sizes: A6, A5, A4, A3, 13×19"'
+                : isMug
+                  ? 'Available sizes: 11 oz, 15 oz'
+                  : 'Selling sizes: S to 3XL'}
+            </p>
           </div>
 
           {!isPoster && !isMug && (

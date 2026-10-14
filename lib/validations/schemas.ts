@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
 export const AddressSchema = z.object({
-  name: z.string().min(1, 'Full name is required'),
-  email: z.string().email('A valid email is required'),
-  street: z.string().min(1, 'Street address is required'),
-  city: z.string().min(1, 'City is required'),
-  state: z.string().min(1, 'State is required'),
-  zip: z.string().min(1, 'ZIP / Postal code is required'),
+  name: z.string().trim().min(1, 'Full name is required'),
+  email: z.string().trim().email('A valid email is required'),
+  street: z.string().trim().min(1, 'Street address is required'),
+  city: z.string().trim().min(1, 'City is required'),
+  state: z.string().trim().min(1, 'State is required'),
+  zip: z.string().trim().min(1, 'ZIP / Postal code is required'),
   country: z.string().optional().default('India'),
   phone: z.string().optional(),
 });

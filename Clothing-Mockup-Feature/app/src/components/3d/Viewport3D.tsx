@@ -447,7 +447,7 @@ function isPointInPolygon(px: number, py: number, corners: Array<{ x: number; y:
   return inside;
 }
 
-/** Draw all transform handles onto the overlay canvas. */
+/** Draw all transform handles onto the overlay canvas with high contrast and zero Gaussian shadowBlur. */
 function drawTransformHandles(
   ctx: CanvasRenderingContext2D,
   layer: ArtworkLayer3D,
@@ -457,11 +457,12 @@ function drawTransformHandles(
   uvLookup: FastUVIndex | null,
   mesh: THREE.Mesh | THREE.SkinnedMesh | null,
   camera: THREE.Camera | null,
-  garmentConfig?: Garment3DConfig
-): void {
-  if (!camera) return;
-  const result = computeHandles(layer, imgAspect, rendererRect, uvLookup, mesh, camera, garmentConfig);
-  if (!result || !result.isFacing) return;
+  garmentConfig?: Garment3DConfig,
+  precomputedResult?: ComputedHandlesResult | null
+): ComputedHandlesResult | null {
+  if (!camera) return null;
+  const result = precomputedResult || computeHandles(layer, imgAspect, rendererRect, uvLookup, mesh, camera, garmentConfig);
+  if (!result || !result.isFacing) return null;
 
   const { corners, handles } = result;
   const [tl, tr, br, bl] = corners;
@@ -470,33 +471,42 @@ function drawTransformHandles(
   ctx.scale(dpr, dpr); // work in CSS px units after this
 
   // 1. Draw quad outline with solid contrast underlay and dashed accent overlay
+  // (crisp double stroke replaces expensive canvas shadowBlur which causes main thread stutters)
   ctx.beginPath();
   ctx.moveTo(tl.x, tl.y);
   ctx.lineTo(tr.x, tr.y);
   ctx.lineTo(br.x, br.y);
   ctx.lineTo(bl.x, bl.y);
   ctx.closePath();
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
-  ctx.lineWidth = 2.5;
-  ctx.shadowColor = 'rgba(0,0,0,0.65)';
-  ctx.shadowBlur = 5;
+  ctx.strokeStyle = 'rgba(0, 0, 0, 0.65)';
+  ctx.lineWidth = 3.6;
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.95)';
+  ctx.lineWidth = 2.0;
   ctx.stroke();
 
   ctx.strokeStyle = ACCENT;
-  ctx.lineWidth = 1.8;
+  ctx.lineWidth = 1.6;
   ctx.setLineDash([6, 4]);
   ctx.stroke();
   ctx.setLineDash([]);
-  ctx.shadowBlur = 0;
 
   // 2. Rotation stem
   const topMidX = (tl.x + tr.x) / 2;
   const topMidY = (tl.y + tr.y) / 2;
   const rotH = handles[4];
   ctx.beginPath();
+  ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+  ctx.lineWidth = 2.4;
+  ctx.moveTo(topMidX, topMidY);
+  ctx.lineTo(rotH.cx, rotH.cy);
+  ctx.stroke();
+
+  ctx.beginPath();
   ctx.setLineDash([3, 3]);
-  ctx.strokeStyle = 'rgba(255,255,255,0.75)';
-  ctx.lineWidth = 1.2;
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+  ctx.lineWidth = 1.4;
   ctx.moveTo(topMidX, topMidY);
   ctx.lineTo(rotH.cx, rotH.cy);
   ctx.stroke();
@@ -506,13 +516,16 @@ function drawTransformHandles(
   for (const h of handles) {
     ctx.save();
     if (h.type === 'rotate') {
+      // High-contrast outer rim
       ctx.beginPath();
-      ctx.arc(h.cx, h.cy, HANDLE_HALF + 2, 0, Math.PI * 2);
-      ctx.fillStyle = ACCENT;
-      ctx.shadowColor = 'rgba(0,0,0,0.6)';
-      ctx.shadowBlur = 6;
+      ctx.arc(h.cx, h.cy, HANDLE_HALF + 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
       ctx.fill();
-      ctx.shadowBlur = 0;
+
+      ctx.beginPath();
+      ctx.arc(h.cx, h.cy, HANDLE_HALF + 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = ACCENT;
+      ctx.fill();
       ctx.strokeStyle = HANDLE_FILL;
       ctx.lineWidth = 2;
       ctx.stroke();
@@ -524,11 +537,12 @@ function drawTransformHandles(
       ctx.stroke();
     } else {
       ctx.translate(h.cx, h.cy);
+      // Dark underlay rect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+      ctx.fillRect(-HANDLE_HALF - 1.5, -HANDLE_HALF - 1.5, (HANDLE_HALF + 1.5) * 2, (HANDLE_HALF + 1.5) * 2);
+
       ctx.fillStyle = HANDLE_FILL;
-      ctx.shadowColor = 'rgba(0,0,0,0.6)';
-      ctx.shadowBlur = 5;
       ctx.fillRect(-HANDLE_HALF, -HANDLE_HALF, HANDLE_HALF * 2, HANDLE_HALF * 2);
-      ctx.shadowBlur = 0;
       ctx.strokeStyle = ACCENT;
       ctx.lineWidth = 2;
       ctx.strokeRect(-HANDLE_HALF, -HANDLE_HALF, HANDLE_HALF * 2, HANDLE_HALF * 2);
@@ -537,6 +551,7 @@ function drawTransformHandles(
   }
 
   ctx.restore();
+  return result;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -619,6 +634,10 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
   const scrubberTextRef = useRef<HTMLSpanElement>(null);
   const overlayCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const overlayCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+  const cachedSelectedHandlesRef = useRef<ComputedHandlesResult | null>(null);
+  const lastDrawnLayerIdRef = useRef<string | null>(null);
+  const prevCamStateRef = useRef<{ x: number; y: number; z: number; qx: number; qy: number; qz: number; qw: number } | null>(null);
+  const prevLayerStateRef = useRef<{ id: string; u?: number; v?: number; scale: number; rotation: number; uvWidth?: number; uvHeight?: number; opacity: number } | null>(null);
 
   // Loading state (React state — only changes occasionally)
   const [loading, setLoading] = useState<boolean>(true);
@@ -737,10 +756,27 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     if (!layer) return null;
     const sm = sceneManagerRef.current;
     if (!sm) return null;
+
+    // Fast path: if handles were already computed and neither camera nor layer moved, reuse cached result
+    const cam = sm.camera;
+    const camMoved =
+      !prevCamStateRef.current ||
+      prevCamStateRef.current.x !== cam.position.x ||
+      prevCamStateRef.current.y !== cam.position.y ||
+      prevCamStateRef.current.z !== cam.position.z ||
+      prevCamStateRef.current.qx !== cam.quaternion.x ||
+      prevCamStateRef.current.qy !== cam.quaternion.y ||
+      prevCamStateRef.current.qz !== cam.quaternion.z ||
+      prevCamStateRef.current.qw !== cam.quaternion.w;
+
+    if (!camMoved && cachedSelectedHandlesRef.current && cachedSelectedHandlesRef.current.isFacing) {
+      return cachedSelectedHandlesRef.current;
+    }
+
     const rect = sm.renderer.domElement.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return null;
     const imgAspect = getImgAspectForLayer(layer);
-    return computeHandles(
+    const result = computeHandles(
       layer,
       imgAspect,
       rect,
@@ -749,6 +785,8 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       sm.camera,
       garmentConfigRef.current
     );
+    cachedSelectedHandlesRef.current = result;
+    return result;
   };
 
   const getLayerScreenInfo = (layer: ArtworkLayer3D): { handlesResult: ComputedHandlesResult } | null => {
@@ -882,31 +920,98 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     if (!sm) return;
 
     const domEl = sm.renderer.domElement;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const expW = Math.round(domEl.clientWidth * dpr);
     const expH = Math.round(domEl.clientHeight * dpr);
-    if (canvas.width !== expW || canvas.height !== expH) {
+    const sizeChanged = canvas.width !== expW || canvas.height !== expH;
+    if (sizeChanged) {
       canvas.width = expW;
       canvas.height = expH;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     const selId = selectedLayerIdRef.current;
-    if (!selId || !garmentMeshRef.current) return;
+    if (!selId || !garmentMeshRef.current) {
+      if (lastDrawnLayerIdRef.current !== null || sizeChanged) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        lastDrawnLayerIdRef.current = null;
+        cachedSelectedHandlesRef.current = null;
+      }
+      return;
+    }
 
     const layers = artworkLayersRef.current;
     const liveLayer = liveLayerRef.current;
     const layer = liveLayer
       ? (liveLayer.id === selId ? liveLayer : layers.find((l) => l.id === selId))
       : layers.find((l) => l.id === selId);
-    if (!layer) return;
+    if (!layer) {
+      if (lastDrawnLayerIdRef.current !== null || sizeChanged) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        lastDrawnLayerIdRef.current = null;
+        cachedSelectedHandlesRef.current = null;
+      }
+      return;
+    }
+
+    // Check if camera moved, or layer transform changed, or animated tick
+    const cam = sm.camera;
+    const camMoved =
+      !prevCamStateRef.current ||
+      prevCamStateRef.current.x !== cam.position.x ||
+      prevCamStateRef.current.y !== cam.position.y ||
+      prevCamStateRef.current.z !== cam.position.z ||
+      prevCamStateRef.current.qx !== cam.quaternion.x ||
+      prevCamStateRef.current.qy !== cam.quaternion.y ||
+      prevCamStateRef.current.qz !== cam.quaternion.z ||
+      prevCamStateRef.current.qw !== cam.quaternion.w;
+
+    const layerChanged =
+      !prevLayerStateRef.current ||
+      prevLayerStateRef.current.id !== layer.id ||
+      prevLayerStateRef.current.u !== layer.u ||
+      prevLayerStateRef.current.v !== layer.v ||
+      prevLayerStateRef.current.scale !== layer.scale ||
+      prevLayerStateRef.current.rotation !== layer.rotation ||
+      prevLayerStateRef.current.uvWidth !== layer.uvWidth ||
+      prevLayerStateRef.current.uvHeight !== layer.uvHeight ||
+      prevLayerStateRef.current.opacity !== layer.opacity;
+
+    const isAnimTick = isAnimatedRef.current && isPlayingRef.current;
+    const isDragging = dragSessionRef.current !== null;
+
+    if (!sizeChanged && !camMoved && !layerChanged && !isAnimTick && !isDragging && cachedSelectedHandlesRef.current) {
+      // Handles are identical to what's already on the overlay canvas. Skip re-clearing and re-projecting!
+      return;
+    }
+
+    prevCamStateRef.current = {
+      x: cam.position.x,
+      y: cam.position.y,
+      z: cam.position.z,
+      qx: cam.quaternion.x,
+      qy: cam.quaternion.y,
+      qz: cam.quaternion.z,
+      qw: cam.quaternion.w,
+    };
+    prevLayerStateRef.current = {
+      id: layer.id,
+      u: layer.u,
+      v: layer.v,
+      scale: layer.scale,
+      rotation: layer.rotation,
+      uvWidth: layer.uvWidth,
+      uvHeight: layer.uvHeight,
+      opacity: layer.opacity,
+    };
+    lastDrawnLayerIdRef.current = selId;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const rect = domEl.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
     const imgAspect = getImgAspectForLayer(layer);
 
-    drawTransformHandles(
+    const result = drawTransformHandles(
       ctx,
       layer,
       imgAspect,
@@ -917,6 +1022,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       sm.camera,
       garmentConfigRef.current
     );
+    cachedSelectedHandlesRef.current = result;
   };
 
   drawOverlayRef.current = drawOverlay;
@@ -1127,6 +1233,78 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       }
     };
 
+    let hoverRafId: number | null = null;
+    let pendingHoverCoords: { clientX: number; clientY: number } | null = null;
+
+    const performHoverCheck = () => {
+      hoverRafId = null;
+      if (!pendingHoverCoords) return;
+      const { clientX, clientY } = pendingHoverCoords;
+      pendingHoverCoords = null;
+
+      const sm = sceneManagerRef.current;
+      if (!sm || sm.isPointerDown) return;
+      if (interactionStateRef.current !== 'idle' && interactionStateRef.current !== 'selected') return;
+
+      const domEl = sm.renderer?.domElement;
+      if (!domEl) return;
+      const rect = domEl.getBoundingClientRect();
+      const px = clientX - rect.left;
+      const py = clientY - rect.top;
+
+      // 1. Check selected layer handles
+      const selId = selectedLayerIdRef.current;
+      if (selId) {
+        const handlesResult = getSelectedLayerHandles();
+        if (handlesResult && handlesResult.isFacing) {
+          const hit = hitHandle(handlesResult.handles, px, py);
+          if (hit) {
+            if (lastHoverHitRef.current !== 'handle') {
+              lastHoverHitRef.current = 'handle';
+              setCursorStyle(hit.type === 'rotate' ? 'grab' : 'nwse-resize');
+              notifyCursorHover(true);
+            }
+            return;
+          }
+          if (isPointInPolygon(px, py, handlesResult.corners)) {
+            if (lastHoverHitRef.current !== 'layer') {
+              lastHoverHitRef.current = 'layer';
+              setCursorStyle('grab');
+              notifyCursorHover(true);
+            }
+            return;
+          }
+        }
+      }
+
+      // 2. Check other artwork layers (facing camera)
+      const layers = artworkLayersRef.current;
+      let hitAnyLayer = false;
+      for (let i = layers.length - 1; i >= 0; i--) {
+        const layer = layers[i];
+        if (layer.id === selId) continue;
+        if ((layer.placementMode ?? 'atlas') !== 'atlas' || layer.opacity <= 0) continue;
+        const info = getLayerScreenInfo(layer);
+        if (info && info.handlesResult.isFacing && isPointInPolygon(px, py, info.handlesResult.corners)) {
+          if (lastHoverHitRef.current !== 'layer') {
+            lastHoverHitRef.current = 'layer';
+            setCursorStyle('grab');
+            notifyCursorHover(true);
+          }
+          hitAnyLayer = true;
+          break;
+        }
+      }
+
+      if (!hitAnyLayer) {
+        if (lastHoverHitRef.current !== 'none') {
+          lastHoverHitRef.current = 'none';
+          setCursorStyle('default');
+          notifyCursorHover(false);
+        }
+      }
+    };
+
     const onPointerMove = (e: PointerEvent) => {
       // Store latest pointer position — consumed by tick()
       if (dragSessionRef.current) {
@@ -1138,56 +1316,11 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       const sm = sceneManagerRef.current;
       if (sm && sm.isPointerDown) return;
 
-      // Hover: detect hit for cursor style (ZERO 3D raycasting = ZERO lag!)
+      // Hover: throttle hit detection to RAF to avoid 1000Hz mouse polling lag
       if (interactionStateRef.current === 'idle' || interactionStateRef.current === 'selected') {
-        const domEl = sm?.renderer.domElement;
-        if (!domEl) return;
-        const rect = domEl.getBoundingClientRect();
-        const px = e.clientX - rect.left;
-        const py = e.clientY - rect.top;
-
-        // 1. Check selected layer handles
-        const selId = selectedLayerIdRef.current;
-        if (selId) {
-          const handlesResult = getSelectedLayerHandles();
-          if (handlesResult && handlesResult.isFacing) {
-            const hit = hitHandle(handlesResult.handles, px, py);
-            if (hit) {
-              lastHoverHitRef.current = 'handle';
-              setCursorStyle(hit.type === 'rotate' ? 'grab' : 'nwse-resize');
-              notifyCursorHover(true);
-              return;
-            }
-            if (isPointInPolygon(px, py, handlesResult.corners)) {
-              lastHoverHitRef.current = 'layer';
-              setCursorStyle('grab');
-              notifyCursorHover(true);
-              return;
-            }
-          }
-        }
-
-        // 2. Check other artwork layers (facing camera)
-        const layers = artworkLayersRef.current;
-        let hitAnyLayer = false;
-        for (let i = layers.length - 1; i >= 0; i--) {
-          const layer = layers[i];
-          if (layer.id === selId) continue;
-          if ((layer.placementMode ?? 'atlas') !== 'atlas' || layer.opacity <= 0) continue;
-          const info = getLayerScreenInfo(layer);
-          if (info && info.handlesResult.isFacing && isPointInPolygon(px, py, info.handlesResult.corners)) {
-            lastHoverHitRef.current = 'layer';
-            setCursorStyle('grab');
-            notifyCursorHover(true);
-            hitAnyLayer = true;
-            break;
-          }
-        }
-
-        if (!hitAnyLayer) {
-          lastHoverHitRef.current = 'none';
-          setCursorStyle('default');
-          notifyCursorHover(false);
+        pendingHoverCoords = { clientX: e.clientX, clientY: e.clientY };
+        if (hoverRafId === null) {
+          hoverRafId = requestAnimationFrame(performHoverCheck);
         }
       }
     };
@@ -1369,6 +1502,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
 
     return () => {
       cancelAnimationFrame(animFrameId);
+      if (hoverRafId !== null) cancelAnimationFrame(hoverRafId);
       domEl.removeEventListener('pointerdown', onPointerDown);
       domEl.removeEventListener('pointermove', onPointerMove);
       domEl.removeEventListener('pointerup', onPointerUp);
