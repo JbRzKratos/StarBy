@@ -32,10 +32,8 @@ export async function GET(_request: Request, { params }: { params: { id: string 
 
     // Auth check: Must be admin, owner of the order, or have verified email link
     const isOwner = Boolean(user?.id && user.id === order.userId);
-    let isAdmin =
-      user?.email === 'fregorostudios@gmail.com' ||
-      user?.email === 'admin@fregorostudios.com' ||
-      user?.email === 'gokul@fregorostudios.com';
+    const { isSuperAdminEmail } = await import('@/app/admin/lib/auth');
+    let isAdmin = isSuperAdminEmail(user?.email);
 
     if (!isAdmin && user?.id) {
       const dbUser = await prisma.user.findUnique({ where: { id: user.id } });

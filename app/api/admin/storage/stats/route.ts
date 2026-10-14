@@ -20,32 +20,33 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const isSuperAdminEmail =
-      user.email === 'fregorostudios@gmail.com' ||
-      user.email === 'admin@fregorostudios.com' ||
-      user.email === 'gokul@fregorostudios.com';
+    const { isSuperAdminEmail } = await import('@/app/admin/lib/auth');
+    const isSuperAdmin = isSuperAdminEmail(user.email);
 
     let dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser && user.email) {
+      dbUser = await prisma.user.findUnique({ where: { email: user.email.toLowerCase() } });
+    }
 
-    if (isSuperAdminEmail) {
+    if (isSuperAdmin) {
       if (!dbUser) {
         dbUser = await prisma.user.create({
           data: {
             id: user.id,
-            email: user.email || 'fregorostudios@gmail.com',
+            email: user.email?.toLowerCase() || 'gokul30sep@gmail.com',
             role: 'ADMIN',
             fullName: (user.user_metadata?.full_name as string) || 'Admin',
           },
         });
       } else if (dbUser.role !== 'ADMIN') {
         dbUser = await prisma.user.update({
-          where: { id: user.id },
+          where: { id: dbUser.id },
           data: { role: 'ADMIN' },
         });
       }
     }
 
-    if (!dbUser || (dbUser.role !== 'ADMIN' && dbUser.role !== 'STAFF')) {
+    if (!dbUser || (dbUser.role !== 'ADMIN' && dbUser.role !== 'STAFF' && !isSuperAdmin)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
