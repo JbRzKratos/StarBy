@@ -301,7 +301,7 @@ export function ShopMobile({ category, products }: { category: string; products:
 
       {/* Content Area */}
       <div className="px-5 pt-6">
-        {isCategoryComingSoon(activeTab) ? (
+        {activeTab !== 'all' && isCategoryComingSoon(activeTab) ? (
           <CategoryComingSoonPage category={activeTab} />
         ) : activeTab === 'tees' || activeTab === 'hoodies' ? (
           <ClothingDesignsGallery

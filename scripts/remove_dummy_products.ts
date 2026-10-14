@@ -15,13 +15,19 @@ async function main() {
     'oasis-hoodie',
     'echo-hoodie',
     'titan-hoodie',
-    'apex-hoodie'
+    'apex-hoodie',
+    'classic-heavyweight-tee',
+    'oversized-streetwear-tee',
+    'core-heavyweight-hoodie',
+    'boxy-streetwear-hoodie'
   ];
 
   const dummyIds = [
     'prod_001', 'prod_002', 'prod_003', 'prod_004', 'prod_005', 'prod_006',
     'prod_007', 'prod_008', 'prod_009', 'prod_010', 'prod_011', 'prod_012',
-    'prod_test_tees'
+    'prod_test_tees',
+    'apparel_tee_01', 'apparel_tee_02',
+    'apparel_hoodie_01', 'apparel_hoodie_02'
   ];
 
   console.log('Finding dummy products in DB...');

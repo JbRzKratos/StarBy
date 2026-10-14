@@ -13,6 +13,7 @@ export interface Category {
 }
 
 export const ACTIVE_PRODUCT_CATEGORIES = new Set([
+  'all',
   'tees',
   'oversized-tees',
   'hoodies',
@@ -24,7 +25,9 @@ export const ACTIVE_PRODUCT_CATEGORIES = new Set([
 
 export function isCategoryComingSoon(categorySlug?: string): boolean {
   if (!categorySlug) return false;
-  return !ACTIVE_PRODUCT_CATEGORIES.has(categorySlug.toLowerCase());
+  const slug = categorySlug.toLowerCase().trim();
+  if (slug === 'all' || slug === 'all-designs' || slug === 'all designs') return false;
+  return !ACTIVE_PRODUCT_CATEGORIES.has(slug);
 }
 
 export function isProductComingSoon(product?: {

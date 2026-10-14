@@ -301,7 +301,7 @@ export function ShopDesktop({ category, products }: { category: string; products
           </div>
         </div>
 
-        {isCategoryComingSoon(activeTab) ? (
+        {activeTab !== 'all' && isCategoryComingSoon(activeTab) ? (
           <CategoryComingSoonPage category={activeTab} />
         ) : activeTab === 'tees' || activeTab === 'hoodies' ? (
           <ClothingDesignsGallery

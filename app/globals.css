@@ -52,20 +52,38 @@
    * On mobile screens (< 768px), the native browser cursor is ALWAYS preserved.
    */
   @media (min-width: 768px) {
-    html.cursor-ready,
-    html.cursor-ready * {
+    html.cursor-ready:not(.cursor-hidden),
+    html.cursor-ready:not(.cursor-hidden) * {
       cursor: none !important;
+    }
+
+    html.cursor-hidden,
+    html.cursor-hidden * {
+      cursor: auto !important;
     }
 
     /* Restore text caret inside text inputs even when custom cursor is active */
     html.cursor-ready input,
-    html.cursor-ready textarea {
+    html.cursor-ready textarea,
+    html.cursor-ready [contenteditable='true'] {
       cursor: text !important;
+    }
+
+    /* Restore native cursor on iframes (3D mockup studio, embeds) */
+    html.cursor-ready iframe {
+      cursor: auto !important;
     }
 
     /* Admin, AR camera, and reduced-motion: always restore native cursor */
     html.cursor-ready body.ar-active,
     html.cursor-ready body.ar-active * {
+      cursor: auto !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.cursor-ready,
+    html.cursor-ready * {
       cursor: auto !important;
     }
   }
