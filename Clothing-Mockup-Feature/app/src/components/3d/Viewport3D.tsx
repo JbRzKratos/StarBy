@@ -1527,8 +1527,15 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         if (cancelled) return;
         await materialManager.setupGarmentMaterials(garmentConfig, compositor);
         if (cancelled) return;
-        for (const layer of artworkLayers) await compositor.preloadArtwork(layer.imageUrl);
-        compositor.composite(garmentColor, artworkLayers, garmentConfig, activeRegionId);
+
+        // Preload any active artwork layers before first composite
+        await Promise.all(
+          artworkLayersRef.current.map(async (layer) => {
+            try { await compositor.preloadArtwork(layer.imageUrl); } catch (_) {}
+          })
+        );
+        if (cancelled) return;
+        compositor.composite(garmentColorRef.current, artworkLayersRef.current, garmentConfig, activeRegionIdRef.current);
 
         setLoadProgress(40);
         const loadedModel: LoadedGarmentModel = await modelManager.loadGarment(
@@ -1559,13 +1566,28 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
           garmentConfig.cameraDefaults.distance, garmentConfig.cameraDefaults.fov);
 
         compositor.setGarmentMesh(loadedModel.garmentMesh);
-        compositor.composite(garmentColor, artworkLayers, garmentConfig, activeRegionId);
         garmentMeshRef.current = loadedModel.garmentMesh;
         if (loadedModel.garmentMesh && loadedModel.garmentMesh.geometry) {
           uvLookupRef.current = new FastUVIndex(loadedModel.garmentMesh.geometry);
         } else {
           uvLookupRef.current = null;
         }
+
+        // CRITICAL: Now that model is loaded and added to scene, preload and composite with the LATEST artworkLayersRef.current
+        const latestLayers = artworkLayersRef.current;
+        await Promise.all(
+          latestLayers.map(async (layer) => {
+            try { await compositor.preloadArtwork(layer.imageUrl); } catch (_) {}
+          })
+        );
+        if (cancelled) return;
+
+        const panel = selectedPanelIdRef.current ? findPanelById(garmentConfig.id, selectedPanelIdRef.current) : null;
+        compositor.setHighlightPanel(panel);
+        compositor.composite(garmentColorRef.current, latestLayers, garmentConfig, activeRegionIdRef.current, true);
+        materialManager.updateMaterialParams(roughness, metalness);
+        materialManager.getGarmentMaterial().needsUpdate = true;
+
         if (onModelLoaded) onModelLoaded(loadedModel.garmentMesh);
 
         setLoadProgress(100);
@@ -1587,17 +1609,22 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
 
     async function updateTexture() {
       if (!compositorRef.current || !materialManagerRef.current) return;
-      for (const layer of artworkLayers) {
-        try {
-          await compositorRef.current.preloadArtwork(layer.imageUrl);
-        } catch (err) {
-          console.warn('[Viewport3D] Preload artwork error for layer:', layer.imageUrl, err);
-        }
-      }
+      const currentLayers = artworkLayersRef.current;
+      await Promise.all(
+        currentLayers.map(async (layer) => {
+          try {
+            await compositorRef.current?.preloadArtwork(layer.imageUrl);
+          } catch (err) {
+            console.warn('[Viewport3D] Preload artwork error for layer:', layer.imageUrl, err);
+          }
+        })
+      );
+      if (!compositorRef.current || !materialManagerRef.current) return;
       const panel = selectedPanelId ? findPanelById(garmentConfig.id, selectedPanelId) : null;
       compositorRef.current.setHighlightPanel(panel);
-      compositorRef.current.composite(garmentColor, artworkLayers, garmentConfig, activeRegionId, true);
+      compositorRef.current.composite(garmentColorRef.current, currentLayers, garmentConfig, activeRegionIdRef.current, true);
       materialManagerRef.current.updateMaterialParams(roughness, metalness);
+      materialManagerRef.current.getGarmentMaterial().needsUpdate = true;
     }
     updateTexture();
   }, [garmentColor, artworkLayers, garmentConfig, roughness, metalness, activeRegionId, selectedPanelId]);

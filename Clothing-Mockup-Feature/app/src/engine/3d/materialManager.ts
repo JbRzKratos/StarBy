@@ -165,6 +165,7 @@ export class MaterialManager3D {
     this.garmentMaterial.map = compositor.getTexture();
     this.garmentMaterial.map.needsUpdate = true;
     this.baseMapUniform.uBaseMap.value = compositor.getBaseTexture();
+    this.garmentMaterial.needsUpdate = true;
 
     // 2. Load Normal Map (garment wrinkle/seam normals)
     if (garmentConfig.textures.normal) {
