@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, type CSSProperties, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import type {
   ClothingDesignEntry,
@@ -192,9 +192,9 @@ export function useClothingProductModalState({
     const defaultArt = artworks.find((a) => a.id === defaultId) || artworks[0];
     const initialSide =
       defaultArt.suggestedPlacement === 'back' ||
-      defaultArt.suggestedPlacement === 'back-center' ||
-      defaultArt.suggestedPlacement === 'back-collar' ||
-      defaultArt.suggestedPlacement === 'full-back'
+        defaultArt.suggestedPlacement === 'back-center' ||
+        defaultArt.suggestedPlacement === 'back-collar' ||
+        defaultArt.suggestedPlacement === 'full-back'
         ? 'back'
         : 'front';
     setPreviewSide(initialSide);
@@ -363,7 +363,7 @@ export function useClothingProductModalState({
   };
 
   // Click on 2D Garment Mockup plate to pinpoint placement
-  const handleGarmentMockupClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleGarmentMockupClick = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const relX = (e.clientX - rect.left) / rect.width;
     const relY = (e.clientY - rect.top) / rect.height;
@@ -440,7 +440,7 @@ export function useClothingProductModalState({
     placement: DesignPlacementTarget,
     scale: DesignScalePreset,
     isMobile?: boolean
-  ): React.CSSProperties => {
+  ): CSSProperties => {
     let scaleMultiplier = isMobile ? 0.62 : 1.0;
     if (scale === 'compact') scaleMultiplier *= 0.72;
     if (scale === 'oversized') scaleMultiplier *= 1.35;
@@ -523,13 +523,13 @@ export function useClothingProductModalState({
   const isCurrentPlacementOnCurrentSide =
     previewSide === 'front'
       ? currentPlacement !== 'back' &&
-        currentPlacement !== 'back-center' &&
-        currentPlacement !== 'back-collar' &&
-        currentPlacement !== 'full-back'
+      currentPlacement !== 'back-center' &&
+      currentPlacement !== 'back-collar' &&
+      currentPlacement !== 'full-back'
       : currentPlacement === 'back' ||
-        currentPlacement === 'back-center' ||
-        currentPlacement === 'back-collar' ||
-        currentPlacement === 'full-back';
+      currentPlacement === 'back-center' ||
+      currentPlacement === 'back-collar' ||
+      currentPlacement === 'full-back';
 
   return {
     mounted,

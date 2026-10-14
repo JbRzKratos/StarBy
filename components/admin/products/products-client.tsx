@@ -6,19 +6,13 @@ import {
   Search,
   Plus,
   Edit2,
-  Trash2,
-  ChevronDown,
-  ChevronUp,
   Check,
   X,
-  Sparkles,
   DollarSign,
   Layers,
-  Tag,
   SlidersHorizontal,
   LayoutGrid,
   List,
-  AlertTriangle,
 } from 'lucide-react';
 import { AdminBadge } from '../ui/badge';
 import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
@@ -180,7 +174,7 @@ export const CUSTOMER_SELLING_CATEGORIES: CustomerSellingCategory[] = [
 
 export function ProductsClient({
   products,
-  categories,
+  categories: _categories,
 }: {
   products: ProductRow[];
   categories: CategoryOption[];

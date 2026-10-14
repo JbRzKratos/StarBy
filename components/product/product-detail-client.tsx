@@ -131,7 +131,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
       );
       setSelectedApparelColor(matched || selectedGarment.colors[0]);
     }
-  }, [selectedGarmentId, selectedGarment]);
+  }, [selectedGarmentId, selectedGarment, selectedApparelColor.hex, selectedApparelColor.name]);
 
   // Available sizes for currently selected garment
   const availableSizes = useMemo(() => {

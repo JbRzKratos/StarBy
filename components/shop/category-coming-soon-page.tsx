@@ -837,7 +837,7 @@ export function CategoryComingSoonPage({ category }: { category: string }) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {data.timeline.map((step, idx) => (
+            {data.timeline.map((step) => (
               <div
                 key={step.title}
                 className={`p-5 rounded-xl bg-[#141416] space-y-2 relative overflow-hidden ${
