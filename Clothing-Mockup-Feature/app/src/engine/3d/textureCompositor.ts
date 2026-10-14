@@ -85,14 +85,12 @@ export class TextureCompositor3D {
     this.diffuseMaskCtx.imageSmoothingQuality = 'high';
 
     // GlTF textures are NOT Y-flipped in Verge3D/Three.js when using standard coordinates
-    // generateMipmaps=false & minFilter=LinearFilter avoids synchronous GPU downsampling of 11 mipmap levels on 2048x2048 canvas,
-    // eliminating pipeline stalls and stuttering during artwork compositing and dragging.
     this.texture = new THREE.CanvasTexture(this.canvas);
     this.texture.flipY = false;
     this.texture.wrapS = THREE.ClampToEdgeWrapping;
     this.texture.wrapT = THREE.ClampToEdgeWrapping;
-    this.texture.generateMipmaps = false;
-    this.texture.minFilter = THREE.LinearFilter;
+    this.texture.generateMipmaps = true;
+    this.texture.minFilter = THREE.LinearMipmapLinearFilter;
     this.texture.magFilter = THREE.LinearFilter;
     this.texture.colorSpace = THREE.SRGBColorSpace;
 
@@ -110,8 +108,8 @@ export class TextureCompositor3D {
     this.baseTexture.flipY = false;
     this.baseTexture.wrapS = THREE.ClampToEdgeWrapping;
     this.baseTexture.wrapT = THREE.ClampToEdgeWrapping;
-    this.baseTexture.generateMipmaps = false;
-    this.baseTexture.minFilter = THREE.LinearFilter;
+    this.baseTexture.generateMipmaps = true;
+    this.baseTexture.minFilter = THREE.LinearMipmapLinearFilter;
     this.baseTexture.magFilter = THREE.LinearFilter;
     this.baseTexture.colorSpace = THREE.SRGBColorSpace;
 
@@ -264,8 +262,8 @@ export class TextureCompositor3D {
     if (!this.threeTextureCache.has(url)) {
       const tex = new THREE.CanvasTexture(img);
       tex.colorSpace = THREE.SRGBColorSpace;
-      tex.generateMipmaps = false;
-      tex.minFilter = THREE.LinearFilter;
+      tex.generateMipmaps = true;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
       tex.magFilter = THREE.LinearFilter;
       this.threeTextureCache.set(url, tex);
     }
@@ -520,8 +518,8 @@ export class TextureCompositor3D {
       if (!threeTex) {
         threeTex = new THREE.CanvasTexture(img);
         threeTex.colorSpace = THREE.SRGBColorSpace;
-        threeTex.generateMipmaps = false;
-        threeTex.minFilter = THREE.LinearFilter;
+        threeTex.generateMipmaps = true;
+        threeTex.minFilter = THREE.LinearMipmapLinearFilter;
         threeTex.magFilter = THREE.LinearFilter;
         this.threeTextureCache.set(layer.imageUrl, threeTex);
       }

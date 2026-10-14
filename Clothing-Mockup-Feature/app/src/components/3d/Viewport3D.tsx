@@ -757,22 +757,6 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     const sm = sceneManagerRef.current;
     if (!sm) return null;
 
-    // Fast path: if handles were already computed and neither camera nor layer moved, reuse cached result
-    const cam = sm.camera;
-    const camMoved =
-      !prevCamStateRef.current ||
-      prevCamStateRef.current.x !== cam.position.x ||
-      prevCamStateRef.current.y !== cam.position.y ||
-      prevCamStateRef.current.z !== cam.position.z ||
-      prevCamStateRef.current.qx !== cam.quaternion.x ||
-      prevCamStateRef.current.qy !== cam.quaternion.y ||
-      prevCamStateRef.current.qz !== cam.quaternion.z ||
-      prevCamStateRef.current.qw !== cam.quaternion.w;
-
-    if (!camMoved && cachedSelectedHandlesRef.current && cachedSelectedHandlesRef.current.isFacing) {
-      return cachedSelectedHandlesRef.current;
-    }
-
     const rect = sm.renderer.domElement.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return null;
     const imgAspect = getImgAspectForLayer(layer);
@@ -979,7 +963,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     const isAnimTick = isAnimatedRef.current && isPlayingRef.current;
     const isDragging = dragSessionRef.current !== null;
 
-    if (!sizeChanged && !camMoved && !layerChanged && !isAnimTick && !isDragging && cachedSelectedHandlesRef.current) {
+    if (!sizeChanged && !camMoved && !layerChanged && !isAnimTick && !isDragging) {
       // Handles are identical to what's already on the overlay canvas. Skip re-clearing and re-projecting!
       return;
     }
@@ -1603,7 +1587,13 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
 
     async function updateTexture() {
       if (!compositorRef.current || !materialManagerRef.current) return;
-      for (const layer of artworkLayers) await compositorRef.current.preloadArtwork(layer.imageUrl);
+      for (const layer of artworkLayers) {
+        try {
+          await compositorRef.current.preloadArtwork(layer.imageUrl);
+        } catch (err) {
+          console.warn('[Viewport3D] Preload artwork error for layer:', layer.imageUrl, err);
+        }
+      }
       const panel = selectedPanelId ? findPanelById(garmentConfig.id, selectedPanelId) : null;
       compositorRef.current.setHighlightPanel(panel);
       compositorRef.current.composite(garmentColor, artworkLayers, garmentConfig, activeRegionId, true);
