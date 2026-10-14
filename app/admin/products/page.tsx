@@ -1,15 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import { ProductsClient } from '@/components/admin/products/products-client';
-import { syncAllProductsToDatabase } from '@/scripts/sync-all-products-to-db';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminProductsPage() {
-  // Ensure all products across catalog, split posters, magazines, and wall studio are in DB
-  const totalCount = await prisma.product.count();
-  if (totalCount < 400) {
-    await syncAllProductsToDatabase();
-  }
 
   const [products, categories] = await Promise.all([
     prisma.product.findMany({
