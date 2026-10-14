@@ -222,10 +222,28 @@ export function ClothingMockupIframe() {
       const doc = iframe.contentDocument;
       const win = iframe.contentWindow;
 
-      // 1. Sync cursor-ready class from parent to iframe document
+      // 1. Sync cursor-ready class from parent to iframe document and suppress native cursor inside iframe
       if (doc) {
-        if (document.documentElement.classList.contains('cursor-ready')) {
-          doc.documentElement.classList.add('cursor-ready');
+        doc.documentElement.classList.add('cursor-ready');
+        doc.documentElement.classList.remove('cursor-hidden');
+
+        // Inject strong cursor suppression style inside iframe
+        let styleEl = doc.getElementById('starby-iframe-cursor-suppress') as HTMLStyleElement | null;
+        if (!styleEl) {
+          styleEl = doc.createElement('style');
+          styleEl.id = 'starby-iframe-cursor-suppress';
+          styleEl.textContent = `
+            html.cursor-ready:not(.cursor-hidden),
+            html.cursor-ready:not(.cursor-hidden) * {
+              cursor: none !important;
+            }
+            html.cursor-ready:not(.cursor-hidden) input,
+            html.cursor-ready:not(.cursor-hidden) textarea,
+            html.cursor-ready:not(.cursor-hidden) [contenteditable="true"] {
+              cursor: text !important;
+            }
+          `;
+          doc.head?.appendChild(styleEl);
         }
 
         const observer = new MutationObserver(() => {
@@ -253,11 +271,20 @@ export function ClothingMockupIframe() {
           rafId = null;
           if (!pendingMove || !iframeRef.current) return;
           const rect = iframeRef.current.getBoundingClientRect();
+          const clientX = pendingMove.clientX + rect.left;
+          const clientY = pendingMove.clientY + rect.top;
+
           window.dispatchEvent(
-            new MouseEvent('mousemove', {
-              clientX: pendingMove.clientX + rect.left,
-              clientY: pendingMove.clientY + rect.top,
+            new PointerEvent('pointermove', {
+              clientX,
+              clientY,
               bubbles: true,
+              pointerType: 'mouse',
+            }),
+          );
+          window.dispatchEvent(
+            new CustomEvent('custom-cursor-coords', {
+              detail: { clientX, clientY },
             }),
           );
         };
@@ -272,7 +299,7 @@ export function ClothingMockupIframe() {
 
             const target = e.target as HTMLElement | null;
             const isInteractive = !!target?.closest(
-              'button, a, input, select, textarea, [role="button"], .interactive, .nav-tab-btn, .side-btn, .header-btn, .btn-card-subtle',
+              'button, a, input, select, textarea, [role="button"], .interactive, .nav-tab-btn, .side-btn, .header-btn, .btn-card-subtle, .quick-action-pill, .color-swatch-btn, .catalog-card, .layer-item, .toggle-row, .camera-preset-btn, .uv-tab-btn, .uv-tool-btn, .btn-add-to-cart',
             );
             if (isInteractive !== lastInteractive) {
               lastInteractive = isInteractive;
@@ -285,6 +312,16 @@ export function ClothingMockupIframe() {
           },
           { passive: true },
         );
+
+        win.addEventListener('pointerdown', (e: PointerEvent) => {
+          if (e.pointerType === 'touch') return;
+          window.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', bubbles: true }));
+        });
+
+        win.addEventListener('pointerup', (e: PointerEvent) => {
+          if (e.pointerType === 'touch') return;
+          window.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
+        });
 
         win.addEventListener('mousedown', () => {
           window.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));

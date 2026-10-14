@@ -7,6 +7,42 @@ import type { User } from '@prisma/client';
 export type AdminUser = User & { isAdmin: boolean; isStaff: boolean };
 
 /**
+ * Ensures superadmin email accounts are automatically upserted and granted ADMIN role
+ */
+async function syncAdminUser(user: {
+  id: string;
+  email?: string;
+  user_metadata?: Record<string, unknown>;
+}): Promise<User | null> {
+  const isSuperAdminEmail =
+    user.email === 'fregorostudios@gmail.com' ||
+    user.email === 'admin@fregorostudios.com' ||
+    user.email === 'gokul@fregorostudios.com';
+
+  let dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+
+  if (isSuperAdminEmail) {
+    if (!dbUser) {
+      dbUser = await prisma.user.create({
+        data: {
+          id: user.id,
+          email: user.email || 'fregorostudios@gmail.com',
+          role: 'ADMIN',
+          fullName: (user.user_metadata?.full_name as string) || 'Admin',
+        },
+      });
+    } else if (dbUser.role !== 'ADMIN') {
+      dbUser = await prisma.user.update({
+        where: { id: user.id },
+        data: { role: 'ADMIN' },
+      });
+    }
+  }
+
+  return dbUser;
+}
+
+/**
  * Call from any /admin page or server action.
  * Returns the authenticated DB user if they have ADMIN or STAFF role.
  * Redirects otherwise.
@@ -23,7 +59,7 @@ export const requireStaff = cache(async (): Promise<AdminUser> => {
       redirect('/login');
     }
 
-    const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+    const dbUser = await syncAdminUser(user);
 
     if (!dbUser || (dbUser.role !== 'ADMIN' && dbUser.role !== 'STAFF')) {
       redirect('/');
@@ -73,18 +109,12 @@ export async function assertAdmin() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error('Not authenticated: please log in');
-  let dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+
+  const dbUser = await syncAdminUser(user);
   const isSuperAdminEmail =
     user.email === 'fregorostudios@gmail.com' ||
     user.email === 'admin@fregorostudios.com' ||
     user.email === 'gokul@fregorostudios.com';
-
-  if (dbUser && isSuperAdminEmail && dbUser.role !== 'ADMIN') {
-    dbUser = await prisma.user.update({
-      where: { id: user.id },
-      data: { role: 'ADMIN' },
-    });
-  }
 
   if (!dbUser || (dbUser.role !== 'ADMIN' && !isSuperAdminEmail)) {
     throw new Error('Forbidden: Only admin access users can change product prices');
@@ -98,7 +128,8 @@ export async function assertStaff() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error('Not authenticated');
-  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+
+  const dbUser = await syncAdminUser(user);
   if (!dbUser || (dbUser.role !== 'ADMIN' && dbUser.role !== 'STAFF')) {
     throw new Error('Forbidden');
   }

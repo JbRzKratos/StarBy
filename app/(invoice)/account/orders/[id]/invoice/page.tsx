@@ -18,8 +18,10 @@ export default async function InvoicePage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const order = await prisma.order.findUnique({
-    where: { id: params.id },
+  const order = await prisma.order.findFirst({
+    where: {
+      OR: [{ id: params.id }, { publicOrderId: params.id }],
+    },
     include: {
       items: true,
       user: {
@@ -36,7 +38,9 @@ export default async function InvoicePage({
 
   const isOwner = Boolean(user?.id && user.id === order.userId);
   let isAdmin =
-    user?.email === 'fregorostudios@gmail.com' || user?.email === 'admin@fregorostudios.com';
+    user?.email === 'fregorostudios@gmail.com' ||
+    user?.email === 'admin@fregorostudios.com' ||
+    user?.email === 'gokul@fregorostudios.com';
 
   if (!isAdmin && user?.id) {
     const dbUser = await prisma.user.findUnique({ where: { id: user.id } });

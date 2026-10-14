@@ -36,7 +36,7 @@ export function getEmailWhatsappLink(message: string): string {
  * Public website base URL
  */
 export function getEmailBaseUrl(): string {
-  const url = process.env.NEXT_PUBLIC_SITE_URL;
+  const url = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL;
   if (url && !url.includes('localhost')) {
     return url.replace(/\/$/, '');
   }

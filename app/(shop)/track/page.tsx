@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 interface TrackResult {
   status: string;
@@ -12,15 +13,19 @@ interface TrackResult {
   trackingUrl?: string | null;
 }
 
-export default function TrackOrderPage() {
-  const [orderId, setOrderId] = useState('');
-  const [email, setEmail] = useState('');
+function TrackOrderContent() {
+  const searchParams = useSearchParams();
+  const initialOrderId = searchParams.get('orderId') || '';
+  const initialEmail = searchParams.get('email') || '';
+
+  const [orderId, setOrderId] = useState(initialOrderId);
+  const [email, setEmail] = useState(initialEmail);
   const [tracking, setTracking] = useState(false);
   const [result, setResult] = useState<TrackResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleTrack = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const executeTrack = useCallback(async (targetOrderId: string, targetEmail: string) => {
+    if (!targetOrderId.trim() || !targetEmail.trim()) return;
     setTracking(true);
     setError(null);
     setResult(null);
@@ -29,7 +34,7 @@ export default function TrackOrderPage() {
       const res = await fetch('/api/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId, email }),
+        body: JSON.stringify({ orderId: targetOrderId.trim(), email: targetEmail.trim() }),
       });
       const data = await res.json();
       if (data.success) {
@@ -42,6 +47,17 @@ export default function TrackOrderPage() {
     } finally {
       setTracking(false);
     }
+  }, []);
+
+  useEffect(() => {
+    if (initialOrderId && initialEmail) {
+      executeTrack(initialOrderId, initialEmail);
+    }
+  }, [initialOrderId, initialEmail, executeTrack]);
+
+  const handleTrack = async (e: React.FormEvent) => {
+    e.preventDefault();
+    executeTrack(orderId, email);
   };
 
   return (
@@ -63,7 +79,7 @@ export default function TrackOrderPage() {
               required
               value={orderId}
               onChange={(e) => setOrderId(e.target.value)}
-              placeholder="e.g. ORD_..."
+              placeholder="e.g. STB-..."
               className="w-full bg-graphite border border-smoke/50 px-4 py-3 text-bone font-mono text-body-sm focus:outline-none focus:border-cobalt transition-colors"
             />
           </div>
@@ -176,5 +192,19 @@ export default function TrackOrderPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function TrackOrderPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen pt-32 pb-16 px-5 text-center font-mono text-pearl">
+          Loading tracker...
+        </div>
+      }
+    >
+      <TrackOrderContent />
+    </Suspense>
   );
 }

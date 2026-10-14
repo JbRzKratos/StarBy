@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { generateInvoicePdf } from './invoice';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy');
 const DEFAULT_FROM = process.env.EMAIL_FROM || 'Fregoro Studios <onboarding@resend.dev>';
@@ -11,7 +12,7 @@ export const BUSINESS_ADDRESS_LINE2 = 'Thiruvallur - 631203, Tamil Nadu, India';
 export const BUSINESS_FULL_ADDRESS = `${BUSINESS_ADDRESS_LINE1}, ${BUSINESS_ADDRESS_LINE2}`;
 
 function getBaseUrl(): string {
-  const url = process.env.NEXT_PUBLIC_SITE_URL;
+  const url = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL;
   if (url && !url.includes('localhost')) {
     return url.replace(/\/$/, '');
   }
@@ -402,16 +403,75 @@ export async function sendOrderConfirmationEmail(
 </html>
   `;
 
+  let attachments: Array<{ filename: string; content: Buffer }> | undefined = undefined;
+  try {
+    const pdfBuffer = await generateInvoicePdf({
+      id: details?.orderId || orderId,
+      publicOrderId: details?.publicOrderId || orderId,
+      createdAt: details?.createdAt || new Date(),
+      shippingAddress: details?.shippingAddress,
+      user: {
+        fullName: customerName,
+        email: toEmail,
+      },
+      items: items.map((item) => ({
+        productId: item.id || 'item',
+        productNameSnapshot: item.name,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        totalPrice: item.totalPrice,
+        price: item.unitPrice,
+      })),
+      discount: details?.discount,
+      couponCode: details?.couponCode,
+      total: finalTotal,
+    });
+
+    if (pdfBuffer && pdfBuffer.length > 0) {
+      attachments = [
+        {
+          filename: `Fregoro_Invoice_${safeOrderId}.pdf`,
+          content: pdfBuffer,
+        },
+      ];
+    }
+  } catch (pdfErr) {
+    console.warn('Could not generate PDF invoice attachment for customer email:', pdfErr);
+  }
+
+  const sender =
+    process.env.FREGORO_FROM_EMAIL ||
+    process.env.EMAIL_FROM ||
+    'Fregoro Studios <orders@fregorostudios.com>';
+
   try {
     await resend.emails.send({
-      from: DEFAULT_FROM,
+      from: sender,
       to: [toEmail],
       replyTo: BUSINESS_EMAIL,
       subject: `✦ Order Confirmed #${safeOrderId} — Your Celestial Artifact is in Production`,
       html,
+      attachments,
     });
     return true;
-  } catch (error) {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : String(error);
+    if (errMsg.includes('not verified')) {
+      try {
+        console.warn('Sender domain still propagating, retrying delivery via fallback sender...');
+        await resend.emails.send({
+          from: 'Fregoro Studios <onboarding@resend.dev>',
+          to: [toEmail],
+          replyTo: BUSINESS_EMAIL,
+          subject: `✦ Order Confirmed #${safeOrderId} — Your Celestial Artifact is in Production`,
+          html,
+          attachments,
+        });
+        return true;
+      } catch (fallbackErr) {
+        console.error('Fallback delivery failed:', fallbackErr);
+      }
+    }
     console.error('Failed to send order confirmation email:', error);
     return false;
   }
@@ -696,16 +756,75 @@ export async function sendAdminNewOrderEmail(
 </html>
   `;
 
+  let attachments: Array<{ filename: string; content: Buffer }> | undefined = undefined;
+  try {
+    const pdfBuffer = await generateInvoicePdf({
+      id: details?.orderId || orderId,
+      publicOrderId: details?.publicOrderId || orderId,
+      createdAt: details?.createdAt || new Date(),
+      shippingAddress: details?.shippingAddress,
+      user: {
+        fullName: customerName,
+        email: details?.customerEmail || undefined,
+      },
+      items: items.map((item) => ({
+        productId: item.id || 'item',
+        productNameSnapshot: item.name,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        totalPrice: item.totalPrice,
+        price: item.unitPrice,
+      })),
+      discount: details?.discount,
+      couponCode: details?.couponCode,
+      total: finalTotal,
+    });
+
+    if (pdfBuffer && pdfBuffer.length > 0) {
+      attachments = [
+        {
+          filename: `Fregoro_Invoice_${safeOrderId}.pdf`,
+          content: pdfBuffer,
+        },
+      ];
+    }
+  } catch (pdfErr) {
+    console.warn('Could not generate PDF invoice attachment for admin email:', pdfErr);
+  }
+
+  const sender =
+    process.env.FREGORO_FROM_EMAIL ||
+    process.env.EMAIL_FROM ||
+    'Fregoro Studios <orders@fregorostudios.com>';
+
   try {
     await resend.emails.send({
-      from: DEFAULT_FROM,
+      from: sender,
       to: [ADMIN_RECIPIENT],
       replyTo: details?.customerEmail || BUSINESS_EMAIL,
       subject: `⚡ [NEW ORDER] #${safeOrderId} · ₹${finalTotal.toFixed(2)} by ${customerName}`,
       html,
+      attachments,
     });
     return true;
-  } catch (error) {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : String(error);
+    if (errMsg.includes('not verified')) {
+      try {
+        console.warn('Sender domain still propagating, retrying admin notification via fallback sender...');
+        await resend.emails.send({
+          from: 'Fregoro Studios <onboarding@resend.dev>',
+          to: [ADMIN_RECIPIENT],
+          replyTo: details?.customerEmail || BUSINESS_EMAIL,
+          subject: `⚡ [NEW ORDER] #${safeOrderId} · ₹${finalTotal.toFixed(2)} by ${customerName}`,
+          html,
+          attachments,
+        });
+        return true;
+      } catch (fallbackErr) {
+        console.error('Fallback admin email delivery failed:', fallbackErr);
+      }
+    }
     console.error('Failed to send admin order email:', error);
     return false;
   }

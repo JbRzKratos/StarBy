@@ -25,8 +25,10 @@ export default async function OrderTrackingPage({ params }: { params: { id: stri
     redirect('/login');
   }
 
-  const order = await prisma.order.findUnique({
-    where: { id: params.id },
+  const order = await prisma.order.findFirst({
+    where: {
+      OR: [{ id: params.id }, { publicOrderId: params.id }],
+    },
     include: {
       items: true,
       statusHistory: {

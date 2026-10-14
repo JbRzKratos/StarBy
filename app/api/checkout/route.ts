@@ -4,7 +4,7 @@ import { rateLimit } from '@/lib/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import { Prisma } from '@prisma/client';
-import { sendOrderConfirmationEmail, sendAdminNewOrderEmail } from '@/lib/email';
+import { dispatchNotification } from '@/lib/notifications';
 import { createCashfreeOrder, generatePublicOrderId, getCashfreeEnvironment } from '@/lib/cashfree';
 import { uploadBufferToR2, getR2PublicUrl } from '@/lib/r2';
 import { getLayoutById, FREGORO_LAYOUTS } from '@/lib/wall-studio/layouts-data';
@@ -690,11 +690,13 @@ export async function POST(request: Request) {
     });
 
     let orderId: string;
+    let createdOrderDate = new Date();
     try {
       const newOrder = await prisma.order.create({
         data: createOrderData(userId),
       });
       orderId = newOrder.id;
+      createdOrderDate = newOrder.createdAt;
     } catch (dbError) {
       console.error('Final DB order creation error:', dbError);
       return NextResponse.json(
@@ -723,19 +725,40 @@ export async function POST(request: Request) {
         });
       }
 
-      // Send confirmation email for COD orders
-      const orderAddress = address as Record<string, string> | null;
-      if (orderAddress && orderAddress.email) {
-        await sendOrderConfirmationEmail(
-          orderAddress.email,
-          publicOrderId,
-          orderAddress.name || 'Customer',
-          totalAmount,
-        );
-      }
+      // Send confirmation notifications for COD orders with full item manifest
+      try {
+        const orderAddress = address as Record<string, string> | null;
+        const mappedItems = validatedItems.map((item) => ({
+          id: item.productId,
+          name: item.productNameSnapshot || `Product #${item.productId}`,
+          variant: item.variantId,
+          size: item.size,
+          quantity: item.quantity,
+          unitPrice: item.unitPrice,
+          totalPrice: item.unitPrice * item.quantity,
+          customization: item.customization as Record<string, unknown> | null,
+        }));
 
-      // Notify admin
-      await sendAdminNewOrderEmail(publicOrderId, totalAmount);
+        await dispatchNotification('ORDER_CREATED', {
+          orderId,
+          publicOrderId: publicOrderId || undefined,
+          customerName: orderAddress?.name || 'Valued Customer',
+          customerEmail: orderAddress?.email || undefined,
+          customerPhone: orderAddress?.phone || undefined,
+          total: totalAmount,
+          subtotal,
+          shippingFee,
+          discount: discountAmount,
+          couponCode: couponCode || undefined,
+          paymentMethod: 'Cash on Delivery (COD)',
+          paymentStatus: 'Pending (COD)',
+          shippingAddress: orderAddress,
+          items: mappedItems,
+          createdAt: createdOrderDate,
+        });
+      } catch (codNotifErr) {
+        console.warn('COD notification dispatch error (non-critical):', codNotifErr);
+      }
     }
 
     // 12. ──── Return response ────

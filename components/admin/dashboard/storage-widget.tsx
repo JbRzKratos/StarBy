@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Database, Download, Trash2, Loader2, RefreshCw } from 'lucide-react';
+import { Database, Download, Trash2, Loader2, RefreshCw, AlertCircle } from 'lucide-react';
 
 interface StorageStats {
   usedBytes: number;
@@ -18,16 +18,25 @@ interface StorageData {
 export function StorageWidget() {
   const [data, setData] = useState<StorageData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isClearing, setIsClearing] = useState(false);
 
   const fetchStats = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch('/api/admin/storage/stats');
+      if (!res.ok) {
+        throw new Error(`Server returned HTTP ${res.status}`);
+      }
       const json = await res.json();
+      if (!json || typeof json !== 'object' || !json.supabase || !json.r2) {
+        throw new Error('Invalid storage data format received');
+      }
       setData(json);
-    } catch (error) {
-      console.error('Failed to fetch storage stats', error);
+    } catch (err: unknown) {
+      console.error('Failed to fetch storage stats:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch storage stats');
     } finally {
       setLoading(false);
     }
@@ -38,15 +47,29 @@ export function StorageWidget() {
   }, []);
 
   const formatBytes = (bytes: number) => {
-    if (!bytes || bytes === 0) return '0 B';
+    if (!bytes || bytes <= 0 || isNaN(bytes)) return '0 B';
     const k = 1024;
     const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  const supabaseStats = data?.supabase ?? {
+    usedBytes: 0,
+    totalBytes: 500 * 1024 * 1024,
+    percentage: 0,
+  };
+
+  const r2Stats = data?.r2 ?? {
+    usedBytes: 0,
+    totalBytes: 10 * 1024 * 1024 * 1024,
+    percentage: 0,
+    fileCount: 0,
+  };
+
   const handleDownload = (target: 'supabase' | 'r2') => {
-    if (data && data[target].usedBytes === 0) {
+    const used = target === 'supabase' ? supabaseStats.usedBytes : r2Stats.usedBytes;
+    if (used === 0) {
       alert(`There are no files in ${target === 'r2' ? 'Cloudflare R2' : 'Supabase'} to download.`);
       return;
     }
@@ -54,7 +77,7 @@ export function StorageWidget() {
   };
 
   const handleClearR2 = async () => {
-    if (data && data.r2.usedBytes === 0) {
+    if (r2Stats.usedBytes === 0) {
       alert('There are no files in Cloudflare R2 to clear.');
       return;
     }
@@ -74,11 +97,11 @@ export function StorageWidget() {
         alert('R2 Storage cleared successfully!');
         await fetchStats();
       } else {
-        const error = await res.json();
-        alert('Failed to clear storage: ' + error.message);
+        const errJson = await res.json().catch(() => ({}));
+        alert('Failed to clear storage: ' + (errJson.message || errJson.error || 'Unknown error'));
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       alert('An error occurred while clearing storage.');
     } finally {
       setIsClearing(false);
@@ -105,7 +128,23 @@ export function StorageWidget() {
           </div>
         </div>
 
-        {data && (
+        {loading && !data ? (
+          <div className="py-12 flex flex-col items-center justify-center text-slate-400 gap-3">
+            <Loader2 className="w-6 h-6 animate-spin text-cobalt" />
+            <span className="font-mono text-xs">Loading storage metrics...</span>
+          </div>
+        ) : error && !data ? (
+          <div className="bg-black/30 rounded-lg p-5 border border-white/10 text-center my-4">
+            <AlertCircle className="w-6 h-6 text-amber-400 mx-auto mb-2" />
+            <p className="text-xs text-slate-300 font-mono mb-3">Metrics currently unavailable</p>
+            <button
+              onClick={fetchStats}
+              className="py-1.5 px-3 bg-white/10 hover:bg-white/15 text-white rounded text-xs font-mono transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : (
           <div className="space-y-5 mb-2">
             {/* Supabase PostgreSQL Database */}
             <div className="bg-black/30 rounded-lg p-4 border border-white/10">
@@ -115,27 +154,27 @@ export function StorageWidget() {
                   Supabase PostgreSQL
                 </span>
                 <span className="text-emerald-400 font-mono text-xs font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  {data.supabase.percentage}% used
+                  {supabaseStats.percentage}% used
                 </span>
               </div>
 
               <div className="flex justify-between items-baseline mb-2">
                 <span className="text-white font-mono text-base font-bold">
-                  {formatBytes(data.supabase.usedBytes)}
+                  {formatBytes(supabaseStats.usedBytes)}
                 </span>
                 <span className="text-slate-400 font-mono text-xs">
-                  limit: {formatBytes(data.supabase.totalBytes)}
+                  limit: {formatBytes(supabaseStats.totalBytes)}
                 </span>
               </div>
 
               <p className="text-[11px] font-mono text-slate-400 mb-3">
-                Exact: {data.supabase.usedBytes.toLocaleString()} bytes
+                Exact: {supabaseStats.usedBytes.toLocaleString()} bytes
               </p>
 
               <div className="w-full h-2.5 bg-black/60 rounded-full overflow-hidden border border-white/10 mb-4">
                 <div
                   className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-700 ease-out"
-                  style={{ width: `${Math.max(data.supabase.percentage, 1.5)}%` }}
+                  style={{ width: `${Math.max(supabaseStats.percentage, 1.5)}%` }}
                 ></div>
               </div>
 
@@ -159,24 +198,24 @@ export function StorageWidget() {
                   Cloudflare R2 Bucket
                 </span>
                 <span className="text-blue-400 font-mono text-xs font-bold bg-cobalt/10 px-2 py-0.5 rounded border border-cobalt/20">
-                  {data.r2.percentage}% used
+                  {r2Stats.percentage}% used
                 </span>
               </div>
 
               <div className="flex justify-between items-baseline mb-2">
                 <span className="text-white font-mono text-base font-bold">
-                  {formatBytes(data.r2.usedBytes)}
+                  {formatBytes(r2Stats.usedBytes)}
                 </span>
                 <span className="text-slate-400 font-mono text-xs">
-                  limit: {formatBytes(data.r2.totalBytes)}
+                  limit: {formatBytes(r2Stats.totalBytes)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-3">
-                <span>Exact: {data.r2.usedBytes.toLocaleString()} bytes</span>
-                {typeof data.r2.fileCount === 'number' && (
+                <span>Exact: {r2Stats.usedBytes.toLocaleString()} bytes</span>
+                {typeof r2Stats.fileCount === 'number' && (
                   <span className="text-slate-300 font-medium">
-                    {data.r2.fileCount} {data.r2.fileCount === 1 ? 'file' : 'files'}
+                    {r2Stats.fileCount} {r2Stats.fileCount === 1 ? 'file' : 'files'}
                   </span>
                 )}
               </div>
@@ -184,7 +223,7 @@ export function StorageWidget() {
               <div className="w-full h-2.5 bg-black/60 rounded-full overflow-hidden border border-white/10 mb-4">
                 <div
                   className="h-full bg-gradient-to-r from-cobalt to-[#8b5cf6] rounded-full transition-all duration-700 ease-out"
-                  style={{ width: `${Math.max(data.r2.percentage, 1.5)}%` }}
+                  style={{ width: `${Math.max(r2Stats.percentage, 1.5)}%` }}
                 ></div>
               </div>
 

@@ -349,7 +349,116 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                 </p>
               </div>
 
-              {/* STEP 1: Multi-Image Artwork Gallery Selector */}
+              {/* STEP 1: Garment Type & GSM */}
+              <div className="flex flex-col gap-2">
+                <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold">
+                  Select Apparel Type ({selectedGarment.gsm} GSM)
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {APPAREL_LIST.map((apparel) => {
+                    const isSelected = selectedGarmentId === apparel.id;
+                    return (
+                      <button
+                        key={apparel.id}
+                        type="button"
+                        onClick={() => setSelectedGarmentId(apparel.id)}
+                        className={`p-2.5 rounded-xl border text-left flex flex-col gap-0.5 transition-all ${
+                          isSelected
+                            ? 'bg-white/10 border-white text-white shadow-md'
+                            : 'bg-white/5 border-white/5 text-white/70 hover:bg-white/[0.08] hover:border-white/20'
+                        }`}
+                      >
+                        <span className="font-mono text-xs font-semibold uppercase tracking-wider">
+                          {apparel.name}
+                        </span>
+                        <span className="font-mono text-[10px] text-white/40">
+                          {apparel.fabric} • {apparel.gsm} GSM
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* STEP 2: Color Swatches */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold">
+                    Garment Color: <span className="text-white">{selectedColor.name}</span>
+                  </label>
+                  {currentActiveArt?.colorHint && currentActiveArt.colorHint !== 'any' && (
+                    <span className="font-mono text-[10px] text-emerald-400">
+                      ★ Graphic optimized for {currentActiveArt.colorHint}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap items-center gap-3">
+                  {selectedGarment.colors.map((color) => {
+                    const isSelected = selectedColor.name === color.name;
+                    return (
+                      <button
+                        key={color.name}
+                        type="button"
+                        onClick={() => setSelectedColor(color)}
+                        className={`group relative w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                          isSelected
+                            ? 'ring-2 ring-white ring-offset-2 ring-offset-[#111216] scale-110 shadow-lg'
+                            : 'opacity-85 hover:opacity-100 hover:scale-105'
+                        }`}
+                        style={{
+                          backgroundColor: color.hex,
+                          border:
+                            color.hex === '#FFFFFF'
+                              ? '1px solid #444'
+                              : '1px solid rgba(255,255,255,0.1)',
+                        }}
+                        title={color.name}
+                        aria-label={color.name}
+                      >
+                        {isSelected && (
+                          <Check
+                            className={`w-4 h-4 ${
+                              color.hex === '#FFFFFF' ||
+                              color.hex === '#D4C5B9' ||
+                              color.hex === '#E5E5E5'
+                                ? 'text-black'
+                                : 'text-white'
+                            }`}
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* STEP 3: Sizes */}
+              <div className="flex flex-col gap-2">
+                <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold">
+                  Garment Size
+                </label>
+                <div className="flex items-center gap-2">
+                  {selectedGarment.sizes.map((size) => {
+                    const isSelected = selectedSize === size;
+                    return (
+                      <button
+                        key={size}
+                        type="button"
+                        onClick={() => setSelectedSize(size)}
+                        className={`flex-1 py-2 rounded-lg font-mono text-xs uppercase tracking-wider transition-all ${
+                          isSelected
+                            ? 'bg-white text-black font-bold shadow-md'
+                            : 'bg-white/5 text-white/70 border border-white/5 hover:bg-white/10 hover:text-white'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* STEP 4: Multi-Image Artwork Gallery Selector */}
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold flex items-center gap-1.5">
@@ -480,7 +589,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                 </div>
               </div>
 
-              {/* STEP 2: Natural Language Input Bar */}
+              {/* STEP 5: Natural Language Input Bar */}
               <div className="flex flex-col gap-2 p-3.5 rounded-2xl bg-gradient-to-r from-emerald-950/20 via-white/[0.03] to-cyan-950/20 border border-white/10">
                 <div className="flex items-center justify-between">
                   <label className="font-mono text-[11px] text-white/90 uppercase tracking-wider font-bold flex items-center gap-1.5">
@@ -554,7 +663,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                 </div>
               </div>
 
-              {/* STEP 3: Placement Region & Precise Target */}
+              {/* STEP 6: Placement Region & Precise Target */}
               <div className="flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
                 <div className="flex items-center justify-between">
                   <label className="font-mono text-[11px] text-white/90 uppercase tracking-wider font-bold flex items-center gap-1.5">
@@ -669,7 +778,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                 </div>
               </div>
 
-              {/* STEP 4: Scale */}
+              {/* STEP 7: Scale */}
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold">
@@ -704,115 +813,6 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                         >
                           {scale.desc}
                         </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* STEP 5: Garment Type & GSM */}
-              <div className="flex flex-col gap-2">
-                <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold">
-                  Select Apparel Type ({selectedGarment.gsm} GSM)
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {APPAREL_LIST.map((apparel) => {
-                    const isSelected = selectedGarmentId === apparel.id;
-                    return (
-                      <button
-                        key={apparel.id}
-                        type="button"
-                        onClick={() => setSelectedGarmentId(apparel.id)}
-                        className={`p-2.5 rounded-xl border text-left flex flex-col gap-0.5 transition-all ${
-                          isSelected
-                            ? 'bg-white/10 border-white text-white shadow-md'
-                            : 'bg-white/5 border-white/5 text-white/70 hover:bg-white/[0.08] hover:border-white/20'
-                        }`}
-                      >
-                        <span className="font-mono text-xs font-semibold uppercase tracking-wider">
-                          {apparel.name}
-                        </span>
-                        <span className="font-mono text-[10px] text-white/40">
-                          {apparel.fabric} • {apparel.gsm} GSM
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* STEP 6: Color Swatches */}
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold">
-                    Garment Color: <span className="text-white">{selectedColor.name}</span>
-                  </label>
-                  {currentActiveArt?.colorHint && currentActiveArt.colorHint !== 'any' && (
-                    <span className="font-mono text-[10px] text-emerald-400">
-                      ★ Graphic optimized for {currentActiveArt.colorHint}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-wrap items-center gap-3">
-                  {selectedGarment.colors.map((color) => {
-                    const isSelected = selectedColor.name === color.name;
-                    return (
-                      <button
-                        key={color.name}
-                        type="button"
-                        onClick={() => setSelectedColor(color)}
-                        className={`group relative w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                          isSelected
-                            ? 'ring-2 ring-white ring-offset-2 ring-offset-[#111216] scale-110 shadow-lg'
-                            : 'opacity-85 hover:opacity-100 hover:scale-105'
-                        }`}
-                        style={{
-                          backgroundColor: color.hex,
-                          border:
-                            color.hex === '#FFFFFF'
-                              ? '1px solid #444'
-                              : '1px solid rgba(255,255,255,0.1)',
-                        }}
-                        title={color.name}
-                        aria-label={color.name}
-                      >
-                        {isSelected && (
-                          <Check
-                            className={`w-4 h-4 ${
-                              color.hex === '#FFFFFF' ||
-                              color.hex === '#D4C5B9' ||
-                              color.hex === '#E5E5E5'
-                                ? 'text-black'
-                                : 'text-white'
-                            }`}
-                          />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* STEP 7: Sizes */}
-              <div className="flex flex-col gap-2">
-                <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold">
-                  Garment Size
-                </label>
-                <div className="flex items-center gap-2">
-                  {selectedGarment.sizes.map((size) => {
-                    const isSelected = selectedSize === size;
-                    return (
-                      <button
-                        key={size}
-                        type="button"
-                        onClick={() => setSelectedSize(size)}
-                        className={`flex-1 py-2 rounded-lg font-mono text-xs uppercase tracking-wider transition-all ${
-                          isSelected
-                            ? 'bg-white text-black font-bold shadow-md'
-                            : 'bg-white/5 text-white/70 border border-white/5 hover:bg-white/10 hover:text-white'
-                        }`}
-                      >
-                        {size}
                       </button>
                     );
                   })}

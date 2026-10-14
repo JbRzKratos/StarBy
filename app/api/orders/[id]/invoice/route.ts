@@ -10,8 +10,10 @@ export async function GET(_request: Request, { params }: { params: { id: string 
       data: { user },
     } = await supabase.auth.getUser();
 
-    const order = await prisma.order.findUnique({
-      where: { id: params.id },
+    const order = await prisma.order.findFirst({
+      where: {
+        OR: [{ id: params.id }, { publicOrderId: params.id }],
+      },
       include: {
         user: true,
         items: true,
@@ -22,17 +24,28 @@ export async function GET(_request: Request, { params }: { params: { id: string 
       return new NextResponse('Order not found', { status: 404 });
     }
 
-    // Auth check: Must be admin or the owner of the order
-    const isOwner = user?.id === order.userId;
-    let isAdmin = false;
+    const { searchParams } = new URL(_request.url);
+    const searchEmail = (searchParams.get('email') || '').toLowerCase().trim();
+    const address = (order.shippingAddress as Record<string, string | undefined>) || {};
+    const orderEmail = (address.email || order.user?.email || '').toLowerCase().trim();
+    const isEmailVerifiedLink = Boolean(searchEmail && orderEmail && searchEmail === orderEmail);
 
-    if (user) {
+    // Auth check: Must be admin, owner of the order, or have verified email link
+    const isOwner = Boolean(user?.id && user.id === order.userId);
+    let isAdmin =
+      user?.email === 'fregorostudios@gmail.com' ||
+      user?.email === 'admin@fregorostudios.com' ||
+      user?.email === 'gokul@fregorostudios.com';
+
+    if (!isAdmin && user?.id) {
       const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
       isAdmin = dbUser?.role === 'ADMIN' || dbUser?.role === 'STAFF';
     }
 
-    if (!isOwner && !isAdmin) {
-      return new NextResponse('Unauthorized', { status: 401 });
+    if (!isOwner && !isAdmin && !isEmailVerifiedLink) {
+      return new NextResponse('Unauthorized: Please log in or provide verified email link', {
+        status: 401,
+      });
     }
 
     const pdfBuffer = await generateInvoicePdf(order);
@@ -41,7 +54,7 @@ export async function GET(_request: Request, { params }: { params: { id: string 
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="invoice-${order.id}.pdf"`,
+        'Content-Disposition': `attachment; filename="invoice-${order.publicOrderId || order.id}.pdf"`,
       },
     });
   } catch (error) {

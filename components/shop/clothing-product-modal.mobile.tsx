@@ -317,7 +317,116 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
           </p>
         </div>
 
-        {/* ── STEP 1: Artwork Files Selector ─────────────────────────────── */}
+        {/* ── STEP 1: Garment Type ────────────────────────────────────────── */}
+        <div className="flex flex-col gap-2">
+          <label className="font-mono text-[10px] text-white/70 uppercase tracking-wider font-semibold">
+            Apparel Type ({selectedGarment.gsm} GSM)
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {APPAREL_LIST.map((apparel) => {
+              const isSelected = selectedGarmentId === apparel.id;
+              return (
+                <button
+                  key={apparel.id}
+                  type="button"
+                  onClick={() => setSelectedGarmentId(apparel.id)}
+                  className={`p-2 rounded-xl border text-left flex flex-col gap-0.5 transition-all ${
+                    isSelected
+                      ? 'bg-white/10 border-white text-white shadow'
+                      : 'bg-white/5 border-white/5 text-white/70 active:bg-white/10'
+                  }`}
+                >
+                  <span className="font-mono text-[11px] font-semibold uppercase tracking-wider truncate">
+                    {apparel.name}
+                  </span>
+                  <span className="font-mono text-[9px] text-white/40">
+                    {apparel.fabric} • {apparel.gsm} GSM
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── STEP 2: Garment Color Swatches ──────────────────────────────── */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <label className="font-mono text-[10px] text-white/70 uppercase tracking-wider font-semibold">
+              Color: <span className="text-white">{selectedColor.name}</span>
+            </label>
+            {currentActiveArt?.colorHint && currentActiveArt.colorHint !== 'any' && (
+              <span className="font-mono text-[9px] text-emerald-400">
+                ★ Best for {currentActiveArt.colorHint}
+              </span>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            {selectedGarment.colors.map((color) => {
+              const isSelected = selectedColor.name === color.name;
+              return (
+                <button
+                  key={color.name}
+                  type="button"
+                  onClick={() => setSelectedColor(color)}
+                  className={`group relative w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                    isSelected
+                      ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0c0e12] scale-110 shadow'
+                      : 'opacity-85 active:scale-105'
+                  }`}
+                  style={{
+                    backgroundColor: color.hex,
+                    border:
+                      color.hex === '#FFFFFF'
+                        ? '1px solid #444'
+                        : '1px solid rgba(255,255,255,0.1)',
+                  }}
+                  title={color.name}
+                  aria-label={color.name}
+                >
+                  {isSelected && (
+                    <Check
+                      className={`w-4 h-4 ${
+                        color.hex === '#FFFFFF' ||
+                        color.hex === '#D4C5B9' ||
+                        color.hex === '#E5E5E5'
+                          ? 'text-black'
+                          : 'text-white'
+                      }`}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── STEP 3: Garment Sizes ───────────────────────────────────────── */}
+        <div className="flex flex-col gap-2">
+          <label className="font-mono text-[10px] text-white/70 uppercase tracking-wider font-semibold">
+            Garment Size
+          </label>
+          <div className="flex items-center gap-2">
+            {selectedGarment.sizes.map((size) => {
+              const isSelected = selectedSize === size;
+              return (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() => setSelectedSize(size)}
+                  className={`flex-1 py-2 rounded-lg font-mono text-xs uppercase tracking-wider transition-all ${
+                    isSelected
+                      ? 'bg-white text-black font-bold shadow'
+                      : 'bg-white/5 text-white/70 border border-white/5 active:bg-white/10'
+                  }`}
+                >
+                  {size}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── STEP 4: Artwork Files Selector ─────────────────────────────── */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <label className="font-mono text-[11px] text-white/80 uppercase tracking-wider font-semibold flex items-center gap-1.5">
@@ -625,114 +734,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
           </div>
         </div>
 
-        {/* ── STEP 5: Garment Type ────────────────────────────────────────── */}
-        <div className="flex flex-col gap-2">
-          <label className="font-mono text-[10px] text-white/70 uppercase tracking-wider font-semibold">
-            Apparel Type ({selectedGarment.gsm} GSM)
-          </label>
-          <div className="grid grid-cols-2 gap-2">
-            {APPAREL_LIST.map((apparel) => {
-              const isSelected = selectedGarmentId === apparel.id;
-              return (
-                <button
-                  key={apparel.id}
-                  type="button"
-                  onClick={() => setSelectedGarmentId(apparel.id)}
-                  className={`p-2 rounded-xl border text-left flex flex-col gap-0.5 transition-all ${
-                    isSelected
-                      ? 'bg-white/10 border-white text-white shadow'
-                      : 'bg-white/5 border-white/5 text-white/70 active:bg-white/10'
-                  }`}
-                >
-                  <span className="font-mono text-[11px] font-semibold uppercase tracking-wider truncate">
-                    {apparel.name}
-                  </span>
-                  <span className="font-mono text-[9px] text-white/40">
-                    {apparel.fabric} • {apparel.gsm} GSM
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
 
-        {/* ── STEP 6: Garment Color Swatches ──────────────────────────────── */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <label className="font-mono text-[10px] text-white/70 uppercase tracking-wider font-semibold">
-              Color: <span className="text-white">{selectedColor.name}</span>
-            </label>
-            {currentActiveArt?.colorHint && currentActiveArt.colorHint !== 'any' && (
-              <span className="font-mono text-[9px] text-emerald-400">
-                ★ Best for {currentActiveArt.colorHint}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            {selectedGarment.colors.map((color) => {
-              const isSelected = selectedColor.name === color.name;
-              return (
-                <button
-                  key={color.name}
-                  type="button"
-                  onClick={() => setSelectedColor(color)}
-                  className={`group relative w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                    isSelected
-                      ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0c0e12] scale-110 shadow'
-                      : 'opacity-85 active:scale-105'
-                  }`}
-                  style={{
-                    backgroundColor: color.hex,
-                    border:
-                      color.hex === '#FFFFFF'
-                        ? '1px solid #444'
-                        : '1px solid rgba(255,255,255,0.1)',
-                  }}
-                  title={color.name}
-                  aria-label={color.name}
-                >
-                  {isSelected && (
-                    <Check
-                      className={`w-4 h-4 ${
-                        color.hex === '#FFFFFF' ||
-                        color.hex === '#D4C5B9' ||
-                        color.hex === '#E5E5E5'
-                          ? 'text-black'
-                          : 'text-white'
-                      }`}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── STEP 7: Garment Sizes ───────────────────────────────────────── */}
-        <div className="flex flex-col gap-2">
-          <label className="font-mono text-[10px] text-white/70 uppercase tracking-wider font-semibold">
-            Garment Size
-          </label>
-          <div className="flex items-center gap-2">
-            {selectedGarment.sizes.map((size) => {
-              const isSelected = selectedSize === size;
-              return (
-                <button
-                  key={size}
-                  type="button"
-                  onClick={() => setSelectedSize(size)}
-                  className={`flex-1 py-2 rounded-lg font-mono text-xs uppercase tracking-wider transition-all ${
-                    isSelected
-                      ? 'bg-white text-black font-bold shadow'
-                      : 'bg-white/5 text-white/70 border border-white/5 active:bg-white/10'
-                  }`}
-                >
-                  {size}
-                </button>
-              );
-            })}
-          </div>
-        </div>
       </div>
 
       {/* ── 4. Sticky Bottom Action Bar with Safe-Area Clearance ────────── */}

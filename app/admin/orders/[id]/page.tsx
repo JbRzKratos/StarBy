@@ -9,8 +9,10 @@ interface PageProps {
 }
 
 export default async function OrderDetailPage({ params }: PageProps) {
-  const order = await prisma.order.findUnique({
-    where: { id: params.id },
+  const order = await prisma.order.findFirst({
+    where: {
+      OR: [{ id: params.id }, { publicOrderId: params.id }],
+    },
     include: {
       user: { select: { id: true, fullName: true, email: true } },
       items: {

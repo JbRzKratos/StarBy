@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/admin/status-badge';
 import { RevenueChart } from './revenue-chart';
 import { StorageWidget } from './storage-widget';
 import { AdminPrintInvoiceButton } from '../orders/print-invoice-button';
+import { ErrorBoundary } from '@/components/error-boundary';
 import { X, User, MapPin, Phone, Mail, Package, Clock, ArrowRight } from 'lucide-react';
 
 interface DashboardStats {
@@ -83,7 +84,7 @@ interface DashboardClientProps {
 const STAT_CARDS = (stats: DashboardStats) => [
   {
     label: 'Total Revenue',
-    value: `₹${stats.totalRevenue.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`,
+    value: `₹${(stats?.totalRevenue ?? 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}`,
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B5EFF" strokeWidth="2">
         <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
@@ -93,7 +94,7 @@ const STAT_CARDS = (stats: DashboardStats) => [
   },
   {
     label: 'Orders Today',
-    value: stats.ordersToday.toString(),
+    value: (stats?.ordersToday ?? 0).toString(),
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2">
         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
@@ -105,7 +106,7 @@ const STAT_CARDS = (stats: DashboardStats) => [
   },
   {
     label: 'Total Customers',
-    value: stats.totalCustomers.toLocaleString(),
+    value: (stats?.totalCustomers ?? 0).toLocaleString(),
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -118,7 +119,7 @@ const STAT_CARDS = (stats: DashboardStats) => [
   },
   {
     label: 'Avg Order Value',
-    value: `₹${stats.aov.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`,
+    value: `₹${(stats?.aov ?? 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}`,
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2">
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -180,7 +181,21 @@ export function DashboardClient({
 
         {/* Storage Widget */}
         <div className="lg:col-span-1">
-          <StorageWidget />
+          <ErrorBoundary
+            fallback={
+              <div className="bg-[#1A1A1E] rounded-xl border border-white/10 p-6 flex flex-col justify-between shadow-xl">
+                <div className="flex items-center gap-2 text-white font-bold mb-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-cobalt"></span>
+                  Storage Capacity
+                </div>
+                <p className="text-xs text-slate-400 font-mono">
+                  Storage metrics are currently initializing.
+                </p>
+              </div>
+            }
+          >
+            <StorageWidget />
+          </ErrorBoundary>
         </div>
       </div>
 
