@@ -445,7 +445,7 @@ export async function sendOrderConfirmationEmail(
     'Fregoro Studios <orders@fregorostudios.com>';
 
   try {
-    await resend.emails.send({
+    const sendResult = await resend.emails.send({
       from: sender,
       to: [toEmail],
       replyTo: BUSINESS_EMAIL,
@@ -453,13 +453,16 @@ export async function sendOrderConfirmationEmail(
       html,
       attachments,
     });
+    if (sendResult.error) {
+      throw new Error(sendResult.error.message || 'Resend delivery rejected');
+    }
     return true;
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
     if (errMsg.includes('not verified')) {
       try {
         console.warn('Sender domain still propagating, retrying delivery via fallback sender...');
-        await resend.emails.send({
+        const fallbackRes = await resend.emails.send({
           from: 'Fregoro Studios <onboarding@resend.dev>',
           to: [toEmail],
           replyTo: BUSINESS_EMAIL,
@@ -467,6 +470,9 @@ export async function sendOrderConfirmationEmail(
           html,
           attachments,
         });
+        if (fallbackRes.error) {
+          throw new Error(fallbackRes.error.message || 'Fallback delivery rejected');
+        }
         return true;
       } catch (fallbackErr) {
         console.error('Fallback delivery failed:', fallbackErr);
@@ -798,7 +804,7 @@ export async function sendAdminNewOrderEmail(
     'Fregoro Studios <orders@fregorostudios.com>';
 
   try {
-    await resend.emails.send({
+    const sendResult = await resend.emails.send({
       from: sender,
       to: [ADMIN_RECIPIENT],
       replyTo: details?.customerEmail || BUSINESS_EMAIL,
@@ -806,13 +812,16 @@ export async function sendAdminNewOrderEmail(
       html,
       attachments,
     });
+    if (sendResult.error) {
+      throw new Error(sendResult.error.message || 'Resend admin delivery rejected');
+    }
     return true;
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
     if (errMsg.includes('not verified')) {
       try {
         console.warn('Sender domain still propagating, retrying admin notification via fallback sender...');
-        await resend.emails.send({
+        const fallbackRes = await resend.emails.send({
           from: 'Fregoro Studios <onboarding@resend.dev>',
           to: [ADMIN_RECIPIENT],
           replyTo: details?.customerEmail || BUSINESS_EMAIL,
@@ -820,6 +829,9 @@ export async function sendAdminNewOrderEmail(
           html,
           attachments,
         });
+        if (fallbackRes.error) {
+          throw new Error(fallbackRes.error.message || 'Fallback admin delivery rejected');
+        }
         return true;
       } catch (fallbackErr) {
         console.error('Fallback admin email delivery failed:', fallbackErr);
