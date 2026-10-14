@@ -24,6 +24,33 @@ export default defineConfig(({command}) => ({
   build: {
     outDir: path.resolve(import.meta.dirname, '../../public/tools/clothing-mockup'),
     emptyOutDir: true,
+    // Raise the warning threshold — three.js vendor chunk is large by design,
+    // but it is cached permanently via immutable Cache-Control headers.
+    chunkSizeWarningLimit: 800,
+    rollupOptions: {
+      output: {
+        // Split vendor libraries into separate, long-lived cacheable chunks.
+        // Each chunk gets a content-hash filename so browsers can cache it permanently.
+        manualChunks(id) {
+          // Three.js and its loaders/controls (~900 kB minified)
+          if (id.includes('node_modules/three')) {
+            return 'vendor-three';
+          }
+          // React runtime
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+            return 'vendor-react';
+          }
+          // Lucide icon library — tree-shakeable but still significant
+          if (id.includes('node_modules/lucide-react')) {
+            return 'vendor-lucide';
+          }
+          // JSZip — only loaded when exporting projects
+          if (id.includes('node_modules/jszip')) {
+            return 'vendor-jszip';
+          }
+        },
+      },
+    },
   },
   plugins: [
     react(),

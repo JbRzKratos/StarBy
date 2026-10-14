@@ -230,6 +230,64 @@ export async function updateVariantPrice(variantId: string, newPrice: number) {
   return { success: true, price: sanitized, variant: updatedVariant };
 }
 
+/**
+ * Update all products base price in a given category.
+ * STRICT SECURITY: ONLY ADMIN access users can change product prices.
+ */
+export async function batchUpdateCategoryPrice(
+  categorySlug: string,
+  newBasePrice: number,
+  syncVariants: boolean = true,
+) {
+  await assertAdmin();
+
+  if (typeof newBasePrice !== 'number' || isNaN(newBasePrice) || newBasePrice < 0) {
+    throw new Error('Invalid price: must be a positive number or zero.');
+  }
+
+  const sanitized = Math.round(newBasePrice * 100) / 100;
+
+  const targetCategories =
+    categorySlug === 'tees'
+      ? ['tees', 'oversized-tees']
+      : [categorySlug];
+
+  const products = await prisma.product.findMany({
+    where: { categorySlug: { in: targetCategories } },
+    select: { id: true },
+  });
+
+  if (products.length === 0) {
+    throw new Error(`No products found in category "${categorySlug}".`);
+  }
+
+  await prisma.product.updateMany({
+    where: { categorySlug: { in: targetCategories } },
+    data: { basePrice: sanitized },
+  });
+
+  if (syncVariants) {
+    await prisma.productVariant.updateMany({
+      where: { productId: { in: products.map((p) => p.id) } },
+      data: { price: sanitized },
+    });
+  }
+
+  revalidatePath('/admin/products');
+  revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/wall-studio');
+  revalidatePath('/split-poster');
+  revalidatePath('/magazine');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/cart');
+  revalidatePath('/checkout');
+  revalidatePath('/', 'layout');
+
+  return { success: true, count: products.length, newPrice: sanitized };
+}
+
 export async function toggleVariantStock(variantId: string, inStock: boolean) {
   await assertStaff();
   await prisma.productVariant.update({ where: { id: variantId }, data: { inStock } });

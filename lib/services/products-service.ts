@@ -12,6 +12,18 @@ import {
  * Ensures all prices set in the Admin Panel reflect immediately in real-time
  * on storefront screens, cart, checkout recalculations, and tax invoices.
  */
+const DUMMY_APPAREL_KEYS = new Set([
+  'prod_001', 'prod_002', 'prod_003', 'prod_004', 'prod_005', 'prod_006',
+  'prod_007', 'prod_008', 'prod_009', 'prod_010', 'prod_011', 'prod_012',
+  'prod_test_tees', 'void-tee', 'eclipse-tee', 'solar-tee', 'lunar-tee',
+  'nova-tee', 'zenith-tee', 'orbit-hoodie', 'pulse-hoodie', 'core-hoodie',
+  'vanguard-hoodie', 'oasis-hoodie', 'echo-hoodie', 'titan-hoodie', 'apex-hoodie'
+]);
+
+function filterOutDummyApparel(list: Product[]): Product[] {
+  return list.filter((p) => !DUMMY_APPAREL_KEYS.has(p.id) && !DUMMY_APPAREL_KEYS.has(p.slug));
+}
+
 export async function getLiveProducts(): Promise<Product[]> {
   try {
     const dbProducts = await prisma.product.findMany({
@@ -24,7 +36,7 @@ export async function getLiveProducts(): Promise<Product[]> {
     });
 
     if (!dbProducts || dbProducts.length === 0) {
-      return fallbackProducts;
+      return filterOutDummyApparel(fallbackProducts);
     }
 
     const dbProductMap = new Map(dbProducts.map((p) => [p.id, p]));
@@ -91,10 +103,10 @@ export async function getLiveProducts(): Promise<Product[]> {
       }
     }
 
-    return liveProducts;
+    return filterOutDummyApparel(liveProducts);
   } catch (error) {
     console.error('[products-service] Error fetching live products from DB, using fallback:', error);
-    return fallbackProducts;
+    return filterOutDummyApparel(fallbackProducts);
   }
 }
 

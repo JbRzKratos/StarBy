@@ -1,7 +1,8 @@
-﻿import React from 'react';
+import React from 'react';
 import { Palette, Check, Sparkles } from 'lucide-react';
 
 interface DrawerColor3DProps {
+  garmentId?: string;
   garmentColor: string;
   onColorChange: (color: string) => void;
   roughness: number;
@@ -10,26 +11,34 @@ interface DrawerColor3DProps {
   onMetalnessChange: (val: number) => void;
 }
 
-const COLOR_SWATCHES = [
-  { name: 'Pure White', hex: '#ffffff' },
-  { name: 'Off-White / Cream', hex: '#f4f3ee' },
-  { name: 'Heather Grey', hex: '#9ca3af' },
-  { name: 'Charcoal', hex: '#374151' },
-  { name: 'Carbon Black', hex: '#111215' },
-  { name: 'Navy Blue', hex: '#1e293b' },
-  { name: 'Royal Cobalt', hex: '#1d4ed8' },
-  { name: 'Crimson Red', hex: '#991b1b' },
-  { name: 'Burgundy', hex: '#581c87' },
-  { name: 'Vintage Olive', hex: '#364032' },
-  { name: 'Forest Green', hex: '#14532d' },
-  { name: 'Desert Sand', hex: '#d6cbbe' },
-  { name: 'Mustard Gold', hex: '#ca8a04' },
-  { name: 'Terracotta', hex: '#9a3412' },
-  { name: 'Dusty Rose', hex: '#f43f5e' },
-  { name: 'Lavender Mist', hex: '#c084fc' },
-];
+const APPAREL_APPROVED_COLORS: Record<string, { name: string; hex: string }[]> = {
+  'regular-t-shirt': [
+    { name: 'White', hex: '#ffffff' },
+    { name: 'Black', hex: '#111215' },
+    { name: 'Olive Green', hex: '#3b443b' },
+    { name: 'C.Brown', hex: '#5a3825' },
+    { name: 'Maroon', hex: '#800000' },
+  ],
+  'oversized-t-shirt': [
+    { name: 'White', hex: '#ffffff' },
+    { name: 'Black', hex: '#111215' },
+    { name: 'Dusky Pink', hex: '#d8a1a8' },
+    { name: 'Beige', hex: '#d4c5b9' },
+    { name: 'Navy Blue', hex: '#1b263b' },
+  ],
+  'acid-wash-t-shirt': [
+    { name: 'Black', hex: '#2b2b2b' },
+    { name: 'White', hex: '#e5e5e5' },
+    { name: 'Violet', hex: '#5e4b8b' },
+  ],
+  'hoodie': [
+    { name: 'Black', hex: '#111215' },
+    { name: 'White', hex: '#ffffff' },
+  ],
+};
 
 export const DrawerColor3D: React.FC<DrawerColor3DProps> = ({
+  garmentId = 'regular-t-shirt',
   garmentColor,
   onColorChange,
   roughness,
@@ -37,6 +46,7 @@ export const DrawerColor3D: React.FC<DrawerColor3DProps> = ({
   metalness,
   onMetalnessChange,
 }) => {
+  const activeSwatches = APPAREL_APPROVED_COLORS[garmentId] || APPAREL_APPROVED_COLORS['regular-t-shirt'];
   return (
     <div className="drawer-content" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
       <div className="drawer-header">
@@ -61,9 +71,9 @@ export const DrawerColor3D: React.FC<DrawerColor3DProps> = ({
             gap: '8px',
           }}
         >
-          {COLOR_SWATCHES.map((swatch) => {
+          {activeSwatches.map((swatch) => {
             const isSelected = garmentColor.toLowerCase() === swatch.hex.toLowerCase();
-            const isLight = swatch.hex === '#ffffff' || swatch.hex === '#f4f3ee' || swatch.hex === '#d6cbbe';
+            const isLight = swatch.hex === '#ffffff' || swatch.hex === '#f4f3ee' || swatch.hex === '#d4c5b9' || swatch.hex === '#e5e5e5';
             return (
               <button
                 key={swatch.hex}

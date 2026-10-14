@@ -5,15 +5,32 @@ import { useSearchParams } from 'next/navigation';
 import { useWallStudioStore } from '@/lib/wall-studio/store';
 import { getLayoutById } from '@/lib/wall-studio/layouts-data';
 import { getPrebuiltWallBySlug } from '@/lib/wall-studio/prebuilt-walls-data';
+import dynamic from 'next/dynamic';
 import { WallToolbar } from './wall-toolbar';
 import { WallCanvas } from './wall-canvas';
 import { PosterPickerDrawer } from './poster-picker-drawer';
-import { CustomImageModal } from './custom-image-modal';
-import { LayoutSelectorModal } from './layout-selector-modal';
-import { FregoroCuratorModal } from './fregoro-curator-modal';
-import { ShareWallModal } from './share-wall-modal';
-import { DesignPlacementsModal } from './design-placements-modal';
 import { WallSummaryBar } from './wall-summary-bar';
+
+const CustomImageModal = dynamic(
+  () => import('./custom-image-modal').then((m) => m.CustomImageModal),
+  { ssr: false },
+);
+const LayoutSelectorModal = dynamic(
+  () => import('./layout-selector-modal').then((m) => m.LayoutSelectorModal),
+  { ssr: false },
+);
+const DesignPlacementsModal = dynamic(
+  () => import('./design-placements-modal').then((m) => m.DesignPlacementsModal),
+  { ssr: false },
+);
+const FregoroCuratorModal = dynamic(
+  () => import('./fregoro-curator-modal').then((m) => m.FregoroCuratorModal),
+  { ssr: false },
+);
+const ShareWallModal = dynamic(
+  () => import('./share-wall-modal').then((m) => m.ShareWallModal),
+  { ssr: false },
+);
 
 export const WallStudioEditor: React.FC = () => {
   const searchParams = useSearchParams();

@@ -11,11 +11,17 @@ export async function GET() {
     });
 
     if (dbPrebuilt && dbPrebuilt.length > 0) {
-      return NextResponse.json({ success: true, prebuiltWalls: dbPrebuilt });
+      return NextResponse.json(
+        { success: true, prebuiltWalls: dbPrebuilt },
+        { headers: { 'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600' } },
+      );
     }
   } catch (e) {
     console.warn('DB prebuilt lookup fallback to static:', e);
   }
 
-  return NextResponse.json({ success: true, prebuiltWalls: FREGORO_PREBUILT_WALLS });
+  return NextResponse.json(
+    { success: true, prebuiltWalls: FREGORO_PREBUILT_WALLS },
+    { headers: { 'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600' } },
+  );
 }

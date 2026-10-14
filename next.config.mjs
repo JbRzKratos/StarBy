@@ -3,17 +3,23 @@ const nextConfig = {
   // Disable X-Powered-By header for security
   poweredByHeader: false,
 
-  // Use Turbopack in dev for much faster compilation (Rust-based, replaces Webpack)
-  // Run with: npx next dev --turbopack
-  // Or set NEXT_TURBOPACK=1 env variable
+  // Transpile ESM packages for SSR compatibility on Node & Vercel
+  transpilePackages: ['gsap', '@gsap/react'],
 
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: [
+      'lucide-react',   // icon library — large barrel, only subset used
+      'recharts',       // chart library — only used in /admin
+      '@aws-sdk/client-s3', // AWS SDK — tree-shake S3 commands
+    ],
   },
 
   images: {
+    // All images are served directly from Cloudflare R2 CDN via getR2AssetUrl().
+    // Next.js image optimization is disabled to avoid unnecessary Vercel proxy hops —
+    // R2 already delivers optimised WebP/AVIF assets with global edge caching.
+    // remotePatterns still required for <Image> domain allowlist validation.
     unoptimized: true,
-    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',

@@ -17,30 +17,15 @@ const contactSchema = z.object({
   website: z.string().max(0, 'Spam detected').optional().or(z.literal('')),
 });
 
-// Simple in-memory rate limit: max 5 submissions per IP per minute
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const record = rateLimitMap.get(ip);
-
-  if (!record || now > record.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + 60_000 });
-    return false;
-  }
-
-  if (record.count >= 5) return true;
-
-  record.count++;
-  return false;
-}
+import { rateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
   try {
     // 1. Rate limiting by IP
     const headersList = headers();
     const ip = headersList.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
-    if (isRateLimited(ip)) {
+    const rate = await rateLimit(`contact:${ip}`, 5, 60 * 1000);
+    if (!rate.success) {
       return NextResponse.json(
         { success: false, error: 'Too many requests. Please wait a minute and try again.' },
         { status: 429 },

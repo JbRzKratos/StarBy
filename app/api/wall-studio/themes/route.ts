@@ -11,11 +11,17 @@ export async function GET() {
     });
 
     if (dbThemes && dbThemes.length > 0) {
-      return NextResponse.json({ success: true, themes: dbThemes });
+      return NextResponse.json(
+        { success: true, themes: dbThemes },
+        { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' } },
+      );
     }
   } catch (error) {
     console.warn('Fallback to local themes:', error);
   }
 
-  return NextResponse.json({ success: true, themes: FREGORO_THEMES });
+  return NextResponse.json(
+    { success: true, themes: FREGORO_THEMES },
+    { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' } },
+  );
 }

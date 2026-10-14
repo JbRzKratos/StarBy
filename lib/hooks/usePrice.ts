@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useCurrencyStore } from '@/lib/stores/currency-store';
 
 const exchangeRates: Record<string, number> = {
@@ -20,12 +21,18 @@ export function usePrice() {
   const rate = exchangeRates[currency] || 1;
   const symbol = currencySymbols[currency] || '₹';
 
-  const formatPrice = (amountInINR: number) => {
-    const converted = amountInINR * rate;
-    const formatted =
-      currency === 'INR' ? Math.round(converted).toLocaleString('en-IN') : converted.toFixed(2);
-    return `${symbol}${formatted}`;
-  };
+  // Stable reference: only changes when currency changes, preventing
+  // unnecessary child re-renders when formatPrice is passed as a prop.
+  const formatPrice = useCallback(
+    (amountInINR: number) => {
+      const converted = amountInINR * rate;
+      const formatted =
+        currency === 'INR' ? Math.round(converted).toLocaleString('en-IN') : converted.toFixed(2);
+      return `${symbol}${formatted}`;
+    },
+    [currency, rate, symbol],
+  );
 
   return { formatPrice };
 }
+

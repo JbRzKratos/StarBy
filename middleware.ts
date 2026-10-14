@@ -2,6 +2,17 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
+  // Block direct public access to raw master design artwork paths
+  if (request.nextUrl.pathname.startsWith('/t_shirt_designs')) {
+    return new NextResponse('Access Denied: Direct access to original print artwork is restricted.', {
+      status: 403,
+      headers: {
+        'Cache-Control': 'no-store',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
+  }
+
   let response = NextResponse.next({
     request: { headers: request.headers },
   });
@@ -83,5 +94,21 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|images|3d-assets|designs|backgrounds|gobo|tools/clothing-mockup).*)'],
+  matcher: [
+    /*
+     * Match all request paths EXCEPT:
+     *  - _next/static  (static files, JS chunks, CSS)
+     *  - _next/image   (Next.js image optimizer)
+     *  - favicon.ico
+     *  - Static asset directories proxied to R2
+     *  - The Vite clothing mockup tool
+     *  - Common static file extensions (fonts, images, etc.)
+     *
+     * Auth + device-cookie middleware only runs on HTML page routes,
+     * not on asset requests — avoiding unnecessary edge CPU and preventing
+     * Set-Cookie headers that would break CDN cache-ability of assets.
+     */
+    '/((?!_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap\\.xml|site\\.webmanifest|images|3d-assets|designs|backgrounds|gobo|tools/clothing-mockup|.*\\.(?:png|jpg|jpeg|gif|webp|avif|svg|ico|woff|woff2|ttf|eot|otf|mp4|webm|ogg|mp3|wav)).*)',
+  ],
 };
+

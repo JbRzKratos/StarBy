@@ -1,0 +1,5324 @@
+{
+  "version": "3.0.0",
+  "generatedAt": "2026-10-13T19:08:17.749Z",
+  "totalDesigns": 96,
+  "totalArtworks": 155,
+  "designs": [
+    {
+      "id": "design-001",
+      "folder": "Design 1",
+      "name": "Ben 10: Omnitrix Evolution",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "ben-10",
+        "cartoons",
+        "pop-culture",
+        "nostalgia",
+        "cartoon-network",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back ( From collor to full back).png",
+          "name": "Back (Collar to Full Back)",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back ( From collor to full back).png",
+          "originalObjectKey": "clothing-designs/design-001/original/Back ( From collor to full back).png",
+          "thumbnailObjectKey": "clothing-designs/design-001/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-001/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front ( Left Chest).png",
+          "name": "Front (Left Chest)",
+          "suggestedPlacement": "left-chest",
+          "colorHint": "any",
+          "originalPath": "Front ( Left Chest).png",
+          "originalObjectKey": "clothing-designs/design-001/original/Front ( Left Chest).png",
+          "thumbnailObjectKey": "clothing-designs/design-001/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-001/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio"
+        },
+        {
+          "id": "art-3",
+          "fileName": "Sleeve (on any side bottom).png",
+          "name": "Sleeve Graphic",
+          "suggestedPlacement": "left-sleeve",
+          "colorHint": "any",
+          "originalPath": "Sleeve (on any side bottom).png",
+          "originalObjectKey": "clothing-designs/design-001/original/Sleeve (on any side bottom).png",
+          "thumbnailObjectKey": "clothing-designs/design-001/previews/thumb_art-3.webp",
+          "previewObjectKey": "clothing-designs/design-001/previews/studio_art-3.webp",
+          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front",
+        "sleeve"
+      ],
+      "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.741Z"
+    },
+    {
+      "id": "design-002",
+      "folder": "Design 2",
+      "name": "Not Rich Yet (Loading...)",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "streetwear",
+        "chibi",
+        "typography",
+        "urban",
+        "hustle",
+        "relatable",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front ( full front only for black tees).png",
+          "name": "Front (Black Tees)",
+          "suggestedPlacement": "front-center",
+          "colorHint": "black",
+          "originalPath": "Front ( full front only for black tees).png",
+          "originalObjectKey": "clothing-designs/design-002/original/Front ( full front only for black tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-002/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-002/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front ( full front only for white tees).png",
+          "name": "Front (White Tees)",
+          "suggestedPlacement": "front-center",
+          "colorHint": "white",
+          "originalPath": "Front ( full front only for white tees).png",
+          "originalObjectKey": "clothing-designs/design-002/original/Front ( full front only for white tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-002/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-002/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.741Z"
+    },
+    {
+      "id": "design-003",
+      "folder": "Design 3",
+      "name": "Tom & Jerry: Big Trouble",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "tom-and-jerry",
+        "cartoons",
+        "retro",
+        "cheese",
+        "nostalgia",
+        "comedy",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back ( From Collor to full back).png",
+          "name": "Back (Collar to Full Back)",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back ( From Collor to full back).png",
+          "originalObjectKey": "clothing-designs/design-003/original/Back ( From Collor to full back).png",
+          "thumbnailObjectKey": "clothing-designs/design-003/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-003/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-003/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-003/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-003/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.742Z"
+    },
+    {
+      "id": "design-004",
+      "folder": "Design 4",
+      "name": "Zenitsu: Thunder Blade",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "demon-slayer",
+        "kimetsu-no-yaiba",
+        "zenitsu",
+        "thunder-breathing",
+        "anime",
+        "katana",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-004/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-004/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-004/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.742Z"
+    },
+    {
+      "id": "design-005",
+      "folder": "Design 5",
+      "name": "LUCK Jackpot Cylinder",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "luck",
+        "jackpot",
+        "slot-machine",
+        "cyberpunk",
+        "graphic-art",
+        "streetwear",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-005/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-005/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-005/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-005/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-005/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-005/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.742Z"
+    },
+    {
+      "id": "design-006",
+      "folder": "Design 6",
+      "name": "Think Outside The Box",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "minimalist",
+        "typography",
+        "graffiti",
+        "creativity",
+        "chalk",
+        "street-art",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-006/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-006/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-006/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.742Z"
+    },
+    {
+      "id": "design-007",
+      "folder": "Design 7",
+      "name": "MOVE Streetwear Silhouette",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "streetwear",
+        "urban",
+        "oversized",
+        "fashion",
+        "bucket-hat",
+        "orange",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-007/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-007/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-007/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.742Z"
+    },
+    {
+      "id": "design-008",
+      "folder": "Design 8",
+      "name": "Four Seasons Panorama",
+      "category": "tees",
+      "tags": [
+        "aesthetic",
+        "nature",
+        "aesthetic",
+        "minimalist",
+        "landscape",
+        "seasons",
+        "serene",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-008/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-008/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-008/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.742Z"
+    },
+    {
+      "id": "design-009",
+      "folder": "Design 9",
+      "name": "Lone Samurai Under Moon",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "samurai",
+        "japanese",
+        "full-moon",
+        "bushido",
+        "ronin",
+        "calligraphy",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-009/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-009/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-009/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-009/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-009/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-009/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.742Z"
+    },
+    {
+      "id": "design-010",
+      "folder": "Design 10",
+      "name": "Pro Controller Matrix",
+      "category": "tees",
+      "tags": [
+        "gaming",
+        "gaming",
+        "controller",
+        "playstation",
+        "xbox",
+        "tech",
+        "gamer",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back ( Black tees).png",
+          "name": "Back (Black Tees)",
+          "suggestedPlacement": "back-center",
+          "colorHint": "black",
+          "originalPath": "Back ( Black tees).png",
+          "originalObjectKey": "clothing-designs/design-010/original/Back ( Black tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-010/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-010/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Back ( white tees).png",
+          "name": "Back (White Tees)",
+          "suggestedPlacement": "back-center",
+          "colorHint": "white",
+          "originalPath": "Back ( white tees).png",
+          "originalObjectKey": "clothing-designs/design-010/original/Back ( white tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-010/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-010/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=studio"
+        },
+        {
+          "id": "art-3",
+          "fileName": "Front ( Black tees).png",
+          "name": "Front (Black Tees)",
+          "suggestedPlacement": "front-center",
+          "colorHint": "black",
+          "originalPath": "Front ( Black tees).png",
+          "originalObjectKey": "clothing-designs/design-010/original/Front ( Black tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-010/previews/thumb_art-3.webp",
+          "previewObjectKey": "clothing-designs/design-010/previews/studio_art-3.webp",
+          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio"
+        },
+        {
+          "id": "art-4",
+          "fileName": "Front ( White tees).png",
+          "name": "Front (White Tees)",
+          "suggestedPlacement": "front-center",
+          "colorHint": "white",
+          "originalPath": "Front ( White tees).png",
+          "originalObjectKey": "clothing-designs/design-010/original/Front ( White tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-010/previews/thumb_art-4.webp",
+          "previewObjectKey": "clothing-designs/design-010/previews/studio_art-4.webp",
+          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-3",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.742Z"
+    },
+    {
+      "id": "design-011",
+      "folder": "Design 11",
+      "name": "SM Monogram Minimalist",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "monogram",
+        "geometric",
+        "minimalist",
+        "luxury",
+        "brand-mark",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back (White tees).png",
+          "name": "Back (White Tees)",
+          "suggestedPlacement": "back-center",
+          "colorHint": "white",
+          "originalPath": "Back (White tees).png",
+          "originalObjectKey": "clothing-designs/design-011/original/Back (White tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-011/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Back (black tees).png",
+          "name": "Back (Black Tees)",
+          "suggestedPlacement": "back-center",
+          "colorHint": "black",
+          "originalPath": "Back (black tees).png",
+          "originalObjectKey": "clothing-designs/design-011/original/Back (black tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-011/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=studio"
+        },
+        {
+          "id": "art-3",
+          "fileName": "Front (Black Tees).png",
+          "name": "Front (Black Tees)",
+          "suggestedPlacement": "front-center",
+          "colorHint": "black",
+          "originalPath": "Front (Black Tees).png",
+          "originalObjectKey": "clothing-designs/design-011/original/Front (Black Tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-3.webp",
+          "previewObjectKey": "clothing-designs/design-011/previews/studio_art-3.webp",
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio"
+        },
+        {
+          "id": "art-4",
+          "fileName": "Front (White Tees).png",
+          "name": "Front (White Tees)",
+          "suggestedPlacement": "front-center",
+          "colorHint": "white",
+          "originalPath": "Front (White Tees).png",
+          "originalObjectKey": "clothing-designs/design-011/original/Front (White Tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-4.webp",
+          "previewObjectKey": "clothing-designs/design-011/previews/studio_art-4.webp",
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=studio"
+        },
+        {
+          "id": "art-5",
+          "fileName": "Sleeve ( Black Tees).png",
+          "name": "Sleeve (Black Tees)",
+          "suggestedPlacement": "left-sleeve",
+          "colorHint": "black",
+          "originalPath": "Sleeve ( Black Tees).png",
+          "originalObjectKey": "clothing-designs/design-011/original/Sleeve ( Black Tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-5.webp",
+          "previewObjectKey": "clothing-designs/design-011/previews/studio_art-5.webp",
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=studio"
+        },
+        {
+          "id": "art-6",
+          "fileName": "Sleeve ( White Tees).png",
+          "name": "Sleeve (White Tees)",
+          "suggestedPlacement": "left-sleeve",
+          "colorHint": "white",
+          "originalPath": "Sleeve ( White Tees).png",
+          "originalObjectKey": "clothing-designs/design-011/original/Sleeve ( White Tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-6.webp",
+          "previewObjectKey": "clothing-designs/design-011/previews/studio_art-6.webp",
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-3",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front",
+        "sleeve"
+      ],
+      "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-012",
+      "folder": "Design 12",
+      "name": "GTA VI Vice Neon",
+      "category": "tees",
+      "tags": [
+        "gaming",
+        "gta-6",
+        "grand-theft-auto",
+        "gaming",
+        "vice-city",
+        "neon",
+        "rockstar",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-012/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-012/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-012/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-012/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-012/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-012/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-013",
+      "folder": "Design 13",
+      "name": "Human After All Emo Anime",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "anime",
+        "emo",
+        "streetwear",
+        "aesthetic",
+        "sad-boy",
+        "relatable",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back ( Black tees).png",
+          "name": "Back (Black Tees)",
+          "suggestedPlacement": "back-center",
+          "colorHint": "black",
+          "originalPath": "Back ( Black tees).png",
+          "originalObjectKey": "clothing-designs/design-013/original/Back ( Black tees).png",
+          "thumbnailObjectKey": "clothing-designs/design-013/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-013/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-014",
+      "folder": "Design 14",
+      "name": "MONEY Stack Ribbon",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "money",
+        "typography",
+        "dollar",
+        "streetwear",
+        "hustle",
+        "urban",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-014/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-014/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-014/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front Rotated.png",
+          "name": "Front Rotated",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front Rotated.png",
+          "originalObjectKey": "clothing-designs/design-014/original/Front Rotated.png",
+          "thumbnailObjectKey": "clothing-designs/design-014/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-014/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-015",
+      "folder": "Design 15",
+      "name": "Luffy: Most Wanted Pirate",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "one-piece",
+        "luffy",
+        "straw-hat",
+        "anime",
+        "manga",
+        "bounty",
+        "shonen",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-015/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-015/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-015/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-015/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-015/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-015/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-016",
+      "folder": "Design 16",
+      "name": "CHILL Bubblegum Wave",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "chill",
+        "typography",
+        "bubblegum",
+        "retro",
+        "liquid",
+        "groovy",
+        "pink",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-016/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-016/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-016/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-016/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-016/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-016/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-017",
+      "folder": "Design 17",
+      "name": "Kawaii Kittens Stack",
+      "category": "tees",
+      "tags": [
+        "aesthetic",
+        "cats",
+        "cute",
+        "kawaii",
+        "animals",
+        "kittens",
+        "playful",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front Bottom.png",
+          "name": "Front Hem Graphic",
+          "suggestedPlacement": "bottom-hem",
+          "colorHint": "any",
+          "originalPath": "Front Bottom.png",
+          "originalObjectKey": "clothing-designs/design-017/original/Front Bottom.png",
+          "thumbnailObjectKey": "clothing-designs/design-017/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-017/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-018",
+      "folder": "Design 18",
+      "name": "ROSES Dark Romance",
+      "category": "tees",
+      "tags": [
+        "aesthetic",
+        "roses",
+        "botanical",
+        "floral",
+        "dark-romance",
+        "nature",
+        "elegance",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-018/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-018/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-018/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-018/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-018/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-018/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-019",
+      "folder": "Design 19",
+      "name": "Please Do Not Disturb Cat",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "cat",
+        "humor",
+        "coffee",
+        "sarcasm",
+        "relatable",
+        "introvert",
+        "funny",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-019/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-019/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-019/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-020",
+      "folder": "Design 20",
+      "name": "McLaren Speedmark Supercar",
+      "category": "tees",
+      "tags": [
+        "automotive",
+        "mclaren",
+        "supercars",
+        "racing",
+        "f1",
+        "speed",
+        "automotive",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-020/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-020/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-020/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-020/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-020/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-020/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-021",
+      "folder": "Design 21",
+      "name": "Good vs Bad Dual Contrast",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "minimalist",
+        "typography",
+        "contrast",
+        "philosophy",
+        "dark-mode",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-021/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-021/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-021/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.743Z"
+    },
+    {
+      "id": "design-022",
+      "folder": "Design 22",
+      "name": "You Might Be Drunk Kinetic",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "humor",
+        "kinetic",
+        "party",
+        "typography",
+        "motion-blur",
+        "funny",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-022/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-022/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-022/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-023",
+      "folder": "Design 23",
+      "name": "Break Da Rules Ripped Art",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "streetwear",
+        "grunge",
+        "graffiti",
+        "break-rules",
+        "urban",
+        "rebel",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-023/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-023/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-023/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-024",
+      "folder": "Design 24",
+      "name": "Trust The Process Heavy Metal",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "gym",
+        "motivational",
+        "fitness",
+        "hardcore",
+        "metal",
+        "discipline",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-024/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-024/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-024/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-025",
+      "folder": "Design 25",
+      "name": "Fill In The Blanks Crossword",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "humor",
+        "puzzle",
+        "sarcasm",
+        "crossword",
+        "playful",
+        "comedy",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-025/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-025/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-025/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-026",
+      "folder": "Design 26",
+      "name": "Focus On Purpose Mindset",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "mindset",
+        "motivational",
+        "discipline",
+        "focus",
+        "typography",
+        "gym",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-026/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-026/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-026/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-027",
+      "folder": "Design 27",
+      "name": "The Camera Sutra",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "photography",
+        "camera",
+        "photographer",
+        "humor",
+        "dslr",
+        "funny",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-027/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-027/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-027/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-028",
+      "folder": "Design 28",
+      "name": "TVS Ronin Scrambler Moto",
+      "category": "tees",
+      "tags": [
+        "automotive",
+        "motorcycle",
+        "scrambler",
+        "biker",
+        "ronin",
+        "moto",
+        "dark-aesthetic",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-028/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-028/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-028/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-029",
+      "folder": "Design 29",
+      "name": "Continental GT 650 Cafe Racer",
+      "category": "tees",
+      "tags": [
+        "automotive",
+        "royal-enfield",
+        "gt650",
+        "motorcycle",
+        "cafe-racer",
+        "biker",
+        "twin",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-029/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-029/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-029/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-030",
+      "folder": "Design 30",
+      "name": "DISOBEY Stand Out Sheep",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "disobey",
+        "minimalist",
+        "individuality",
+        "black-sheep",
+        "rebel",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-030/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-030/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-030/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-031",
+      "folder": "Design 31",
+      "name": "Equation Clock Matrix",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "math",
+        "science",
+        "geek",
+        "nerd",
+        "calculus",
+        "physics",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-031/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-031/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-031/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-032",
+      "folder": "Design 32",
+      "name": "Skulls & Roses Skate Decks",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "skate",
+        "gothic",
+        "tattoo",
+        "roses",
+        "skulls",
+        "snakes",
+        "streetwear",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-032/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-032/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-032/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-033",
+      "folder": "Design 33",
+      "name": "I'm Fine Drowning Thumbs Up",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "dark-humor",
+        "sarcasm",
+        "relatable",
+        "im-fine",
+        "funny",
+        "minimalist",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-033/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-033/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-033/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-034",
+      "folder": "Design 34",
+      "name": "Disturbed Cat Coffee Club",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "cat",
+        "humor",
+        "animals",
+        "coffee",
+        "attitude",
+        "sarcastic",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-034/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-034/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-034/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-035",
+      "folder": "Design 35",
+      "name": "Porsche Wordmark Heritage",
+      "category": "tees",
+      "tags": [
+        "automotive",
+        "porsche",
+        "automotive",
+        "supercars",
+        "luxury",
+        "german-engineering",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-035/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-035/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-035/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-035/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-035/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-035/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.744Z"
+    },
+    {
+      "id": "design-036",
+      "folder": "Design 36",
+      "name": "Barely Managing Grocery Shopper",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "relatable",
+        "humor",
+        "lifestyle",
+        "funny",
+        "groceries",
+        "adulting",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-036/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-036/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-036/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-037",
+      "folder": "Design 37",
+      "name": "Perspective Lunar Alignment",
+      "category": "tees",
+      "tags": [
+        "aesthetic",
+        "moon",
+        "astronomy",
+        "perspective",
+        "minimalist",
+        "lunar",
+        "sacred",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-037/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-037/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-037/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-038",
+      "folder": "Design 38",
+      "name": "FOCUS Chrome Red Mirror",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "focus",
+        "typography",
+        "chrome",
+        "streetwear",
+        "reflection",
+        "red",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-038/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-038/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-038/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-039",
+      "folder": "Design 39",
+      "name": "Toyota GR Supra Racing Edition",
+      "category": "tees",
+      "tags": [
+        "automotive",
+        "supra",
+        "toyota",
+        "jdm",
+        "racing",
+        "gr-supra",
+        "drift",
+        "turbo",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-039/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-039/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-039/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Toyota-Supra-Logo.png",
+          "name": "Supra Chest Badge",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Toyota-Supra-Logo.png",
+          "originalObjectKey": "clothing-designs/design-039/original/Toyota-Supra-Logo.png",
+          "thumbnailObjectKey": "clothing-designs/design-039/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-039/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-040",
+      "folder": "Design 40",
+      "name": "Spider-Man Metallic Chrome",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "spider-man",
+        "marvel",
+        "superhero",
+        "chrome",
+        "insignia",
+        "peter-parker",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Both Front and Back.png",
+          "name": "Full Front & Back",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Both Front and Back.png",
+          "originalObjectKey": "clothing-designs/design-040/original/Both Front and Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-040/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-040/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-041",
+      "folder": "Design 41",
+      "name": "Monday to Friday Evolution",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "weekend",
+        "beer",
+        "humor",
+        "workplace",
+        "friday",
+        "evolution",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-041/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-041/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-041/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-042",
+      "folder": "Design 42",
+      "name": "Green Heart Acid Chrome",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "cyberpunk",
+        "acid-graphics",
+        "y2k",
+        "streetwear",
+        "chrome",
+        "green",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-042/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-042/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-042/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-043",
+      "folder": "Design 43",
+      "name": "Dodge Ram Muscle Wordmark",
+      "category": "tees",
+      "tags": [
+        "automotive",
+        "dodge",
+        "muscle-car",
+        "automotive",
+        "hemi",
+        "ram",
+        "v8",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-043/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-043/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-043/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-043/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-043/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-043/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-044",
+      "folder": "Design 44",
+      "name": "The Weeknd XO Glow Signature",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "the-weeknd",
+        "xo",
+        "music",
+        "pop-culture",
+        "neon",
+        "after-hours",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-044/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-044/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-044/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-044/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-044/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-044/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-045",
+      "folder": "Design 45",
+      "name": "Crimson Spider Symbiote",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "spider-man",
+        "carnage",
+        "marvel",
+        "insignia",
+        "symbiote",
+        "crimson",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-045/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-045/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-045/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-045/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-045/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-045/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-046",
+      "folder": "Design 46",
+      "name": "PLZ USE IT Brain Offering",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "sarcasm",
+        "humor",
+        "funny",
+        "stickman",
+        "brain",
+        "logic",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-046/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-046/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-046/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-047",
+      "folder": "Design 47",
+      "name": "F*CK Breakdown Pie Chart",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "humor",
+        "attitude",
+        "sarcasm",
+        "streetwear",
+        "pie-chart",
+        "grunge",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-047/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-047/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-047/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-048",
+      "folder": "Design 48",
+      "name": "BLURRED Liquid Metal Ring",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "chrome",
+        "cyberpunk",
+        "y2k",
+        "typography",
+        "blurred",
+        "liquid-metal",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "BAck.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "BAck.png",
+          "originalObjectKey": "clothing-designs/design-048/original/BAck.png",
+          "thumbnailObjectKey": "clothing-designs/design-048/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-048/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.745Z"
+    },
+    {
+      "id": "design-049",
+      "folder": "Design 49",
+      "name": "God Is A Designer Creative",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "designer",
+        "creative",
+        "artist",
+        "typography",
+        "graphic-design",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-049/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-049/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-049/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-050",
+      "folder": "Design 50",
+      "name": "DISCIPLINE Minimalist Cross",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "discipline",
+        "minimalist",
+        "gym",
+        "focus",
+        "clean",
+        "subtle",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-050/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-050/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-050/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-050/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-050/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-050/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-051",
+      "folder": "Design 51",
+      "name": "Thalapathy Vijay Blockbuster",
+      "category": "tees",
+      "tags": [
+        "indian-cinema",
+        "thalapathy",
+        "vijay",
+        "kollywood",
+        "cinema",
+        "leo",
+        "master",
+        "star",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-051/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-051/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-051/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-052",
+      "folder": "Design 52",
+      "name": "What's Up Danger (Spider-Verse)",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "miles-morales",
+        "spider-verse",
+        "marvel",
+        "danger",
+        "spider-man",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back full back.png",
+          "name": "Back (Collar to Full Back)",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back full back.png",
+          "originalObjectKey": "clothing-designs/design-052/original/Back full back.png",
+          "thumbnailObjectKey": "clothing-designs/design-052/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-052/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "front.png",
+          "originalObjectKey": "clothing-designs/design-052/original/front.png",
+          "thumbnailObjectKey": "clothing-designs/design-052/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-052/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-053",
+      "folder": "Design 53",
+      "name": "Heisenberg: Breaking Bad",
+      "category": "tees",
+      "tags": [
+        "cinema",
+        "breaking-bad",
+        "heisenberg",
+        "walter-white",
+        "series",
+        "chemistry",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-053/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-053/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-053/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-053/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-053/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-053/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-054",
+      "folder": "Design 54",
+      "name": "Another F*cking Day 3D",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "humor",
+        "relatable",
+        "streetwear",
+        "graffiti",
+        "3d-type",
+        "daily-grind",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-054/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-054/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-054/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-054/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-054/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-054/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-055",
+      "folder": "Design 55",
+      "name": "Spotify Vibes Music Walk",
+      "category": "tees",
+      "tags": [
+        "aesthetic",
+        "music",
+        "spotify",
+        "aesthetic",
+        "playlist",
+        "vibes",
+        "lo-fi",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-055/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-055/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-055/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-056",
+      "folder": "Design 56",
+      "name": "Forever Ethereal Smoke Lovers",
+      "category": "tees",
+      "tags": [
+        "aesthetic",
+        "couple",
+        "romance",
+        "love",
+        "aesthetic",
+        "smoke-art",
+        "forever",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-056/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-056/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-056/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-056/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-056/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-056/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-057",
+      "folder": "Design 57",
+      "name": "Meiyazhagan Cinema Heritage",
+      "category": "tees",
+      "tags": [
+        "indian-cinema",
+        "meiyazhagan",
+        "karthi",
+        "cinema",
+        "tamil",
+        "heritage",
+        "kollywood",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-057/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-057/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-057/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-057/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-057/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-057/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-058",
+      "folder": "Design 58",
+      "name": "IMPROVE IT Kinetic Slash",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "motivational",
+        "improve",
+        "fitness",
+        "typography",
+        "kinetic",
+        "speed",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-058/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-058/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-058/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-058/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-058/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-058/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-059",
+      "folder": "Design 59",
+      "name": "When Life Hurts... Thoongu!",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "tamil-meme",
+        "thoongu",
+        "humor",
+        "relatable",
+        "sleep",
+        "stress-relief",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-059/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-059/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-059/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-060",
+      "folder": "Design 60",
+      "name": "Spring In Action Liquid Type",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "spring",
+        "liquid",
+        "typography",
+        "bold",
+        "orange",
+        "warped",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-060/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-060/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-060/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-060/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-060/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-060/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.746Z"
+    },
+    {
+      "id": "design-061",
+      "folder": "Design 61",
+      "name": "Sweetheart Chibi Couple Set",
+      "category": "tees",
+      "tags": [
+        "aesthetic",
+        "couple",
+        "chibi",
+        "love",
+        "cute",
+        "sweetheart",
+        "boy-girl",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Boy tees front.png",
+          "name": "Boy Tee (Front)",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Boy tees front.png",
+          "originalObjectKey": "clothing-designs/design-061/original/Boy tees front.png",
+          "thumbnailObjectKey": "clothing-designs/design-061/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-061/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Girl Tees Front.png",
+          "name": "Girl Tee (Front)",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Girl Tees Front.png",
+          "originalObjectKey": "clothing-designs/design-061/original/Girl Tees Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-061/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-061/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-062",
+      "folder": "Design 62",
+      "name": "Anime Flora & Gaze",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "anime",
+        "eyes",
+        "lilies",
+        "aesthetic",
+        "manga-gaze",
+        "butterflies",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-062/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-062/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-062/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-062/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-062/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-062/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-063",
+      "folder": "Design 63",
+      "name": "Sorry But I Don't Care",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "attitude",
+        "humor",
+        "sarcasm",
+        "smiley",
+        "unbothered",
+        "streetwear",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-063/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-063/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-063/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-064",
+      "folder": "Design 64",
+      "name": "Ghost Rider Flaming Inferno",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "ghost-rider",
+        "marvel",
+        "flames",
+        "comics",
+        "hellfire",
+        "antihero",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-064/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-064/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-064/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-064/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-064/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-064/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-065",
+      "folder": "Design 65",
+      "name": "Spider-Man Angular Red Crest",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "spider-man",
+        "marvel",
+        "insignia",
+        "superhero",
+        "geometric",
+        "red",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-065/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-065/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-065/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-065/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-065/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-065/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio"
+        },
+        {
+          "id": "art-3",
+          "fileName": "Sleeve.png",
+          "name": "Sleeve Graphic",
+          "suggestedPlacement": "left-sleeve",
+          "colorHint": "any",
+          "originalPath": "Sleeve.png",
+          "originalObjectKey": "clothing-designs/design-065/original/Sleeve.png",
+          "thumbnailObjectKey": "clothing-designs/design-065/previews/thumb_art-3.webp",
+          "previewObjectKey": "clothing-designs/design-065/previews/studio_art-3.webp",
+          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front",
+        "sleeve"
+      ],
+      "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-066",
+      "folder": "Design 66",
+      "name": "IT IS ME Red Statement",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "statement",
+        "minimalist",
+        "typography",
+        "bold",
+        "confidence",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-066/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-066/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-066/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-066/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-066/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-066/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-067",
+      "folder": "Design 67",
+      "name": "Make Things Happen Orbit",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "space",
+        "astronomy",
+        "orbit",
+        "motivational",
+        "planetary",
+        "cosmos",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Make Things Happen Orbital Typography.png",
+          "name": "Make Things Happen Orbital Typography",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Make Things Happen Orbital Typography.png",
+          "originalObjectKey": "clothing-designs/design-067/original/Make Things Happen Orbital Typography.png",
+          "thumbnailObjectKey": "clothing-designs/design-067/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-067/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-068",
+      "folder": "Design 68",
+      "name": "Formula 1 Racing Speed",
+      "category": "tees",
+      "tags": [
+        "automotive",
+        "f1",
+        "formula-1",
+        "racing",
+        "motorsport",
+        "speed",
+        "grand-prix",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-068/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-068/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-068/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-068/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-068/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-068/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-069",
+      "folder": "Design 69",
+      "name": "The Incredible HULK Green Fury",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "hulk",
+        "marvel",
+        "comics",
+        "superhero",
+        "avengers",
+        "green-fury",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back bottom.png",
+          "name": "Back Hem Graphic",
+          "suggestedPlacement": "bottom-hem",
+          "colorHint": "any",
+          "originalPath": "Back bottom.png",
+          "originalObjectKey": "clothing-designs/design-069/original/Back bottom.png",
+          "thumbnailObjectKey": "clothing-designs/design-069/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-069/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front bottom.png",
+          "name": "Front Hem Graphic",
+          "suggestedPlacement": "bottom-hem",
+          "colorHint": "any",
+          "originalPath": "Front bottom.png",
+          "originalObjectKey": "clothing-designs/design-069/original/Front bottom.png",
+          "thumbnailObjectKey": "clothing-designs/design-069/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-069/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-070",
+      "folder": "Design 70",
+      "name": "Roronoa Zoro: Three Swords",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "zoro",
+        "one-piece",
+        "anime",
+        "samurai",
+        "swordsman",
+        "bamboo",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-070/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-070/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-070/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-071",
+      "folder": "Design 71",
+      "name": "Spider-Man Web Frequency",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "spider-man",
+        "marvel",
+        "mandala",
+        "sacred-geometry",
+        "superhero",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-071/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-071/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-071/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-072",
+      "folder": "Design 72",
+      "name": "Venom: Dual Nature Neon",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "venom",
+        "marvel",
+        "symbiote",
+        "neon",
+        "antihero",
+        "spider-man",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-072/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-072/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-072/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.747Z"
+    },
+    {
+      "id": "design-073",
+      "folder": "Design 73",
+      "name": "I AM DOPE Positive Energy",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "dope",
+        "streetwear",
+        "typography",
+        "urban",
+        "positive-energy",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-073/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-073/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-073/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-073/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-073/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-073/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-074",
+      "folder": "Design 74",
+      "name": "LIF@ Social Connected",
+      "category": "tees",
+      "tags": [
+        "humor",
+        "social-media",
+        "life",
+        "digital",
+        "concept",
+        "whatsapp",
+        "instagram",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-074/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-074/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-074/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-074/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-074/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-074/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-075",
+      "folder": "Design 75",
+      "name": "La Casa De Papel Heist",
+      "category": "tees",
+      "tags": [
+        "cinema",
+        "money-heist",
+        "netflix",
+        "series",
+        "dali",
+        "professor",
+        "bella-ciao",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-075/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-075/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-075/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-075/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-075/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-075/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-076",
+      "folder": "Design 76",
+      "name": "Miles Morales: Glitch Hero",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "miles-morales",
+        "spider-man",
+        "marvel",
+        "glitch",
+        "spider-verse",
+        "neon",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Spiderman Miles tees Design.png",
+          "name": "Spiderman Miles tees Design",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Spiderman Miles tees Design.png",
+          "originalObjectKey": "clothing-designs/design-076/original/Spiderman Miles tees Design.png",
+          "thumbnailObjectKey": "clothing-designs/design-076/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-076/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-077",
+      "folder": "Design 77",
+      "name": "One Piece Straw Hat Banner",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "one-piece",
+        "luffy",
+        "anime",
+        "pirates",
+        "straw-hat",
+        "jolly-roger",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-077/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-077/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-077/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Luffy_ King of Pirates Graphic.png",
+          "name": "Luffy King of Pirates Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Luffy_ King of Pirates Graphic.png",
+          "originalObjectKey": "clothing-designs/design-077/original/Luffy_ King of Pirates Graphic.png",
+          "thumbnailObjectKey": "clothing-designs/design-077/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-077/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-078",
+      "folder": "Design 78",
+      "name": "Tony Stark / RDJ Signature",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "iron-man",
+        "rdj",
+        "marvel",
+        "signature",
+        "avengers",
+        "tony-stark",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-078/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-078/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-078/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Iron Tees Design.png",
+          "name": "Iron Tees Design",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Iron Tees Design.png",
+          "originalObjectKey": "clothing-designs/design-078/original/Iron Tees Design.png",
+          "thumbnailObjectKey": "clothing-designs/design-078/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-078/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-079",
+      "folder": "Design 79",
+      "name": "Do It With Love Ribbon",
+      "category": "tees",
+      "tags": [
+        "typography",
+        "love",
+        "calligraphy",
+        "typography",
+        "metallic",
+        "pink",
+        "cursive",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Do It With Love Typographic Design.png",
+          "name": "Do It With Love Typographic Design",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Do It With Love Typographic Design.png",
+          "originalObjectKey": "clothing-designs/design-079/original/Do It With Love Typographic Design.png",
+          "thumbnailObjectKey": "clothing-designs/design-079/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-079/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-080",
+      "folder": "Design 80",
+      "name": "Doctor Doom Latverian Green",
+      "category": "tees",
+      "tags": [
+        "marvel",
+        "dr-doom",
+        "marvel",
+        "villain",
+        "comics",
+        "fantastic-four",
+        "latveria",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-080/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-080/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-080/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-080/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-080/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-080/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-081",
+      "folder": "Design 81",
+      "name": "Kratos: God of War PS5",
+      "category": "tees",
+      "tags": [
+        "gaming",
+        "god-of-war",
+        "kratos",
+        "gaming",
+        "playstation",
+        "norse",
+        "sparta",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-081/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-081/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-081/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "back",
+      "availableSurfaces": [
+        "back"
+      ],
+      "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-082",
+      "folder": "Design 82",
+      "name": "Uchiha Clan Sharingan Crest",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "naruto",
+        "uchiha",
+        "sasuke",
+        "anime",
+        "itachi",
+        "sharingan",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-082/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-082/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-082/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-082/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-082/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-082/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-083",
+      "folder": "Design 83",
+      "name": "ARISE: Solo Leveling Monarch",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "solo-leveling",
+        "sung-jin-woo",
+        "arise",
+        "anime",
+        "shadow-monarch",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-083/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-083/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-083/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-083/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-083/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-083/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-084",
+      "folder": "Design 84",
+      "name": "Flame Kanji Crimson Blaze",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "kanji",
+        "fire",
+        "japanese",
+        "anime",
+        "calligraphy",
+        "blaze",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-084/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-084/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-084/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-084/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-084/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-084/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-085",
+      "folder": "Design 85",
+      "name": "Jujutsu Kaisen Cursed Energy",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "jujutsu-kaisen",
+        "jjk",
+        "gojo",
+        "sukuna",
+        "anime",
+        "curse",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-085/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-085/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-085/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-085/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-085/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-085/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.748Z"
+    },
+    {
+      "id": "design-086",
+      "folder": "Design 86",
+      "name": "Cyber Samurai Tokyo Ronin",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "cyber-samurai",
+        "cyberpunk",
+        "katana",
+        "tokyo",
+        "armor",
+        "samurai",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Cyber Samurai_ Walk Your Own Path.png",
+          "name": "Cyber Samurai Walk Your Own Path",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Cyber Samurai_ Walk Your Own Path.png",
+          "originalObjectKey": "clothing-designs/design-086/original/Cyber Samurai_ Walk Your Own Path.png",
+          "thumbnailObjectKey": "clothing-designs/design-086/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-086/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-087",
+      "folder": "Design 87",
+      "name": "Straw Hat Crew Vintage Manga",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "one-piece",
+        "straw-hat",
+        "luffy",
+        "vintage-manga",
+        "retro-anime",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Straw Hat Crew_ One Piece Manga Print.png",
+          "name": "Straw Hat Crew One Piece Manga Print",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Straw Hat Crew_ One Piece Manga Print.png",
+          "originalObjectKey": "clothing-designs/design-087/original/Straw Hat Crew_ One Piece Manga Print.png",
+          "thumbnailObjectKey": "clothing-designs/design-087/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-087/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Vintage Straw Hat Crew Logo.png",
+          "name": "Vintage Straw Hat Crew Logo",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Vintage Straw Hat Crew Logo.png",
+          "originalObjectKey": "clothing-designs/design-087/original/Vintage Straw Hat Crew Logo.png",
+          "thumbnailObjectKey": "clothing-designs/design-087/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-087/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-088",
+      "folder": "Design 88",
+      "name": "Zoro Santoryu Katana Crest",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "zoro",
+        "santoryu",
+        "one-piece",
+        "swordsman",
+        "three-swords",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-088/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-088/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-088/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-088/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-088/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-088/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-089",
+      "folder": "Design 89",
+      "name": "Zoro Fierce Gaze Box",
+      "category": "tees",
+      "tags": [
+        "anime",
+        "zoro",
+        "anime-eyes",
+        "one-piece",
+        "manga",
+        "gaze",
+        "katana",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-089/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-089/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-089/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-089/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-089/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-089/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-090",
+      "folder": "Design 90",
+      "name": "Red Dead Redemption II Outlaw",
+      "category": "tees",
+      "tags": [
+        "gaming",
+        "rdr2",
+        "rockstar",
+        "arthur-morgan",
+        "gaming",
+        "outlaw",
+        "western",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-090/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-090/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-090/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-090/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-090/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-090/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-091",
+      "folder": "Design 91",
+      "name": "Manual Transmission H-Pattern",
+      "category": "tees",
+      "tags": [
+        "automotive",
+        "manual-transmission",
+        "stick-shift",
+        "cars",
+        "jdm",
+        "gearbox",
+        "petrolhead",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-091/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-091/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-091/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-091/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-091/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-091/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-092",
+      "folder": "Design 92",
+      "name": "Angry Birds Feathered Fury",
+      "category": "tees",
+      "tags": [
+        "gaming",
+        "angry-birds",
+        "mobile-gaming",
+        "cartoons",
+        "nostalgia",
+        "birds",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-092/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-092/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-092/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-092/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-092/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-092/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-093",
+      "folder": "Design 93",
+      "name": "C. Joseph Vijay Leader Edition",
+      "category": "tees",
+      "tags": [
+        "indian-cinema",
+        "vijay",
+        "thalapathy",
+        "tvk",
+        "kollywood",
+        "leader",
+        "tamil-nadu",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-093/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-093/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-093/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-094",
+      "folder": "Design 94",
+      "name": "Protect Your Peace Urban",
+      "category": "tees",
+      "tags": [
+        "streetwear",
+        "protect-your-peace",
+        "streetwear",
+        "urban",
+        "portrait",
+        "red-slash",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-094/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-094/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-094/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-094/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-094/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-094/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-095",
+      "folder": "Design 95",
+      "name": "Thalaivar Nirandharam Gold",
+      "category": "tees",
+      "tags": [
+        "indian-cinema",
+        "rajinikanth",
+        "thalaivar",
+        "superstar",
+        "kollywood",
+        "gold-typography",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Back.png",
+          "name": "Back Graphic",
+          "suggestedPlacement": "back-center",
+          "colorHint": "any",
+          "originalPath": "Back.png",
+          "originalObjectKey": "clothing-designs/design-095/original/Back.png",
+          "thumbnailObjectKey": "clothing-designs/design-095/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-095/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=studio"
+        },
+        {
+          "id": "art-2",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-095/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-095/previews/thumb_art-2.webp",
+          "previewObjectKey": "clothing-designs/design-095/previews/studio_art-2.webp",
+          "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-2",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "back",
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    },
+    {
+      "id": "design-096",
+      "folder": "Design 96",
+      "name": "Canon EOS Pro Optics Rig",
+      "category": "tees",
+      "tags": [
+        "creative",
+        "canon",
+        "camera",
+        "photography",
+        "lens",
+        "optics",
+        "dslr",
+        "apparel",
+        "clothing-design"
+      ],
+      "artworks": [
+        {
+          "id": "art-1",
+          "fileName": "Front.png",
+          "name": "Front Graphic",
+          "suggestedPlacement": "front-center",
+          "colorHint": "any",
+          "originalPath": "Front.png",
+          "originalObjectKey": "clothing-designs/design-096/original/Front.png",
+          "thumbnailObjectKey": "clothing-designs/design-096/previews/thumb_art-1.webp",
+          "previewObjectKey": "clothing-designs/design-096/previews/studio_art-1.webp",
+          "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail",
+          "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio"
+        }
+      ],
+      "defaultArtworkId": "art-1",
+      "defaultSurface": "front",
+      "availableSurfaces": [
+        "front"
+      ],
+      "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail",
+      "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio",
+      "status": "active",
+      "compatibleGarments": [
+        "regular-t-shirt",
+        "oversized-t-shirt",
+        "acid-wash-t-shirt",
+        "hoodie"
+      ],
+      "createdAt": "2026-10-13T19:08:17.749Z"
+    }
+  ]
+}

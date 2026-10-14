@@ -87,6 +87,13 @@ temp/
 .agents/scratch/
 .gemini/
 
+# ─── Master Artworks & Local Storage (Private / Cloudflare R2) ──────────────
+# Master clothing designs (147 artwork files + mockups) are stored in private Cloudflare R2
+# and backed up in storage/. They should never be committed into the git repo.
+storage/
+/storage/
+/public/t_shirt_designs/
+
 # ─── Cloudflare R2 Assets (served from CDN, not committed to git) ────────────
 # These files live in R2. Run `python scripts/upload_to_r2.py` to upload them.
 # Keep: favicon.ico, robots.txt, placeholder.png (tiny, needed at build time)

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useCartStore, type CartItem } from '@/lib/stores/cart-store';
 
 /**
@@ -28,6 +29,12 @@ interface WindowWithTawk {
 export function ClothingMockupIframe() {
   const [isLoading, setIsLoading] = useState(true);
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const searchParams = useSearchParams();
+
+  const iframeSrc = React.useMemo(() => {
+    const qs = searchParams?.toString();
+    return qs ? `/tools/clothing-mockup/index.html?${qs}` : '/tools/clothing-mockup/index.html';
+  }, [searchParams]);
 
   // Apply body class while the studio is mounted and aggressively suppress
   // the Tawk.to widget, WhatsApp button, and other floating UI in both 2D and 3D.
@@ -175,6 +182,7 @@ export function ClothingMockupIframe() {
               printPosition: 'Custom 3D Studio Mockup',
               printInstructions: payload.printInstructions || 'Custom 3D Studio Placement',
               customerNotes: payload.customerNotes || payload.printInstructions || null,
+              designId: payload.designId || null,
               uploadedArtworks: payload.uploadedArtworks || [],
               is3dMockup: true,
             },
@@ -324,7 +332,7 @@ export function ClothingMockupIframe() {
       {/* ── The embedded studio ───────────────────────────────────────────── */}
       <iframe
         ref={iframeRef}
-        src="/tools/clothing-mockup/index.html"
+        src={iframeSrc}
         className="w-full h-full border-none block"
         allow="fullscreen"
         title="Fregoro Mockup Studio — Design your garment"

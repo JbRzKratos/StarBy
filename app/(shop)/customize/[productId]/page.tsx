@@ -1,5 +1,6 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { products } from '@/data/products';
+import { isProductComingSoon } from '@/data/categories';
 import { ClothingMockupIframe } from '@/components/customizer/clothing-mockup-iframe';
 import { SimpleCustomizerLayout } from '@/components/customizer/simple-customizer-layout';
 import type { ProductType } from '@/lib/config/printSpecs';
@@ -38,6 +39,16 @@ function mapCategoryToProductType(categorySlug: string): ProductType | null {
 import { getLiveProductBySlug } from '@/lib/services/products-service';
 
 export default async function CustomizePage({ params }: CustomizePageProps) {
+  // Direct clothing-mockup studio entry
+  if (params.productId === 'clothing-mockup') {
+    return <ClothingMockupIframe />;
+  }
+
+  // If user requests a curated clothing design by ID, direct them to its artwork detail page
+  if (params.productId.startsWith('design-')) {
+    redirect(`/products/tees/${params.productId}`);
+  }
+
   // Fetch live product from DB to ensure real-time admin pricing reflection
   const product =
     (await getLiveProductBySlug(params.productId)) ||
@@ -45,6 +56,11 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
 
   if (!product || !product.customizable) {
     notFound();
+  }
+
+  // If product is coming soon (e.g. cups, mugs, stationery, skins), redirect to drop detail page
+  if (isProductComingSoon(product)) {
+    redirect(`/products/${product.categorySlug}/${product.slug || product.id}`);
   }
 
   const productType = mapCategoryToProductType(product.categorySlug) || 't-shirt';

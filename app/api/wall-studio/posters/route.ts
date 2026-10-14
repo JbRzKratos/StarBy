@@ -45,7 +45,10 @@ export async function GET(request: Request) {
       });
 
       if (posters && posters.length > 0) {
-        return NextResponse.json({ success: true, posters });
+        return NextResponse.json(
+          { success: true, posters },
+          { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' } },
+        );
       }
     } catch (e) {
       console.warn('DB poster search fallback to in-memory:', e);
@@ -75,7 +78,10 @@ export async function GET(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, posters: filtered });
+    return NextResponse.json(
+      { success: true, posters: filtered },
+      { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' } },
+    );
   } catch (error) {
     return NextResponse.json(
       { success: false, message: 'Failed to fetch posters', error: String(error) },

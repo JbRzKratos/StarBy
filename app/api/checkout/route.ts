@@ -124,7 +124,26 @@ export async function POST(request: Request) {
       new Set(items.map((i) => i.variantId).filter((v) => v && v !== 'default')),
     );
 
-    const [dbProducts, dbVariants] = await Promise.all([
+    // Pre-collect all wall layout slugs/ids so we can batch-fetch them in one query
+    // instead of doing a separate DB round-trip per wall item in the loop (N+1 fix).
+    const wallLayoutKeys = Array.from(
+      new Set(
+        items
+          .filter((i) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const c = i.customization as any;
+            return c?.isWallProduct || i.productId.startsWith('wall_') || i.productId.startsWith('prebuilt_');
+          })
+          .flatMap((i) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const c = i.customization as any;
+            const slug = c?.layoutSlug || c?.layoutId;
+            return slug ? [slug] : [];
+          }),
+      ),
+    );
+
+    const [dbProducts, dbVariants, dbWallLayouts] = await Promise.all([
       prisma.product.findMany({
         where: { id: { in: productIds } },
         select: { id: true, name: true, basePrice: true, customizable: true },
@@ -142,11 +161,31 @@ export async function POST(request: Request) {
             },
           })
         : Promise.resolve([]),
+      // Batch-fetch all wall layouts referenced in this cart in one round-trip
+      wallLayoutKeys.length > 0
+        ? prisma.wallLayout.findMany({
+            where: {
+              OR: [
+                { slug: { in: wallLayoutKeys } },
+                { id: { in: wallLayoutKeys } },
+              ],
+            },
+            select: { id: true, slug: true, basePrice: true, compareAtPrice: true },
+          })
+        : Promise.resolve([]),
     ]);
 
     // Build lookup maps
     const productMap = new Map(dbProducts.map((p) => [p.id, p]));
     const variantMap = new Map(dbVariants.map((v) => [v.id, v]));
+    // Index wall layouts by both slug and id for O(1) lookup inside the item loop
+    const wallLayoutMap = new Map(
+      dbWallLayouts.flatMap((wl) => [
+        [wl.slug, wl],
+        [wl.id, wl],
+      ]),
+    );
+
 
     // 5. ──── Validate products, variants, stock ────
     let subtotal = 0;
@@ -174,18 +213,8 @@ export async function POST(request: Request) {
         const layoutSlug = customData?.layoutSlug || customData?.layoutId || 'stepped-hero-05';
         const layout = getLayoutById(layoutSlug) || FREGORO_LAYOUTS[4];
 
-        // Fetch live DB base price configured by admin in real-time
-        const dbLayout = await prisma.wallLayout.findFirst({
-          where: {
-            OR: [
-              { slug: layoutSlug },
-              { id: layoutSlug },
-              { slug: layout.slug },
-              { id: layout.id },
-            ],
-          },
-          select: { basePrice: true, compareAtPrice: true },
-        });
+        // Look up live DB price from the pre-fetched batch map (no additional DB round-trip)
+        const dbLayout = wallLayoutMap.get(layoutSlug) ?? wallLayoutMap.get(layout.slug) ?? wallLayoutMap.get(layout.id);
 
         const effectiveLayout = dbLayout
           ? {

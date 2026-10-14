@@ -1,11 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface SizeFinderModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSizeSelect: (size: string) => void;
+  availableSizes?: string[];
+}
+
+export function normalizeApparelSize(size: string, availableSizes?: string[]): string {
+  const validList =
+    availableSizes && availableSizes.length > 0
+      ? availableSizes
+      : ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+
+  if (validList.includes(size)) return size;
+
+  // XXL <-> 2XL normalization
+  if (size === 'XXL' && validList.includes('2XL')) return '2XL';
+  if (size === '2XL' && validList.includes('XXL')) return 'XXL';
+
+  // 3XL <-> XXXL normalization
+  if (size === 'XXXL' && validList.includes('3XL')) return '3XL';
+  if (size === '3XL' && validList.includes('XXXL')) return 'XXXL';
+
+  return validList[0] || size;
 }
 
 // Size lookup table for Indian sizing (Selling sizes: S to 3XL)
@@ -14,7 +35,7 @@ const sizeTable = [
   { size: 'M', heightMin: 162, heightMax: 172, weightMin: 56, weightMax: 68 },
   { size: 'L', heightMin: 168, heightMax: 178, weightMin: 66, weightMax: 78 },
   { size: 'XL', heightMin: 174, heightMax: 184, weightMin: 76, weightMax: 88 },
-  { size: 'XXL', heightMin: 178, heightMax: 190, weightMin: 86, weightMax: 100 },
+  { size: '2XL', heightMin: 178, heightMax: 190, weightMin: 86, weightMax: 100 },
   { size: '3XL', heightMin: 182, heightMax: 205, weightMin: 96, weightMax: 130 },
 ];
 
@@ -28,6 +49,7 @@ function recommendSize(
   height: number,
   weight: number,
   fit: string,
+  availableSizes?: string[],
 ): { size: string; confidence: number } {
   // Score each size based on how well height + weight match
   const scores = sizeTable.map((entry) => {
@@ -56,37 +78,68 @@ function recommendSize(
   const offset = fitOffsets[fit] ?? 0;
   const baseIndex = sizeTable.findIndex((e) => e.size === scores[0]?.size);
   const finalIndex = Math.max(0, Math.min(sizeTable.length - 1, baseIndex + offset));
-  const finalSize = sizeTable[finalIndex]?.size ?? 'M';
+  const rawSize = sizeTable[finalIndex]?.size ?? 'M';
+  const finalSize = normalizeApparelSize(rawSize, availableSizes);
   const confidence = Math.min(100, Math.round(((scores[0]?.score ?? 0) / 4) * 100));
 
   return { size: finalSize, confidence };
 }
 
-export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderModalProps) {
+export function SizeFinderModal({
+  isOpen,
+  onClose,
+  onSizeSelect,
+  availableSizes,
+}: SizeFinderModalProps) {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [fit, setFit] = useState('regular');
   const [result, setResult] = useState<{ size: string; confidence: number } | null>(null);
   const [activeTab, setActiveTab] = useState<'smart' | 'chart'>('smart');
+  const [mounted, setMounted] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+    const orig = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = orig;
+    };
+  }, [isOpen]);
+
+  // Real-time calculation as inputs are entered
+  useEffect(() => {
+    const h = parseFloat(height);
+    const w = parseFloat(weight);
+    if (h >= 120 && h <= 230 && w >= 35 && w <= 160) {
+      setResult(recommendSize(h, w, fit, availableSizes));
+    }
+  }, [height, weight, fit, availableSizes]);
+
+  if (!mounted || !isOpen) return null;
 
   const handleFind = () => {
     const h = parseFloat(height);
     const w = parseFloat(weight);
     if (!h || !w || h < 100 || h > 250 || w < 30 || w > 200) return;
-    setResult(recommendSize(h, w, fit));
+    setResult(recommendSize(h, w, fit, availableSizes));
   };
 
   const handleApply = () => {
     if (result) {
-      onSizeSelect(result.size);
+      const normalized = normalizeApparelSize(result.size, availableSizes);
+      onSizeSelect(normalized);
       onClose();
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-[150] flex items-end sm:items-center justify-center">
+  return createPortal(
+    <div className="fixed inset-0 z-[99990] flex items-end sm:items-center justify-center animate-fadeIn">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-charcoal/80 backdrop-blur-sm" onClick={onClose} />
 
@@ -265,13 +318,14 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
                     { size: 'M', bust: 38, length: 25, shoulder: 15, sleeve: 6.0 },
                     { size: 'L', bust: 40, length: 26, shoulder: 16, sleeve: 6.5 },
                     { size: 'XL', bust: 42, length: 27, shoulder: 17, sleeve: 7.0 },
-                    { size: 'XXL', bust: 44, length: 28, shoulder: 18, sleeve: 7.5 },
+                    { size: '2XL', bust: 44, length: 28, shoulder: 18, sleeve: 7.5 },
                     { size: '3XL', bust: 46, length: 29, shoulder: 19, sleeve: 8.0 },
                   ].map((row) => (
                     <tr
                       key={row.size}
                       onClick={() => {
-                        onSizeSelect(row.size);
+                        const normalized = normalizeApparelSize(row.size, availableSizes);
+                        onSizeSelect(normalized);
                         onClose();
                       }}
                       className="hover:bg-white/[0.04] transition-colors cursor-pointer group"
@@ -295,6 +349,7 @@ export function SizeFinderModal({ isOpen, onClose, onSizeSelect }: SizeFinderMod
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

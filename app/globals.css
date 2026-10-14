@@ -205,7 +205,20 @@
   body.mockup-studio-active .floating-whatsapp-btn,
   body.mockup-studio-active .floating-scroll-top-btn,
   body.mockup-studio-active nextjs-portal,
-  body.mockup-studio-active [data-nextjs-toast] {
+  body.mockup-studio-active [data-nextjs-toast],
+  body.clothing-modal-open .tawk-button,
+  body.clothing-modal-open .tawk-badge,
+  body.clothing-modal-open [id*='tawk' i],
+  body.clothing-modal-open iframe[src*='tawk.to'],
+  body.clothing-modal-open iframe[title*='chat' i],
+  body.clothing-modal-open iframe[title*='tawk' i],
+  body.clothing-modal-open div:has(> iframe[src*='tawk.to']),
+  body.clothing-modal-open div:has(iframe[src*='tawk.to']),
+  body.clothing-modal-open div[class*='tawk'],
+  body.clothing-modal-open [class*='tawk'],
+  body.clothing-modal-open .widget-visible,
+  body.clothing-modal-open .floating-whatsapp-btn,
+  body.clothing-modal-open .floating-scroll-top-btn {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -303,7 +316,20 @@ body.mockup-studio-active .tawk-button,
 body.mockup-studio-active .tawk-badge,
 body.mockup-studio-active [id*="tawk" i],
 body.mockup-studio-active [class*="tawk" i],
-body.mockup-studio-active .widget-visible {
+body.mockup-studio-active .widget-visible,
+body.clothing-modal-open div:has(> iframe[src*="tawk.to"]),
+body.clothing-modal-open div:has(iframe[src*="tawk.to"]),
+body.clothing-modal-open iframe[src*="tawk.to"],
+body.clothing-modal-open iframe[title*="chat" i],
+body.clothing-modal-open iframe[title*="tawk" i],
+body.clothing-modal-open #tawk-default-container,
+body.clothing-modal-open #tawk-bubble-container,
+body.clothing-modal-open .tawk-min-container,
+body.clothing-modal-open .tawk-button,
+body.clothing-modal-open .tawk-badge,
+body.clothing-modal-open [id*="tawk" i],
+body.clothing-modal-open [class*="tawk" i],
+body.clothing-modal-open .widget-visible {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;

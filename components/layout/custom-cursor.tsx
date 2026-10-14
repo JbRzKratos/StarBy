@@ -13,33 +13,42 @@
  *
  * If any step fails → native cursor is preserved, no class added, no error thrown to the user.
  *
- * CSS in globals.css uses `html.cursor-ready` as the gate, never `body` directly,
- * and never via an unconditional selector.
+ * CSS in globals.css uses `html.cursor-ready` as the gate, never `body` directly.
  *
- * Cleanup on unmount: removes all event listeners AND removes cursor-ready from <html>.
+ * Portaled to document.body with max zIndex (2147483647) so it is ALWAYS on top of
+ * any modal, drawer, backdrop, dialog, or floating panel across the entire site.
  */
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { gsap } from '@/lib/gsap-config';
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     // ── Step 1: Feature detection ────────────────────────────────────────────
-    // Only proceed if this is a genuine pointer device (mouse/trackpad).
-    // matchMedia('(pointer: fine)') returns false on touch-only devices.
-    // The ontouchstart check catches hybrid devices that report pointer: fine
-    // but are primarily touch (e.g. some Surface/iPad configurations).
+    // Only disable if device is strictly coarse touch-only (e.g., phones/tablets).
+    // Touchscreen laptops with mice/trackpads (pointer: fine) MUST keep the cursor.
     const isPointerFine =
       typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches;
 
-    const isTouchOnly = 'ontouchstart' in window;
+    const isCoarseOnly =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(pointer: coarse)').matches &&
+      !window.matchMedia('(pointer: fine)').matches;
+
     const isMobileWidth = window.innerWidth < 768;
 
-    if (!isPointerFine || isTouchOnly || isMobileWidth) {
-      // Touch, coarse-pointer, or mobile device: leave native cursor intact, do nothing.
+    if (!isPointerFine || isCoarseOnly || isMobileWidth) {
       return;
     }
 
@@ -48,14 +57,13 @@ export function CustomCursor() {
     const dot = dotRef.current;
     if (!cursor || !dot) return;
 
-    // ── Step 3: GSAP setup + mousemove — all inside try/catch ────────────────
-    // Any failure here aborts the entire init WITHOUT adding cursor-ready.
+    // ── Step 3: GSAP setup + mousemove ───────────────────────────────────────
     let xToCursor: ((val: number) => void) | null = null;
     let yToCursor: ((val: number) => void) | null = null;
     let xToDot: ((val: number) => void) | null = null;
     let yToDot: ((val: number) => void) | null = null;
     let isHovering = false;
-
+    let isCrosshair = false;
     let hasMoved = false;
 
     const onMouseMove = (e: MouseEvent) => {
@@ -66,7 +74,7 @@ export function CustomCursor() {
       if (!hasMoved) {
         hasMoved = true;
         document.documentElement.classList.add('cursor-ready');
-        gsap.to([cursor, dot], { opacity: 1, duration: 0.3 });
+        gsap.to([cursor, dot], { opacity: 1, duration: 0.2 });
       }
       xToCursor?.(e.clientX);
       yToCursor?.(e.clientY);
@@ -81,39 +89,98 @@ export function CustomCursor() {
       }
     };
 
+    const onWindowLeave = () => {
+      gsap.to([cursor, dot], { opacity: 0, duration: 0.15 });
+    };
+
+    const onWindowEnter = () => {
+      if (hasMoved && window.innerWidth >= 768) {
+        gsap.to([cursor, dot], { opacity: 1, duration: 0.15 });
+      }
+    };
+
     const onMouseOver = (e: MouseEvent) => {
       if (window.innerWidth < 768) return;
       const target = e.target as HTMLElement;
-      const isInteractive = !!target.closest('a, button, input, select, textarea, [role="button"]');
+      if (!target || !target.closest) return;
+
+      // When hovering text inputs/textareas, hide custom cursor so native text caret is clean
+      const isInput = !!target.closest(
+        'input:not([type="button"]):not([type="submit"]):not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="color"]), textarea, [contenteditable="true"]'
+      );
+      if (isInput) {
+        gsap.to([cursor, dot], { opacity: 0, duration: 0.12 });
+        return;
+      } else if (hasMoved) {
+        gsap.to([cursor, dot], { opacity: 1, duration: 0.12 });
+      }
+
+      // Check for precision crosshair targets (e.g. apparel mockup canvas or click-to-pinpoint)
+      const isTargetCrosshair = !!target.closest('.cursor-crosshair, [data-cursor="crosshair"]');
+      if (isTargetCrosshair) {
+        isCrosshair = true;
+        isHovering = false;
+        gsap.to(cursor, {
+          scale: 0.8,
+          backgroundColor: 'rgba(16, 185, 129, 0.15)',
+          borderColor: '#10B981',
+          boxShadow: '0 0 0 1.5px rgba(0, 0, 0, 0.9), 0 0 12px rgba(16, 185, 129, 0.7)',
+          duration: 0.2,
+        });
+        gsap.to(dot, {
+          scale: 1,
+          backgroundColor: '#10B981',
+          boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.9), 0 0 6px #10b981',
+          duration: 0.2,
+        });
+        return;
+      } else if (isCrosshair) {
+        isCrosshair = false;
+      }
+
+      const isInteractive = !!target.closest(
+        'a, button, select, [role="button"], .cursor-pointer, [data-cursor-hover], input[type="button"], input[type="submit"], input[type="radio"], input[type="checkbox"], input[type="range"], input[type="color"], label[for], .clickable'
+      );
+
       if (isInteractive && !isHovering) {
         isHovering = true;
         gsap.to(cursor, {
-          scale: 1.5,
-          backgroundColor: '#ffffff',
-          borderColor: 'transparent',
-          duration: 0.3,
+          scale: 1.45,
+          backgroundColor: 'rgba(59, 94, 255, 0.22)',
+          borderColor: '#3B5EFF',
+          boxShadow: '0 0 0 1.5px rgba(0, 0, 0, 0.85), 0 0 16px rgba(59, 94, 255, 0.55)',
+          duration: 0.22,
         });
-        gsap.to(dot, { scale: 0, duration: 0.3 });
+        gsap.to(dot, { scale: 0, duration: 0.18 });
       } else if (!isInteractive && isHovering) {
         isHovering = false;
         gsap.to(cursor, {
           scale: 1,
           backgroundColor: 'transparent',
-          borderColor: 'rgba(255, 255, 255, 0.5)',
-          duration: 0.3,
+          borderColor: 'rgba(255, 255, 255, 0.95)',
+          boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.8), 0 0 10px rgba(59, 94, 255, 0.35)',
+          duration: 0.22,
         });
-        gsap.to(dot, { scale: 1, duration: 0.3 });
+        gsap.to(dot, {
+          scale: 1,
+          backgroundColor: '#ffffff',
+          boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.9), 0 0 6px rgba(59, 94, 255, 0.7)',
+          duration: 0.22,
+        });
       }
     };
 
     const onMouseDown = () => {
       if (window.innerWidth >= 768) {
-        gsap.to(cursor, { scale: 0.8, duration: 0.1 });
+        gsap.to(cursor, { scale: isHovering ? 1.25 : 0.85, duration: 0.1 });
       }
     };
     const onMouseUp = () => {
       if (window.innerWidth >= 768) {
-        gsap.to(cursor, { scale: isHovering ? 1.5 : 1, duration: 0.1 });
+        gsap.to(cursor, {
+          scale: isCrosshair ? 0.8 : isHovering ? 1.45 : 1,
+          duration: 0.15,
+        });
       }
     };
 
@@ -124,21 +191,28 @@ export function CustomCursor() {
       if (isInteractive && !isHovering) {
         isHovering = true;
         gsap.to(cursor, {
-          scale: 1.5,
-          backgroundColor: '#ffffff',
-          borderColor: 'transparent',
-          duration: 0.3,
+          scale: 1.45,
+          backgroundColor: 'rgba(59, 94, 255, 0.22)',
+          borderColor: '#3B5EFF',
+          boxShadow: '0 0 0 1.5px rgba(0, 0, 0, 0.85), 0 0 16px rgba(59, 94, 255, 0.55)',
+          duration: 0.22,
         });
-        gsap.to(dot, { scale: 0, duration: 0.3 });
+        gsap.to(dot, { scale: 0, duration: 0.18 });
       } else if (!isInteractive && isHovering) {
         isHovering = false;
         gsap.to(cursor, {
           scale: 1,
           backgroundColor: 'transparent',
-          borderColor: 'rgba(255, 255, 255, 0.5)',
-          duration: 0.3,
+          borderColor: 'rgba(255, 255, 255, 0.95)',
+          boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.8), 0 0 10px rgba(59, 94, 255, 0.35)',
+          duration: 0.22,
         });
-        gsap.to(dot, { scale: 1, duration: 0.3 });
+        gsap.to(dot, {
+          scale: 1,
+          backgroundColor: '#ffffff',
+          boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.9), 0 0 6px rgba(59, 94, 255, 0.7)',
+          duration: 0.22,
+        });
       }
     };
 
@@ -147,7 +221,7 @@ export function CustomCursor() {
       gsap.set(cursor, { xPercent: -50, yPercent: -50, x: -100, y: -100 });
       gsap.set(dot, { xPercent: -50, yPercent: -50, x: -100, y: -100 });
 
-      // Create quickTo instances — this can throw if GSAP is misconfigured
+      // Create quickTo instances
       xToCursor = gsap.quickTo(cursor, 'x', { duration: 0.1, ease: 'power3' });
       yToCursor = gsap.quickTo(cursor, 'y', { duration: 0.1, ease: 'power3' });
       xToDot = gsap.quickTo(dot, 'x', { duration: 0.08, ease: 'power3' });
@@ -160,6 +234,8 @@ export function CustomCursor() {
       window.addEventListener('mousedown', onMouseDown, { passive: true });
       window.addEventListener('mouseup', onMouseUp, { passive: true });
       window.addEventListener('custom-cursor-hover', onCustomHover);
+      document.addEventListener('mouseleave', onWindowLeave);
+      document.addEventListener('mouseenter', onWindowEnter);
     } catch (err) {
       console.error('[CustomCursor] Failed to initialize:', err);
       return;
@@ -174,11 +250,15 @@ export function CustomCursor() {
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
       window.removeEventListener('custom-cursor-hover', onCustomHover);
+      document.removeEventListener('mouseleave', onWindowLeave);
+      document.removeEventListener('mouseenter', onWindowEnter);
       gsap.killTweensOf([cursor, dot]);
     };
-  }, []);
+  }, [mounted]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <>
       {/* Outer ring cursor (hidden on mobile) */}
       <div
@@ -191,11 +271,11 @@ export function CustomCursor() {
           width: '2rem',
           height: '2rem',
           borderRadius: '9999px',
-          border: '1px solid rgba(255,255,255,0.5)',
+          border: '1.5px solid rgba(255, 255, 255, 0.95)',
+          boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.8), 0 0 10px rgba(59, 94, 255, 0.35)',
           pointerEvents: 'none',
-          zIndex: 999999,
+          zIndex: 2147483647,
           opacity: 0,
-          mixBlendMode: 'difference',
           willChange: 'transform',
         }}
         aria-hidden="true"
@@ -210,16 +290,17 @@ export function CustomCursor() {
           left: 0,
           width: '6px',
           height: '6px',
-          backgroundColor: 'white',
+          backgroundColor: '#ffffff',
           borderRadius: '9999px',
+          boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.9), 0 0 6px rgba(59, 94, 255, 0.7)',
           pointerEvents: 'none',
-          zIndex: 999999,
+          zIndex: 2147483647,
           opacity: 0,
-          mixBlendMode: 'difference',
           willChange: 'transform',
         }}
         aria-hidden="true"
       />
-    </>
+    </>,
+    document.body
   );
 }

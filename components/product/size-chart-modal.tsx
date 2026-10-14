@@ -2,7 +2,8 @@
 
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface SizeChartModalProps {
   isOpen: boolean;
@@ -69,6 +70,11 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [unit, setUnit] = useState<'in' | 'cm'>('in');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useGSAP(
     () => {
@@ -106,7 +112,7 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
   const isMug = catLower.includes('mug');
   const isSkin = catLower.includes('skin');
 
-  if (isSkin) return null;
+  if (isSkin || !mounted) return null;
 
   const apparelData: ApparelSizeRow[] = isHoodie
     ? sizeData.hoodies
@@ -125,10 +131,10 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
       ? 'Oversized Tees Size Guide'
       : 'T-Shirt Size Guide';
 
-  return (
+  return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-modal bg-charcoal/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 opacity-0"
+      className="fixed inset-0 z-[99990] bg-charcoal/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 opacity-0"
       onClick={onClose}
     >
       <div
@@ -295,6 +301,7 @@ export function SizeChartModal({ isOpen, onClose, category }: SizeChartModalProp
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

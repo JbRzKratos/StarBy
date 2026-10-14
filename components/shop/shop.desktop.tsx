@@ -1,28 +1,91 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
-import { DeviceSkinsComingSoon } from './device-skins-coming-soon';
+import { CategoryComingSoonPage } from './category-coming-soon-page';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { getR2AssetUrl } from '@/lib/r2';
+import { isProductComingSoon, isCategoryComingSoon } from '@/data/categories';
 
-function DesktopProductCard({ product, index }: { product: Product; index: number }) {
+import { ClothingDesignsGallery } from './clothing-designs-gallery';
+// ClothingProductModal (~51 kB) — lazy loaded, only shown when a design is selected
+const ClothingProductModal = dynamic(
+  () => import('./clothing-product-modal').then((m) => m.ClothingProductModal),
+  { ssr: false },
+);
+import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
+
+function DesktopProductCard({
+  product,
+  index,
+  onSelectDesign,
+}: {
+  product: Product;
+  index: number;
+  onSelectDesign?: (designId: string) => void;
+}) {
   const { formatPrice } = usePrice();
-  const isComingSoon = product.categorySlug === 'skins';
+  const isComingSoon = isProductComingSoon(product);
+  const isClothingDesign = product.id.startsWith('design-');
   const [imgError, setImgError] = useState(false);
 
   const fallbackImg = getR2AssetUrl('images/hero/posters.webp');
   const primaryImg = product.variants[0]?.images?.[0] || fallbackImg;
   const imgSrc = imgError ? fallbackImg : primaryImg;
 
+  if (isClothingDesign) {
+    return (
+      <div
+        onClick={() => onSelectDesign?.(product.id)}
+        className="group flex flex-col gap-0 cursor-pointer"
+        style={{ perspective: '1000px' }}
+      >
+        {/* Design Thumbnail Image wrapper */}
+        <div className="relative aspect-[3/4] overflow-hidden bg-[#16161A] rounded-xl border border-white/5 group-hover:border-emerald-500/40 transition-colors duration-300">
+          <Image
+            src={imgSrc}
+            alt={product.name}
+            fill
+            unoptimized
+            priority={index < 8}
+            className="object-contain p-4 transition-transform duration-[600ms] ease-out group-hover:scale-105"
+            sizes="(max-width: 1024px) 33vw, 25vw"
+            onError={() => setImgError(true)}
+          />
+
+          {/* 3D Studio Badge */}
+          <div className="absolute top-2.5 right-2.5 z-10 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[9px] font-mono text-emerald-400 uppercase tracking-wider backdrop-blur-sm">
+            3D Studio
+          </div>
+
+          {/* Hover overlay with button */}
+          <div className="absolute inset-0 bg-charcoal/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+            <span className="bg-white text-black font-mono text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-lg shadow-xl translate-y-3 group-hover:translate-y-0 transition-all duration-300">
+              Customize in 3D
+            </span>
+          </div>
+        </div>
+
+        {/* Name / price below card */}
+        <div className="flex flex-col gap-1 mt-4">
+          <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-emerald-400 transition-colors truncate">
+            {product.name}
+          </h3>
+          <p className="font-display text-lg text-pearl">{formatPrice(product.basePrice)}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Link
       href={
-        isComingSoon
+        product.categorySlug === 'skins'
           ? '/products/skins'
           : `/products/${product.categorySlug}/${product.slug || product.id}`
       }
@@ -37,15 +100,29 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
           fill
           unoptimized
           priority={index < 8}
-          className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-105"
+          className={`${isComingSoon ? 'object-contain p-4' : 'object-cover'} transition-transform duration-[600ms] ease-out group-hover:scale-105`}
           sizes="(max-width: 1024px) 33vw, 25vw"
           onError={() => setImgError(true)}
         />
 
+        {/* Coming Soon Badge */}
+        {isComingSoon && (
+          <div className="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/40 text-[9px] font-mono font-medium text-amber-300 uppercase tracking-widest backdrop-blur-md flex items-center gap-1.5 shadow-lg">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            Coming Soon
+          </div>
+        )}
+
         {/* Hover overlay with button */}
         <div className="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-          <span className="bg-cobalt text-bone font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg shadow-xl translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-            View Product
+          <span
+            className={`font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg shadow-xl translate-y-4 group-hover:translate-y-0 transition-all duration-300 ${
+              isComingSoon
+                ? 'bg-amber-500 text-black font-semibold'
+                : 'bg-cobalt text-bone'
+            }`}
+          >
+            {isComingSoon ? 'Drop Alert' : 'View Product'}
           </span>
         </div>
       </div>
@@ -55,7 +132,15 @@ function DesktopProductCard({ product, index }: { product: Product; index: numbe
         <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-cobalt transition-colors truncate">
           {product.name}
         </h3>
-        <p className="font-display text-lg text-pearl">{formatPrice(product.basePrice)}</p>
+        <p className="font-display text-lg text-pearl">
+          {isComingSoon ? (
+            <span className="font-mono text-xs uppercase tracking-widest text-amber-400/90 font-medium">
+              Coming Soon
+            </span>
+          ) : (
+            formatPrice(product.basePrice)
+          )}
+        </p>
       </div>
     </Link>
   );
@@ -73,6 +158,23 @@ export function ShopDesktop({ category, products }: { category: string; products
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [visibleCount, setVisibleCount] = useState(16);
+  const [selectedClothingDesign, setSelectedClothingDesign] = useState<ClothingDesignEntry | null>(null);
+
+  const handleSelectDesign = async (designId: string) => {
+    try {
+      const res = await fetch(`/api/clothing-designs?id=${designId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.designs && data.designs.length > 0) {
+          setSelectedClothingDesign(data.designs[0]);
+          return;
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+    router.push(`/customize/clothing-mockup?designId=${designId}`);
+  };
 
   useEffect(() => {
     setActiveTab(category || 'all');
@@ -107,8 +209,29 @@ export function ShopDesktop({ category, products }: { category: string; products
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const baseProducts =
-    activeTab === 'all' ? products : products.filter((p) => p.categorySlug === activeTab);
+  const baseProducts = useMemo(() => {
+    if (activeTab !== 'all') {
+      return products.filter((p) => p.categorySlug === activeTab);
+    }
+
+    // When viewing "All Designs" / Catalog:
+    // What we are actually selling must show up FIRST:
+    // (Posters, Split Posters, Wall Studio, Magazine Studio, and Core Apparel)
+    const activeSellingProducts = products.filter(
+      (p) => !isProductComingSoon(p) && !p.id.startsWith('design-'),
+    );
+    const clothingDesigns = products.filter((p) => p.id.startsWith('design-'));
+    const comingSoonProducts = products.filter((p) => isProductComingSoon(p));
+
+    // Sort active selling products: featured items first
+    const sortedSelling = [...activeSellingProducts].sort((a, b) => {
+      const aFeat = a.featured ? 1 : 0;
+      const bFeat = b.featured ? 1 : 0;
+      return bFeat - aFeat;
+    });
+
+    return [...sortedSelling, ...clothingDesigns, ...comingSoonProducts];
+  }, [products, activeTab]);
   let filteredProducts = baseProducts;
   if (filterType === 'customizable')
     filteredProducts = filteredProducts.filter((p) => p.customizable);
@@ -154,7 +277,11 @@ export function ShopDesktop({ category, products }: { category: string; products
                 ? 'Device Skins'
                 : activeTab === 'mugs-cups'
                   ? 'Cups & Mugs'
-                  : activeTab}
+                  : activeTab === 'stationery'
+                    ? 'Stationery'
+                    : activeTab === 'accessories'
+                      ? 'Accessories'
+                      : activeTab}
           </h1>
 
           <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar pb-4 border-b border-smoke/20">
@@ -174,11 +301,17 @@ export function ShopDesktop({ category, products }: { category: string; products
           </div>
         </div>
 
-        {activeTab === 'skins' ? (
-          <DeviceSkinsComingSoon />
+        {isCategoryComingSoon(activeTab) ? (
+          <CategoryComingSoonPage category={activeTab} />
+        ) : activeTab === 'tees' || activeTab === 'hoodies' ? (
+          <ClothingDesignsGallery
+            category={activeTab as 'tees' | 'hoodies'}
+            searchQuery={searchQuery}
+          />
         ) : (
           /* Filters & Grid */
-          <div className="flex items-start gap-12">
+          <div className="flex flex-col gap-8">
+            <div className="flex items-start gap-12">
             {/* Sidebar Filters */}
             <aside className="w-64 flex-shrink-0 sticky top-32">
               <div className="flex flex-col gap-10">
@@ -304,6 +437,27 @@ export function ShopDesktop({ category, products }: { category: string; products
 
             {/* Product Grid */}
             <div className="flex-grow flex flex-col min-h-[50vh]">
+              {isCategoryComingSoon(activeTab) && activeTab !== 'skins' && (
+                <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/20 backdrop-blur-sm flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0 text-amber-400 mt-0.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="font-mono text-xs font-bold uppercase tracking-widest text-amber-400">
+                        Upcoming Studio Drop
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 font-mono text-[9px] uppercase tracking-wider font-semibold">
+                        Pre-Production
+                      </span>
+                    </div>
+                    <p className="font-mono text-xs text-bone/70 max-w-2xl leading-relaxed">
+                      This collection is currently in development. Explore the preview line below and select any product to join the drop waitlist for priority access when released.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               <div className="flex justify-between items-center mb-8">
                 <span className="font-mono text-[10px] text-pearl uppercase tracking-widest">
                   Showing {displayProducts.length} of {filteredProducts.length} Results
@@ -317,6 +471,7 @@ export function ShopDesktop({ category, products }: { category: string; products
                       key={`prod-${product.id}`}
                       product={product}
                       index={index}
+                      onSelectDesign={handleSelectDesign}
                     />
                   ))}
                 </div>
@@ -354,6 +509,16 @@ export function ShopDesktop({ category, products }: { category: string; products
               )}
             </div>
           </div>
+          </div>
+        )}
+
+        {/* Interactive Clothing Design Customization Modal */}
+        {selectedClothingDesign && (
+          <ClothingProductModal
+            design={selectedClothingDesign}
+            onClose={() => setSelectedClothingDesign(null)}
+            defaultCategory={activeTab === 'hoodies' ? 'hoodies' : 'tees'}
+          />
         )}
       </div>
     </main>

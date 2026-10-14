@@ -11,6 +11,8 @@ import {
   FolderOpen,
   Save,
   ShoppingBag,
+  Sparkles,
+  HelpCircle,
 } from 'lucide-react';
 import type { GarmentSide } from '../types/mockup';
 
@@ -35,6 +37,10 @@ interface HeaderProps {
   onLoadProject: () => void;
   onCameraPreset3D?: (preset: 'front' | 'back' | 'threeQuarter') => void;
   onOpenAddToCart?: () => void;
+  onOpenDesignsLibrary?: () => void;
+  onOpenDesignSetup?: () => void;
+  onOpenInstructions?: () => void;
+  hasLoadedDesign?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -58,6 +64,10 @@ export const Header: React.FC<HeaderProps> = ({
   onLoadProject,
   onCameraPreset3D,
   onOpenAddToCart,
+  onOpenDesignsLibrary,
+  onOpenDesignSetup,
+  onOpenInstructions,
+  hasLoadedDesign,
 }) => {
   return (
     <header className="app-header">
@@ -219,6 +229,89 @@ export const Header: React.FC<HeaderProps> = ({
               <span>Load</span>
             </button>
           </>
+        )}
+
+        {/* Design Setup Quick Button */}
+        {onOpenDesignSetup && hasLoadedDesign && (
+          <button
+            id="btn-open-design-setup"
+            type="button"
+            className="header-btn"
+            onClick={onOpenDesignSetup}
+            style={{
+              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(20, 22, 28, 0.8) 100%)',
+              border: '1px solid rgba(16, 185, 129, 0.45)',
+              color: '#34d399',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontWeight: 700,
+            }}
+            title="Configure graphic placement and apparel questions"
+          >
+            <Sparkles size={14} style={{ color: '#34d399' }} />
+            <span className="export-text-full">Setup Graphic</span>
+            <span className="export-text-mobile">Setup</span>
+          </button>
+        )}
+
+        {/* StarBy Graphic Library Quick Button */}
+        {onOpenDesignsLibrary && (
+          <button
+            id="btn-open-designs-library"
+            type="button"
+            className="header-btn"
+            onClick={onOpenDesignsLibrary}
+            style={{
+              background: 'linear-gradient(135deg, rgba(59, 94, 255, 0.25) 0%, rgba(20, 22, 28, 0.8) 100%)',
+              border: '1px solid rgba(59, 94, 255, 0.45)',
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontWeight: 700,
+            }}
+            title="Browse StarBy Graphic Library (96 Designs)"
+          >
+            <Sparkles size={14} style={{ color: '#3B5EFF' }} />
+            <span className="export-text-full">Designs</span>
+            <span
+              style={{
+                fontSize: '9px',
+                fontFamily: 'monospace',
+                background: '#3B5EFF',
+                color: '#fff',
+                padding: '2px 5px',
+                borderRadius: '4px',
+              }}
+            >
+              96
+            </span>
+          </button>
+        )}
+
+        {/* 3D Studio Guide & Instructions Button */}
+        {mode === '3d' && onOpenInstructions && (
+          <button
+            id="btn-3d-instructions"
+            type="button"
+            className="header-btn"
+            onClick={onOpenInstructions}
+            style={{
+              background: 'rgba(245, 158, 11, 0.15)',
+              border: '1px solid rgba(245, 158, 11, 0.4)',
+              color: '#fbbf24',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontWeight: 700,
+            }}
+            title="3D Placement Warning & Studio Adjustment Guide"
+          >
+            <HelpCircle size={14} style={{ color: '#f59e0b' }} />
+            <span className="export-text-full">3D Guide</span>
+            <span className="export-text-mobile">Guide</span>
+          </button>
         )}
 
         {/* Primary Export Button */}

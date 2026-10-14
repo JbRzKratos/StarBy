@@ -1,27 +1,73 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
 import { SHOP_CATEGORIES } from './shop.shared';
-import { DeviceSkinsComingSoon } from './device-skins-coming-soon';
+import { CategoryComingSoonPage } from './category-coming-soon-page';
 import { getR2AssetUrl } from '@/lib/r2';
 import { usePrice } from '@/lib/hooks/usePrice';
-function MobileProductCard({ product, index }: { product: Product; index: number }) {
+import { isProductComingSoon, isCategoryComingSoon } from '@/data/categories';
+import { ClothingDesignsGallery } from './clothing-designs-gallery';
+import { ClothingProductModal } from './clothing-product-modal';
+import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
+
+function MobileProductCard({
+  product,
+  index,
+  onSelectDesign,
+}: {
+  product: Product;
+  index: number;
+  onSelectDesign?: (designId: string) => void;
+}) {
   const { formatPrice } = usePrice();
-  const isComingSoon = product.categorySlug === 'skins';
+  const isComingSoon = isProductComingSoon(product);
+  const isClothingDesign = product.id.startsWith('design-');
   const [imgError, setImgError] = useState(false);
 
   const fallbackImg = getR2AssetUrl('images/hero/posters.webp');
   const primaryImg = product.variants[0]?.images?.[0] || fallbackImg;
   const imgSrc = imgError ? fallbackImg : primaryImg;
 
+  if (isClothingDesign) {
+    return (
+      <div
+        onClick={() => onSelectDesign?.(product.id)}
+        className="group flex flex-col gap-0 col-span-1 cursor-pointer"
+      >
+        <div className="relative aspect-[3/4] overflow-hidden bg-[#16161A] rounded-xl border border-white/5 active:border-emerald-500/40 transition-colors">
+          <Image
+            src={imgSrc}
+            alt={product.name}
+            fill
+            unoptimized
+            priority={index < 6}
+            className="object-contain p-3 transition-transform duration-500 active:scale-105"
+            sizes="(max-width: 768px) 50vw"
+            onError={() => setImgError(true)}
+          />
+          <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[8px] font-mono text-emerald-400 uppercase tracking-wider backdrop-blur-sm">
+            3D Studio
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-0.5 mt-3">
+          <h3 className="font-mono text-[11px] text-bone uppercase tracking-widest truncate group-hover:text-emerald-400">
+            {product.name}
+          </h3>
+          <p className="font-display text-sm text-pearl">{formatPrice(product.basePrice)}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Link
       href={
-        isComingSoon
+        product.categorySlug === 'skins'
           ? '/products/skins'
           : `/products/${product.categorySlug}/${product.slug || product.id}`
       }
@@ -35,17 +81,31 @@ function MobileProductCard({ product, index }: { product: Product; index: number
           fill
           unoptimized
           priority={index < 6}
-          className="object-cover transition-transform duration-500 active:scale-105"
+          className={`${isComingSoon ? 'object-contain p-3' : 'object-cover'} transition-transform duration-500 active:scale-105`}
           sizes="(max-width: 768px) 50vw"
           onError={() => setImgError(true)}
         />
+        {isComingSoon && (
+          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-[8px] font-mono font-medium text-amber-300 uppercase tracking-wider backdrop-blur-sm flex items-center gap-1 shadow-lg">
+            <span className="w-1 h-1 rounded-full bg-amber-400 animate-pulse" />
+            Coming Soon
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-0.5 mt-3">
         <h3 className="font-mono text-[11px] text-bone uppercase tracking-widest truncate">
           {product.name}
         </h3>
-        <p className="font-display text-sm text-pearl">{formatPrice(product.basePrice)}</p>
+        <p className="font-display text-sm text-pearl">
+          {isComingSoon ? (
+            <span className="font-mono text-[10px] uppercase tracking-widest text-amber-400/90 font-medium">
+              Coming Soon
+            </span>
+          ) : (
+            formatPrice(product.basePrice)
+          )}
+        </p>
       </div>
     </Link>
   );
@@ -63,6 +123,23 @@ export function ShopMobile({ category, products }: { category: string; products:
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [visibleCount, setVisibleCount] = useState(12);
+  const [selectedClothingDesign, setSelectedClothingDesign] = useState<ClothingDesignEntry | null>(null);
+
+  const handleSelectDesign = async (designId: string) => {
+    try {
+      const res = await fetch(`/api/clothing-designs?id=${designId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.designs && data.designs.length > 0) {
+          setSelectedClothingDesign(data.designs[0]);
+          return;
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+    router.push(`/customize/clothing-mockup?designId=${designId}`);
+  };
 
   useEffect(() => {
     setActiveTab(category || 'all');
@@ -99,8 +176,29 @@ export function ShopMobile({ category, products }: { category: string; products:
     setIsFilterOpen(false);
   };
 
-  const baseProducts =
-    activeTab === 'all' ? products : products.filter((p) => p.categorySlug === activeTab);
+  const baseProducts = useMemo(() => {
+    if (activeTab !== 'all') {
+      return products.filter((p) => p.categorySlug === activeTab);
+    }
+
+    // When viewing "All Designs" / Catalog:
+    // What we are actually selling must show up FIRST:
+    // (Posters, Split Posters, Wall Studio, Magazine Studio, and Core Apparel)
+    const activeSellingProducts = products.filter(
+      (p) => !isProductComingSoon(p) && !p.id.startsWith('design-'),
+    );
+    const clothingDesigns = products.filter((p) => p.id.startsWith('design-'));
+    const comingSoonProducts = products.filter((p) => isProductComingSoon(p));
+
+    // Sort active selling products: featured items first
+    const sortedSelling = [...activeSellingProducts].sort((a, b) => {
+      const aFeat = a.featured ? 1 : 0;
+      const bFeat = b.featured ? 1 : 0;
+      return bFeat - aFeat;
+    });
+
+    return [...sortedSelling, ...clothingDesigns, ...comingSoonProducts];
+  }, [products, activeTab]);
   let filteredProducts = baseProducts;
   if (filterType === 'customizable')
     filteredProducts = filteredProducts.filter((p) => p.customizable);
@@ -143,9 +241,13 @@ export function ShopMobile({ category, products }: { category: string; products:
                 ? 'Device Skins'
                 : activeTab === 'mugs-cups'
                   ? 'Cups & Mugs'
-                  : activeTab}
+                  : activeTab === 'stationery'
+                    ? 'Stationery'
+                    : activeTab === 'accessories'
+                      ? 'Accessories'
+                      : activeTab}
           </h1>
-          {activeTab !== 'diy' && (
+          {activeTab !== 'diy' && !isCategoryComingSoon(activeTab) && (
             <button
               onClick={() => setIsFilterOpen(true)}
               className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-2 border border-smoke/30 rounded-full px-4 py-3 min-h-[44px]"
@@ -199,10 +301,36 @@ export function ShopMobile({ category, products }: { category: string; products:
 
       {/* Content Area */}
       <div className="px-5 pt-6">
-        {activeTab === 'skins' ? (
-          <DeviceSkinsComingSoon />
+        {isCategoryComingSoon(activeTab) ? (
+          <CategoryComingSoonPage category={activeTab} />
+        ) : activeTab === 'tees' || activeTab === 'hoodies' ? (
+          <ClothingDesignsGallery
+            category={activeTab as 'tees' | 'hoodies'}
+            searchQuery={searchQuery}
+          />
         ) : (
           <div className="flex flex-col">
+            {isCategoryComingSoon(activeTab) && activeTab !== 'skins' && (
+              <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/20 backdrop-blur-sm flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0 text-amber-400 mt-0.5">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-amber-400">
+                      Upcoming Drop
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[8px] uppercase tracking-wider">
+                      Coming Soon
+                    </span>
+                  </div>
+                  <p className="font-mono text-[10px] text-bone/70 leading-relaxed">
+                    Preview the upcoming collection below. Tap any product to join the drop waitlist.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <p className="font-mono text-[9px] text-pearl uppercase tracking-widest mb-6">
               Showing {displayProducts.length} Results
             </p>
@@ -210,7 +338,12 @@ export function ShopMobile({ category, products }: { category: string; products:
             {displayProducts.length > 0 ? (
               <div className="grid grid-cols-2 gap-x-4 gap-y-6">
                 {displayProducts.map((product, index) => (
-                  <MobileProductCard key={`prod-${product.id}`} product={product} index={index} />
+                  <MobileProductCard
+                    key={`prod-${product.id}`}
+                    product={product}
+                    index={index}
+                    onSelectDesign={handleSelectDesign}
+                  />
                 ))}
               </div>
             ) : (
@@ -358,6 +491,15 @@ export function ShopMobile({ category, products }: { category: string; products:
           </option>
         </select>
       </div>
+
+      {/* Interactive Clothing Design Customization Modal */}
+      {selectedClothingDesign && (
+        <ClothingProductModal
+          design={selectedClothingDesign}
+          onClose={() => setSelectedClothingDesign(null)}
+          defaultCategory={activeTab === 'hoodies' ? 'hoodies' : 'tees'}
+        />
+      )}
     </main>
   );
 }

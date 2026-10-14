@@ -261,10 +261,11 @@ export function DeviceSkinsComingSoon() {
                     src={item.image}
                     alt={item.name}
                     fill
+                    unoptimized
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-contain p-6 transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="object-contain p-6 transition-transform duration-700 ease-out group-hover:scale-105 drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#121214] via-transparent to-transparent opacity-40" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#121214] via-transparent to-transparent opacity-40 pointer-events-none" />
                 </div>
 
                 {/* Details */}

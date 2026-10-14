@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 
 export type SidebarTab =
+  | 'library'
+  | 'library3d'
   | 'templates'
   | 'artwork'
   | 'garment'
@@ -41,6 +43,7 @@ export const SidebarTabs: React.FC<SidebarTabsProps> = ({
   layerCount,
 }) => {
   const tabs2D = [
+    { id: 'library' as SidebarTab, label: 'Designs', icon: Sparkles },
     { id: 'artwork' as SidebarTab, label: 'Artwork', icon: Upload, badge: layerCount },
     { id: 'garment' as SidebarTab, label: 'Color', icon: Palette },
     { id: 'templates' as SidebarTab, label: 'Catalog', icon: Shirt },
@@ -50,6 +53,7 @@ export const SidebarTabs: React.FC<SidebarTabsProps> = ({
   ];
 
   const tabs3D = [
+    { id: 'library3d' as SidebarTab, label: 'Designs', icon: Sparkles },
     { id: 'artwork3d' as SidebarTab, label: 'Artwork', icon: Upload, badge: layerCount },
     { id: 'uv3d' as SidebarTab, label: 'UV Editor', icon: Layers },
     { id: 'color3d' as SidebarTab, label: 'Color', icon: Palette },

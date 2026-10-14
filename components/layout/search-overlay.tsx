@@ -6,6 +6,7 @@ import { gsap } from '@/lib/gsap-config';
 import { useSearchStore } from '@/lib/stores/search-store';
 import { products, type Product } from '@/data/products';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { isProductComingSoon, isCategoryComingSoon } from '@/data/categories';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -245,20 +246,30 @@ export function SearchOverlay() {
                 Browse Categories
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {ALL_CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className="group p-4 bg-graphite border border-smoke/30 rounded-xl text-left hover:border-cobalt/50 hover:bg-graphite/80 transition-all"
-                  >
-                    <span className="font-display text-bone text-lg group-hover:text-cobalt transition-colors">
-                      {CATEGORY_LABELS[cat]}
-                    </span>
-                    <p className="font-mono text-[11px] text-pearl mt-1">
-                      {allProducts.filter((p) => p.categorySlug === cat).length} products
-                    </p>
-                  </button>
-                ))}
+                {ALL_CATEGORIES.map((cat) => {
+                  const isCatComingSoon = isCategoryComingSoon(cat);
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className="group p-4 bg-graphite border border-smoke/30 rounded-xl text-left hover:border-cobalt/50 hover:bg-graphite/80 transition-all relative overflow-hidden"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-display text-bone text-lg group-hover:text-cobalt transition-colors">
+                          {CATEGORY_LABELS[cat]}
+                        </span>
+                        {isCatComingSoon && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-[8px] font-mono font-medium text-amber-300 uppercase tracking-wider">
+                            Soon
+                          </span>
+                        )}
+                      </div>
+                      <p className="font-mono text-[11px] text-pearl mt-1">
+                        {allProducts.filter((p) => p.categorySlug === cat).length} products
+                      </p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ) : (
@@ -270,45 +281,60 @@ export function SearchOverlay() {
                   : ''}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {displayResults.map((product) => (
-                  <Link
-                    key={product.id}
-                    href={`/products/${product.categorySlug}/${product.slug}`}
-                    onClick={() => setSearchOpen(false)}
-                    className="group flex flex-col gap-3"
-                  >
-                    <div className="aspect-[4/5] relative rounded-xl overflow-hidden bg-graphite border border-smoke/30">
-                      {product.variants[0]?.images[0] ? (
-                        <Image
-                          src={product.variants[0].images[0]}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 424px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                          className="object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="font-display text-2xl text-smoke font-bold">
-                            {product.name[0]}
+                {displayResults.map((product) => {
+                  const isProdComingSoon = isProductComingSoon(product);
+                  return (
+                    <Link
+                      key={product.id}
+                      href={`/products/${product.categorySlug}/${product.slug}`}
+                      onClick={() => setSearchOpen(false)}
+                      className="group flex flex-col gap-3"
+                    >
+                      <div className="aspect-[4/5] relative rounded-xl overflow-hidden bg-graphite border border-smoke/30">
+                        {product.variants[0]?.images[0] ? (
+                          <Image
+                            src={product.variants[0].images[0]}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 424px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                            className="object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="font-display text-2xl text-smoke font-bold">
+                              {product.name[0]}
+                            </span>
+                          </div>
+                        )}
+                        {isProdComingSoon && (
+                          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-[8px] font-mono font-medium text-amber-300 uppercase tracking-wider backdrop-blur-sm flex items-center gap-1 shadow-lg">
+                            <span className="w-1 h-1 rounded-full bg-amber-400 animate-pulse" />
+                            Coming Soon
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-display text-lg text-bone group-hover:text-cobalt transition-colors">
+                          {product.name}
+                        </span>
+                        <div className="flex items-center justify-between">
+                          <p className="font-mono text-caption text-ash capitalize">
+                            {CATEGORY_LABELS[product.categorySlug] ?? product.categorySlug}
+                          </p>
+                          <span className="font-mono text-caption text-pearl">
+                            {isProdComingSoon ? (
+                              <span className="text-amber-400 font-medium text-[10px] uppercase tracking-wider">
+                                Coming Soon
+                              </span>
+                            ) : (
+                              formatPrice(product.basePrice)
+                            )}
                           </span>
                         </div>
-                      )}
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-display text-lg text-bone group-hover:text-cobalt transition-colors">
-                        {product.name}
-                      </span>
-                      <div className="flex items-center justify-between">
-                        <p className="font-mono text-caption text-ash capitalize">
-                          {CATEGORY_LABELS[product.categorySlug] ?? product.categorySlug}
-                        </p>
-                        <span className="font-mono text-caption text-pearl">
-                          {formatPrice(product.basePrice)}
-                        </span>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}

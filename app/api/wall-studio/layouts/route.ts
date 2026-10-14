@@ -12,14 +12,20 @@ export async function GET() {
     });
 
     if (dbLayouts && dbLayouts.length > 0) {
-      return NextResponse.json({ success: true, layouts: dbLayouts });
+      return NextResponse.json(
+        { success: true, layouts: dbLayouts },
+        { headers: { 'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600' } },
+      );
     }
   } catch (error) {
     console.warn('Fallback to local layouts due to database query error:', error);
   }
 
   // Fallback to coded in-memory layouts
-  return NextResponse.json({ success: true, layouts: FREGORO_LAYOUTS });
+  return NextResponse.json(
+    { success: true, layouts: FREGORO_LAYOUTS },
+    { headers: { 'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600' } },
+  );
 }
 
 export async function POST(request: Request) {

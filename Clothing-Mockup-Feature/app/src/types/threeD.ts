@@ -84,6 +84,8 @@ export interface ArtworkLayer3D {
   flipVertical?: boolean;
   // Cross-seam 3D Surface Projector configuration
   surfaceProjector?: SurfaceProjectorConfig;
+  placementTarget?: string;
+  scalePreset?: string;
 }
 
 export type AnimationActionName = 'IDLE' | 'WALK' | 'DANCE' | 'RUN' | 'FIGHTER' | 'STRUT';

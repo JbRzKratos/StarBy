@@ -18,12 +18,13 @@ export const DrawerGarment3D: React.FC<DrawerGarment3DProps> = ({
   const categories = [
     { id: 'all', label: 'All Items' },
     { id: 't-shirts', label: 'T-Shirts' },
-    { id: 'hoodies', label: 'Hoodies & Sweats' },
-    { id: 'pants', label: 'Pants' },
-    { id: 'headwear', label: 'Headwear' },
+    { id: 'hoodies', label: 'Hoodies' },
   ];
 
+  const APPROVED_GARMENT_IDS = ['regular-t-shirt', 'oversized-t-shirt', 'acid-wash-t-shirt', 'hoodie'];
+
   const filteredGarments = GARMENT_3D_CATALOG.filter((g) => {
+    if (!APPROVED_GARMENT_IDS.includes(g.id)) return false;
     const matchesCategory =
       activeCategory === 'all' || g.category === activeCategory;
     const matchesSearch =

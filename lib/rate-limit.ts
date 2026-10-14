@@ -1,22 +1,37 @@
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
+// Module-level singletons: instantiated once per serverless warm instance
+// (Upstash uses HTTP so there's no persistent TCP socket to leak)
+let _ratelimit: Ratelimit | null = null;
+
+function getRatelimit(): Ratelimit | null {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  if (!url || !token || url.includes('YOUR_UPSTASH')) return null;
+
+  if (!_ratelimit) {
+    const redis = new Redis({ url, token });
+    _ratelimit = new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(10, '60 s'),
+      analytics: true,
+    });
+  }
+
+  return _ratelimit;
+}
+
 // Memory fallback store for when Upstash Redis is not yet configured
 const inMemoryStore = new Map<string, { count: number; expires: number }>();
 
 export async function rateLimit(identifier: string, limit = 10, windowMs = 60 * 1000) {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const ratelimitInstance = getRatelimit();
 
-  if (url && token && !url.includes('YOUR_UPSTASH')) {
+  if (ratelimitInstance) {
     try {
-      const redis = new Redis({ url, token });
-      const ratelimit = new Ratelimit({
-        redis,
-        limiter: Ratelimit.slidingWindow(limit, `${windowMs / 1000} s`),
-        analytics: true,
-      });
-      const result = await ratelimit.limit(identifier);
+      const result = await ratelimitInstance.limit(identifier);
       return {
         success: result.success,
         limit: result.limit,
@@ -28,7 +43,7 @@ export async function rateLimit(identifier: string, limit = 10, windowMs = 60 * 
     }
   }
 
-  // Memory Fallback
+  // Memory Fallback (development or Upstash not configured)
   const now = Date.now();
   const record = inMemoryStore.get(identifier);
 
@@ -44,3 +59,4 @@ export async function rateLimit(identifier: string, limit = 10, windowMs = 60 * 
   record.count += 1;
   return { success: true, limit, remaining: limit - record.count, reset: record.expires };
 }
+

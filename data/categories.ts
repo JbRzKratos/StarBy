@@ -9,6 +9,35 @@ export interface Category {
   featured: boolean;
   gradient: string;
   image?: string;
+  comingSoon?: boolean;
+}
+
+export const ACTIVE_PRODUCT_CATEGORIES = new Set([
+  'tees',
+  'oversized-tees',
+  'hoodies',
+  'posters',
+  'split-posters',
+  'wall-studio',
+  'magazine',
+]);
+
+export function isCategoryComingSoon(categorySlug?: string): boolean {
+  if (!categorySlug) return false;
+  return !ACTIVE_PRODUCT_CATEGORIES.has(categorySlug.toLowerCase());
+}
+
+export function isProductComingSoon(product?: {
+  categorySlug?: string;
+  comingSoon?: boolean;
+  tags?: string[];
+}): boolean {
+  if (!product) return false;
+  if (product.comingSoon !== undefined) return product.comingSoon;
+  if (product.tags?.includes('clothing-design') || product.tags?.includes('apparel')) {
+    return false;
+  }
+  return isCategoryComingSoon(product.categorySlug);
 }
 
 export const categories: Category[] = [
@@ -21,6 +50,7 @@ export const categories: Category[] = [
     featured: true,
     gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
     image: getR2AssetUrl('images/hero/tees.webp'),
+    comingSoon: false,
   },
   {
     slug: 'oversized-tees',
@@ -31,6 +61,7 @@ export const categories: Category[] = [
     featured: false,
     gradient: 'linear-gradient(135deg, #1a1a2e 0%, #4a1942 100%)',
     image: getR2AssetUrl('images/mockups/oversized-tee-black-front.png'),
+    comingSoon: false,
   },
   {
     slug: 'hoodies',
@@ -41,17 +72,19 @@ export const categories: Category[] = [
     featured: true,
     gradient: 'linear-gradient(135deg, #2d1b69 0%, #11998e 100%)',
     image: getR2AssetUrl('images/hero/hoodies.webp'),
+    comingSoon: false,
   },
   {
     slug: 'skins',
     name: 'Device Skins',
     tagline: 'Precision armor for your tech.',
     description:
-      'A new way to protect and personalize your devices is on the way. Our Device Skins collection is currently in development and will be available soon.',
+      'A new way to protect and personalize your devices is on the way. Our Device Skins collection is currently in active development.',
     productCount: 10,
     featured: true,
     gradient: 'linear-gradient(135deg, #0E0E0F 0%, #3B5EFF 100%)',
     image: getR2AssetUrl('images/hero/skins.webp'),
+    comingSoon: true,
   },
   {
     slug: 'posters',
@@ -62,6 +95,7 @@ export const categories: Category[] = [
     featured: true,
     gradient: 'linear-gradient(135deg, #434343 0%, #1a1a2e 100%)',
     image: getR2AssetUrl('images/hero/posters.webp'),
+    comingSoon: false,
   },
   {
     slug: 'split-posters',
@@ -72,44 +106,49 @@ export const categories: Category[] = [
     featured: true,
     gradient: 'linear-gradient(135deg, #0E0E0F 0%, #C45D3E 100%)',
     image: getR2AssetUrl('images/hero/split_posters.webp'),
+    comingSoon: false,
   },
   {
     slug: 'stationery',
     name: 'Stationery',
-    tagline: 'Write your story.',
-    description: 'Customizable diaries, notebooks, and journals.',
+    tagline: 'Write your story • Coming Soon.',
+    description: 'Customizable diaries, notebooks, and journals. In development — drop list open.',
     productCount: 12,
     featured: true,
     gradient: 'linear-gradient(135deg, #2A2A2F 0%, #D8D0C8 100%)',
     image: getR2AssetUrl('images/hero/stationery.webp'),
+    comingSoon: true,
   },
   {
     slug: 'mugs-cups',
     name: 'Cups & Mugs',
-    tagline: 'Your everyday studio ritual.',
-    description: 'Custom ceramic stoneware, insulated travel tumblers, and heat-reactive mugs.',
+    tagline: 'Your everyday studio ritual • Coming Soon.',
+    description: 'Custom ceramic stoneware, insulated travel tumblers, and heat-reactive mugs. In development — drop list open.',
     productCount: 8,
     featured: true,
     gradient: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
     image: getR2AssetUrl('images/products/classic_mug_11oz.png'),
+    comingSoon: true,
   },
   {
     slug: 'accessories',
     name: 'Accessories',
-    tagline: 'Details that define.',
-    description: 'Keychains, caps, and statement pieces.',
+    tagline: 'Details that define • Coming Soon.',
+    description: 'Keychains, caps, and statement pieces. In development — drop list open.',
     productCount: 20,
     featured: false,
     gradient: 'linear-gradient(135deg, #1A1A1E 0%, #3A3A40 100%)',
+    comingSoon: true,
   },
   {
     slug: 'prints',
     name: 'Photo Prints',
-    tagline: 'Moments, materialized.',
-    description: 'Polaroid prints and custom photo products.',
+    tagline: 'Moments, materialized • Coming Soon.',
+    description: 'Polaroid prints and custom photo products. In development — drop list open.',
     productCount: 10,
     featured: false,
     gradient: 'linear-gradient(135deg, #F5F1EA 0%, #D8D0C8 100%)',
+    comingSoon: true,
   },
   {
     slug: 'magazine',
@@ -122,6 +161,7 @@ export const categories: Category[] = [
     gradient: 'linear-gradient(135deg, #0D0D0E 0%, #1A1A24 50%, #0057FF 100%)',
     image:
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+    comingSoon: false,
   },
   {
     slug: 'wall-studio',
@@ -133,6 +173,7 @@ export const categories: Category[] = [
     featured: true,
     gradient: 'linear-gradient(135deg, #1A1A24 0%, #0057FF 100%)',
     image: getR2AssetUrl('images/hero/split_posters.webp'),
+    comingSoon: false,
   },
 ];
 

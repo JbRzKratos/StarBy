@@ -1,16 +1,21 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Upload,
   Trash2,
   Copy,
   Eye,
   EyeOff,
+  Sparkles,
 } from 'lucide-react';
 import type {
   ArtworkLayer3D,
   Garment3DConfig,
   SurfaceProjectorConfig,
 } from '../../types/threeD';
+import {
+  buildLayerFromPlacement,
+  parseNaturalLanguagePlacement,
+} from '../../engine/3d/placementParser';
 
 interface DrawerArtwork3DProps {
   garmentConfig: Garment3DConfig;
@@ -23,23 +28,57 @@ interface DrawerArtwork3DProps {
   onDeleteLayer: (id: string) => void;
   selectedLayerId: string | null;
   onSelectLayer: (id: string | null) => void;
+  onOpenLibrary?: () => void;
 }
 
 export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
-  garmentConfig: _garmentConfig,
+  garmentConfig,
   artworkLayers,
   activeRegionId,
-  onRegionChange: _onRegionChange,
+  onRegionChange,
   onAddArtwork,
   onUpdateLayer,
   onDuplicateLayer,
   onDeleteLayer,
   selectedLayerId,
   onSelectLayer,
+  onOpenLibrary,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [nlpInput, setNlpInput] = useState<string>('');
 
   const selectedLayer = artworkLayers.find((l) => l.id === selectedLayerId);
+
+  const handleApplySmartPlacement = (text: string) => {
+    if (!selectedLayer) return;
+    const clean = text.trim();
+    if (!clean) return;
+
+    const parsed = parseNaturalLanguagePlacement(clean);
+    const updatedLayer = buildLayerFromPlacement(garmentConfig.id, {
+      id: selectedLayer.id,
+      name: selectedLayer.name,
+      imageUrl: selectedLayer.imageUrl,
+      placementTextOrTarget: parsed.placement,
+      scalePresetOrText: parsed.scale,
+    });
+
+    onUpdateLayer(selectedLayer.id, {
+      placementMode: 'atlas',
+      u: updatedLayer.u,
+      v: updatedLayer.v,
+      uvWidth: updatedLayer.uvWidth,
+      uvHeight: updatedLayer.uvHeight,
+      offsetX: updatedLayer.offsetX,
+      offsetY: updatedLayer.offsetY,
+      scale: updatedLayer.scale,
+      regionId: updatedLayer.regionId,
+    });
+
+    if (updatedLayer.regionId && onRegionChange) {
+      onRegionChange(updatedLayer.regionId);
+    }
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -166,6 +205,65 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
           Full Atlas & 3D Cross-Seam Projection
         </span>
       </div>
+
+      {/* StarBy Curated Designs Library Button */}
+      {onOpenLibrary && (
+        <button
+          type="button"
+          onClick={onOpenLibrary}
+          style={{
+            background: 'linear-gradient(135deg, rgba(59, 94, 255, 0.22) 0%, rgba(20, 22, 28, 0.95) 100%)',
+            border: '1px solid rgba(59, 94, 255, 0.45)',
+            borderRadius: '12px',
+            padding: '12px 14px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            transition: 'all 0.2s',
+            boxShadow: '0 4px 16px rgba(59, 94, 255, 0.15)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '8px',
+                background: 'rgba(59, 94, 255, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#A5B4FC',
+              }}
+            >
+              <Sparkles size={17} />
+            </div>
+            <div style={{ textAlign: 'left' }}>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff' }}>
+                StarBy Graphic Library
+              </div>
+              <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.65)' }}>
+                96 Curated Designs (Anime, Cars, Marvel, Quotes)
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              fontSize: '10px',
+              fontWeight: 700,
+              color: '#fff',
+              background: '#3B5EFF',
+              padding: '5px 9px',
+              borderRadius: '6px',
+              letterSpacing: '0.5px',
+            }}
+          >
+            Browse →
+          </div>
+        </button>
+      )}
 
       {/* Upload Dropzone */}
       <div
@@ -336,6 +434,281 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
             gap: '12px',
           }}
         >
+          {/* Customer Print Surface Selector: FRONT vs BACK vs SLEEVE */}
+          {(() => {
+            const isBack = selectedLayer.regionId === 'back' || (selectedLayer.placementTarget && selectedLayer.placementTarget.includes('back'));
+            const isSleeve = (selectedLayer.placementTarget && selectedLayer.placementTarget.includes('sleeve'));
+            const activeRegion: 'front' | 'back' | 'sleeve' = isBack ? 'back' : isSleeve ? 'sleeve' : 'front';
+
+            return (
+              <div
+                style={{
+                  padding: '10px',
+                  borderRadius: '8px',
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase' }}>
+                    Step 1: Apparel Region
+                  </span>
+                  <span style={{ fontSize: '9px', color: '#10b981', fontFamily: 'monospace', fontWeight: 600 }}>
+                    {activeRegion.toUpperCase()}
+                  </span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = buildLayerFromPlacement(garmentConfig.id, {
+                        id: selectedLayer.id,
+                        name: selectedLayer.name,
+                        imageUrl: selectedLayer.imageUrl,
+                        placementTextOrTarget: 'front-center',
+                        scalePresetOrText: selectedLayer.scalePreset || 'standard',
+                      });
+                      onUpdateLayer(selectedLayer.id, {
+                        placementMode: 'atlas',
+                        u: updated.u,
+                        v: updated.v,
+                        uvWidth: updated.uvWidth,
+                        uvHeight: updated.uvHeight,
+                        offsetX: updated.offsetX,
+                        offsetY: updated.offsetY,
+                        scale: updated.scale,
+                        regionId: 'front',
+                        placementTarget: 'front-center',
+                      });
+                      if (onRegionChange) onRegionChange('front');
+                    }}
+                    style={{
+                      padding: '8px 4px',
+                      borderRadius: '6px',
+                      border: activeRegion === 'front' ? '1.5px solid #10b981' : '1px solid rgba(255,255,255,0.12)',
+                      background: activeRegion === 'front' ? 'rgba(16, 185, 129, 0.22)' : 'rgba(255,255,255,0.03)',
+                      color: activeRegion === 'front' ? '#34d399' : '#aaa',
+                      fontWeight: 700,
+                      fontSize: '11px',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <span>👕 FRONT</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = buildLayerFromPlacement(garmentConfig.id, {
+                        id: selectedLayer.id,
+                        name: selectedLayer.name,
+                        imageUrl: selectedLayer.imageUrl,
+                        placementTextOrTarget: 'back-center',
+                        scalePresetOrText: selectedLayer.scalePreset || 'standard',
+                      });
+                      onUpdateLayer(selectedLayer.id, {
+                        placementMode: 'atlas',
+                        u: updated.u,
+                        v: updated.v,
+                        uvWidth: updated.uvWidth,
+                        uvHeight: updated.uvHeight,
+                        offsetX: updated.offsetX,
+                        offsetY: updated.offsetY,
+                        scale: updated.scale,
+                        regionId: 'back',
+                        placementTarget: 'back-center',
+                      });
+                      if (onRegionChange) onRegionChange('back');
+                    }}
+                    style={{
+                      padding: '8px 4px',
+                      borderRadius: '6px',
+                      border: activeRegion === 'back' ? '1.5px solid #38bdf8' : '1px solid rgba(255,255,255,0.12)',
+                      background: activeRegion === 'back' ? 'rgba(56, 189, 248, 0.22)' : 'rgba(255,255,255,0.03)',
+                      color: activeRegion === 'back' ? '#38bdf8' : '#aaa',
+                      fontWeight: 700,
+                      fontSize: '11px',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <span>🔄 BACK</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = buildLayerFromPlacement(garmentConfig.id, {
+                        id: selectedLayer.id,
+                        name: selectedLayer.name,
+                        imageUrl: selectedLayer.imageUrl,
+                        placementTextOrTarget: 'left-sleeve',
+                        scalePresetOrText: selectedLayer.scalePreset || 'standard',
+                      });
+                      onUpdateLayer(selectedLayer.id, {
+                        placementMode: 'atlas',
+                        u: updated.u,
+                        v: updated.v,
+                        uvWidth: updated.uvWidth,
+                        uvHeight: updated.uvHeight,
+                        offsetX: updated.offsetX,
+                        offsetY: updated.offsetY,
+                        scale: updated.scale,
+                        regionId: 'front',
+                        placementTarget: 'left-sleeve',
+                      });
+                      if (onRegionChange) onRegionChange('front');
+                    }}
+                    style={{
+                      padding: '8px 4px',
+                      borderRadius: '6px',
+                      border: activeRegion === 'sleeve' ? '1.5px solid #a855f7' : '1px solid rgba(255,255,255,0.12)',
+                      background: activeRegion === 'sleeve' ? 'rgba(168, 85, 247, 0.22)' : 'rgba(255,255,255,0.03)',
+                      color: activeRegion === 'sleeve' ? '#c084fc' : '#aaa',
+                      fontWeight: 700,
+                      fontSize: '11px',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <span>🦾 SLEEVE</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Smart AI Natural Language Placement & Presets */}
+          {(() => {
+            const isBack = selectedLayer.regionId === 'back' || (selectedLayer.placementTarget && selectedLayer.placementTarget.includes('back'));
+            const isSleeve = (selectedLayer.placementTarget && selectedLayer.placementTarget.includes('sleeve'));
+            const activeRegion: 'front' | 'back' | 'sleeve' = isBack ? 'back' : isSleeve ? 'sleeve' : 'front';
+
+            const targetSpots =
+              activeRegion === 'front'
+                ? [
+                    { label: 'Front Center', text: 'front center standard' },
+                    { label: 'Left Chest', text: 'small left chest' },
+                    { label: 'Right Chest', text: 'right chest' },
+                    { label: 'Full Front', text: 'oversized full front' },
+                    { label: 'Bottom Hem', text: 'bottom hem' },
+                  ]
+                : activeRegion === 'back'
+                ? [
+                    { label: 'Back Center', text: 'back center' },
+                    { label: 'Back Collar', text: 'back collar nape' },
+                    { label: 'Full Back', text: 'big full back print' },
+                    { label: 'Bottom Hem', text: 'bottom hem' },
+                  ]
+                : [
+                    { label: 'Left Sleeve', text: 'left sleeve' },
+                    { label: 'Right Sleeve', text: 'right sleeve' },
+                  ];
+
+            return (
+              <div
+                style={{
+                  padding: '10px',
+                  borderRadius: '8px',
+                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 94, 255, 0.08) 100%)',
+                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 700, color: '#34d399', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Sparkles size={12} />
+                    <span>Step 2: Target Spot ({activeRegion.toUpperCase()})</span>
+                  </span>
+                  <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>
+                    Filtered
+                  </span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '6px' }}>
+                  {targetSpots.map((p) => (
+                    <button
+                      key={p.label}
+                      type="button"
+                      onClick={() => {
+                        setNlpInput(p.text);
+                        handleApplySmartPlacement(p.text);
+                      }}
+                      style={{
+                        padding: '6px 8px',
+                        borderRadius: '6px',
+                        background: 'rgba(255,255,255,0.06)',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        color: '#fff',
+                        fontWeight: 600,
+                        fontSize: '10.5px',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                      }}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Natural Language Placement Input Box */}
+                <div style={{ marginTop: '4px' }}>
+                  <span style={{ fontSize: '9.5px', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    Step 3: Or Type Placement Place
+                  </span>
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    <input
+                      type="text"
+                      value={nlpInput}
+                      onChange={(e) => setNlpInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleApplySmartPlacement(nlpInput);
+                        }
+                      }}
+                      placeholder='e.g. "small left chest", "big back print", "bottom hem"...'
+                      style={{
+                        flex: 1,
+                        background: 'rgba(0,0,0,0.5)',
+                        border: '1px solid rgba(255,255,255,0.18)',
+                        borderRadius: '6px',
+                        padding: '5px 8px',
+                        fontSize: '11px',
+                        color: '#fff',
+                        outline: 'none',
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleApplySmartPlacement(nlpInput)}
+                      style={{
+                        padding: '5px 10px',
+                        background: '#10b981',
+                        color: '#000',
+                        fontWeight: 700,
+                        fontSize: '10px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
+                      Place
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Placement Mode Selector */}
           <div>
             <span style={{ fontSize: '10px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '6px', display: 'block' }}>

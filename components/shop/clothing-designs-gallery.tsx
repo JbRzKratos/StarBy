@@ -1,0 +1,199 @@
+'use client';
+
+import React, { useState, useEffect, useCallback } from 'react';
+import dynamic from 'next/dynamic';
+import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
+import { ClothingDesignCard } from './clothing-design-card';
+// ClothingProductModal (~51 kB) — lazy loaded, only shown when a design card is clicked
+const ClothingProductModal = dynamic(
+  () => import('./clothing-product-modal').then((m) => m.ClothingProductModal),
+  { ssr: false },
+);
+import { Search } from 'lucide-react';
+
+interface ClothingDesignsGalleryProps {
+  category: 'tees' | 'hoodies';
+  searchQuery?: string;
+}
+
+export function ClothingDesignsGallery({
+  category,
+  searchQuery = '',
+}: ClothingDesignsGalleryProps) {
+  const [designs, setDesigns] = useState<ClothingDesignEntry[]>([]);
+  const [activeTheme, setActiveTheme] = useState<string>('all');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedDesign, setSelectedDesign] = useState<ClothingDesignEntry | null>(null);
+
+  const THEME_CATEGORIES = [
+    { id: 'all', label: 'All Graphics', icon: '✨' },
+    { id: 'anime', label: 'Anime & Manga', icon: '⚡' },
+    { id: 'automotive', label: 'Automotive & JDM', icon: '🏎️' },
+    { id: 'marvel', label: 'Marvel & Comics', icon: '🦸' },
+    { id: 'streetwear', label: 'Streetwear & Urban', icon: '🔥' },
+    { id: 'typography', label: 'Typography & Quotes', icon: '✒️' },
+    { id: 'gaming', label: 'Gaming & Tech', icon: '🎮' },
+    { id: 'indian-cinema', label: 'Cinema & Stars', icon: '🎬' },
+    { id: 'humor', label: 'Humor & Sarcasm', icon: '☕' },
+    { id: 'aesthetic', label: 'Aesthetic & Nature', icon: '🌸' },
+  ];
+
+  const fetchDesigns = useCallback(
+    async (targetPage: number, resetList = false, themeOverride?: string) => {
+      setIsLoading(true);
+      try {
+        const currentTheme = themeOverride !== undefined ? themeOverride : activeTheme;
+        const garmentFilter = category === 'hoodies' ? 'hoodie' : '';
+        const params = new URLSearchParams({
+          page: targetPage.toString(),
+          limit: '24',
+        });
+        if (garmentFilter) params.set('garment', garmentFilter);
+        if (searchQuery) params.set('q', searchQuery);
+        if (currentTheme && currentTheme !== 'all') params.set('theme', currentTheme);
+
+        const res = await fetch(`/api/clothing-designs?${params.toString()}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success) {
+            setDesigns((prev) => (resetList ? data.designs : [...prev, ...data.designs]));
+            setTotalPages(data.totalPages);
+            setTotalCount(data.total);
+            setPage(targetPage);
+          }
+        }
+      } catch (err) {
+        console.error('[ClothingDesignsGallery] Fetch error:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [category, searchQuery, activeTheme],
+  );
+
+  // Initial and category/search change load
+  useEffect(() => {
+    fetchDesigns(1, true);
+  }, [fetchDesigns]);
+
+  const handleSelectTheme = (themeId: string) => {
+    if (themeId === activeTheme) return;
+    setActiveTheme(themeId);
+    fetchDesigns(1, true, themeId);
+  };
+
+  const handleLoadMore = () => {
+    if (page < totalPages && !isLoading) {
+      fetchDesigns(page + 1, false);
+    }
+  };
+
+  return (
+    <div className="w-full flex flex-col gap-6 sm:gap-8">
+      {/* Gallery Header Bar */}
+      <div className="flex flex-col gap-4 pb-4 border-b border-white/10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <h2 className="font-mono text-sm uppercase tracking-widest text-white/90">
+              {category === 'hoodies' ? 'Hoodie Graphic Library' : 'Tees Graphic Library'}
+            </h2>
+            <span className="font-mono text-xs text-white/40 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
+              {totalCount} Designs
+            </span>
+          </div>
+
+          <p className="font-mono text-xs text-white/50">
+            Select any design to choose garment, color & customize in 3D
+          </p>
+        </div>
+
+        {/* Category Pills Filter Bar */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 pt-1 no-scrollbar scroll-smooth">
+          {THEME_CATEGORIES.map((cat) => {
+            const isActive = activeTheme === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => handleSelectTheme(cat.id)}
+                className={`flex-shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 active:scale-95 ${
+                  isActive
+                    ? 'bg-white text-black font-semibold shadow-[0_0_15px_rgba(255,255,255,0.3)]'
+                    : 'bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.09] border border-white/5'
+                }`}
+              >
+                <span>{cat.icon}</span>
+                <span>{cat.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Grid */}
+      {designs.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          {designs.map((design, idx) => (
+            <ClothingDesignCard
+              key={design.id}
+              design={design}
+              onSelect={setSelectedDesign}
+              priority={idx < 8}
+            />
+          ))}
+        </div>
+      ) : (
+        !isLoading && (
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-center">
+            <Search className="w-8 h-8 text-white/20" />
+            <p className="font-mono text-sm text-white/60 uppercase tracking-wider">
+              No matching designs found
+            </p>
+            <p className="font-mono text-xs text-white/40">
+              Try a different keyword or reset your filters.
+            </p>
+          </div>
+        )
+      )}
+
+      {/* Loading Indicator / Skeletons */}
+      {isLoading && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div
+              key={`skel-${i}`}
+              className="aspect-[3/4] bg-[#14161C] rounded-2xl animate-pulse border border-white/5"
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Load More Button */}
+      {page < totalPages && !isLoading && (
+        <div className="flex justify-center pt-8">
+          <button
+            onClick={handleLoadMore}
+            className="px-8 py-3 bg-white/5 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-widest rounded-full border border-white/10 hover:border-white/20 transition-all active:scale-95 flex items-center gap-2"
+          >
+            <span>Load More Designs</span>
+            <span className="text-white/40">
+              ({designs.length} of {totalCount})
+            </span>
+          </button>
+        </div>
+      )}
+
+      {/* Configuration Modal */}
+      {selectedDesign && (
+        <ClothingProductModal
+          design={selectedDesign}
+          onClose={() => setSelectedDesign(null)}
+          defaultCategory={category}
+        />
+      )}
+    </div>
+  );
+}

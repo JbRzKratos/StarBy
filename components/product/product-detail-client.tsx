@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import type { Product } from '@/data/products';
@@ -9,11 +10,36 @@ import { useCartStore } from '@/lib/stores/cart-store';
 import { ImageGallery } from './image-gallery';
 import { VariantSelector } from './variant-selector';
 import { SizeSelector } from './size-selector';
-import { SizeFinderModal } from './size-finder-modal';
-import { SizeChartModal } from './size-chart-modal';
 import { ProductReviews } from './product-reviews';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
+import { getDesignById } from '@/lib/clothing-designs/manifest';
+import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
+import {
+  APPAREL_CONFIG,
+  APPAREL_LIST,
+  type ApparelProductConfig,
+  type ApparelColorSwatch,
+} from '@/lib/config/apparel-variants';
+import { Check, Sparkles } from 'lucide-react';
+import { isProductComingSoon } from '@/data/categories';
+
+// ── Lazy-loaded modals: only downloaded when the user triggers them ───────────
+// ClothingProductModal (~51 kB) — only for design- products, on button click
+const ClothingProductModal = dynamic(
+  () => import('@/components/shop/clothing-product-modal').then((m) => m.ClothingProductModal),
+  { ssr: false },
+);
+// SizeFinderModal (~12 kB) — only for apparel, on "Find my size" click
+const SizeFinderModal = dynamic(
+  () => import('./size-finder-modal').then((m) => m.SizeFinderModal),
+  { ssr: false },
+);
+// SizeChartModal (~12 kB) — on "Size chart" click
+const SizeChartModal = dynamic(
+  () => import('./size-chart-modal').then((m) => m.SizeChartModal),
+  { ssr: false },
+);
 
 interface ProductDetailClientProps {
   product: Product;
@@ -23,10 +49,106 @@ interface ProductDetailClientProps {
 const APPAREL_CATEGORIES = ['tees', 'hoodies', 'oversized-tees'];
 
 export function ProductDetailClient({ product }: ProductDetailClientProps) {
+  const isApparelCategory =
+    APPAREL_CATEGORIES.includes(product.categorySlug) ||
+    product.tags?.includes('clothing-design') ||
+    product.tags?.includes('apparel');
+
+  const resolvedClothingDesign: ClothingDesignEntry | null =
+    getDesignById(product.id) ||
+    getDesignById(product.slug) ||
+    (isApparelCategory
+      ? {
+          id: product.id,
+          folder: product.name,
+          name: product.name,
+          category: (product.categorySlug === 'hoodies' ? 'hoodies' : 'tees') as 'tees' | 'hoodies',
+          tags: product.tags || [],
+          defaultArtworkId: `art-${product.id}`,
+          defaultSurface: 'front' as const,
+          availableSurfaces: ['front', 'back'] as ('front' | 'back' | 'sleeve')[],
+          previewUrl: product.variants?.[0]?.images?.[0] || '',
+          studioPreviewUrl: product.variants?.[0]?.images?.[0] || '',
+          status: 'active' as const,
+          compatibleGarments: [
+            'regular-t-shirt',
+            'oversized-t-shirt',
+            'acid-wash-t-shirt',
+            'hoodie',
+          ] as ('regular-t-shirt' | 'oversized-t-shirt' | 'acid-wash-t-shirt' | 'hoodie')[],
+          createdAt: new Date().toISOString(),
+          artworks: [
+            {
+              id: `art-${product.id}`,
+              fileName: `${product.slug || product.id}.png`,
+              name: product.name,
+              suggestedPlacement: 'front-center' as const,
+              colorHint: 'any' as const,
+              originalPath: `${product.slug || product.id}.png`,
+              originalObjectKey: '',
+              thumbnailObjectKey: '',
+              previewObjectKey: '',
+              previewUrl: product.variants?.[0]?.images?.[0] || '',
+              studioPreviewUrl: product.variants?.[0]?.images?.[0] || '',
+            },
+          ],
+        }
+      : null);
+
+  const clothingDesign = resolvedClothingDesign;
+  const isApparel = !!clothingDesign || isApparelCategory;
+
+  // Garment cut state for apparel
+  const [selectedGarmentId, setSelectedGarmentId] = useState<string>(() => {
+    if (product.categorySlug === 'hoodies') return 'hoodie';
+    if (product.categorySlug === 'oversized-tees') return 'oversized-t-shirt';
+    return 'regular-t-shirt';
+  });
+
+  const selectedGarment: ApparelProductConfig =
+    APPAREL_CONFIG[selectedGarmentId] || APPAREL_CONFIG['regular-t-shirt'];
+
+  // Color selection for apparel
+  const [selectedApparelColor, setSelectedApparelColor] = useState<ApparelColorSwatch>(() => {
+    const hint = clothingDesign?.artworks?.[0]?.colorHint;
+    if (hint === 'white') {
+      const w = selectedGarment.colors.find((c) => c.name.toLowerCase().includes('white'));
+      if (w) return w;
+    } else if (hint === 'black') {
+      const b = selectedGarment.colors.find((c) => c.name.toLowerCase().includes('black'));
+      if (b) return b;
+    }
+    return selectedGarment.colors[0];
+  });
+
+  // Keep color valid when garment type changes
+  useEffect(() => {
+    if (selectedGarment && selectedGarment.colors.length > 0) {
+      const matched = selectedGarment.colors.find(
+        (c) =>
+          c.hex.toLowerCase() === selectedApparelColor.hex.toLowerCase() ||
+          c.name === selectedApparelColor.name
+      );
+      setSelectedApparelColor(matched || selectedGarment.colors[0]);
+    }
+  }, [selectedGarmentId, selectedGarment]);
+
+  // Available sizes for currently selected garment
+  const availableSizes = useMemo(() => {
+    if (isApparel) {
+      return selectedGarment.sizes.map((s) => (s === 'XXL' ? '2XL' : s));
+    }
+    return product.sizes || ['S', 'M', 'L', 'XL', '2XL'];
+  }, [isApparel, selectedGarment.sizes, product.sizes]);
+
   const [selectedVariant, setSelectedVariant] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] ?? 'M');
+  const [selectedSize, setSelectedSize] = useState<string>(() => {
+    const initial = product.sizes?.[0] ?? 'L';
+    return initial === 'XXL' ? '2XL' : initial;
+  });
   const [sizeFinder, setSizeFinder] = useState(false);
   const [sizeChart, setSizeChart] = useState(false);
+  const [isClothingModalOpen, setIsClothingModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { formatPrice } = usePrice();
 
@@ -51,7 +173,41 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   const variant = product.variants[selectedVariant];
 
-  const isComingSoon = product.categorySlug === 'skins';
+  const isComingSoon = isProductComingSoon(product);
+
+  const comingSoonCopy = useMemo(() => {
+    switch (product.categorySlug) {
+      case 'mugs-cups':
+        return {
+          title: 'Ceramic Stoneware & Drinkware',
+          desc: 'This item is part of the upcoming FREGORO Studio Drinkware drop. Custom kiln formulation, high-temperature dishwasher testing, and heat-reactive glazing are in progress.',
+          roadmapLink: '/products/mugs-cups',
+          roadmapLabel: 'Cups & Mugs Collection',
+        };
+      case 'stationery':
+        return {
+          title: 'Archival Stationery & Journals',
+          desc: 'This item is part of the upcoming FREGORO Studio Stationery drop. Archival 120 GSM paper selection, lay-flat thread binding, and custom debossing testing are in progress.',
+          roadmapLink: '/products/stationery',
+          roadmapLabel: 'Stationery Collection',
+        };
+      case 'accessories':
+        return {
+          title: 'Signature Studio Accessories',
+          desc: 'This item is part of the upcoming FREGORO Accessories drop. Precision CNC alloy molding, matte PVD coating, and tactile hardware testing are in progress.',
+          roadmapLink: '/products/accessories',
+          roadmapLabel: 'Accessories Collection',
+        };
+      case 'skins':
+      default:
+        return {
+          title: 'Precision Tech Armor',
+          desc: 'This item is part of the upcoming FREGORO Device Skins drop. Precision laser die-cutting, 3M architectural vinyl testing, and device heat vent mapping are in progress.',
+          roadmapLink: '/products/skins',
+          roadmapLabel: 'Device Skins Collection',
+        };
+    }
+  }, [product.categorySlug]);
 
   const [notifyEmail, setNotifyEmail] = useState('');
   const [notifySubmitted, setNotifySubmitted] = useState(false);
@@ -86,7 +242,29 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   };
 
   const handleAddToCart = () => {
-    if (!variant || isComingSoon) return;
+    if (isComingSoon) return;
+
+    if (isApparel) {
+      addItem({
+        productId: product.id,
+        variantId: `var_${product.id}_${selectedGarment.id}_${selectedApparelColor.name.toLowerCase().replace(/\s+/g, '-')}`,
+        quantity: 1,
+        price: selectedGarment.basePrice,
+        size: selectedSize,
+        customization: {
+          apparelId: selectedGarment.id,
+          apparelName: selectedGarment.name,
+          color: selectedApparelColor.name,
+          colorHex: selectedApparelColor.hex,
+          gsm: selectedGarment.gsm,
+          fabric: selectedGarment.fabric,
+        },
+      });
+      setCartOpen(true);
+      return;
+    }
+
+    if (!variant) return;
     addItem({
       productId: product.id,
       variantId: variant.id,
@@ -107,9 +285,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         >
           {/* Left: Gallery */}
           <ImageGallery
-            colorHex={variant?.colorHex ?? '#1A1A1E'}
+            colorHex={isApparel ? selectedApparelColor.hex : variant?.colorHex ?? '#1A1A1E'}
             productName={product.name}
-            images={variant?.images}
+            images={
+              clothingDesign?.artworks && clothingDesign.artworks.length > 0
+                ? clothingDesign.artworks.map((a) => a.previewUrl)
+                : variant?.images
+            }
           />
 
           {/* Right: Info */}
@@ -156,49 +338,151 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             ) : (
               <div className="flex items-baseline gap-3">
                 <span className="font-mono text-display-sm text-bone">
-                  {formatPrice(variant?.price ?? product.basePrice)}
+                  {formatPrice(isApparel ? selectedGarment.basePrice : (variant?.price ?? product.basePrice))}
                 </span>
                 <span className="font-mono text-caption text-ash">Incl. taxes</span>
               </div>
             )}
 
-            {/* Variants */}
-            {product.variants.length > 1 && (
-              <VariantSelector
-                variants={product.variants}
-                selectedIndex={selectedVariant}
-                onSelect={setSelectedVariant}
-              />
+            {/* Apparel Cut & Approved Colors for Apparel, or VariantSelector for Other Products */}
+            {isApparel ? (
+              <div className="flex flex-col gap-6">
+                {/* 1. Tees Types / Garment Cut Grid */}
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-caption text-ash uppercase tracking-widest font-semibold flex items-center gap-1.5">
+                      <span>Apparel Type</span>
+                      <span className="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                        {selectedGarment.gsm} GSM {selectedGarment.fabric}
+                      </span>
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {APPAREL_LIST.map((apparel) => {
+                      const isSelected = selectedGarmentId === apparel.id;
+                      return (
+                        <button
+                          key={apparel.id}
+                          type="button"
+                          onClick={() => setSelectedGarmentId(apparel.id)}
+                          className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all relative ${
+                            isSelected
+                              ? 'bg-white/10 border-white text-white shadow-lg ring-1 ring-white/40'
+                              : 'bg-smoke/10 border-smoke/30 text-pearl hover:bg-smoke/20 hover:border-smoke hover:text-bone'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-mono text-xs font-bold uppercase tracking-wider">
+                              {apparel.name}
+                            </span>
+                            <span className="font-mono text-[11px] text-bone font-semibold">
+                              ₹{apparel.basePrice}
+                            </span>
+                          </div>
+                          <span className="font-mono text-[10px] text-ash">
+                            {apparel.fabric} • {apparel.gsm} GSM
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 2. Approved Colors for Selected Apparel Cut */}
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-caption text-ash uppercase tracking-widest font-semibold">
+                      Color — <span className="text-bone font-bold">{selectedApparelColor.name}</span>
+                    </span>
+                    {clothingDesign?.artworks?.[0]?.colorHint && clothingDesign.artworks[0].colorHint !== 'any' && (
+                      <span className="font-mono text-[10px] text-emerald-400">
+                        ★ Graphic optimized for {clothingDesign.artworks[0].colorHint}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    {selectedGarment.colors.map((color) => {
+                      const isSelected = selectedApparelColor.name === color.name;
+                      return (
+                        <button
+                          key={color.name}
+                          type="button"
+                          onClick={() => setSelectedApparelColor(color)}
+                          className={`group relative w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                            isSelected
+                              ? 'ring-2 ring-cobalt ring-offset-2 ring-offset-charcoal scale-110 shadow-lg'
+                              : 'opacity-85 hover:opacity-100 hover:scale-105 border border-smoke/40 hover:border-pearl'
+                          }`}
+                          style={{
+                            backgroundColor: color.hex,
+                            border:
+                              color.hex === '#FFFFFF'
+                                ? '1px solid #444'
+                                : '1px solid rgba(255,255,255,0.15)',
+                          }}
+                          title={color.name}
+                          aria-label={color.name}
+                        >
+                          {isSelected && (
+                            <Check
+                              className={`w-4 h-4 ${
+                                color.hex === '#FFFFFF' || color.hex === '#D4C5B9' || color.hex === '#E5E5E5'
+                                  ? 'text-black'
+                                  : 'text-white'
+                              }`}
+                            />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Non-apparel product variant selector */
+              product.variants.length > 1 && (
+                <VariantSelector
+                  variants={product.variants}
+                  selectedIndex={selectedVariant}
+                  onSelect={setSelectedVariant}
+                />
+              )
             )}
 
             {/* Sizes */}
-            {!isComingSoon && product.sizes && (
-              <div className="flex flex-col gap-2">
+            {!isComingSoon && (
+              <div className="flex flex-col gap-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-caption text-ash uppercase tracking-widest">
-                    Size
+                  <span className="font-mono text-caption text-ash uppercase tracking-widest font-semibold">
+                    Size — <span className="text-bone font-bold">{selectedSize}</span>
                   </span>
                   <div className="flex items-center gap-4">
                     <button
+                      type="button"
                       onClick={() => setSizeChart(true)}
                       className="font-mono text-[10px] text-pearl uppercase tracking-widest underline underline-offset-4 hover:text-bone transition-colors"
                     >
                       Size Guide
                     </button>
-                    {APPAREL_CATEGORIES.includes(product.categorySlug) && (
+                    {isApparel && (
                       <button
+                        type="button"
                         onClick={() => setSizeFinder(true)}
-                        className="font-mono text-[10px] text-cobalt uppercase tracking-widest underline underline-offset-4 hover:text-bone transition-colors"
+                        className="font-mono text-[10px] text-cobalt uppercase tracking-widest underline underline-offset-4 hover:text-bone transition-colors font-semibold flex items-center gap-1"
                       >
-                        Find My Size →
+                        <Sparkles className="w-3 h-3 text-cobalt" />
+                        <span>Find My Size →</span>
                       </button>
                     )}
                   </div>
                 </div>
                 <SizeSelector
-                  sizes={product.sizes}
+                  sizes={availableSizes}
                   selected={selectedSize}
                   onSelect={setSelectedSize}
+                  hideLabel
                 />
               </div>
             )}
@@ -213,13 +497,10 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               <div className="bg-[#121214] border border-[#F5F1EA]/15 rounded-xl p-5 sm:p-6 space-y-4 mt-2 shadow-xl">
                 <div className="flex items-center gap-2 text-[#ED9518] font-mono text-xs uppercase tracking-widest font-bold">
                   <span className="w-2 h-2 rounded-full bg-[#ED9518] animate-pulse" />
-                  <span>In Active Development</span>
+                  <span>In Active Development • {comingSoonCopy.title}</span>
                 </div>
                 <p className="font-mono text-xs text-[#F5F1EA]/75 leading-relaxed">
-                  This item is part of the upcoming{' '}
-                  <strong className="text-[#F5F1EA]">FREGORO</strong> Device Skins collection.
-                  Precision laser cutting, 3M architectural vinyl testing, and custom device
-                  modeling are currently in progress.
+                  {comingSoonCopy.desc}
                 </p>
                 {notifySubmitted ? (
                   <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg font-mono text-xs text-emerald-400">
@@ -242,7 +523,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                     <button
                       type="submit"
                       disabled={notifyLoading}
-                      className="px-5 py-3 bg-[#0057FF] hover:bg-[#0046CC] disabled:opacity-50 text-[#F5F1EA] font-mono text-xs font-bold uppercase tracking-wider rounded-lg transition-colors whitespace-nowrap shadow-lg shadow-[#0057FF]/20"
+                      className="px-5 py-3 bg-[#0057FF] hover:bg-[#0046CC] disabled:opacity-50 text-[#F5F1EA] font-mono text-xs font-bold uppercase tracking-wider rounded-lg transition-colors whitespace-nowrap shadow-lg shadow-[#0057FF]/20 cursor-pointer"
                     >
                       {notifyLoading ? 'Joining...' : 'Notify Me →'}
                     </button>
@@ -251,10 +532,10 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 {notifyError && <p className="font-mono text-xs text-rose-400">{notifyError}</p>}
                 <div className="pt-2 border-t border-[#F5F1EA]/10 flex justify-between items-center text-xs font-mono">
                   <Link
-                    href="/products/skins"
+                    href={comingSoonCopy.roadmapLink}
                     className="text-[#ED9518] hover:underline uppercase tracking-wider font-semibold"
                   >
-                    ← Full Device Skins Roadmap
+                    ← Full {comingSoonCopy.roadmapLabel}
                   </Link>
                   <Link
                     href="/products/all"
@@ -269,17 +550,29 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 <div className="flex flex-col sm:flex-row gap-3">
                   {product.customizable ? (
                     <>
-                      <Link
-                        href={`/customize/${product.id}`}
-                        className="flex-1 flex items-center justify-center py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold"
-                      >
-                        Customize Design
-                      </Link>
+                      {clothingDesign ? (
+                        <button
+                          type="button"
+                          onClick={() => setIsClothingModalOpen(true)}
+                          className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold shadow-lg"
+                        >
+                          <Sparkles className="w-4 h-4 text-bone" />
+                          <span>Customize Design</span>
+                        </button>
+                      ) : (
+                        <Link
+                          href={`/customize/${product.id}`}
+                          className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold"
+                        >
+                          <Sparkles className="w-4 h-4 text-bone" />
+                          <span>Customize Design</span>
+                        </Link>
+                      )}
                       <button
                         onClick={handleAddToCart}
                         className="flex-1 py-3.5 border border-smoke/70 text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl hover:text-bone hover:bg-white/[0.03] transition-colors"
                       >
-                        Add to Cart (Plain)
+                        {clothingDesign ? 'Add to Cart' : 'Add to Cart (Plain)'}
                       </button>
                     </>
                   ) : (
@@ -315,18 +608,34 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         </div>
       )}
 
-      {APPAREL_CATEGORIES.includes(product.categorySlug) && (
+      {isApparel && (
         <SizeFinderModal
           isOpen={sizeFinder}
           onClose={() => setSizeFinder(false)}
           onSizeSelect={(size) => setSelectedSize(size)}
+          availableSizes={availableSizes}
         />
       )}
       <SizeChartModal
         isOpen={sizeChart}
         onClose={() => setSizeChart(false)}
-        category={product.categorySlug}
+        category={
+          selectedGarmentId === 'oversized-t-shirt'
+            ? 'oversized'
+            : selectedGarmentId === 'hoodie'
+            ? 'hoodies'
+            : 'tees'
+        }
       />
+      {isClothingModalOpen && clothingDesign && (
+        <ClothingProductModal
+          design={clothingDesign}
+          onClose={() => setIsClothingModalOpen(false)}
+          defaultCategory={selectedGarment.id === 'hoodie' ? 'hoodies' : 'tees'}
+          initialGarmentId={selectedGarment.id}
+          initialColorHex={selectedApparelColor.hex}
+        />
+      )}
     </>
   );
 }

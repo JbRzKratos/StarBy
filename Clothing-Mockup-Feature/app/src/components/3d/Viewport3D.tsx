@@ -1738,6 +1738,83 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
           }} title="Clear Panel Selection">Clear</button>
         </div>
       )}
+
+      {/* Floating Artwork Placement & Adjustment Hint Banner */}
+      {showInstruction && artworkLayers.length > 0 && (
+        <div
+          id="artwork-adjustment-hint-banner"
+          style={{
+            position: 'absolute',
+            bottom: isAnimated ? '120px' : '28px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            maxWidth: 'min(92%, 560px)',
+            width: '100%',
+            backgroundColor: 'rgba(15, 20, 28, 0.94)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(245, 158, 11, 0.45)',
+            borderRadius: '16px',
+            padding: '12px 16px',
+            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.12)',
+            zIndex: 25,
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '12px',
+            color: '#ffffff',
+            animation: 'fadeIn 0.25s ease-out',
+            pointerEvents: 'auto',
+          }}
+        >
+          <div
+            style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(245, 158, 11, 0.18)',
+              border: '1px solid rgba(245, 158, 11, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#f59e0b',
+              flexShrink: 0,
+              fontSize: '13px',
+              marginTop: '1px',
+            }}
+          >
+            ⚠️
+          </div>
+
+          <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, fontFamily: 'monospace', color: '#fbbf24', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                3D Placement Notice &amp; Quick Guide
+              </span>
+            </div>
+            <p style={{ margin: 0, fontSize: '11px', lineHeight: '1.45', color: 'rgba(255, 255, 255, 0.85)', fontFamily: 'monospace' }}>
+              Automatic placement is approximate. <strong>Click &amp; drag directly on the 3D shirt</strong> to move, use corner handles to scale, or top circle to rotate.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={hideInstruction}
+            style={{
+              background: 'rgba(255, 255, 255, 0.12)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '8px',
+              padding: '5px 10px',
+              color: '#ffffff',
+              fontSize: '10px',
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            GOT IT
+          </button>
+        </div>
+      )}
     </div>
   );
 };
