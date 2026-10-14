@@ -90,8 +90,8 @@ temp/
 # ─── Master Artworks & Local Storage (Private / Cloudflare R2) ──────────────
 # Master clothing designs (147 artwork files + mockups) are stored in private Cloudflare R2
 # and backed up in storage/. They should never be committed into the git repo.
-storage/
 /storage/
+!app/api/admin/storage/
 /public/t_shirt_designs/
 
 # ─── Cloudflare R2 Assets (served from CDN, not committed to git) ────────────

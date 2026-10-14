@@ -32,9 +32,9 @@ export async function GET() {
         dbUser = await prisma.user.create({
           data: {
             id: user.id,
-            email: user.email!,
+            email: user.email || 'fregorostudios@gmail.com',
             role: 'ADMIN',
-            fullName: user.user_metadata?.full_name || 'Admin',
+            fullName: (user.user_metadata?.full_name as string) || 'Admin',
           },
         });
       } else if (dbUser.role !== 'ADMIN') {
