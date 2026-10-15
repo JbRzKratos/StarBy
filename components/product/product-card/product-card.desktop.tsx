@@ -1,13 +1,12 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/data/products';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { getR2AssetUrl } from '@/lib/r2';
-import { useState } from 'react';
 import { isProductComingSoon } from '@/data/categories';
 
 interface ProductCardProps {
@@ -15,12 +14,12 @@ interface ProductCardProps {
   onCardClick?: (e: React.MouseEvent) => void;
 }
 
-export function ProductCardDesktop({ product, onCardClick }: ProductCardProps) {
+export const ProductCardDesktop = memo(function ProductCardDesktop({ product, onCardClick }: ProductCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mockupRef = useRef<HTMLDivElement>(null);
 
   const toggleWishlist = useWishlistStore((state) => state.toggleItem);
-  const isWishlisted = useWishlistStore((state) => state.hasItem(product.id));
+  const isWishlisted = useWishlistStore((state) => state.items.includes(product.id));
   const { formatPrice } = usePrice();
   const [imgError, setImgError] = useState(false);
 
@@ -128,4 +127,4 @@ export function ProductCardDesktop({ product, onCardClick }: ProductCardProps) {
       </button>
     </div>
   );
-}
+});

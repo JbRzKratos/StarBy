@@ -93,9 +93,13 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
 
   // Sticky nav background animation
   useEffect(() => {
+    let prev = window.scrollY > 60;
     const handleScroll = () => {
       const shouldScroll = window.scrollY > 60;
-      setIsScrolledState(shouldScroll);
+      if (prev !== shouldScroll) {
+        prev = shouldScroll;
+        setIsScrolledState(shouldScroll);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

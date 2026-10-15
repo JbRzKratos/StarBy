@@ -1,9 +1,21 @@
 import { prisma } from '@/lib/prisma';
 import { ProductsClient } from '@/components/admin/products/products-client';
+import { syncClothingDesignsToDb } from '@/scripts/sync_clothing_designs_to_db';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminProductsPage() {
+  const designCount = await prisma.product.count({
+    where: { id: { startsWith: 'design-' } },
+  });
+
+  if (designCount === 0) {
+    try {
+      await syncClothingDesignsToDb();
+    } catch (e) {
+      console.warn('Auto sync clothing designs in admin page error:', e);
+    }
+  }
 
   const [products, categories] = await Promise.all([
     prisma.product.findMany({

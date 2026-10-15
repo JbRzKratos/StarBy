@@ -13,8 +13,13 @@ export async function middleware(request: NextRequest) {
     });
   }
 
+  // Forward current pathname in request headers so Server Components can read it
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', request.nextUrl.pathname);
+  requestHeaders.set('x-url', request.url);
+
   let response = NextResponse.next({
-    request: { headers: request.headers },
+    request: { headers: requestHeaders },
   });
 
   // 1. Device Cookie Check
@@ -30,14 +35,7 @@ export async function middleware(request: NextRequest) {
   } else {
     device = existingCookie.value;
   }
-  if (!existingCookie || existingCookie.value !== device) {
-    response.cookies.set('device', device, {
-      path: '/',
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 365,
-    });
-  }
+  const shouldSetDeviceCookie = !existingCookie || existingCookie.value !== device;
 
   // 2. Supabase Auth + RBAC
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -52,7 +50,7 @@ export async function middleware(request: NextRequest) {
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           response = NextResponse.next({
-            request: { headers: request.headers },
+            request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options),
@@ -68,26 +66,56 @@ export async function middleware(request: NextRequest) {
       path.startsWith('/account') || path.startsWith('/admin') || path.startsWith('/checkout');
 
     if (isProtectedRoute) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      let authUser = null;
+      try {
+        const {
+          data: { user },
+          error: authError,
+        } = await supabase.auth.getUser();
+        if (user && !authError) {
+          authUser = user;
+        }
+      } catch (err) {
+        console.warn('[Middleware] getUser error:', err);
+      }
+
+      // Fallback to getSession() if getUser() encountered token refresh or network glitch
+      if (!authUser) {
+        try {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
+          if (session?.user) {
+            authUser = session.user;
+          }
+        } catch (err) {
+          console.warn('[Middleware] getSession fallback error:', err);
+        }
+      }
 
       // Protect /account and /checkout routes
-      if ((path.startsWith('/account') || path.startsWith('/checkout')) && !user) {
+      if ((path.startsWith('/account') || path.startsWith('/checkout')) && !authUser) {
         const redirectUrl = new URL('/login', request.url);
         redirectUrl.searchParams.set('redirectTo', path);
         return NextResponse.redirect(redirectUrl);
       }
 
       // Protect all /admin routes — require login first
-      if (path.startsWith('/admin')) {
-        if (!user) {
-          const redirectUrl = new URL('/login', request.url);
-          redirectUrl.searchParams.set('redirectTo', path);
-          return NextResponse.redirect(redirectUrl);
-        }
+      if (path.startsWith('/admin') && !authUser) {
+        const redirectUrl = new URL('/login', request.url);
+        redirectUrl.searchParams.set('redirectTo', path);
+        return NextResponse.redirect(redirectUrl);
       }
     }
+  }
+
+  if (shouldSetDeviceCookie) {
+    response.cookies.set('device', device, {
+      path: '/',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 365,
+    });
   }
 
   return response;
@@ -111,4 +139,3 @@ export const config = {
     '/((?!_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap\\.xml|site\\.webmanifest|images|3d-assets|designs|backgrounds|gobo|tools/clothing-mockup|.*\\.(?:png|jpg|jpeg|gif|webp|avif|svg|ico|woff|woff2|ttf|eot|otf|mp4|webm|ogg|mp3|wav)).*)',
   ],
 };
-

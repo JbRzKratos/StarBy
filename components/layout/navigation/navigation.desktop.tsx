@@ -70,8 +70,13 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
 
   // Scroll listener for sticky header background transition
   useEffect(() => {
+    let prev = window.scrollY > 60;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 60);
+      const next = window.scrollY > 60;
+      if (prev !== next) {
+        prev = next;
+        setIsScrolled(next);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

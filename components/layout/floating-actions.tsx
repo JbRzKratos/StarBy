@@ -20,8 +20,13 @@ export function FloatingActions() {
 
   useEffect(() => {
     if (isExcludedRoute) return;
+    let prev = window.scrollY > 400;
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
+      const next = window.scrollY > 400;
+      if (prev !== next) {
+        prev = next;
+        setShowScrollTop(next);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

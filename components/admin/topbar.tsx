@@ -37,26 +37,35 @@ export function AdminTopbar({ isAdmin, role }: AdminTopbarProps) {
     });
   }, [router]);
 
-  // Realtime Polling: auto-refresh every 12 seconds when tab is visible
+  // Realtime Polling: auto-refresh every 60 seconds on orders/dashboard when tab is visible
+  // Do NOT poll continuously on products page to avoid disrupting active editing and DB spikes
   useEffect(() => {
+    if (pathname.startsWith('/admin/products')) {
+      return;
+    }
+
     const interval = setInterval(() => {
       if (document.visibilityState === 'visible') {
         refreshData();
       }
-    }, 12000);
+    }, 60000);
 
     return () => clearInterval(interval);
-  }, [refreshData]);
+  }, [pathname, refreshData]);
 
-  // Refresh immediately when window regains focus
+  // Refresh on window focus only if more than 60 seconds have elapsed
   useEffect(() => {
     const handleFocus = () => {
-      refreshData();
+      if (pathname.startsWith('/admin/products')) return;
+      const elapsed = (Date.now() - lastUpdated.getTime()) / 1000;
+      if (elapsed > 60) {
+        refreshData();
+      }
     };
 
     window.addEventListener('focus', handleFocus);
     return () => window.removeEventListener('focus', handleFocus);
-  }, [refreshData]);
+  }, [pathname, lastUpdated, refreshData]);
 
   // Track seconds elapsed since last update
   useEffect(() => {

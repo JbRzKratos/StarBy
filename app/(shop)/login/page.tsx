@@ -7,6 +7,8 @@ import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
 import { getR2AssetUrl } from '@/lib/r2';
 
+import { isSuperAdminEmail } from '@/lib/auth-constants';
+
 // Map Supabase error messages to user-friendly text
 function getFriendlyError(msg: string): string {
   if (msg.includes('Invalid login credentials'))
@@ -20,7 +22,7 @@ function getFriendlyError(msg: string): string {
 
 function LoginContent() {
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirectTo') || '/account';
+  const rawRedirectTo = searchParams.get('redirectTo');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,10 +38,18 @@ function LoginContent() {
     const supabase = createClient();
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        window.location.href = redirectTo;
+        if (rawRedirectTo) {
+          window.location.href = rawRedirectTo;
+          return;
+        }
+        if (isSuperAdminEmail(session.user.email)) {
+          window.location.href = '/admin';
+          return;
+        }
+        window.location.href = '/account';
       }
     });
-  }, [redirectTo]);
+  }, [rawRedirectTo]);
 
   const validateEmail = (val: string) => {
     if (!val) {
@@ -85,12 +95,11 @@ function LoginContent() {
         return;
       }
 
-      if (data?.session) {
-        // Hard navigation ensures cookies are sent cleanly in HTTP headers to server
-        window.location.href = redirectTo;
-      } else {
-        window.location.href = redirectTo;
+      let dest = rawRedirectTo;
+      if (!dest) {
+        dest = isSuperAdminEmail(data?.session?.user?.email || email) ? '/admin' : '/account';
       }
+      window.location.href = dest;
     } catch (err) {
       console.error('Login error:', err);
       setAuthError('An unexpected error occurred. Please try again.');

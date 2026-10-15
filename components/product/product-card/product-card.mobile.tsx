@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/data/products';
@@ -14,9 +14,9 @@ interface ProductCardProps {
   onCardClick?: (e: React.MouseEvent) => void;
 }
 
-export function ProductCardMobile({ product, onCardClick }: ProductCardProps) {
+export const ProductCardMobile = memo(function ProductCardMobile({ product, onCardClick }: ProductCardProps) {
   const toggleWishlist = useWishlistStore((state) => state.toggleItem);
-  const isWishlisted = useWishlistStore((state) => state.hasItem(product.id));
+  const isWishlisted = useWishlistStore((state) => state.items.includes(product.id));
   const { formatPrice } = usePrice();
   const [imgError, setImgError] = useState(false);
 
@@ -131,4 +131,4 @@ export function ProductCardMobile({ product, onCardClick }: ProductCardProps) {
       </button>
     </div>
   );
-}
+});

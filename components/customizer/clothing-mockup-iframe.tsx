@@ -99,17 +99,12 @@ export function ClothingMockupIframe() {
 
     suppressTawk();
 
-    // Guard against asynchronous script load or incoming notification unhide events
-    const interval = setInterval(suppressTawk, 250);
-
-    const observer = new MutationObserver(() => {
-      suppressTawk();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Signal cursor bridge that clothing mockup studio iframe is ready
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('clothing-mockup-mounted'));
+    }
 
     return () => {
-      clearInterval(interval);
-      observer.disconnect();
       document.body.classList.remove('mockup-studio-active');
       const win = window as unknown as WindowWithTawk;
       try {
