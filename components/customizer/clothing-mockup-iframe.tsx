@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCartStore, type CartItem } from '@/lib/stores/cart-store';
+import { createClient } from '@/lib/supabase/client';
+import { isSuperAdminEmail } from '@/lib/auth-constants';
 
 /**
  * ClothingMockupIframe
@@ -28,13 +30,71 @@ interface WindowWithTawk {
 
 export function ClothingMockupIframe() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isDesignerAuthorized, setIsDesignerAuthorized] = useState(false);
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const searchParams = useSearchParams();
 
+  // Verify whether the logged in user is authorized for designer mode (gokul30sep@gmail.com / superadmin)
+  useEffect(() => {
+    let isMounted = true;
+    try {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data }) => {
+        if (!isMounted) return;
+        const email = data.user?.email;
+        const authorized = Boolean(
+          email && (email.toLowerCase() === 'gokul30sep@gmail.com' || isSuperAdminEmail(email))
+        );
+        setIsDesignerAuthorized(authorized);
+        if (iframeRef.current?.contentWindow) {
+          iframeRef.current.contentWindow.postMessage(
+            { type: 'STARBY_DESIGNER_AUTH', authorized, email: authorized ? email : null },
+            '*'
+          );
+        }
+      });
+
+      const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (!isMounted) return;
+        const email = session?.user?.email;
+        const authorized = Boolean(
+          email && (email.toLowerCase() === 'gokul30sep@gmail.com' || isSuperAdminEmail(email))
+        );
+        setIsDesignerAuthorized(authorized);
+        if (iframeRef.current?.contentWindow) {
+          iframeRef.current.contentWindow.postMessage(
+            { type: 'STARBY_DESIGNER_AUTH', authorized, email: authorized ? email : null },
+            '*'
+          );
+        }
+      });
+
+      return () => {
+        authListener?.subscription?.unsubscribe();
+      };
+    } catch (err) {
+      console.warn('[ClothingMockupIframe] Auth verification error:', err);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const iframeSrc = React.useMemo(() => {
-    const qs = searchParams?.toString();
+    const sp = new URLSearchParams(searchParams?.toString() || '');
+    if (!isDesignerAuthorized) {
+      // Strip any designer query parameters if user is not authorized
+      sp.delete('designer');
+      sp.delete('mode');
+      sp.delete('admin');
+      sp.delete('designerAuth');
+    } else {
+      sp.set('designerAuth', '1');
+    }
+    const qs = sp.toString();
     return qs ? `/tools/clothing-mockup/index.html?${qs}` : '/tools/clothing-mockup/index.html';
-  }, [searchParams]);
+  }, [searchParams, isDesignerAuthorized]);
 
   // Apply body class while the studio is mounted and aggressively suppress
   // the Tawk.to widget, WhatsApp button, and other floating UI in both 2D and 3D.
@@ -131,6 +191,77 @@ export function ClothingMockupIframe() {
             bubbles: true,
           }),
         );
+      }
+
+      if (e.data && (e.data.type === 'STARBY_PLACEMENT_SAVED' || e.data.type === 'STARBY_ALL_PLACEMENTS_SAVED')) {
+        try {
+          const { designId, garmentId, target, artId, placement, layers } = e.data;
+          const STORAGE_KEY = 'fregoro_curated_placements';
+          const raw = window.localStorage.getItem(STORAGE_KEY) || '{}';
+          const all = JSON.parse(raw);
+          const garmentKey = (garmentId || 'regular-t-shirt').toLowerCase();
+
+          if (Array.isArray(layers) && layers.length > 0) {
+            layers.forEach((layer: any) => {
+              const tgt =
+                layer.placementTarget ||
+                (layer.regionId === 'back' || (layer.name && layer.name.toLowerCase().includes('back'))
+                  ? 'back-center'
+                  : layer.name && layer.name.toLowerCase().includes('sleeve')
+                  ? 'left-sleeve'
+                  : 'front-center');
+              const artMatch = (layer.id || '').match(/art-\d+/i);
+              const aId = artMatch ? artMatch[0].toLowerCase() : undefined;
+              const isHidden = layer.opacity === 0 || layer.hidden === true;
+              const pl = {
+                u: layer.u,
+                v: layer.v,
+                uvWidth: layer.uvWidth,
+                scale: layer.scale,
+                rotation: layer.rotation || 0,
+                regionId: layer.regionId === 'back' || tgt.includes('back') ? 'back' : 'front',
+                placementTarget: tgt,
+                scalePreset: layer.scalePreset || 'standard',
+                hidden: isHidden,
+                removed: false,
+                opacity: typeof layer.opacity === 'number' ? layer.opacity : (isHidden ? 0 : 1.0),
+              };
+              if (!isHidden) {
+                all[`${designId}__${garmentKey}__${tgt}`] = pl;
+                all[`${designId}__${garmentKey}__${pl.regionId}`] = pl;
+              }
+              if (aId) all[`${designId}__${garmentKey}__${aId}`] = pl;
+            });
+          }
+
+          if (Array.isArray(e.data.removedArtIds)) {
+            e.data.removedArtIds.forEach((rId: string) => {
+              const rKey = `${designId}__${garmentKey}__${rId.toLowerCase()}`;
+              all[rKey] = {
+                ...(all[rKey] || {}),
+                removed: true,
+                hidden: true,
+                opacity: 0,
+              };
+            });
+          }
+
+          if (Array.isArray(e.data.hiddenArtIds)) {
+            e.data.hiddenArtIds.forEach((hId: string) => {
+              const hKey = `${designId}__${garmentKey}__${hId.toLowerCase()}`;
+              all[hKey] = {
+                ...(all[hKey] || {}),
+                hidden: true,
+                removed: false,
+                opacity: 0,
+              };
+            });
+          }
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(all, null, 2));
+          window.dispatchEvent(new CustomEvent('starby:placement-saved', { detail: e.data }));
+        } catch {
+          /* ignore */
+        }
       }
 
       if (e.data && e.data.type === 'ADD_CLOTHING_MOCKUP_TO_CART') {
@@ -320,6 +451,17 @@ export function ClothingMockupIframe() {
 
       const doc = iframe.contentDocument;
       const win = iframe.contentWindow;
+
+      // Send designer authorization status to the iframe
+      if (win) {
+        win.postMessage(
+          {
+            type: 'STARBY_DESIGNER_AUTH',
+            authorized: isDesignerAuthorized,
+          },
+          '*'
+        );
+      }
 
       // 1. Sync cursor-ready class from parent to iframe document and suppress native cursor inside iframe
       if (doc) {

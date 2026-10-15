@@ -49,12 +49,20 @@ import { DrawerLighting3D } from './components/3d/DrawerLighting3D';
 import { DrawerExport3D } from './components/3d/DrawerExport3D';
 import { DrawerProject3D } from './components/3d/DrawerProject3D';
 import { UVCanvasEditor3D } from './components/3d/UVCanvasEditor3D';
+import { findPanelAtUV } from './engine/3d/garmentPanels';
 import { AddToCartModal3D } from './components/3d/AddToCartModal3D';
 import { Export3DManager } from './engine/3d/export3D';
 import type { SceneManager3D } from './engine/3d/sceneManager';
 import type { TextureCompositor3D } from './engine/3d/textureCompositor';
 import { ClothingDesignsDrawer, type ApplyDesignEvent } from './components/ClothingDesignsDrawer';
 import { CURATED_CLOTHING_DESIGNS, type CuratedClothingDesign } from './data/clothingDesignsData';
+import { DesignerPlacementBar } from './components/3d/DesignerPlacementBar';
+import {
+  getCuratedPlacement,
+  saveCuratedPlacement,
+  clearCuratedPlacement,
+  syncServerPlacements,
+} from './engine/3d/curatedPlacements';
 import type * as THREE from 'three';
 
 const APPAREL_APPROVED_COLORS_MAP: Record<string, { name: string; hex: string }[]> = {
@@ -224,7 +232,17 @@ export const App: React.FC = () => {
   const [showInstructionModal, setShowInstructionModal] = useState<boolean>(false);
   const [isDesignSetupModalOpen, setIsDesignSetupModalOpen] = useState<boolean>(false);
   const [activeCuratedDesign, setActiveCuratedDesign] = useState<CuratedClothingDesign | null>(null);
-  const [initialDesignId, setInitialDesignId] = useState<string | null>(null);
+  const [initialDesignId, setInitialDesignId] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        return sp.get('designId') || null;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
   const initialPriceRef = useRef<number | null>(null);
   const [unitPrice, setUnitPrice] = useState<number>(() => {
     if (typeof window !== 'undefined') {
@@ -245,6 +263,249 @@ export const App: React.FC = () => {
   const [modalSelectedRegion, setModalSelectedRegion] = useState<'front' | 'back' | 'sleeve'>('front');
   const [modalNlpText, setModalNlpText] = useState<string>('');
   const [modalFeedbackMessage, setModalFeedbackMessage] = useState<string | null>(null);
+  const [showSaveSuccessBanner, setShowSaveSuccessBanner] = useState<boolean>(false);
+
+  // Designer Authorization & Calibration Mode State (Restricted exclusively to gokul30sep@gmail.com / superadmin)
+  const [isDesignerAuthorized, setIsDesignerAuthorized] = useState<boolean>(false);
+  const [isDesignerMode, setIsDesignerMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    let active = true;
+
+    // 1. Verify session with server endpoint
+    fetch('/api/clothing-designs/designer-auth', { credentials: 'same-origin' })
+      .then((res) => (res.ok ? res.json() : { authorized: false }))
+      .then((data) => {
+        if (!active) return;
+        if (data && data.authorized) {
+          setIsDesignerAuthorized(true);
+          try {
+            const sp = new URLSearchParams(window.location.search);
+            if (
+              sp.get('designer') === 'true' ||
+              sp.get('mode') === 'designer' ||
+              sp.get('admin') === '1'
+            ) {
+              setIsDesignerMode(true);
+            }
+          } catch {
+            /* ignore */
+          }
+        } else {
+          setIsDesignerAuthorized(false);
+          setIsDesignerMode(false);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setIsDesignerAuthorized(false);
+          setIsDesignerMode(false);
+        }
+      });
+
+    // 2. Listen for postMessage from parent host window (StarBy iframe container)
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data && e.data.type === 'STARBY_DESIGNER_AUTH') {
+        if (e.data.authorized) {
+          setIsDesignerAuthorized(true);
+          try {
+            const sp = new URLSearchParams(window.location.search);
+            if (
+              sp.get('designer') === 'true' ||
+              sp.get('mode') === 'designer' ||
+              sp.get('admin') === '1'
+            ) {
+              setIsDesignerMode(true);
+            }
+          } catch {
+            /* ignore */
+          }
+        } else {
+          setIsDesignerAuthorized(false);
+          setIsDesignerMode(false);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => {
+      active = false;
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
+  const handleToggleDesignerMode = useCallback(() => {
+    if (!isDesignerAuthorized) {
+      console.warn('[DesignerMode] Access denied: designer mode is restricted to authorized creators');
+      return;
+    }
+    setIsDesignerMode((prev) => {
+      const next = !prev;
+      setProject3D((proj) => ({
+        ...proj,
+        artworkLayers: proj.artworkLayers.map((l) => ({
+          ...l,
+          locked: l.isCurated ? !next : l.locked,
+        })),
+      }));
+      return next;
+    });
+  }, [isDesignerAuthorized]);
+
+  const handleSaveCurrentPlacement = useCallback(() => {
+    if (!isDesignerAuthorized) {
+      console.warn('[DesignerMode] Save ignored: user is not authorized for designer placement saves');
+      return;
+    }
+    let urlDesignId: string | null = null;
+    if (typeof window !== 'undefined') {
+      try {
+        urlDesignId = new URLSearchParams(window.location.search).get('designId');
+      } catch {
+        /* ignore */
+      }
+    }
+
+    const primaryDesignId =
+      project3D.artworkLayers[0]?.curatedDesignId ||
+      activeCuratedDesign?.id ||
+      initialDesignId ||
+      urlDesignId ||
+      'design-001';
+
+    // Find any curated artworks belonging to this design that have been removed
+    const targetCurated = activeCuratedDesign || CURATED_CLOTHING_DESIGNS.find((d) => d.id === primaryDesignId);
+    const allCuratedArtworks = targetCurated?.artworks || [];
+
+    const getLayerArtId = (l: ArtworkLayer3D): string | null => {
+      const m = l.id.match(/art-\d+/i);
+      if (m) return m[0].toLowerCase();
+      const match = allCuratedArtworks.find(
+        (a) => l.id.toLowerCase().includes(a.id.toLowerCase()) || (l.name && l.name.toLowerCase().includes(a.name.toLowerCase()))
+      );
+      return match ? match.id.toLowerCase() : null;
+    };
+
+    const presentArtIds = new Set(
+      project3D.artworkLayers.map(getLayerArtId).filter(Boolean) as string[]
+    );
+
+    const removedArtworks = allCuratedArtworks.filter((a) => !presentArtIds.has(a.id.toLowerCase()));
+    const removedArtIdsList = removedArtworks.map((a) => a.id.toLowerCase());
+    const hiddenArtIdsList = project3D.artworkLayers
+      .filter((l) => l.opacity === 0 || (l as any).hidden === true)
+      .map(getLayerArtId)
+      .filter(Boolean) as string[];
+
+    // 1. Mark removed artworks so they don't reappear upon reload
+    removedArtworks.forEach((art) => {
+      saveCuratedPlacement(
+        primaryDesignId,
+        project3D.garmentId,
+        {
+          u: 0.25,
+          v: 0.63,
+          uvWidth: 0.26,
+          scale: 0.74,
+          rotation: 0,
+          regionId: 'front',
+          placementTarget: art.suggestedPlacement || 'front-center',
+          hidden: true,
+          removed: true,
+          opacity: 0,
+        },
+        art.suggestedPlacement || 'front-center',
+        art.id.toLowerCase()
+      );
+    });
+
+    // 2. Persist active artwork layers on this garment with true opacity & hidden status
+    project3D.artworkLayers.forEach((layer) => {
+      const designId = layer.curatedDesignId || primaryDesignId;
+
+      const target =
+        layer.placementTarget ||
+        (layer.regionId === 'back' || layer.name.toLowerCase().includes('back')
+          ? 'back-center'
+          : layer.name.toLowerCase().includes('sleeve')
+          ? 'left-sleeve'
+          : 'front-center');
+
+      const artId = getLayerArtId(layer) || undefined;
+      const isHidden = layer.opacity === 0 || (layer as any).hidden === true;
+
+      saveCuratedPlacement(
+        designId,
+        project3D.garmentId,
+        {
+          u: layer.u !== undefined ? layer.u : 0.25,
+          v: layer.v !== undefined ? layer.v : 0.63,
+          uvWidth: layer.uvWidth !== undefined ? layer.uvWidth : 0.26,
+          scale: layer.scale !== undefined ? layer.scale : 0.74,
+          rotation: layer.rotation || 0,
+          regionId: (layer.regionId as 'front' | 'back') || (target.includes('back') ? 'back' : 'front'),
+          placementTarget: target,
+          scalePreset: layer.scalePreset || 'standard',
+          hidden: isHidden,
+          removed: false,
+          opacity: typeof layer.opacity === 'number' ? layer.opacity : (isHidden ? 0 : 1.0),
+        },
+        target,
+        artId
+      );
+    });
+
+    // Also persist all layers directly to backend server API
+    try {
+      fetch('/api/clothing-designs/save-placement', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          designId: primaryDesignId,
+          garmentId: project3D.garmentId,
+          layers: project3D.artworkLayers,
+          removedArtIds: removedArtIdsList,
+          hiddenArtIds: hiddenArtIdsList,
+        }),
+      }).catch((err) => {
+        console.warn('[App] Failed to save placement to server API:', err);
+      });
+    } catch {
+      /* ignore */
+    }
+
+    // Broadcast full layers state to parent host window
+    if (typeof window !== 'undefined' && window.parent && window.parent !== window) {
+      window.parent.postMessage(
+        {
+          type: 'STARBY_ALL_PLACEMENTS_SAVED',
+          designId: primaryDesignId,
+          garmentId: project3D.garmentId,
+          layers: project3D.artworkLayers,
+          removedArtIds: removedArtIdsList,
+          hiddenArtIds: hiddenArtIdsList,
+        },
+        '*'
+      );
+    }
+
+    // Ensure all curated layers hold the designId
+    setProject3D((prev) => ({
+      ...prev,
+      artworkLayers: prev.artworkLayers.map((l) => ({
+        ...l,
+        curatedDesignId: l.isCurated ? primaryDesignId : l.curatedDesignId,
+      })),
+    }));
+
+    setShowSaveSuccessBanner(true);
+    setTimeout(() => setShowSaveSuccessBanner(false), 2500);
+  }, [
+    project3D.artworkLayers,
+    project3D.garmentId,
+    activeCuratedDesign,
+    initialDesignId,
+  ]);
 
   // Sync initial selected artwork & region when modal design is active
   useEffect(() => {
@@ -271,6 +532,17 @@ export const App: React.FC = () => {
         placement?: string | null;
         scale?: string | number | null;
         scalePreset?: string | null;
+        curatedDesignId?: string | null;
+        isCurated?: boolean;
+        opacity?: number;
+        hidden?: boolean;
+        removed?: boolean;
+        u?: number;
+        v?: number;
+        uvWidth?: number;
+        rotation?: number;
+        regionId?: string;
+        placementTarget?: string;
       },
       fallbackIndex: number
     ): ArtworkLayer3D | null => {
@@ -282,15 +554,85 @@ export const App: React.FC = () => {
       const placementText = (input.placement || 'front-center').toString();
       const scaleText = (input.scalePreset || input.scale || 'standard').toString();
 
-      return buildLayerFromPlacement(garmentId, {
+      const baseLayer = buildLayerFromPlacement(garmentId, {
         id: layerId,
         name: layerName,
         imageUrl: url,
         placementTextOrTarget: placementText,
         scalePresetOrText: scaleText,
       });
+
+      let urlDesignId: string | null = null;
+      if (typeof window !== 'undefined') {
+        try {
+          const sp = new URLSearchParams(window.location.search);
+          urlDesignId = sp.get('designId') || (sp.get('curated') === 'true' ? 'design-001' : null);
+        } catch {
+          /* ignore */
+        }
+      }
+
+      const designId =
+        input.curatedDesignId ||
+        activeCuratedDesign?.id ||
+        initialDesignId ||
+        urlDesignId ||
+        (layerId.includes('fregor-art') || layerId.includes('fregor-design') ? 'design-001' : null);
+
+      const isCurated =
+        input.isCurated !== undefined
+          ? input.isCurated
+          : (!!designId || layerId.includes('fregor-art') || layerId.includes('fregor-design'));
+
+      const artMatch = layerId.match(/art-\d+/i) || (input.id || '').match(/art-\d+/i);
+      const artId = artMatch ? artMatch[0].toLowerCase() : null;
+
+      const calibrated = getCuratedPlacement(designId, garmentId, placementText, artId);
+
+      // If artwork is explicitly marked removed either in input or in saved placement, DO NOT load it!
+      if (input.removed === true || calibrated?.removed === true) {
+        return null;
+      }
+
+      const finalU = typeof (input as any).u === 'number' ? (input as any).u : calibrated.u;
+      const finalV = typeof (input as any).v === 'number' ? (input as any).v : calibrated.v;
+      const finalUvW = typeof (input as any).uvWidth === 'number' ? (input as any).uvWidth : calibrated.uvWidth;
+      const finalScale = typeof (input as any).scale === 'number' ? (input as any).scale : calibrated.scale;
+      const finalRot = typeof (input as any).rotation === 'number' ? (input as any).rotation : (calibrated.rotation ?? 0);
+      const finalRegion = (input as any).regionId || calibrated.regionId || baseLayer.regionId;
+
+      const isExplicitlyHidden =
+        (input as any).hidden === true ||
+        (input as any).opacity === 0 ||
+        calibrated?.hidden === true ||
+        calibrated?.opacity === 0;
+
+      const finalOpacity = isExplicitlyHidden
+        ? 0
+        : typeof (input as any).opacity === 'number'
+        ? (input as any).opacity
+        : 1.0;
+
+      return {
+        ...baseLayer,
+        u: finalU,
+        v: finalV,
+        uvWidth: finalUvW,
+        uvHeight: finalUvW,
+        scale: finalScale,
+        rotation: finalRot,
+        opacity: finalOpacity,
+        hidden: isExplicitlyHidden,
+        regionId: finalRegion,
+        placementTarget: (input as any).placementTarget || placementText,
+        offsetX: parseFloat(((finalU - 0.5) * 2).toFixed(3)),
+        offsetY: parseFloat(((finalV - 0.5) * 2).toFixed(3)),
+        isCurated,
+        curatedDesignId: designId || undefined,
+        locked: isCurated ? !(isDesignerAuthorized && isDesignerMode) : false,
+      };
     },
-    []
+    [activeCuratedDesign, initialDesignId, isDesignerAuthorized, isDesignerMode]
   );
 
   const handleModalChangeGarment = useCallback(
@@ -305,6 +647,13 @@ export const App: React.FC = () => {
         const newColor = colorMatches ? prev.garmentColor : approvedColors[0].hex;
 
         const updatedLayers = prev.artworkLayers.map((l, idx) => {
+          const target =
+            l.placementTarget ||
+            (l.regionId === 'back' || l.name.toLowerCase().includes('back')
+              ? 'back-center'
+              : l.name.toLowerCase().includes('sleeve')
+              ? 'left-sleeve'
+              : 'front-center');
           return (
             computePlacementLayer(
               garmentId,
@@ -312,8 +661,10 @@ export const App: React.FC = () => {
                 id: l.id,
                 name: l.name,
                 imageUrl: l.imageUrl,
-                placement: l.placementTarget || 'front-center',
+                placement: target,
                 scale: l.scalePreset || 'standard',
+                curatedDesignId: l.curatedDesignId,
+                isCurated: l.isCurated,
               },
               idx
             ) || l
@@ -563,7 +914,10 @@ export const App: React.FC = () => {
       if (curated) {
         setActiveCuratedDesign(curated);
       }
-      if (params.designId) setInitialDesignId(params.designId);
+      if (params.designId) {
+        setInitialDesignId(params.designId);
+        syncServerPlacements(params.designId, params.garment).catch(() => {});
+      }
       let parsedPrice: number | null = null;
       if (params.price !== undefined && params.price !== null && !isNaN(Number(params.price))) {
         parsedPrice = Number(params.price);
@@ -602,7 +956,50 @@ export const App: React.FC = () => {
 
       if (parsedLayersList.length > 0) {
         parsedLayersList.forEach((item, idx) => {
-          const mapped = computePlacementLayer(targetGarmentId, item, idx);
+          if (item.removed) return;
+          const artMatch = (item.id || '').match(/art-\d+/i);
+          let artId = artMatch ? artMatch[0].toLowerCase() : undefined;
+          if (!artId && curated) {
+            const matchedArt = curated.artworks.find(
+              (a) => item.id?.includes(a.id) || (item.name && item.name.toLowerCase().includes(a.name.toLowerCase()))
+            );
+            if (matchedArt) artId = matchedArt.id.toLowerCase();
+          }
+
+          const designId = params.designId || item.curatedDesignId || (curated ? curated.id : undefined);
+          const calibrated = getCuratedPlacement(designId, targetGarmentId, item.placement, artId);
+          if (calibrated?.removed) return;
+          const isHidden = calibrated?.hidden === true || calibrated?.opacity === 0 || item.hidden === true || item.opacity === 0;
+
+          let placement = item.placement;
+          if (curated) {
+            const matchedArt = curated.artworks.find(
+              (a) => item.id?.includes(a.id) || (item.name && item.name.toLowerCase().includes(a.name.toLowerCase()))
+            );
+            if (matchedArt) {
+              // If matchedArt is intended for back or sleeve, but item.placement was front-center (from old bug), restore it
+              if (
+                matchedArt.suggestedPlacement &&
+                (matchedArt.suggestedPlacement.includes('back') || matchedArt.suggestedPlacement.includes('sleeve')) &&
+                (!placement || placement === 'front-center' || placement === 'front')
+              ) {
+                placement = matchedArt.suggestedPlacement;
+              }
+            }
+          }
+
+          const mapped = computePlacementLayer(
+            targetGarmentId,
+            {
+              ...item,
+              placement: placement || 'front-center',
+              curatedDesignId: designId,
+              isCurated: true,
+              opacity: isHidden ? 0 : (typeof item.opacity === 'number' ? item.opacity : 1.0),
+              hidden: isHidden,
+            },
+            idx
+          );
           if (mapped) newLayers.push(mapped);
         });
       } else if (params.previewUrl) {
@@ -615,22 +1012,20 @@ export const App: React.FC = () => {
             placement: params.placement || 'front-center',
             scale: params.scale,
             scalePreset: params.scalePreset,
+            curatedDesignId: params.designId || (curated ? curated.id : undefined),
+            isCurated: true,
           },
           0
         );
         if (mapped) newLayers.push(mapped);
       } else if (curated && curated.artworks.length > 0) {
-        // Place ALL artworks in the curated design on their respective designated regions!
-        const usedPlacements = new Set<string>();
-
         curated.artworks.forEach((art, idx) => {
-          let placement = art.suggestedPlacement || (idx === 0 ? 'front-center' : 'back-center');
-          if (usedPlacements.has(placement)) {
-            if (placement === 'front-center') placement = 'left-chest';
-            else if (placement === 'back-center') placement = 'back-collar';
-            else placement = idx % 2 === 0 ? 'front-center' : 'back-center';
-          }
-          usedPlacements.add(placement);
+          const placement = art.suggestedPlacement || (idx === 0 ? 'front-center' : 'back-center');
+          const calibrated = getCuratedPlacement(curated.id, targetGarmentId, placement, art.id);
+          // If this artwork was explicitly removed by the user on this garment, SKIP it!
+          if (calibrated?.removed) return;
+
+          const isHidden = calibrated?.hidden === true || calibrated?.opacity === 0;
 
           const mapped = computePlacementLayer(
             targetGarmentId,
@@ -638,13 +1033,41 @@ export const App: React.FC = () => {
               id: `fregor-art-${curated.id}-${art.id}`,
               name: art.name || curated.name,
               previewUrl: art.studioPreviewUrl || art.previewUrl,
-              placement: curated.artworks.length === 1 && params.placement ? params.placement : placement,
-              scale: placement === 'left-chest' || placement === 'back-collar' ? 'compact' : 'standard',
+              placement: curated.artworks.length === 1 && params.placement ? params.placement : (calibrated?.placementTarget || placement),
+              scale: calibrated?.scale ?? (placement === 'left-chest' || placement === 'back-collar' ? 'compact' : 'standard'),
+              opacity: isHidden ? 0 : (typeof calibrated?.opacity === 'number' ? calibrated.opacity : 1.0),
+              hidden: isHidden,
+              curatedDesignId: curated.id,
+              isCurated: true,
+              u: calibrated?.u,
+              v: calibrated?.v,
+              uvWidth: calibrated?.uvWidth,
+              rotation: calibrated?.rotation ?? 0,
+              regionId: calibrated?.regionId,
+              placementTarget: calibrated?.placementTarget || placement,
             },
             idx
           );
           if (mapped) newLayers.push(mapped);
         });
+
+        // Safety fallback: if all artworks were marked removed, restore the first one
+        if (newLayers.length === 0 && curated.artworks.length > 0) {
+          const firstArt = curated.artworks[0];
+          const mapped = computePlacementLayer(
+            targetGarmentId,
+            {
+              id: `fregor-art-${curated.id}-${firstArt.id}`,
+              name: firstArt.name || curated.name,
+              previewUrl: firstArt.studioPreviewUrl || firstArt.previewUrl,
+              placement: firstArt.suggestedPlacement || 'front-center',
+              scale: 'standard',
+              opacity: 1.0,
+            },
+            0
+          );
+          if (mapped) newLayers.push(mapped);
+        }
       }
 
       setProject3D((prev) => {
@@ -1418,17 +1841,66 @@ export const App: React.FC = () => {
   // =========================================================================
   const currentGarmentConfig3D = getGarmentConfig(project3D.garmentId);
 
-  const handleSelectGarment3D = (garment: Garment3DConfig) => {
-    setProject3D((prev) => ({
-      ...prev,
-      garmentId: garment.id,
-      name: `${garment.name} Mockup`,
-      activeRegionId: garment.regions[0].id,
-      camera: {
-        ...prev.camera,
-        preset: 'front',
-      },
-    }));
+  const handleSelectGarment3D = (garment: Garment3DConfig | string) => {
+    const garmentId = typeof garment === 'string' ? garment : garment.id;
+    const config = typeof garment === 'string' ? getGarmentConfig(garmentId) : garment;
+    const approvedColors = getApprovedColorsForGarment(garmentId);
+
+    setProject3D((prev) => {
+      const colorMatches = approvedColors.some(
+        (c) => c.hex.toLowerCase() === prev.garmentColor.toLowerCase()
+      );
+      const newColor = colorMatches ? prev.garmentColor : approvedColors[0].hex;
+
+      const updatedLayers = prev.artworkLayers.map((l) => {
+        if (!l.isCurated && l.locked === false) {
+          return l;
+        }
+        const designId = l.curatedDesignId || activeCuratedDesign?.id || initialDesignId || null;
+        const target =
+          l.placementTarget ||
+          (l.regionId === 'back' || l.name.toLowerCase().includes('back')
+            ? 'back-center'
+            : l.name.toLowerCase().includes('sleeve')
+            ? 'left-sleeve'
+            : 'front-center');
+        const artMatch = l.id.match(/art-\d+/i);
+        const artId = artMatch ? artMatch[0].toLowerCase() : null;
+        const calibrated = getCuratedPlacement(
+          designId,
+          garmentId,
+          target,
+          artId
+        );
+        return {
+          ...l,
+          placementTarget: target,
+          u: calibrated.u,
+          v: calibrated.v,
+          uvWidth: calibrated.uvWidth,
+          uvHeight: l.lockAspectRatio !== false ? undefined : calibrated.uvWidth,
+          scale: calibrated.scale,
+          rotation: calibrated.rotation ?? l.rotation,
+          regionId: calibrated.regionId || l.regionId,
+          offsetX: parseFloat(((calibrated.u - 0.5) * 2).toFixed(3)),
+          offsetY: parseFloat(((calibrated.v - 0.5) * 2).toFixed(3)),
+          locked: l.isCurated ? !(isDesignerAuthorized && isDesignerMode) : l.locked,
+        };
+      });
+
+      return {
+        ...prev,
+        garmentId,
+        garmentColor: newColor,
+        name: `${config.name} Mockup`,
+        artworkLayers: updatedLayers,
+        activeRegionId: config.regions[0].id,
+        camera: {
+          ...prev.camera,
+          preset: 'front',
+        },
+      };
+    });
     setSelectedPanelId3D(null);
   };
 
@@ -1518,52 +1990,90 @@ export const App: React.FC = () => {
   }, [commitHistory2D]);
 
 
-  const handleApplyDesignFromLibrary3D = useCallback((event: ApplyDesignEvent) => {
-    const { design, artwork, targetPlacement } = event;
-    if (design) {
-      setActiveCuratedDesign(design);
-    }
-    const imgUrl = artwork.studioPreviewUrl || artwork.previewUrl;
-    const finalPlacement = targetPlacement || artwork.suggestedPlacement || 'front-center';
-
-    const layer = buildLayerFromPlacement(project3D.garmentId, {
-      id: `layer-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-      name: artwork.name,
-      imageUrl: imgUrl,
-      placementTextOrTarget: finalPlacement,
-      scalePresetOrText: finalPlacement === 'left-chest' || finalPlacement === 'back-collar' ? 'compact' : 'standard',
-    });
-
-    const isBack = layer.regionId === 'back';
-
-    setProject3D((prev) => {
-      // Replace existing layer on the same side/region to prevent stacking in the same spot,
-      // while keeping layers on the opposite side intact!
-      const filtered = prev.artworkLayers.filter((l) => {
-        if (isBack) {
-          return !(l.regionId === 'back' || (l.placementTarget && l.placementTarget.includes('back')));
-        } else {
-          return !(l.regionId === 'front' && l.placementTarget === layer.placementTarget);
+  const handleApplyDesignFromLibrary3D = useCallback(
+    async (event: ApplyDesignEvent) => {
+      const { design, artwork, targetPlacement } = event;
+      if (design) {
+        setActiveCuratedDesign(design);
+        try {
+          await syncServerPlacements(design.id);
+        } catch {
+          /* ignore network errors */
         }
+      }
+      const imgUrl = artwork.studioPreviewUrl || artwork.previewUrl;
+      const finalPlacement = targetPlacement || artwork.suggestedPlacement || 'front-center';
+
+      const calibrated = getCuratedPlacement(design?.id, project3D.garmentId, finalPlacement, artwork.id);
+      if (calibrated?.removed) return;
+      const isHidden = calibrated?.hidden === true || calibrated?.opacity === 0;
+
+      const baseLayer = buildLayerFromPlacement(project3D.garmentId, {
+        id: `layer-${design?.id || 'curated'}-${artwork.id}-${Date.now()}`,
+        name: artwork.name,
+        imageUrl: imgUrl,
+        placementTextOrTarget: calibrated?.placementTarget || finalPlacement,
+        scalePresetOrText: finalPlacement === 'left-chest' || finalPlacement === 'back-collar' ? 'compact' : 'standard',
       });
 
-      return {
-        ...prev,
-        artworkLayers: [...filtered, layer],
-        activeRegionId: layer.regionId || prev.activeRegionId,
-        camera: {
-          ...prev.camera,
-          preset: isBack ? 'back' : 'front',
-        },
+      const layer: ArtworkLayer3D = {
+        ...baseLayer,
+        u: calibrated.u,
+        v: calibrated.v,
+        uvWidth: calibrated.uvWidth,
+        uvHeight: calibrated.uvWidth,
+        scale: calibrated.scale,
+        rotation: calibrated.rotation ?? 0,
+        opacity: isHidden ? 0 : (typeof calibrated.opacity === 'number' ? calibrated.opacity : 1.0),
+        hidden: isHidden,
+        regionId: calibrated.regionId || baseLayer.regionId,
+        placementTarget: calibrated.placementTarget || finalPlacement,
+        offsetX: parseFloat(((calibrated.u - 0.5) * 2).toFixed(3)),
+        offsetY: parseFloat(((calibrated.v - 0.5) * 2).toFixed(3)),
+        isCurated: true,
+        curatedDesignId: design?.id,
+        locked: !(isDesignerAuthorized && isDesignerMode),
       };
-    });
 
-    setSelectedLayerId3D(layer.id);
-  }, [project3D.garmentId]);
+      const isBack = layer.regionId === 'back';
+
+      setProject3D((prev) => {
+        // Replace existing layer on the same side/region to prevent stacking in the same spot,
+        // while keeping layers on the opposite side intact!
+        const filtered = prev.artworkLayers.filter((l) => {
+          if (isBack) {
+            return !(l.regionId === 'back' || (l.placementTarget && l.placementTarget.includes('back')));
+          } else {
+            return !(l.regionId === 'front' && l.placementTarget === layer.placementTarget);
+          }
+        });
+
+        return {
+          ...prev,
+          artworkLayers: [...filtered, layer],
+          activeRegionId: layer.regionId || prev.activeRegionId,
+          camera: {
+            ...prev.camera,
+            preset: isBack ? 'back' : 'front',
+          },
+        };
+      });
+
+      setSelectedLayerId3D(layer.id);
+    },
+    [project3D.garmentId, isDesignerAuthorized, isDesignerMode]
+  );
 
   const handleApplyAllArtworksFromDesign3D = useCallback(
-    (design: CuratedClothingDesign) => {
+    async (design: CuratedClothingDesign) => {
       setActiveCuratedDesign(design);
+
+      // 1. First sync server-saved placements for this design
+      try {
+        await syncServerPlacements(design.id);
+      } catch {
+        /* ignore network */
+      }
 
       let targetColor = project3D.garmentColor;
       const colorHint = design.artworks.find((a) => a.colorHint && a.colorHint !== 'any')?.colorHint;
@@ -1576,25 +2086,31 @@ export const App: React.FC = () => {
       const newLayers: ArtworkLayer3D[] = [];
       let hasBack = false;
       let hasFront = false;
-      const usedPlacements = new Set<string>();
-
       design.artworks.forEach((art, idx) => {
-        let placement = art.suggestedPlacement || (idx === 0 ? 'front-center' : 'back-center');
-        if (usedPlacements.has(placement)) {
-          if (placement === 'front-center') placement = 'left-chest';
-          else if (placement === 'back-center') placement = 'back-collar';
-          else placement = idx % 2 === 0 ? 'front-center' : 'back-center';
-        }
-        usedPlacements.add(placement);
+        const placement = art.suggestedPlacement || (idx === 0 ? 'front-center' : 'back-center');
+
+        const calibrated = getCuratedPlacement(design.id, project3D.garmentId, placement, art.id);
+        if (calibrated?.removed) return;
+        const isHidden = calibrated?.hidden === true || calibrated?.opacity === 0;
 
         const layer = computePlacementLayer(
           project3D.garmentId,
           {
             id: `layer-${design.id}-${art.id}-${Date.now()}-${idx}`,
-            name: `${art.name} (${placement.includes('back') ? 'Back' : 'Front'})`,
+            name: `${art.name} (${(calibrated?.placementTarget || placement).includes('back') ? 'Back' : 'Front'})`,
             imageUrl: art.studioPreviewUrl || art.previewUrl,
-            placement,
-            scale: placement === 'left-chest' || placement === 'back-collar' ? 'compact' : 'standard',
+            placement: calibrated?.placementTarget || placement,
+            scale: calibrated?.scale ?? (placement === 'left-chest' || placement === 'back-collar' ? 'compact' : 'standard'),
+            opacity: isHidden ? 0 : (typeof calibrated?.opacity === 'number' ? calibrated.opacity : 1.0),
+            hidden: isHidden,
+            curatedDesignId: design.id,
+            isCurated: true,
+            u: calibrated?.u,
+            v: calibrated?.v,
+            uvWidth: calibrated?.uvWidth,
+            rotation: calibrated?.rotation ?? 0,
+            regionId: calibrated?.regionId,
+            placementTarget: calibrated?.placementTarget || placement,
           },
           idx
         );
@@ -1728,9 +2244,9 @@ export const App: React.FC = () => {
   }, [project3D.artworkLayers.length]);
 
   const handleUpdateLayer3D = (id: string, updates: Partial<ArtworkLayer3D>) => {
-    setProject3D((prev) => ({
-      ...prev,
-      artworkLayers: prev.artworkLayers.map((l) => {
+    setProject3D((prev) => {
+      let updatedLayerForSave: ArtworkLayer3D | null = null;
+      const nextLayers = prev.artworkLayers.map((l) => {
         if (l.id !== id) return l;
         const merged = { ...l, ...updates };
         if (updates.scale !== undefined && updates.uvWidth === undefined) {
@@ -1741,9 +2257,101 @@ export const App: React.FC = () => {
         } else if (updates.uvWidth !== undefined && updates.scale === undefined) {
           merged.scale = parseFloat((updates.uvWidth / 0.35).toFixed(5));
         }
+
+        // Auto-detect panel and region if coordinates moved and not explicitly overridden
+        if (updates.u !== undefined || updates.v !== undefined) {
+          const checkU = updates.u !== undefined ? updates.u : merged.u;
+          const checkV = updates.v !== undefined ? updates.v : merged.v;
+          if (checkU !== undefined && checkV !== undefined) {
+            const panel = findPanelAtUV(prev.garmentId, checkU, checkV);
+            if (panel && !updates.regionId && !updates.placementTarget) {
+              if (panel.id === 'back_body') {
+                merged.regionId = 'back';
+                if (!merged.placementTarget || !merged.placementTarget.includes('back')) {
+                  merged.placementTarget = 'back-center';
+                }
+              } else if (panel.id === 'collar') {
+                merged.regionId = 'back';
+                merged.placementTarget = 'back-collar';
+              } else if (panel.id === 'left_sleeve') {
+                merged.regionId = 'front';
+                merged.placementTarget = 'left-sleeve';
+              } else if (panel.id === 'right_sleeve') {
+                merged.regionId = 'front';
+                merged.placementTarget = 'right-sleeve';
+              } else if (panel.id === 'front_body') {
+                merged.regionId = 'front';
+                if (!merged.placementTarget || merged.placementTarget.includes('back') || merged.placementTarget.includes('sleeve')) {
+                  merged.placementTarget = 'front-center';
+                }
+              }
+            }
+          }
+        }
+
+        updatedLayerForSave = merged;
         return merged;
-      }),
-    }));
+      });
+
+      // AUTO-PERSIST: Persist artwork placements to localStorage immediately on any adjustment
+      if (updatedLayerForSave) {
+        const lyr = updatedLayerForSave as ArtworkLayer3D;
+        let urlDesignId: string | null = null;
+        if (typeof window !== 'undefined') {
+          try {
+            urlDesignId = new URLSearchParams(window.location.search).get('designId');
+          } catch {
+            /* ignore */
+          }
+        }
+
+        const primaryDesignId =
+          lyr.curatedDesignId ||
+          activeCuratedDesign?.id ||
+          initialDesignId ||
+          urlDesignId ||
+          (lyr.isCurated ? 'design-001' : null);
+
+        if (primaryDesignId) {
+          const target =
+            lyr.placementTarget ||
+            (lyr.regionId === 'back' || lyr.name.toLowerCase().includes('back')
+              ? 'back-center'
+              : lyr.name.toLowerCase().includes('sleeve')
+              ? 'left-sleeve'
+              : 'front-center');
+
+          const artMatch = lyr.id.match(/art-\d+/i);
+          const artId = artMatch ? artMatch[0].toLowerCase() : undefined;
+
+          const isLyrHidden = lyr.opacity === 0 || (lyr as any).hidden === true;
+          saveCuratedPlacement(
+            primaryDesignId,
+            prev.garmentId,
+            {
+              u: lyr.u !== undefined ? lyr.u : 0.25,
+              v: lyr.v !== undefined ? lyr.v : 0.63,
+              uvWidth: lyr.uvWidth !== undefined ? lyr.uvWidth : 0.26,
+              scale: lyr.scale !== undefined ? lyr.scale : 0.74,
+              rotation: lyr.rotation || 0,
+              regionId: (lyr.regionId as 'front' | 'back') || (target.includes('back') ? 'back' : 'front'),
+              placementTarget: target,
+              scalePreset: lyr.scalePreset || 'standard',
+              hidden: isLyrHidden,
+              removed: false,
+              opacity: typeof lyr.opacity === 'number' ? lyr.opacity : (isLyrHidden ? 0 : 1.0),
+            },
+            target,
+            artId
+          );
+        }
+      }
+
+      return {
+        ...prev,
+        artworkLayers: nextLayers,
+      };
+    });
   };
 
   const handleDuplicateLayer3D = (id: string) => {
@@ -1766,12 +2374,90 @@ export const App: React.FC = () => {
   };
 
   const handleDeleteLayer3D = (id: string) => {
+    const deletedLayer = project3D.artworkLayers.find((l) => l.id === id);
     setProject3D((prev) => ({
       ...prev,
       artworkLayers: prev.artworkLayers.filter((l) => l.id !== id),
     }));
     if (selectedLayerId3D === id) {
       setSelectedLayerId3D(null);
+    }
+
+    if (deletedLayer) {
+      let urlDesignId: string | null = null;
+      if (typeof window !== 'undefined') {
+        try {
+          urlDesignId = new URLSearchParams(window.location.search).get('designId');
+        } catch {
+          /* ignore */
+        }
+      }
+      const primaryDesignId =
+        deletedLayer.curatedDesignId ||
+        activeCuratedDesign?.id ||
+        initialDesignId ||
+        urlDesignId ||
+        'design-001';
+
+      const targetCurated = activeCuratedDesign || CURATED_CLOTHING_DESIGNS.find((d) => d.id === primaryDesignId);
+      const artMatch = deletedLayer.id.match(/art-\d+/i);
+      let artId = artMatch ? artMatch[0].toLowerCase() : undefined;
+      if (!artId && targetCurated) {
+        const matched = targetCurated.artworks.find(
+          (a) => deletedLayer.id.toLowerCase().includes(a.id.toLowerCase()) || (deletedLayer.name && deletedLayer.name.toLowerCase().includes(a.name.toLowerCase()))
+        );
+        if (matched) artId = matched.id.toLowerCase();
+      }
+
+      if (artId) {
+        saveCuratedPlacement(
+          primaryDesignId,
+          project3D.garmentId,
+          {
+            u: deletedLayer.u ?? 0.25,
+            v: deletedLayer.v ?? 0.63,
+            uvWidth: deletedLayer.uvWidth ?? 0.26,
+            scale: deletedLayer.scale ?? 0.74,
+            rotation: deletedLayer.rotation || 0,
+            regionId: (deletedLayer.regionId as 'front' | 'back') || 'front',
+            hidden: true,
+            removed: true,
+            opacity: 0,
+          },
+          deletedLayer.placementTarget,
+          artId
+        );
+
+        // Only persist removal globally if authorized creator in designer mode
+        if (isDesignerAuthorized && isDesignerMode) {
+          try {
+            fetch('/api/clothing-designs/save-placement', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                designId: primaryDesignId,
+                garmentId: project3D.garmentId,
+                removedArtIds: [artId],
+              }),
+            }).catch(() => {});
+          } catch {
+            /* ignore */
+          }
+        }
+
+        // Broadcast removal to parent host window
+        if (typeof window !== 'undefined' && window.parent && window.parent !== window) {
+          window.parent.postMessage(
+            {
+              type: 'STARBY_ALL_PLACEMENTS_SAVED',
+              designId: primaryDesignId,
+              garmentId: project3D.garmentId,
+              removedArtIds: [artId],
+            },
+            '*'
+          );
+        }
+      }
     }
   };
 
@@ -2084,8 +2770,9 @@ export const App: React.FC = () => {
           if (mode === '2d') {
             persistenceManager.saveProjectToFile(project2D);
           } else {
-            setActiveTab('project3d');
-            setMobileDrawerOpen(true);
+            handleSaveCurrentPlacement();
+            setShowSaveSuccessBanner(true);
+            setTimeout(() => setShowSaveSuccessBanner(false), 2500);
           }
         }}
         onLoadProject={() => {
@@ -2119,7 +2806,38 @@ export const App: React.FC = () => {
         onOpenDesignSetup={() => setIsDesignSetupModalOpen(true)}
         onOpenInstructions={() => setShowInstructionModal(true)}
         hasLoadedDesign={!!activeCuratedDesign || project3D.artworkLayers.length > 0}
+        isDesignerAuthorized={isDesignerAuthorized}
+        isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
+        onToggleDesignerMode={isDesignerAuthorized ? handleToggleDesignerMode : undefined}
       />
+
+      {/* Floating Save Confirmation Notification Banner */}
+      {showSaveSuccessBanner && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '72px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 999999,
+            backgroundColor: '#10b981',
+            color: '#ffffff',
+            padding: '10px 22px',
+            borderRadius: '8px',
+            boxShadow: '0 4px 18px rgba(0,0,0,0.35)',
+            fontWeight: 700,
+            fontSize: '13px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            pointerEvents: 'none',
+            animation: 'fadeIn 0.2s ease-out',
+          }}
+        >
+          <Check size={18} />
+          <span>Curated placements for {currentGarmentConfig3D.name} saved successfully!</span>
+        </div>
+      )}
 
       {/* Main Workspace Body */}
       <div className="workspace-body">
@@ -2188,6 +2906,9 @@ export const App: React.FC = () => {
                         selectedLayerId={selectedLayerId3D}
                         onSelectLayer={setSelectedLayerId3D}
                         onOpenLibrary={() => setIsDesignsLibraryOpen(true)}
+                        isDesignerAuthorized={isDesignerAuthorized}
+                        isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
+                        onToggleDesignerMode={isDesignerAuthorized ? handleToggleDesignerMode : undefined}
                       />
                     )}
 
@@ -2397,6 +3118,97 @@ export const App: React.FC = () => {
         {/* Center Viewport and Right 2D UV Editor */}
         {mode === '3d' ? (
           <>
+            {/* Designer Placement Calibration Bar */}
+            {isDesignerAuthorized && isDesignerMode && (
+              <DesignerPlacementBar
+                activeDesignName={
+                  activeCuratedDesign?.name ||
+                  project3D.artworkLayers[0]?.name ||
+                  'Selected Artwork'
+                }
+                activeDesignId={
+                  activeCuratedDesign?.id ||
+                  project3D.artworkLayers[0]?.curatedDesignId ||
+                  initialDesignId
+                }
+                garmentConfig={currentGarmentConfig3D}
+                selectedLayer={
+                  project3D.artworkLayers.find((l) => l.id === selectedLayerId3D) ||
+                  project3D.artworkLayers[0] ||
+                  null
+                }
+                isDesignerAuthorized={isDesignerAuthorized}
+                isDesignerMode={isDesignerMode}
+                onToggleDesignerMode={handleToggleDesignerMode}
+                onSelectGarment={handleSelectGarment3D}
+                onUpdateLayer={handleUpdateLayer3D}
+                onSavePlacement={handleSaveCurrentPlacement}
+                onResetPlacement={() => {
+                  const primaryDesignId =
+                    project3D.artworkLayers[0]?.curatedDesignId ||
+                    activeCuratedDesign?.id ||
+                    initialDesignId ||
+                    null;
+                  if (primaryDesignId) {
+                    clearCuratedPlacement(primaryDesignId, project3D.garmentId);
+                  }
+                  project3D.artworkLayers.forEach((l) => {
+                    const target =
+                      l.placementTarget ||
+                      (l.regionId === 'back' || l.name.toLowerCase().includes('back')
+                        ? 'back-center'
+                        : l.name.toLowerCase().includes('sleeve')
+                        ? 'left-sleeve'
+                        : 'front-center');
+                    const resetPl = getCuratedPlacement(null, project3D.garmentId, target);
+                    handleUpdateLayer3D(l.id, {
+                      u: resetPl.u,
+                      v: resetPl.v,
+                      uvWidth: resetPl.uvWidth,
+                      scale: resetPl.scale,
+                      rotation: resetPl.rotation,
+                      regionId: resetPl.regionId,
+                      placementTarget: target,
+                    });
+                  });
+                }}
+                onApplyPreset={(target) => {
+                  const targetLayer =
+                    project3D.artworkLayers.find((l) => l.id === selectedLayerId3D) ||
+                    project3D.artworkLayers[0];
+                  if (!targetLayer) return;
+                  const updated = buildLayerFromPlacement(project3D.garmentId, {
+                    id: targetLayer.id,
+                    name: targetLayer.name,
+                    imageUrl: targetLayer.imageUrl,
+                    placementTextOrTarget: target,
+                    scalePresetOrText: targetLayer.scalePreset || 'standard',
+                  });
+                  handleUpdateLayer3D(targetLayer.id, {
+                    placementMode: 'atlas',
+                    u: updated.u,
+                    v: updated.v,
+                    uvWidth: updated.uvWidth,
+                    uvHeight: updated.uvHeight,
+                    scale: updated.scale,
+                    rotation: updated.rotation,
+                    regionId: updated.regionId,
+                    placementTarget: target,
+                  });
+                  if (updated.regionId) {
+                    setProject3D((prev) => ({
+                      ...prev,
+                      activeRegionId: updated.regionId,
+                      camera: {
+                        ...prev.camera,
+                        preset: updated.regionId === 'back' ? 'back' : 'front',
+                      },
+                    }));
+                  }
+                }}
+              />
+            )}
+
             <Viewport3D
               garmentConfig={currentGarmentConfig3D}
               garmentColor={project3D.garmentColor}
@@ -2415,6 +3227,7 @@ export const App: React.FC = () => {
               cameraPreset={project3D.camera.preset}
               isTurntable={project3D.camera.turntable}
               isUvEditorOpen={isUvEditorOpen}
+              isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
               onAnimatedToggle={() =>
                 setProject3D((prev) => ({
                   ...prev,
@@ -2485,6 +3298,8 @@ export const App: React.FC = () => {
                 isOpen={isMobile ? true : isUvEditorOpen}
                 onToggleOpen={() => setIsUvEditorOpen(!isUvEditorOpen)}
                 onClose={() => setIsUvEditorOpen(false)}
+                isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
+                onSavePlacement={isDesignerAuthorized ? handleSaveCurrentPlacement : undefined}
               />
             )}
           </>

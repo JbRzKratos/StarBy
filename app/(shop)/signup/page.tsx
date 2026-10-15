@@ -21,10 +21,12 @@ export default function SignUpPage() {
     try {
       const supabase = createClient();
       const cleanEmail = email.trim();
+      const origin = typeof window !== 'undefined' ? window.location.origin : 'https://fregorostudios.com';
       const { data, error: authError } = await supabase.auth.signUp({
         email: cleanEmail,
         password,
         options: {
+          emailRedirectTo: `${origin}/auth/confirm`,
           data: {
             full_name: fullName,
           },

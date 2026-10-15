@@ -13,6 +13,8 @@ import {
   ShoppingBag,
   Sparkles,
   HelpCircle,
+  Lock,
+  Unlock,
 } from 'lucide-react';
 import type { GarmentSide } from '../types/mockup';
 
@@ -41,6 +43,9 @@ export interface HeaderProps {
   onOpenDesignSetup?: () => void;
   onOpenInstructions?: () => void;
   hasLoadedDesign?: boolean;
+  isDesignerAuthorized?: boolean;
+  isDesignerMode?: boolean;
+  onToggleDesignerMode?: () => void;
 }
 
 export const HeaderDesktop: React.FC<HeaderProps> = ({
@@ -68,6 +73,9 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
   onOpenDesignSetup,
   onOpenInstructions,
   hasLoadedDesign,
+  isDesignerAuthorized = false,
+  isDesignerMode = false,
+  onToggleDesignerMode,
 }) => {
   return (
     <header className="app-header header-desktop">
@@ -307,6 +315,43 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
           >
             <HelpCircle size={14} style={{ color: '#f59e0b' }} />
             <span>3D Guide</span>
+          </button>
+        )}
+
+        {/* Designer Calibration Mode Toggle */}
+        {mode === '3d' && isDesignerAuthorized && onToggleDesignerMode && (
+          <button
+            id="btn-designer-mode-toggle"
+            type="button"
+            className="header-btn"
+            onClick={onToggleDesignerMode}
+            style={{
+              background: isDesignerMode
+                ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.35) 0%, rgba(88, 28, 135, 0.6) 100%)'
+                : 'rgba(255, 255, 255, 0.05)',
+              border: isDesignerMode
+                ? '1px solid #a78bfa'
+                : '1px solid rgba(255, 255, 255, 0.15)',
+              color: isDesignerMode ? '#ffffff' : 'rgba(255, 255, 255, 0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontWeight: 700,
+              boxShadow: isDesignerMode ? '0 0 14px rgba(139, 92, 246, 0.45)' : 'none',
+              transition: 'all 0.15s ease',
+            }}
+            title={
+              isDesignerMode
+                ? 'Designer Mode ON: Click to test Customer View (Locked)'
+                : 'Click to enter Designer Mode to adjust and calibrate artwork placement on all garment cuts'
+            }
+          >
+            {isDesignerMode ? (
+              <Unlock size={14} style={{ color: '#c4b5fd' }} />
+            ) : (
+              <Lock size={14} style={{ color: 'rgba(255,255,255,0.6)' }} />
+            )}
+            <span>{isDesignerMode ? 'Designer Mode' : 'Customer View'}</span>
           </button>
         )}
 

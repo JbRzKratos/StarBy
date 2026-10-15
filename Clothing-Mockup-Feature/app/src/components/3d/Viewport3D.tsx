@@ -47,6 +47,7 @@ interface Viewport3DProps {
   cameraPreset: CameraPreset3D;
   isTurntable: boolean;
   isUvEditorOpen?: boolean;
+  isDesignerMode?: boolean;
   onAnimatedToggle: () => void;
   onActionChange: (action: AnimationActionName) => void;
   onPlayToggle: () => void;
@@ -574,6 +575,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
   cameraPreset,
   isTurntable,
   isUvEditorOpen,
+  isDesignerMode = false,
   onAnimatedToggle,
   onActionChange,
   onPlayToggle,
@@ -606,6 +608,8 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
   const mouseVecRef = useRef(new THREE.Vector2());
 
   // Latest-value mirrors (always current, never trigger re-renders)
+  const isDesignerModeRef = useRef(isDesignerMode);
+  isDesignerModeRef.current = isDesignerMode;
   const garmentConfigRef = useRef(garmentConfig);
   garmentConfigRef.current = garmentConfig;
   const garmentColorRef = useRef(garmentColor);
@@ -928,7 +932,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     const layer = liveLayer
       ? (liveLayer.id === selId ? liveLayer : layers.find((l) => l.id === selId))
       : layers.find((l) => l.id === selId);
-    if (!layer) {
+    if (!layer || (layer.locked && !isDesignerModeRef.current)) {
       if (lastDrawnLayerIdRef.current !== null || sizeChanged) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         lastDrawnLayerIdRef.current = null;
@@ -1057,64 +1061,69 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       const selId = selectedLayerIdRef.current;
       const sm = sceneManagerRef.current;
       if (selId && sm) {
-        const rect = sm.renderer.domElement.getBoundingClientRect();
-        const handlesResult = getSelectedLayerHandles();
-        if (handlesResult && handlesResult.isFacing) {
-          const px = e.clientX - rect.left;
-          const py = e.clientY - rect.top;
-          const hit = hitHandle(handlesResult.handles, px, py);
-          if (hit) {
-            hideInstruction();
-            const layers = artworkLayersRef.current;
-            const layer = layers.find((l) => l.id === selId)!;
-            const { uvW, uvH } = getLayerUVSize(layer, handlesResult.imgAspect, garmentConfigRef.current);
-            const { u, v } = getLayerUV(layer, garmentConfigRef.current);
-            let state: InteractionState = 'rotating';
-            if (hit.type === 'corner-tl') state = 'resizing-tl';
-            else if (hit.type === 'corner-tr') state = 'resizing-tr';
-            else if (hit.type === 'corner-bl') state = 'resizing-bl';
-            else if (hit.type === 'corner-br') state = 'resizing-br';
-            else state = 'rotating';
+        const layers = artworkLayersRef.current;
+        const currentSelLayer = layers.find((l) => l.id === selId);
+        const isLockedForCustomer = currentSelLayer?.locked && !isDesignerModeRef.current;
 
-            const center = handlesResult.center;
-            const dist0 = Math.hypot(e.clientX - (rect.left + center.x), e.clientY - (rect.top + center.y));
-            const currentAngle = Math.atan2(e.clientY - (rect.top + center.y), e.clientX - (rect.left + center.x));
-            const currentAngleDeg = (currentAngle * 180) / Math.PI;
-            const angleOffset = (layer.rotation - currentAngleDeg + 720) % 360;
+        if (!isLockedForCustomer) {
+          const rect = sm.renderer.domElement.getBoundingClientRect();
+          const handlesResult = getSelectedLayerHandles();
+          if (handlesResult && handlesResult.isFacing) {
+            const px = e.clientX - rect.left;
+            const py = e.clientY - rect.top;
+            const hit = hitHandle(handlesResult.handles, px, py);
+            if (hit) {
+              hideInstruction();
+              const layer = currentSelLayer || layers.find((l) => l.id === selId)!;
+              const { uvW, uvH } = getLayerUVSize(layer, handlesResult.imgAspect, garmentConfigRef.current);
+              const { u, v } = getLayerUV(layer, garmentConfigRef.current);
+              let state: InteractionState = 'rotating';
+              if (hit.type === 'corner-tl') state = 'resizing-tl';
+              else if (hit.type === 'corner-tr') state = 'resizing-tr';
+              else if (hit.type === 'corner-bl') state = 'resizing-bl';
+              else if (hit.type === 'corner-br') state = 'resizing-br';
+              else state = 'rotating';
 
-            dragSessionRef.current = {
-              state,
-              layerId: selId,
-              clientX0: e.clientX,
-              clientY0: e.clientY,
-              uvX0: 0,
-              uvY0: 0,
-              u0: u,
-              v0: v,
-              uvWidth0: uvW,
-              uvHeight0: uvH,
-              scale0: layer.scale,
-              rotation0: layer.rotation,
-              imgAspect: handlesResult.imgAspect,
-              screenCenterX: center.x,
-              screenCenterY: center.y,
-              dist0: Math.max(10, dist0),
-              angleOffset,
-            };
-            interactionStateRef.current = state;
-            liveLayerRef.current = { ...layer };
+              const center = handlesResult.center;
+              const dist0 = Math.hypot(e.clientX - (rect.left + center.x), e.clientY - (rect.top + center.y));
+              const currentAngle = Math.atan2(e.clientY - (rect.top + center.y), e.clientX - (rect.left + center.x));
+              const currentAngleDeg = (currentAngle * 180) / Math.PI;
+              const angleOffset = (layer.rotation - currentAngleDeg + 720) % 360;
 
-            sceneManager.controls.enabled = false;
-            compositor.beginDragPreview(
-              selId,
-              garmentColorRef.current,
-              artworkLayersRef.current,
-              garmentConfigRef.current,
-              activeRegionIdRef.current
-            );
+              dragSessionRef.current = {
+                state,
+                layerId: selId,
+                clientX0: e.clientX,
+                clientY0: e.clientY,
+                uvX0: 0,
+                uvY0: 0,
+                u0: u,
+                v0: v,
+                uvWidth0: uvW,
+                uvHeight0: uvH,
+                scale0: layer.scale,
+                rotation0: layer.rotation,
+                imgAspect: handlesResult.imgAspect,
+                screenCenterX: center.x,
+                screenCenterY: center.y,
+                dist0: Math.max(10, dist0),
+                angleOffset,
+              };
+              interactionStateRef.current = state;
+              liveLayerRef.current = { ...layer };
 
-            try { domEl.setPointerCapture(e.pointerId); } catch (_) {}
-            return;
+              sceneManager.controls.enabled = false;
+              compositor.beginDragPreview(
+                selId,
+                garmentColorRef.current,
+                artworkLayersRef.current,
+                garmentConfigRef.current,
+                activeRegionIdRef.current
+              );
+
+              try { domEl.setPointerCapture(e.pointerId); } catch (_) {}
+              return;
+            }
           }
         }
       }
@@ -1153,6 +1162,15 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         }
 
         if (hitLayer && hitHandlesResult) {
+          // If layer is locked and not in designer mode, do NOT start dragging!
+          // Selecting the layer allows viewing its details, but controls stay enabled so dragging orbits 360°
+          if (hitLayer.locked && !isDesignerModeRef.current) {
+            if (selId !== hitLayer.id) {
+              onSelectLayerRef.current?.(hitLayer.id);
+            }
+            return;
+          }
+
           hideInstruction();
           if (selId !== hitLayer.id) {
             onSelectLayerRef.current?.(hitLayer.id);
@@ -1238,7 +1256,9 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
 
       // 1. Check selected layer handles
       const selId = selectedLayerIdRef.current;
-      if (selId) {
+      const layers = artworkLayersRef.current;
+      const currentSel = selId ? layers.find((l) => l.id === selId) : null;
+      if (selId && (!currentSel?.locked || isDesignerModeRef.current)) {
         const handlesResult = getSelectedLayerHandles();
         if (handlesResult && handlesResult.isFacing) {
           const hit = hitHandle(handlesResult.handles, px, py);
@@ -1262,11 +1282,11 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       }
 
       // 2. Check other artwork layers (facing camera)
-      const layers = artworkLayersRef.current;
       let hitAnyLayer = false;
       for (let i = layers.length - 1; i >= 0; i--) {
         const layer = layers[i];
         if (layer.id === selId) continue;
+        if (layer.locked && !isDesignerModeRef.current) continue;
         if ((layer.placementMode ?? 'atlas') !== 'atlas' || layer.opacity <= 0) continue;
         const info = getLayerScreenInfo(layer);
         if (info && info.handlesResult.isFacing && isPointInPolygon(px, py, info.handlesResult.corners)) {
@@ -1891,35 +1911,74 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       )}
 
       {/* Floating Artwork Placement & Adjustment Hint Banner */}
-      {showInstruction && artworkLayers.length > 0 && (
-        <div
-          id="artwork-adjustment-hint-banner"
-          className={`artwork-adjustment-hint-banner ${isAnimated ? 'with-animation' : ''}`}
-        >
-          <div className="hint-banner-icon">
-            ⚠️
-          </div>
+      {showInstruction && artworkLayers.length > 0 && (() => {
+        const hasLockedCurated = artworkLayers.some((l) => l.locked) && !isDesignerMode;
+        if (hasLockedCurated) {
+          return (
+            <div
+              id="artwork-adjustment-hint-banner"
+              className={`artwork-adjustment-hint-banner ${isAnimated ? 'with-animation' : ''}`}
+              style={{
+                borderColor: 'rgba(59, 94, 255, 0.45)',
+                background: 'rgba(15, 20, 30, 0.94)',
+              }}
+            >
+              <div className="hint-banner-icon" style={{ color: '#38bdf8' }}>
+                🔒
+              </div>
 
-          <div className="hint-banner-content">
-            <div className="hint-banner-title-row">
-              <span className="hint-banner-title">
-                3D Placement Notice &amp; Quick Guide
-              </span>
+              <div className="hint-banner-content">
+                <div className="hint-banner-title-row">
+                  <span className="hint-banner-title" style={{ color: '#38bdf8' }}>
+                    Designer Placement Locked • 360° Studio View
+                  </span>
+                </div>
+                <p className="hint-banner-desc">
+                  This curated artwork has been calibrated for {garmentConfig.name}. <strong>Drag anywhere to orbit in 360°</strong> and switch garment cuts or colors to view how your shirt will look.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                className="hint-banner-dismiss-btn"
+                onClick={hideInstruction}
+              >
+                GOT IT
+              </button>
             </div>
-            <p className="hint-banner-desc">
-              Automatic placement is approximate. <strong>Click &amp; drag directly on the 3D shirt</strong> to move, use corner handles to scale, or top circle to rotate.
-            </p>
-          </div>
+          );
+        }
 
-          <button
-            type="button"
-            className="hint-banner-dismiss-btn"
-            onClick={hideInstruction}
+        return (
+          <div
+            id="artwork-adjustment-hint-banner"
+            className={`artwork-adjustment-hint-banner ${isAnimated ? 'with-animation' : ''}`}
           >
-            GOT IT
-          </button>
-        </div>
-      )}
+            <div className="hint-banner-icon">
+              ⚠️
+            </div>
+
+            <div className="hint-banner-content">
+              <div className="hint-banner-title-row">
+                <span className="hint-banner-title">
+                  3D Placement Notice &amp; Quick Guide
+                </span>
+              </div>
+              <p className="hint-banner-desc">
+                Automatic placement is approximate. <strong>Click &amp; drag directly on the 3D shirt</strong> to move, use corner handles to scale, or top circle to rotate.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              className="hint-banner-dismiss-btn"
+              onClick={hideInstruction}
+            >
+              GOT IT
+            </button>
+          </div>
+        );
+      })()}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Verified Per-Garment UV Panel & Surface Definitions
  * 
  * Anatomical Orientation Convention:
@@ -1172,6 +1172,16 @@ export const VERIFIED_GARMENT_PANELS: Record<string, GarmentPanel3D[]> = {
  * Retrieve verified physical panels for a specific garment ID.
  */
 export function getGarmentPanels(garmentId: string): GarmentPanel3D[] {
+  const norm = (garmentId || 'regular-t-shirt').toLowerCase();
+  if (norm.includes('acid') || norm.includes('oversized')) {
+    return VERIFIED_GARMENT_PANELS['oversized-t-shirt'];
+  }
+  if (norm.includes('hoodie')) {
+    return VERIFIED_GARMENT_PANELS['hoodie'];
+  }
+  if (norm.includes('fitted')) {
+    return VERIFIED_GARMENT_PANELS['fitted-t-shirt'];
+  }
   return VERIFIED_GARMENT_PANELS[garmentId] || VERIFIED_GARMENT_PANELS['regular-t-shirt'];
 }
 

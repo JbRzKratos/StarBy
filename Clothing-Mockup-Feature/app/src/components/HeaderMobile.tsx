@@ -6,6 +6,8 @@ import {
   ShoppingBag,
   Sparkles,
   HelpCircle,
+  Lock,
+  Unlock,
 } from 'lucide-react';
 import type { HeaderProps } from './HeaderDesktop';
 
@@ -17,6 +19,9 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
   onOpenDesignSetup,
   onOpenInstructions,
   hasLoadedDesign,
+  isDesignerAuthorized = false,
+  isDesignerMode = false,
+  onToggleDesignerMode,
 }) => {
   return (
     <header className="app-header header-mobile" aria-label="Mobile Navigation Header">
@@ -98,6 +103,25 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
             aria-label="Setup Graphic"
           >
             <Sparkles size={14} />
+          </button>
+        )}
+
+        {/* Designer Mode icon button on Mobile */}
+        {mode === '3d' && isDesignerAuthorized && onToggleDesignerMode && (
+          <button
+            type="button"
+            id="mobile-btn-designer-mode"
+            className="mobile-icon-btn"
+            onClick={onToggleDesignerMode}
+            style={{
+              background: isDesignerMode ? 'rgba(139, 92, 246, 0.35)' : 'rgba(255, 255, 255, 0.08)',
+              border: isDesignerMode ? '1px solid #a78bfa' : '1px solid rgba(255, 255, 255, 0.15)',
+              color: isDesignerMode ? '#c4b5fd' : '#ffffff',
+            }}
+            title={isDesignerMode ? 'Designer Mode ON (Unlocked)' : 'Customer View (Locked)'}
+            aria-label="Toggle Designer Mode"
+          >
+            {isDesignerMode ? <Unlock size={14} /> : <Lock size={14} />}
           </button>
         )}
 

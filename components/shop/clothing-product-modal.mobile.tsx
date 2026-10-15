@@ -30,6 +30,8 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
     activeArtId,
     setActiveArtId,
     artworkPlacements,
+    artworkScales,
+    artworkCalibratedCoords,
     includedArtworks,
     previewSide,
     setPreviewSide,
@@ -53,6 +55,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
     APPAREL_LIST,
     SCALE_PRESETS,
     QUICK_NLP_PROMPTS,
+    isCuratedDesign,
   } = state;
 
   if (!design) return null;
@@ -255,7 +258,12 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
           {/* Render Graphic with Placement & Scale Applied */}
           {currentActiveArt && isCurrentPlacementOnCurrentSide && (
             <div
-              style={getPreviewPlacementStyles(currentPlacement, currentScale, true)}
+              style={getPreviewPlacementStyles(
+                currentPlacement,
+                currentScale,
+                true,
+                artworkCalibratedCoords[currentActiveArt.id]
+              )}
               className="z-10 flex items-center justify-center transition-all duration-300 drop-shadow-xl pointer-events-none"
             >
               <Image
@@ -544,196 +552,227 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
           </div>
         </div>
 
-        {/* ── STEP 2: Natural Language Placement Prompt ───────────────────── */}
-        <div className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/10">
-          <div className="flex items-center justify-between">
-            <label className="font-mono text-[10px] text-white/90 uppercase tracking-wider font-bold flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-emerald-400" />
-              <span>Smart AI Placement</span>
-            </label>
-            <span className="text-[9px] font-mono text-emerald-400">Natural Language</span>
-          </div>
-
-          <div className="flex gap-2 items-center">
-            <input
-              type="text"
-              value={nlpInputText}
-              onChange={(e) => handleNlpInputChange(e.target.value)}
-              placeholder='e.g. "small left chest", "big back print"...'
-              className="flex-1 bg-black/60 border border-white/15 focus:border-emerald-400 rounded-lg px-3 py-2 text-xs text-white placeholder-white/35 focus:outline-none font-mono"
-            />
-            <button
-              type="button"
-              onClick={() => {
-                if (nlpInputText.trim()) handleNlpInputChange(nlpInputText);
-              }}
-              className="px-3 py-2 rounded-lg bg-emerald-500 active:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-wider shrink-0"
-            >
-              Place
-            </button>
-          </div>
-
-          {nlpParsed && (
-            <div className="text-[9px] font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-2 py-1 rounded flex items-center gap-1.5">
-              <Check className="w-3 h-3 text-emerald-400 shrink-0" />
-              <span>
-                Placed on: <strong>{nlpParsed.description}</strong>
+        {/* Curated Studio Placement vs Custom User Upload Controls */}
+        {isCuratedDesign ? (
+          <div className="flex flex-col gap-2.5 p-3.5 rounded-xl bg-gradient-to-r from-purple-950/25 via-indigo-950/20 to-black/60 border border-purple-500/30 shadow-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
+                  🔒 Studio Verified Placement
+                </span>
+              </div>
+              <span className="text-[9px] font-mono text-purple-300 font-bold bg-purple-500/20 px-2 py-0.5 rounded-full border border-purple-500/40">
+                LOCKED
               </span>
             </div>
-          )}
-
-          <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
-            {QUICK_NLP_PROMPTS.slice(0, 4).map((prompt) => (
-              <button
-                key={prompt.text}
-                type="button"
-                onClick={() => handleApplyQuickPrompt(prompt.text)}
-                className="px-2 py-0.5 rounded-full bg-white/5 active:bg-white/15 border border-white/10 text-[9px] font-mono text-white/70"
-              >
-                {prompt.label}
-              </button>
-            ))}
+            <p className="font-mono text-[11px] text-white/75 leading-relaxed">
+              This curated artwork has been calibrated specifically for{' '}
+              <strong className="text-white">{selectedGarment.name}</strong>. Position, scale, and print coordinates are locked to guarantee optimal print aesthetics.
+            </p>
+            <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-white/60">
+              <span>
+                Placement: <strong className="text-purple-300 uppercase">{currentPlacement.replace('-', ' ')}</strong>
+              </span>
+              <span>
+                Cut: <strong className="text-white">{selectedGarment.name}</strong>
+              </span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <>
+            {/* ── STEP 2: Natural Language Placement Prompt ───────────────────── */}
+            <div className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/10">
+              <div className="flex items-center justify-between">
+                <label className="font-mono text-[10px] text-white/90 uppercase tracking-wider font-bold flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-emerald-400" />
+                  <span>Smart AI Placement</span>
+                </label>
+                <span className="text-[9px] font-mono text-emerald-400">Natural Language</span>
+              </div>
 
-        {/* ── STEP 3: Print Region (Front, Back, Sleeve) & Targets ────────── */}
-        <div className="flex flex-col gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/10">
-          <div className="flex items-center justify-between">
-            <label className="font-mono text-[10px] text-white/80 uppercase tracking-wider font-bold">
-              Print Placement: {getPlacementRegion(currentPlacement).toUpperCase()}
-            </label>
-            <span className="font-mono text-[9px] text-emerald-400 font-bold uppercase">
-              {currentPlacement.replace('-', ' ')}
-            </span>
-          </div>
-
-          {/* 3 Main Region Tabs */}
-          <div className="grid grid-cols-3 gap-1.5">
-            <button
-              type="button"
-              onClick={() => handleUpdateSide('front')}
-              className={`py-2 px-1 rounded-lg border text-center font-mono text-[11px] uppercase tracking-wider transition-all ${
-                getPlacementRegion(currentPlacement) === 'front'
-                  ? 'bg-emerald-500 border-emerald-400 text-black font-bold shadow'
-                  : 'bg-white/5 border-white/10 text-white/70'
-              }`}
-            >
-              👕 Front
-            </button>
-            <button
-              type="button"
-              onClick={() => handleUpdateSide('back')}
-              className={`py-2 px-1 rounded-lg border text-center font-mono text-[11px] uppercase tracking-wider transition-all ${
-                getPlacementRegion(currentPlacement) === 'back'
-                  ? 'bg-emerald-500 border-emerald-400 text-black font-bold shadow'
-                  : 'bg-white/5 border-white/10 text-white/70'
-              }`}
-            >
-              🔄 Back
-            </button>
-            <button
-              type="button"
-              onClick={() => handleUpdateSide('sleeve')}
-              className={`py-2 px-1 rounded-lg border text-center font-mono text-[11px] uppercase tracking-wider transition-all ${
-                getPlacementRegion(currentPlacement) === 'sleeve'
-                  ? 'bg-emerald-500 border-emerald-400 text-black font-bold shadow'
-                  : 'bg-white/5 border-white/10 text-white/70'
-              }`}
-            >
-              🦾 Sleeve
-            </button>
-          </div>
-
-          {/* Placement Options for Selected Region */}
-          <div className="grid grid-cols-2 gap-1.5 pt-1">
-            {(getPlacementRegion(currentPlacement) === 'front'
-              ? [
-                  { id: 'front-center', label: 'Front Center', desc: 'Standard chest' },
-                  { id: 'left-chest', label: 'Left Chest', desc: 'Over heart' },
-                  { id: 'right-chest', label: 'Right Chest', desc: 'Right chest' },
-                  { id: 'full-front', label: 'Full Front', desc: 'Large torso' },
-                  { id: 'bottom-hem', label: 'Bottom Hem', desc: 'Lower hemline' },
-                ]
-              : getPlacementRegion(currentPlacement) === 'back'
-              ? [
-                  { id: 'back-center', label: 'Back Center', desc: 'Upper back' },
-                  { id: 'back-collar', label: 'Back Collar', desc: 'Nape accent' },
-                  { id: 'full-back', label: 'Full Back', desc: 'Large statement' },
-                  { id: 'bottom-hem', label: 'Bottom Hem', desc: 'Lower hemline' },
-                ]
-              : [
-                  { id: 'left-sleeve', label: 'Left Sleeve', desc: 'Left arm' },
-                  { id: 'right-sleeve', label: 'Right Sleeve', desc: 'Right arm' },
-                ]
-            ).map((opt) => {
-              const isSelected = currentPlacement === opt.id;
-              return (
+              <div className="flex gap-2 items-center">
+                <input
+                  type="text"
+                  value={nlpInputText}
+                  onChange={(e) => handleNlpInputChange(e.target.value)}
+                  placeholder='e.g. "small left chest", "big back print"...'
+                  className="flex-1 bg-black/60 border border-white/15 focus:border-emerald-400 rounded-lg px-3 py-2 text-xs text-white placeholder-white/35 focus:outline-none font-mono"
+                />
                 <button
-                  key={opt.id}
                   type="button"
-                  onClick={() => handleUpdatePlacement(opt.id as DesignPlacementTarget)}
-                  className={`p-2 rounded-lg border text-left flex flex-col gap-0.5 transition-all ${
-                    isSelected
-                      ? 'bg-white text-black border-white font-bold shadow'
-                      : 'bg-white/5 border-white/5 text-white/70 active:bg-white/10'
+                  onClick={() => {
+                    if (nlpInputText.trim()) handleNlpInputChange(nlpInputText);
+                  }}
+                  className="px-3 py-2 rounded-lg bg-emerald-500 active:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-wider shrink-0"
+                >
+                  Place
+                </button>
+              </div>
+
+              {nlpParsed && (
+                <div className="text-[9px] font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-2 py-1 rounded flex items-center gap-1.5">
+                  <Check className="w-3 h-3 text-emerald-400 shrink-0" />
+                  <span>
+                    Placed on: <strong>{nlpParsed.description}</strong>
+                  </span>
+                </div>
+              )}
+
+              <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+                {QUICK_NLP_PROMPTS.slice(0, 4).map((prompt) => (
+                  <button
+                    key={prompt.text}
+                    type="button"
+                    onClick={() => handleApplyQuickPrompt(prompt.text)}
+                    className="px-2 py-0.5 rounded-full bg-white/5 active:bg-white/15 border border-white/10 text-[9px] font-mono text-white/70"
+                  >
+                    {prompt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* ── STEP 3: Print Region (Front, Back, Sleeve) & Targets ────────── */}
+            <div className="flex flex-col gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/10">
+              <div className="flex items-center justify-between">
+                <label className="font-mono text-[10px] text-white/80 uppercase tracking-wider font-bold">
+                  Print Placement: {getPlacementRegion(currentPlacement).toUpperCase()}
+                </label>
+                <span className="font-mono text-[9px] text-emerald-400 font-bold uppercase">
+                  {currentPlacement.replace('-', ' ')}
+                </span>
+              </div>
+
+              {/* 3 Main Region Tabs */}
+              <div className="grid grid-cols-3 gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => handleUpdateSide('front')}
+                  className={`py-2 px-1 rounded-lg border text-center font-mono text-[11px] uppercase tracking-wider transition-all ${
+                    getPlacementRegion(currentPlacement) === 'front'
+                      ? 'bg-emerald-500 border-emerald-400 text-black font-bold shadow'
+                      : 'bg-white/5 border-white/10 text-white/70'
                   }`}
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-wider">
-                    {opt.label}
-                  </span>
-                  <span
-                    className={`font-mono text-[8px] truncate ${
-                      isSelected ? 'text-black/60' : 'text-white/40'
-                    }`}
-                  >
-                    {opt.desc}
-                  </span>
+                  👕 Front
                 </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── STEP 4: Scale Presets ───────────────────────────────────────── */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <label className="font-mono text-[10px] text-white/70 uppercase tracking-wider font-semibold">
-              Design Print Scale
-            </label>
-            <span className="font-mono text-[9px] text-white/50 uppercase">
-              {currentScale} scale
-            </span>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            {SCALE_PRESETS.map((scale) => {
-              const isSelected = currentScale === scale.id;
-              return (
                 <button
-                  key={scale.id}
                   type="button"
-                  onClick={() => handleUpdateScale(scale.id)}
-                  className={`py-2 px-2 rounded-xl border text-center flex flex-col items-center justify-center gap-0.5 transition-all ${
-                    isSelected
-                      ? 'bg-white text-black border-white font-bold shadow'
-                      : 'bg-white/5 border-white/5 text-white/70 active:bg-white/10'
+                  onClick={() => handleUpdateSide('back')}
+                  className={`py-2 px-1 rounded-lg border text-center font-mono text-[11px] uppercase tracking-wider transition-all ${
+                    getPlacementRegion(currentPlacement) === 'back'
+                      ? 'bg-emerald-500 border-emerald-400 text-black font-bold shadow'
+                      : 'bg-white/5 border-white/10 text-white/70'
                   }`}
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-wider">
-                    {scale.label}
-                  </span>
-                  <span
-                    className={`font-mono text-[8px] ${
-                      isSelected ? 'text-black/60' : 'text-white/40'
-                    }`}
-                  >
-                    {scale.desc}
-                  </span>
+                  🔄 Back
                 </button>
-              );
-            })}
-          </div>
-        </div>
+                <button
+                  type="button"
+                  onClick={() => handleUpdateSide('sleeve')}
+                  className={`py-2 px-1 rounded-lg border text-center font-mono text-[11px] uppercase tracking-wider transition-all ${
+                    getPlacementRegion(currentPlacement) === 'sleeve'
+                      ? 'bg-emerald-500 border-emerald-400 text-black font-bold shadow'
+                      : 'bg-white/5 border-white/10 text-white/70'
+                  }`}
+                >
+                  🦾 Sleeve
+                </button>
+              </div>
+
+              {/* Placement Options for Selected Region */}
+              <div className="grid grid-cols-2 gap-1.5 pt-1">
+                {(getPlacementRegion(currentPlacement) === 'front'
+                  ? [
+                      { id: 'front-center', label: 'Front Center', desc: 'Standard chest' },
+                      { id: 'left-chest', label: 'Left Chest', desc: 'Over heart' },
+                      { id: 'right-chest', label: 'Right Chest', desc: 'Right chest' },
+                      { id: 'full-front', label: 'Full Front', desc: 'Large torso' },
+                      { id: 'bottom-hem', label: 'Bottom Hem', desc: 'Lower hemline' },
+                    ]
+                  : getPlacementRegion(currentPlacement) === 'back'
+                  ? [
+                      { id: 'back-center', label: 'Back Center', desc: 'Upper back' },
+                      { id: 'back-collar', label: 'Back Collar', desc: 'Nape accent' },
+                      { id: 'full-back', label: 'Full Back', desc: 'Large statement' },
+                      { id: 'bottom-hem', label: 'Bottom Hem', desc: 'Lower hemline' },
+                    ]
+                  : [
+                      { id: 'left-sleeve', label: 'Left Sleeve', desc: 'Left arm' },
+                      { id: 'right-sleeve', label: 'Right Sleeve', desc: 'Right arm' },
+                    ]
+                ).map((opt) => {
+                  const isSelected = currentPlacement === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => handleUpdatePlacement(opt.id as DesignPlacementTarget)}
+                      className={`p-2 rounded-lg border text-left flex flex-col gap-0.5 transition-all ${
+                        isSelected
+                          ? 'bg-white text-black border-white font-bold shadow'
+                          : 'bg-white/5 border-white/5 text-white/70 active:bg-white/10'
+                      }`}
+                    >
+                      <span className="font-mono text-[10px] uppercase tracking-wider">
+                        {opt.label}
+                      </span>
+                      <span
+                        className={`font-mono text-[8px] truncate ${
+                          isSelected ? 'text-black/60' : 'text-white/40'
+                        }`}
+                      >
+                        {opt.desc}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ── STEP 4: Scale Presets ───────────────────────────────────────── */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <label className="font-mono text-[10px] text-white/70 uppercase tracking-wider font-semibold">
+                  Design Print Scale
+                </label>
+                <span className="font-mono text-[9px] text-white/50 uppercase">
+                  {currentScale} scale
+                </span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                {SCALE_PRESETS.map((scale) => {
+                  const isSelected = currentScale === scale.id;
+                  return (
+                    <button
+                      key={scale.id}
+                      type="button"
+                      onClick={() => handleUpdateScale(scale.id)}
+                      className={`py-2 px-2 rounded-xl border text-center flex flex-col items-center justify-center gap-0.5 transition-all ${
+                        isSelected
+                          ? 'bg-white text-black border-white font-bold shadow'
+                          : 'bg-white/5 border-white/5 text-white/70 active:bg-white/10'
+                      }`}
+                    >
+                      <span className="font-mono text-[10px] uppercase tracking-wider">
+                        {scale.label}
+                      </span>
+                      <span
+                        className={`font-mono text-[8px] ${
+                          isSelected ? 'text-black/60' : 'text-white/40'
+                        }`}
+                      >
+                        {scale.desc}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
 
 
       </div>

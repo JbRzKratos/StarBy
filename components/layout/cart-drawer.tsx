@@ -186,8 +186,12 @@ export function CartDrawer() {
         <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
           {items.length === 0 ? (
             <div className="empty-state h-full min-h-[300px] flex flex-col items-center justify-center text-center p-6">
-              <div className="w-20 h-20 rounded-full border border-smoke/50 flex items-center justify-center mb-5">
-                <span className="font-mono text-h4 text-smoke">0</span>
+              <div className="w-20 h-20 rounded-full border border-smoke/50 bg-white/5 flex items-center justify-center mb-5 text-smoke">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
               </div>
               <h3 className="font-display text-xl text-pearl mb-2">Your bag is empty.</h3>
               <p className="font-mono text-xs text-ash mb-6 max-w-xs">
@@ -447,8 +451,12 @@ export function CartDrawer() {
         >
           {items.length === 0 ? (
             <div className="empty-state h-full flex flex-col items-center justify-center text-center">
-              <div className="w-24 h-24 rounded-full border border-smoke/50 flex items-center justify-center mb-6">
-                <span className="font-mono text-h4 text-smoke">0</span>
+              <div className="w-24 h-24 rounded-full border border-smoke/50 bg-white/5 flex items-center justify-center mb-6 text-smoke">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
               </div>
               <h3 className="font-display text-h3 text-pearl mb-4">Your bag is empty.</h3>
               <p className="font-mono text-body-sm text-ash mb-8 max-w-sm">

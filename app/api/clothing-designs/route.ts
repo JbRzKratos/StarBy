@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getManifest } from '@/lib/clothing-designs/manifest';
+import { getAllServerPlacements } from '@/lib/clothing-designs/placements-store';
 import { rateLimit } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
@@ -76,6 +77,8 @@ export async function GET(req: Request) {
     const offset = (page - 1) * limit;
     const paginated = designs.slice(offset, offset + limit);
 
+    const serverPlacements = getAllServerPlacements();
+
     // Strip any internal or raw object keys from the public response
     const sanitized = paginated.map((d) => {
       const dbProduct = dbMap.get(d.id);
@@ -103,15 +106,29 @@ export async function GET(req: Request) {
         previewUrl: d.previewUrl,
         studioPreviewUrl: d.studioPreviewUrl,
         compatibleGarments: d.compatibleGarments,
-        artworks: (d.artworks || []).map((a) => ({
-          id: a.id,
-          name: a.name,
-          fileName: a.fileName,
-          suggestedPlacement: a.suggestedPlacement,
-          colorHint: a.colorHint,
-          previewUrl: a.previewUrl,
-          studioPreviewUrl: a.studioPreviewUrl,
-        })),
+        artworks: (d.artworks || []).map((a) => {
+          const targetGarment = (garment || 'regular-t-shirt').toLowerCase();
+          const aId = a.id.toLowerCase();
+          const artKey = `${d.id}__${targetGarment}__${aId}`;
+          const targetKey = `${d.id}__${targetGarment}__${a.suggestedPlacement}`;
+          const savedPlacement =
+            serverPlacements[artKey] ||
+            (serverPlacements[targetKey]?.removed ? null : serverPlacements[targetKey]);
+          const isRemoved = savedPlacement?.removed === true;
+          const isHidden = savedPlacement?.hidden === true || savedPlacement?.opacity === 0;
+          return {
+            id: a.id,
+            name: a.name,
+            fileName: a.fileName,
+            suggestedPlacement: savedPlacement?.placementTarget || a.suggestedPlacement,
+            calibratedPlacement: savedPlacement || null,
+            hidden: isHidden,
+            removed: isRemoved,
+            colorHint: a.colorHint,
+            previewUrl: a.previewUrl,
+            studioPreviewUrl: a.studioPreviewUrl,
+          };
+        }),
       };
     });
 

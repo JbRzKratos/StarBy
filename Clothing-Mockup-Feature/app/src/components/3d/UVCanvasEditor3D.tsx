@@ -18,6 +18,8 @@ import {
   Tag,
   ArrowLeft,
   Upload,
+  Save,
+  Check,
 } from 'lucide-react';
 import * as THREE from 'three';
 import type { ArtworkLayer3D, Garment3DConfig } from '../../types/threeD';
@@ -47,6 +49,8 @@ interface UVCanvasEditor3DProps {
   isOpen?: boolean;
   onToggleOpen?: () => void;
   onClose?: () => void;
+  isDesignerMode?: boolean;
+  onSavePlacement?: () => void;
 }
 
 type InteractionMode = 'none' | 'pan' | 'drag-art' | 'scale-art' | 'rotate-art';
@@ -71,7 +75,10 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
   isOpen = true,
   onToggleOpen,
   onClose,
+  isDesignerMode = false,
+  onSavePlacement,
 }) => {
+  const [justSaved, setJustSaved] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -541,65 +548,80 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
 
       // Bounding box for selected layer
       if (isSelected) {
-        ctx.save();
-        ctx.translate(bounds.centerX, bounds.centerY);
-        ctx.rotate((bounds.rotation * Math.PI) / 180);
+        if (layer.locked && !isDesignerMode) {
+          // Render subtle locked indicator without transform handles
+          ctx.save();
+          ctx.translate(bounds.centerX, bounds.centerY);
+          ctx.rotate((bounds.rotation * Math.PI) / 180);
+          const halfW = bounds.width / 2;
+          const halfH = bounds.height / 2;
+          ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([4, 4]);
+          ctx.strokeRect(-halfW, -halfH, bounds.width, bounds.height);
+          ctx.setLineDash([]);
+          ctx.restore();
+        } else {
+          ctx.save();
+          ctx.translate(bounds.centerX, bounds.centerY);
+          ctx.rotate((bounds.rotation * Math.PI) / 180);
 
-        const halfW = bounds.width / 2;
-        const halfH = bounds.height / 2;
+          const halfW = bounds.width / 2;
+          const halfH = bounds.height / 2;
 
-        ctx.strokeStyle = '#3B5EFF';
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(-halfW, -halfH, bounds.width, bounds.height);
-
-        // Rotation Handle
-        ctx.beginPath();
-        ctx.moveTo(0, -halfH);
-        ctx.lineTo(0, -halfH - 24);
-        ctx.strokeStyle = '#3B5EFF';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(0, -halfH - 24, 6, 0, Math.PI * 2);
-        ctx.fillStyle = '#3B5EFF';
-        ctx.fill();
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // 8 Scale Handles
-        const handleSize = 8;
-        const handles = [
-          [-halfW, -halfH],
-          [0, -halfH],
-          [halfW, -halfH],
-          [halfW, 0],
-          [halfW, halfH],
-          [0, halfH],
-          [-halfW, halfH],
-          [-halfW, 0],
-        ];
-
-        handles.forEach(([hx, hy]) => {
-          ctx.fillStyle = '#ffffff';
           ctx.strokeStyle = '#3B5EFF';
           ctx.lineWidth = 1.5;
-          ctx.fillRect(
-            hx - handleSize / 2,
-            hy - handleSize / 2,
-            handleSize,
-            handleSize
-          );
-          ctx.strokeRect(
-            hx - handleSize / 2,
-            hy - handleSize / 2,
-            handleSize,
-            handleSize
-          );
-        });
+          ctx.strokeRect(-halfW, -halfH, bounds.width, bounds.height);
 
-        ctx.restore();
+          // Rotation Handle
+          ctx.beginPath();
+          ctx.moveTo(0, -halfH);
+          ctx.lineTo(0, -halfH - 24);
+          ctx.strokeStyle = '#3B5EFF';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(0, -halfH - 24, 6, 0, Math.PI * 2);
+          ctx.fillStyle = '#3B5EFF';
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // 8 Scale Handles
+          const handleSize = 8;
+          const handles = [
+            [-halfW, -halfH],
+            [0, -halfH],
+            [halfW, -halfH],
+            [halfW, 0],
+            [halfW, halfH],
+            [0, halfH],
+            [-halfW, halfH],
+            [-halfW, 0],
+          ];
+
+          handles.forEach(([hx, hy]) => {
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#3B5EFF';
+            ctx.lineWidth = 1.5;
+            ctx.fillRect(
+              hx - handleSize / 2,
+              hy - handleSize / 2,
+              handleSize,
+              handleSize
+            );
+            ctx.strokeRect(
+              hx - handleSize / 2,
+              hy - handleSize / 2,
+              handleSize,
+              handleSize
+            );
+          });
+
+          ctx.restore();
+        }
       }
     });
 
@@ -666,6 +688,26 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
     const py = (e.clientY - rect.top) * dpr;
 
     if (selectedLayer) {
+      if (selectedLayer.locked && !isDesignerMode) {
+        interactionModeRef.current = 'pan';
+        interactionStartRef.current = {
+          pointerX: px,
+          pointerY: py,
+          artU: 0,
+          artV: 0,
+          artOffsetX: 0,
+          artOffsetY: 0,
+          artScale: 1,
+          artRot: 0,
+          initialDistance: 1,
+          initialAngle: 0,
+          scaleHandle: 'pan',
+          panStartX: pan.x,
+          panStartY: pan.y,
+        };
+        return;
+      }
+
       const bounds = getArtworkScreenBounds(selectedLayer);
       const rad = (-bounds.rotation * Math.PI) / 180;
 
@@ -1006,10 +1048,32 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
     if (!panel) return;
 
     if (selectedLayer) {
+      let targetRegion: 'front' | 'back' = 'front';
+      let targetPlacement = selectedLayer.placementTarget || 'front-center';
+
+      if (panelId === 'back_body') {
+        targetRegion = 'back';
+        targetPlacement = 'back-center';
+      } else if (panelId === 'collar') {
+        targetRegion = 'back';
+        targetPlacement = 'back-collar';
+      } else if (panelId === 'left_sleeve') {
+        targetRegion = 'front';
+        targetPlacement = 'left-sleeve';
+      } else if (panelId === 'right_sleeve') {
+        targetRegion = 'front';
+        targetPlacement = 'right-sleeve';
+      } else if (panelId === 'front_body') {
+        targetRegion = 'front';
+        targetPlacement = 'front-center';
+      }
+
       onUpdateLayer(selectedLayer.id, {
         placementMode: 'atlas',
         u: panel.u,
         v: panel.v,
+        regionId: targetRegion,
+        placementTarget: targetPlacement,
         offsetX: parseFloat(((panel.u - 0.5) * 2).toFixed(3)),
         offsetY: parseFloat(((panel.v - 0.5) * 2).toFixed(3)),
       });
@@ -1388,6 +1452,49 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                   </button>
                 </div>
               </div>
+
+              {/* Save Curated Placement for this Garment Cut */}
+              {onSavePlacement && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onSavePlacement();
+                    setJustSaved(true);
+                    setTimeout(() => setJustSaved(false), 2200);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    padding: '8px 12px',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    letterSpacing: '0.03em',
+                    backgroundColor: justSaved ? '#10b981' : '#2563eb',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                    width: '100%',
+                  }}
+                  title={`Save current placements for ${garmentConfig.name}`}
+                >
+                  {justSaved ? (
+                    <>
+                      <Check size={14} />
+                      <span>Saved Placements for {garmentConfig.name}!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save size={14} />
+                      <span>Save Placements ({garmentConfig.name})</span>
+                    </>
+                  )}
+                </button>
+              )}
 
               {/* Quick Move Artwork to Verified Garment Panel */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>

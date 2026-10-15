@@ -30,6 +30,9 @@ interface DrawerArtwork3DProps {
   selectedLayerId: string | null;
   onSelectLayer: (id: string | null) => void;
   onOpenLibrary?: () => void;
+  isDesignerAuthorized?: boolean;
+  isDesignerMode?: boolean;
+  onToggleDesignerMode?: () => void;
 }
 
 export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
@@ -44,6 +47,9 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
   selectedLayerId,
   onSelectLayer,
   onOpenLibrary,
+  isDesignerAuthorized = false,
+  isDesignerMode = false,
+  onToggleDesignerMode,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [nlpInput, setNlpInput] = useState<string>('');
@@ -74,6 +80,8 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
       offsetY: updatedLayer.offsetY,
       scale: updatedLayer.scale,
       regionId: updatedLayer.regionId,
+      placementTarget: updatedLayer.placementTarget,
+      scalePreset: updatedLayer.scalePreset,
     });
 
     if (updatedLayer.regionId && onRegionChange) {
@@ -384,42 +392,66 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onUpdateLayer(layer.id, { opacity: layer.opacity > 0 ? 0 : 1.0 });
-                      }}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: layer.opacity > 0 ? '#fff' : 'var(--text-muted)',
-                        cursor: 'pointer',
-                        padding: '4px',
-                      }}
-                      title={layer.opacity > 0 ? 'Hide' : 'Show'}
-                    >
-                      {layer.opacity > 0 ? <Eye size={14} /> : <EyeOff size={14} />}
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDuplicateLayer(layer.id);
-                      }}
-                      style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
-                      title="Duplicate"
-                    >
-                      <Copy size={13} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeleteLayer(layer.id);
-                      }}
-                      style={{ background: 'transparent', border: 'none', color: '#ff4d4d', cursor: 'pointer', padding: '4px' }}
-                      title="Delete"
-                    >
-                      <Trash2 size={13} />
-                    </button>
+                    {layer.locked && !isDesignerMode ? (
+                      <span
+                        style={{
+                          fontSize: '9px',
+                          color: '#38bdf8',
+                          padding: '3px 7px',
+                          borderRadius: '4px',
+                          background: 'rgba(56, 189, 248, 0.12)',
+                          border: '1px solid rgba(56, 189, 248, 0.3)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '3px',
+                          fontWeight: 700,
+                          fontFamily: 'monospace',
+                        }}
+                        title="Placement locked by designer"
+                      >
+                        🔒 LOCKED
+                      </span>
+                    ) : (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const nextHidden = layer.opacity > 0;
+                            onUpdateLayer(layer.id, { opacity: nextHidden ? 0 : 1.0, hidden: nextHidden });
+                          }}
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: layer.opacity > 0 ? '#fff' : 'var(--text-muted)',
+                            cursor: 'pointer',
+                            padding: '4px',
+                          }}
+                          title={layer.opacity > 0 ? 'Hide' : 'Show'}
+                        >
+                          {layer.opacity > 0 ? <Eye size={14} /> : <EyeOff size={14} />}
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDuplicateLayer(layer.id);
+                          }}
+                          style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
+                          title="Duplicate"
+                        >
+                          <Copy size={13} />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteLayer(layer.id);
+                          }}
+                          style={{ background: 'transparent', border: 'none', color: '#ff4d4d', cursor: 'pointer', padding: '4px' }}
+                          title="Delete"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               );
@@ -441,6 +473,99 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
             gap: '12px',
           }}
         >
+          {selectedLayer.locked && !isDesignerMode ? (
+            /* ── Verified Locked Artwork Details for Customers ── */
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '9px 12px',
+                  borderRadius: '8px',
+                  background: 'rgba(56, 189, 248, 0.1)',
+                  border: '1px solid rgba(56, 189, 248, 0.3)',
+                }}
+              >
+                <span style={{ fontSize: '18px' }}>🔒</span>
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 800, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Studio Verified Placement
+                  </div>
+                  <div style={{ fontSize: '9.5px', color: 'rgba(255, 255, 255, 0.7)' }}>
+                    Original artwork tailored specifically for {garmentConfig.name}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  fontSize: '11px',
+                  lineHeight: '1.5',
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                }}
+              >
+                <p style={{ margin: '0 0 8px 0', fontWeight: 600, color: '#ffffff' }}>
+                  This artwork placement and scale are locked so your printed garment matches the creator's exact design specifications.
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '10.5px', color: '#94a3b8' }}>
+                  <div>• <strong>All Garment Cuts:</strong> Change apparel below (Regular, Oversized, Acid Wash, Hoodie) to preview all looks in 3D.</div>
+                  <div>• <strong>Approved Fabric Colors:</strong> Switch colors to see how the print looks on dark &amp; light fabrics.</div>
+                  <div>• <strong>360° Inspection:</strong> Drag anywhere across the 3D model to inspect print details and seams.</div>
+                </div>
+              </div>
+
+              {isDesignerAuthorized && onToggleDesignerMode && (
+                <div style={{ marginTop: '4px', paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                  <button
+                    type="button"
+                    onClick={onToggleDesignerMode}
+                    style={{
+                      width: '100%',
+                      padding: '8px 10px',
+                      background: 'rgba(139, 92, 246, 0.18)',
+                      border: '1px solid rgba(139, 92, 246, 0.45)',
+                      borderRadius: '6px',
+                      color: '#c4b5fd',
+                      fontSize: '10.5px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <span>🎨 Switch to Designer Mode (Adjust Placement)</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* ── Unlocked Controls (Custom Uploads or Designer Mode) ── */
+            <>
+              {isDesignerAuthorized && isDesignerMode && (
+                <div
+                  style={{
+                    padding: '6px 8px',
+                    borderRadius: '6px',
+                    background: 'rgba(139, 92, 246, 0.2)',
+                    border: '1px solid rgba(139, 92, 246, 0.5)',
+                    fontSize: '10px',
+                    color: '#c4b5fd',
+                    fontWeight: 800,
+                    textAlign: 'center',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  🛠️ Designer Placement Mode Active
+                </div>
+              )}
           {/* Customer Print Surface Selector: FRONT vs BACK vs SLEEVE */}
           {(() => {
             const isBack = selectedLayer.regionId === 'back' || (selectedLayer.placementTarget && selectedLayer.placementTarget.includes('back'));
@@ -984,6 +1109,8 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
               Flip Vertical
             </button>
           </div>
+            </>
+          )}
         </div>
       )}
     </div>

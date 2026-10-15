@@ -86,6 +86,11 @@ export interface ArtworkLayer3D {
   surfaceProjector?: SurfaceProjectorConfig;
   placementTarget?: string;
   scalePreset?: string;
+  locked?: boolean;
+  isCurated?: boolean;
+  curatedDesignId?: string;
+  hidden?: boolean;
+  removed?: boolean;
 }
 
 export type AnimationActionName = 'IDLE' | 'WALK' | 'DANCE' | 'RUN' | 'FIGHTER' | 'STRUT';

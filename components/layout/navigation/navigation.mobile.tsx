@@ -15,16 +15,16 @@ import { OfferBannerMobile } from '@/components/home/offer-banner/offer-banner.m
 import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const menuLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/products/all', label: 'Shop All' },
-  { href: '/products/posters', label: 'Posters' },
-  { href: '/split-poster', label: 'Split Posters' },
-  { href: '/wall-studio', label: 'Wall Studio' },
-  { href: '/bulk-orders', label: 'Bulk & Custom Orders' },
-  { href: '/magazine', label: 'Magazine Studio' },
-  { href: '/studio', label: 'Studio' },
-  { href: '/faq', label: 'FAQ & Shipping' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/', label: 'Home', symbol: '✦' },
+  { href: '/products/all', label: 'Shop All', symbol: '👕' },
+  { href: '/products/posters', label: 'Posters', symbol: '🖼️' },
+  { href: '/split-poster', label: 'Split Posters', symbol: '⊞' },
+  { href: '/wall-studio', label: 'Wall Studio', symbol: '🎨' },
+  { href: '/bulk-orders', label: 'Bulk & Custom Orders', symbol: '📦' },
+  { href: '/magazine', label: 'Magazine Studio', symbol: '📖' },
+  { href: '/studio', label: '360° Studio', symbol: '↺' },
+  { href: '/faq', label: 'FAQ & Shipping', symbol: '✈' },
+  { href: '/contact', label: 'Contact', symbol: '✉' },
 ];
 
 export interface NavigationMobileProps {
@@ -292,9 +292,10 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
                   key={link.href}
                   href={link.href}
                   onClick={onClose}
-                  className="font-display text-2xl font-bold text-[#F5F1EA] hover:text-[#ED9518] transition-colors"
+                  className="font-display text-2xl font-bold text-[#F5F1EA] hover:text-[#ED9518] transition-colors flex items-center gap-3"
                 >
-                  {link.label}
+                  <span className="text-lg opacity-80 shrink-0">{link.symbol}</span>
+                  <span>{link.label}</span>
                 </Link>
               ))}
             </div>
