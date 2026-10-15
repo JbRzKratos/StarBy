@@ -59,7 +59,7 @@ export function toAbsoluteUrl(url?: string | null): string {
   const trimmed = url.trim();
   if (trimmed.startsWith('data:')) return trimmed;
 
-  const domain = 'https://fregorostudios.com';
+  const domain = getBaseUrl();
 
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
     if (trimmed.startsWith('http:///') || trimmed.startsWith('https:///')) {
@@ -529,7 +529,6 @@ export async function sendOrderConfirmationEmail(
     return false;
   }
 
-  const baseUrl = getBaseUrl();
   const safeName = escapeHtml(customerName || details?.customerName || 'Valued Collector');
   const safeOrderId = escapeHtml(
     orderId || details?.publicOrderId || details?.orderId || 'STB-ORDER',
@@ -887,7 +886,6 @@ export async function sendAdminNewOrderEmail(
     return false;
   }
 
-  const baseUrl = getBaseUrl();
   const safeOrderId = escapeHtml(
     orderId || details?.publicOrderId || details?.orderId || 'STB-ORDER',
   );
