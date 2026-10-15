@@ -1,0 +1,295 @@
+{
+  "Acid-Wash-240GSM": {
+    "Black": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Black/Plain_Acid-Wash-240GSM_Black_10_Construction-Closeup.jpg"
+      ]
+    },
+    "Violet": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/Violet/Plain_Acid-Wash-240GSM_Violet_10_Construction-Closeup.jpg"
+      ]
+    },
+    "White": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Acid-Wash-240GSM/White/Plain_Acid-Wash-240GSM_White_10_Construction-Closeup.jpg"
+      ]
+    }
+  },
+  "Hoodie-Brushed-Fleece-300GSM": {
+    "Black": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_10_Construction-Closeup.jpg"
+      ]
+    },
+    "White": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Hoodie-Brushed-Fleece-300GSM/White/Plain_Hoodie-Brushed-Fleece-300GSM_White_10_Construction-Closeup.jpg"
+      ]
+    }
+  },
+  "Oversized-French-Terry-240GSM": {
+    "Beige": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Beige/Plain_Oversized-French-Terry-240GSM_Beige_10_Construction-Closeup.jpg"
+      ]
+    },
+    "Black": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_10_Construction-Closeup.jpg"
+      ]
+    },
+    "Dusky-Pink": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Dusky-Pink/Plain_Oversized-French-Terry-240GSM_Dusky-Pink_10_Construction-Closeup.jpg"
+      ]
+    },
+    "Navy-Blue": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/Navy-Blue/Plain_Oversized-French-Terry-240GSM_Navy-Blue_10_Construction-Closeup.jpg"
+      ]
+    },
+    "White": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Oversized-French-Terry-240GSM/White/Plain_Oversized-French-Terry-240GSM_White_10_Construction-Closeup.jpg"
+      ]
+    }
+  },
+  "Regular-Cotton-180GSM": {
+    "Black": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Black/Plain_Regular-Cotton-180GSM_Black_10_Construction-Closeup.jpg"
+      ]
+    },
+    "C-Brown": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/C-Brown/Plain_Regular-Cotton-180GSM_C-Brown_10_Construction-Closeup.jpg"
+      ]
+    },
+    "Maroon": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Maroon/Plain_Regular-Cotton-180GSM_Maroon_10_Construction-Closeup.jpg"
+      ]
+    },
+    "Olive-Green": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/Olive-Green/Plain_Regular-Cotton-180GSM_Olive-Green_10_Construction-Closeup.jpg"
+      ]
+    },
+    "White": {
+      "primaryImage": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_01_Model-Front.jpg",
+      "modelFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_01_Model-Front.jpg",
+      "modelBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_02_Model-Back.jpg",
+      "garmentFront": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_07_Garment-Front.jpg",
+      "garmentBack": "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_08_Garment-Back.jpg",
+      "allImages": [
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_01_Model-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_02_Model-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_03_Model-Left-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_04_Model-Right-Side.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_05_Model-Front-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_06_Model-Back-Angle.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_07_Garment-Front.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_08_Garment-Back.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_09_Fabric-Macro.jpg",
+        "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/plain-mockups/Regular-Cotton-180GSM/White/Plain_Regular-Cotton-180GSM_White_10_Construction-Closeup.jpg"
+      ]
+    }
+  }
+}

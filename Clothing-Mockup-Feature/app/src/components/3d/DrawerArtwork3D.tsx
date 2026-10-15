@@ -81,33 +81,37 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target?.result as string;
-      const newLayer: ArtworkLayer3D = {
-        id: `layer-${Date.now()}`,
-        name: file.name.replace(/\.[^/.]+$/, ''),
-        regionId: activeRegionId,
-        imageUrl: dataUrl,
-        placementMode: 'atlas',
-        u: 0.25, // default on front torso
-        v: 0.63,
-        uvWidth: 0.35,
-        uvHeight: 0.35,
-        offsetX: 0,
-        offsetY: 0,
-        scale: 1.0,
-        rotation: 0,
-        opacity: 1.0,
-        lockAspectRatio: true,
+    Array.from(files).forEach((file, idx) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        const newLayer: ArtworkLayer3D = {
+          id: `layer-${Date.now()}-${idx}-${Math.random().toString(36).substring(2, 6)}`,
+          name: file.name.replace(/\.[^/.]+$/, ''),
+          regionId: activeRegionId,
+          imageUrl: dataUrl,
+          placementMode: 'atlas',
+          u: 0.25, // default on front torso
+          v: 0.63,
+          uvWidth: 0.35,
+          uvHeight: 0.35,
+          offsetX: 0,
+          offsetY: 0,
+          scale: 1.0,
+          rotation: 0,
+          opacity: 1.0,
+          lockAspectRatio: true,
+        };
+        onAddArtwork(newLayer);
+        if (idx === files.length - 1) {
+          onSelectLayer(newLayer.id);
+        }
       };
-      onAddArtwork(newLayer);
-      onSelectLayer(newLayer.id);
-    };
-    reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
+    });
     e.target.value = '';
   };
 
@@ -307,6 +311,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
         <input
           ref={fileInputRef}
           type="file"
+          multiple
           accept="image/png,image/webp,image/jpeg"
           style={{ display: 'none' }}
           onChange={handleFileUpload}

@@ -16,6 +16,7 @@ export function getClothingDesignProducts(): Product[] {
       const artCount = design.artworks?.length || 1;
       const primaryArt = design.artworks?.[0];
       const previewImg = design.previewUrl || primaryArt?.previewUrl || `/api/clothing-designs/${design.id}/preview?type=thumbnail`;
+      const isOneRupee = design.id === 'design-001';
 
       return {
         id: design.id,
@@ -24,7 +25,7 @@ export function getClothingDesignProducts(): Product[] {
         tagline: artCount > 1 ? `${artCount} Artwork Files • 3D Customizer` : '240 GSM Heavyweight Tee',
         description: `Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.`,
         categorySlug: design.category === 'hoodies' ? 'hoodies' : 'tees',
-        basePrice: design.category === 'hoodies' ? 1499 : 999,
+        basePrice: isOneRupee ? 1 : (design.category === 'hoodies' ? 1499 : 999),
         customizable: true,
         tags: ['apparel', 'featured', 'clothing-design', ...(design.tags || [])],
         featured: true,
@@ -35,7 +36,7 @@ export function getClothingDesignProducts(): Product[] {
             name: 'White',
             color: 'white',
             colorHex: '#FFFFFF',
-            price: design.category === 'hoodies' ? 1499 : 999,
+            price: isOneRupee ? 1 : (design.category === 'hoodies' ? 1499 : 999),
             images: [previewImg],
             inStock: true,
           },
@@ -44,7 +45,7 @@ export function getClothingDesignProducts(): Product[] {
             name: 'Black',
             color: 'black',
             colorHex: '#111216',
-            price: design.category === 'hoodies' ? 1499 : 999,
+            price: isOneRupee ? 1 : (design.category === 'hoodies' ? 1499 : 999),
             images: [previewImg],
             inStock: true,
           },

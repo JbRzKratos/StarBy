@@ -33,23 +33,34 @@ export async function GET(req: Request, { params }: RouteProps) {
       });
     }
 
-    const typeParam = searchParams.get('type') === 'studio' ? 'studio' : 'thumbnail';
+    const typeReq = searchParams.get('type');
+    const typeParam: 'thumbnail' | 'studio' | 'original' =
+      typeReq === 'original' ? 'original' : typeReq === 'studio' ? 'studio' : 'thumbnail';
     const artIdParam = searchParams.get('artId') || searchParams.get('surface') || design.defaultArtworkId;
+    const isDownload = searchParams.get('download') === '1' || searchParams.has('download');
 
     const result = await getPreviewImageStream(id, typeParam, artIdParam);
     if (!result) {
       return new NextResponse('Preview not available', { status: 404 });
     }
 
+    const filename = result.fileName || `${id}_${artIdParam || 'artwork'}.${result.contentType.includes('png') ? 'png' : 'webp'}`;
+
+    const headers: Record<string, string> = {
+      'Content-Type': result.contentType,
+      'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
+      'X-Content-Type-Options': 'nosniff',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    };
+
+    if (isDownload) {
+      headers['Content-Disposition'] = `attachment; filename="${encodeURIComponent(filename)}"`;
+    }
+
     return new Response(new Uint8Array(result.buffer), {
       status: 200,
-      headers: {
-        'Content-Type': result.contentType,
-        'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
-        'X-Content-Type-Options': 'nosniff',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      },
+      headers,
     });
   } catch (err: unknown) {
     console.error(`[API /api/clothing-designs/${params.id}/preview] Error:`, err);

@@ -174,9 +174,28 @@ export const useCartStore = create<CartState & CartActions>()(
                 }
               }
 
+              let liveName: string | undefined;
+              if (item.productId && data.names?.[item.productId]) {
+                liveName = data.names[item.productId];
+              }
+
+              let itemChanged = false;
+              let nextPrice = item.price;
+              let nextName = item.name;
+
               if (typeof livePrice === 'number' && livePrice !== item.price && livePrice >= 0) {
+                nextPrice = livePrice;
+                itemChanged = true;
+              }
+
+              if (typeof liveName === 'string' && liveName && liveName !== item.name) {
+                nextName = liveName;
+                itemChanged = true;
+              }
+
+              if (itemChanged) {
                 changed = true;
-                return { ...item, price: livePrice };
+                return { ...item, price: nextPrice, ...(nextName ? { name: nextName } : {}) };
               }
               return item;
             });

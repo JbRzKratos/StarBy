@@ -17,6 +17,7 @@ export interface AddToCartModal3DProps {
   onClose: () => void;
   garmentName: string;
   garmentColor: string;
+  unitPrice?: number;
   frontSnapshotUrl: string | null;
   backSnapshotUrl: string | null;
   artworkLayers: ArtworkLayer3D[];
@@ -45,6 +46,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   onClose,
   garmentName,
   garmentColor,
+  unitPrice: propUnitPrice,
   frontSnapshotUrl,
   backSnapshotUrl,
   artworkLayers,
@@ -103,7 +105,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
     }, 400);
   };
 
-  const unitPrice = 999;
+  const unitPrice = typeof propUnitPrice === 'number' && propUnitPrice >= 0 ? propUnitPrice : 999;
   const totalPrice = unitPrice * quantity;
 
   return (
@@ -399,7 +401,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
               <div className="price-summary-block">
                 <span className="price-label">Total Price:</span>
                 <span className="price-val">₹{totalPrice.toLocaleString('en-IN')}</span>
-                <span className="price-sub">₹{unitPrice} / tee · Inclusive of all taxes</span>
+                <span className="price-sub">₹{unitPrice} / {garmentName.toLowerCase().includes('hoodie') ? 'hoodie' : 'tee'} · Inclusive of all taxes</span>
               </div>
             </div>
 

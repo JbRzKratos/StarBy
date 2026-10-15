@@ -725,7 +725,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     await downloadMagazinePdf(doc);
   };
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
     const isFirstFashionMagazine =
       doc.templateId === 'tpl_fashion_1' ||
       doc.templateId === 'fashion-magazine-1' ||
@@ -733,6 +733,35 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
       doc.title?.toLowerCase().includes('fashion editorial');
 
     const itemPrice = isFirstFashionMagazine ? 1 : 499;
+
+    let printPdfUrl: string | null = null;
+    try {
+      const { generateMagazinePdf } = await import('@/lib/magazine/pdf-generator');
+      const blob = await generateMagazinePdf(doc, { includeBleed: true });
+      const reader = new FileReader();
+      const pdfDataUrl = await new Promise<string>((resolve, reject) => {
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+
+      const uploadRes = await fetch('/api/customizer/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          magazinePdf: pdfDataUrl,
+          filename: `Magazine_Print_${doc.id}.pdf`,
+        }),
+      });
+      if (uploadRes.ok) {
+        const uploadJson = await uploadRes.json();
+        if (uploadJson.printPdfUrl) {
+          printPdfUrl = uploadJson.printPdfUrl;
+        }
+      }
+    } catch (pdfErr) {
+      console.warn('Could not generate or upload print PDF in editor:', pdfErr);
+    }
 
     addItem({
       productId: 'prod_mag_01',
@@ -757,6 +786,8 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
         thumbnail:
           doc.pages[0]?.elements?.find((e) => e.type === 'image')?.content ||
           '/templates/canva/fashion-1/thumbnail.webp',
+        printPdfUrl: printPdfUrl || undefined,
+        designFileUrl: printPdfUrl || undefined,
         document: doc,
         pagesData: doc.pages.map((p, idx) => ({
           pageNumber: idx + 1,

@@ -8,7 +8,7 @@ import { DeviceProvider } from '@/lib/providers/device-provider';
 import { TawkToWidget } from '@/components/layout/tawk-to-widget';
 import './globals.css';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fregoro.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fregorostudios.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

@@ -15,7 +15,7 @@ import {
 const DUMMY_APPAREL_KEYS = new Set([
   'prod_001', 'prod_002', 'prod_003', 'prod_004', 'prod_005', 'prod_006',
   'prod_007', 'prod_008', 'prod_009', 'prod_010', 'prod_011', 'prod_012',
-  'prod_test_tees', 'void-tee', 'eclipse-tee', 'solar-tee', 'lunar-tee',
+  'void-tee', 'eclipse-tee', 'solar-tee', 'lunar-tee',
   'nova-tee', 'zenith-tee', 'orbit-hoodie', 'pulse-hoodie', 'core-hoodie',
   'vanguard-hoodie', 'oasis-hoodie', 'echo-hoodie', 'titan-hoodie', 'apex-hoodie'
 ]);

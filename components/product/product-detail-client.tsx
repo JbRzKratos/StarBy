@@ -100,8 +100,20 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   // Garment cut state for apparel
   const [selectedGarmentId, setSelectedGarmentId] = useState<string>(() => {
-    if (product.categorySlug === 'hoodies') return 'hoodie';
-    if (product.categorySlug === 'oversized-tees') return 'oversized-t-shirt';
+    if (product.id === 'plain_acid_wash_tee' || product.slug === 'plain-vintage-acid-wash-tee')
+      return 'acid-wash-t-shirt';
+    if (
+      product.id === 'plain_oversized_tee' ||
+      product.slug === 'plain-oversized-french-terry-tee' ||
+      product.categorySlug === 'oversized-tees'
+    )
+      return 'oversized-t-shirt';
+    if (
+      product.id === 'plain_hoodie' ||
+      product.slug === 'plain-heavyweight-studio-hoodie' ||
+      product.categorySlug === 'hoodies'
+    )
+      return 'hoodie';
     return 'regular-t-shirt';
   });
 
@@ -248,9 +260,18 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
     if (isComingSoon) return;
 
     if (isApparel) {
+      const apparelImg =
+        selectedApparelColor?.modelImage ||
+        selectedApparelColor?.garmentFrontImage ||
+        variant?.images?.[0] ||
+        product.variants?.[0]?.images?.[0];
+
       addItem({
         productId: product.id,
-        variantId: `var_${product.id}_${selectedGarment.id}_${selectedApparelColor.name.toLowerCase().replace(/\s+/g, '-')}`,
+        variantId: `var_${product.id}_${selectedGarment.id}_${selectedApparelColor.name.toLowerCase().replace(/[^a-z0-9]/gi, '')}`,
+        name: product.name,
+        variant: `${selectedGarment.name} / ${selectedApparelColor.name}`,
+        image: apparelImg,
         quantity: 1,
         price: selectedGarment.basePrice,
         size: selectedSize,
@@ -261,6 +282,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
           colorHex: selectedApparelColor.hex,
           gsm: selectedGarment.gsm,
           fabric: selectedGarment.fabric,
+          previewFileUrl: apparelImg,
         },
       });
       setCartOpen(true);
@@ -291,7 +313,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             colorHex={isApparel ? selectedApparelColor.hex : variant?.colorHex ?? '#1A1A1E'}
             productName={product.name}
             images={
-              clothingDesign?.artworks && clothingDesign.artworks.length > 0
+              selectedApparelColor?.allImages && selectedApparelColor.allImages.length > 0
+                ? selectedApparelColor.allImages
+                : variant?.images && variant.images.length > 0 && !clothingDesign?.artworks?.length
+                ? variant.images
+                : clothingDesign?.artworks && clothingDesign.artworks.length > 0
                 ? clothingDesign.artworks.map((a) => a.previewUrl)
                 : variant?.images
             }

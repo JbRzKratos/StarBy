@@ -2,6 +2,7 @@
 const nextConfig = {
   // Disable X-Powered-By header for security
   poweredByHeader: false,
+  distDir: process.env.NEXT_DIST_DIR || '.next',
 
   // Transpile ESM packages for SSR compatibility on Node & Vercel
   transpilePackages: ['gsap', '@gsap/react'],
@@ -170,6 +171,20 @@ const nextConfig = {
         ],
       },
       {
+        // Cache plain mockups permanently
+        source: '/plain-mockups/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+        ],
+      },
+      {
         // Cache the clothing mockup studio built assets (content-hashed JS/CSS)
         source: '/tools/clothing-mockup/assets/:path*',
         headers: [
@@ -188,6 +203,10 @@ const nextConfig = {
       'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev';
 
     return [
+      {
+        source: '/plain-mockups/:path*',
+        destination: `${r2Base}/plain-mockups/:path*`,
+      },
       {
         source: '/3d-assets/:path*',
         destination: `${r2Base}/3d-assets/:path*`,

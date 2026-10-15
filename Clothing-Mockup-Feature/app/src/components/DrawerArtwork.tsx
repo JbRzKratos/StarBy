@@ -91,13 +91,13 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      onUploadFile(e.dataTransfer.files[0]);
+      Array.from(e.dataTransfer.files).forEach((file) => onUploadFile(file));
     }
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      onUploadFile(e.target.files[0]);
+      Array.from(e.target.files).forEach((file) => onUploadFile(file));
     }
     e.target.value = '';
   };
@@ -315,6 +315,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
           <input
             ref={fileInputRef}
             type="file"
+            multiple
             accept=".png,.jpg,.jpeg,.svg,.webp"
             style={{ display: 'none' }}
             onChange={handleFileInput}

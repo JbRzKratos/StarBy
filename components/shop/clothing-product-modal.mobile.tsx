@@ -22,6 +22,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
     selectedGarmentId,
     setSelectedGarmentId,
     selectedGarment,
+    unitPrice,
     selectedColor,
     setSelectedColor,
     selectedSize,
@@ -744,7 +745,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
             Unit Price
           </p>
           <p className="font-mono text-xl font-bold text-white">
-            ₹{selectedGarment.basePrice.toLocaleString()}
+            ₹{unitPrice.toLocaleString()}
           </p>
         </div>
 

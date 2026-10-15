@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getProductsFromDB } from '@/lib/services/db-service';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const products = await getProductsFromDB();
@@ -8,7 +11,7 @@ export async function GET() {
       { success: true, products },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
         },
       },
     );

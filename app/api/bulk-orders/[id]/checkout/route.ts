@@ -71,7 +71,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     let returnUrl = `${siteUrl}/bulk-orders/request/${bulkRequest.requestNumber}?order_id=${cfOrderId}&paid=true`;
     if (cfEnvironment === 'production' && returnUrl.startsWith('http://')) {
       if (isLocal) {
-        returnUrl = `https://fregoro.vercel.app/bulk-orders/request/${bulkRequest.requestNumber}?order_id=${cfOrderId}&paid=true`;
+        returnUrl = `https://fregorostudios.com/bulk-orders/request/${bulkRequest.requestNumber}?order_id=${cfOrderId}&paid=true`;
       } else {
         returnUrl = returnUrl.replace(/^http:\/\//i, 'https://');
       }

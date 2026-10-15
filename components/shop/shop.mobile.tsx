@@ -178,17 +178,16 @@ export function ShopMobile({ category, products }: { category: string; products:
 
   const baseProducts = useMemo(() => {
     if (activeTab !== 'all') {
-      return products.filter((p) => p.categorySlug === activeTab);
+      return products.filter((p) => p.categorySlug === activeTab && !isProductComingSoon(p));
     }
 
     // When viewing "All Designs" / Catalog:
-    // What we are actually selling must show up FIRST:
-    // (Posters, Split Posters, Wall Studio, Magazine Studio, and Core Apparel)
+    // Only display what we are actually selling right now!
+    // (Posters, Split Posters, Wall Studio, Magazine Studio, and Real Clothing Designs)
     const activeSellingProducts = products.filter(
       (p) => !isProductComingSoon(p) && !p.id.startsWith('design-'),
     );
     const clothingDesigns = products.filter((p) => p.id.startsWith('design-'));
-    const comingSoonProducts = products.filter((p) => isProductComingSoon(p));
 
     // Sort active selling products: featured items first
     const sortedSelling = [...activeSellingProducts].sort((a, b) => {
@@ -197,7 +196,7 @@ export function ShopMobile({ category, products }: { category: string; products:
       return bFeat - aFeat;
     });
 
-    return [...sortedSelling, ...clothingDesigns, ...comingSoonProducts];
+    return [...sortedSelling, ...clothingDesigns];
   }, [products, activeTab]);
   let filteredProducts = baseProducts;
   if (filterType === 'customizable')
@@ -307,6 +306,7 @@ export function ShopMobile({ category, products }: { category: string; products:
           <ClothingDesignsGallery
             category={activeTab as 'tees' | 'hoodies'}
             searchQuery={searchQuery}
+            products={products}
           />
         ) : (
           <div className="flex flex-col">

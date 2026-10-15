@@ -34,6 +34,8 @@ export interface ClothingDesignEntry {
   name: string; // Display title, e.g. "Design 01" or named graphic
   category: 'tees' | 'hoodies' | 'apparel';
   tags: string[];
+  basePrice?: number;
+  price?: number;
   artworks: DesignArtworkOption[]; // All artwork options from this folder
   defaultArtworkId: string;
   defaultSurface: 'front' | 'back';

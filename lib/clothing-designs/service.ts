@@ -39,9 +39,9 @@ function getBucketName(): string {
 
 export async function getPreviewImageStream(
   designId: string,
-  type: 'thumbnail' | 'studio',
+  type: 'thumbnail' | 'studio' | 'original',
   artIdOrSurface?: string,
-): Promise<{ buffer: Buffer; contentType: string } | null> {
+): Promise<{ buffer: Buffer; contentType: string; fileName?: string } | null> {
   const design = getDesignById(designId);
   if (!design || !design.artworks || design.artworks.length === 0) return null;
 
@@ -57,17 +57,70 @@ export async function getPreviewImageStream(
     art = design.artworks.find((a) => a.id === design.defaultArtworkId) || design.artworks[0];
   }
 
+  // 1. Original high-res artwork download handling
+  if (type === 'original') {
+    // Check local filesystem first if originalPath exists
+    if (art.originalPath) {
+      const candidates = [
+        path.resolve(process.cwd(), 'Clothing_Designs', design.folder, art.fileName),
+        path.resolve(process.cwd(), art.originalPath),
+        path.resolve(process.cwd(), 'public', art.originalPath),
+      ];
+      for (const p of candidates) {
+        if (fs.existsSync(p)) {
+          try {
+            const buffer = fs.readFileSync(p);
+            const contentType = art.fileName.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
+            return { buffer, contentType, fileName: art.fileName };
+          } catch {
+            // Fall through to R2
+          }
+        }
+      }
+    }
+
+    // Fallback: Fetch original object key from R2
+    const r2Key = art.originalObjectKey;
+    try {
+      const client = getR2Client();
+      const command = new GetObjectCommand({
+        Bucket: getBucketName(),
+        Key: r2Key,
+      });
+
+      const response = await client.send(command);
+      if (!response.Body) return null;
+
+      const chunks: Uint8Array[] = [];
+      // @ts-expect-error - aws-sdk body is async iterable in Node
+      for await (const chunk of response.Body) {
+        chunks.push(chunk);
+      }
+      const buffer = Buffer.concat(chunks);
+      const contentType = response.ContentType || (art.fileName.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg');
+
+      return {
+        buffer,
+        contentType,
+        fileName: art.fileName,
+      };
+    } catch (err) {
+      console.warn(`[ClothingDesignService] R2 original fetch error for ${r2Key}:`, err);
+      // Fall through to studio preview as fallback
+    }
+  }
+
   const primaryFileName = `${type === 'thumbnail' ? 'thumb' : 'studio'}_${art.id}.webp`;
   const legacyFileName = `${type === 'thumbnail' ? 'thumb' : 'studio'}_${art.suggestedPlacement}.webp`;
   
   const localCachePath = path.join(CACHE_DIR, designId, primaryFileName);
   const legacyCachePath = path.join(CACHE_DIR, designId, legacyFileName);
 
-  // 1. Check local derivative cache first for instant millisecond response
+  // 2. Check local derivative cache first for instant millisecond response
   if (fs.existsSync(localCachePath)) {
     try {
       const buffer = fs.readFileSync(localCachePath);
-      return { buffer, contentType: 'image/webp' };
+      return { buffer, contentType: 'image/webp', fileName: art.fileName };
     } catch {
       // Fall through
     }
@@ -76,13 +129,13 @@ export async function getPreviewImageStream(
   if (fs.existsSync(legacyCachePath)) {
     try {
       const buffer = fs.readFileSync(legacyCachePath);
-      return { buffer, contentType: 'image/webp' };
+      return { buffer, contentType: 'image/webp', fileName: art.fileName };
     } catch {
       // Fall through
     }
   }
 
-  // 2. Stream derivative from private Cloudflare R2
+  // 3. Stream derivative from private Cloudflare R2
   const r2Key = type === 'thumbnail' ? art.thumbnailObjectKey : art.previewObjectKey;
 
   try {
@@ -114,9 +167,11 @@ export async function getPreviewImageStream(
     return {
       buffer,
       contentType: response.ContentType || 'image/webp',
+      fileName: art.fileName,
     };
   } catch (err) {
     console.warn(`[ClothingDesignService] R2 fetch error for ${r2Key}:`, err);
     return null;
   }
 }
+

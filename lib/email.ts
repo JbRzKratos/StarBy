@@ -1,5 +1,39 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Resend } from 'resend';
 import { generateInvoicePdf } from './invoice';
+import fs from 'fs';
+import path from 'path';
+
+async function fetchAttachmentBuffer(url?: string | null): Promise<Buffer | null> {
+  if (!url || typeof url !== 'string') return null;
+  try {
+    if (url.startsWith('data:')) {
+      const matches = url.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (matches && matches[2]) {
+        return Buffer.from(matches[2], 'base64');
+      }
+    }
+    if (url.startsWith('/')) {
+      const filePath = path.join(process.cwd(), 'public', url);
+      if (fs.existsSync(filePath)) {
+        return fs.readFileSync(filePath);
+      }
+    }
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeout);
+      if (res.ok) {
+        const ab = await res.arrayBuffer();
+        return Buffer.from(ab);
+      }
+    }
+  } catch (err) {
+    console.warn(`[Email] Could not fetch buffer for attachment (${url}):`, err);
+  }
+  return null;
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy');
 const DEFAULT_FROM = process.env.EMAIL_FROM || 'Fregoro Studios <onboarding@resend.dev>';
@@ -19,6 +53,46 @@ function getBaseUrl(): string {
   return 'https://fregorostudios.com';
 }
 
+/** Converts any relative URL into an absolute HTTPS URL on fregorostudios.com */
+export function toAbsoluteUrl(url?: string | null): string {
+  if (!url || typeof url !== 'string') return '';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('data:')) return trimmed;
+
+  const domain = 'https://fregorostudios.com';
+
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    if (trimmed.startsWith('http:///') || trimmed.startsWith('https:///')) {
+      const fixedPath = trimmed.replace(/^https?:\/\/\/?/, '');
+      return `${domain}/${fixedPath.startsWith('/') ? fixedPath.slice(1) : fixedPath}`;
+    }
+    if (trimmed.includes('fregoro.vercel.app')) {
+      return trimmed.replace(/https?:\/\/fregoro\.vercel\.app/g, domain);
+    }
+    return trimmed;
+  }
+
+  const cleanPath = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  return `${domain}${cleanPath}`;
+}
+
+/** Generates a high-resolution artwork download URL with attachment header */
+export function getArtworkDownloadUrl(rawUrl?: string | null): string {
+  if (!rawUrl) return '';
+  const abs = toAbsoluteUrl(rawUrl);
+  try {
+    const urlObj = new URL(abs);
+    if (urlObj.pathname.includes('/api/clothing-designs/')) {
+      urlObj.searchParams.set('type', 'original');
+      urlObj.searchParams.set('download', '1');
+      return urlObj.toString();
+    }
+    return abs;
+  } catch {
+    return abs;
+  }
+}
+
 /** Prevent XSS by escaping HTML special characters in user-supplied strings */
 function escapeHtml(str?: string | number | null): string {
   if (str === null || str === undefined) return '';
@@ -28,6 +102,325 @@ function escapeHtml(str?: string | number | null): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+/** Builds rich, table-based, cross-client responsive customization HTML for emails */
+function buildCustomizationEmailHtml(
+  c: Record<string, any> | null | undefined,
+  item: OrderItemEmailData,
+  forAdmin: boolean = false,
+): string {
+  if (!c || typeof c !== 'object') return '';
+
+  const blocks: string[] = [];
+
+  // 1. Placement & Print Instructions (Top priority - impossible to miss)
+  const instructions = c.printInstructions || c.customerNotes || c.instructions || null;
+  if (instructions) {
+    blocks.push(`
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px; margin-bottom: 10px; background-color: #141B2D; border: 1px solid #2B3D66; border-left: 4px solid #3B82F6; border-radius: 6px;">
+        <tr>
+          <td style="padding: 10px 14px;">
+            <div style="font-size: 11px; font-weight: 800; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px;">
+              🎯 Production Placement &amp; Print Instructions:
+            </div>
+            <div style="font-size: 13px; color: #FFFFFF; font-style: italic; line-height: 1.5; font-weight: 500;">
+              &ldquo;${escapeHtml(String(instructions))}&rdquo;
+            </div>
+          </td>
+        </tr>
+      </table>
+    `);
+  }
+
+  // 2. Visual Mockup Proofs (Front and Back side-by-side using table columns)
+  const frontMockup = c.frontPreviewFileUrl || c.previewFileUrl || item.previewUrl;
+  const backMockup = c.backPreviewFileUrl;
+  const is2d = Boolean(c.is2dMockup || c.mode === '2d');
+  const studioTypeLabel = is2d ? '2D Studio Placement Proofs' : '3D Studio Placement Proofs';
+  const proofTag = is2d ? '2D' : '3D';
+
+  if (frontMockup || backMockup) {
+    const absFront = frontMockup ? toAbsoluteUrl(frontMockup) : '';
+    const absBack = backMockup ? toAbsoluteUrl(backMockup) : '';
+
+    blocks.push(`
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px; margin-bottom: 10px; background-color: #131520; border: 1px solid #282C3D; border-radius: 8px;">
+        <tr>
+          <td style="padding: 10px 14px; border-bottom: 1px solid #212536;">
+            <div style="font-size: 11px; font-weight: 800; color: #10B981; text-transform: uppercase; letter-spacing: 0.6px;">
+              👕 ${studioTypeLabel} (Front &amp; Back Render Proofs):
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 12px;">
+            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                ${absFront ? `
+                  <td align="center" width="${absBack ? '50%' : '100%'}" style="vertical-align: top; padding: 6px;">
+                    <a href="${absFront}" target="_blank" style="text-decoration: none; display: inline-block;">
+                      <img src="${absFront}" alt="Front ${proofTag} Proof" style="width: 130px; height: 130px; object-fit: contain; background-color: #0B0D13; border: 1px solid #2563EB; border-radius: 6px; display: block;" />
+                    </a>
+                    <div style="margin-top: 6px;">
+                      <a href="${absFront}" target="_blank" style="font-size: 11px; color: #60A5FA; font-weight: 700; text-decoration: none;">
+                        🔍 View Front ${proofTag} Proof ↗
+                      </a>
+                    </div>
+                  </td>
+                ` : ''}
+                ${absBack ? `
+                  <td align="center" width="${absFront ? '50%' : '100%'}" style="vertical-align: top; padding: 6px;">
+                    <a href="${absBack}" target="_blank" style="text-decoration: none; display: inline-block;">
+                      <img src="${absBack}" alt="Back ${proofTag} Proof" style="width: 130px; height: 130px; object-fit: contain; background-color: #0B0D13; border: 1px solid #2563EB; border-radius: 6px; display: block;" />
+                    </a>
+                    <div style="margin-top: 6px;">
+                      <a href="${absBack}" target="_blank" style="font-size: 11px; color: #60A5FA; font-weight: 700; text-decoration: none;">
+                        🔍 View Back ${proofTag} Proof ↗
+                      </a>
+                    </div>
+                  </td>
+                ` : ''}
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    `);
+  }
+
+  // 3. Placed Artwork Files & High-Res Production Downloads (Front, Back, Sleeve)
+  const uploadedArtworks: any[] = Array.isArray(c.uploadedArtworks)
+    ? [...c.uploadedArtworks]
+    : [];
+
+  // Fallback single design file if uploadedArtworks array was empty
+  if (uploadedArtworks.length === 0 && (c.designFileUrl || c.frontDesignFileUrl || item.designFileUrl)) {
+    const rawUrl = c.designFileUrl || c.frontDesignFileUrl || item.designFileUrl;
+    uploadedArtworks.push({
+      url: rawUrl,
+      name: 'Custom Placement Artwork',
+      side: 'front',
+    });
+  }
+
+  if (uploadedArtworks.length > 0) {
+    blocks.push(`
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px; margin-bottom: 10px; background-color: #131520; border: 1px solid #282C3D; border-radius: 8px;">
+        <tr>
+          <td style="padding: 10px 14px; border-bottom: 1px solid #212536;">
+            <div style="font-size: 11px; font-weight: 800; color: #F59E0B; text-transform: uppercase; letter-spacing: 0.6px;">
+              🎨 Placed Artwork Files &amp; Production Downloads (${uploadedArtworks.length}):
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 10px 14px;">
+            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+              ${uploadedArtworks.map((art: any, aIdx: number) => {
+                const rawUrl = art.url || art.dataUrl;
+                const downloadUrl = getArtworkDownloadUrl(rawUrl);
+                const thumbUrl = toAbsoluteUrl(rawUrl);
+                const artName = art.name || `Artwork #${aIdx + 1}`;
+
+                let sideBadge = 'Standard Print';
+                const lower = String(art.side || art.name || '').toLowerCase();
+                if (lower.includes('back')) sideBadge = 'Back Placement';
+                else if (lower.includes('front') || lower.includes('chest')) sideBadge = 'Front Placement';
+                else if (lower.includes('sleeve')) sideBadge = 'Sleeve Placement';
+                else if (art.side) sideBadge = `${String(art.side).toUpperCase()} Placement`;
+
+                return `
+                  <tr>
+                    <td style="padding: 8px 0; ${aIdx < uploadedArtworks.length - 1 ? 'border-bottom: 1px solid rgba(255,255,255,0.06);' : ''}">
+                      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          ${thumbUrl ? `
+                            <td width="44" style="vertical-align: middle;">
+                              <img src="${thumbUrl}" alt="${escapeHtml(artName)}" style="width: 36px; height: 36px; object-fit: contain; background: #000; border-radius: 4px; border: 1px solid #374151; display: block;" />
+                            </td>
+                          ` : ''}
+                          <td style="vertical-align: middle; padding-left: 10px;">
+                            <div style="font-size: 12px; font-weight: 700; color: #F5F1EA;">${escapeHtml(artName)}</div>
+                            <div style="font-size: 10.5px; color: #9CA3AF; font-family: monospace;">Zone: ${escapeHtml(sideBadge)}</div>
+                          </td>
+                          ${downloadUrl ? `
+                            <td align="right" style="vertical-align: middle;">
+                              <a href="${downloadUrl}" target="_blank" style="display: inline-block; background-color: #2563EB; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 6px 14px; border-radius: 5px; font-family: sans-serif; white-space: nowrap; box-shadow: 0 2px 6px rgba(37,99,235,0.3);">
+                                📥 Download High-Res Original
+                              </a>
+                            </td>
+                          ` : ''}
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </table>
+          </td>
+        </tr>
+      </table>
+    `);
+  }
+
+  // 4. Starmap Coordinates / Celestial Text
+  const title = c.text || c.headline || c.title;
+  const occasion = c.occasion;
+  const dateLoc = [c.date, c.location || c.locationName].filter(Boolean).join(' · ');
+  if (title || occasion || dateLoc) {
+    blocks.push(`
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 8px; margin-bottom: 8px; background-color: rgba(229, 194, 135, 0.08); border-left: 3px solid #E5C287; border-radius: 4px;">
+        <tr>
+          <td style="padding: 8px 12px; font-size: 11px; color: #E5C287; line-height: 1.4;">
+            ${title ? `<div style="font-size: 12px; font-weight: 700; margin-bottom: 2px;">"${escapeHtml(String(title))}"</div>` : ''}
+            ${occasion ? `<div>✦ Occasion: ${escapeHtml(String(occasion))}</div>` : ''}
+            ${dateLoc ? `<div>✦ Coordinates: ${escapeHtml(String(dateLoc))}</div>` : ''}
+          </td>
+        </tr>
+      </table>
+    `);
+  }
+
+  // 5. Editorial Magazine Dossier
+  const isMagazine = Boolean(c.magazineTitle || Array.isArray(c.pagesData) || c.document);
+  if (isMagazine) {
+    const magTitle = c.magazineTitle || item.name;
+    const magPages = c.pageCount || (Array.isArray(c.pagesData) ? c.pagesData.length : 12);
+    const paperWeight = c.paperWeight || '170gsm Silk';
+    const coverFinish = c.coverFinish || 'Soft Touch Matte';
+    const bindingType = c.bindingType || 'Saddle Stitch';
+    const printPdf = c.printPdfUrl ? toAbsoluteUrl(c.printPdfUrl) : (c.designFileUrl ? toAbsoluteUrl(c.designFileUrl) : null);
+
+    let pagesHtml = '';
+    const pagesArr = Array.isArray(c.pagesData)
+      ? c.pagesData
+      : (c.document && Array.isArray(c.document.pages) ? c.document.pages : []);
+
+    if (forAdmin && pagesArr.length > 0) {
+      pagesHtml = `
+        <div style="margin-top: 14px;">
+          <div style="font-size: 11px; font-weight: 800; color: #60A5FA; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">
+            📑 Page-by-Page Editorial Content &amp; Instructions (${pagesArr.length} Pages):
+          </div>
+          <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+            ${pagesArr.map((p: any, pIdx: number) => {
+              const pageNo = p.pageNumber || (pIdx + 1);
+              const elements = Array.isArray(p.elements) ? p.elements : [];
+              const instructionsList: string[] = [];
+              elements.forEach((el: any) => {
+                if (el.userInstructions && typeof el.userInstructions === 'string') {
+                  instructionsList.push(`${el.name || el.label || 'Field'}: "${el.userInstructions}"`);
+                }
+              });
+              if (p.instructions) instructionsList.push(String(p.instructions));
+
+              const textElements = elements.filter((el: any) => {
+                const text = el.text || (el.type === 'text' ? el.content : '');
+                return typeof text === 'string' && text.trim().length > 0;
+              });
+
+              const imageElements = elements.filter((el: any) => {
+                const src = el.src || (el.type === 'image' ? el.content : '');
+                return typeof src === 'string' && src.startsWith('http');
+              });
+
+              return `
+                <tr>
+                  <td style="padding: 8px 10px; margin-bottom: 6px; background-color: #11131B; border: 1px solid #232838; border-radius: 6px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #F5F1EA; margin-bottom: 4px;">
+                      📖 Page ${pageNo} ${p.title ? `· ${escapeHtml(p.title)}` : ''}
+                    </div>
+                    ${instructionsList.length > 0 ? `
+                      <div style="margin: 6px 0; padding: 6px 10px; background: rgba(245, 158, 11, 0.12); border-left: 3px solid #F59E0B; border-radius: 4px; font-size: 11px; color: #FDE68A; line-height: 1.4;">
+                        <strong>🎯 Customer Instructions:</strong><br />
+                        ${instructionsList.map((inst) => escapeHtml(inst)).join('<br />')}
+                      </div>
+                    ` : ''}
+                    ${textElements.length > 0 ? `
+                      <div style="margin-top: 4px;">
+                        ${textElements.map((el: any) => `<div style="font-size: 11px; color: #D1D5DB; line-height: 1.4;"><strong style="color: #93C5FD;">📝 ${escapeHtml(el.name || el.label || 'Text')}:</strong> "${escapeHtml(el.text || el.content || '')}"</div>`).join('')}
+                      </div>
+                    ` : ''}
+                    ${imageElements.length > 0 ? `
+                      <div style="margin-top: 6px;">
+                        ${imageElements.map((el: any) => {
+                          const src = toAbsoluteUrl(el.src || el.content);
+                          return `
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 4px; background: #161822; border: 1px solid #2D303E; border-radius: 4px; padding: 4px 6px;">
+                              <tr>
+                                <td width="36"><img src="${src}" style="width: 32px; height: 32px; object-fit: cover; border-radius: 3px;" /></td>
+                                <td style="padding-left: 8px; font-size: 11px; color: #F5F1EA;">${escapeHtml(el.name || 'Image Asset')}</td>
+                                <td align="right"><a href="${src}" target="_blank" style="background-color: #2563EB; color: #FFF; font-size: 10px; font-weight: 700; text-decoration: none; padding: 4px 8px; border-radius: 3px;">📥 Download</a></td>
+                              </tr>
+                            </table>
+                          `;
+                        }).join('')}
+                      </div>
+                    ` : ''}
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </table>
+        </div>
+      `;
+    }
+
+    blocks.push(`
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px; margin-bottom: 10px; background-color: #0E131F; border: 1px solid #2563EB; border-radius: 8px;">
+        <tr>
+          <td style="padding: 12px 14px;">
+            <div style="font-size: 10.5px; font-weight: 800; color: #60A5FA; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px;">
+              📖 Editorial Magazine Dossier:
+            </div>
+            <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin-bottom: 4px;">
+              ${escapeHtml(String(magTitle))}
+            </div>
+            <div style="font-size: 11px; color: #9CA3AF; margin-bottom: 8px; font-family: monospace;">
+              Pages: ${magPages} · Format: A4 · Paper: ${escapeHtml(String(paperWeight))} · Cover: ${escapeHtml(String(coverFinish))} · Binding: ${escapeHtml(String(bindingType))}
+            </div>
+            ${printPdf ? `
+              <div style="margin-top: 8px;">
+                <a href="${printPdf}" target="_blank" style="display: inline-block; background-color: #2563EB; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 6px 14px; border-radius: 5px;">
+                  📥 Download 300-DPI Print PDF &rarr;
+                </a>
+              </div>
+            ` : ''}
+            ${pagesHtml}
+          </td>
+        </tr>
+      </table>
+    `);
+  }
+
+  // 6. Generic specs (Garment, Color, Size, etc.)
+  const ignoredKeys = [
+    'designFileUrl', 'frontDesignFileUrl', 'backDesignFileUrl',
+    'previewFileUrl', 'frontPreviewFileUrl', 'backPreviewFileUrl',
+    'frontPreviewUrl', 'backPreviewUrl', 'thumbnail',
+    'printInstructions', 'customerNotes', 'instructions',
+    'uploadedArtworks', 'is3dMockup', 'is2dMockup', 'mode',
+    'printPdfUrl', 'magazineTitle', 'templateId', 'pageCount',
+    'paperWeight', 'coverFinish', 'bindingType', 'magazineId',
+    'pagesData', 'document', 'text', 'headline', 'title', 'occasion', 'date', 'location', 'locationName'
+  ];
+  const keys = Object.keys(c).filter(
+    (k) => typeof c[k] === 'string' && c[k] && !ignoredKeys.includes(k)
+  );
+  if (keys.length > 0) {
+    blocks.push(`
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 6px; margin-bottom: 6px; background-color: #1A1D29; border-radius: 6px;">
+        <tr>
+          <td style="padding: 8px 10px; font-size: 11px; color: #D1D5DB; line-height: 1.5;">
+            ${keys.slice(0, 6).map((k) => `<div><strong style="color: #9CA3AF;">${escapeHtml(k)}:</strong> <span style="color: #FFFFFF;">${escapeHtml(String(c[k]))}</span></div>`).join('')}
+          </td>
+        </tr>
+      </table>
+    `);
+  }
+
+  return blocks.join('');
 }
 
 export interface OrderItemEmailData {
@@ -158,8 +551,8 @@ export async function sendOrderConfirmationEmail(
           },
         ];
 
-  const invoiceUrl = `${baseUrl}/account/orders/${encodeURIComponent(orderId)}/invoice?email=${encodeURIComponent(toEmail)}`;
-  const trackingUrl = `${baseUrl}/track?orderId=${encodeURIComponent(safeOrderId)}&email=${encodeURIComponent(toEmail)}`;
+  const invoiceUrl = toAbsoluteUrl(`/account/orders/${encodeURIComponent(orderId)}/invoice?email=${encodeURIComponent(toEmail)}`);
+  const trackingUrl = toAbsoluteUrl(`/track?orderId=${encodeURIComponent(safeOrderId)}&email=${encodeURIComponent(toEmail)}`);
 
   // Build items HTML
   const itemsHtml = items
@@ -172,30 +565,18 @@ export async function sendOrderConfirmationEmail(
         .filter(Boolean)
         .join(' · ');
 
-      // Extract custom text if present
-      let customSnippet = '';
-      if (item.customization && typeof item.customization === 'object') {
-        const c = item.customization as Record<string, unknown>;
-        const title = c.text || c.headline || c.title;
-        const occasion = c.occasion;
-        const dateLoc = [c.date, c.location || c.locationName].filter(Boolean).join(' · ');
-        if (title || occasion || dateLoc) {
-          customSnippet = `
-            <div style="margin-top: 6px; padding: 6px 10px; background: rgba(229, 194, 135, 0.08); border-left: 2px solid #E5C287; border-radius: 4px; font-size: 11px; color: #E5C287; line-height: 1.4;">
-              ${title ? `<div><strong>"${escapeHtml(String(title))}"</strong></div>` : ''}
-              ${occasion ? `<div>✦ Occasion: ${escapeHtml(String(occasion))}</div>` : ''}
-              ${dateLoc ? `<div>✦ ${escapeHtml(String(dateLoc))}</div>` : ''}
-            </div>
-          `;
-        }
-      }
+      const customizationHtml = buildCustomizationEmailHtml(
+        item.customization as Record<string, any>,
+        item,
+        false,
+      );
 
       return `
         <tr>
           <td style="padding: 16px 12px; border-bottom: 1px solid rgba(245, 241, 234, 0.08); vertical-align: top;">
             <div style="font-size: 14px; font-weight: 600; color: #F5F1EA; margin-bottom: 4px;">${itemTitle}</div>
             ${variantDetails ? `<div style="font-size: 12px; color: #9E9EA7; font-family: monospace;">${escapeHtml(variantDetails)}</div>` : ''}
-            ${customSnippet}
+            ${customizationHtml}
           </td>
           <td style="padding: 16px 12px; border-bottom: 1px solid rgba(245, 241, 234, 0.08); text-align: center; vertical-align: top; font-size: 14px; color: #C7C7CC; font-family: monospace;">
             ${item.quantity}
@@ -354,9 +735,16 @@ export async function sendOrderConfirmationEmail(
                   </td>
                 </tr>
                 <tr>
-                  <td align="center">
+                  <td align="center" style="padding-bottom: 12px;">
                     <a href="${invoiceUrl}" target="_blank" style="display: inline-block; width: 85%; max-width: 320px; background-color: transparent; border: 1px solid rgba(245, 241, 234, 0.25); color: #F5F1EA; font-weight: 600; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 13px; text-align: center;">
                       View &amp; Print Official Tax Invoice &rarr;
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center">
+                    <a href="https://fregorostudios.com/products/all" target="_blank" style="display: inline-block; width: 85%; max-width: 320px; background-color: #171924; border: 1px solid rgba(229, 194, 135, 0.35); color: #E5C287; font-weight: 700; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 13px; text-align: center; text-transform: uppercase; letter-spacing: 1px;">
+                      ✦ Shop More Bespoke Collections &rarr;
                     </a>
                   </td>
                 </tr>
@@ -526,10 +914,10 @@ export async function sendAdminNewOrderEmail(
           },
         ];
 
-  const adminOrderUrl = `${baseUrl}/admin/orders/${encodeURIComponent(orderId)}`;
-  const invoiceUrl = `${baseUrl}/account/orders/${encodeURIComponent(orderId)}/invoice`;
+  const adminOrderUrl = toAbsoluteUrl(`/admin/orders/${encodeURIComponent(orderId)}`);
+  const invoiceUrl = toAbsoluteUrl(`/account/orders/${encodeURIComponent(orderId)}/invoice`);
 
-  // Item table rows with artwork links
+  // Item table rows with 3D mockups, placement instructions, and artwork links
   const itemsHtml = items
     .map((item) => {
       const itemTitle = escapeHtml(item.name);
@@ -540,48 +928,18 @@ export async function sendAdminNewOrderEmail(
         .filter(Boolean)
         .join(' · ');
 
-      let customDetailsHtml = '';
-      if (item.customization && typeof item.customization === 'object') {
-        const c = item.customization as Record<string, unknown>;
-        const keys = Object.keys(c).filter(
-          (k) =>
-            typeof c[k] === 'string' &&
-            c[k] &&
-            !['designFileUrl', 'previewFileUrl', 'thumbnail'].includes(k),
-        );
-        if (keys.length > 0) {
-          customDetailsHtml = `
-            <div style="margin-top: 6px; padding: 6px 8px; background: #222430; border-radius: 4px; font-size: 11px; color: #D1D5DB;">
-              ${keys
-                .slice(0, 5)
-                .map(
-                  (k) =>
-                    `<div><strong>${escapeHtml(k)}:</strong> ${escapeHtml(String(c[k]))}</div>`,
-                )
-                .join('')}
-            </div>
-          `;
-        }
-      }
-
-      // Download print asset button if present
-      let fileLinks = '';
-      if (item.designFileUrl || item.previewUrl) {
-        fileLinks = `
-          <div style="margin-top: 8px;">
-            ${item.designFileUrl ? `<a href="${item.designFileUrl}" target="_blank" style="display: inline-block; background-color: #2563EB; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 4px 10px; border-radius: 4px; margin-right: 6px;">📥 Download Print Artwork</a>` : ''}
-            ${item.previewUrl ? `<a href="${item.previewUrl}" target="_blank" style="display: inline-block; background-color: #374151; color: #FFFFFF; font-size: 11px; text-decoration: none; padding: 4px 8px; border-radius: 4px;">👁 View Preview</a>` : ''}
-          </div>
-        `;
-      }
+      const customizationHtml = buildCustomizationEmailHtml(
+        item.customization as Record<string, any>,
+        item,
+        true,
+      );
 
       return `
         <tr>
           <td style="padding: 14px 12px; border-bottom: 1px solid #2D303E; vertical-align: top;">
             <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">${itemTitle}</div>
             ${specLine ? `<div style="font-size: 12px; color: #9CA3AF; font-family: monospace; margin-top: 2px;">${escapeHtml(specLine)}</div>` : ''}
-            ${customDetailsHtml}
-            ${fileLinks}
+            ${customizationHtml}
           </td>
           <td align="center" style="padding: 14px 12px; border-bottom: 1px solid #2D303E; font-size: 13px; color: #E5E7EB; font-family: monospace; vertical-align: top;">
             ${item.quantity}
@@ -786,16 +1144,123 @@ export async function sendAdminNewOrderEmail(
       total: finalTotal,
     });
 
+    const finalAttachments: Array<{ filename: string; content: Buffer }> = [];
     if (pdfBuffer && pdfBuffer.length > 0) {
-      attachments = [
-        {
-          filename: `Fregoro_Invoice_${safeOrderId}.pdf`,
-          content: pdfBuffer,
-        },
-      ];
+      finalAttachments.push({
+        filename: `Fregoro_Invoice_${safeOrderId}.pdf`,
+        content: pdfBuffer,
+      });
+    }
+
+    // Attach all original artwork files & 3D mockup placement snapshots to admin email
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const cust = item.customization as Record<string, any> | null;
+      if (!cust) continue;
+
+      const is2d = Boolean(cust.is2dMockup || cust.mode === '2d');
+      const proofPrefix = is2d ? '2D_Mockup_Proof' : '3D_Mockup_Proof';
+
+      // 1. Attach Front Mockup
+      const frontMockupUrl = cust.frontPreviewFileUrl || cust.previewFileUrl || item.previewUrl;
+      if (frontMockupUrl && typeof frontMockupUrl === 'string') {
+        const buf = await fetchAttachmentBuffer(frontMockupUrl);
+        if (buf && buf.length > 0 && buf.length < 10 * 1024 * 1024) {
+          finalAttachments.push({
+            filename: `${proofPrefix}_Front_${safeOrderId}_Item${i + 1}.png`,
+            content: buf,
+          });
+        }
+      }
+
+      // 2. Attach Back Mockup
+      const backMockupUrl = cust.backPreviewFileUrl;
+      if (backMockupUrl && typeof backMockupUrl === 'string') {
+        const buf = await fetchAttachmentBuffer(backMockupUrl);
+        if (buf && buf.length > 0 && buf.length < 10 * 1024 * 1024) {
+          finalAttachments.push({
+            filename: `${proofPrefix}_Back_${safeOrderId}_Item${i + 1}.png`,
+            content: buf,
+          });
+        }
+      }
+
+      // 3. Attach all uploaded customer artwork files
+      if (Array.isArray(cust.uploadedArtworks) && cust.uploadedArtworks.length > 0) {
+        for (let aIdx = 0; aIdx < cust.uploadedArtworks.length; aIdx++) {
+          const art = cust.uploadedArtworks[aIdx];
+          const artUrl = art.url || art.dataUrl;
+          if (artUrl && typeof artUrl === 'string') {
+            const buf = await fetchAttachmentBuffer(artUrl);
+            if (buf && buf.length > 0 && buf.length < 15 * 1024 * 1024) {
+              const safeArtName = (art.name || `Artwork_${aIdx + 1}`).replace(/[^a-zA-Z0-9._-]/g, '_');
+              const ext = safeArtName.includes('.') ? '' : '.png';
+              finalAttachments.push({
+                filename: `Original_Artwork_${aIdx + 1}_${safeArtName}${ext}`,
+                content: buf,
+              });
+            }
+          }
+        }
+      } else if (cust.designFileUrl || cust.frontDesignFileUrl || item.designFileUrl) {
+        const primaryArtUrl = cust.designFileUrl || cust.frontDesignFileUrl || item.designFileUrl;
+        const buf = await fetchAttachmentBuffer(primaryArtUrl);
+        if (buf && buf.length > 0 && buf.length < 15 * 1024 * 1024) {
+          finalAttachments.push({
+            filename: `Original_Artwork_${safeOrderId}_Item${i + 1}.png`,
+            content: buf,
+          });
+        }
+      }
+
+      // 4. Attach Magazine 300 DPI Print-Ready PDF to Admin Email
+      const magPdfUrl = cust.printPdfUrl || (cust.magazineTitle ? cust.designFileUrl : null);
+      if (magPdfUrl && typeof magPdfUrl === 'string') {
+        const buf = await fetchAttachmentBuffer(magPdfUrl);
+        if (buf && buf.length > 0 && buf.length < 25 * 1024 * 1024) {
+          const safeTitle = (cust.magazineTitle || 'Custom_Magazine').replace(/[^a-zA-Z0-9_-]/g, '_');
+          finalAttachments.push({
+            filename: `Magazine_Print_${safeOrderId}_${safeTitle}.pdf`,
+            content: buf,
+          });
+        }
+      }
+
+      // 5. Attach Customer-Uploaded Magazine Imagery
+      if (Array.isArray(cust.pagesData)) {
+        let attachedMagImgCount = 0;
+        for (const p of cust.pagesData) {
+          if (!Array.isArray(p.elements)) continue;
+          for (const el of p.elements) {
+            if (
+              el.src &&
+              typeof el.src === 'string' &&
+              (el.src.startsWith('http') || el.src.startsWith('data:image/')) &&
+              attachedMagImgCount < 6
+            ) {
+              const buf = await fetchAttachmentBuffer(el.src);
+              if (buf && buf.length > 0 && buf.length < 10 * 1024 * 1024) {
+                attachedMagImgCount++;
+                const safeElName = (
+                  el.name || `P${p.pageNumber || 1}_Photo_${attachedMagImgCount}`
+                ).replace(/[^a-zA-Z0-9_-]/g, '_');
+                finalAttachments.push({
+                  filename: `Magazine_${safeOrderId}_${safeElName}.png`,
+                  content: buf,
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (finalAttachments.length > 0) {
+      attachments = finalAttachments;
     }
   } catch (pdfErr) {
-    console.warn('Could not generate PDF invoice attachment for admin email:', pdfErr);
+    console.warn('Could not generate attachments for admin email:', pdfErr);
   }
 
   const sender =

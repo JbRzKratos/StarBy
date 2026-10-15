@@ -418,6 +418,16 @@ export function useClothingProductModalState({
       artworkPlacements[primaryArt.id] || primaryArt.suggestedPlacement || 'front-center';
     const primaryScale = artworkScales[primaryArt.id] || 'standard';
 
+    const isOneRupee =
+      design.basePrice === 1 ||
+      (design.id === 'design-001' && selectedGarmentId !== 'hoodie') ||
+      ((design.id === 'design-001' || design.id === 'design-002') && selectedGarmentId === 'hoodie');
+    const unitPrice = isOneRupee
+      ? 1
+      : typeof design.basePrice === 'number' && design.basePrice > 0
+        ? design.basePrice
+        : selectedGarment.basePrice;
+
     const params = new URLSearchParams({
       designId: design.id,
       designName: design.name,
@@ -430,7 +440,7 @@ export function useClothingProductModalState({
       scale: primaryScale,
       previewUrl: primaryArt.studioPreviewUrl,
       layers: JSON.stringify(layersToLoad),
-      price: selectedGarment.basePrice.toString(),
+      price: unitPrice.toString(),
     });
 
     router.push(`/customize/clothing-mockup?${params.toString()}`);
@@ -531,6 +541,16 @@ export function useClothingProductModalState({
       currentPlacement === 'back-collar' ||
       currentPlacement === 'full-back';
 
+  const isOneRupee =
+    design?.basePrice === 1 ||
+    (design?.id === 'design-001' && selectedGarmentId !== 'hoodie') ||
+    ((design?.id === 'design-001' || design?.id === 'design-002') && selectedGarmentId === 'hoodie');
+  const unitPrice = isOneRupee
+    ? 1
+    : typeof design?.basePrice === 'number' && design.basePrice > 0
+      ? design.basePrice
+      : selectedGarment.basePrice;
+
   return {
     mounted,
     design,
@@ -538,6 +558,7 @@ export function useClothingProductModalState({
     selectedGarmentId,
     setSelectedGarmentId,
     selectedGarment,
+    unitPrice,
     selectedColor,
     setSelectedColor,
     selectedSize,

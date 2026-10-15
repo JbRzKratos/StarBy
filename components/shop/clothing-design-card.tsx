@@ -130,7 +130,16 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
         </h3>
 
         <p className="font-mono text-[11px] text-white/50">
-          From ₹799 <span className="text-white/30">• Cotton & Fleece</span>
+          {typeof design.basePrice === 'number' ? (
+            <span className={design.basePrice === 1 ? 'text-emerald-400 font-bold' : 'text-white/90 font-medium'}>
+              {design.basePrice === 1 ? '₹1' : `From ₹${design.basePrice.toLocaleString()}`}
+            </span>
+          ) : design.id === 'design-001' ? (
+            <span className="text-emerald-400 font-bold">₹1</span>
+          ) : (
+            'From ₹799'
+          )}{' '}
+          <span className="text-white/30">• Cotton & Fleece</span>
         </p>
       </div>
     </div>

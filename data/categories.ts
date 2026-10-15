@@ -34,13 +34,13 @@ export function isProductComingSoon(product?: {
   categorySlug?: string;
   comingSoon?: boolean;
   tags?: string[];
+  basePrice?: number;
 }): boolean {
   if (!product) return false;
-  if (product.comingSoon !== undefined) return product.comingSoon;
-  if (product.tags?.includes('clothing-design') || product.tags?.includes('apparel')) {
-    return false;
-  }
-  return isCategoryComingSoon(product.categorySlug);
+  if (product.comingSoon === true) return true;
+  if (isCategoryComingSoon(product.categorySlug)) return true;
+  if (product.comingSoon === false) return false;
+  return false;
 }
 
 export const categories: Category[] = [

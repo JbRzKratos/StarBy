@@ -10,15 +10,21 @@ const ClothingProductModal = dynamic(
   { ssr: false },
 );
 import { Search } from 'lucide-react';
+import { PlainApparelCard } from './plain-apparel-card';
+import { plainApparelProducts } from '@/data/plain-apparel-products';
+
+import type { Product } from '@/data/products';
 
 interface ClothingDesignsGalleryProps {
   category: 'tees' | 'hoodies';
   searchQuery?: string;
+  products?: Product[];
 }
 
 export function ClothingDesignsGallery({
   category,
   searchQuery = '',
+  products,
 }: ClothingDesignsGalleryProps) {
   const [designs, setDesigns] = useState<ClothingDesignEntry[]>([]);
   const [activeTheme, setActiveTheme] = useState<string>('all');
@@ -28,8 +34,21 @@ export function ClothingDesignsGallery({
   const [isLoading, setIsLoading] = useState(true);
   const [selectedDesign, setSelectedDesign] = useState<ClothingDesignEntry | null>(null);
 
+  const plainProductsForCategory = React.useMemo(() => {
+    if (products && products.length > 0) {
+      const dbPlain = products.filter(
+        (p) =>
+          p.categorySlug === category &&
+          (p.tags?.includes('plain') || p.id.startsWith('plain_') || p.slug.startsWith('plain-')),
+      );
+      if (dbPlain.length > 0) return dbPlain;
+    }
+    return plainApparelProducts.filter((p) => p.categorySlug === category);
+  }, [products, category]);
+
   const THEME_CATEGORIES = [
     { id: 'all', label: 'All Graphics', icon: '✨' },
+    { id: 'plain', label: 'Plain Essentials (Blanks)', icon: '👕' },
     { id: 'anime', label: 'Anime & Manga', icon: '⚡' },
     { id: 'automotive', label: 'Automotive & JDM', icon: '🏎️' },
     { id: 'marvel', label: 'Marvel & Comics', icon: '🦸' },
@@ -43,9 +62,14 @@ export function ClothingDesignsGallery({
 
   const fetchDesigns = useCallback(
     async (targetPage: number, resetList = false, themeOverride?: string) => {
+      const currentTheme = themeOverride !== undefined ? themeOverride : activeTheme;
+      if (currentTheme === 'plain') {
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
       try {
-        const currentTheme = themeOverride !== undefined ? themeOverride : activeTheme;
         const garmentFilter = category === 'hoodies' ? 'hoodie' : '';
         const params = new URLSearchParams({
           page: targetPage.toString(),
@@ -99,15 +123,25 @@ export function ClothingDesignsGallery({
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
             <h2 className="font-mono text-sm uppercase tracking-widest text-white/90">
-              {category === 'hoodies' ? 'Hoodie Graphic Library' : 'Tees Graphic Library'}
+              {activeTheme === 'plain'
+                ? category === 'hoodies'
+                  ? 'Plain Hoodie Essentials'
+                  : 'Plain Tees Essentials'
+                : category === 'hoodies'
+                  ? 'Hoodie Graphic Library'
+                  : 'Tees Graphic Library'}
             </h2>
             <span className="font-mono text-xs text-white/40 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
-              {totalCount} Designs
+              {activeTheme === 'plain'
+                ? `${plainProductsForCategory.length} Styles`
+                : `${totalCount} Designs`}
             </span>
           </div>
 
           <p className="font-mono text-xs text-white/50">
-            Select any design to choose garment, color & customize in 3D
+            {activeTheme === 'plain'
+              ? 'Premium heavy GSM combed cotton blanks with 10 studio photo angles per color'
+              : 'Select any design to choose garment, color & customize in 3D'}
           </p>
         </div>
 
@@ -133,8 +167,41 @@ export function ClothingDesignsGallery({
         </div>
       </div>
 
-      {/* Grid */}
-      {designs.length > 0 ? (
+      {/* Quick link banner to Plain Essentials when in graphics mode */}
+      {activeTheme !== 'plain' && plainProductsForCategory.length > 0 && (
+        <div
+          onClick={() => handleSelectTheme('plain')}
+          className="group flex items-center justify-between p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-white/[0.06] via-white/[0.03] to-transparent border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-xl">👕</span>
+            <div>
+              <p className="font-mono text-xs text-white/90 font-medium group-hover:text-white">
+                Looking for clean, unprinted plain blanks?
+              </p>
+              <p className="font-mono text-[11px] text-white/50">
+                {category === 'hoodies'
+                  ? 'Explore 300 GSM Heavyweight Hoodies in Black & White.'
+                  : 'Explore 180 GSM Regular, 240 GSM French Terry & Acid Wash Blanks.'}
+              </p>
+            </div>
+          </div>
+          <span className="hidden sm:inline-flex items-center gap-1.5 font-mono text-xs text-white/70 group-hover:text-white bg-white/5 group-hover:bg-white/10 px-3 py-1.5 rounded-full border border-white/10 transition-colors">
+            Explore Plain Essentials &rarr;
+          </span>
+        </div>
+      )}
+
+      {/* Grid: Plain Essentials Mode */}
+      {activeTheme === 'plain' ? (
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {plainProductsForCategory.map((product, idx) => (
+              <PlainApparelCard key={product.id} product={product} priority={idx < 4} />
+            ))}
+          </div>
+        </div>
+      ) : designs.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {designs.map((design, idx) => (
             <ClothingDesignCard
@@ -172,7 +239,7 @@ export function ClothingDesignsGallery({
       )}
 
       {/* Load More Button */}
-      {page < totalPages && !isLoading && (
+      {activeTheme !== 'plain' && page < totalPages && !isLoading && (
         <div className="flex justify-center pt-8">
           <button
             onClick={handleLoadMore}

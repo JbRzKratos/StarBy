@@ -53,26 +53,31 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Return complete price dictionary for fast client sync across all products, walls, splits, and magazines
+    // Return complete price & name dictionary for fast client sync across all products, walls, splits, and magazines
     const [products, variants, wallLayouts, prebuiltWalls] = await Promise.all([
       prisma.product.findMany({
-        select: { id: true, basePrice: true, slug: true, categorySlug: true },
+        select: { id: true, basePrice: true, slug: true, categorySlug: true, name: true },
       }),
       prisma.productVariant.findMany({
         select: { id: true, price: true, inStock: true, productId: true },
       }),
       prisma.wallLayout.findMany({
-        select: { id: true, slug: true, basePrice: true },
+        select: { id: true, slug: true, basePrice: true, name: true },
       }),
       prisma.prebuiltWallProduct.findMany({
-        select: { id: true, slug: true, basePrice: true },
+        select: { id: true, slug: true, basePrice: true, title: true },
       }),
     ]);
 
     const productPriceMap: Record<string, number> = {};
+    const productNameMap: Record<string, string> = {};
     for (const p of products) {
       productPriceMap[p.id] = p.basePrice;
       if (p.slug) productPriceMap[p.slug] = p.basePrice;
+      if (p.name) {
+        productNameMap[p.id] = p.name;
+        if (p.slug) productNameMap[p.slug] = p.name;
+      }
     }
 
     const wallLayoutPriceMap: Record<string, number> = {};
@@ -82,6 +87,11 @@ export async function GET(request: NextRequest) {
       productPriceMap[`wall_${wl.slug}`] = wl.basePrice;
       productPriceMap[`wall_${wl.id}`] = wl.basePrice;
       productPriceMap[`wall-layout-${wl.slug}`] = wl.basePrice;
+      if (wl.name) {
+        productNameMap[`wall_${wl.slug}`] = wl.name;
+        productNameMap[`wall_${wl.id}`] = wl.name;
+        productNameMap[`wall-layout-${wl.slug}`] = wl.name;
+      }
     }
 
     const prebuiltPriceMap: Record<string, number> = {};
@@ -91,6 +101,11 @@ export async function GET(request: NextRequest) {
       productPriceMap[`prebuilt_${pw.slug}`] = pw.basePrice;
       productPriceMap[`prebuilt_${pw.id}`] = pw.basePrice;
       productPriceMap[`prebuilt-wall-${pw.slug}`] = pw.basePrice;
+      if (pw.title) {
+        productNameMap[`prebuilt_${pw.slug}`] = pw.title;
+        productNameMap[`prebuilt_${pw.id}`] = pw.title;
+        productNameMap[`prebuilt-wall-${pw.slug}`] = pw.title;
+      }
     }
 
     const variantPriceMap: Record<string, { price: number; inStock: boolean }> = {};
@@ -103,6 +118,7 @@ export async function GET(request: NextRequest) {
         success: true,
         timestamp: Date.now(),
         products: productPriceMap,
+        names: productNameMap,
         variants: variantPriceMap,
         wallLayouts: wallLayoutPriceMap,
         prebuiltWalls: prebuiltPriceMap,

@@ -120,6 +120,8 @@ export function ClothingMockupIframe() {
     };
   }, []);
 
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+
   // PostMessage coordinate listener and cart bridge
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
@@ -141,55 +143,117 @@ export function ClothingMockupIframe() {
         if (!payload) return;
 
         const executeAdd = async () => {
-          let resolvedPrice = payload.price;
-          if (typeof resolvedPrice !== 'number' || resolvedPrice <= 0) {
-            try {
-              const res = await fetch('/api/products/prices?id=prod_test_tees', { cache: 'no-store' });
-              if (res.ok) {
-                const data = await res.json();
-                if (data.success && typeof data.product?.basePrice === 'number') {
-                  resolvedPrice = data.product.basePrice;
+          setIsAddingToCart(true);
+          try {
+            let resolvedPrice = payload.price;
+            if (typeof resolvedPrice !== 'number' || resolvedPrice <= 0) {
+              if (payload.designId === 'design-001') {
+                resolvedPrice = 1;
+              } else {
+                try {
+                  const checkId = payload.designId || 'clothing-mockup';
+                  const res = await fetch(`/api/products/prices?id=${encodeURIComponent(checkId)}`, { cache: 'no-store' });
+                  if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && typeof data.product?.basePrice === 'number') {
+                      resolvedPrice = data.product.basePrice;
+                    }
+                  }
+                } catch {
+                  resolvedPrice = 999;
                 }
               }
-            } catch {
-              resolvedPrice = 999;
             }
-          }
 
-          const cartItem: CartItem = {
-            productId: 'prod_test_tees',
-            variantId: `mockup-3d-${payload.garmentId || 'tee'}-${String(payload.garmentColor || 'white').replace(/[^a-z0-9]/gi, '')}`,
-            name: `Custom ${payload.garmentName || 'T-Shirt'}`,
-            variant: `${payload.garmentColor || 'Custom'} / ${payload.size || 'L'}`,
-            quantity: payload.quantity || 1,
-            price: resolvedPrice || 999,
-            size: payload.size || 'L',
-            image: payload.frontPreviewUrl || payload.previewFileUrl || undefined,
-            customization: {
-              garment: payload.garmentName,
-              color: payload.garmentColor,
-              size: payload.size,
+            // 1. Upload high-res snapshots and original uploaded artworks to Cloudflare R2
+            // This prevents massive base64 strings in localStorage which causes quota errors.
+            let uploadResult = {
+              frontPreviewUrl: payload.frontPreviewUrl || null,
+              backPreviewUrl: payload.backPreviewUrl || null,
+              previewFileUrl: payload.previewFileUrl || payload.frontPreviewUrl || null,
               frontDesignFileUrl: payload.frontDesignFileUrl || null,
               backDesignFileUrl: payload.backDesignFileUrl || null,
-              designFileUrl:
-                payload.designFileUrl ||
-                payload.frontDesignFileUrl ||
-                payload.backDesignFileUrl ||
-                null,
-              frontPreviewFileUrl: payload.frontPreviewUrl || null,
-              backPreviewFileUrl: payload.backPreviewUrl || null,
-              previewFileUrl: payload.previewFileUrl || payload.frontPreviewUrl || null,
-              printPosition: 'Custom 3D Studio Mockup',
-              printInstructions: payload.printInstructions || 'Custom 3D Studio Placement',
-              customerNotes: payload.customerNotes || payload.printInstructions || null,
-              designId: payload.designId || null,
+              designFileUrl: payload.designFileUrl || payload.frontDesignFileUrl || null,
               uploadedArtworks: payload.uploadedArtworks || [],
-              is3dMockup: true,
-            },
-          };
+            };
 
-          useCartStore.getState().addItem(cartItem);
-          useCartStore.getState().setCartOpen(true);
+            try {
+              const uploadRes = await fetch('/api/customizer/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  frontSnapshot: payload.frontPreviewUrl,
+                  backSnapshot: payload.backPreviewUrl,
+                  uploadedArtworks: payload.uploadedArtworks || [],
+                  garmentId: payload.garmentId || 'tee',
+                }),
+              });
+
+              if (uploadRes.ok) {
+                const uploadJson = await uploadRes.json();
+                if (uploadJson.success) {
+                  uploadResult = {
+                    frontPreviewUrl: uploadJson.frontPreviewUrl || uploadResult.frontPreviewUrl,
+                    backPreviewUrl: uploadJson.backPreviewUrl || uploadResult.backPreviewUrl,
+                    previewFileUrl: uploadJson.previewFileUrl || uploadResult.previewFileUrl,
+                    frontDesignFileUrl: uploadJson.frontDesignFileUrl || uploadResult.frontDesignFileUrl,
+                    backDesignFileUrl: uploadJson.backDesignFileUrl || uploadResult.backDesignFileUrl,
+                    designFileUrl: uploadJson.designFileUrl || uploadResult.designFileUrl,
+                    uploadedArtworks: uploadJson.uploadedArtworks || uploadResult.uploadedArtworks,
+                  };
+                }
+              }
+            } catch (uploadErr) {
+              console.warn('[ClothingMockupIframe] Upload error (using fallback):', uploadErr);
+            }
+
+            const safeImage =
+              uploadResult.frontPreviewUrl ||
+              uploadResult.previewFileUrl ||
+              '/images/mockups/tee-black-front.png';
+
+            const is2d = payload.mode === '2d';
+            const variantPrefix = is2d ? 'mockup-2d' : 'mockup-3d';
+            const defaultPlacementTitle = is2d ? 'Custom 2D Studio Mockup' : 'Custom 3D Studio Mockup';
+            const defaultInstructions = is2d ? 'Custom 2D Studio Placement' : 'Custom 3D Studio Placement';
+
+            const cartItem: CartItem = {
+              productId: payload.designId || 'clothing-mockup',
+              variantId: `${variantPrefix}-${payload.garmentId || 'tee'}-${String(payload.garmentColor || 'white').replace(/[^a-z0-9]/gi, '')}-${payload.size || 'L'}`,
+              name: `Custom ${payload.garmentName || 'Garment'}`,
+              variant: `${payload.garmentColor || 'Custom'} / ${payload.size || 'L'}`,
+              quantity: payload.quantity || 1,
+              price: typeof resolvedPrice === 'number' && resolvedPrice >= 0 ? resolvedPrice : 999,
+              size: payload.size || 'L',
+              image: safeImage,
+              customization: {
+                garment: payload.garmentName,
+                color: payload.garmentColor,
+                size: payload.size,
+                frontDesignFileUrl: uploadResult.frontDesignFileUrl,
+                backDesignFileUrl: uploadResult.backDesignFileUrl,
+                designFileUrl: uploadResult.designFileUrl,
+                frontPreviewFileUrl: uploadResult.frontPreviewUrl,
+                backPreviewFileUrl: uploadResult.backPreviewUrl,
+                previewFileUrl: uploadResult.previewFileUrl,
+                printPosition: defaultPlacementTitle,
+                printInstructions: payload.printInstructions || defaultInstructions,
+                customerNotes: payload.customerNotes || payload.printInstructions || null,
+                designId: payload.designId || null,
+                uploadedArtworks: uploadResult.uploadedArtworks,
+                is3dMockup: !is2d,
+                is2dMockup: is2d,
+                mode: payload.mode || '3d',
+              },
+            };
+
+            useCartStore.getState().addItem(cartItem);
+            useCartStore.getState().setCartOpen(true);
+          } catch (err) {
+            console.error('[ClothingMockupIframe] Failed to add item to bag:', err);
+          } finally {
+            setIsAddingToCart(false);
+          }
         };
 
         void executeAdd();
@@ -362,6 +426,28 @@ export function ClothingMockupIframe() {
           {/* Subtle pulse bar */}
           <div className="w-48 h-1 rounded-full bg-[#1f2530] overflow-hidden">
             <div className="h-full bg-[#3B5EFF]/60 rounded-full animate-pulse w-3/5" />
+          </div>
+        </div>
+      )}
+
+      {/* ── Adding to bag overlay ─────────────────────────────────────────── */}
+      {isAddingToCart && (
+        <div
+          className="absolute inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-[#0c0e12]/85 backdrop-blur-md"
+          aria-live="assertive"
+          aria-label="Saving design and adding to bag"
+        >
+          <div className="relative w-14 h-14">
+            <div className="absolute inset-0 rounded-full border-2 border-[#3B5EFF]/20" />
+            <div className="absolute inset-0 rounded-full border-2 border-t-[#3B5EFF] border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+          </div>
+          <div className="flex flex-col items-center gap-1.5 text-center px-4">
+            <p className="text-sm font-bold tracking-wider text-[#F5F1EA] uppercase font-mono">
+              Adding Custom 3D Garment to Bag
+            </p>
+            <p className="text-xs text-[#9E9EA7] font-mono">
+              Rendering 3D proofs &amp; securing original artwork files…
+            </p>
           </div>
         </div>
       )}

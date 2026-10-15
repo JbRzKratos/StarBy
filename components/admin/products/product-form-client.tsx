@@ -162,10 +162,14 @@ export function ProductFormClient({
                 setForm({
                   ...form,
                   name: e.target.value,
-                  slug: e.target.value
-                    .toLowerCase()
-                    .replace(/\s+/g, '-')
-                    .replace(/[^a-z0-9-]/g, ''),
+                  ...(mode === 'create'
+                    ? {
+                        slug: e.target.value
+                          .toLowerCase()
+                          .replace(/\s+/g, '-')
+                          .replace(/[^a-z0-9-]/g, ''),
+                      }
+                    : {}),
                 })
               }
               className={inputClass}

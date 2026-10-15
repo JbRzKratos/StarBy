@@ -23,6 +23,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
     selectedGarmentId,
     setSelectedGarmentId,
     selectedGarment,
+    unitPrice,
     selectedColor,
     setSelectedColor,
     selectedSize,
@@ -828,7 +829,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                 Unit Price
               </p>
               <p className="font-mono text-2xl font-bold text-white">
-                ₹{selectedGarment.basePrice.toLocaleString()}
+                ₹{unitPrice.toLocaleString()}
               </p>
             </div>
 

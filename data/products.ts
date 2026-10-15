@@ -1,5 +1,6 @@
 import { getR2AssetUrl } from '@/lib/r2';
 import { getClothingDesignProducts } from '@/lib/clothing-designs/clothing-products';
+import { plainApparelProducts } from './plain-apparel-products';
 
 export interface ProductVariant {
   id: string;
@@ -28,6 +29,7 @@ export interface Product {
 }
 
 export const products: Product[] = [
+  ...plainApparelProducts,
   ...getClothingDesignProducts(),
   {
     id: 'prod_022',

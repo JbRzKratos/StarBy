@@ -4,10 +4,16 @@
  * Strict rules: Only these 4 apparel products and their approved colors are permitted.
  */
 
+import manifest from '@/data/plain-mockups-manifest.json';
+
 export interface ApparelColorSwatch {
   name: string;
   hex: string;
   twClass?: string;
+  modelImage?: string;
+  garmentFrontImage?: string;
+  garmentBackImage?: string;
+  allImages?: string[];
 }
 
 export interface ApparelProductConfig {
@@ -36,11 +42,46 @@ export const APPAREL_CONFIG: Record<string, ApparelProductConfig> = {
     sizes: ['S', 'M', 'L', 'XL', 'XXL', '3XL'],
     defaultColorHex: '#FFFFFF',
     colors: [
-      { name: 'White', hex: '#FFFFFF' },
-      { name: 'Black', hex: '#111215' },
-      { name: 'Olive Green', hex: '#3B443B' },
-      { name: 'C.Brown', hex: '#5A3825' },
-      { name: 'Maroon', hex: '#800000' },
+      {
+        name: 'White',
+        hex: '#FFFFFF',
+        modelImage: manifest['Regular-Cotton-180GSM']['White'].modelFront,
+        garmentFrontImage: manifest['Regular-Cotton-180GSM']['White'].garmentFront,
+        garmentBackImage: manifest['Regular-Cotton-180GSM']['White'].garmentBack,
+        allImages: manifest['Regular-Cotton-180GSM']['White'].allImages,
+      },
+      {
+        name: 'Black',
+        hex: '#111215',
+        modelImage: manifest['Regular-Cotton-180GSM']['Black'].modelFront,
+        garmentFrontImage: manifest['Regular-Cotton-180GSM']['Black'].garmentFront,
+        garmentBackImage: manifest['Regular-Cotton-180GSM']['Black'].garmentBack,
+        allImages: manifest['Regular-Cotton-180GSM']['Black'].allImages,
+      },
+      {
+        name: 'Olive Green',
+        hex: '#3B443B',
+        modelImage: manifest['Regular-Cotton-180GSM']['Olive-Green'].modelFront,
+        garmentFrontImage: manifest['Regular-Cotton-180GSM']['Olive-Green'].garmentFront,
+        garmentBackImage: manifest['Regular-Cotton-180GSM']['Olive-Green'].garmentBack,
+        allImages: manifest['Regular-Cotton-180GSM']['Olive-Green'].allImages,
+      },
+      {
+        name: 'C.Brown',
+        hex: '#5A3825',
+        modelImage: manifest['Regular-Cotton-180GSM']['C-Brown'].modelFront,
+        garmentFrontImage: manifest['Regular-Cotton-180GSM']['C-Brown'].garmentFront,
+        garmentBackImage: manifest['Regular-Cotton-180GSM']['C-Brown'].garmentBack,
+        allImages: manifest['Regular-Cotton-180GSM']['C-Brown'].allImages,
+      },
+      {
+        name: 'Maroon',
+        hex: '#800000',
+        modelImage: manifest['Regular-Cotton-180GSM']['Maroon'].modelFront,
+        garmentFrontImage: manifest['Regular-Cotton-180GSM']['Maroon'].garmentFront,
+        garmentBackImage: manifest['Regular-Cotton-180GSM']['Maroon'].garmentBack,
+        allImages: manifest['Regular-Cotton-180GSM']['Maroon'].allImages,
+      },
     ],
     description: '180 GSM 100% combed cotton, classic unisex cut with reinforced ribbing.',
   },
@@ -55,11 +96,46 @@ export const APPAREL_CONFIG: Record<string, ApparelProductConfig> = {
     sizes: ['S', 'M', 'L', 'XL', 'XXL', '3XL'],
     defaultColorHex: '#FFFFFF',
     colors: [
-      { name: 'White', hex: '#FFFFFF' },
-      { name: 'Black', hex: '#111215' },
-      { name: 'Dusky Pink', hex: '#D8A1A8' },
-      { name: 'Beige', hex: '#D4C5B9' },
-      { name: 'Navy Blue', hex: '#1B263B' },
+      {
+        name: 'White',
+        hex: '#FFFFFF',
+        modelImage: manifest['Oversized-French-Terry-240GSM']['White'].modelFront,
+        garmentFrontImage: manifest['Oversized-French-Terry-240GSM']['White'].garmentFront,
+        garmentBackImage: manifest['Oversized-French-Terry-240GSM']['White'].garmentBack,
+        allImages: manifest['Oversized-French-Terry-240GSM']['White'].allImages,
+      },
+      {
+        name: 'Black',
+        hex: '#111215',
+        modelImage: manifest['Oversized-French-Terry-240GSM']['Black'].modelFront,
+        garmentFrontImage: manifest['Oversized-French-Terry-240GSM']['Black'].garmentFront,
+        garmentBackImage: manifest['Oversized-French-Terry-240GSM']['Black'].garmentBack,
+        allImages: manifest['Oversized-French-Terry-240GSM']['Black'].allImages,
+      },
+      {
+        name: 'Dusky Pink',
+        hex: '#D8A1A8',
+        modelImage: manifest['Oversized-French-Terry-240GSM']['Dusky-Pink'].modelFront,
+        garmentFrontImage: manifest['Oversized-French-Terry-240GSM']['Dusky-Pink'].garmentFront,
+        garmentBackImage: manifest['Oversized-French-Terry-240GSM']['Dusky-Pink'].garmentBack,
+        allImages: manifest['Oversized-French-Terry-240GSM']['Dusky-Pink'].allImages,
+      },
+      {
+        name: 'Beige',
+        hex: '#D4C5B9',
+        modelImage: manifest['Oversized-French-Terry-240GSM']['Beige'].modelFront,
+        garmentFrontImage: manifest['Oversized-French-Terry-240GSM']['Beige'].garmentFront,
+        garmentBackImage: manifest['Oversized-French-Terry-240GSM']['Beige'].garmentBack,
+        allImages: manifest['Oversized-French-Terry-240GSM']['Beige'].allImages,
+      },
+      {
+        name: 'Navy Blue',
+        hex: '#1B263B',
+        modelImage: manifest['Oversized-French-Terry-240GSM']['Navy-Blue'].modelFront,
+        garmentFrontImage: manifest['Oversized-French-Terry-240GSM']['Navy-Blue'].garmentFront,
+        garmentBackImage: manifest['Oversized-French-Terry-240GSM']['Navy-Blue'].garmentBack,
+        allImages: manifest['Oversized-French-Terry-240GSM']['Navy-Blue'].allImages,
+      },
     ],
     description: '240 GSM heavyweight French Terry, relaxed dropped-shoulder silhouette.',
   },
@@ -74,9 +150,30 @@ export const APPAREL_CONFIG: Record<string, ApparelProductConfig> = {
     sizes: ['S', 'M', 'L', 'XL', 'XXL', '3XL'],
     defaultColorHex: '#2B2B2B',
     colors: [
-      { name: 'Black', hex: '#2B2B2B' },
-      { name: 'White', hex: '#E5E5E5' },
-      { name: 'Violet', hex: '#5E4B8B' },
+      {
+        name: 'Black',
+        hex: '#2B2B2B',
+        modelImage: manifest['Acid-Wash-240GSM']['Black'].modelFront,
+        garmentFrontImage: manifest['Acid-Wash-240GSM']['Black'].garmentFront,
+        garmentBackImage: manifest['Acid-Wash-240GSM']['Black'].garmentBack,
+        allImages: manifest['Acid-Wash-240GSM']['Black'].allImages,
+      },
+      {
+        name: 'White',
+        hex: '#E5E5E5',
+        modelImage: manifest['Acid-Wash-240GSM']['White'].modelFront,
+        garmentFrontImage: manifest['Acid-Wash-240GSM']['White'].garmentFront,
+        garmentBackImage: manifest['Acid-Wash-240GSM']['White'].garmentBack,
+        allImages: manifest['Acid-Wash-240GSM']['White'].allImages,
+      },
+      {
+        name: 'Violet',
+        hex: '#5E4B8B',
+        modelImage: manifest['Acid-Wash-240GSM']['Violet'].modelFront,
+        garmentFrontImage: manifest['Acid-Wash-240GSM']['Violet'].garmentFront,
+        garmentBackImage: manifest['Acid-Wash-240GSM']['Violet'].garmentBack,
+        allImages: manifest['Acid-Wash-240GSM']['Violet'].allImages,
+      },
     ],
     description: '240 GSM premium heavy cotton with authentic vintage acid wash marbled finish.',
   },
@@ -91,8 +188,22 @@ export const APPAREL_CONFIG: Record<string, ApparelProductConfig> = {
     sizes: ['S', 'M', 'L', 'XL', 'XXL', '3XL'],
     defaultColorHex: '#111215',
     colors: [
-      { name: 'Black', hex: '#111215' },
-      { name: 'White', hex: '#FFFFFF' },
+      {
+        name: 'Black',
+        hex: '#111215',
+        modelImage: manifest['Hoodie-Brushed-Fleece-300GSM']['Black'].modelFront,
+        garmentFrontImage: manifest['Hoodie-Brushed-Fleece-300GSM']['Black'].garmentFront,
+        garmentBackImage: manifest['Hoodie-Brushed-Fleece-300GSM']['Black'].garmentBack,
+        allImages: manifest['Hoodie-Brushed-Fleece-300GSM']['Black'].allImages,
+      },
+      {
+        name: 'White',
+        hex: '#FFFFFF',
+        modelImage: manifest['Hoodie-Brushed-Fleece-300GSM']['White'].modelFront,
+        garmentFrontImage: manifest['Hoodie-Brushed-Fleece-300GSM']['White'].garmentFront,
+        garmentBackImage: manifest['Hoodie-Brushed-Fleece-300GSM']['White'].garmentBack,
+        allImages: manifest['Hoodie-Brushed-Fleece-300GSM']['White'].allImages,
+      },
     ],
     description: '300 GSM heavyweight brushed fleece pullover with double-layer drawstring hood.',
   },

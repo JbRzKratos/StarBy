@@ -113,40 +113,107 @@ export function ControlPanel() {
     reader.readAsDataURL(file);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Check if we have at least one design
     if (!designs.front.url && !designs.back.url) return;
     if (!productId) return;
     setIsSaving(true);
 
-    const frontPreviewUrl = exportPreviewFns.front ? exportPreviewFns.front() : null;
-    const backPreviewUrl = exportPreviewFns.back ? exportPreviewFns.back() : null;
+    try {
+      const rawFrontPreview = exportPreviewFns.front ? exportPreviewFns.front() : null;
+      const rawBackPreview = exportPreviewFns.back ? exportPreviewFns.back() : null;
 
-    const variantToUse = activeVariant || matchingVariant;
-    const variantIdToUse = variantToUse?.id || 'default';
-    const variantPrice = variantToUse?.price ?? currentProd?.basePrice ?? 0;
+      const rawArtworks: Array<{ name: string; url: string; side: string }> = [];
+      if (designs.front.url) {
+        rawArtworks.push({
+          name: 'Front_Artwork.png',
+          url: designs.front.url,
+          side: 'front',
+        });
+      }
+      if (designs.back.url) {
+        rawArtworks.push({
+          name: 'Back_Artwork.png',
+          url: designs.back.url,
+          side: 'back',
+        });
+      }
 
-    addItem({
-      productId,
-      variantId: variantIdToUse,
-      quantity: 1,
-      price: variantPrice,
-      size: selectedSize,
-      customization: {
-        frontDesignFileUrl: designs.front.url,
-        frontPreviewFileUrl: frontPreviewUrl,
-        backDesignFileUrl: designs.back.url,
-        backPreviewFileUrl: backPreviewUrl,
-        designFileUrl: designs.front.url || designs.back.url,
-        previewFileUrl: frontPreviewUrl || backPreviewUrl,
-        color: selectedColor,
+      let uploadResult = {
+        frontPreviewUrl: rawFrontPreview,
+        backPreviewUrl: rawBackPreview,
+        previewFileUrl: rawFrontPreview || rawBackPreview,
+        frontDesignFileUrl: designs.front.url || null,
+        backDesignFileUrl: designs.back.url || null,
+        designFileUrl: designs.front.url || designs.back.url || null,
+        uploadedArtworks: rawArtworks,
+      };
+
+      try {
+        const uploadRes = await fetch('/api/customizer/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            frontSnapshot: rawFrontPreview,
+            backSnapshot: rawBackPreview,
+            uploadedArtworks: rawArtworks,
+            garmentId: productId,
+          }),
+        });
+
+        if (uploadRes.ok) {
+          const uploadJson = await uploadRes.json();
+          if (uploadJson.success) {
+            uploadResult = {
+              frontPreviewUrl: uploadJson.frontPreviewUrl || uploadResult.frontPreviewUrl,
+              backPreviewUrl: uploadJson.backPreviewUrl || uploadResult.backPreviewUrl,
+              previewFileUrl: uploadJson.previewFileUrl || uploadResult.previewFileUrl,
+              frontDesignFileUrl: uploadJson.frontDesignFileUrl || uploadResult.frontDesignFileUrl,
+              backDesignFileUrl: uploadJson.backDesignFileUrl || uploadResult.backDesignFileUrl,
+              designFileUrl: uploadJson.designFileUrl || uploadResult.designFileUrl,
+              uploadedArtworks: uploadJson.uploadedArtworks || uploadResult.uploadedArtworks,
+            };
+          }
+        }
+      } catch (uploadErr) {
+        console.warn('[ControlPanel] R2 upload notice:', uploadErr);
+      }
+
+      const variantToUse = activeVariant || matchingVariant;
+      const variantIdToUse = variantToUse?.id || 'default';
+      const variantPrice = variantToUse?.price ?? currentProd?.basePrice ?? 0;
+
+      addItem({
+        productId,
+        variantId: variantIdToUse,
+        quantity: 1,
+        price: variantPrice,
         size: selectedSize,
-        printInstructions: instructions || 'No special instructions',
-      },
-    });
+        image: uploadResult.frontPreviewUrl || uploadResult.previewFileUrl || undefined,
+        customization: {
+          frontDesignFileUrl: uploadResult.frontDesignFileUrl,
+          frontPreviewFileUrl: uploadResult.frontPreviewUrl,
+          backDesignFileUrl: uploadResult.backDesignFileUrl,
+          backPreviewFileUrl: uploadResult.backPreviewUrl,
+          designFileUrl: uploadResult.designFileUrl,
+          previewFileUrl: uploadResult.previewFileUrl,
+          uploadedArtworks: uploadResult.uploadedArtworks,
+          color: selectedColor,
+          size: selectedSize,
+          printPosition: 'Custom 2D Canvas Mockup',
+          printInstructions: instructions || 'No special instructions',
+          customerNotes: instructions || null,
+          is2dMockup: true,
+          mode: '2d',
+        },
+      });
 
-    setCartOpen(true);
-    setIsSaving(false);
+      setCartOpen(true);
+    } catch (err) {
+      console.error('[ControlPanel] Failed to add item to bag:', err);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (

@@ -277,6 +277,127 @@ export async function POST(request: Request) {
         continue;
       }
 
+      // ──── Check if this is a 3D or 2D Mockup Custom Garment ────
+      if (
+        customData?.is3dMockup ||
+        customData?.is2dMockup ||
+        item.variantId?.startsWith('mockup-3d-') ||
+        item.variantId?.startsWith('mockup-2d-') ||
+        item.productId === 'clothing-mockup' ||
+        item.productId === 'prod_test_tees' ||
+        item.productId.startsWith('apparel_') ||
+        item.productId.startsWith('design-')
+      ) {
+        const dbProduct = productMap.get(item.productId);
+        let unitPrice = 999;
+        if (dbProduct && typeof dbProduct.basePrice === 'number' && dbProduct.basePrice > 0) {
+          unitPrice = dbProduct.basePrice;
+        } else if (typeof item.price === 'number' && item.price > 0) {
+          unitPrice = item.price;
+        }
+
+        const totalItemPrice = unitPrice * item.quantity;
+        subtotal += totalItemPrice;
+
+        const itemName = typeof item.name === 'string' ? item.name : undefined;
+        const garmentTitle = (typeof customData?.garment === 'string' ? customData.garment : null) || itemName || 'Custom Garment';
+        const colorName = customData?.color ? ` (${customData.color})` : '';
+        const productNameSnapshot: string = itemName && itemName.startsWith('Custom ')
+          ? itemName
+          : `Custom ${garmentTitle}${colorName}`;
+        const skuSnapshot = item.variantId || `mockup-3d-${item.productId}`;
+
+        // Clone and upload any remaining base64 images to R2 if needed
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const processedCustomization: any = customData ? JSON.parse(JSON.stringify(customData)) : {};
+
+        const uploadKeys = [
+          'designFileUrl',
+          'frontDesignFileUrl',
+          'backDesignFileUrl',
+          'previewFileUrl',
+          'frontPreviewFileUrl',
+          'backPreviewFileUrl',
+          'frontPreviewUrl',
+          'backPreviewUrl',
+          'thumbnail',
+          'imageUrl',
+        ];
+
+        for (const key of uploadKeys) {
+          if (
+            processedCustomization[key] &&
+            typeof processedCustomization[key] === 'string' &&
+            processedCustomization[key].startsWith('data:image/')
+          ) {
+            try {
+              const dataStr = processedCustomization[key];
+              const matches = dataStr.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+              if (matches && matches.length === 3) {
+                const contentType = matches[1];
+                const base64Data = matches[2];
+                const buffer = Buffer.from(base64Data, 'base64');
+
+                const { objectKey } = await uploadBufferToR2(
+                  buffer,
+                  `custom_${item.productId}_${key}.png`,
+                  contentType,
+                );
+
+                processedCustomization[key] = getR2PublicUrl(objectKey);
+              }
+            } catch (e) {
+              console.error(`Error uploading ${key} to R2:`, e);
+            }
+          }
+        }
+
+        if (Array.isArray(processedCustomization.uploadedArtworks)) {
+          for (let aIdx = 0; aIdx < processedCustomization.uploadedArtworks.length; aIdx++) {
+            const art = processedCustomization.uploadedArtworks[aIdx];
+            if (art && typeof art === 'object') {
+              for (const k of ['dataUrl', 'url', 'previewUrl']) {
+                if (art[k] && typeof art[k] === 'string' && art[k].startsWith('data:image/')) {
+                  try {
+                    const matches = art[k].match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                    if (matches && matches.length === 3) {
+                      const contentType = matches[1];
+                      const base64Data = matches[2];
+                      const buffer = Buffer.from(base64Data, 'base64');
+                      const safeName = (art.name || `artwork_${aIdx}`).replace(/[^a-zA-Z0-9._-]/g, '_');
+                      const { objectKey } = await uploadBufferToR2(
+                        buffer,
+                        `artwork_${item.productId}_${aIdx}_${safeName}.png`,
+                        contentType,
+                      );
+                      art[k] = getR2PublicUrl(objectKey);
+                      if (k === 'dataUrl') {
+                        art.url = getR2PublicUrl(objectKey);
+                      }
+                    }
+                  } catch (e) {
+                    console.error('Error uploading artwork to R2:', e);
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        validatedItems.push({
+          productId: item.productId || 'clothing-mockup',
+          variantId: item.variantId || 'default',
+          quantity: item.quantity,
+          unitPrice,
+          totalPrice: totalItemPrice,
+          size: item.size || customData?.size || 'L',
+          customization: processedCustomization,
+          productNameSnapshot,
+          skuSnapshot,
+        });
+        continue;
+      }
+
       const product = productMap.get(item.productId);
       if (!product) {
         return NextResponse.json(
@@ -343,6 +464,10 @@ export async function POST(request: Request) {
           'frontDesignFileUrl',
           'backDesignFileUrl',
           'previewFileUrl',
+          'frontPreviewFileUrl',
+          'backPreviewFileUrl',
+          'frontPreviewUrl',
+          'backPreviewUrl',
           'thumbnail',
           'imageUrl',
         ];
@@ -372,6 +497,36 @@ export async function POST(request: Request) {
             } catch (e) {
               console.error(`Error uploading ${key} to R2:`, e);
               // Fallback to storing base64 if R2 fails
+            }
+          }
+        }
+
+        // Upload custom 3D Mockup artwork layers if present in uploadedArtworks
+        if (Array.isArray(processedCustomization.uploadedArtworks)) {
+          for (let aIdx = 0; aIdx < processedCustomization.uploadedArtworks.length; aIdx++) {
+            const art = processedCustomization.uploadedArtworks[aIdx];
+            if (art && typeof art === 'object') {
+              for (const k of ['dataUrl', 'url', 'previewUrl']) {
+                if (art[k] && typeof art[k] === 'string' && art[k].startsWith('data:image/')) {
+                  try {
+                    const matches = art[k].match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                    if (matches && matches.length === 3) {
+                      const contentType = matches[1];
+                      const base64Data = matches[2];
+                      const buffer = Buffer.from(base64Data, 'base64');
+                      const safeName = (art.name || `artwork_${aIdx}`).replace(/[^a-zA-Z0-9._-]/g, '_');
+                      const { objectKey } = await uploadBufferToR2(
+                        buffer,
+                        `artwork_${item.productId}_${aIdx}_${safeName}.png`,
+                        contentType,
+                      );
+                      art[k] = getR2PublicUrl(objectKey);
+                    }
+                  } catch (e) {
+                    console.error('Error uploading artwork to R2:', e);
+                  }
+                }
+              }
             }
           }
         }
@@ -544,7 +699,7 @@ export async function POST(request: Request) {
         let returnUrl = `${siteUrl}/payment/status?order_id=${cfOrderId}`;
         if (cfEnvironment === 'production' && returnUrl.startsWith('http://')) {
           if (isLocal) {
-            returnUrl = `https://fregoro.vercel.app/payment/status?order_id=${cfOrderId}`;
+            returnUrl = `https://fregorostudios.com/payment/status?order_id=${cfOrderId}`;
           } else {
             returnUrl = returnUrl.replace(/^http:\/\//i, 'https://');
           }
@@ -779,16 +934,22 @@ export async function POST(request: Request) {
       // Send confirmation notifications for COD orders with full item manifest
       try {
         const orderAddress = address as Record<string, string> | null;
-        const mappedItems = validatedItems.map((item) => ({
-          id: item.productId,
-          name: item.productNameSnapshot || `Product #${item.productId}`,
-          variant: item.variantId,
-          size: item.size,
-          quantity: item.quantity,
-          unitPrice: item.unitPrice,
-          totalPrice: item.unitPrice * item.quantity,
-          customization: item.customization as Record<string, unknown> | null,
-        }));
+        const mappedItems = validatedItems.map((item) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const cust = item.customization as Record<string, any> | null;
+          return {
+            id: item.productId,
+            name: item.productNameSnapshot || `Product #${item.productId}`,
+            variant: item.variantId,
+            size: item.size,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+            totalPrice: item.unitPrice * item.quantity,
+            customization: cust,
+            previewUrl: (cust?.previewFileUrl || cust?.frontPreviewFileUrl || cust?.thumbnail) || null,
+            designFileUrl: (cust?.designFileUrl || cust?.frontDesignFileUrl || cust?.imageUrl) || null,
+          };
+        });
 
         await dispatchNotification('ORDER_CREATED', {
           orderId,

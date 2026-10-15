@@ -20,6 +20,7 @@ import {
   deleteProduct,
   toggleVariantStock,
   updateProductPrice,
+  updateProductName,
   updateVariantPrice,
   batchUpdateCategoryPrice,
 } from '@/app/admin/lib/actions';
@@ -192,6 +193,12 @@ export function ProductsClient({
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  // Product title/name editing state
+  const [editingNameProductId, setEditingNameProductId] = useState<string | null>(null);
+  const [editNameValue, setEditNameValue] = useState<string>('');
+  const [savingNameId, setSavingNameId] = useState<string | null>(null);
+  const [recentlySavedNameId, setRecentlySavedNameId] = useState<string | null>(null);
+
   // Price editing state
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [editPriceValue, setEditPriceValue] = useState<string>('');
@@ -286,6 +293,31 @@ export function ProductsClient({
     const avg = Math.round(prices.reduce((acc, val) => acc + val, 0) / prices.length);
     return { min, max, avg, count: filtered.length };
   }, [filtered]);
+
+  async function handleSaveProductName(productId: string) {
+    const trimmed = editNameValue.trim();
+    if (!trimmed) {
+      show('Product name cannot be empty.', 'error');
+      return;
+    }
+
+    setSavingNameId(productId);
+    try {
+      await updateProductName(productId, trimmed);
+      setProductList((prev) =>
+        prev.map((p) => (p.id === productId ? { ...p, name: trimmed } : p))
+      );
+      setEditingNameProductId(null);
+      setRecentlySavedNameId(productId);
+      setTimeout(() => setRecentlySavedNameId(null), 2500);
+      show(`Product name updated to "${trimmed}"! Live in storefront.`, 'success');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to update product name';
+      show(msg, 'error');
+    } finally {
+      setSavingNameId(null);
+    }
+  }
 
   async function handleSaveBasePrice(productId: string) {
     const newPrice = parseFloat(editPriceValue);
@@ -960,7 +992,9 @@ export function ProductsClient({
 
     const isExpanded = expandedId === product.id;
     const isEditingPrice = editingProductId === product.id;
+    const isEditingName = editingNameProductId === product.id;
     const isRecentlySaved = recentlySavedId === product.id;
+    const isRecentlySavedName = recentlySavedNameId === product.id;
     const isComingSoon = isCategoryComingSoon(product.categorySlug);
 
     // Find suggested prices based on category
@@ -973,24 +1007,77 @@ export function ProductsClient({
         <tr
           className={`hover:bg-white/[0.04] transition-colors cursor-pointer ${
             isExpanded ? 'bg-blue-500/[0.07]' : ''
-          } ${isRecentlySaved ? 'bg-emerald-500/10' : ''}`}
+          } ${isRecentlySaved ? 'bg-emerald-500/10' : ''} ${isRecentlySavedName ? 'bg-blue-500/10' : ''}`}
           onClick={() => setExpandedId(isExpanded ? null : product.id)}
         >
-          {/* Product Name & Slug */}
-          <td className="px-4 py-3">
-            <div className="flex items-center gap-2">
-              <div>
-                <p className="font-semibold text-bone hover:text-[#3B5EFF] transition-colors">
-                  {product.name}
-                </p>
-                <p className="text-[11px] text-ash/50 font-mono">{product.slug}</p>
+          {/* Product Name & Slug (Live Inline Editable) */}
+          <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+            {isEditingName ? (
+              <div className="flex flex-col gap-1.5 p-2 bg-black/90 border border-blue-500/50 rounded-xl shadow-2xl min-w-[260px] max-w-sm">
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="text"
+                    value={editNameValue}
+                    onChange={(e) => setEditNameValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSaveProductName(product.id);
+                      if (e.key === 'Escape') setEditingNameProductId(null);
+                    }}
+                    autoFocus
+                    placeholder="Enter product title"
+                    className="w-full px-2.5 py-1 text-xs bg-black border border-blue-400 rounded-lg text-white font-medium focus:outline-none focus:ring-1 focus:ring-blue-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleSaveProductName(product.id)}
+                    disabled={savingNameId === product.id}
+                    title="Save live product title"
+                    className="px-2.5 py-1 bg-[#3B5EFF] hover:bg-[#3B5EFF]/90 text-white rounded-lg text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-1 cursor-pointer shrink-0"
+                  >
+                    {savingNameId === product.id ? '…' : <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                    <span>Save</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditingNameProductId(null)}
+                    title="Cancel"
+                    className="px-2 py-1 bg-white/10 hover:bg-white/20 text-ash hover:text-white rounded-lg text-xs shrink-0 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <p className="text-[10px] text-ash/50 font-mono">Press Enter to save • Live in storefront</p>
               </div>
-              {product.featured && (
-                <span className="text-[9px] font-mono px-1.5 py-0.2 bg-[#3B5EFF]/20 text-[#7B9EFF] rounded border border-[#3B5EFF]/30">
-                  FEATURED
-                </span>
-              )}
-            </div>
+            ) : (
+              <div className="group/name flex items-center gap-2">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingNameProductId(product.id);
+                        setEditNameValue(product.name);
+                      }}
+                      title="Click to edit product name live"
+                      className={`font-semibold text-left transition-colors flex items-center gap-1.5 rounded px-1.5 py-0.5 -ml-1.5 border border-transparent hover:border-white/15 hover:bg-white/5 cursor-pointer ${
+                        isRecentlySavedName
+                          ? 'bg-blue-500/20 text-blue-300 border-blue-500/40'
+                          : 'text-bone hover:text-[#3B5EFF]'
+                      }`}
+                    >
+                      <span className="truncate max-w-[260px]">{product.name}</span>
+                      <Edit2 className="w-3 h-3 text-ash/30 group-hover/name:text-[#3B5EFF] transition-colors shrink-0" />
+                    </button>
+                    {product.featured && (
+                      <span className="text-[9px] font-mono px-1.5 py-0.2 bg-[#3B5EFF]/20 text-[#7B9EFF] rounded border border-[#3B5EFF]/30">
+                        FEATURED
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-ash/50 font-mono mt-0.5">{product.slug}</p>
+                </div>
+              </div>
+            )}
           </td>
 
           {/* Customer Selling Category */}

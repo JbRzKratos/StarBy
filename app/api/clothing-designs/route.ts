@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
 import { getManifest } from '@/lib/clothing-designs/manifest';
 import { rateLimit } from '@/lib/rate-limit';
 
@@ -55,28 +56,56 @@ export async function GET(req: Request) {
     const offset = (page - 1) * limit;
     const paginated = designs.slice(offset, offset + limit);
 
+    // Overlay live product prices and customized names from PostgreSQL
+    let dbMap = new Map<string, { id: string; name: string; basePrice: number }>();
+    try {
+      const dbProducts = await prisma.product.findMany({
+        where: { id: { in: paginated.map((d) => d.id) } },
+        select: { id: true, name: true, basePrice: true },
+      });
+      dbMap = new Map(dbProducts.map((p) => [p.id, p]));
+    } catch (e) {
+      console.warn('[clothing-designs] Could not fetch dbProducts overlay:', e);
+    }
+
     // Strip any internal or raw object keys from the public response
-    const sanitized = paginated.map((d) => ({
-      id: d.id,
-      name: d.name,
-      category: d.category,
-      tags: d.tags,
-      defaultSurface: d.defaultSurface,
-      availableSurfaces: d.availableSurfaces,
-      defaultArtworkId: d.defaultArtworkId,
-      previewUrl: d.previewUrl,
-      studioPreviewUrl: d.studioPreviewUrl,
-      compatibleGarments: d.compatibleGarments,
-      artworks: (d.artworks || []).map((a) => ({
-        id: a.id,
-        name: a.name,
-        fileName: a.fileName,
-        suggestedPlacement: a.suggestedPlacement,
-        colorHint: a.colorHint,
-        previewUrl: a.previewUrl,
-        studioPreviewUrl: a.studioPreviewUrl,
-      })),
-    }));
+    const sanitized = paginated.map((d) => {
+      const dbProduct = dbMap.get(d.id);
+      const isOneRupee = d.id === 'design-001';
+      const livePrice =
+        typeof dbProduct?.basePrice === 'number' && dbProduct.basePrice > 0
+          ? dbProduct.basePrice
+          : isOneRupee
+            ? 1
+            : d.category === 'hoodies'
+              ? 1499
+              : 999;
+      const liveName = dbProduct?.name || d.name;
+
+      return {
+        id: d.id,
+        name: liveName,
+        basePrice: livePrice,
+        price: livePrice,
+        category: d.category,
+        tags: d.tags,
+        defaultSurface: d.defaultSurface,
+        availableSurfaces: d.availableSurfaces,
+        defaultArtworkId: d.defaultArtworkId,
+        previewUrl: d.previewUrl,
+        studioPreviewUrl: d.studioPreviewUrl,
+        compatibleGarments: d.compatibleGarments,
+        artworks: (d.artworks || []).map((a) => ({
+          id: a.id,
+          name: a.name,
+          fileName: a.fileName,
+          suggestedPlacement: a.suggestedPlacement,
+          colorHint: a.colorHint,
+          previewUrl: a.previewUrl,
+          studioPreviewUrl: a.studioPreviewUrl,
+        })),
+      };
+    });
 
     return NextResponse.json(
       {
@@ -89,7 +118,7 @@ export async function GET(req: Request) {
       },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
         },
       },
     );

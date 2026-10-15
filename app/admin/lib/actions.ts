@@ -364,13 +364,97 @@ export async function updateProduct(
   } else {
     await assertStaff();
   }
-  await prisma.product.update({ where: { id: productId }, data });
+
+  const updated = await prisma.product.update({ where: { id: productId }, data });
+
+  // Revalidate across all storefront and admin paths
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/${productId}/edit`);
   revalidatePath('/products');
   revalidatePath('/products/[category]', 'page');
   revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/api/products');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/cart');
+  revalidatePath('/checkout');
   revalidatePath('/', 'layout');
+
+  return updated;
+}
+
+/**
+ * Fast inline update of product title/name from admin table or quick action.
+ * Propagates live changes to all storefront product pages, catalog, cart, and Wall Studio.
+ */
+export async function updateProductName(productId: string, newName: string) {
+  await assertStaff();
+
+  if (!newName || typeof newName !== 'string' || newName.trim().length === 0) {
+    throw new Error('Product name cannot be empty.');
+  }
+
+  const trimmed = newName.trim();
+
+  const updatedProduct = await prisma.product.update({
+    where: { id: productId },
+    data: { name: trimmed },
+    include: { variants: true },
+  });
+
+  // Synchronize with Wall Studio tables if this is a Wall Studio layout or Prebuilt Wall
+  if (updatedProduct.categorySlug === 'wall-studio' || productId.startsWith('wall_')) {
+    const layoutSlug = updatedProduct.slug.replace(/^wall-layout-/, '').replace(/^wall_/, '');
+    const cleanId = productId.replace(/^wall_/, '');
+    try {
+      await prisma.wallLayout.updateMany({
+        where: {
+          OR: [
+            { slug: layoutSlug },
+            { id: cleanId },
+            { id: productId },
+            { slug: updatedProduct.slug },
+          ],
+        },
+        data: { name: trimmed },
+      });
+    } catch (e) {
+      console.warn('Could not update wallLayout in sync:', e);
+    }
+  }
+
+  if (updatedProduct.categorySlug === 'wall-studio' || productId.startsWith('prebuilt_')) {
+    const prebuiltSlug = updatedProduct.slug.replace(/^prebuilt-wall-/, '').replace(/^prebuilt_/, '');
+    const cleanId = productId.replace(/^prebuilt_/, '');
+    try {
+      await prisma.prebuiltWallProduct.updateMany({
+        where: {
+          OR: [
+            { slug: prebuiltSlug },
+            { id: cleanId },
+            { id: productId },
+            { slug: updatedProduct.slug },
+          ],
+        },
+        data: { title: trimmed },
+      });
+    } catch (e) {
+      console.warn('Could not update prebuiltWallProduct in sync:', e);
+    }
+  }
+
+  // Bust cache across entire storefront and customer routes
+  revalidatePath('/admin/products');
+  revalidatePath(`/admin/products/${productId}/edit`);
+  revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/api/products');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/cart');
+  revalidatePath('/checkout');
+  revalidatePath('/', 'layout');
+
+  return { success: true, name: trimmed, product: updatedProduct };
 }
 
 export async function createVariant(data: {

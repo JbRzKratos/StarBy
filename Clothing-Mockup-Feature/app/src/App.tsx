@@ -226,6 +226,19 @@ export const App: React.FC = () => {
   const [activeCuratedDesign, setActiveCuratedDesign] = useState<CuratedClothingDesign | null>(null);
   const [initialDesignId, setInitialDesignId] = useState<string | null>(null);
   const initialPriceRef = useRef<number | null>(null);
+  const [unitPrice, setUnitPrice] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const p = sp.get('price');
+        if (p !== null && !isNaN(Number(p))) return Number(p);
+        if (sp.get('designId') === 'design-001') return 1;
+      } catch {
+        /* ignore */
+      }
+    }
+    return 999;
+  });
 
   // Modal Placement State
   const [modalSelectedArtId, setModalSelectedArtId] = useState<string | null>(null);
@@ -551,7 +564,16 @@ export const App: React.FC = () => {
         setActiveCuratedDesign(curated);
       }
       if (params.designId) setInitialDesignId(params.designId);
-      if (params.price) initialPriceRef.current = parseFloat(params.price) || 999;
+      let parsedPrice: number | null = null;
+      if (params.price !== undefined && params.price !== null && !isNaN(Number(params.price))) {
+        parsedPrice = Number(params.price);
+      } else if (params.designId === 'design-001') {
+        parsedPrice = 1;
+      }
+      if (parsedPrice !== null) {
+        initialPriceRef.current = parsedPrice;
+        setUnitPrice(parsedPrice);
+      }
 
       const targetGarmentId =
         params.garment ||
@@ -1766,33 +1788,37 @@ export const App: React.FC = () => {
   };
 
   const handleAddArtworkFromFile3D = (file: File) => {
-    const url = URL.createObjectURL(file);
-    const region = currentGarmentConfig3D.regions.find((r: any) => r.id === project3D.activeRegionId) || currentGarmentConfig3D.regions[0];
-    const u = region ? region.uvCenter[0] : 0.25;
-    const v = region ? region.uvCenter[1] : 0.63;
-    const baseW = region ? region.uvSpan[0] : 0.35;
-    const scale = 0.85;
-    const uvW = parseFloat((baseW * scale).toFixed(4));
-    const uvH = parseFloat((baseW * scale).toFixed(4));
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      const region = currentGarmentConfig3D.regions.find((r: any) => r.id === project3D.activeRegionId) || currentGarmentConfig3D.regions[0];
+      const u = region ? region.uvCenter[0] : 0.25;
+      const v = region ? region.uvCenter[1] : 0.63;
+      const baseW = region ? region.uvSpan[0] : 0.35;
+      const scale = 0.85;
+      const uvW = parseFloat((baseW * scale).toFixed(4));
+      const uvH = parseFloat((baseW * scale).toFixed(4));
 
-    const newLayer: ArtworkLayer3D = {
-      id: `layer-${Date.now()}`,
-      name: file.name.replace(/\.[^/.]+$/, ''),
-      regionId: region?.id || 'front',
-      imageUrl: url,
-      placementMode: 'atlas',
-      u,
-      v,
-      uvWidth: uvW,
-      uvHeight: uvH,
-      offsetX: 0,
-      offsetY: 0,
-      scale,
-      rotation: 0,
-      opacity: 1.0,
-      lockAspectRatio: true,
+      const newLayer: ArtworkLayer3D = {
+        id: `layer-${Date.now()}`,
+        name: file.name.replace(/\.[^/.]+$/, ''),
+        regionId: region?.id || 'front',
+        imageUrl: dataUrl,
+        placementMode: 'atlas',
+        u,
+        v,
+        uvWidth: uvW,
+        uvHeight: uvH,
+        offsetX: 0,
+        offsetY: 0,
+        scale,
+        rotation: 0,
+        opacity: 1.0,
+        lockAspectRatio: true,
+      };
+      handleAddArtwork3D(newLayer);
     };
-    handleAddArtwork3D(newLayer);
+    reader.readAsDataURL(file);
   };
 
   const handleOpenAddToCart = async () => {
@@ -1850,14 +1876,42 @@ export const App: React.FC = () => {
     }
   };
 
-  const handleConfirmAddToCart = (data: {
+  const handleConfirmAddToCart = async (data: {
     size: string;
     quantity: number;
     printInstructions: string;
   }) => {
+    let frontSnapshot = cartFrontSnapshot;
+    let backSnapshot = cartBackSnapshot;
+
+    if (mode === '2d' && (!frontSnapshot || !backSnapshot)) {
+      try {
+        if (!frontSnapshot) {
+          const frontCanvas = await exportManager.renderSideCanvas(project2D, 'front', {
+            scope: 'current',
+            dimensions: '2048x2048',
+            transparentBg: false,
+            includeShadow: true,
+          });
+          frontSnapshot = frontCanvas.toDataURL('image/png');
+        }
+        if (!backSnapshot) {
+          const backCanvas = await exportManager.renderSideCanvas(project2D, 'back', {
+            scope: 'current',
+            dimensions: '2048x2048',
+            transparentBg: false,
+            includeShadow: true,
+          });
+          backSnapshot = backCanvas.toDataURL('image/png');
+        }
+      } catch (err) {
+        console.warn('[App] 2D mockup fallback snapshot warning:', err);
+      }
+    }
+
     let frontDesignUrl: string | null = null;
     let backDesignUrl: string | null = null;
-    const uploadedArtworks: { name: string; url: string; side: string }[] = [];
+    const uploadedArtworks: { name: string; url: string; dataUrl?: string; side: string }[] = [];
 
     if (mode === '3d') {
       project3D.artworkLayers.forEach((l) => {
@@ -1869,6 +1923,7 @@ export const App: React.FC = () => {
         uploadedArtworks.push({
           name: l.name || 'Artwork',
           url: l.imageUrl,
+          dataUrl: l.imageUrl?.startsWith('data:') ? l.imageUrl : undefined,
           side,
         });
         if (isBack && !backDesignUrl) {
@@ -1885,13 +1940,23 @@ export const App: React.FC = () => {
       if (project2D.front.layers.length > 0) {
         frontDesignUrl = project2D.front.layers[0].src;
         project2D.front.layers.forEach((l) =>
-          uploadedArtworks.push({ name: l.name, url: l.src, side: 'front' })
+          uploadedArtworks.push({
+            name: l.name,
+            url: l.src,
+            dataUrl: l.src.startsWith('data:') ? l.src : undefined,
+            side: 'front',
+          })
         );
       }
       if (project2D.back.layers.length > 0) {
         backDesignUrl = project2D.back.layers[0].src;
         project2D.back.layers.forEach((l) =>
-          uploadedArtworks.push({ name: l.name, url: l.src, side: 'back' })
+          uploadedArtworks.push({
+            name: l.name,
+            url: l.src,
+            dataUrl: l.src.startsWith('data:') ? l.src : undefined,
+            side: 'back',
+          })
         );
       }
     }
@@ -1901,17 +1966,23 @@ export const App: React.FC = () => {
     const garmentId = mode === '3d' ? project3D.garmentId : project2D.templateId;
     const garmentColor = mode === '3d' ? project3D.garmentColor : project2D.garmentColor;
 
+    const finalPrice = typeof unitPrice === 'number' && unitPrice >= 0
+      ? unitPrice
+      : (typeof initialPriceRef.current === 'number' && initialPriceRef.current >= 0
+        ? initialPriceRef.current
+        : (initialDesignId === 'design-001' ? 1 : 999));
+
     const payload = {
       garmentId,
       garmentName,
       garmentColor,
       size: data.size,
       quantity: data.quantity,
-      price: initialPriceRef.current || 999,
+      price: finalPrice,
       designId: initialDesignId || undefined,
-      frontPreviewUrl: cartFrontSnapshot,
-      backPreviewUrl: cartBackSnapshot,
-      previewFileUrl: cartFrontSnapshot || cartBackSnapshot,
+      frontPreviewUrl: frontSnapshot,
+      backPreviewUrl: backSnapshot,
+      previewFileUrl: frontSnapshot || backSnapshot,
       frontDesignFileUrl: frontDesignUrl,
       backDesignFileUrl: backDesignUrl,
       designFileUrl: primaryDesignFileUrl,
@@ -2436,6 +2507,7 @@ export const App: React.FC = () => {
         onClose={() => setIsAddToCartOpen(false)}
         garmentName={mode === '3d' ? currentGarmentConfig3D.name : activeTemplate2D.name}
         garmentColor={mode === '3d' ? project3D.garmentColor : project2D.garmentColor}
+        unitPrice={unitPrice}
         frontSnapshotUrl={cartFrontSnapshot}
         backSnapshotUrl={cartBackSnapshot}
         artworkLayers={project3D.artworkLayers}
