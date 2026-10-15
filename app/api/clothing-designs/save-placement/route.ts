@@ -14,7 +14,6 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const designId = searchParams.get('designId');
-    const garmentId = searchParams.get('garmentId');
 
     const all = getAllServerPlacements();
 
@@ -109,36 +108,41 @@ export async function POST(req: Request) {
 
     // 2. If layers list provided directly from 3D project
     if (Array.isArray(layers) && layers.length > 0) {
-      layers.forEach((layer: any) => {
+      layers.forEach((rawLayer: Record<string, unknown>) => {
+        const layerPlacementTarget = typeof rawLayer.placementTarget === 'string' ? rawLayer.placementTarget : undefined;
+        const layerRegionId = typeof rawLayer.regionId === 'string' ? rawLayer.regionId : undefined;
+        const layerName = typeof rawLayer.name === 'string' ? rawLayer.name : '';
+        const layerId = typeof rawLayer.id === 'string' ? rawLayer.id : '';
+
         const target =
-          layer.placementTarget ||
-          (layer.regionId === 'back' || (layer.name && layer.name.toLowerCase().includes('back'))
+          layerPlacementTarget ||
+          (layerRegionId === 'back' || layerName.toLowerCase().includes('back')
             ? 'back-center'
-            : layer.name && layer.name.toLowerCase().includes('sleeve')
+            : layerName.toLowerCase().includes('sleeve')
             ? 'left-sleeve'
             : 'front-center');
 
-        const artMatch = (layer.id || '').match(/art-\d+/i);
+        const artMatch = layerId.match(/art-\d+/i);
         const artId = artMatch ? artMatch[0].toLowerCase() : undefined;
-        const isHidden = layer.opacity === 0 || layer.hidden === true;
-        const isRemoved = layer.removed === true;
+        const isHidden = rawLayer.opacity === 0 || rawLayer.hidden === true;
+        const isRemoved = rawLayer.removed === true;
 
         if (artId && !isHidden && !isRemoved) {
           activeArtIds.add(artId);
         }
 
         const placementItem: SavedPlacementItem = {
-          u: typeof layer.u === 'number' ? parseFloat(layer.u.toFixed(5)) : 0.25,
-          v: typeof layer.v === 'number' ? parseFloat(layer.v.toFixed(5)) : 0.63,
-          uvWidth: typeof layer.uvWidth === 'number' ? parseFloat(layer.uvWidth.toFixed(5)) : 0.26,
-          scale: typeof layer.scale === 'number' ? parseFloat(layer.scale.toFixed(5)) : 0.74,
-          rotation: Math.round(layer.rotation || 0),
-          regionId: layer.regionId === 'back' || target.includes('back') ? 'back' : 'front',
+          u: typeof rawLayer.u === 'number' ? parseFloat(rawLayer.u.toFixed(5)) : 0.25,
+          v: typeof rawLayer.v === 'number' ? parseFloat(rawLayer.v.toFixed(5)) : 0.63,
+          uvWidth: typeof rawLayer.uvWidth === 'number' ? parseFloat(rawLayer.uvWidth.toFixed(5)) : 0.26,
+          scale: typeof rawLayer.scale === 'number' ? parseFloat(rawLayer.scale.toFixed(5)) : 0.74,
+          rotation: Math.round((typeof rawLayer.rotation === 'number' ? rawLayer.rotation : 0)),
+          regionId: layerRegionId === 'back' || target.includes('back') ? 'back' : 'front',
           placementTarget: target,
-          scalePreset: layer.scalePreset || 'standard',
+          scalePreset: typeof rawLayer.scalePreset === 'string' ? rawLayer.scalePreset : 'standard',
           hidden: isHidden,
           removed: isRemoved,
-          opacity: typeof layer.opacity === 'number' ? layer.opacity : (isHidden ? 0 : 1.0),
+          opacity: typeof rawLayer.opacity === 'number' ? rawLayer.opacity : (isHidden ? 0 : 1.0),
           savedAt: now,
         };
 
@@ -166,12 +170,14 @@ export async function POST(req: Request) {
       const manifestArtworks = getManifest().designs.find((d) => d.id === designId)?.artworks || [];
       manifestArtworks.forEach((a) => {
         const aId = a.id.toLowerCase();
-        const isPresentInLayers = layers.some((l: any) => {
-          const m = (l.id || '').match(/art-\d+/i);
+        const isPresentInLayers = layers.some((l: Record<string, unknown>) => {
+          const lId = typeof l.id === 'string' ? l.id : '';
+          const lName = typeof l.name === 'string' ? l.name : '';
+          const m = lId.match(/art-\d+/i);
           return (
             (m && m[0].toLowerCase() === aId) ||
-            (l.id && l.id.toLowerCase().includes(aId)) ||
-            (l.name && l.name.toLowerCase().includes(a.name.toLowerCase()))
+            lId.toLowerCase().includes(aId) ||
+            lName.toLowerCase().includes(a.name.toLowerCase())
           );
         });
         if (!isPresentInLayers) {

@@ -30,7 +30,6 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
     activeArtId,
     setActiveArtId,
     artworkPlacements,
-    artworkScales,
     artworkCalibratedCoords,
     includedArtworks,
     previewSide,

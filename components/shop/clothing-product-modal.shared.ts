@@ -7,6 +7,7 @@ import type {
   DesignArtworkOption,
   DesignPlacementTarget,
   DesignScalePreset,
+  SavedPlacementItem,
 } from '@/lib/clothing-designs/types';
 import { parseNaturalLanguagePlacement } from '@/lib/clothing-designs/placement-parser';
 import {
@@ -230,8 +231,8 @@ export function useClothingProductModalState({
       Boolean(design.category))
   );
 
-  // Calibrated coordinates per artwork: Record<artId, any>
-  const [artworkCalibratedCoords, setArtworkCalibratedCoords] = useState<Record<string, any>>({});
+  // Calibrated coordinates per artwork: Record<artId, SavedPlacementItem>
+  const [artworkCalibratedCoords, setArtworkCalibratedCoords] = useState<Record<string, SavedPlacementItem>>({});
 
   // Fetch persisted server placements on mount / design load and merge into localStorage
   useEffect(() => {
@@ -265,9 +266,9 @@ export function useClothingProductModalState({
       try {
         const raw = window.localStorage.getItem('fregoro_curated_placements');
         if (!raw) return null;
-        const all = JSON.parse(raw);
+        const all: Record<string, SavedPlacementItem> = JSON.parse(raw);
 
-        const validateCandidate = (candidate: any, isExplicit = false): boolean => {
+        const validateCandidate = (candidate: Partial<SavedPlacementItem> | null | undefined, isExplicit = false): boolean => {
           if (!candidate || typeof candidate.u !== 'number' || typeof candidate.v !== 'number') return false;
           // Explicit user-calibrated keys for artwork or target are always honored
           if (isExplicit) return true;
@@ -315,7 +316,7 @@ export function useClothingProductModalState({
 
     const initialPlacements: Record<string, DesignPlacementTarget> = {};
     const initialScales: Record<string, DesignScalePreset> = {};
-    const initialCoords: Record<string, any> = {};
+    const initialCoords: Record<string, SavedPlacementItem> = {};
     const initialIncluded = new Set<string>();
 
     artworks.forEach((art) => {
@@ -332,7 +333,7 @@ export function useClothingProductModalState({
           : 'standard';
 
       // Look up saved placement specifically for this artwork or target
-      const serverCalibrated = (art as any).calibratedPlacement;
+      const serverCalibrated = art.calibratedPlacement;
       const savedForArt = getSavedPlacementForDesign(selectedGarment.garment3dId, art.id, initPlacement) || serverCalibrated;
       if (savedForArt) {
         initialCoords[art.id] = savedForArt;
@@ -351,8 +352,8 @@ export function useClothingProductModalState({
       initialScales[art.id] = initScale;
 
       const isRemovedOrHidden =
-        (art as any).removed === true ||
-        (art as any).hidden === true ||
+        art.removed === true ||
+        art.hidden === true ||
         savedForArt?.removed === true ||
         savedForArt?.hidden === true ||
         savedForArt?.opacity === 0;
@@ -594,7 +595,7 @@ export function useClothingProductModalState({
       const calibrated =
         artworkCalibratedCoords[art.id] ||
         getSavedPlacementForDesign(selectedGarment.garment3dId, art.id, placement) ||
-        (art as any).calibratedPlacement;
+        art.calibratedPlacement;
 
       return {
         id: `fregor-art-${art.id}-${index}`,
@@ -627,7 +628,7 @@ export function useClothingProductModalState({
     const primaryCalibrated =
       artworkCalibratedCoords[primaryArt.id] ||
       getSavedPlacementForDesign(selectedGarment.garment3dId, primaryArt.id, primaryPlacement) ||
-      (primaryArt as any).calibratedPlacement;
+      primaryArt.calibratedPlacement;
 
     const isOneRupee =
       design.basePrice === 1 ||

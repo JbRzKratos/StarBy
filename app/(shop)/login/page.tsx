@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense, useRef, type FormEvent } from 'react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
 import { isSuperAdminEmail } from '@/lib/auth-constants';
@@ -56,7 +56,6 @@ const SHOWCASE_ITEMS = [
 ];
 
 function LoginContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const rawRedirectTo = searchParams.get('redirectTo');
   const isVerifiedParam = searchParams.get('verified') === 'true';

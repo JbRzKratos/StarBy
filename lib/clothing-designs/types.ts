@@ -14,6 +14,23 @@ export type DesignPlacementTarget =
   | 'sleeve';
 export type DesignScalePreset = 'compact' | 'standard' | 'oversized';
 
+export interface SavedPlacementItem {
+  u: number;
+  v: number;
+  uvWidth: number;
+  uvHeight?: number;
+  scale: number;
+  rotation: number;
+  regionId: 'front' | 'back';
+  placementTarget?: string;
+  scalePreset?: string;
+  hidden?: boolean;
+  removed?: boolean;
+  opacity?: number;
+  includedArtIds?: string[];
+  savedAt?: string;
+}
+
 export interface DesignArtworkOption {
   id: string; // e.g. "art-1", "art-2"
   fileName: string;
@@ -26,6 +43,9 @@ export interface DesignArtworkOption {
   previewObjectKey: string;
   previewUrl: string; // /api/clothing-designs/{id}/preview?artId={artId}&type=thumbnail
   studioPreviewUrl: string; // /api/clothing-designs/{id}/preview?artId={artId}&type=studio
+  calibratedPlacement?: SavedPlacementItem;
+  removed?: boolean;
+  hidden?: boolean;
 }
 
 export interface ClothingDesignEntry {

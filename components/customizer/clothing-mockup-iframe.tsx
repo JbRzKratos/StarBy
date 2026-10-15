@@ -202,26 +202,31 @@ export function ClothingMockupIframe() {
           const garmentKey = (garmentId || 'regular-t-shirt').toLowerCase();
 
           if (Array.isArray(layers) && layers.length > 0) {
-            layers.forEach((layer: any) => {
+            layers.forEach((layer: Record<string, unknown>) => {
+              const layerTarget = typeof layer.placementTarget === 'string' ? layer.placementTarget : undefined;
+              const layerRegion = typeof layer.regionId === 'string' ? layer.regionId : undefined;
+              const layerName = typeof layer.name === 'string' ? layer.name : '';
+              const layerId = typeof layer.id === 'string' ? layer.id : '';
+
               const tgt =
-                layer.placementTarget ||
-                (layer.regionId === 'back' || (layer.name && layer.name.toLowerCase().includes('back'))
+                layerTarget ||
+                (layerRegion === 'back' || layerName.toLowerCase().includes('back')
                   ? 'back-center'
-                  : layer.name && layer.name.toLowerCase().includes('sleeve')
+                  : layerName.toLowerCase().includes('sleeve')
                   ? 'left-sleeve'
                   : 'front-center');
-              const artMatch = (layer.id || '').match(/art-\d+/i);
+              const artMatch = layerId.match(/art-\d+/i);
               const aId = artMatch ? artMatch[0].toLowerCase() : undefined;
               const isHidden = layer.opacity === 0 || layer.hidden === true;
               const pl = {
-                u: layer.u,
-                v: layer.v,
-                uvWidth: layer.uvWidth,
-                scale: layer.scale,
-                rotation: layer.rotation || 0,
-                regionId: layer.regionId === 'back' || tgt.includes('back') ? 'back' : 'front',
+                u: typeof layer.u === 'number' ? layer.u : 0.25,
+                v: typeof layer.v === 'number' ? layer.v : 0.63,
+                uvWidth: typeof layer.uvWidth === 'number' ? layer.uvWidth : 0.26,
+                scale: typeof layer.scale === 'number' ? layer.scale : 0.74,
+                rotation: typeof layer.rotation === 'number' ? layer.rotation : 0,
+                regionId: layerRegion === 'back' || tgt.includes('back') ? 'back' : 'front',
                 placementTarget: tgt,
-                scalePreset: layer.scalePreset || 'standard',
+                scalePreset: typeof layer.scalePreset === 'string' ? layer.scalePreset : 'standard',
                 hidden: isHidden,
                 removed: false,
                 opacity: typeof layer.opacity === 'number' ? layer.opacity : (isHidden ? 0 : 1.0),
@@ -232,6 +237,13 @@ export function ClothingMockupIframe() {
               }
               if (aId) all[`${designId}__${garmentKey}__${aId}`] = pl;
             });
+          } else if (placement) {
+            if (target) {
+              all[`${designId}__${garmentKey}__${target}`] = placement;
+            }
+            if (artId) {
+              all[`${designId}__${garmentKey}__${String(artId).toLowerCase()}`] = placement;
+            }
           }
 
           if (Array.isArray(e.data.removedArtIds)) {

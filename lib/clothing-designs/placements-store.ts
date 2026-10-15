@@ -1,22 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import type { SavedPlacementItem } from './types';
 
-export interface SavedPlacementItem {
-  u: number;
-  v: number;
-  uvWidth: number;
-  uvHeight?: number;
-  scale: number;
-  rotation: number;
-  regionId: 'front' | 'back';
-  placementTarget?: string;
-  scalePreset?: string;
-  hidden?: boolean;
-  removed?: boolean;
-  opacity?: number;
-  includedArtIds?: string[];
-  savedAt?: string;
-}
+export type { SavedPlacementItem };
 
 const PLACEMENTS_FILE_PATH = path.resolve(process.cwd(), 'lib', 'clothing-designs', 'custom-placements.json');
 

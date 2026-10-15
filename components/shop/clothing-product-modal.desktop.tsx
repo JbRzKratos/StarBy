@@ -31,7 +31,6 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
     activeArtId,
     setActiveArtId,
     artworkPlacements,
-    artworkScales,
     artworkCalibratedCoords,
     includedArtworks,
     setIncludedArtworks,
