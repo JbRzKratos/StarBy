@@ -74,19 +74,20 @@ export function HeroDesktop() {
             Minimal designs. Maximum impact.
           </p>
 
-          <div className="flex items-center gap-6 pt-2">
+          <div className="flex items-center gap-4 pt-2">
             <Link
-              href="/products/all"
+              href="/products/tees"
               className="group relative inline-flex items-center justify-center bg-[#0A0A0A] text-[#F5F1EA] px-8 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] transition-all duration-300 hover:bg-[#ED9518] hover:border-[#ED9518] hover:text-[#0A0A0A] hover:shadow-[0_0_25px_rgba(237,149,24,0.4)]"
             >
               <span className="relative z-10">SHOP NOW</span>
             </Link>
 
             <Link
-              href="/products/all"
-              className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#0A0A0A] border-b-2 border-[#0A0A0A] pb-1 hover:text-[#B45309] hover:border-[#B45309] transition-colors"
+              href="/customize/clothing-mockup"
+              className="group relative inline-flex items-center gap-2.5 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#0A0A0A] border-2 border-[#0A0A0A] px-7 py-3.5 transition-all duration-300 hover:bg-[#0A0A0A] hover:text-[#F5F1EA] hover:border-[#0A0A0A]"
             >
-              EXPLORE THE DROP
+              <span className="w-2 h-2 rounded-full bg-[#ED9518] animate-pulse" />
+              <span>ENTER 3D STUDIO [360°]</span>
             </Link>
           </div>
         </div>

@@ -9,7 +9,8 @@ const ClothingProductModal = dynamic(
   () => import('./clothing-product-modal').then((m) => m.ClothingProductModal),
   { ssr: false },
 );
-import { Search } from 'lucide-react';
+import Link from 'next/link';
+import { Search, ArrowRight } from 'lucide-react';
 import { PlainApparelCard } from './plain-apparel-card';
 import { plainApparelProducts } from '@/data/plain-apparel-products';
 
@@ -117,6 +118,80 @@ export function ClothingDesignsGallery({
 
   return (
     <div className="w-full flex flex-col gap-6 sm:gap-8">
+      {/* 3D Studio Creation Process Ribbon */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#16181E] via-[#121318] to-[#16181E] border border-white/10 p-4 sm:p-6 shadow-2xl">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest bg-[#ED9518]/15 text-[#ED9518] border border-[#ED9518]/30 font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#ED9518] animate-pulse" />
+                Interactive 3D Apparel Lab
+              </span>
+              <span className="text-[11px] font-mono text-white/50 uppercase hidden sm:inline">• Curated Graphics For Tees &amp; Hoodies</span>
+            </div>
+            <h3 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide uppercase">
+              Every Artwork Is A Canvas. Pick Any Graphic → Build On 3D Garment.
+            </h3>
+            <p className="font-mono text-xs text-white/60">
+              We don&apos;t use flat static mockups. Click any design below to rotate 360°, change garment cuts, pick colorways &amp; position graphics in real-time.
+            </p>
+          </div>
+
+          <Link
+            href="/customize/clothing-mockup"
+            className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-black font-mono text-xs font-bold uppercase tracking-widest hover:bg-[#ED9518] hover:text-black transition-all active:scale-95 shadow-lg shadow-black/40"
+          >
+            <span>Launch Blank 3D Studio</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        {/* 3-Step Flow Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-4 mt-4 border-t border-white/10">
+          <div className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <span className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center font-mono text-xs font-bold text-white flex-shrink-0">
+              01
+            </span>
+            <div className="flex flex-col">
+              <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
+                1. Select Graphic
+              </span>
+              <span className="text-[11px] text-white/50 leading-relaxed">
+                Browse curated collections (Anime, Automotive, Streetwear, Marvel) or upload your own.
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <span className="w-7 h-7 rounded-lg bg-[#ED9518]/20 text-[#ED9518] flex items-center justify-center font-mono text-xs font-bold flex-shrink-0">
+              02
+            </span>
+            <div className="flex flex-col">
+              <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
+                2. Customize In 360° 3D
+              </span>
+              <span className="text-[11px] text-white/50 leading-relaxed">
+                Choose Heavyweight Tee, Acid Wash, or Hoodie. Move, scale, and rotate on chest, back, or sleeves.
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <span className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono text-xs font-bold flex-shrink-0">
+              03
+            </span>
+            <div className="flex flex-col">
+              <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
+                3. Tailored &amp; Delivered
+              </span>
+              <span className="text-[11px] text-white/50 leading-relaxed">
+                Engineered with high-definition DTF printing on luxury 240–300 GSM combed cotton.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Gallery Header Bar */}
       <div className="flex flex-col gap-4 pb-4 border-b border-white/10">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">

@@ -53,19 +53,20 @@ export function HeroMobile() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col gap-2 pt-1">
+        <div className="flex flex-col gap-2.5 pt-1">
           <Link
-            href="/products/all"
+            href="/products/tees"
             className="w-full text-center bg-[#0A0A0A] text-[#F5F1EA] py-3.5 px-6 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] active:bg-[#ED9518] active:border-[#ED9518] active:text-[#0A0A0A] transition-all"
           >
             SHOP NOW
           </Link>
 
           <Link
-            href="/products/all"
-            className="w-full text-center bg-transparent text-[#0A0A0A] py-3 px-6 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] active:bg-[#ED9518] active:border-[#ED9518] active:text-[#0A0A0A] transition-all"
+            href="/customize/clothing-mockup"
+            className="w-full inline-flex items-center justify-center gap-2 bg-transparent text-[#0A0A0A] py-3 px-6 font-mono text-xs font-bold uppercase tracking-[0.18em] border-2 border-[#0A0A0A] active:bg-[#0A0A0A] active:text-[#F5F1EA] transition-all"
           >
-            EXPLORE THE DROP
+            <span className="w-2 h-2 rounded-full bg-[#ED9518] animate-pulse" />
+            <span>ENTER 3D STUDIO [360°]</span>
           </Link>
         </div>
 

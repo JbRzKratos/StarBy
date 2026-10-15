@@ -20,6 +20,14 @@ const ClothingProductModal = dynamic(
 );
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
 
+import {
+  classifyProduct,
+  sortCatalogProducts,
+  matchesProductSearch,
+  filterByPreset,
+  QUICK_FILTER_PRESETS,
+} from '@/lib/shop/product-classifier';
+
 function DesktopProductCard({
   product,
   index,
@@ -31,7 +39,10 @@ function DesktopProductCard({
 }) {
   const { formatPrice } = usePrice();
   const isComingSoon = isProductComingSoon(product);
-  const isClothingDesign = product.id.startsWith('design-');
+  const productType = classifyProduct(product);
+  const isClothingDesign = productType === 'tees-designs';
+  const isPlainApparel = productType === 'plain-tees';
+  const isSplitPoster = productType === 'split-posters';
   const [imgError, setImgError] = useState(false);
 
   const fallbackImg = getR2AssetUrl('images/hero/posters.webp');
@@ -59,7 +70,8 @@ function DesktopProductCard({
           />
 
           {/* 3D Studio Badge */}
-          <div className="absolute top-2.5 right-2.5 z-10 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[9px] font-mono text-emerald-400 uppercase tracking-wider backdrop-blur-sm">
+          <div className="absolute top-2.5 right-2.5 z-10 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[9px] font-mono text-emerald-400 uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             3D Studio
           </div>
 
@@ -73,22 +85,30 @@ function DesktopProductCard({
 
         {/* Name / price below card */}
         <div className="flex flex-col gap-1 mt-4">
-          <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-emerald-400 transition-colors truncate">
-            {product.name}
-          </h3>
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-emerald-400 transition-colors truncate">
+              {product.name}
+            </h3>
+            <span className="font-mono text-[9px] uppercase tracking-wider text-emerald-400/80 px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+              3D Graphic
+            </span>
+          </div>
           <p className="font-display text-lg text-pearl">{formatPrice(product.basePrice)}</p>
         </div>
       </div>
     );
   }
 
+  const productHref =
+    product.categorySlug === 'skins'
+      ? '/products/skins'
+      : isSplitPoster
+        ? `/products/split-posters/${product.slug || product.id}`
+        : `/products/${product.categorySlug}/${product.slug || product.id}`;
+
   return (
     <Link
-      href={
-        product.categorySlug === 'skins'
-          ? '/products/skins'
-          : `/products/${product.categorySlug}/${product.slug || product.id}`
-      }
+      href={productHref}
       className="group flex flex-col gap-0"
       style={{ perspective: '1000px' }}
     >
@@ -105,13 +125,23 @@ function DesktopProductCard({
           onError={() => setImgError(true)}
         />
 
-        {/* Coming Soon Badge */}
-        {isComingSoon && (
+        {/* Badges */}
+        {isComingSoon ? (
           <div className="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/40 text-[9px] font-mono font-medium text-amber-300 uppercase tracking-widest backdrop-blur-md flex items-center gap-1.5 shadow-lg">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             Coming Soon
           </div>
-        )}
+        ) : isPlainApparel ? (
+          <div className="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-full bg-black/60 border border-white/20 text-[9px] font-mono text-bone uppercase tracking-wider backdrop-blur-md flex items-center gap-1 shadow-lg">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+            Blank Essential
+          </div>
+        ) : isSplitPoster ? (
+          <div className="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/40 text-[9px] font-mono text-purple-300 uppercase tracking-wider backdrop-blur-md flex items-center gap-1 shadow-lg">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+            Multi-Panel Split
+          </div>
+        ) : null}
 
         {/* Hover overlay with button */}
         <div className="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
@@ -119,19 +149,28 @@ function DesktopProductCard({
             className={`font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg shadow-xl translate-y-4 group-hover:translate-y-0 transition-all duration-300 ${
               isComingSoon
                 ? 'bg-amber-500 text-black font-semibold'
-                : 'bg-cobalt text-bone'
+                : isPlainApparel
+                  ? 'bg-white text-black font-bold'
+                  : 'bg-cobalt text-bone'
             }`}
           >
-            {isComingSoon ? 'Drop Alert' : 'View Product'}
+            {isComingSoon ? 'Drop Alert' : isPlainApparel ? 'View Fit & Colors' : isSplitPoster ? 'View Split Art' : 'View Product'}
           </span>
         </div>
       </div>
 
       {/* Name / price below card */}
       <div className="flex flex-col gap-1 mt-4">
-        <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-cobalt transition-colors truncate">
-          {product.name}
-        </h3>
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="font-mono text-sm text-bone uppercase tracking-widest group-hover:text-cobalt transition-colors truncate">
+            {product.name}
+          </h3>
+          {isPlainApparel && (
+            <span className="font-mono text-[9px] uppercase tracking-wider text-ash/90 px-1.5 py-0.5 rounded bg-white/5 border border-white/10 flex-shrink-0">
+              Plain
+            </span>
+          )}
+        </div>
         <p className="font-display text-lg text-pearl">
           {isComingSoon ? (
             <span className="font-mono text-xs uppercase tracking-widest text-amber-400/90 font-medium">
@@ -153,6 +192,7 @@ export function ShopDesktop({ category, products }: { category: string; products
 
   const [activeTab, setActiveTab] = useState(category || 'all');
   const [filterType, setFilterType] = useState('all');
+  const [quickPreset, setQuickPreset] = useState('all');
   const [sortMethod, setSortMethod] = useState('featured');
   const [searchQuery, setSearchQuery] = useState('');
   const [minPrice, setMinPrice] = useState('');
@@ -182,6 +222,7 @@ export function ShopDesktop({ category, products }: { category: string; products
 
   useEffect(() => {
     setFilterType(searchParams.get('type') || 'all');
+    setQuickPreset(searchParams.get('preset') || 'all');
     setSortMethod(searchParams.get('sort') || 'featured');
     setSearchQuery(searchParams.get('q') || '');
     setMinPrice(searchParams.get('min') || '');
@@ -190,6 +231,7 @@ export function ShopDesktop({ category, products }: { category: string; products
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
+    setQuickPreset('all');
     router.push(`/products/${tabId}`, { scroll: false });
   };
 
@@ -198,6 +240,15 @@ export function ShopDesktop({ category, products }: { category: string; products
     setFilterType(type);
     const params = new URLSearchParams(searchParams.toString());
     params.set('type', type);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const handlePresetClick = (presetId: string) => {
+    const next = quickPreset === presetId ? 'all' : presetId;
+    setQuickPreset(next);
+    const params = new URLSearchParams(searchParams.toString());
+    if (next !== 'all') params.set('preset', next);
+    else params.delete('preset');
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
@@ -211,56 +262,54 @@ export function ShopDesktop({ category, products }: { category: string; products
 
   const baseProducts = useMemo(() => {
     if (activeTab !== 'all') {
-      return products.filter((p) => p.categorySlug === activeTab && !isProductComingSoon(p));
+      const filtered = products.filter((p) => p.categorySlug === activeTab && !isProductComingSoon(p));
+      return sortCatalogProducts(filtered, sortMethod);
     }
 
-    // When viewing "All Designs" / Catalog:
-    // Only display what we are actually selling right now!
-    // (Posters, Split Posters, Wall Studio, Magazine Studio, and Real Clothing Designs)
-    const activeSellingProducts = products.filter(
-      (p) => !isProductComingSoon(p) && !p.id.startsWith('design-'),
-    );
-    const clothingDesigns = products.filter((p) => p.id.startsWith('design-'));
+    // Catalog view (All Designs):
+    // Prioritize in strict requested sequence:
+    // 1. Plain Tees & Hoodies (Blank essentials)
+    // 2. Tees Designs (Curated graphic artworks)
+    // 3. Posters (Single art posters)
+    // 4. Split Posters (Multi-panel wall art)
+    // 5. Other Active Products
+    const activeSelling = products.filter((p) => !isProductComingSoon(p));
+    return sortCatalogProducts(activeSelling, sortMethod);
+  }, [products, activeTab, sortMethod]);
 
-    // Sort active selling products: featured items first
-    const sortedSelling = [...activeSellingProducts].sort((a, b) => {
-      const aFeat = a.featured ? 1 : 0;
-      const bFeat = b.featured ? 1 : 0;
-      return bFeat - aFeat;
-    });
-
-    return [...sortedSelling, ...clothingDesigns];
-  }, [products, activeTab]);
   let filteredProducts = baseProducts;
-  if (filterType === 'customizable')
-    filteredProducts = filteredProducts.filter((p) => p.customizable);
-  else if (filterType === 'original')
-    filteredProducts = filteredProducts.filter((p) => !p.customizable);
 
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
+  // Identity / Category Type filter
+  if (filterType === 'plain') {
+    filteredProducts = filteredProducts.filter((p) => classifyProduct(p) === 'plain-tees');
+  } else if (filterType === 'designs') {
+    filteredProducts = filteredProducts.filter((p) => classifyProduct(p) === 'tees-designs');
+  } else if (filterType === 'wall-art') {
     filteredProducts = filteredProducts.filter(
-      (p) => p.name.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q),
+      (p) => classifyProduct(p) === 'posters' || classifyProduct(p) === 'split-posters',
     );
+  } else if (filterType === 'customizable') {
+    filteredProducts = filteredProducts.filter((p) => p.customizable);
+  } else if (filterType === 'original') {
+    filteredProducts = filteredProducts.filter((p) => !p.customizable);
   }
+
+  // Quick preset keyword filter
+  if (quickPreset !== 'all') {
+    filteredProducts = filterByPreset(filteredProducts, quickPreset);
+  }
+
+  // Enhanced semantic keyword search (matches query tokens & everyday synonyms)
+  if (searchQuery) {
+    filteredProducts = filteredProducts.filter((p) => matchesProductSearch(p, searchQuery));
+  }
+
   if (minPrice) {
     filteredProducts = filteredProducts.filter((p) => p.basePrice >= Number(minPrice));
   }
   if (maxPrice) {
     filteredProducts = filteredProducts.filter((p) => p.basePrice <= Number(maxPrice));
   }
-
-  if (sortMethod === 'new')
-    filteredProducts = [...filteredProducts].sort((a, b) => {
-      // Products with 'new' tag surface first; within each group, preserve original order
-      const aIsNew = a.tags.includes('new') ? 1 : 0;
-      const bIsNew = b.tags.includes('new') ? 1 : 0;
-      return bIsNew - aIsNew;
-    });
-  if (sortMethod === 'price-asc')
-    filteredProducts = [...filteredProducts].sort((a, b) => a.basePrice - b.basePrice);
-  if (sortMethod === 'price-desc')
-    filteredProducts = [...filteredProducts].sort((a, b) => b.basePrice - a.basePrice);
 
   const displayProducts = filteredProducts.slice(0, visibleCount);
 
@@ -283,20 +332,55 @@ export function ShopDesktop({ category, products }: { category: string; products
                       : activeTab}
           </h1>
 
-          <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar pb-4 border-b border-smoke/20">
-            {SHOP_CATEGORIES.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => handleTabClick(tab.id)}
-                className={`font-mono text-[11px] uppercase tracking-widest pb-4 border-b-2 whitespace-nowrap transition-colors ${
-                  activeTab === tab.id
-                    ? 'border-bone text-bone'
-                    : 'border-transparent text-pearl hover:text-bone'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar pb-4 border-b border-smoke/20">
+              {SHOP_CATEGORIES.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={`font-mono text-[11px] uppercase tracking-widest pb-4 border-b-2 whitespace-nowrap transition-colors ${
+                    activeTab === tab.id
+                      ? 'border-bone text-bone'
+                      : 'border-transparent text-pearl hover:text-bone'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Quick Filter Keyword Pills */}
+            <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2 pt-1">
+              <span className="font-mono text-[10px] text-pearl/50 uppercase tracking-widest mr-2 flex-shrink-0 flex items-center gap-1">
+                <span>Filter:</span>
+              </span>
+              {QUICK_FILTER_PRESETS.map((preset) => {
+                const isActive = quickPreset === preset.id;
+                return (
+                  <button
+                    key={preset.id}
+                    onClick={() => handlePresetClick(preset.id)}
+                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-all whitespace-nowrap active:scale-95 ${
+                      isActive
+                        ? 'bg-bone text-charcoal font-bold shadow-md shadow-white/10'
+                        : 'bg-white/5 text-bone/70 hover:text-bone hover:bg-white/10 border border-white/5'
+                    }`}
+                  >
+                    {preset.icon && <span>{preset.icon}</span>}
+                    <span>{preset.label}</span>
+                    {preset.badge && (
+                      <span
+                        className={`text-[8px] px-1.5 py-0.2 rounded-full font-bold uppercase tracking-wider ${
+                          isActive ? 'bg-charcoal text-bone' : 'bg-white/10 text-bone/60'
+                        }`}
+                      >
+                        {preset.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -317,9 +401,24 @@ export function ShopDesktop({ category, products }: { category: string; products
               <div className="flex flex-col gap-10">
                 {/* Search */}
                 <div>
-                  <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                    Search
-                  </h4>
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest">
+                      Search
+                    </h4>
+                    {searchQuery && (
+                      <button
+                        onClick={() => {
+                          setSearchQuery('');
+                          const params = new URLSearchParams(searchParams.toString());
+                          params.delete('q');
+                          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                        }}
+                        className="font-mono text-[9px] text-ash hover:text-bone uppercase"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
                   <input
                     type="text"
                     value={searchQuery}
@@ -330,9 +429,12 @@ export function ShopDesktop({ category, products }: { category: string; products
                       else params.delete('q');
                       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
                     }}
-                    placeholder="Search products..."
+                    placeholder="Search tees, blanks, posters..."
                     className="w-full bg-transparent border-b border-smoke/30 text-bone font-mono text-xs pb-2 outline-none focus:border-bone placeholder-smoke"
                   />
+                  <p className="font-mono text-[9px] text-pearl/40 mt-1.5">
+                    Try &ldquo;oversized&rdquo;, &ldquo;blank&rdquo;, &ldquo;anime&rdquo;, &ldquo;jdm&rdquo;
+                  </p>
                 </div>
 
                 {/* Price Range */}
@@ -373,7 +475,7 @@ export function ShopDesktop({ category, products }: { category: string; products
 
                 <div>
                   <h4 className="font-mono text-[10px] text-pearl uppercase tracking-widest mb-4">
-                    Identity
+                    Category Filter
                   </h4>
                   <div className="flex flex-col gap-3">
                     <label className="flex items-center gap-3 cursor-pointer group">
@@ -395,15 +497,45 @@ export function ShopDesktop({ category, products }: { category: string; products
                       <input
                         type="radio"
                         name="filterType"
-                        value="original"
-                        checked={filterType === 'original'}
+                        value="plain"
+                        checked={filterType === 'plain'}
                         onChange={handleFilterChange}
                         className="accent-bone"
                       />
                       <span
-                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'original' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
+                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'plain' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
                       >
-                        Designed by Us
+                        Plain Essentials (Blanks)
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="filterType"
+                        value="designs"
+                        checked={filterType === 'designs'}
+                        onChange={handleFilterChange}
+                        className="accent-bone"
+                      />
+                      <span
+                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'designs' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
+                      >
+                        3D Graphic Canvases
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="filterType"
+                        value="wall-art"
+                        checked={filterType === 'wall-art'}
+                        onChange={handleFilterChange}
+                        className="accent-bone"
+                      />
+                      <span
+                        className={`font-mono text-xs uppercase tracking-widest ${filterType === 'wall-art' ? 'text-bone' : 'text-ash group-hover:text-pearl'}`}
+                      >
+                        Wall Art (Posters)
                       </span>
                     </label>
                   </div>

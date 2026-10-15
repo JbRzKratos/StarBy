@@ -838,7 +838,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
               onClick={handleLaunch3D}
               className="flex-1 py-3.5 px-6 bg-white hover:bg-white/90 text-black font-mono text-xs font-bold uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-xl hover:shadow-white/10 cursor-pointer"
             >
-              <span>CUSTOMIZE IN 3D</span>
+              <span>OPEN IN 3D STUDIO [360°]</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

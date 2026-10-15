@@ -22,18 +22,38 @@ export async function GET(req: Request) {
     const manifest = getManifest();
     let designs = manifest.designs;
 
+    // Overlay live product prices and customized names from PostgreSQL
+    let dbMap = new Map<string, { id: string; name: string; basePrice: number }>();
+    try {
+      const dbProducts = await prisma.product.findMany({
+        where: { id: { startsWith: 'design-' } },
+        select: { id: true, name: true, basePrice: true },
+      });
+      dbMap = new Map(dbProducts.map((p) => [p.id, p]));
+    } catch (e) {
+      console.warn('[clothing-designs] Could not fetch dbProducts overlay:', e);
+    }
+
     // Filter by specific design id
     const specificId = searchParams.get('id');
     if (specificId) {
       designs = designs.filter((d) => d.id === specificId);
     }
 
-    // Filter by query
-    const q = searchParams.get('q')?.toLowerCase();
+    // Filter by query (searches both manifest name AND live DB customized name, plus tags)
+    const q = searchParams.get('q')?.toLowerCase()?.trim();
     if (q) {
-      designs = designs.filter(
-        (d) => d.name.toLowerCase().includes(q) || d.id.toLowerCase().includes(q) || d.tags.some(t => t.toLowerCase().includes(q))
-      );
+      const tokens = q.split(/\s+/).filter(Boolean);
+      designs = designs.filter((d) => {
+        const dbProduct = dbMap.get(d.id);
+        const manifestName = d.name.toLowerCase();
+        const liveName = (dbProduct?.name || '').toLowerCase();
+        const idLower = d.id.toLowerCase();
+        const tagsJoined = d.tags.map((t) => t.toLowerCase()).join(' ');
+        const fullSearch = `${manifestName} ${liveName} ${idLower} ${tagsJoined}`;
+
+        return tokens.every((token) => fullSearch.includes(token));
+      });
     }
 
     // Filter by theme category (e.g. anime, automotive, streetwear, etc.)
@@ -55,18 +75,6 @@ export async function GET(req: Request) {
     const totalPages = Math.ceil(total / limit);
     const offset = (page - 1) * limit;
     const paginated = designs.slice(offset, offset + limit);
-
-    // Overlay live product prices and customized names from PostgreSQL
-    let dbMap = new Map<string, { id: string; name: string; basePrice: number }>();
-    try {
-      const dbProducts = await prisma.product.findMany({
-        where: { id: { in: paginated.map((d) => d.id) } },
-        select: { id: true, name: true, basePrice: true },
-      });
-      dbMap = new Map(dbProducts.map((p) => [p.id, p]));
-    } catch (e) {
-      console.warn('[clothing-designs] Could not fetch dbProducts overlay:', e);
-    }
 
     // Strip any internal or raw object keys from the public response
     const sanitized = paginated.map((d) => {
