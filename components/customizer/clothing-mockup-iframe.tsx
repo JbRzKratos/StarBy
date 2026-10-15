@@ -173,6 +173,9 @@ export function ClothingMockupIframe() {
             };
 
             try {
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 8000);
+
               const uploadRes = await fetch('/api/customizer/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -182,7 +185,9 @@ export function ClothingMockupIframe() {
                   uploadedArtworks: payload.uploadedArtworks || [],
                   garmentId: payload.garmentId || 'tee',
                 }),
+                signal: controller.signal,
               });
+              clearTimeout(timeoutId);
 
               if (uploadRes.ok) {
                 const uploadJson = await uploadRes.json();
@@ -199,13 +204,20 @@ export function ClothingMockupIframe() {
                 }
               }
             } catch (uploadErr) {
-              console.warn('[ClothingMockupIframe] Upload error (using fallback):', uploadErr);
+              console.warn('[ClothingMockupIframe] Upload error or timeout (using fallback):', uploadErr);
             }
 
-            const safeImage =
+            // Ensure safe image for bag display: fallback to static mockup if string is oversized
+            const candidateImage =
               uploadResult.frontPreviewUrl ||
               uploadResult.previewFileUrl ||
               '/images/mockups/tee-black-front.png';
+            const safeImage =
+              typeof candidateImage === 'string' &&
+              candidateImage.startsWith('data:') &&
+              candidateImage.length > 80000
+                ? '/images/mockups/tee-black-front.png'
+                : candidateImage;
 
             const is2d = payload.mode === '2d';
             const variantPrefix = is2d ? 'mockup-2d' : 'mockup-3d';
@@ -242,7 +254,35 @@ export function ClothingMockupIframe() {
               },
             };
 
-            useCartStore.getState().addItem(cartItem);
+            try {
+              useCartStore.getState().addItem(cartItem);
+            } catch (storageErr) {
+              console.warn('[ClothingMockupIframe] addItem caught storage quota error, sanitizing item and retrying...', storageErr);
+              // Clean any data URLs from cartItem to avoid localStorage quota issues
+              const cleanItem: CartItem = {
+                ...cartItem,
+                image: cartItem.image && cartItem.image.startsWith('data:')
+                  ? '/images/mockups/tee-black-front.png'
+                  : cartItem.image,
+                customization: cartItem.customization ? {
+                  ...cartItem.customization,
+                  frontPreviewFileUrl: cartItem.customization.frontPreviewFileUrl?.startsWith('data:') ? null : cartItem.customization.frontPreviewFileUrl,
+                  backPreviewFileUrl: cartItem.customization.backPreviewFileUrl?.startsWith('data:') ? null : cartItem.customization.backPreviewFileUrl,
+                  previewFileUrl: cartItem.customization.previewFileUrl?.startsWith('data:') ? null : cartItem.customization.previewFileUrl,
+                  designFileUrl: cartItem.customization.designFileUrl?.startsWith('data:') ? null : cartItem.customization.designFileUrl,
+                  frontDesignFileUrl: cartItem.customization.frontDesignFileUrl?.startsWith('data:') ? null : cartItem.customization.frontDesignFileUrl,
+                  backDesignFileUrl: cartItem.customization.backDesignFileUrl?.startsWith('data:') ? null : cartItem.customization.backDesignFileUrl,
+                  uploadedArtworks: Array.isArray(cartItem.customization.uploadedArtworks)
+                    ? (cartItem.customization.uploadedArtworks as Array<{ name?: string; url?: string; side?: string }>).map((a) => ({
+                        name: a.name || 'Artwork',
+                        url: a.url?.startsWith('data:') ? '' : a.url,
+                        side: a.side || 'front',
+                      }))
+                    : [],
+                } : null,
+              };
+              useCartStore.getState().addItem(cleanItem);
+            }
             useCartStore.getState().setCartOpen(true);
           } catch (err) {
             console.error('[ClothingMockupIframe] Failed to add item to bag:', err);

@@ -121,7 +121,7 @@ export interface SerializedProject {
 }
 
 export interface ExportOptions {
-  dimensions: '1200x1200' | '1920x1080' | '2048x2048' | '2560x1440' | '3840x2160';
+  dimensions: '600x600' | '1200x1200' | '1920x1080' | '2048x2048' | '2560x1440' | '3840x2160';
   scope: 'current' | 'front' | 'back' | 'both_zip' | 'side_by_side';
   transparentBg: boolean;
   includeShadow: boolean;

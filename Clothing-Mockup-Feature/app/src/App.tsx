@@ -11,7 +11,7 @@ import { X, SlidersHorizontal, ChevronUp, Sparkles, Check, Shirt, Palette, Layer
 import { assetManager } from './engine/assetManager';
 import { compositor } from './engine/compositor';
 import { exportManager } from './engine/exportManager';
-import { validateArtworkFile } from './engine/validation';
+import { validateArtworkFile, readOptimizedImageDataUrl } from './engine/validation';
 import { persistenceManager } from './engine/persistence';
 
 // ── 2D components – lazy-loaded (only needed when user switches to 2D mode) ──
@@ -1140,17 +1140,13 @@ export const App: React.FC = () => {
       setUploadWarning(validation.warning);
     }
 
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const dataUrl = e.target?.result as string;
-      try {
-        const img = await assetManager.loadImage(dataUrl);
-        addArtworkLayer2D(img, file.name, dataUrl, validation.isOpaque);
-      } catch (err) {
-        setUploadWarning('Failed to decode image file.');
-      }
-    };
-    reader.readAsDataURL(file);
+    try {
+      const dataUrl = await readOptimizedImageDataUrl(file, 1600);
+      const img = await assetManager.loadImage(dataUrl);
+      addArtworkLayer2D(img, file.name, dataUrl, validation.isOpaque);
+    } catch (err) {
+      setUploadWarning('Failed to decode image file.');
+    }
   };
 
 
@@ -1787,10 +1783,9 @@ export const App: React.FC = () => {
     handleUpdateLayer3D(id, { offsetY: 0 });
   };
 
-  const handleAddArtworkFromFile3D = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUrl = e.target?.result as string;
+  const handleAddArtworkFromFile3D = async (file: File) => {
+    try {
+      const dataUrl = await readOptimizedImageDataUrl(file, 1600);
       const region = currentGarmentConfig3D.regions.find((r: any) => r.id === project3D.activeRegionId) || currentGarmentConfig3D.regions[0];
       const u = region ? region.uvCenter[0] : 0.25;
       const v = region ? region.uvCenter[1] : 0.63;
@@ -1817,8 +1812,9 @@ export const App: React.FC = () => {
         lockAspectRatio: true,
       };
       handleAddArtwork3D(newLayer);
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Failed to read 3D artwork file:', err);
+    }
   };
 
   const handleOpenAddToCart = async () => {
@@ -1829,13 +1825,17 @@ export const App: React.FC = () => {
 
     try {
       if (mode === '3d' && sceneManager3DRef.current) {
-        // High-resolution snap of both front and back views
+        // Fast, high-clarity 600x600 cart snapshot (keeps storage under 50KB)
         const frontData = await export3DManager.captureSnapshotDataUrl(
           sceneManager3DRef.current,
           {
             view: 'front',
             transparent: false,
-            resolution: 'standard',
+            resolution: 'cart',
+            width: 600,
+            height: 600,
+            format: 'jpeg',
+            quality: 0.85,
           },
           compositor3DRef.current ?? undefined
         );
@@ -1846,28 +1846,32 @@ export const App: React.FC = () => {
           {
             view: 'back',
             transparent: false,
-            resolution: 'standard',
+            resolution: 'cart',
+            width: 600,
+            height: 600,
+            format: 'jpeg',
+            quality: 0.85,
           },
           compositor3DRef.current ?? undefined
         );
         setCartBackSnapshot(backData);
       } else {
-        // 2D mode: render composite canvases for front and back
+        // 2D mode: render composite canvases for front and back at 600x600
         const frontCanvas = await exportManager.renderSideCanvas(project2D, 'front', {
           scope: 'current',
-          dimensions: '2048x2048',
+          dimensions: '600x600',
           transparentBg: false,
           includeShadow: true,
         });
-        setCartFrontSnapshot(frontCanvas.toDataURL('image/png'));
+        setCartFrontSnapshot(frontCanvas.toDataURL('image/jpeg', 0.85));
 
         const backCanvas = await exportManager.renderSideCanvas(project2D, 'back', {
           scope: 'current',
-          dimensions: '2048x2048',
+          dimensions: '600x600',
           transparentBg: false,
           includeShadow: true,
         });
-        setCartBackSnapshot(backCanvas.toDataURL('image/png'));
+        setCartBackSnapshot(backCanvas.toDataURL('image/jpeg', 0.85));
       }
     } catch (err) {
       console.error('[App] Failed to capture cart mockups:', err);
@@ -1889,23 +1893,58 @@ export const App: React.FC = () => {
         if (!frontSnapshot) {
           const frontCanvas = await exportManager.renderSideCanvas(project2D, 'front', {
             scope: 'current',
-            dimensions: '2048x2048',
+            dimensions: '600x600',
             transparentBg: false,
             includeShadow: true,
           });
-          frontSnapshot = frontCanvas.toDataURL('image/png');
+          frontSnapshot = frontCanvas.toDataURL('image/jpeg', 0.85);
         }
         if (!backSnapshot) {
           const backCanvas = await exportManager.renderSideCanvas(project2D, 'back', {
             scope: 'current',
-            dimensions: '2048x2048',
+            dimensions: '600x600',
             transparentBg: false,
             includeShadow: true,
           });
-          backSnapshot = backCanvas.toDataURL('image/png');
+          backSnapshot = backCanvas.toDataURL('image/jpeg', 0.85);
         }
       } catch (err) {
         console.warn('[App] 2D mockup fallback snapshot warning:', err);
+      }
+    } else if (mode === '3d' && (!frontSnapshot || !backSnapshot) && sceneManager3DRef.current) {
+      try {
+        if (!frontSnapshot) {
+          frontSnapshot = await export3DManager.captureSnapshotDataUrl(
+            sceneManager3DRef.current,
+            {
+              view: 'front',
+              transparent: false,
+              resolution: 'cart',
+              width: 600,
+              height: 600,
+              format: 'jpeg',
+              quality: 0.85,
+            },
+            compositor3DRef.current ?? undefined
+          );
+        }
+        if (!backSnapshot) {
+          backSnapshot = await export3DManager.captureSnapshotDataUrl(
+            sceneManager3DRef.current,
+            {
+              view: 'back',
+              transparent: false,
+              resolution: 'cart',
+              width: 600,
+              height: 600,
+              format: 'jpeg',
+              quality: 0.85,
+            },
+            compositor3DRef.current ?? undefined
+          );
+        }
+      } catch (err) {
+        console.warn('[App] 3D mockup fallback snapshot warning:', err);
       }
     }
 
@@ -1923,7 +1962,6 @@ export const App: React.FC = () => {
         uploadedArtworks.push({
           name: l.name || 'Artwork',
           url: l.imageUrl,
-          dataUrl: l.imageUrl?.startsWith('data:') ? l.imageUrl : undefined,
           side,
         });
         if (isBack && !backDesignUrl) {
@@ -1943,7 +1981,6 @@ export const App: React.FC = () => {
           uploadedArtworks.push({
             name: l.name,
             url: l.src,
-            dataUrl: l.src.startsWith('data:') ? l.src : undefined,
             side: 'front',
           })
         );
@@ -1954,7 +1991,6 @@ export const App: React.FC = () => {
           uploadedArtworks.push({
             name: l.name,
             url: l.src,
-            dataUrl: l.src.startsWith('data:') ? l.src : undefined,
             side: 'back',
           })
         );

@@ -16,6 +16,7 @@ import {
   buildLayerFromPlacement,
   parseNaturalLanguagePlacement,
 } from '../../engine/3d/placementParser';
+import { readOptimizedImageDataUrl } from '../../engine/validation';
 
 interface DrawerArtwork3DProps {
   garmentConfig: Garment3DConfig;
@@ -80,14 +81,14 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    Array.from(files).forEach((file, idx) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const dataUrl = event.target?.result as string;
+    for (let idx = 0; idx < files.length; idx++) {
+      const file = files[idx];
+      try {
+        const dataUrl = await readOptimizedImageDataUrl(file, 1600);
         const newLayer: ArtworkLayer3D = {
           id: `layer-${Date.now()}-${idx}-${Math.random().toString(36).substring(2, 6)}`,
           name: file.name.replace(/\.[^/.]+$/, ''),
@@ -109,9 +110,10 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
         if (idx === files.length - 1) {
           onSelectLayer(newLayer.id);
         }
-      };
-      reader.readAsDataURL(file);
-    });
+      } catch (err) {
+        console.error('Failed to process uploaded artwork:', err);
+      }
+    }
     e.target.value = '';
   };
 

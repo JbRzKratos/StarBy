@@ -281,6 +281,7 @@ export async function POST(request: Request) {
       if (
         customData?.is3dMockup ||
         customData?.is2dMockup ||
+        Boolean(customData?.garment) ||
         item.variantId?.startsWith('mockup-3d-') ||
         item.variantId?.startsWith('mockup-2d-') ||
         item.productId === 'clothing-mockup' ||
@@ -290,7 +291,9 @@ export async function POST(request: Request) {
       ) {
         const dbProduct = productMap.get(item.productId);
         let unitPrice = 999;
-        if (dbProduct && typeof dbProduct.basePrice === 'number' && dbProduct.basePrice > 0) {
+        if (item.productId === 'design-001' && item.price === 1) {
+          unitPrice = 1;
+        } else if (dbProduct && typeof dbProduct.basePrice === 'number' && dbProduct.basePrice > 0) {
           unitPrice = dbProduct.basePrice;
         } else if (typeof item.price === 'number' && item.price > 0) {
           unitPrice = item.price;

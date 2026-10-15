@@ -2,14 +2,16 @@ import * as THREE from 'three';
 import type { SceneManager3D } from './sceneManager';
 import type { TextureCompositor3D } from './textureCompositor';
 
-export type ExportResolutionPreset = 'standard' | 'high';
+export type ExportResolutionPreset = 'cart' | 'standard' | 'high';
 
 export interface ExportStillOptions {
   view: 'current' | 'front' | 'back';
   transparent: boolean;
-  resolution?: ExportResolutionPreset; // 'standard' = 2048px, 'high' = 4096px
-  width?: number;   // explicit override (ignored if resolution is set)
-  height?: number;  // explicit override (ignored if resolution is set)
+  resolution?: ExportResolutionPreset; // 'cart' = 600px, 'standard' = 2048px, 'high' = 4096px
+  width?: number;   // explicit override
+  height?: number;  // explicit override
+  format?: 'png' | 'jpeg';
+  quality?: number;
   filename?: string;
   download?: boolean; // if false, returns dataUrl without downloading file
 }
@@ -28,9 +30,18 @@ function resolveExportDimensions(
   options: ExportStillOptions,
   renderer: THREE.WebGLRenderer
 ): { exportW: number; exportH: number } {
+  // If explicit width and height are provided, use them directly
+  if (options.width && options.height) {
+    const w = options.width % 2 === 0 ? options.width : options.width - 1;
+    const h = options.height % 2 === 0 ? options.height : options.height - 1;
+    return { exportW: w, exportH: h };
+  }
+
   // Determine the long-edge target from preset
   const longEdge =
-    options.resolution === 'high'
+    options.resolution === 'cart'
+      ? 600
+      : options.resolution === 'high'
       ? 4096
       : options.resolution === 'standard'
       ? 2048
@@ -207,10 +218,13 @@ export class Export3DManager {
     ctx.putImageData(imageData, 0, 0);
 
     // ── 13. Encode and download ──────────────────────────────────────────────
-    const dataUrl = offscreen.toDataURL('image/png');
+    const mime = options.format === 'jpeg' ? 'image/jpeg' : 'image/png';
+    const quality = typeof options.quality === 'number' ? options.quality : 0.85;
+    const dataUrl = offscreen.toDataURL(mime, quality);
 
+    const ext = options.format === 'jpeg' ? 'jpg' : 'png';
     const filename =
-      options.filename || `mockup-3d-${options.view}-${exportW}x${exportH}-${Date.now()}.png`;
+      options.filename || `mockup-3d-${options.view}-${exportW}x${exportH}-${Date.now()}.${ext}`;
     if (options.download !== false) {
       this.downloadFile(dataUrl, filename);
     }

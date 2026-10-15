@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 
 /* ── Types ── */
 
@@ -213,10 +213,101 @@ export const useCartStore = create<CartState & CartActions>()(
       }),
       {
         name: 'starby-cart',
-        // Only persist the cart items, not the drawer open state
-        partialize: (state) => ({ items: state.items }),
+        storage: createJSONStorage(() => ({
+          getItem: (key: string): string | null => {
+            if (typeof window === 'undefined') return null;
+            try {
+              return window.localStorage.getItem(key);
+            } catch {
+              return null;
+            }
+          },
+          setItem: (key: string, value: string): void => {
+            if (typeof window === 'undefined') return;
+            try {
+              window.localStorage.setItem(key, value);
+            } catch (quotaErr) {
+              console.warn('[CartStore] Quota exceeded in localStorage.setItem, trimming items...', quotaErr);
+              try {
+                const parsed = JSON.parse(value);
+                if (parsed?.state?.items && Array.isArray(parsed.state.items)) {
+                  parsed.state.items = parsed.state.items.map((item: CartItem) => ({
+                    ...item,
+                    image:
+                      typeof item.image === 'string' &&
+                      item.image.startsWith('data:') &&
+                      item.image.length > 50000
+                        ? '/images/mockups/tee-black-front.png'
+                        : item.image,
+                    customization: sanitizeCustomizationForStorage(item.customization),
+                  }));
+                  window.localStorage.setItem(key, JSON.stringify(parsed));
+                }
+              } catch (retryErr) {
+                console.error('[CartStore] Failed to write trimmed cart to localStorage:', retryErr);
+              }
+            }
+          },
+          removeItem: (key: string): void => {
+            if (typeof window === 'undefined') return;
+            try {
+              window.localStorage.removeItem(key);
+            } catch {}
+          },
+        })),
+        // Only persist the cart items, not the drawer open state, with oversized data URL protection
+        partialize: (state) => ({
+          items: state.items.map((item) => ({
+            ...item,
+            image:
+              typeof item.image === 'string' &&
+              item.image.startsWith('data:') &&
+              item.image.length > 50000
+                ? '/images/mockups/tee-black-front.png'
+                : item.image,
+            customization: sanitizeCustomizationForStorage(item.customization),
+          })),
+        }),
       },
     ),
     { name: 'CartStore', enabled: process.env.NODE_ENV === 'development' },
   ),
 );
+
+function sanitizeCustomizationForStorage(cust: CartCustomization | null): CartCustomization | null {
+  if (!cust || typeof cust !== 'object') return cust;
+  const copy: Record<string, unknown> = { ...cust };
+  const keysToCheck = [
+    'designFileUrl',
+    'frontDesignFileUrl',
+    'backDesignFileUrl',
+    'previewFileUrl',
+    'frontPreviewFileUrl',
+    'backPreviewFileUrl',
+    'thumbnail',
+    'imageUrl',
+  ];
+
+  for (const k of keysToCheck) {
+    const val = copy[k];
+    if (typeof val === 'string' && val.startsWith('data:image/') && val.length > 50000) {
+      copy[k] = undefined;
+    }
+  }
+
+  if (Array.isArray(copy.uploadedArtworks)) {
+    copy.uploadedArtworks = copy.uploadedArtworks.map((art: unknown) => {
+      if (!art || typeof art !== 'object') return art;
+      const aCopy = { ...(art as Record<string, unknown>) };
+      if (typeof aCopy.url === 'string' && aCopy.url.startsWith('data:image/') && aCopy.url.length > 50000) {
+        aCopy.url = '';
+      }
+      if (typeof aCopy.dataUrl === 'string') {
+        aCopy.dataUrl = undefined;
+      }
+      return aCopy;
+    });
+  }
+
+  return copy as CartCustomization;
+}

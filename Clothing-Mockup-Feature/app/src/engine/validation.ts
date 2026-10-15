@@ -113,3 +113,64 @@ export function checkEffectiveResolution(
     dpiQuality: 'high',
   };
 }
+
+/**
+ * Reads an image file and safely scales it if larger than maxDimension (default 1600),
+ * keeping payload sizes manageable and preventing WebGL memory issues and storage quotas.
+ */
+export async function readOptimizedImageDataUrl(
+  file: File,
+  maxDimension = 1600
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = (e) => {
+      const rawDataUrl = e.target?.result as string;
+      if (!rawDataUrl) return reject(new Error('Failed to read image file'));
+
+      // If it's an SVG, preserve original SVG vector string
+      if (file.type === 'image/svg+xml' || file.name.toLowerCase().endsWith('.svg')) {
+        return resolve(rawDataUrl);
+      }
+
+      const img = new Image();
+      img.onload = () => {
+        const { width, height } = img;
+        // If image is already within bounds and small enough, use original
+        if (width <= maxDimension && height <= maxDimension && file.size < 1.5 * 1024 * 1024) {
+          return resolve(rawDataUrl);
+        }
+
+        // Downscale proportionally
+        let targetW = width;
+        let targetH = height;
+        if (targetW > targetH) {
+          if (targetW > maxDimension) {
+            targetH = Math.round((targetH * maxDimension) / targetW);
+            targetW = maxDimension;
+          }
+        } else {
+          if (targetH > maxDimension) {
+            targetW = Math.round((targetW * maxDimension) / targetH);
+            targetH = maxDimension;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return resolve(rawDataUrl);
+
+        ctx.drawImage(img, 0, 0, targetW, targetH);
+        const isPng = file.type === 'image/png' || file.name.toLowerCase().endsWith('.png');
+        resolve(canvas.toDataURL(isPng ? 'image/png' : 'image/jpeg', 0.90));
+      };
+      img.onerror = () => resolve(rawDataUrl);
+      img.src = rawDataUrl;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
