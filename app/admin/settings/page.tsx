@@ -7,35 +7,48 @@ export const dynamic = 'force-dynamic';
 export default async function AdminSettingsPage() {
   await requireAdmin(); // Settings should be admin-only
 
-  const [settings, shippingZones] = await Promise.all([
-    prisma.storeSettings.findFirst(),
-    prisma.shippingZone.findMany(),
-  ]);
+  let settingsData = {
+    id: 'new',
+    storeName: 'Fregoro Studios',
+    contactEmail: 'fregorostudios@gmail.com',
+    taxRate: 18,
+  };
 
-  return (
-    <SettingsClient
-      settings={
-        settings
-          ? {
-              id: settings.id,
-              storeName: settings.storeName,
-              contactEmail: settings.contactEmail,
-              taxRate: settings.taxRate,
-            }
-          : {
-              id: 'new',
-              storeName: 'Fregoro Studios',
-              contactEmail: 'fregorostudios@gmail.com',
-              taxRate: 18,
-            }
-      }
-      shippingZones={shippingZones.map((z) => ({
+  let zonesData: Array<{
+    id: string;
+    name: string;
+    states: string[];
+    rateType: string;
+    rateValue: number;
+  }> = [];
+
+  try {
+    const [settings, shippingZones] = await Promise.all([
+      prisma.storeSettings.findFirst().catch(() => null),
+      prisma.shippingZone.findMany().catch(() => []),
+    ]);
+
+    if (settings) {
+      settingsData = {
+        id: settings.id,
+        storeName: settings.storeName || 'Fregoro Studios',
+        contactEmail: settings.contactEmail || 'fregorostudios@gmail.com',
+        taxRate: typeof settings.taxRate === 'number' ? settings.taxRate : 18,
+      };
+    }
+
+    if (Array.isArray(shippingZones)) {
+      zonesData = shippingZones.map((z) => ({
         id: z.id,
-        name: z.name,
-        states: z.states,
-        rateType: z.rateType,
-        rateValue: z.rateValue,
-      }))}
-    />
-  );
+        name: z.name || 'Default Zone',
+        states: Array.isArray(z.states) ? z.states : [],
+        rateType: z.rateType || 'FLAT',
+        rateValue: typeof z.rateValue === 'number' ? z.rateValue : 0,
+      }));
+    }
+  } catch (err) {
+    console.error('[AdminSettingsPage] Error loading settings/shipping zones:', err);
+  }
+
+  return <SettingsClient settings={settingsData} shippingZones={zonesData} />;
 }

@@ -4,28 +4,47 @@ import { CategoriesClient } from '@/components/admin/categories/categories-clien
 export const dynamic = 'force-dynamic';
 
 export default async function AdminCategoriesPage() {
-  const categories = await prisma.category.findMany({
-    orderBy: { name: 'asc' },
-  });
+  let mappedCategories: Array<{
+    id: string;
+    slug: string;
+    name: string;
+    description: string;
+    tagline: string;
+    gradient: string;
+    featured: boolean;
+    productCount: number;
+  }> = [];
 
-  const productCounts = await prisma.product.groupBy({
-    by: ['categorySlug'],
-    _count: { id: true },
-  });
-  const countMap = Object.fromEntries(productCounts.map((p) => [p.categorySlug, p._count.id]));
+  try {
+    const [categories, productCounts] = await Promise.all([
+      prisma.category.findMany({
+        orderBy: { name: 'asc' },
+      }),
+      prisma.product
+        .groupBy({
+          by: ['categorySlug'],
+          _count: { id: true },
+        })
+        .catch(() => []),
+    ]);
 
-  return (
-    <CategoriesClient
-      categories={categories.map((c) => ({
-        id: c.id,
-        slug: c.slug,
-        name: c.name,
-        description: c.description,
-        tagline: c.tagline,
-        gradient: c.gradient,
-        featured: c.featured,
-        productCount: countMap[c.slug] || 0,
-      }))}
-    />
-  );
+    const countMap = Object.fromEntries(
+      (Array.isArray(productCounts) ? productCounts : []).map((p) => [p.categorySlug, p._count?.id || 0]),
+    );
+
+    mappedCategories = (Array.isArray(categories) ? categories : []).map((c) => ({
+      id: c.id,
+      slug: c.slug,
+      name: c.name,
+      description: c.description || '',
+      tagline: c.tagline || '',
+      gradient: c.gradient || 'from-blue-600 to-indigo-600',
+      featured: Boolean(c.featured),
+      productCount: countMap[c.slug] || 0,
+    }));
+  } catch (err) {
+    console.error('[AdminCategoriesPage] Error loading categories:', err);
+  }
+
+  return <CategoriesClient categories={mappedCategories} />;
 }

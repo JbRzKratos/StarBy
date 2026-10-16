@@ -11,15 +11,15 @@ export default async function AdminDashboardPage() {
 
   try {
     const [
-      totalOrders,
-      totalRevenueData,
-      ordersToday,
-      totalCustomers,
-      recentOrders,
-      allOrders90d,
-      topVariants,
-      lowStockVariants,
-    ] = await Promise.all([
+      totalOrdersResult,
+      totalRevenueResult,
+      ordersTodayResult,
+      totalCustomersResult,
+      recentOrdersResult,
+      allOrders90dResult,
+      topVariantsResult,
+      lowStockVariantsResult,
+    ] = await Promise.allSettled([
       prisma.order.count(),
       prisma.order.aggregate({
         _sum: { total: true },
@@ -43,7 +43,6 @@ export default async function AdminDashboardPage() {
         select: { total: true, createdAt: true },
         orderBy: { createdAt: 'asc' },
       }),
-      // Top selling by order items (last 30 days)
       prisma.orderItem.groupBy({
         by: ['productId'],
         where: {
@@ -64,18 +63,49 @@ export default async function AdminDashboardPage() {
       }),
     ]);
 
+    const totalOrders = totalOrdersResult.status === 'fulfilled' ? totalOrdersResult.value : 0;
+    const totalRevenueData =
+      totalRevenueResult.status === 'fulfilled' ? totalRevenueResult.value : { _sum: { total: 0 } };
+    const ordersToday = ordersTodayResult.status === 'fulfilled' ? ordersTodayResult.value : 0;
+    const totalCustomers =
+      totalCustomersResult.status === 'fulfilled' ? totalCustomersResult.value : 0;
+    const recentOrders =
+      recentOrdersResult.status === 'fulfilled' && Array.isArray(recentOrdersResult.value)
+        ? recentOrdersResult.value
+        : [];
+    const allOrders90d =
+      allOrders90dResult.status === 'fulfilled' && Array.isArray(allOrders90dResult.value)
+        ? allOrders90dResult.value
+        : [];
+    const topVariants =
+      topVariantsResult.status === 'fulfilled' && Array.isArray(topVariantsResult.value)
+        ? topVariantsResult.value
+        : [];
+    const lowStockVariants =
+      lowStockVariantsResult.status === 'fulfilled' && Array.isArray(lowStockVariantsResult.value)
+        ? lowStockVariantsResult.value
+        : [];
+
     // Fetch product names for top items
-    const topProductIds = topVariants.map((v) => v.productId);
-    const topProducts = await prisma.product.findMany({
-      where: { id: { in: topProductIds } },
-      select: { id: true, name: true },
-    });
+    const topProductIds = topVariants.map((v) => v.productId).filter(Boolean);
+    let topProducts: Array<{ id: string; name: string }> = [];
+    if (topProductIds.length > 0) {
+      try {
+        topProducts = await prisma.product.findMany({
+          where: { id: { in: topProductIds } },
+          select: { id: true, name: true },
+        });
+      } catch (err) {
+        console.warn('[AdminDashboard] Could not fetch top product names:', err);
+      }
+    }
+
     const topProductsWithSales = topVariants.map((v) => {
       const product = topProducts.find((p) => p.id === v.productId);
-      return { id: v.productId, name: product?.name || 'Unknown', unitsSold: v._sum.quantity || 0 };
+      return { id: v.productId, name: product?.name || 'Unknown', unitsSold: v._sum?.quantity || 0 };
     });
 
-    const totalRevenue = totalRevenueData._sum.total || 0;
+    const totalRevenue = totalRevenueData._sum?.total || 0;
     const aov = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
     return (
@@ -125,21 +155,25 @@ export default async function AdminDashboardPage() {
             paymentStatus: o.paymentStatus,
             paymentProvider: o.paymentProvider || 'Cashfree',
             total: o.total,
-            createdAt: o.createdAt.toISOString(),
-            itemCount: o.items.reduce((sum, i) => sum + i.quantity, 0),
-            items: o.items.map((i) => ({
-              id: i.id,
-              name: i.productNameSnapshot || i.productId,
-              quantity: i.quantity,
-              size: i.size,
-              unitPrice: i.unitPrice || i.price || 0,
-              totalPrice: i.totalPrice || (i.price ? i.price * i.quantity : 0),
-            })),
+            createdAt: o.createdAt ? o.createdAt.toISOString() : new Date().toISOString(),
+            itemCount: Array.isArray(o.items)
+              ? o.items.reduce((sum, i) => sum + (i.quantity || 0), 0)
+              : 0,
+            items: Array.isArray(o.items)
+              ? o.items.map((i) => ({
+                  id: i.id,
+                  name: i.productNameSnapshot || i.productId,
+                  quantity: i.quantity || 1,
+                  size: i.size || null,
+                  unitPrice: i.unitPrice || i.price || 0,
+                  totalPrice: i.totalPrice || (i.price ? i.price * (i.quantity || 1) : 0),
+                }))
+              : [],
           };
         })}
         revenueData={allOrders90d.map((o) => ({
-          date: o.createdAt.toISOString().split('T')[0] ?? '',
-          revenue: o.total,
+          date: o.createdAt ? o.createdAt.toISOString().split('T')[0] ?? '' : '',
+          revenue: o.total || 0,
         }))}
         topProducts={topProductsWithSales}
         lowStockVariants={lowStockVariants.map((v) => ({
@@ -148,9 +182,9 @@ export default async function AdminDashboardPage() {
           productId: v.product?.id || v.productId,
           productName: v.product?.name || 'Unknown Product',
           productSlug: v.product?.slug || '',
-          stockQuantity: v.stockQuantity,
-          inStock: v.inStock,
-          reorderThreshold: v.reorderThreshold,
+          stockQuantity: typeof v.stockQuantity === 'number' ? v.stockQuantity : 0,
+          inStock: Boolean(v.inStock),
+          reorderThreshold: typeof v.reorderThreshold === 'number' ? v.reorderThreshold : 5,
         }))}
       />
     );

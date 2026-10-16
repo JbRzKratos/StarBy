@@ -14,24 +14,30 @@ export const metadata = {
 export default async function AdminContactPage() {
   await requireStaff();
 
-  const submissions = await prisma.contactSubmission.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
+  let formatted: AdminContactSubmission[] = [];
 
-  const formatted: AdminContactSubmission[] = submissions.map((sub) => ({
-    id: sub.id,
-    name: sub.name,
-    email: sub.email,
-    phone: sub.phone,
-    company: sub.company,
-    subject: sub.subject,
-    message: sub.message,
-    status: sub.status,
-    emailStatus: sub.emailStatus,
-    emailError: sub.emailError,
-    createdAt: sub.createdAt.toISOString(),
-    updatedAt: sub.updatedAt.toISOString(),
-  }));
+  try {
+    const submissions = await prisma.contactSubmission.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+
+    formatted = (Array.isArray(submissions) ? submissions : []).map((sub) => ({
+      id: sub.id,
+      name: sub.name || '—',
+      email: sub.email || '—',
+      phone: sub.phone,
+      company: sub.company,
+      subject: sub.subject || 'No Subject',
+      message: sub.message || '',
+      status: sub.status || 'UNREAD',
+      emailStatus: sub.emailStatus,
+      emailError: sub.emailError,
+      createdAt: sub.createdAt ? sub.createdAt.toISOString() : new Date().toISOString(),
+      updatedAt: sub.updatedAt ? sub.updatedAt.toISOString() : new Date().toISOString(),
+    }));
+  } catch (err) {
+    console.error('[AdminContactPage] Error loading contact submissions:', err);
+  }
 
   return <AdminContactClient initialSubmissions={formatted} />;
 }
