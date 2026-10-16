@@ -98,6 +98,35 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
     return list;
   }, [selectedCategory, searchQuery]);
 
+  // Pre-warm all artworks for the active design so clicks respond in under 50ms
+  useEffect(() => {
+    if (!activeDesign) return;
+    activeDesign.artworks.forEach((art) => {
+      const url = art.studioPreviewUrl || art.previewUrl;
+      if (url) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = url;
+      }
+    });
+  }, [activeDesign]);
+
+  // Pre-warm first batch of designs when the drawer is opened
+  useEffect(() => {
+    if (!isOpen) return;
+    const initialBatch = CURATED_CLOTHING_DESIGNS.slice(0, 12);
+    initialBatch.forEach((d) => {
+      d.artworks.forEach((art) => {
+        const url = art.studioPreviewUrl || art.previewUrl;
+        if (url) {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.src = url;
+        }
+      });
+    });
+  }, [isOpen]);
+
   const handleApplyArtwork = async (
     design: CuratedClothingDesign,
     artwork: ClothingDesignArtwork,
@@ -131,10 +160,12 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
       setFeedbackMessage(null);
     }, 3500);
 
-    // Auto close drawer so user can immediately view their selected design in 3D
-    setTimeout(() => {
-      onClose();
-    }, 600);
+    // On mobile screens, auto-close promptly so user sees full garment; on desktop, keep drawer open so user can rapidly try different graphics
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setTimeout(() => {
+        onClose();
+      }, 100);
+    }
   };
 
   const handleApplyAllArtworks = async (design: CuratedClothingDesign) => {
@@ -155,10 +186,10 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
       setFeedbackMessage(null);
     }, 4000);
 
-    // Auto close drawer so user can immediately view their selected design in 3D
+    // Promptly close so user can immediately view their selected design in 3D
     setTimeout(() => {
       onClose();
-    }, 600);
+    }, 150);
   };
 
   if (!isOpen) return null;

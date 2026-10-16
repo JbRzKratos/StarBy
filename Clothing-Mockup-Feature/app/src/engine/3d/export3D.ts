@@ -108,6 +108,8 @@ export class Export3DManager {
 
     // ── 2. Save current renderer / camera state ──────────────────────────────
     const prevRenderTarget = renderer.getRenderTarget();
+    const prevSize = new THREE.Vector2();
+    renderer.getSize(prevSize);
     const prevClearColor = new THREE.Color();
     const prevClearAlpha = renderer.getClearAlpha();
     renderer.getClearColor(prevClearColor);
@@ -136,6 +138,11 @@ export class Export3DManager {
     if (options.transparent) {
       scene.background = null;
       renderer.setClearColor(0x000000, 0);
+    } else {
+      const bgColor = scene.background instanceof THREE.Color
+        ? scene.background
+        : (prevClearAlpha > 0.05 ? prevClearColor : new THREE.Color(0x151922));
+      renderer.setClearColor(bgColor, 1.0);
     }
 
     // ── 5. If compositor is provided, ensure texture is at full resolution ──
@@ -147,6 +154,10 @@ export class Export3DManager {
     }
 
     // ── 6. Create off-screen render target at export resolution ─────────────
+    // CRITICAL: Set colorSpace to SRGBColorSpace and isXRRenderTarget = true so
+    // Three.js executes ACESFilmic tone mapping and sRGB gamma encoding into the
+    // render target. Without this, Three.js outputs un-tonemapped linear gamma (1.0),
+    // which makes exported mockup PNGs look dark, crushed, and dim.
     const exportTarget = new THREE.WebGLRenderTarget(exportW, exportH, {
       minFilter: THREE.LinearFilter,
       magFilter: THREE.LinearFilter,
@@ -155,6 +166,8 @@ export class Export3DManager {
       generateMipmaps: false,
       samples: renderer.capabilities.isWebGL2 ? 4 : 0, // MSAA if available
     });
+    exportTarget.texture.colorSpace = THREE.SRGBColorSpace;
+    (exportTarget as any).isXRRenderTarget = true;
 
     // ── 7. Adjust camera aspect for export dimensions ────────────────────────
     camera.aspect = exportW / exportH;
@@ -163,10 +176,6 @@ export class Export3DManager {
     // ── 8. Render scene into the off-screen render target ───────────────────
     renderer.setRenderTarget(exportTarget);
     renderer.setSize(exportW, exportH, false); // false = don't update CSS
-    renderer.setClearColor(
-      options.transparent ? 0x000000 : prevClearColor,
-      options.transparent ? 0 : prevClearAlpha
-    );
     renderer.clear();
     renderer.render(scene, camera);
 
@@ -176,9 +185,7 @@ export class Export3DManager {
 
     // ── 10. Restore renderer state ──────────────────────────────────────────
     renderer.setRenderTarget(prevRenderTarget);
-    const vp = new THREE.Vector2();
-    renderer.getSize(vp);
-    renderer.setSize(vp.x, vp.y, false);
+    renderer.setSize(prevSize.x, prevSize.y, false);
     scene.background = prevBackground;
     renderer.setClearColor(prevClearColor, prevClearAlpha);
 

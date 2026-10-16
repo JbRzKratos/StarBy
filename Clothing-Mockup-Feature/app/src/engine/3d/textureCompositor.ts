@@ -41,6 +41,7 @@ export class TextureCompositor3D {
   private pixelBuffer: Uint8Array | null = null;
   private projMeshCenter: THREE.Vector3 = new THREE.Vector3();
   private threeTextureCache: Map<string, THREE.CanvasTexture | THREE.Texture> = new Map();
+  private pendingImagePromises: Map<string, Promise<HTMLImageElement>> = new Map();
 
   // ── Drag preview cache ─────────────────────────────────────────────────────
   // During live artwork dragging we composite background layers once into
@@ -272,21 +273,40 @@ export class TextureCompositor3D {
 
   private loadImage(url: string): Promise<HTMLImageElement> {
     if (this.imageCache.has(url)) {
-      return Promise.resolve(this.imageCache.get(url)!);
+      const cached = this.imageCache.get(url)!;
+      if (cached.complete && cached.naturalWidth > 0) {
+        return Promise.resolve(cached);
+      }
     }
-    return new Promise((resolve, reject) => {
+    if (this.pendingImagePromises.has(url)) {
+      return this.pendingImagePromises.get(url)!;
+    }
+
+    const promise = new Promise<HTMLImageElement>((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
-      img.onload = () => {
+      img.onload = async () => {
+        try {
+          if ('decode' in img) {
+            await img.decode();
+          }
+        } catch {
+          // ignore non-fatal decode errors
+        }
         this.imageCache.set(url, img);
+        this.pendingImagePromises.delete(url);
         resolve(img);
       };
       img.onerror = (err) => {
         console.warn(`[TextureCompositor3D] Failed to load image: ${url}`, err);
+        this.pendingImagePromises.delete(url);
         reject(err);
       };
       img.src = url;
     });
+
+    this.pendingImagePromises.set(url, promise);
+    return promise;
   }
 
   /**

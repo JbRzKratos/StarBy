@@ -2182,11 +2182,8 @@ export const App: React.FC = () => {
               '*'
             );
           }
-        }
-        try {
-          await syncServerPlacements(design.id, project3D.garmentId);
-        } catch {
-          /* ignore network errors */
+          // Non-blocking background sync (never freeze UI thread on network/Supabase roundtrip)
+          syncServerPlacements(design.id, project3D.garmentId).catch(() => {});
         }
       }
       const imgUrl = artwork.studioPreviewUrl || artwork.previewUrl;
@@ -2262,12 +2259,8 @@ export const App: React.FC = () => {
         }
       }
 
-      // 1. First sync server-saved placements for this design
-      try {
-        await syncServerPlacements(design.id, project3D.garmentId);
-      } catch {
-        /* ignore network */
-      }
+      // 1. Non-blocking background sync (never freeze UI thread on network/Supabase roundtrip)
+      syncServerPlacements(design.id, project3D.garmentId).catch(() => {});
 
       let targetColor = project3D.garmentColor;
       const colorHint = design.artworks.find((a) => a.colorHint && a.colorHint !== 'any')?.colorHint;
