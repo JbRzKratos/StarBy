@@ -7,6 +7,7 @@ import {
   Layers,
   Activity,
   Upload,
+  Sparkles,
 } from 'lucide-react';
 import type {
   AnimationActionName,
@@ -48,6 +49,7 @@ interface Viewport3DProps {
   isTurntable: boolean;
   isUvEditorOpen?: boolean;
   isDesignerMode?: boolean;
+  isCuratedDesign?: boolean;
   onAnimatedToggle: () => void;
   onActionChange: (action: AnimationActionName) => void;
   onPlayToggle: () => void;
@@ -576,6 +578,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
   isTurntable,
   isUvEditorOpen,
   isDesignerMode = false,
+  isCuratedDesign = false,
   onAnimatedToggle,
   onActionChange,
   onPlayToggle,
@@ -1796,7 +1799,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
 
       {/* Floating Viewport Action Bar */}
       <div className="viewport-quick-actions" id="viewport-3d-quick-actions">
-        {onAddArtworkFromFile && (
+        {onAddArtworkFromFile && (!isCuratedDesign || isDesignerMode) && (
           <label className="quick-action-pill quick-action-upload" title="Upload custom graphic to 3D model">
             <Upload size={14} />
             <span className="quick-action-full">Upload Design</span>
@@ -1809,6 +1812,26 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
                 e.target.value = '';
               }} />
           </label>
+        )}
+        {isCuratedDesign && !isDesignerMode && (
+          <button
+            type="button"
+            className="quick-action-pill"
+            style={{
+              borderColor: 'rgba(56, 189, 248, 0.4)',
+              background: 'rgba(56, 189, 248, 0.12)',
+              color: '#38bdf8',
+            }}
+            onClick={() => {
+              instructionHiddenRef.current = false;
+              setShowInstruction(true);
+            }}
+            title="Read 3D Color Contrast Notice & Print Quality Guarantee"
+          >
+            <Sparkles size={14} />
+            <span className="quick-action-full">Print Guarantee &amp; Info</span>
+            <span className="quick-action-short">Guarantee</span>
+          </button>
         )}
         {onToggleUvEditor && (
           <button type="button"
@@ -1912,36 +1935,62 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
 
       {/* Floating Artwork Placement & Adjustment Hint Banner */}
       {showInstruction && artworkLayers.length > 0 && (() => {
-        const hasLockedCurated = artworkLayers.some((l) => l.locked) && !isDesignerMode;
+        const hasLockedCurated = (artworkLayers.some((l) => l.locked) || isCuratedDesign) && !isDesignerMode;
         if (hasLockedCurated) {
           return (
             <div
               id="artwork-adjustment-hint-banner"
               className={`artwork-adjustment-hint-banner ${isAnimated ? 'with-animation' : ''}`}
               style={{
-                borderColor: 'rgba(59, 94, 255, 0.45)',
-                background: 'rgba(15, 20, 30, 0.94)',
+                borderColor: 'rgba(56, 189, 248, 0.45)',
+                background: 'rgba(10, 14, 24, 0.96)',
+                backdropFilter: 'blur(16px)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(59, 94, 255, 0.2)',
+                maxWidth: '640px',
+                width: 'min(94%, 640px)',
               }}
             >
-              <div className="hint-banner-icon" style={{ color: '#38bdf8' }}>
-                🔒
+              <div className="hint-banner-icon" style={{ color: '#38bdf8', fontSize: '20px', alignSelf: 'flex-start', marginTop: '2px' }}>
+                ✦
               </div>
 
-              <div className="hint-banner-content">
-                <div className="hint-banner-title-row">
-                  <span className="hint-banner-title" style={{ color: '#38bdf8' }}>
-                    Designer Placement Locked • 360° Studio View
+              <div className="hint-banner-content" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div className="hint-banner-title-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                  <span className="hint-banner-title" style={{ color: '#38bdf8', fontWeight: 800, fontSize: '13px' }}>
+                    360° Studio Placement Preview
+                  </span>
+                  <span style={{ fontSize: '10px', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '1px 6px', borderRadius: '4px', fontWeight: 700 }}>
+                    100% Print Guarantee
                   </span>
                 </div>
-                <p className="hint-banner-desc">
-                  This curated artwork has been calibrated for {garmentConfig.name}. <strong>Drag anywhere to orbit in 360°</strong> and switch garment cuts or colors to view how your shirt will look.
+                <p className="hint-banner-desc" style={{ fontSize: '11px', lineHeight: 1.45, color: 'rgba(255, 255, 255, 0.85)', margin: 0 }}>
+                  This 3D Studio is provided so you can check the exact <strong>calibrated placement, scale, and fit</strong> on your {garmentConfig.name}. Drag anywhere to orbit in 360°.
                 </p>
+                <div style={{ fontSize: '10.5px', color: '#fbbf24', background: 'rgba(251, 191, 36, 0.1)', border: '1px solid rgba(251, 191, 36, 0.25)', padding: '4px 8px', borderRadius: '6px', lineHeight: 1.35, marginTop: '2px' }}>
+                  <strong>Digital Preview Note:</strong> In WebGL lighting, graphic contrast on certain fabric colors may appear slightly softer. Don&apos;t worry — our dev team is actively refining real-time shading!
+                </div>
+                <div style={{ fontSize: '10.5px', color: '#34d399', lineHeight: 1.35, marginTop: '2px' }}>
+                  ✨ <strong>Delivered Quality:</strong> When your tees arrive, your design will have an ultra-vibrant, razor-sharp, opaque finish with premium high-density DTG inks on every color!
+                </div>
               </div>
 
               <button
                 type="button"
                 className="hint-banner-dismiss-btn"
                 onClick={hideInstruction}
+                style={{
+                  background: 'linear-gradient(135deg, #3B5EFF 0%, #2563EB 100%)',
+                  color: '#fff',
+                  fontWeight: 700,
+                  fontSize: '11px',
+                  padding: '7px 14px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                  alignSelf: 'center',
+                  boxShadow: '0 2px 10px rgba(59, 94, 255, 0.4)',
+                }}
               >
                 GOT IT
               </button>

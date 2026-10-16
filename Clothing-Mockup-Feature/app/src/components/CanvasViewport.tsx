@@ -47,6 +47,8 @@ interface CanvasViewportProps {
   onCommitHistory: () => void;
   onFrameTick?: (frame: number) => void;
   onUploadFile?: (file: File) => void;
+  isCuratedDesign?: boolean;
+  isDesignerMode?: boolean;
 }
 
 type DragMode = 'move' | 'scale-tl' | 'scale-tr' | 'scale-bl' | 'scale-br' | 'rotate' | 'pan' | null;
@@ -74,6 +76,8 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
   onCommitHistory,
   onFrameTick,
   onUploadFile,
+  isCuratedDesign = false,
+  isDesignerMode = false,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -841,7 +845,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
       )}
 
       {/* Floating 2D Upload Design Quick Action Button */}
-      {onUploadFile && (
+      {onUploadFile && (!isCuratedDesign || isDesignerMode) && (
         <div className="viewport-2d-floating-actions">
           <label className="quick-action-pill quick-action-upload" title="Upload custom graphic or print">
             <Upload size={14} />

@@ -42,6 +42,8 @@ interface DrawerArtworkProps {
     scalePreset?: 'compact' | 'standard' | 'oversized'
   ) => void;
   onMoveLayerToSide?: (layerId: string, targetSide: GarmentSide) => void;
+  isCuratedDesign?: boolean;
+  isDesignerMode?: boolean;
 }
 
 export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
@@ -63,6 +65,8 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
   onSideChange,
   onApplyPlacement,
   onMoveLayerToSide,
+  isCuratedDesign = false,
+  isDesignerMode = false,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [nlpInput, setNlpInput] = useState<string>('');
@@ -297,30 +301,32 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
         )}
 
         {/* Upload Dropzone */}
-        <div
-          id="artwork-dropzone"
-          className="dropzone"
-          onClick={() => fileInputRef.current?.click()}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          style={{ marginBottom: '10px', padding: '12px' }}
-        >
-          <div className="dropzone-icon">
-            <Upload size={18} />
+        {(!isCuratedDesign || isDesignerMode) && (
+          <div
+            id="artwork-dropzone"
+            className="dropzone"
+            onClick={() => fileInputRef.current?.click()}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            style={{ marginBottom: '10px', padding: '12px' }}
+          >
+            <div className="dropzone-icon">
+              <Upload size={18} />
+            </div>
+            <div>
+              <div className="dropzone-title" style={{ fontSize: '12px' }}>Upload Design</div>
+              <div className="dropzone-subtitle" style={{ fontSize: '10px' }}>PNG, JPG, SVG or WebP</div>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept=".png,.jpg,.jpeg,.svg,.webp"
+              style={{ display: 'none' }}
+              onChange={handleFileInput}
+            />
           </div>
-          <div>
-            <div className="dropzone-title" style={{ fontSize: '12px' }}>Upload Design</div>
-            <div className="dropzone-subtitle" style={{ fontSize: '10px' }}>PNG, JPG, SVG or WebP</div>
-          </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            accept=".png,.jpg,.jpeg,.svg,.webp"
-            style={{ display: 'none' }}
-            onChange={handleFileInput}
-          />
-        </div>
+        )}
 
         {/* Validation Warning Alert */}
         {uploadWarning && (

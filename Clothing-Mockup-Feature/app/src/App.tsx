@@ -259,6 +259,12 @@ export const App: React.FC = () => {
     return 999;
   });
 
+  const isCuratedDesign = Boolean(
+    activeCuratedDesign ||
+    initialDesignId ||
+    project3D.artworkLayers.some((l) => l.isCurated || l.curatedDesignId)
+  );
+
   // Modal Placement State
   const [modalSelectedArtId, setModalSelectedArtId] = useState<string | null>(null);
   const [modalSelectedRegion, setModalSelectedRegion] = useState<'front' | 'back' | 'sleeve'>('front');
@@ -2092,8 +2098,22 @@ export const App: React.FC = () => {
       const { design, artwork, targetPlacement } = event;
       if (design) {
         setActiveCuratedDesign(design);
+        setInitialDesignId(design.id);
+        if (typeof window !== 'undefined') {
+          try {
+            const url = new URL(window.location.href);
+            url.searchParams.set('designId', design.id);
+            window.history.replaceState({}, '', url.toString());
+          } catch {}
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage(
+              { type: 'STARBY_DESIGN_CHANGED', designId: design.id, designName: design.name },
+              '*'
+            );
+          }
+        }
         try {
-          await syncServerPlacements(design.id);
+          await syncServerPlacements(design.id, project3D.garmentId);
         } catch {
           /* ignore network errors */
         }
@@ -2134,20 +2154,11 @@ export const App: React.FC = () => {
 
       const isBack = layer.regionId === 'back';
 
+      // Cleanly replace any previous design with the new selected artwork alone
       setProject3D((prev) => {
-        // Replace existing layer on the same side/region to prevent stacking in the same spot,
-        // while keeping layers on the opposite side intact!
-        const filtered = prev.artworkLayers.filter((l) => {
-          if (isBack) {
-            return !(l.regionId === 'back' || (l.placementTarget && l.placementTarget.includes('back')));
-          } else {
-            return !(l.regionId === 'front' && l.placementTarget === layer.placementTarget);
-          }
-        });
-
         return {
           ...prev,
-          artworkLayers: [...filtered, layer],
+          artworkLayers: [layer],
           activeRegionId: layer.regionId || prev.activeRegionId,
           camera: {
             ...prev.camera,
@@ -2164,10 +2175,25 @@ export const App: React.FC = () => {
   const handleApplyAllArtworksFromDesign3D = useCallback(
     async (design: CuratedClothingDesign) => {
       setActiveCuratedDesign(design);
+      setInitialDesignId(design.id);
+
+      if (typeof window !== 'undefined') {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set('designId', design.id);
+          window.history.replaceState({}, '', url.toString());
+        } catch {}
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(
+            { type: 'STARBY_DESIGN_CHANGED', designId: design.id, designName: design.name },
+            '*'
+          );
+        }
+      }
 
       // 1. First sync server-saved placements for this design
       try {
-        await syncServerPlacements(design.id);
+        await syncServerPlacements(design.id, project3D.garmentId);
       } catch {
         /* ignore network */
       }
@@ -2226,7 +2252,7 @@ export const App: React.FC = () => {
         setProject3D((prev) => ({
           ...prev,
           garmentColor: targetColor,
-          artworkLayers: newLayers,
+          artworkLayers: newLayers, // Completely replaces all previous artwork layers with new design
           activeRegionId: initialRegion,
           camera: {
             ...prev.camera,
@@ -3006,6 +3032,7 @@ export const App: React.FC = () => {
                         onOpenLibrary={() => setIsDesignsLibraryOpen(true)}
                         isDesignerAuthorized={isDesignerAuthorized}
                         isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
+                        isCuratedDesign={isCuratedDesign}
                         onToggleDesignerMode={isDesignerAuthorized ? handleToggleDesignerMode : undefined}
                       />
                     )}
@@ -3121,6 +3148,8 @@ export const App: React.FC = () => {
                         onSideChange={handleSideChange2D}
                         onApplyPlacement={handleApplyPlacement2D}
                         onMoveLayerToSide={handleMoveLayerToSide2D}
+                        isCuratedDesign={isCuratedDesign}
+                        isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
                       />
                     )}
 
@@ -3326,6 +3355,7 @@ export const App: React.FC = () => {
               isTurntable={project3D.camera.turntable}
               isUvEditorOpen={isUvEditorOpen}
               isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
+              isCuratedDesign={isCuratedDesign}
               onAnimatedToggle={() =>
                 setProject3D((prev) => ({
                   ...prev,
@@ -3397,6 +3427,7 @@ export const App: React.FC = () => {
                 onToggleOpen={() => setIsUvEditorOpen(!isUvEditorOpen)}
                 onClose={() => setIsUvEditorOpen(false)}
                 isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
+                isCuratedDesign={isCuratedDesign}
                 onSavePlacement={isDesignerAuthorized ? handleSaveCurrentPlacement : undefined}
               />
             )}
@@ -3428,6 +3459,8 @@ export const App: React.FC = () => {
               activeLightingFrameRef.current = f;
             }}
             onUploadFile={handleUploadFile2D}
+            isCuratedDesign={isCuratedDesign}
+            isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
           />
           </Suspense>
         )}

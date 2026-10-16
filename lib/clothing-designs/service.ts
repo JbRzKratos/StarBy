@@ -62,6 +62,7 @@ export async function getPreviewImageStream(
     // Check local filesystem first if originalPath exists
     if (art.originalPath) {
       const candidates = [
+        path.resolve(process.cwd(), 'public', 't_shirt_designs', design.folder, art.fileName),
         path.resolve(process.cwd(), 'Clothing_Designs', design.folder, art.fileName),
         path.resolve(process.cwd(), art.originalPath),
         path.resolve(process.cwd(), 'public', art.originalPath),

@@ -32,6 +32,7 @@ interface DrawerArtwork3DProps {
   onOpenLibrary?: () => void;
   isDesignerAuthorized?: boolean;
   isDesignerMode?: boolean;
+  isCuratedDesign?: boolean;
   onToggleDesignerMode?: () => void;
 }
 
@@ -49,6 +50,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
   onOpenLibrary,
   isDesignerAuthorized = false,
   isDesignerMode = false,
+  isCuratedDesign = false,
   onToggleDesignerMode,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -279,54 +281,73 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
         </button>
       )}
 
-      {/* Upload Dropzone */}
-      <div
-        onClick={() => fileInputRef.current?.click()}
-        style={{
-          border: '2px dashed var(--border-subtle, rgba(255,255,255,0.15))',
-          borderRadius: 'var(--radius-lg, 12px)',
-          padding: '16px',
-          textAlign: 'center',
-          cursor: 'pointer',
-          background: 'rgba(255, 255, 255, 0.02)',
-          transition: 'all 0.15s ease',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '8px',
-        }}
-      >
+      {/* Upload Dropzone (Only shown for blank apparel or when creator is in designer mode) */}
+      {!isCuratedDesign || isDesignerMode ? (
         <div
+          onClick={() => fileInputRef.current?.click()}
           style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            background: 'rgba(59, 94, 255, 0.15)',
-            color: '#3B5EFF',
+            border: '2px dashed var(--border-subtle, rgba(255,255,255,0.15))',
+            borderRadius: 'var(--radius-lg, 12px)',
+            padding: '16px',
+            textAlign: 'center',
+            cursor: 'pointer',
+            background: 'rgba(255, 255, 255, 0.02)',
+            transition: 'all 0.15s ease',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
+            gap: '8px',
           }}
         >
-          <Upload size={18} />
-        </div>
-        <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main, #fff)' }}>
-            Upload Custom Artwork
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              background: 'rgba(59, 94, 255, 0.15)',
+              color: '#3B5EFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Upload size={18} />
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-            PNG, WEBP, or JPEG with transparency
+          <div>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main, #fff)' }}>
+              Upload Custom Artwork
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              PNG, WEBP, or JPEG with transparency
+            </div>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/png,image/webp,image/jpeg"
+            style={{ display: 'none' }}
+            onChange={handleFileUpload}
+          />
+        </div>
+      ) : (
+        <div
+          style={{
+            background: 'rgba(56, 189, 248, 0.08)',
+            border: '1px solid rgba(56, 189, 248, 0.25)',
+            borderRadius: '12px',
+            padding: '12px 14px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+          }}
+        >
+          <Sparkles size={18} style={{ color: '#38bdf8', flexShrink: 0 }} />
+          <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.4 }}>
+            You are viewing a <strong>StarBy Curated Design</strong>. Calibrated placements are locked for production quality. Browse our library above if you want to switch designs!
           </div>
         </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          accept="image/png,image/webp,image/jpeg"
-          style={{ display: 'none' }}
-          onChange={handleFileUpload}
-        />
-      </div>
+      )}
 
       {/* Layers List */}
       <div>

@@ -130,6 +130,11 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
     setTimeout(() => {
       setFeedbackMessage(null);
     }, 3500);
+
+    // Auto close drawer so user can immediately view their selected design in 3D
+    setTimeout(() => {
+      onClose();
+    }, 600);
   };
 
   const handleApplyAllArtworks = async (design: CuratedClothingDesign) => {
@@ -149,6 +154,11 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
     setTimeout(() => {
       setFeedbackMessage(null);
     }, 4000);
+
+    // Auto close drawer so user can immediately view their selected design in 3D
+    setTimeout(() => {
+      onClose();
+    }, 600);
   };
 
   if (!isOpen) return null;

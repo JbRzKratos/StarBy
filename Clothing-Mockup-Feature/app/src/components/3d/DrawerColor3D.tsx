@@ -152,6 +152,33 @@ export const DrawerColor3D: React.FC<DrawerColor3DProps> = ({
         />
       </div>
 
+      {/* 3D Color Contrast Notice & Print Quality Guarantee */}
+      <div
+        style={{
+          background: 'rgba(56, 189, 248, 0.08)',
+          border: '1px solid rgba(56, 189, 248, 0.25)',
+          borderRadius: '10px',
+          padding: '10px 12px',
+          fontSize: '11px',
+          color: 'rgba(255, 255, 255, 0.85)',
+          lineHeight: 1.45,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#38bdf8', fontWeight: 700 }}>
+          <Sparkles size={14} />
+          <span>Color &amp; Print Quality Guarantee</span>
+        </div>
+        <div style={{ color: '#fbbf24', fontSize: '10.5px' }}>
+          <em>Note:</em> Real-time 3D lighting simulation on certain colors may show softer contrast on screen. Our dev team is fine-tuning this shading.
+        </div>
+        <div style={{ color: '#34d399', fontSize: '10.5px' }}>
+          ✨ <strong>Delivered Tees:</strong> Physical garments feature ultra-vibrant, opaque high-density direct-to-garment (DTG) printing with a razor-sharp premium finish on every fabric color!
+        </div>
+      </div>
+
       {/* Fabric Material Parameters */}
       <div
         style={{

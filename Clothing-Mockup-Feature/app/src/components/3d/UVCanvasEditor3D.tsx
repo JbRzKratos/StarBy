@@ -50,6 +50,7 @@ interface UVCanvasEditor3DProps {
   onToggleOpen?: () => void;
   onClose?: () => void;
   isDesignerMode?: boolean;
+  isCuratedDesign?: boolean;
   onSavePlacement?: () => void;
 }
 
@@ -76,6 +77,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
   onToggleOpen,
   onClose,
   isDesignerMode = false,
+  isCuratedDesign = false,
   onSavePlacement,
 }) => {
   const [justSaved, setJustSaved] = useState<boolean>(false);
@@ -1195,7 +1197,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
             </div>
 
             <div className="uv-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {onAddArtwork && (
+              {onAddArtwork && (!isCuratedDesign || isDesignerMode) && (
                 <label
                   className="uv-upload-header-btn"
                   title="Upload custom graphic or print"
