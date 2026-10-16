@@ -15,7 +15,13 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const designId = searchParams.get('designId');
 
-    const all = getAllServerPlacements();
+    const all = await getAllServerPlacements();
+
+    const responseHeaders = {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'CDN-Cache-Control': 'no-store',
+      'Vercel-CDN-Cache-Control': 'no-store',
+    };
 
     if (designId) {
       const filtered: Record<string, SavedPlacementItem> = {};
@@ -25,10 +31,10 @@ export async function GET(req: Request) {
           filtered[key] = val;
         }
       }
-      return NextResponse.json({ success: true, placements: filtered });
+      return NextResponse.json({ success: true, placements: filtered }, { headers: responseHeaders });
     }
 
-    return NextResponse.json({ success: true, placements: all });
+    return NextResponse.json({ success: true, placements: all }, { headers: responseHeaders });
   } catch (err) {
     console.error('[API save-placement GET] Error:', err);
     return NextResponse.json({ error: 'Failed to retrieve placements' }, { status: 500 });
@@ -40,10 +46,25 @@ export async function POST(req: Request) {
     // Verify that the caller is authorized as a designer (gokul30sep@gmail.com / superadmin)
     const supabase = createClient();
     let authUser: { id: string; email?: string } | null = null;
-    try {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (user && !error) authUser = user;
-    } catch {}
+
+    // Check Authorization header for Bearer token first
+    const authHeader = req.headers.get('authorization');
+    if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
+      const token = authHeader.substring(7).trim();
+      if (token) {
+        try {
+          const { data: tokenData } = await supabase.auth.getUser(token);
+          if (tokenData?.user) authUser = tokenData.user;
+        } catch {}
+      }
+    }
+
+    if (!authUser) {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (user && !error) authUser = user;
+      } catch {}
+    }
     if (!authUser) {
       try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -74,7 +95,7 @@ export async function POST(req: Request) {
     }
 
     const garmentKey = (garmentId || 'regular-t-shirt').toLowerCase();
-    const all = getAllServerPlacements();
+    const all = await getAllServerPlacements();
     const updates: Record<string, SavedPlacementItem> = {};
     const now = new Date().toISOString();
     const activeArtIds = new Set<string>();
@@ -241,7 +262,7 @@ export async function POST(req: Request) {
       savedAt: now,
     };
 
-    const ok = saveServerPlacements(updates);
+    const ok = await saveServerPlacements(updates);
     if (!ok) {
       return NextResponse.json({ error: 'Failed to write placements to storage' }, { status: 500 });
     }

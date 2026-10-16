@@ -722,6 +722,7 @@ export function saveCuratedPlacement(
       fetch('/api/clothing-designs/save-placement', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(payload),
       }).catch((err) => {
         console.warn('[CuratedPlacements] Server persistence notice:', err);
@@ -798,9 +799,12 @@ export async function syncServerPlacements(
 ): Promise<Record<string, CalibratedPlacement>> {
   if (typeof window === 'undefined' || !designId) return {};
   try {
-    const qs = new URLSearchParams({ designId });
-    const base = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'http://localhost:3000';
-    const res = await fetch(`${base}/api/clothing-designs/save-placement?${qs.toString()}`);
+    const qs = new URLSearchParams({ designId, _t: Date.now().toString() });
+    const base = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : '';
+    const res = await fetch(`${base}/api/clothing-designs/save-placement?${qs.toString()}`, {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+    });
     if (!res.ok) return {};
     const data = await res.json();
     if (data?.success && data.placements) {

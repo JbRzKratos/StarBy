@@ -81,6 +81,45 @@ export function ClothingMockupIframe() {
     };
   }, []);
 
+  // Fetch live server-persisted placements for this design from DB on mount and sync to iframe
+  useEffect(() => {
+    const designId = searchParams?.get('design') || searchParams?.get('designId');
+    const garmentId = searchParams?.get('garment') || searchParams?.get('garmentId');
+    if (!designId) return;
+
+    fetch(`/api/clothing-designs/save-placement?designId=${encodeURIComponent(designId)}&_t=${Date.now()}`, {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data?.success || !data.placements) return;
+        try {
+          const STORAGE_KEY = 'fregoro_curated_placements';
+          const raw = window.localStorage.getItem(STORAGE_KEY) || '{}';
+          const all = JSON.parse(raw);
+          const merged = { ...all, ...data.placements };
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged, null, 2));
+
+          // Post to iframe to guarantee real-time reflection
+          if (iframeRef.current?.contentWindow) {
+            iframeRef.current.contentWindow.postMessage(
+              {
+                type: 'STARBY_SYNC_PLACEMENTS',
+                placements: data.placements,
+                designId,
+                garmentId,
+              },
+              '*'
+            );
+          }
+        } catch {
+          /* ignore */
+        }
+      })
+      .catch(() => {});
+  }, [searchParams]);
+
   const iframeSrc = React.useMemo(() => {
     const sp = new URLSearchParams(searchParams?.toString() || '');
     if (!isDesignerAuthorized) {
@@ -271,6 +310,36 @@ export function ClothingMockupIframe() {
           }
           window.localStorage.setItem(STORAGE_KEY, JSON.stringify(all, null, 2));
           window.dispatchEvent(new CustomEvent('starby:placement-saved', { detail: e.data }));
+
+          // Forward to server save-placement API with first-party session token to guarantee DB persistence
+          try {
+            const supabase = createClient();
+            supabase.auth.getSession().then(({ data: { session } }) => {
+              const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+              if (session?.access_token) {
+                headers['Authorization'] = `Bearer ${session.access_token}`;
+              }
+              fetch('/api/clothing-designs/save-placement', {
+                method: 'POST',
+                headers,
+                credentials: 'include',
+                body: JSON.stringify({
+                  designId: e.data.designId,
+                  garmentId: e.data.garmentId,
+                  layers: e.data.layers,
+                  placement: e.data.placement,
+                  target: e.data.target,
+                  artId: e.data.artId,
+                  removedArtIds: e.data.removedArtIds,
+                  hiddenArtIds: e.data.hiddenArtIds,
+                }),
+              }).catch((err) => {
+                console.warn('[ClothingMockupIframe] Failed to forward placement to server:', err);
+              });
+            });
+          } catch {
+            /* ignore */
+          }
         } catch {
           /* ignore */
         }

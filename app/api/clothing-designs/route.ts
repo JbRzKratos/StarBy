@@ -77,7 +77,7 @@ export async function GET(req: Request) {
     const offset = (page - 1) * limit;
     const paginated = designs.slice(offset, offset + limit);
 
-    const serverPlacements = getAllServerPlacements();
+    const serverPlacements = await getAllServerPlacements();
 
     // Strip any internal or raw object keys from the public response
     const sanitized = paginated.map((d) => {

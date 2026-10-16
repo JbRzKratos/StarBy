@@ -238,7 +238,10 @@ export function useClothingProductModalState({
   useEffect(() => {
     if (!design?.id) return;
     let isCancelled = false;
-    fetch(`/api/clothing-designs/save-placement?designId=${encodeURIComponent(design.id)}`)
+    fetch(`/api/clothing-designs/save-placement?designId=${encodeURIComponent(design.id)}&_t=${Date.now()}`, {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (isCancelled || !data?.success || !data.placements) return;
@@ -248,6 +251,7 @@ export function useClothingProductModalState({
           const all = JSON.parse(raw);
           const merged = { ...all, ...data.placements };
           window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged, null, 2));
+          setArtworkCalibratedCoords((prev) => ({ ...prev, ...data.placements }));
           setPlacementSaveVersion((v) => v + 1);
         } catch {
           /* ignore */

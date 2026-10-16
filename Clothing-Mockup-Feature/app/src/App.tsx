@@ -62,6 +62,7 @@ import {
   saveCuratedPlacement,
   clearCuratedPlacement,
   syncServerPlacements,
+  getAllSavedPlacements,
 } from './engine/3d/curatedPlacements';
 import type * as THREE from 'three';
 
@@ -460,6 +461,7 @@ export const App: React.FC = () => {
       fetch('/api/clothing-designs/save-placement', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           designId: primaryDesignId,
           garmentId: project3D.garmentId,
@@ -916,7 +918,54 @@ export const App: React.FC = () => {
       }
       if (params.designId) {
         setInitialDesignId(params.designId);
-        syncServerPlacements(params.designId, params.garment).catch(() => {});
+        syncServerPlacements(params.designId, params.garment)
+          .then((serverPlacements) => {
+            if (serverPlacements && Object.keys(serverPlacements).length > 0) {
+              setProject3D((prev) => {
+                const updatedLayers = prev.artworkLayers.map((layer) => {
+                  const artMatch = (layer.id || '').match(/art-\d+/i);
+                  let artId = artMatch ? artMatch[0].toLowerCase() : undefined;
+                  if (!artId && curated) {
+                    const matchedArt = curated.artworks.find(
+                      (a: any) =>
+                        layer.id?.includes(a.id) ||
+                        (layer.name && layer.name.toLowerCase().includes(a.name.toLowerCase()))
+                    );
+                    if (matchedArt) artId = matchedArt.id.toLowerCase();
+                  }
+                  const dId = params.designId || layer.curatedDesignId || (curated ? curated.id : undefined);
+                  const calibrated = getCuratedPlacement(
+                    dId,
+                    prev.garmentId,
+                    layer.placementTarget || layer.regionId,
+                    artId
+                  );
+                  if (!calibrated) return layer;
+                  const isHidden = calibrated.hidden === true || calibrated.opacity === 0;
+                  return {
+                    ...layer,
+                    u: calibrated.u,
+                    v: calibrated.v,
+                    uvWidth: calibrated.uvWidth,
+                    uvHeight: calibrated.uvWidth,
+                    scale: calibrated.scale,
+                    rotation: calibrated.rotation ?? 0,
+                    regionId: calibrated.regionId || layer.regionId,
+                    placementTarget: calibrated.placementTarget || layer.placementTarget,
+                    opacity: isHidden ? 0 : (typeof calibrated.opacity === 'number' ? calibrated.opacity : layer.opacity),
+                    hidden: isHidden,
+                    offsetX: parseFloat(((calibrated.u - 0.5) * 2).toFixed(3)),
+                    offsetY: parseFloat(((calibrated.v - 0.5) * 2).toFixed(3)),
+                  };
+                });
+                return {
+                  ...prev,
+                  artworkLayers: updatedLayers,
+                };
+              });
+            }
+          })
+          .catch(() => {});
       }
       let parsedPrice: number | null = null;
       if (params.price !== undefined && params.price !== null && !isNaN(Number(params.price))) {
@@ -1263,10 +1312,58 @@ export const App: React.FC = () => {
       /* ignore */
     }
 
-    // 2. Listen for postMessage INIT_3D_DESIGN
+    // 2. Listen for postMessage INIT_3D_DESIGN and STARBY_SYNC_PLACEMENTS
     const handleMsg = (e: MessageEvent) => {
       if (e.data && e.data.type === 'INIT_3D_DESIGN') {
         applyInitParams(e.data.payload || {});
+      }
+      if (e.data && e.data.type === 'STARBY_SYNC_PLACEMENTS' && e.data.placements) {
+        try {
+          const all = getAllSavedPlacements();
+          const merged = { ...all, ...e.data.placements };
+          window.localStorage.setItem('fregoro_curated_placements', JSON.stringify(merged, null, 2));
+          setProject3D((prev) => {
+            const updated = prev.artworkLayers.map((layer) => {
+              const artMatch = (layer.id || '').match(/art-\d+/i);
+              let artId = artMatch ? artMatch[0].toLowerCase() : undefined;
+              if (!artId && activeCuratedDesign) {
+                const matchedArt = activeCuratedDesign.artworks.find(
+                  (a: any) =>
+                    layer.id?.includes(a.id) ||
+                    (layer.name && layer.name.toLowerCase().includes(a.name.toLowerCase()))
+                );
+                if (matchedArt) artId = matchedArt.id.toLowerCase();
+              }
+              const dId = e.data.designId || layer.curatedDesignId || (activeCuratedDesign ? activeCuratedDesign.id : undefined);
+              const calibrated = getCuratedPlacement(
+                dId,
+                prev.garmentId,
+                layer.placementTarget || layer.regionId,
+                artId
+              );
+              if (!calibrated) return layer;
+              const isHidden = calibrated.hidden === true || calibrated.opacity === 0;
+              return {
+                ...layer,
+                u: calibrated.u,
+                v: calibrated.v,
+                uvWidth: calibrated.uvWidth,
+                uvHeight: calibrated.uvWidth,
+                scale: calibrated.scale,
+                rotation: calibrated.rotation ?? 0,
+                regionId: calibrated.regionId || layer.regionId,
+                placementTarget: calibrated.placementTarget || layer.placementTarget,
+                opacity: isHidden ? 0 : (typeof calibrated.opacity === 'number' ? calibrated.opacity : layer.opacity),
+                hidden: isHidden,
+                offsetX: parseFloat(((calibrated.u - 0.5) * 2).toFixed(3)),
+                offsetY: parseFloat(((calibrated.v - 0.5) * 2).toFixed(3)),
+              };
+            });
+            return { ...prev, artworkLayers: updated };
+          });
+        } catch {
+          /* ignore */
+        }
       }
     };
     window.addEventListener('message', handleMsg);
@@ -2434,6 +2531,7 @@ export const App: React.FC = () => {
             fetch('/api/clothing-designs/save-placement', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
               body: JSON.stringify({
                 designId: primaryDesignId,
                 garmentId: project3D.garmentId,
