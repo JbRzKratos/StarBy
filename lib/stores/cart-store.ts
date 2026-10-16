@@ -174,6 +174,16 @@ export const useCartStore = create<CartState & CartActions>()(
                 }
               }
 
+              // For custom clothing mockup items, each uploaded design adds ₹119 to base garment price
+              if (item.customization && typeof item.customization.customArtworkCount === 'number' && !item.customization.designId) {
+                const count = item.customization.customArtworkCount as number;
+                const feePerDesign = 119;
+                const customPrintFee = count * feePerDesign;
+                if (typeof livePrice === 'number' && livePrice >= 0) {
+                  livePrice = livePrice + customPrintFee;
+                }
+              }
+
               let liveName: string | undefined;
               if (item.productId && data.names?.[item.productId]) {
                 liveName = data.names[item.productId];

@@ -65,18 +65,30 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
 
   const productType = mapCategoryToProductType(product.categorySlug) || 't-shirt';
 
+  const defaultVariant =
+    product.variants.find((v) => v.name.toLowerCase() === 'default') || product.variants[0];
+  const price = defaultVariant ? defaultVariant.price : product.basePrice;
+  const isPlain =
+    product.tags?.includes('plain') ||
+    product.id.startsWith('plain_') ||
+    product.slug?.startsWith('plain');
+
   // Use the new 2D + 3D Clothing Mockup Studio for t-shirts and hoodies
   if (productType === 't-shirt' || productType === 'hoodie') {
-    return <ClothingMockupIframe />;
+    return (
+      <ClothingMockupIframe
+        productId={product.id}
+        productName={product.name}
+        basePrice={price}
+        isPlain={isPlain}
+      />
+    );
   }
 
   // Use simple customizer for cups, mugs, posters, stationery, etc.
   const mockupImageSrc =
     product.variants?.[0]?.images?.[0] || getR2AssetUrl('images/mockups/tee-black-front.png');
 
-  const defaultVariant =
-    product.variants.find((v) => v.name.toLowerCase() === 'default') || product.variants[0];
-  const price = defaultVariant ? defaultVariant.price : product.basePrice;
   const variantId = defaultVariant?.id || 'default';
 
   return (

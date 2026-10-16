@@ -46,6 +46,7 @@ export interface HeaderProps {
   isDesignerAuthorized?: boolean;
   isDesignerMode?: boolean;
   onToggleDesignerMode?: () => void;
+  price?: number;
 }
 
 export const HeaderDesktop: React.FC<HeaderProps> = ({
@@ -76,6 +77,7 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
   isDesignerAuthorized = false,
   isDesignerMode = false,
   onToggleDesignerMode,
+  price,
 }) => {
   return (
     <header className="app-header header-desktop">
@@ -370,7 +372,9 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
             title="Review 3D Mockup & Add to Bag"
           >
             <ShoppingBag size={15} />
-            <span className="cart-text-full">Add to Bag</span>
+            <span className="cart-text-full">
+              Add to Bag {typeof price === 'number' && price > 0 ? `· ₹${price.toLocaleString('en-IN')}` : ''}
+            </span>
           </button>
         )}
       </div>

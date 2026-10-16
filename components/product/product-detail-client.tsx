@@ -54,10 +54,16 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
     product.tags?.includes('clothing-design') ||
     product.tags?.includes('apparel');
 
+  const isPlainApparel = Boolean(
+    product.tags?.includes('plain') ||
+    product.id.startsWith('plain_') ||
+    product.slug?.startsWith('plain')
+  );
+
   const resolvedClothingDesign: ClothingDesignEntry | null =
     getDesignById(product.id) ||
     getDesignById(product.slug) ||
-    (isApparelCategory
+    (!isPlainApparel && isApparelCategory
       ? {
           id: product.id,
           folder: product.name,
@@ -96,7 +102,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
       : null);
 
   const clothingDesign = resolvedClothingDesign;
-  const isApparel = !!clothingDesign || isApparelCategory;
+  const isApparel = isPlainApparel || !!clothingDesign || isApparelCategory;
 
   // Garment cut state for apparel
   const [selectedGarmentId, setSelectedGarmentId] = useState<string>(() => {
@@ -590,7 +596,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                         </button>
                       ) : (
                         <Link
-                          href={`/customize/${product.id}`}
+                          href={
+                            isApparel
+                              ? `/customize/clothing-mockup?garment=${encodeURIComponent(selectedGarment.garment3dId || selectedGarmentId)}&garmentName=${encodeURIComponent(selectedGarment.name)}&color=${encodeURIComponent(selectedApparelColor.hex)}&colorName=${encodeURIComponent(selectedApparelColor.name)}&size=${encodeURIComponent(selectedSize)}&price=${selectedGarment.basePrice || product.basePrice}&productId=${encodeURIComponent(product.id)}&plain=true`
+                              : `/customize/${product.id}`
+                          }
                           className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold"
                         >
                           <Sparkles className="w-4 h-4 text-bone" />

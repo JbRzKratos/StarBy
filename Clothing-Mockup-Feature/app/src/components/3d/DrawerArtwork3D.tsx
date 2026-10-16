@@ -34,6 +34,9 @@ interface DrawerArtwork3DProps {
   isDesignerMode?: boolean;
   isCuratedDesign?: boolean;
   onToggleDesignerMode?: () => void;
+  customArtworkCount?: number;
+  customPrintFee?: number;
+  basePrice?: number;
 }
 
 export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
@@ -52,6 +55,9 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
   isDesignerMode = false,
   isCuratedDesign = false,
   onToggleDesignerMode,
+  customArtworkCount = 0,
+  customPrintFee = 0,
+  basePrice,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [nlpInput, setNlpInput] = useState<string>('');
@@ -279,6 +285,42 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
             Browse →
           </div>
         </button>
+      )}
+
+      {/* Custom Print Pricing Notice (Shown for custom/plain tee mode) */}
+      {!isCuratedDesign && (
+        <div
+          style={{
+            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(139, 92, 246, 0.12) 100%)',
+            border: '1px solid rgba(59, 130, 246, 0.35)',
+            borderRadius: '10px',
+            padding: '10px 12px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '4px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              ✦ Custom Print Pricing
+            </span>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#38bdf8', fontFamily: 'monospace' }}>
+              +₹119 / design
+            </span>
+          </div>
+          <div style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.82)', lineHeight: 1.4 }}>
+            Each design you upload adds ₹119 to the base tee. Place graphics on front, back, or sleeves!
+          </div>
+          {customArtworkCount > 0 ? (
+            <div style={{ marginTop: '2px', fontSize: '11px', color: '#34d399', fontWeight: 700 }}>
+              ✓ {customArtworkCount} design{customArtworkCount > 1 ? 's' : ''} added (+₹{customPrintFee || customArtworkCount * 119})
+            </div>
+          ) : (
+            <div style={{ marginTop: '2px', fontSize: '10px', color: '#94a3b8' }}>
+              Base Tee: ₹{basePrice || 799} · 0 designs added
+            </div>
+          )}
+        </div>
       )}
 
       {/* Upload Dropzone (Only shown for blank apparel or when creator is in designer mode) */}

@@ -28,7 +28,19 @@ interface WindowWithTawk {
   };
 }
 
-export function ClothingMockupIframe() {
+export interface ClothingMockupIframeProps {
+  productId?: string;
+  productName?: string;
+  basePrice?: number;
+  isPlain?: boolean;
+}
+
+export function ClothingMockupIframe({
+  productId,
+  productName,
+  basePrice,
+  isPlain,
+}: ClothingMockupIframeProps = {}) {
   const [isLoading, setIsLoading] = useState(true);
   const [isDesignerAuthorized, setIsDesignerAuthorized] = useState(false);
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
@@ -122,6 +134,11 @@ export function ClothingMockupIframe() {
 
   const iframeSrc = React.useMemo(() => {
     const sp = new URLSearchParams(searchParams?.toString() || '');
+    if (productId && !sp.has('productId')) sp.set('productId', productId);
+    if (productName && !sp.has('productName')) sp.set('productName', productName);
+    if (basePrice !== undefined && !sp.has('price')) sp.set('price', basePrice.toString());
+    if (isPlain && !sp.has('plain')) sp.set('plain', 'true');
+
     if (!isDesignerAuthorized) {
       // Strip any designer query parameters if user is not authorized
       sp.delete('designer');
@@ -133,7 +150,7 @@ export function ClothingMockupIframe() {
     }
     const qs = sp.toString();
     return qs ? `/tools/clothing-mockup/index.html?${qs}` : '/tools/clothing-mockup/index.html';
-  }, [searchParams, isDesignerAuthorized]);
+  }, [searchParams, isDesignerAuthorized, productId, productName, basePrice, isPlain]);
 
   // Apply body class while the studio is mounted and aggressively suppress
   // the Tawk.to widget, WhatsApp button, and other floating UI in both 2D and 3D.
@@ -436,10 +453,28 @@ export function ClothingMockupIframe() {
             const defaultPlacementTitle = is2d ? 'Custom 2D Studio Mockup' : 'Custom 3D Studio Mockup';
             const defaultInstructions = is2d ? 'Custom 2D Studio Placement' : 'Custom 3D Studio Placement';
 
+            const customArtworkCount =
+              typeof payload.customArtworkCount === 'number'
+                ? payload.customArtworkCount
+                : (uploadResult.uploadedArtworks?.length || 0);
+            const customPrintFee =
+              typeof payload.customPrintFee === 'number'
+                ? payload.customPrintFee
+                : customArtworkCount * 119;
+            const itemBasePrice =
+              typeof payload.basePrice === 'number'
+                ? payload.basePrice
+                : (typeof resolvedPrice === 'number' ? resolvedPrice - customPrintFee : 799);
+
+            const isCustomUpload = !payload.designId || Boolean(payload.plain);
+            const itemDisplayName = isCustomUpload
+              ? `Custom ${payload.garmentName || 'Garment'}${customArtworkCount > 0 ? ` (${customArtworkCount} Print${customArtworkCount === 1 ? '' : 's'})` : ''}`
+              : (payload.designName || `Custom ${payload.garmentName || 'Garment'}`);
+
             const cartItem: CartItem = {
-              productId: payload.designId || 'clothing-mockup',
+              productId: payload.productId || payload.designId || 'clothing-mockup',
               variantId: `${variantPrefix}-${payload.garmentId || 'tee'}-${String(payload.garmentColor || 'white').replace(/[^a-z0-9]/gi, '')}-${payload.size || 'L'}`,
-              name: `Custom ${payload.garmentName || 'Garment'}`,
+              name: itemDisplayName,
               variant: `${payload.garmentColor || 'Custom'} / ${payload.size || 'L'}`,
               quantity: payload.quantity || 1,
               price: typeof resolvedPrice === 'number' && resolvedPrice >= 0 ? resolvedPrice : 999,
@@ -460,6 +495,10 @@ export function ClothingMockupIframe() {
                 customerNotes: payload.customerNotes || payload.printInstructions || null,
                 designId: payload.designId || null,
                 uploadedArtworks: uploadResult.uploadedArtworks,
+                customArtworkCount,
+                customPrintFee,
+                basePrice: itemBasePrice,
+                isPlain: isCustomUpload,
                 is3dMockup: !is2d,
                 is2dMockup: is2d,
                 mode: payload.mode || '3d',

@@ -40,6 +40,8 @@ export interface ArtworkLayer {
   naturalWidth: number;
   naturalHeight: number;
   isOpaque?: boolean;
+  isCurated?: boolean;
+  curatedDesignId?: string;
 }
 
 export type GarmentSide = 'front' | 'back';

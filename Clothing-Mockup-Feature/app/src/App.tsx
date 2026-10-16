@@ -179,37 +179,52 @@ export const App: React.FC = () => {
   // =========================================================================
   // 3D PROJECT STATE
   // =========================================================================
-  const [project3D, setProject3D] = useState<ProjectState3D>({
-    version: 1,
-    id: 'default-3d-project',
-    name: 'Regular T-Shirt Mockup',
-    updatedAt: new Date().toISOString(),
-    garmentId: 'regular-t-shirt',
-    garmentColor: '#ffffff',
-    roughness: 0.85,
-    metalness: 0.0,
-    artworkLayers: [],
-    activeRegionId: 'front',
-    isAnimated: false,
-    currentAction: 'WALK',
-    isPlaying: false,
-    playbackSpeed: 1.0,
-    secondaryMotionEnabled: false,
-    lighting: {
-      hdrIntensity: 0.7,
-      sunIntensity: 0.95,
-      ambientIntensity: 0.15,
-      sunAzimuth: 45,
-      sunElevation: 45,
-      shadowIntensity: 0.16,
-      bgColor: '#0a0d14',
-      isTransparentBg: false,
-    },
-    camera: {
-      preset: 'front',
-      turntable: false,
-      turntableSpeed: 0.5,
-    },
+  const [project3D, setProject3D] = useState<ProjectState3D>(() => {
+    let initialGarment = 'regular-t-shirt';
+    let initialColor = '#ffffff';
+    if (typeof window !== 'undefined') {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const g = sp.get('garment');
+        if (g) initialGarment = g;
+        const c = sp.get('color');
+        if (c) initialColor = c;
+      } catch {
+        /* ignore */
+      }
+    }
+    return {
+      version: 1,
+      id: 'default-3d-project',
+      name: 'Regular T-Shirt Mockup',
+      updatedAt: new Date().toISOString(),
+      garmentId: initialGarment,
+      garmentColor: initialColor,
+      roughness: 0.85,
+      metalness: 0.0,
+      artworkLayers: [],
+      activeRegionId: 'front',
+      isAnimated: false,
+      currentAction: 'WALK',
+      isPlaying: false,
+      playbackSpeed: 1.0,
+      secondaryMotionEnabled: false,
+      lighting: {
+        hdrIntensity: 0.7,
+        sunIntensity: 0.95,
+        ambientIntensity: 0.15,
+        sunAzimuth: 45,
+        sunElevation: 45,
+        shadowIntensity: 0.16,
+        bgColor: '#0a0d14',
+        isTransparentBg: false,
+      },
+      camera: {
+        preset: 'front',
+        turntable: false,
+        turntableSpeed: 0.5,
+      },
+    };
   });
 
   const [selectedLayerId3D, setSelectedLayerId3D] = useState<string | null>(null);
@@ -227,8 +242,19 @@ export const App: React.FC = () => {
   // Compositor ref — needed to pass to the high-res exporter
   const compositor3DRef = useRef<TextureCompositor3D | null>(null);
 
-  // Active Sidebar Tab
-  const [activeTab, setActiveTab] = useState<SidebarTab>('color3d');
+  const isPlainParam = typeof window !== 'undefined'
+    ? (() => {
+        try {
+          const sp = new URLSearchParams(window.location.search);
+          return sp.get('plain') === 'true' || sp.get('plain') === '1' || sp.get('custom') === 'true';
+        } catch {
+          return false;
+        }
+      })()
+    : false;
+
+  // Active Sidebar Tab: for plain tees, default to artwork3d so customers immediately see upload
+  const [activeTab, setActiveTab] = useState<SidebarTab>(() => (isPlainParam ? 'artwork3d' : 'color3d'));
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState<boolean>(false);
   const [isDesignSetupModalOpen, setIsDesignSetupModalOpen] = useState<boolean>(false);
@@ -237,6 +263,7 @@ export const App: React.FC = () => {
     if (typeof window !== 'undefined') {
       try {
         const sp = new URLSearchParams(window.location.search);
+        if (sp.get('plain') === 'true' || sp.get('plain') === '1') return null;
         return sp.get('designId') || null;
       } catch {
         return null;
@@ -244,7 +271,30 @@ export const App: React.FC = () => {
     }
     return null;
   });
+
+  const GARMENT_DEFAULT_BASE_PRICES: Record<string, number> = {
+    'regular-t-shirt': 799,
+    'oversized-t-shirt': 999,
+    'acid-wash-t-shirt': 1099,
+    'hoodie': 1499,
+  };
+
   const initialPriceRef = useRef<number | null>(null);
+  const [basePrice, setBasePrice] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const p = sp.get('price');
+        if (p !== null && !isNaN(Number(p)) && Number(p) > 0) return Number(p);
+        const g = sp.get('garment');
+        if (g && GARMENT_DEFAULT_BASE_PRICES[g]) return GARMENT_DEFAULT_BASE_PRICES[g];
+      } catch {
+        /* ignore */
+      }
+    }
+    return 799;
+  });
+
   const [unitPrice, setUnitPrice] = useState<number>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -260,10 +310,27 @@ export const App: React.FC = () => {
   });
 
   const isCuratedDesign = Boolean(
-    activeCuratedDesign ||
-    initialDesignId ||
-    project3D.artworkLayers.some((l) => l.isCurated || l.curatedDesignId)
+    !isPlainParam && (
+      activeCuratedDesign ||
+      initialDesignId ||
+      project3D.artworkLayers.some((l) => l.isCurated || l.curatedDesignId)
+    )
   );
+
+  // Custom design uploads pricing (+₹119 for each custom design uploaded)
+  const customArtworkCount3D = project3D.artworkLayers.filter(
+    (l) => !l.isCurated && !l.curatedDesignId && !l.hidden && (l.opacity === undefined || l.opacity > 0)
+  ).length;
+
+  const customArtworkCount2D = [...project2D.front.layers, ...project2D.back.layers].filter(
+    (l) => !l.isCurated && l.visible !== false && (l.opacity === undefined || l.opacity > 0)
+  ).length;
+
+  const activeCustomArtworkCount = mode === '3d' ? customArtworkCount3D : customArtworkCount2D;
+  const customPrintFee = isCuratedDesign ? 0 : activeCustomArtworkCount * 119;
+  const effectivePrice = isCuratedDesign
+    ? (unitPrice ?? (initialDesignId === 'design-001' ? 1 : 999))
+    : (basePrice + customPrintFee);
 
   // Modal Placement State
   const [modalSelectedArtId, setModalSelectedArtId] = useState<string | null>(null);
@@ -1949,6 +2016,10 @@ export const App: React.FC = () => {
     const config = typeof garment === 'string' ? getGarmentConfig(garmentId) : garment;
     const approvedColors = getApprovedColorsForGarment(garmentId);
 
+    if (!isCuratedDesign && GARMENT_DEFAULT_BASE_PRICES[garmentId]) {
+      setBasePrice(GARMENT_DEFAULT_BASE_PRICES[garmentId]);
+    }
+
     setProject3D((prev) => {
       const colorMatches = approvedColors.some(
         (c) => c.hex.toLowerCase() === prev.garmentColor.toLowerCase()
@@ -2812,19 +2883,29 @@ export const App: React.FC = () => {
     const garmentId = mode === '3d' ? project3D.garmentId : project2D.templateId;
     const garmentColor = mode === '3d' ? project3D.garmentColor : project2D.garmentColor;
 
-    const finalPrice = typeof unitPrice === 'number' && unitPrice >= 0
-      ? unitPrice
-      : (typeof initialPriceRef.current === 'number' && initialPriceRef.current >= 0
-        ? initialPriceRef.current
-        : (initialDesignId === 'design-001' ? 1 : 999));
+    const finalPrice = effectivePrice;
+
+    let urlProductId: string | null = null;
+    if (typeof window !== 'undefined') {
+      try {
+        urlProductId = new URLSearchParams(window.location.search).get('productId');
+      } catch {
+        /* ignore */
+      }
+    }
 
     const payload = {
+      productId: urlProductId || undefined,
       garmentId,
       garmentName,
       garmentColor,
       size: data.size,
       quantity: data.quantity,
       price: finalPrice,
+      basePrice,
+      customArtworkCount: activeCustomArtworkCount,
+      customPrintFee,
+      plain: isPlainParam || !initialDesignId,
       designId: initialDesignId || undefined,
       frontPreviewUrl: frontSnapshot,
       backPreviewUrl: backSnapshot,
@@ -2933,6 +3014,7 @@ export const App: React.FC = () => {
         isDesignerAuthorized={isDesignerAuthorized}
         isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
         onToggleDesignerMode={isDesignerAuthorized ? handleToggleDesignerMode : undefined}
+        price={effectivePrice}
       />
 
       {/* Floating Save Confirmation Notification Banner */}
@@ -3033,6 +3115,9 @@ export const App: React.FC = () => {
                         isDesignerAuthorized={isDesignerAuthorized}
                         isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
                         isCuratedDesign={isCuratedDesign}
+                        customArtworkCount={activeCustomArtworkCount}
+                        customPrintFee={customPrintFee}
+                        basePrice={basePrice}
                         onToggleDesignerMode={isDesignerAuthorized ? handleToggleDesignerMode : undefined}
                       />
                     )}
@@ -3489,7 +3574,11 @@ export const App: React.FC = () => {
         onClose={() => setIsAddToCartOpen(false)}
         garmentName={mode === '3d' ? currentGarmentConfig3D.name : activeTemplate2D.name}
         garmentColor={mode === '3d' ? project3D.garmentColor : project2D.garmentColor}
-        unitPrice={unitPrice}
+        unitPrice={effectivePrice}
+        basePrice={basePrice}
+        customArtworkCount={activeCustomArtworkCount}
+        customPrintFee={customPrintFee}
+        isCuratedDesign={isCuratedDesign}
         frontSnapshotUrl={cartFrontSnapshot}
         backSnapshotUrl={cartBackSnapshot}
         artworkLayers={project3D.artworkLayers}

@@ -18,6 +18,10 @@ export interface AddToCartModal3DProps {
   garmentName: string;
   garmentColor: string;
   unitPrice?: number;
+  basePrice?: number;
+  customArtworkCount?: number;
+  customPrintFee?: number;
+  isCuratedDesign?: boolean;
   frontSnapshotUrl: string | null;
   backSnapshotUrl: string | null;
   artworkLayers: ArtworkLayer3D[];
@@ -47,6 +51,10 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   garmentName,
   garmentColor,
   unitPrice: propUnitPrice,
+  basePrice,
+  customArtworkCount = 0,
+  customPrintFee = 0,
+  isCuratedDesign = false,
   frontSnapshotUrl,
   backSnapshotUrl,
   artworkLayers,
@@ -401,6 +409,18 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
               <div className="price-summary-block">
                 <span className="price-label">Total Price:</span>
                 <span className="price-val">₹{totalPrice.toLocaleString('en-IN')}</span>
+                {!isCuratedDesign && typeof basePrice === 'number' && (
+                  <div style={{ fontSize: '11px', color: '#94a3b8', margin: '4px 0 2px 0', lineHeight: '1.4' }}>
+                    <div>Base Garment: <strong style={{ color: '#e2e8f0' }}>₹{basePrice}</strong></div>
+                    {customArtworkCount > 0 ? (
+                      <div style={{ color: '#38bdf8' }}>
+                        Custom Prints ({customArtworkCount} × ₹119): <strong style={{ color: '#38bdf8' }}>+₹{customPrintFee || customArtworkCount * 119}</strong>
+                      </div>
+                    ) : (
+                      <div style={{ color: '#64748b' }}>No custom prints uploaded yet (+₹0)</div>
+                    )}
+                  </div>
+                )}
                 <span className="price-sub">₹{unitPrice} / {garmentName.toLowerCase().includes('hoodie') ? 'hoodie' : 'tee'} · Inclusive of all taxes</span>
               </div>
             </div>

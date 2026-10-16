@@ -22,6 +22,7 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
   isDesignerAuthorized = false,
   isDesignerMode = false,
   onToggleDesignerMode,
+  price,
 }) => {
   return (
     <header className="app-header header-mobile" aria-label="Mobile Navigation Header">
@@ -148,7 +149,7 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
             aria-label="Add to Bag"
           >
             <ShoppingBag size={14} />
-            <span>Bag</span>
+            <span>{typeof price === 'number' && price > 0 ? `Bag · ₹${price}` : 'Bag'}</span>
           </button>
         )}
       </div>
