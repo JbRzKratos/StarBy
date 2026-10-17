@@ -278,7 +278,7 @@ export function ShopMobile({ category, products }: { category: string; products:
   const displayProducts = filteredProducts.slice(0, visibleCount);
 
   return (
-    <main className="min-h-screen bg-charcoal text-bone relative pb-24">
+    <main className="min-h-screen bg-charcoal text-bone relative pb-36">
       {/* Sticky Header with Categories */}
       <header className="sticky top-0 left-0 w-full z-10 bg-charcoal/95 backdrop-blur-md border-b border-smoke/20 pt-28">
         <div className="px-5 pb-4 flex items-center justify-between">
@@ -327,15 +327,15 @@ export function ShopMobile({ category, products }: { category: string; products:
 
         {/* Scrollable Category Tabs with Edge Fade Scroll Affordance */}
         <div className="relative">
-          <div className="px-5 pb-2 flex items-center gap-6 overflow-x-auto hide-scrollbar snap-x snap-proximity scroll-smooth scroll-px-5 pr-8">
+          <div className="px-5 pb-2 flex items-center gap-5 overflow-x-auto hide-scrollbar snap-x snap-proximity scroll-smooth scroll-px-5 pr-12">
             {SHOP_CATEGORIES.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
-                className={`font-mono text-[10px] uppercase tracking-widest whitespace-nowrap snap-start transition-colors min-h-[40px] flex items-center ${
+                className={`font-mono text-[11px] uppercase tracking-wider whitespace-nowrap snap-start transition-colors min-h-[40px] flex items-center ${
                   activeTab === tab.id
-                    ? 'text-bone border-b-2 border-bone'
-                    : 'text-pearl border-b-2 border-transparent'
+                    ? 'text-bone border-b-2 border-bone font-bold'
+                    : 'text-pearl/70 hover:text-bone border-b-2 border-transparent'
                 }`}
               >
                 {tab.label}
@@ -343,28 +343,32 @@ export function ShopMobile({ category, products }: { category: string; products:
             ))}
           </div>
           {/* Subtle right-edge fade gradient cue */}
-          <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-charcoal to-transparent" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-10 bg-gradient-to-l from-charcoal to-transparent" />
         </div>
 
         {/* Quick Filter Keyword Pills on Mobile */}
-        <div className="px-5 pb-3 pt-1 flex items-center gap-1.5 overflow-x-auto hide-scrollbar snap-x scroll-smooth">
-          {QUICK_FILTER_PRESETS.map((preset) => {
-            const isActive = quickPreset === preset.id;
-            return (
-              <button
-                key={preset.id}
-                onClick={() => handlePresetClick(preset.id)}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-full font-mono text-[10px] uppercase tracking-wider whitespace-nowrap snap-start transition-all active:scale-95 ${
-                  isActive
-                    ? 'bg-bone text-charcoal font-bold shadow-md shadow-white/10'
-                    : 'bg-white/5 text-bone/70 border border-white/5 active:bg-white/10'
-                }`}
-              >
-                {preset.icon && <span>{preset.icon}</span>}
-                <span>{preset.label}</span>
-              </button>
-            );
-          })}
+        <div className="relative">
+          <div className="px-5 pb-3 pt-1 flex items-center gap-1.5 overflow-x-auto hide-scrollbar snap-x scroll-smooth pr-10">
+            {QUICK_FILTER_PRESETS.map((preset) => {
+              const isActive = quickPreset === preset.id;
+              return (
+                <button
+                  key={preset.id}
+                  onClick={() => handlePresetClick(preset.id)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-mono text-[10px] uppercase tracking-wider whitespace-nowrap snap-start transition-all active:scale-95 ${
+                    isActive
+                      ? 'bg-bone text-charcoal font-bold shadow-md shadow-white/10'
+                      : 'bg-white/5 text-bone/70 border border-white/5 active:bg-white/10'
+                  }`}
+                >
+                  {preset.icon && <span className="opacity-80 text-[11px]">{preset.icon}</span>}
+                  <span>{preset.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          {/* Subtle right-edge fade gradient cue */}
+          <div className="pointer-events-none absolute right-0 top-0 bottom-3 w-10 bg-gradient-to-l from-charcoal to-transparent" />
         </div>
       </header>
 

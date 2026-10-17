@@ -1,13 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import {
-  X,
-  Search,
-  Check,
-  ArrowLeft,
-  ChevronRight,
-  Info,
-} from 'lucide-react';
-import {
   CURATED_CLOTHING_DESIGNS,
   CLOTHING_DESIGN_CATEGORIES,
   type CuratedClothingDesign,
@@ -15,16 +7,16 @@ import {
 } from '../data/clothingDesignsData';
 
 export const CATEGORY_SYMBOLS: Record<string, string> = {
-  all: '❖',
-  anime: '⚡',
-  marvel: '🛡️',
-  automotive: '🏎️',
-  gaming: '🎮',
-  streetwear: '🛹',
-  typography: '🔤',
-  'indian-cinema': '🎬',
-  humor: '🎭',
-  aesthetic: '✦',
+  all: '✦',
+  anime: '✧',
+  marvel: '🛡',
+  automotive: '⚙',
+  gaming: '⌗',
+  streetwear: '▲',
+  typography: 'Aa',
+  'indian-cinema': '▶',
+  humor: '☺',
+  aesthetic: '✿',
 };
 
 export interface ApplyDesignEvent {
@@ -254,13 +246,13 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
               title="Close library (Esc)"
               aria-label="Close library"
             >
-              <X size={18} />
+              <span style={{ fontSize: '16px' }}>✕</span>
             </button>
           </div>
 
           {/* Search Input */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={14} />
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" style={{ fontSize: '13px' }}>⚲</span>
             <input
               type="text"
               value={searchQuery}
@@ -280,39 +272,52 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
           </div>
 
           {/* Category Filter Pills */}
-          <div className="clothing-drawer-categories">
-            {CLOTHING_DESIGN_CATEGORIES.map((cat) => {
-              const isActive = selectedCategory === cat.id;
-              const count =
-                cat.id === 'all'
-                  ? CURATED_CLOTHING_DESIGNS.length
-                  : CURATED_CLOTHING_DESIGNS.filter(
-                      (d) => d.themeCategory === cat.id || d.tags.includes(cat.id)
-                    ).length;
+          <div style={{ position: 'relative' }}>
+            <div className="clothing-drawer-categories" style={{ paddingRight: '28px' }}>
+              {CLOTHING_DESIGN_CATEGORIES.map((cat) => {
+                const isActive = selectedCategory === cat.id;
+                const count =
+                  cat.id === 'all'
+                    ? CURATED_CLOTHING_DESIGNS.length
+                    : CURATED_CLOTHING_DESIGNS.filter(
+                        (d) => d.themeCategory === cat.id || d.tags.includes(cat.id)
+                      ).length;
 
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => {
-                    setSelectedCategory(cat.id);
-                    setActiveDesign(null);
-                  }}
-                  className={`clothing-drawer-cat-btn ${isActive ? 'active' : ''}`}
-                >
-                  <span className="text-[11px] opacity-90">{CATEGORY_SYMBOLS[cat.id] || '❖'}</span>
-                  <span>{cat.label}</span>
-                  <span className="text-[9.5px] opacity-70">({count})</span>
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedCategory(cat.id);
+                      setActiveDesign(null);
+                    }}
+                    className={`clothing-drawer-cat-btn ${isActive ? 'active' : ''}`}
+                  >
+                    <span className="text-[11px] opacity-90">{CATEGORY_SYMBOLS[cat.id] || '✦'}</span>
+                    <span>{cat.label}</span>
+                    <span className="text-[9.5px] opacity-70">({count})</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div
+              style={{
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                bottom: '4px',
+                width: '32px',
+                background: 'linear-gradient(to left, rgba(14, 18, 26, 0.96), transparent)',
+                pointerEvents: 'none',
+              }}
+            />
           </div>
         </div>
 
         {/* ── Feedback Toast ── */}
         {feedbackMessage && (
           <div className="clothing-drawer-toast">
-            <Check size={14} className="text-emerald-400 shrink-0" />
+            <span className="text-emerald-400 shrink-0 font-bold">✓</span>
             <span>{feedbackMessage}</span>
           </div>
         )}
@@ -327,7 +332,7 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
                 onClick={() => setActiveDesign(null)}
                 className="clothing-drawer-back-btn"
               >
-                <ArrowLeft size={13} />
+                <span>←</span>
                 <span>Back to Graphic Library</span>
               </button>
 
@@ -372,15 +377,12 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
               >
                 {appliedDesignId === activeDesign.id ? (
                   <>
-                    <Check size={16} />
+                    <span style={{ fontSize: '16px', fontWeight: 'bold' }}>✓</span>
                     <span>Applied Complete Set to 3D Garment!</span>
                   </>
                 ) : (
                   <>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                      <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
-                      <circle cx="12" cy="13" r="2.5" fill="currentColor" fillOpacity="0.8" />
-                    </svg>
+                    <span style={{ fontSize: '15px' }}>👕</span>
                     <span>
                       Apply Complete Set ({activeDesign.artworks.length > 1 ? 'Front & Back' : 'Single Placement'})
                     </span>
@@ -400,7 +402,7 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
                   gap: '10px',
                 }}
               >
-                <Info size={16} className="text-indigo-400 shrink-0 mt-0.5" />
+                <span className="text-indigo-400 shrink-0 mt-0.5" style={{ fontSize: '14px', fontWeight: 'bold' }}>ℹ</span>
                 <p style={{ margin: 0, fontSize: '11px', lineHeight: '1.45', color: 'rgba(255, 255, 255, 0.75)' }}>
                   Artworks are pre-calibrated for Front Chest, Full Back & Sleeves. You can apply the full set above, or place individual pieces below.
                 </p>
@@ -499,7 +501,7 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
                         >
                           {isArtApplied ? (
                             <>
-                              <Check size={12} />
+                              <span>✓</span>
                               <span>Placed on {actionTarget}!</span>
                             </>
                           ) : (
@@ -634,15 +636,12 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
                           >
                             {isApplied ? (
                               <>
-                                <Check size={13} />
+                                <span>✓</span>
                                 <span>Applied!</span>
                               </>
                             ) : (
                               <>
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                                  <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
-                                  <circle cx="12" cy="13" r="2.5" fill="currentColor" fillOpacity="0.8" />
-                                </svg>
+                                <span>👕</span>
                                 <span>Apply Design</span>
                               </>
                             )}
@@ -659,7 +658,7 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
                             title="Inspect individual artworks and customize placement"
                           >
                             <span>View Artworks ({artCount})</span>
-                            <ChevronRight size={12} className="opacity-60" />
+                            <span className="opacity-60">→</span>
                           </button>
                         </div>
                       </div>

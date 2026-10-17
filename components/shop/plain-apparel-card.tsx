@@ -56,8 +56,8 @@ export function PlainApparelCard({ product, priority = false }: PlainApparelCard
           </div>
         )}
 
-        {/* 10 Angles badge top-right */}
-        <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono text-white/70 tracking-widest uppercase">
+        {/* 10 Angles badge top-right (desktop only to prevent collision on mobile) */}
+        <div className="hidden sm:block absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-mono text-white/70 tracking-widest uppercase">
           10 Views
         </div>
 

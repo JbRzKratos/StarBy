@@ -1,5 +1,4 @@
 import React from 'react';
-import { Palette, Check } from 'lucide-react';
 
 interface DrawerGarmentProps {
   currentColor: string;
@@ -180,13 +179,16 @@ export const DrawerGarment: React.FC<DrawerGarmentProps> = ({
                   title={`${preset.name} (${preset.hex})`}
                 >
                   {isSelected && (
-                    <Check
-                      size={14}
-                      strokeWidth={3}
+                    <span
                       style={{
                         color: isLight ? '#000' : '#fff',
+                        fontWeight: 'bold',
+                        fontSize: '13px',
+                        lineHeight: 1,
                       }}
-                    />
+                    >
+                      ✓
+                    </span>
                   )}
                 </button>
               );
@@ -240,7 +242,7 @@ export const DrawerGarment: React.FC<DrawerGarmentProps> = ({
 
         {/* Shading explanation */}
         <div className="info-box">
-          <Palette size={16} style={{ flexShrink: 0 }} />
+          <span style={{ flexShrink: 0, fontSize: '15px' }}>●</span>
           <div>
             Fabric seams, folds, and natural highlights are preserved regardless of garment color. Artwork prints remain completely color-independent.
           </div>

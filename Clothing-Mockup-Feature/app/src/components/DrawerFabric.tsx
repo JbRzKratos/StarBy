@@ -1,5 +1,4 @@
 import React from 'react';
-import { Sparkles, Info } from 'lucide-react';
 import type { WarpSettings } from '../types/mockup';
 
 interface DrawerFabricProps {
@@ -86,14 +85,14 @@ export const DrawerFabric: React.FC<DrawerFabricProps> = ({
 
         {/* Information Callout */}
         <div className="info-box">
-          <Sparkles size={16} style={{ flexShrink: 0 }} />
+          <span style={{ flexShrink: 0, fontSize: '15px' }}>✦</span>
           <div>
             Fabric warping dynamically maps print pixels across natural wrinkles. Original artwork pixels remain 100% intact; toggling warp on or off never degrades your source design.
           </div>
         </div>
 
         <div className="info-box" style={{ background: 'rgba(16, 185, 129, 0.1)', borderColor: 'rgba(16, 185, 129, 0.25)', color: '#6ee7b7' }}>
-          <Info size={16} style={{ flexShrink: 0 }} />
+          <span style={{ flexShrink: 0, fontSize: '15px' }}>ℹ</span>
           <div>
             Authentic ink integration: artwork responds naturally to macroscopic garment folds, cotton weave micro-texture, and environmental lighting while maintaining true pigment colors.
           </div>

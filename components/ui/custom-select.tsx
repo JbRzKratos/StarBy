@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { ChevronDown, Check } from 'lucide-react';
 
 export interface SelectOption {
   value: string;
@@ -133,11 +132,13 @@ export function CustomSelect({
           {selectedOption ? selectedOption.label : placeholder}
         </span>
 
-        <ChevronDown
-          className={`w-4 h-4 text-pearl/50 shrink-0 transition-transform duration-200 ${
+        <span
+          className={`text-pearl/50 text-xs shrink-0 transition-transform duration-200 ${
             isOpen ? 'rotate-180 text-[#3B5EFF]' : ''
           }`}
-        />
+        >
+          ▼
+        </span>
       </button>
 
       {/* Dropdown Menu Popover */}
@@ -169,7 +170,7 @@ export function CustomSelect({
                   )}
                 </div>
 
-                {isSelected && <Check className="w-4 h-4 text-[#3B5EFF] shrink-0" />}
+                {isSelected && <span className="text-xs text-[#3B5EFF] font-bold shrink-0">✓</span>}
               </button>
             );
           })}

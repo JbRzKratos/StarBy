@@ -1,20 +1,4 @@
 import React, { useState } from 'react';
-import {
-  Check,
-  Copy,
-  Save,
-  RotateCcw,
-  Eye,
-  ChevronDown,
-  ChevronUp,
-  ArrowUp,
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  Plus,
-  Minus,
-  Sparkles,
-} from 'lucide-react';
 import type { ArtworkLayer3D, Garment3DConfig } from '../../types/threeD';
 
 interface DesignerPlacementBarProps {
@@ -158,7 +142,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
               letterSpacing: '0.05em',
             }}
           >
-            <Sparkles size={11} style={{ color: '#a78bfa' }} />
+            <span style={{ color: '#a78bfa', fontSize: '11px' }}>✦</span>
             <span>Designer Mode</span>
           </span>
 
@@ -199,7 +183,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
             }}
             title="Save this placement for this garment cut"
           >
-            {savedToast ? <Check size={12} /> : <Save size={12} />}
+            {savedToast ? <span>✓</span> : <span>💾</span>}
             <span>{savedToast ? 'SAVED!' : 'SAVE PLACEMENT'}</span>
           </button>
 
@@ -222,7 +206,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
             }}
             title="Copy calibrated coordinates JSON"
           >
-            {copied ? <Check size={12} style={{ color: '#34d399' }} /> : <Copy size={12} />}
+            {copied ? <span style={{ color: '#34d399' }}>✓</span> : <span>⧉</span>}
             <span>{copied ? 'COPIED' : 'COPY JSON'}</span>
           </button>
 
@@ -246,7 +230,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
               }}
               title="Reset placement to default calibration"
             >
-              <RotateCcw size={12} />
+              <span>⟳</span>
               <span>RESET</span>
             </button>
           )}
@@ -270,7 +254,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
             }}
             title="Switch to customer mode to verify lock and 360 view"
           >
-            <Eye size={12} />
+            <span>👁</span>
             <span>CUSTOMER VIEW</span>
           </button>
 
@@ -284,10 +268,11 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
               color: 'rgba(255, 255, 255, 0.6)',
               cursor: 'pointer',
               padding: '4px',
+              fontSize: '12px',
             }}
             title={isCollapsed ? 'Expand calibration bar' : 'Collapse bar'}
           >
-            {isCollapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
+            {isCollapsed ? <span>▾</span> : <span>▴</span>}
           </button>
         </div>
       </div>
@@ -418,7 +403,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
                     style={nudgeBtnStyle}
                     title="Nudge Left"
                   >
-                    <ArrowLeft size={10} />
+                    <span>←</span>
                   </button>
                   <button
                     type="button"
@@ -426,7 +411,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
                     style={nudgeBtnStyle}
                     title="Nudge Right"
                   >
-                    <ArrowRight size={10} />
+                    <span>→</span>
                   </button>
                   <button
                     type="button"
@@ -434,7 +419,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
                     style={nudgeBtnStyle}
                     title="Nudge Up"
                   >
-                    <ArrowUp size={10} />
+                    <span>↑</span>
                   </button>
                   <button
                     type="button"
@@ -442,7 +427,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
                     style={nudgeBtnStyle}
                     title="Nudge Down"
                   >
-                    <ArrowDown size={10} />
+                    <span>↓</span>
                   </button>
                 </div>
 
@@ -457,7 +442,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
                     style={nudgeBtnStyle}
                     title="Make Smaller"
                   >
-                    <Minus size={10} />
+                    <span>−</span>
                   </button>
                   <button
                     type="button"
@@ -465,7 +450,7 @@ export const DesignerPlacementBar: React.FC<DesignerPlacementBarProps> = ({
                     style={nudgeBtnStyle}
                     title="Make Bigger"
                   >
-                    <Plus size={10} />
+                    <span>+</span>
                   </button>
                 </div>
               </div>

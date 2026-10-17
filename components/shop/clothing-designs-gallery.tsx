@@ -10,7 +10,6 @@ const ClothingProductModal = dynamic(
   { ssr: false },
 );
 import Link from 'next/link';
-import { Search, ArrowRight } from 'lucide-react';
 import { PlainApparelCard } from './plain-apparel-card';
 import { plainApparelProducts } from '@/data/plain-apparel-products';
 
@@ -48,17 +47,17 @@ export function ClothingDesignsGallery({
   }, [products, category]);
 
   const THEME_CATEGORIES = [
-    { id: 'all', label: 'All Graphics', icon: '✨' },
-    { id: 'plain', label: 'Plain Essentials (Blanks)', icon: '👕' },
-    { id: 'anime', label: 'Anime & Manga', icon: '⚡' },
-    { id: 'automotive', label: 'Automotive & JDM', icon: '🏎️' },
-    { id: 'marvel', label: 'Marvel & Comics', icon: '🦸' },
-    { id: 'streetwear', label: 'Streetwear & Urban', icon: '🔥' },
-    { id: 'typography', label: 'Typography & Quotes', icon: '✒️' },
-    { id: 'gaming', label: 'Gaming & Tech', icon: '🎮' },
-    { id: 'indian-cinema', label: 'Cinema & Stars', icon: '🎬' },
-    { id: 'humor', label: 'Humor & Sarcasm', icon: '☕' },
-    { id: 'aesthetic', label: 'Aesthetic & Nature', icon: '🌸' },
+    { id: 'all', label: 'All Graphics', icon: '✦' },
+    { id: 'plain', label: 'Plain Essentials (Blanks)', icon: '◻' },
+    { id: 'anime', label: 'Anime & Manga', icon: '✧' },
+    { id: 'automotive', label: 'Automotive & JDM', icon: '⚙' },
+    { id: 'marvel', label: 'Marvel & Comics', icon: '🛡' },
+    { id: 'streetwear', label: 'Streetwear & Urban', icon: '▲' },
+    { id: 'typography', label: 'Typography & Quotes', icon: 'Aa' },
+    { id: 'gaming', label: 'Gaming & Tech', icon: '⌗' },
+    { id: 'indian-cinema', label: 'Cinema & Stars', icon: '▶' },
+    { id: 'humor', label: 'Humor & Sarcasm', icon: '☺' },
+    { id: 'aesthetic', label: 'Aesthetic & Nature', icon: '✿' },
   ];
 
   const fetchDesigns = useCallback(
@@ -130,10 +129,10 @@ export function ClothingDesignsGallery({
               <span className="text-[11px] font-mono text-white/50 uppercase hidden sm:inline">• Curated Graphics For Tees &amp; Hoodies</span>
             </div>
             <h3 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide uppercase">
-              Every Artwork Is A Canvas. Pick Any Graphic → Build On 3D Garment.
+              Every Garment Is Your Canvas. Pick Any Graphic → Fit On 3D Apparel.
             </h3>
-            <p className="font-mono text-xs text-white/60">
-              We don&apos;t use flat static mockups. Click any design below to rotate 360°, change garment cuts, pick colorways &amp; position graphics in real-time.
+            <p className="font-mono text-xs text-white/60 leading-relaxed">
+              No flat static mockups. Click any design below to inspect in 360° 3D, switch between Tee &amp; Hoodie cuts, and preview approved fabric colors in real-time.
             </p>
           </div>
 
@@ -142,7 +141,7 @@ export function ClothingDesignsGallery({
             className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-black font-mono text-xs font-bold uppercase tracking-widest hover:bg-[#ED9518] hover:text-black transition-all active:scale-95 shadow-lg shadow-black/40"
           >
             <span>Launch Blank 3D Studio</span>
-            <ArrowRight size={14} />
+            <span className="text-sm">→</span>
           </Link>
         </div>
 
@@ -154,10 +153,10 @@ export function ClothingDesignsGallery({
             </span>
             <div className="flex flex-col">
               <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
-                1. Select Graphic
+                1. Choose Design
               </span>
               <span className="text-[11px] text-white/50 leading-relaxed">
-                Browse curated collections (Anime, Automotive, Streetwear, Marvel) or upload your own.
+                Browse curated drops (Anime, Automotive, Streetwear, Marvel) or tap &apos;Blank Studio&apos; to upload your own artwork.
               </span>
             </div>
           </div>
@@ -168,10 +167,10 @@ export function ClothingDesignsGallery({
             </span>
             <div className="flex flex-col">
               <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
-                2. Customize In 360° 3D
+                2. Preview In 360° 3D
               </span>
               <span className="text-[11px] text-white/50 leading-relaxed">
-                Choose Heavyweight Tee, Acid Wash, or Hoodie. Move, scale, and rotate on chest, back, or sleeves.
+                Fit on Heavyweight Tee, Acid Wash, or Hoodie. Spin 360°, test fabric colorways, and inspect motion simulation.
               </span>
             </div>
           </div>
@@ -182,10 +181,10 @@ export function ClothingDesignsGallery({
             </span>
             <div className="flex flex-col">
               <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
-                3. Tailored &amp; Delivered
+                3. Crafted &amp; Delivered
               </span>
               <span className="text-[11px] text-white/50 leading-relaxed">
-                Engineered with high-definition DTF printing on luxury 240–300 GSM combed cotton.
+                Industrial high-definition DTF printing on luxury 240–400 GSM heavyweight combed cotton &amp; fleece.
               </span>
             </div>
           </div>
@@ -221,24 +220,28 @@ export function ClothingDesignsGallery({
         </div>
 
         {/* Category Pills Filter Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 pt-1 no-scrollbar scroll-smooth">
-          {THEME_CATEGORIES.map((cat) => {
-            const isActive = activeTheme === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => handleSelectTheme(cat.id)}
-                className={`flex-shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 active:scale-95 ${
-                  isActive
-                    ? 'bg-white text-black font-semibold shadow-[0_0_15px_rgba(255,255,255,0.3)]'
-                    : 'bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.09] border border-white/5'
-                }`}
-              >
-                <span>{cat.icon}</span>
-                <span>{cat.label}</span>
-              </button>
-            );
-          })}
+        <div className="relative">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 pt-1 no-scrollbar scroll-smooth pr-10">
+            {THEME_CATEGORIES.map((cat) => {
+              const isActive = activeTheme === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => handleSelectTheme(cat.id)}
+                  className={`flex-shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 active:scale-95 ${
+                    isActive
+                      ? 'bg-white text-black font-semibold shadow-[0_0_15px_rgba(255,255,255,0.3)]'
+                      : 'bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.09] border border-white/5'
+                  }`}
+                >
+                  <span className="opacity-80">{cat.icon}</span>
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          {/* Subtle right-edge fade gradient cue */}
+          <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-10 bg-gradient-to-l from-[#0E0E10] to-transparent" />
         </div>
       </div>
 
@@ -270,14 +273,14 @@ export function ClothingDesignsGallery({
       {/* Grid: Plain Essentials Mode */}
       {activeTheme === 'plain' ? (
         <div className="flex flex-col gap-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {plainProductsForCategory.map((product, idx) => (
               <PlainApparelCard key={product.id} product={product} priority={idx < 4} />
             ))}
           </div>
         </div>
       ) : designs.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {designs.map((design, idx) => (
             <ClothingDesignCard
               key={design.id}
@@ -290,7 +293,7 @@ export function ClothingDesignsGallery({
       ) : (
         !isLoading && (
           <div className="py-20 flex flex-col items-center justify-center gap-3 text-center">
-            <Search className="w-8 h-8 text-white/20" />
+            <span className="text-3xl text-white/20">⚲</span>
             <p className="font-mono text-sm text-white/60 uppercase tracking-wider">
               No matching designs found
             </p>
@@ -303,7 +306,7 @@ export function ClothingDesignsGallery({
 
       {/* Loading Indicator / Skeletons */}
       {isLoading && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={`skel-${i}`}

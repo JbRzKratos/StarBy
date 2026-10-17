@@ -289,14 +289,68 @@ export async function POST(request: Request) {
         item.productId.startsWith('apparel_') ||
         item.productId.startsWith('design-')
       ) {
-        const dbProduct = productMap.get(item.productId);
+        // Check for ₹1 test design
+        const isDesign001 =
+          item.productId === 'design-001' ||
+          customData?.designId === 'design-001' ||
+          (typeof item.price === 'number' && item.price === 1 && (item.productId.includes('design-001') || customData?.designId === 'design-001'));
+
         let unitPrice = 999;
-        if (item.productId === 'design-001' && item.price === 1) {
+
+        if (isDesign001) {
           unitPrice = 1;
-        } else if (dbProduct && typeof dbProduct.basePrice === 'number' && dbProduct.basePrice > 0) {
-          unitPrice = dbProduct.basePrice;
-        } else if (typeof item.price === 'number' && item.price > 0) {
+        } else if (typeof item.price === 'number' && item.price >= 799) {
+          // Exact cart price from 3D/2D studio customizer (base garment ₹799-₹1499 + ₹119 per custom print).
+          // Always respect the exact customer cart total so Cashfree payment gateway matches to the exact rupee!
           unitPrice = item.price;
+        } else {
+          // Fallback calculation if item.price is missing or invalid
+          const garmentKey = (
+            (typeof customData?.garment === 'string' ? customData.garment : '') +
+            ' ' +
+            (typeof item.variantId === 'string' ? item.variantId : '') +
+            ' ' +
+            (typeof item.name === 'string' ? item.name : '') +
+            ' ' +
+            (typeof item.productId === 'string' ? item.productId : '')
+          ).toLowerCase();
+
+          let garmentBasePrice = 799;
+          if (typeof customData?.basePrice === 'number' && customData.basePrice > 0) {
+            garmentBasePrice = customData.basePrice;
+          } else if (garmentKey.includes('hoodie')) {
+            garmentBasePrice = 1499;
+          } else if (garmentKey.includes('acid')) {
+            garmentBasePrice = 1099;
+          } else if (garmentKey.includes('oversized') || garmentKey.includes('french-terry')) {
+            garmentBasePrice = 999;
+          }
+
+          const isCurated = Boolean(customData?.designId && !customData?.isPlain);
+
+          if (isCurated) {
+            const curatedDbProduct = customData?.designId ? productMap.get(customData.designId) : productMap.get(item.productId);
+            const designBase = (curatedDbProduct && typeof curatedDbProduct.basePrice === 'number' && curatedDbProduct.basePrice > 0)
+              ? curatedDbProduct.basePrice
+              : 999;
+
+            if (garmentKey.includes('hoodie')) {
+              unitPrice = Math.max(designBase, 1499);
+            } else if (garmentKey.includes('acid')) {
+              unitPrice = Math.max(designBase, 1099);
+            } else {
+              unitPrice = designBase;
+            }
+          } else {
+            const artworkCount =
+              typeof customData?.customArtworkCount === 'number'
+                ? customData.customArtworkCount
+                : Array.isArray(customData?.uploadedArtworks)
+                  ? customData.uploadedArtworks.length
+                  : 0;
+            const printFee = artworkCount * 119;
+            unitPrice = garmentBasePrice + printFee;
+          }
         }
 
         const totalItemPrice = unitPrice * item.quantity;

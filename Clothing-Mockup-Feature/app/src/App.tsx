@@ -7,7 +7,7 @@ import type {
 import { DEFAULT_TEMPLATE_ID, getTemplateById } from './data/catalog';
 import { Header } from './components/Header';
 import { SidebarTabs, type SidebarTab } from './components/SidebarTabs';
-import { X, SlidersHorizontal, ChevronUp, Sparkles, Check, Shirt, Palette, Layers, CheckCircle2, AlertTriangle, Compass, ArrowRight } from 'lucide-react';
+
 import { assetManager } from './engine/assetManager';
 import { compositor } from './engine/compositor';
 import { exportManager } from './engine/exportManager';
@@ -234,9 +234,8 @@ export const App: React.FC = () => {
     typeof window !== 'undefined' ? window.innerWidth <= 768 : false
   );
 
-  const [isUvEditorOpen, setIsUvEditorOpen] = useState(() =>
-    typeof window !== 'undefined' ? window.innerWidth > 768 : false
-  );
+  const [isUvEditorOpen, setIsUvEditorOpen] = useState(false);
+  const [desktopDrawerOpen, setDesktopDrawerOpen] = useState(false);
   const [garmentMesh3D, setGarmentMesh3D] = useState<THREE.Mesh | THREE.SkinnedMesh | null>(null);
   const sceneManager3DRef = useRef<SceneManager3D | null>(null);
   // Compositor ref — needed to pass to the high-res exporter
@@ -257,6 +256,14 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<SidebarTab>(() => (isPlainParam ? 'artwork3d' : 'color3d'));
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState<boolean>(false);
+  const handleDismissInstructions = useCallback(() => {
+    setShowInstructionModal(false);
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem('starby_3d_instructions_seen', 'true');
+      } catch {}
+    }
+  }, []);
   const [isDesignSetupModalOpen, setIsDesignSetupModalOpen] = useState<boolean>(false);
   const [activeCuratedDesign, setActiveCuratedDesign] = useState<CuratedClothingDesign | null>(null);
   const [initialDesignId, setInitialDesignId] = useState<string | null>(() => {
@@ -1219,6 +1226,20 @@ export const App: React.FC = () => {
         };
       });
 
+      // Prompt 3D guide on first design entry after slight delay so 3D model renders first
+      if (typeof window !== 'undefined' && (params.designId || curated)) {
+        try {
+          const alreadySeen = sessionStorage.getItem('starby_3d_instructions_seen');
+          if (!alreadySeen) {
+            setTimeout(() => {
+              setShowInstructionModal(true);
+            }, 850);
+          }
+        } catch {
+          /* ignore */
+        }
+      }
+
       // Also initialize 2D Editor state so switching to 2D displays all artworks!
       if (curated && curated.artworks.length > 0) {
         const front2D: ArtworkLayer[] = [];
@@ -1539,20 +1560,30 @@ export const App: React.FC = () => {
     if (tab === 'library' || tab === 'library3d') {
       setIsDesignsLibraryOpen(true);
       setMobileDrawerOpen(false);
+      setDesktopDrawerOpen(false);
       return;
     }
     if (tab === 'uv3d') {
-      setIsUvEditorOpen(true);
+      setIsUvEditorOpen((prev) => !prev);
       setMobileDrawerOpen(false);
     } else {
-      if (mobileDrawerOpen && activeTab === tab) {
-        setMobileDrawerOpen(false);
+      if (isMobile) {
+        if (mobileDrawerOpen && activeTab === tab) {
+          setMobileDrawerOpen(false);
+        } else {
+          setActiveTab(tab);
+          setMobileDrawerOpen(true);
+        }
       } else {
-        setActiveTab(tab);
-        setMobileDrawerOpen(true);
+        if (desktopDrawerOpen && activeTab === tab) {
+          setDesktopDrawerOpen(false);
+        } else {
+          setActiveTab(tab);
+          setDesktopDrawerOpen(true);
+        }
       }
     }
-  }, [mobileDrawerOpen, activeTab]);
+  }, [isMobile, mobileDrawerOpen, desktopDrawerOpen, activeTab]);
 
   const getDrawerTitle = (tab: SidebarTab, currentMode: '2d' | '3d') => {
     if (currentMode === '3d') {
@@ -2959,6 +2990,7 @@ export const App: React.FC = () => {
         onOpenExport={() => {
           if (mode === '3d') {
             setActiveTab('export3d');
+            setDesktopDrawerOpen(true);
             setMobileDrawerOpen(true);
           } else {
             setIsExportModalOpen(true);
@@ -2990,6 +3022,7 @@ export const App: React.FC = () => {
             input.click();
           } else {
             setActiveTab('project3d');
+            setDesktopDrawerOpen(true);
             setMobileDrawerOpen(true);
           }
         }}
@@ -3033,7 +3066,7 @@ export const App: React.FC = () => {
             animation: 'fadeIn 0.2s ease-out',
           }}
         >
-          <Check size={18} />
+          <span>✓</span>
           <span>Curated placements for {currentGarmentConfig3D.name} saved successfully!</span>
         </div>
       )}
@@ -3055,16 +3088,17 @@ export const App: React.FC = () => {
           activeTab={activeTab}
           onTabChange={handleTabChange}
           layerCount={mode === '3d' ? project3D.artworkLayers.length : currentLayers2D.length}
+          isDrawerOpen={isMobile ? mobileDrawerOpen : desktopDrawerOpen}
         />
 
         {/* Dynamic Drawers */}
         {(() => {
-          const shouldShowDrawer = isMobile ? (mobileDrawerOpen && activeTab !== 'uv3d') : (activeTab !== 'uv3d');
+          const shouldShowDrawer = isMobile ? (mobileDrawerOpen && activeTab !== 'uv3d') : (desktopDrawerOpen && activeTab !== 'uv3d');
           if (!shouldShowDrawer) return null;
 
           return (
-            <aside className={`drawer-panel ${mobileDrawerOpen ? 'mobile-sheet-open' : ''}`}>
-              {/* Mobile Sheet Drag Handle and Header */}
+            <aside className={`drawer-panel ${mobileDrawerOpen ? 'mobile-sheet-open' : ''} ${desktopDrawerOpen ? 'desktop-drawer-open' : ''}`}>
+              {/* Drawer Drag Handle and Header */}
               <div className="mobile-sheet-header">
                 <div className="mobile-sheet-drag-handle" />
                 <div className="mobile-sheet-title-bar">
@@ -3072,10 +3106,13 @@ export const App: React.FC = () => {
                   <button
                     type="button"
                     className="mobile-sheet-close-btn"
-                    onClick={() => setMobileDrawerOpen(false)}
+                    onClick={() => {
+                      setMobileDrawerOpen(false);
+                      setDesktopDrawerOpen(false);
+                    }}
                     aria-label="Close settings drawer"
                   >
-                    <X size={18} />
+                    ✕
                   </button>
                 </div>
               </div>
@@ -3306,19 +3343,6 @@ export const App: React.FC = () => {
           );
         })()}
 
-        {/* Floating button to bring slide panel back when hidden */}
-        {isMobile && !mobileDrawerOpen && activeTab !== 'uv3d' && (
-          <button
-            type="button"
-            className="mobile-floating-reopen-btn"
-            onClick={() => setMobileDrawerOpen(true)}
-            aria-label="Open settings panel"
-          >
-            <ChevronUp size={15} className="reopen-chevron-icon" />
-            <SlidersHorizontal size={14} />
-            <span>Open {getDrawerTitle(activeTab, mode)}</span>
-          </button>
-        )}
 
         {/* Center Viewport and Right 2D UV Editor */}
         {mode === '3d' ? (
@@ -3481,7 +3505,7 @@ export const App: React.FC = () => {
             />
 
             {/* 2D UV Placement Editor */}
-            {(!isMobile || isUvEditorOpen) && (
+            {isUvEditorOpen && (
               <UVCanvasEditor3D
                 garmentConfig={currentGarmentConfig3D}
                 artworkLayers={project3D.artworkLayers}
@@ -3586,7 +3610,8 @@ export const App: React.FC = () => {
             position: 'fixed',
             inset: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.85)',
-            backdropFilter: 'blur(10px)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -3595,7 +3620,7 @@ export const App: React.FC = () => {
             animation: 'fadeIn 0.25s ease-out',
             overflowY: 'auto',
           }}
-          onClick={() => setShowInstructionModal(false)}
+          onClick={handleDismissInstructions}
           role="dialog"
           aria-modal="true"
           aria-labelledby="instruction-title"
@@ -3603,12 +3628,12 @@ export const App: React.FC = () => {
           <div
             style={{
               backgroundColor: '#111216',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
+              border: '1px solid rgba(255, 255, 255, 0.16)',
               borderRadius: '24px',
-              padding: '32px 26px',
+              padding: '28px 22px',
               maxWidth: '520px',
-              width: '100%',
-              boxShadow: '0 30px 70px rgba(0, 0, 0, 0.8)',
+              width: 'min(94vw, 520px)',
+              boxShadow: '0 30px 80px rgba(0, 0, 0, 0.85), 0 0 30px rgba(59, 94, 255, 0.15)',
               display: 'flex',
               flexDirection: 'column',
               gap: '16px',
@@ -3616,6 +3641,7 @@ export const App: React.FC = () => {
               color: '#ffffff',
               maxHeight: '90vh',
               overflowY: 'auto',
+              fontFamily: 'inherit',
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -3623,63 +3649,84 @@ export const App: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
               <div
                 style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '16px',
-                  backgroundColor: 'rgba(245, 158, 11, 0.15)',
-                  border: '1px solid rgba(245, 158, 11, 0.4)',
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '14px',
+                  backgroundColor: 'rgba(59, 94, 255, 0.15)',
+                  border: '1px solid rgba(59, 94, 255, 0.4)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#f59e0b',
+                  color: '#3B5EFF',
                   flexShrink: 0,
+                  fontSize: '22px',
                 }}
               >
-                <AlertTriangle size={26} />
+                ✦
               </div>
 
-              <div>
+              <div style={{ flex: 1, minWidth: 0 }}>
                 <h3
                   id="instruction-title"
                   style={{
-                    fontSize: '18px',
+                    fontSize: '17px',
                     fontWeight: 800,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
+                    letterSpacing: '0.02em',
                     margin: 0,
-                    fontFamily: 'monospace',
+                    color: '#ffffff',
                   }}
                 >
-                  Artwork Placed &amp; 3D Guide
+                  3D Placement &amp; Studio Guide
                 </h3>
-                <p style={{ margin: 0, fontSize: '11px', color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace' }}>
+                <p style={{ margin: '2px 0 0 0', fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>
                   Your graphics have been placed onto the 3D apparel
                 </p>
               </div>
+
+              <button
+                type="button"
+                onClick={handleDismissInstructions}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '30px',
+                  height: '30px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  flexShrink: 0,
+                }}
+                aria-label="Close guide"
+              >
+                ✕
+              </button>
             </div>
 
-            {/* Warning Callout Box */}
+            {/* Reassuring Notice Callout Box */}
             <div
               style={{
-                backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                border: '1px solid rgba(245, 158, 11, 0.35)',
+                backgroundColor: 'rgba(59, 94, 255, 0.08)',
+                border: '1px solid rgba(59, 94, 255, 0.25)',
                 borderRadius: '14px',
                 padding: '12px 14px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '4px',
-                fontFamily: 'monospace',
-                fontSize: '11px',
+                fontSize: '12px',
                 lineHeight: '1.5',
                 color: 'rgba(255, 255, 255, 0.9)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#fbbf24', fontWeight: 700 }}>
-                <span>⚠️</span>
-                <span>Placement Notice</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#7B9EFF', fontWeight: 700, fontSize: '12px' }}>
+                <span>ℹ</span>
+                <span>Placement Alignment Notice</span>
               </div>
-              <p style={{ margin: 0 }}>
-                Automated artwork placement is an approximate starting position. Because garment cuts, draping, and graphic aspect ratios vary, <strong>automated placement will sometimes not be 100% proper</strong>. Please inspect both the Front &amp; Back and make any desired corrections directly in the 3D Studio!
+              <p style={{ margin: 0, color: 'rgba(255,255,255,0.85)' }}>
+                Automated artwork placement provides a calibrated starting position. Because garment draping, fits, and graphic dimensions vary, we recommend checking both <strong>Front &amp; Back</strong> views. You can freely drag, scale, and adjust your design directly in the 3D Studio!
               </p>
             </div>
 
@@ -3692,66 +3739,65 @@ export const App: React.FC = () => {
                 padding: '16px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '10px',
-                fontFamily: 'monospace',
-                fontSize: '11.5px',
+                gap: '12px',
+                fontSize: '12px',
               }}
             >
-              <span style={{ fontSize: '10.5px', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#3B5EFF', fontWeight: 700 }}>
-                How to make corrections in 3D Studio:
+              <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7B9EFF', fontWeight: 700 }}>
+                How to customize in 3D Studio:
               </span>
 
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
                   1
                 </span>
                 <span>
-                  <strong>Select Graphic:</strong> Click directly on any artwork on the 3D t-shirt to activate its gizmo bounding box.
+                  <strong>Select Graphic:</strong> Click or tap directly on any artwork on the 3D t-shirt to activate its boundary handles.
                 </span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
                   2
                 </span>
                 <span>
-                  <strong>Move / Drag:</strong> Click and drag anywhere inside the graphic to slide it across the chest, back, hem, or sleeves.
+                  <strong>Move &amp; Reposition:</strong> Drag anywhere inside the graphic to position it across the chest, back, sleeves, or hem.
                 </span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
                   3
                 </span>
                 <span>
-                  <strong>Scale / Resize:</strong> Drag any of the 4 corner handles to scale the artwork up or down smoothly.
+                  <strong>Scale &amp; Resize:</strong> Drag any of the 4 corner handles to make your artwork larger or smaller.
                 </span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
                   4
                 </span>
                 <span>
-                  <strong>Rotate / Straighten:</strong> Drag the top circular handle clockwise or counter-clockwise to rotate.
+                  <strong>Rotate &amp; Straighten:</strong> Drag the circular top handle clockwise or counter-clockwise to rotate.
                 </span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
                   5
                 </span>
                 <span>
-                  <strong>Switch Views:</strong> Use the camera buttons at the top (<strong>Front / Back / 3/4 View</strong>) to inspect every angle.
+                  <strong>Inspect All Angles:</strong> Tap <strong>Front</strong>, <strong>Back</strong>, or <strong>3/4</strong> on the top bar to inspect every view.
                 </span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
                   6
                 </span>
                 <span>
-                  <strong>UV Precision Editor:</strong> Click <strong>UV Editor</strong> on the top bar to adjust millimeters on the flat fabric pattern.
+                  <strong>360° Studio Orbit:</strong> Drag anywhere on the background to orbit around the apparel in full 3D.
                 </span>
               </div>
             </div>
@@ -3759,25 +3805,29 @@ export const App: React.FC = () => {
             {/* Dismiss Button */}
             <button
               type="button"
-              onClick={() => setShowInstructionModal(false)}
+              onClick={handleDismissInstructions}
               style={{
                 width: '100%',
-                padding: '14px 24px',
-                backgroundColor: '#ffffff',
-                color: '#000000',
+                padding: '14px 20px',
+                background: 'linear-gradient(135deg, #3B5EFF 0%, #2645E0 100%)',
+                color: '#ffffff',
                 border: 'none',
                 borderRadius: '14px',
-                fontSize: '12px',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.12em',
-                fontFamily: 'monospace',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.04em',
                 cursor: 'pointer',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
-                transition: 'background-color 0.15s ease',
+                boxShadow: '0 4px 20px rgba(59, 94, 255, 0.4)',
+                transition: 'transform 0.15s ease, box-shadow 0.15s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e5e5e5')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.boxShadow = '0 6px 24px rgba(59, 94, 255, 0.55)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'none';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(59, 94, 255, 0.4)';
+              }}
             >
               GOT IT, START CUSTOMIZING IN 3D
             </button>
@@ -3841,7 +3891,7 @@ export const App: React.FC = () => {
                     flexShrink: 0,
                   }}
                 >
-                  <Sparkles size={22} />
+                  <span style={{ fontSize: '20px' }}>✦</span>
                 </div>
                 <div>
                   <h3
@@ -3881,14 +3931,14 @@ export const App: React.FC = () => {
                 }}
                 aria-label="Close setup modal"
               >
-                <X size={16} />
+                <span style={{ fontSize: '16px' }}>✕</span>
               </button>
             </div>
 
             {/* Question 1: Garment Cut / Style */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <label style={{ fontSize: '11px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Shirt size={13} style={{ color: '#3B5EFF' }} />
+                <span style={{ color: '#3B5EFF', fontSize: '13px' }}>👕</span>
                 <span>1. Select Garment Cut</span>
               </label>
 
@@ -3921,7 +3971,7 @@ export const App: React.FC = () => {
                     >
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <span style={{ fontSize: '12px', fontWeight: 600, fontFamily: 'monospace' }}>{item.name}</span>
-                        {isSelected && <Check size={14} style={{ color: '#3B5EFF' }} />}
+                        {isSelected && <span style={{ color: '#3B5EFF', fontSize: '13px' }}>✓</span>}
                       </div>
                       <span style={{ fontSize: '10px', color: isSelected ? '#a5b4fc' : 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>
                         {item.tag}
@@ -3936,7 +3986,7 @@ export const App: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <label style={{ fontSize: '11px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}>
-                  <Palette size={13} style={{ color: '#10b981' }} />
+                  <span style={{ color: '#10b981', fontSize: '13px' }}>●</span>
                   <span>2. Select Fabric Color</span>
                 </label>
                 <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>
@@ -4011,7 +4061,7 @@ export const App: React.FC = () => {
                 onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(1.1)')}
                 onMouseLeave={(e) => (e.currentTarget.style.filter = 'brightness(1.0)')}
               >
-                <Sparkles size={14} />
+                <span style={{ fontSize: '14px' }}>✦</span>
                 <span>✨ Auto-Place All {activeCuratedDesign.artworks.length} Artworks (Front &amp; Back)</span>
               </button>
             )}
@@ -4021,7 +4071,7 @@ export const App: React.FC = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <label style={{ fontSize: '11px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}>
-                    <Layers size={13} style={{ color: '#3B5EFF' }} />
+                    <span style={{ color: '#3B5EFF', fontSize: '13px' }}>⊞</span>
                     <span>3. Choose Artwork to Position ({activeCuratedDesign.artworks.length})</span>
                   </label>
                   <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>
@@ -4110,7 +4160,7 @@ export const App: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <label style={{ fontSize: '11px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}>
-                  <Compass size={13} style={{ color: '#10b981' }} />
+                  <span style={{ color: '#10b981', fontSize: '13px' }}>⤢</span>
                   <span>4. Choose Apparel Region</span>
                 </label>
                 <span style={{ fontSize: '10px', color: '#10b981', fontFamily: 'monospace', fontWeight: 700 }}>
@@ -4158,7 +4208,7 @@ export const App: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <label style={{ fontSize: '11px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}>
-                  <Layers size={13} style={{ color: '#f59e0b' }} />
+                  <span style={{ color: '#f59e0b', fontSize: '13px' }}>⊞</span>
                   <span>5. Target Spot on {modalSelectedRegion.toUpperCase()}</span>
                 </label>
                 <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>
@@ -4249,7 +4299,7 @@ export const App: React.FC = () => {
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <label style={{ fontSize: '11px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#93c5fd', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}>
-                  <Sparkles size={13} style={{ color: '#60a5fa' }} />
+                  <span style={{ color: '#60a5fa', fontSize: '13px' }}>✦</span>
                   <span>6. Type Where to Place Artwork (AI Placement)</span>
                 </label>
                 <span style={{ fontSize: '9.5px', color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace' }}>
@@ -4306,7 +4356,7 @@ export const App: React.FC = () => {
                       }}
                       title="Clear text"
                     >
-                      <X size={12} />
+                      <span style={{ fontSize: '12px' }}>✕</span>
                     </button>
                   )}
                 </div>
@@ -4336,7 +4386,7 @@ export const App: React.FC = () => {
                   onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(1.15)')}
                   onMouseLeave={(e) => (e.currentTarget.style.filter = 'brightness(1.0)')}
                 >
-                  <ArrowRight size={13} />
+                  <span style={{ fontSize: '13px' }}>→</span>
                   <span>Place</span>
                 </button>
               </div>
@@ -4357,7 +4407,7 @@ export const App: React.FC = () => {
                     gap: '6px',
                   }}
                 >
-                  <Check size={12} style={{ color: '#10b981', flexShrink: 0 }} />
+                  <span style={{ color: '#10b981', flexShrink: 0, fontSize: '12px' }}>✓</span>
                   <span>{modalFeedbackMessage}</span>
                 </div>
               )}
@@ -4421,8 +4471,8 @@ export const App: React.FC = () => {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fbbf24', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase' }}>
-                <AlertTriangle size={15} />
-                <span>⚠️ Placement Notice &amp; 3D Studio Guide</span>
+                <span style={{ fontSize: '15px' }}>⚠</span>
+                <span>Placement Notice &amp; 3D Studio Guide</span>
               </div>
               <p style={{ margin: 0, fontSize: '11px', lineHeight: '1.5', color: 'rgba(255, 255, 255, 0.85)' }}>
                 Automated placement provides an initial alignment on the apparel. Because garment cuts (Regular, Oversized, Acid Wash, Hoodie) and artwork aspect ratios vary, <strong>placement will sometimes not be 100% proper</strong>. Make sure to inspect and adjust directly in the 3D Studio:
@@ -4464,7 +4514,7 @@ export const App: React.FC = () => {
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e5e5e5')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#ffffff')}
             >
-              <CheckCircle2 size={16} />
+              <span style={{ fontSize: '16px' }}>✓</span>
               <span>APPLY &amp; START CUSTOMIZING IN 3D</span>
             </button>
           </div>

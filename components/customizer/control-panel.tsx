@@ -3,7 +3,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { useCustomizerStore } from '@/lib/stores/customizer-store';
 import { useCartStore } from '@/lib/stores/cart-store';
-import { Camera, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 import { products } from '@/data/products';
 import { SizeChartModal } from '@/components/product/size-chart-modal';
 import { SizeFinderModal } from '@/components/product/size-finder-modal';
@@ -343,7 +342,7 @@ export function ControlPanel() {
             onClick={() => fileInputRef.current?.click()}
             className="w-full h-32 border-2 border-dashed border-[#F5F1EA]/20 rounded-xl flex flex-col items-center justify-center gap-3 text-ash hover:text-bone hover:border-bone/50 hover:bg-[#F5F1EA]/5 transition-all"
           >
-            <Camera className="w-6 h-6" />
+            <span className="text-2xl">📷</span>
             <span className="text-sm font-medium">Click to upload image</span>
             <span className="text-xs opacity-70">PNG, JPG up to 20MB</span>
           </button>
@@ -374,9 +373,9 @@ export function ControlPanel() {
                 }`}
               >
                 {dpiStatus === 'excellent' || dpiStatus === 'good' ? (
-                  <CheckCircle2 className="w-5 h-5 shrink-0" />
+                  <span className="text-base font-bold shrink-0">✓</span>
                 ) : (
-                  <AlertCircle className="w-5 h-5 shrink-0" />
+                  <span className="text-base font-bold shrink-0">⚠</span>
                 )}
                 <div className="flex flex-col">
                   <span className="font-semibold capitalize">Print Quality: {dpiStatus}</span>
@@ -427,7 +426,7 @@ export function ControlPanel() {
           disabled={(!designs.front.url && !designs.back.url) || isSaving}
           className="flex-1 py-3.5 bg-cobalt text-bone font-mono text-sm uppercase tracking-widest rounded-lg hover:bg-cobalt/90 disabled:opacity-50 transition-colors shadow-[0_0_20px_rgba(0,87,255,0.3)] flex justify-center items-center gap-2"
         >
-          {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save & Continue'}
+          {isSaving ? <span className="animate-spin text-base">⟳</span> : 'Save & Continue'}
         </button>
       </div>
 

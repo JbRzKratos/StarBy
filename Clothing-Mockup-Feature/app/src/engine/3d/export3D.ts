@@ -130,6 +130,7 @@ export class Export3DManager {
         anySm.targetCameraPos = null;
         anySm.targetControlsTarget = null;
       }
+      camera.lookAt(controls.target);
       controls.update();
       camera.updateProjectionMatrix();
     }
@@ -142,6 +143,7 @@ export class Export3DManager {
       const bgColor = scene.background instanceof THREE.Color
         ? scene.background
         : (prevClearAlpha > 0.05 ? prevClearColor : new THREE.Color(0x151922));
+      scene.background = bgColor;
       renderer.setClearColor(bgColor, 1.0);
     }
 
@@ -156,15 +158,16 @@ export class Export3DManager {
     // ── 6. Create off-screen render target at export resolution ─────────────
     // CRITICAL: Set colorSpace to SRGBColorSpace and isXRRenderTarget = true so
     // Three.js executes ACESFilmic tone mapping and sRGB gamma encoding into the
-    // render target. Without this, Three.js outputs un-tonemapped linear gamma (1.0),
-    // which makes exported mockup PNGs look dark, crushed, and dim.
+    // render target.
+    // CRITICAL FIX: samples MUST be 0! In WebGL2, readRenderTargetPixels reads from
+    // __webglFramebuffer which is never resolved if samples > 0, producing all zeros (black).
     const exportTarget = new THREE.WebGLRenderTarget(exportW, exportH, {
       minFilter: THREE.LinearFilter,
       magFilter: THREE.LinearFilter,
       format: THREE.RGBAFormat,
       type: THREE.UnsignedByteType,
       generateMipmaps: false,
-      samples: renderer.capabilities.isWebGL2 ? 4 : 0, // MSAA if available
+      samples: 0,
     });
     exportTarget.texture.colorSpace = THREE.SRGBColorSpace;
     (exportTarget as any).isXRRenderTarget = true;
@@ -182,6 +185,15 @@ export class Export3DManager {
     // ── 9. Read pixels from GPU into a Uint8Array ────────────────────────────
     const pixelBuffer = new Uint8Array(exportW * exportH * 4);
     renderer.readRenderTargetPixels(exportTarget, 0, 0, exportW, exportH, pixelBuffer);
+
+    // Check if pixelBuffer contains non-black pixels
+    let hasColor = false;
+    for (let i = 0; i < pixelBuffer.length; i += 32) {
+      if (pixelBuffer[i] > 12 || pixelBuffer[i + 1] > 12 || pixelBuffer[i + 2] > 12) {
+        hasColor = true;
+        break;
+      }
+    }
 
     // ── 10. Restore renderer state ──────────────────────────────────────────
     renderer.setRenderTarget(prevRenderTarget);
@@ -201,6 +213,17 @@ export class Export3DManager {
 
     // ── 11. Dispose temporary render target ─────────────────────────────────
     exportTarget.dispose();
+
+    const mime = options.format === 'jpeg' ? 'image/jpeg' : 'image/png';
+    const quality = typeof options.quality === 'number' ? options.quality : 0.85;
+
+    // Bulletproof Fallback: if offscreen readback produced all-black pixels,
+    // capture directly from the live WebGL canvas which is already actively rendering!
+    if (!hasColor && renderer.domElement) {
+      console.warn('[Export3D] Offscreen render target read returned dark/empty pixels. Using direct canvas capture.');
+      this.isExportingStill = false;
+      return renderer.domElement.toDataURL(mime, quality);
+    }
 
     // ── 12. Blit the pixel buffer into a canvas and encode to PNG ───────────
     // WebGL's coordinate origin is bottom-left; we flip vertically here.
@@ -225,8 +248,6 @@ export class Export3DManager {
     ctx.putImageData(imageData, 0, 0);
 
     // ── 13. Encode and download ──────────────────────────────────────────────
-    const mime = options.format === 'jpeg' ? 'image/jpeg' : 'image/png';
-    const quality = typeof options.quality === 'number' ? options.quality : 0.85;
     const dataUrl = offscreen.toDataURL(mime, quality);
 
     const ext = options.format === 'jpeg' ? 'jpg' : 'png';

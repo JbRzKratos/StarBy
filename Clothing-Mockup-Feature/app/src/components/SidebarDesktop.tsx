@@ -1,15 +1,4 @@
 import React from 'react';
-import {
-  Shirt,
-  Upload,
-  Palette,
-  Sparkles,
-  Sun,
-  Settings,
-  Zap,
-  Download,
-  Layers,
-} from 'lucide-react';
 
 export type SidebarTab =
   | 'library'
@@ -34,6 +23,7 @@ export interface SidebarTabsProps {
   activeTab: SidebarTab;
   onTabChange: (tab: SidebarTab) => void;
   layerCount: number;
+  isDrawerOpen?: boolean;
 }
 
 export const SidebarDesktop: React.FC<SidebarTabsProps> = ({
@@ -41,26 +31,27 @@ export const SidebarDesktop: React.FC<SidebarTabsProps> = ({
   activeTab,
   onTabChange,
   layerCount,
+  isDrawerOpen = true,
 }) => {
   const tabs2D = [
-    { id: 'library' as SidebarTab, label: 'Designs', icon: Sparkles },
-    { id: 'artwork' as SidebarTab, label: 'Artwork', icon: Upload, badge: layerCount },
-    { id: 'garment' as SidebarTab, label: 'Color', icon: Palette },
-    { id: 'templates' as SidebarTab, label: 'Catalog', icon: Shirt },
-    { id: 'fabric' as SidebarTab, label: 'Warp', icon: Sparkles },
-    { id: 'lighting' as SidebarTab, label: 'Light', icon: Sun },
-    { id: 'project' as SidebarTab, label: 'Project', icon: Settings },
+    { id: 'library' as SidebarTab, label: 'Designs', symbol: '✦' },
+    { id: 'artwork' as SidebarTab, label: 'Artwork', symbol: '↑', badge: layerCount },
+    { id: 'garment' as SidebarTab, label: 'Color', symbol: '●' },
+    { id: 'templates' as SidebarTab, label: 'Catalog', symbol: '◻' },
+    { id: 'fabric' as SidebarTab, label: 'Warp', symbol: '∿' },
+    { id: 'lighting' as SidebarTab, label: 'Light', symbol: '☼' },
+    { id: 'project' as SidebarTab, label: 'Project', symbol: '⚙' },
   ];
 
   const tabs3D = [
-    { id: 'library3d' as SidebarTab, label: 'Designs', icon: Sparkles },
-    { id: 'artwork3d' as SidebarTab, label: 'Artwork', icon: Upload, badge: layerCount },
-    { id: 'uv3d' as SidebarTab, label: 'UV Editor', icon: Layers },
-    { id: 'color3d' as SidebarTab, label: 'Color', icon: Palette },
-    { id: 'garment3d' as SidebarTab, label: 'Garments', icon: Shirt },
-    { id: 'animation3d' as SidebarTab, label: 'Motion', icon: Zap },
-    { id: 'lighting3d' as SidebarTab, label: 'Studio', icon: Sun },
-    { id: 'export3d' as SidebarTab, label: 'Export', icon: Download },
+    { id: 'library3d' as SidebarTab, label: 'Designs', symbol: '✦' },
+    { id: 'artwork3d' as SidebarTab, label: 'Artwork', symbol: '↑', badge: layerCount },
+    { id: 'color3d' as SidebarTab, label: 'Color', symbol: '●' },
+    { id: 'garment3d' as SidebarTab, label: 'Garments', symbol: '◻' },
+    { id: 'animation3d' as SidebarTab, label: 'Motion', symbol: '∿' },
+    { id: 'lighting3d' as SidebarTab, label: 'Studio', symbol: '☼' },
+    { id: 'uv3d' as SidebarTab, label: 'UV Editor', symbol: '⊞' },
+    { id: 'export3d' as SidebarTab, label: 'Export', symbol: '⤓' },
   ];
 
   const tabs = mode === '3d' ? tabs3D : tabs2D;
@@ -68,8 +59,7 @@ export const SidebarDesktop: React.FC<SidebarTabsProps> = ({
   return (
     <nav className="nav-sidebar sidebar-desktop" aria-label="Desktop Studio Tools">
       {tabs.map((tab) => {
-        const Icon = tab.icon;
-        const isActive = activeTab === tab.id;
+        const isActive = activeTab === tab.id && isDrawerOpen;
         return (
           <button
             key={`desktop-${tab.id}`}
@@ -79,19 +69,19 @@ export const SidebarDesktop: React.FC<SidebarTabsProps> = ({
             onClick={() => onTabChange(tab.id)}
             title={tab.label}
           >
-            <Icon size={19} />
-            <span>{tab.label}</span>
+            <span className="tab-symbol" style={{ fontSize: '22px', lineHeight: 1 }}>{tab.symbol}</span>
+            <span className="tab-label" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.01em' }}>{tab.label}</span>
             {tab.badge !== undefined && tab.badge > 0 && (
               <span
                 style={{
                   position: 'absolute',
-                  top: '4px',
-                  right: '4px',
-                  width: '8px',
-                  height: '8px',
+                  top: '6px',
+                  right: '6px',
+                  width: '7px',
+                  height: '7px',
                   borderRadius: '50%',
                   background: 'var(--accent, #3B5EFF)',
-                  border: '2px solid var(--bg-sidebar, #090b10)',
+                  boxShadow: '0 0 6px rgba(59, 94, 255, 0.8)',
                 }}
               />
             )}

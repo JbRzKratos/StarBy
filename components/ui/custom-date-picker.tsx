@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 interface CustomDatePickerProps {
   value?: string; // ISO date string 'YYYY-MM-DD'
@@ -242,10 +241,10 @@ export function CustomDatePicker({
         <button
           type="button"
           onClick={handlePrevMonth}
-          className="p-2 sm:p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-pearl/70 hover:text-white transition-colors cursor-pointer"
+          className="p-2 sm:p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-pearl/70 hover:text-white transition-colors cursor-pointer text-sm font-bold"
           title="Previous month"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <span>‹</span>
         </button>
 
         <div className="text-center font-mono">
@@ -257,10 +256,10 @@ export function CustomDatePicker({
         <button
           type="button"
           onClick={handleNextMonth}
-          className="p-2 sm:p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-pearl/70 hover:text-white transition-colors cursor-pointer"
+          className="p-2 sm:p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-pearl/70 hover:text-white transition-colors cursor-pointer text-sm font-bold"
           title="Next month"
         >
-          <ChevronRight className="w-4 h-4" />
+          <span>›</span>
         </button>
       </div>
 
@@ -378,11 +377,13 @@ export function CustomDatePicker({
         } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         <div className="flex items-center gap-3 overflow-hidden">
-          <CalendarIcon
-            className={`w-4 h-4 shrink-0 transition-colors ${
+          <span
+            className={`text-sm shrink-0 transition-colors ${
               selectedDate ? 'text-[#3B5EFF]' : 'text-pearl/40'
             }`}
-          />
+          >
+            📅
+          </span>
           {selectedDate ? (
             <span className="font-mono text-sm font-semibold text-white tracking-wide">
               {formatDisplay(selectedDate)}
@@ -401,7 +402,7 @@ export function CustomDatePicker({
             className="p-1 rounded-md text-pearl/40 hover:text-white hover:bg-white/10 transition-colors"
             title="Clear date"
           >
-            <X className="w-3.5 h-3.5" />
+            <span className="text-xs">✕</span>
           </span>
         )}
       </button>
@@ -440,10 +441,10 @@ export function CustomDatePicker({
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-pearl/60 hover:text-white transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-pearl/60 hover:text-white transition-colors cursor-pointer text-xs"
                 title="Close"
               >
-                <X className="w-4 h-4" />
+                <span>✕</span>
               </button>
             </div>
 

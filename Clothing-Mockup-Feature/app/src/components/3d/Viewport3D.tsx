@@ -1,14 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
-import {
-  Play,
-  Pause,
-  RotateCw,
-  Layers,
-  Activity,
-  Upload,
-  Sparkles,
-} from 'lucide-react';
+
 import type {
   AnimationActionName,
   ArtworkLayer3D,
@@ -652,6 +644,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
 
   // Instruction hint visibility: hides on user interaction, reappears when new artwork is added
   const [showInstruction, setShowInstruction] = useState<boolean>(true);
+  const [showGuaranteeModal, setShowGuaranteeModal] = useState<boolean>(false);
   const prevArtworkCountRef = useRef<number>(artworkLayers.length);
   const instructionHiddenRef = useRef<boolean>(false);
 
@@ -1754,92 +1747,75 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
           borderRadius: '16px',
           pointerEvents: 'none',
           zIndex: 12,
-          whiteSpace: 'nowrap',
+          maxWidth: 'calc(100% - 24px)',
+          textAlign: 'center',
           transition: 'opacity 0.25s ease, transform 0.25s ease',
         }}>
-          Drag to move · Corner handles to resize · Circle handle to rotate
+          <span className="hint-text-desktop">Drag to move · Corner handles to resize · Circle handle to rotate</span>
+          <span className="hint-text-mobile">Drag to move · Corners to scale · Circle to rotate</span>
         </div>
       )}
 
-      {/* Camera Presets Bar */}
-      <div id="camera-presets-bar" className="camera-presets-bar">
+      {/* Unified Floating Camera & Quick Action Bar */}
+      <div id="camera-presets-bar" className="camera-presets-bar" role="toolbar" aria-label="Camera angles and studio actions">
         <span className="camera-presets-label">Views:</span>
-        {(['front', 'back', 'left', 'right', 'threeQuarter'] as CameraPreset3D[]).map((p) => (
-          <button key={p} onClick={() => onCameraPresetChange(p)}
-            className={`camera-preset-btn ${cameraPreset === p ? 'active' : ''}`}
-            title={`View ${p === 'threeQuarter' ? '3/4 Angle' : p}`}>
-            {p === 'threeQuarter' ? (
-              <><span className="camera-view-full">3/4 View</span><span className="camera-view-short">3/4</span></>
-            ) : p}
-          </button>
-        ))}
+        {(['front', 'back', 'left', 'right', 'threeQuarter'] as CameraPreset3D[]).map((p) => {
+          const isAngleSecondary = p === 'left' || p === 'right';
+          return (
+            <button key={p} onClick={() => onCameraPresetChange(p)}
+              className={`camera-preset-btn ${cameraPreset === p ? 'active' : ''} ${isAngleSecondary ? 'camera-preset-secondary-angle' : ''}`}
+              title={`View ${p === 'threeQuarter' ? '3/4 Angle' : p}`}>
+              <span className={isAngleSecondary ? 'angle-label-full' : ''}>
+                {p === 'threeQuarter' ? '3/4' : p.charAt(0).toUpperCase() + p.slice(1)}
+              </span>
+              {isAngleSecondary && (
+                <span className="angle-label-short">
+                  {p === 'left' ? 'L' : 'R'}
+                </span>
+              )}
+            </button>
+          );
+        })}
+
+        {/* Primary Studio Action: Upload Design (Shown on custom/plain garments or in designer mode; hidden on pre-made saved curated artwork) */}
+        {onAddArtworkFromFile && (!isCuratedDesign || isDesignerMode) && (
+          <>
+            <div className="camera-preset-divider" />
+            <label className="camera-preset-btn camera-preset-upload" title="Upload custom graphic to 3D model" style={{ cursor: 'pointer' }}>
+              <span>↑</span>
+              <span className="quick-action-full">Upload Design</span>
+              <span className="quick-action-short">Upload</span>
+              <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) onAddArtworkFromFile(file);
+                  e.target.value = '';
+                }} />
+            </label>
+          </>
+        )}
+
         <div className="camera-preset-divider" />
+
+        {/* Studio Viewport Tools */}
         <button onClick={onTurntableToggle} title="Toggle Turntable 360° Auto-Rotate"
           className={`camera-preset-btn camera-preset-turntable ${isTurntable ? 'active' : ''}`}>
-          <RotateCw size={13} className={isTurntable ? 'spin-slow' : ''} />
+          <span className={isTurntable ? 'spin-slow' : ''} style={{ display: 'inline-block' }}>⟳</span>
           <span>360°</span>
         </button>
-        <div className="camera-preset-divider" />
         <button id="toggle-animation-btn" onClick={onAnimatedToggle}
-          title={isAnimated ? 'Disable Animation' : 'Enable Skeletal Animation'}
+          title={isAnimated ? 'Disable Motion' : 'Enable Skeletal Motion'}
           className={`camera-preset-btn camera-preset-animate ${isAnimated ? 'active' : ''}`}>
-          <Activity size={13} />
-          <span className="camera-anim-full">{isAnimated ? 'Animating' : 'Animate'}</span>
-          <span className="camera-anim-short">{isAnimated ? 'Anim' : 'Motion'}</span>
+          <span>∿</span>
+          <span>{isAnimated ? 'Moving' : 'Motion'}</span>
         </button>
         {onToggleUvEditor && (
           <button id="toggle-uv-editor-btn" onClick={onToggleUvEditor}
-            title={isUvEditorOpen ? 'Hide 2D UV Editor' : 'Show 2D UV Editor'}
-            className={`camera-preset-btn camera-preset-uv desktop-only-preset-uv ${isUvEditorOpen ? 'active' : ''}`}>
-            <Layers size={13} />
-            <span>UV Editor</span>
-          </button>
-        )}
-      </div>
-
-      {/* Floating Viewport Action Bar */}
-      <div className="viewport-quick-actions" id="viewport-3d-quick-actions">
-        {onAddArtworkFromFile && (!isCuratedDesign || isDesignerMode) && (
-          <label className="quick-action-pill quick-action-upload" title="Upload custom graphic to 3D model">
-            <Upload size={14} />
-            <span className="quick-action-full">Upload Design</span>
-            <span className="quick-action-short">Upload</span>
-            <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"
-              style={{ display: 'none' }}
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) onAddArtworkFromFile(file);
-                e.target.value = '';
-              }} />
-          </label>
-        )}
-        {isCuratedDesign && !isDesignerMode && (
-          <button
-            type="button"
-            className="quick-action-pill"
-            style={{
-              borderColor: 'rgba(56, 189, 248, 0.4)',
-              background: 'rgba(56, 189, 248, 0.12)',
-              color: '#38bdf8',
-            }}
-            onClick={() => {
-              instructionHiddenRef.current = false;
-              setShowInstruction(true);
-            }}
-            title="Read 3D Color Contrast Notice & Print Quality Guarantee"
-          >
-            <Sparkles size={14} />
-            <span className="quick-action-full">Print Guarantee &amp; Info</span>
-            <span className="quick-action-short">Guarantee</span>
-          </button>
-        )}
-        {onToggleUvEditor && (
-          <button type="button"
-            className={`quick-action-pill quick-action-uv ${isUvEditorOpen ? 'active' : ''}`}
-            onClick={onToggleUvEditor}
-            title={isUvEditorOpen ? 'Close 2D UV Editor' : 'Open 2D UV Placement Editor'}>
-            <Layers size={14} />
-            <span>{isUvEditorOpen ? 'Close UV' : 'UV Editor'}</span>
+            title={isUvEditorOpen ? 'Hide 2D Pattern UV Editor' : 'Show 2D Pattern UV Editor'}
+            className={`camera-preset-btn camera-preset-uv ${isUvEditorOpen ? 'active' : ''}`}>
+            <span>⊞</span>
+            <span>{isUvEditorOpen ? 'Close' : 'UV Map'}</span>
           </button>
         )}
       </div>
@@ -1848,7 +1824,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       {isAnimated && (
         <div id="animation-control-bar" className="animation-control-bar" style={{
           position: 'absolute', left: '50%', transform: 'translateX(-50%)',
-          width: 'min(92%, 620px)', background: 'rgba(15,20,30,0.88)', backdropFilter: 'blur(12px)',
+          width: 'min(92%, 580px)', background: 'rgba(15,20,30,0.88)', backdropFilter: 'blur(12px)',
           padding: '10px 16px', borderRadius: '18px', border: '1px solid rgba(255,255,255,0.12)',
           boxShadow: '0 12px 40px rgba(0,0,0,0.5)', zIndex: 10, display: 'flex', flexDirection: 'column', gap: '8px',
         }}>
@@ -1859,7 +1835,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
               width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer', flexShrink: 0,
             }} title={isPlaying ? 'Pause' : 'Play'}>
-              {isPlaying ? <Pause size={15} /> : <Play size={15} style={{ marginLeft: '2px' }} />}
+              {isPlaying ? <span style={{ fontSize: '13px', lineHeight: 1 }}>❚❚</span> : <span style={{ fontSize: '13px', lineHeight: 1, marginLeft: '2px' }}>▶</span>}
             </button>
             <input ref={scrubberInputRef} id="animation-timeline-scrubber" type="range"
               min={0} max={1} step={0.002} defaultValue={0} onChange={handleScrubberChange}
@@ -1889,7 +1865,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
                 borderRadius: '12px', padding: '3px 8px', fontSize: '11px', fontWeight: 600,
                 cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px',
               }}>
-                <Activity size={12} /><span>Spring Bones</span>
+                <span>∿</span><span>Spring Bones</span>
               </button>
               <div style={{ display: 'flex', background: 'rgba(255,255,255,0.06)', borderRadius: '10px', padding: '2px' }}>
                 {[0.5, 1.0, 1.5].map((s) => (
@@ -1933,101 +1909,172 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         </div>
       )}
 
-      {/* Floating Artwork Placement & Adjustment Hint Banner */}
-      {showInstruction && artworkLayers.length > 0 && (() => {
-        const hasLockedCurated = (artworkLayers.some((l) => l.locked) || isCuratedDesign) && !isDesignerMode;
-        if (hasLockedCurated) {
-          return (
-            <div
-              id="artwork-adjustment-hint-banner"
-              className={`artwork-adjustment-hint-banner ${isAnimated ? 'with-animation' : ''}`}
-              style={{
-                borderColor: 'rgba(56, 189, 248, 0.45)',
-                background: 'rgba(10, 14, 24, 0.96)',
-                backdropFilter: 'blur(16px)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(59, 94, 255, 0.2)',
-                maxWidth: '640px',
-                width: 'min(94%, 640px)',
-              }}
-            >
-              <div className="hint-banner-icon" style={{ color: '#38bdf8', fontSize: '20px', alignSelf: 'flex-start', marginTop: '2px' }}>
-                ✦
-              </div>
+      {/* Compact Bottom Hint & Guarantee Toast (Only shown when no layer is selected to prevent double banner overlap) */}
+      {showInstruction && artworkLayers.length > 0 && !hasSelectedLayer && (
+        <div
+          id="artwork-adjustment-hint-banner"
+          className={`artwork-adjustment-hint-banner ${isAnimated ? 'with-animation' : ''}`}
+          style={{
+            position: 'absolute',
+            bottom: isAnimated ? '135px' : '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            background: 'rgba(10, 14, 26, 0.92)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(59, 94, 255, 0.35)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 16px rgba(59,94,255,0.2)',
+            borderRadius: '24px',
+            padding: '8px 16px',
+            zIndex: 12,
+            maxWidth: 'min(94vw, 560px)',
+          }}
+        >
+          <span style={{ color: '#38bdf8', fontSize: '15px' }}>✦</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1, minWidth: 0, overflow: 'hidden' }}>
+            <span style={{ fontSize: '11px', color: '#fff', fontWeight: 600, whiteSpace: 'nowrap' }}>
+              360° Studio Fit
+            </span>
+            <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+              Drag to orbit · 100% DTG Print Guarantee
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowGuaranteeModal(true)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#38bdf8',
+              fontSize: '11px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              textDecoration: 'underline',
+            }}
+          >
+            Info
+          </button>
+          <button
+            type="button"
+            className="hint-banner-dismiss-btn"
+            onClick={hideInstruction}
+            style={{
+              background: 'linear-gradient(135deg, #3B5EFF 0%, #2563EB 100%)',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '10px',
+              padding: '4px 10px',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            GOT IT
+          </button>
+        </div>
+      )}
 
-              <div className="hint-banner-content" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <div className="hint-banner-title-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                  <span className="hint-banner-title" style={{ color: '#38bdf8', fontWeight: 800, fontSize: '13px' }}>
-                    360° Studio Placement Preview
-                  </span>
-                  <span style={{ fontSize: '10px', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '1px 6px', borderRadius: '4px', fontWeight: 700 }}>
-                    100% Print Guarantee
-                  </span>
-                </div>
-                <p className="hint-banner-desc" style={{ fontSize: '11px', lineHeight: 1.45, color: 'rgba(255, 255, 255, 0.85)', margin: 0 }}>
-                  This 3D Studio is provided so you can check the exact <strong>calibrated placement, scale, and fit</strong> on your {garmentConfig.name}. Drag anywhere to orbit in 360°.
-                </p>
-                <div style={{ fontSize: '10.5px', color: '#fbbf24', background: 'rgba(251, 191, 36, 0.1)', border: '1px solid rgba(251, 191, 36, 0.25)', padding: '4px 8px', borderRadius: '6px', lineHeight: 1.35, marginTop: '2px' }}>
-                  <strong>Digital Preview Note:</strong> In WebGL lighting, graphic contrast on certain fabric colors may appear slightly softer. Don&apos;t worry — our dev team is actively refining real-time shading!
-                </div>
-                <div style={{ fontSize: '10.5px', color: '#34d399', lineHeight: 1.35, marginTop: '2px' }}>
-                  ✨ <strong>Delivered Quality:</strong> When your tees arrive, your design will have an ultra-vibrant, razor-sharp, opaque finish with premium high-density DTG inks on every color!
-                </div>
+      {/* Guarantee & Contrast Info Modal */}
+      {showGuaranteeModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.7)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '16px',
+          }}
+          onClick={() => setShowGuaranteeModal(false)}
+        >
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #111625 0%, #0c0f1a 100%)',
+              border: '1px solid rgba(59,94,255,0.3)',
+              borderRadius: '20px',
+              boxShadow: '0 24px 60px rgba(0,0,0,0.8), 0 0 30px rgba(59,94,255,0.15)',
+              maxWidth: '520px',
+              width: '100%',
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#38bdf8', fontSize: '20px' }}>✦</span>
+                <span style={{ fontSize: '16px', fontWeight: 800, color: '#fff' }}>
+                  360° Studio Placement Preview
+                </span>
               </div>
-
               <button
                 type="button"
-                className="hint-banner-dismiss-btn"
-                onClick={hideInstruction}
+                onClick={() => setShowGuaranteeModal(false)}
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '28px',
+                  height: '28px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ display: 'inline-flex', alignSelf: 'flex-start', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '3px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 700 }}>
+              ✓ 100% Print Guarantee
+            </div>
+
+            <p style={{ fontSize: '12.5px', lineHeight: 1.55, color: 'rgba(255,255,255,0.85)', margin: 0 }}>
+              This 3D Studio is provided so you can check the exact <strong>calibrated placement, scale, and fit</strong> on your {garmentConfig.name}. Drag anywhere to orbit in 360°.
+            </p>
+
+            <div style={{ fontSize: '11.5px', color: '#fbbf24', background: 'rgba(251, 191, 36, 0.08)', border: '1px solid rgba(251, 191, 36, 0.25)', padding: '8px 12px', borderRadius: '10px', lineHeight: 1.45 }}>
+              <strong>Digital Preview Note:</strong> In WebGL lighting, graphic contrast on certain fabric colors may appear slightly softer. Don&apos;t worry — our dev team is actively refining real-time shading!
+            </div>
+
+            <div style={{ fontSize: '11.5px', color: '#34d399', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', padding: '8px 12px', borderRadius: '10px', lineHeight: 1.45 }}>
+              ✨ <strong>Delivered Quality:</strong> When your tees arrive, your design will have an ultra-vibrant, razor-sharp, opaque finish with premium high-density DTG inks on every color!
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
+              <button
+                type="button"
+                onClick={() => setShowGuaranteeModal(false)}
                 style={{
                   background: 'linear-gradient(135deg, #3B5EFF 0%, #2563EB 100%)',
                   color: '#fff',
                   fontWeight: 700,
-                  fontSize: '11px',
-                  padding: '7px 14px',
-                  borderRadius: '8px',
+                  fontSize: '12px',
+                  padding: '8px 22px',
+                  borderRadius: '10px',
                   border: 'none',
                   cursor: 'pointer',
-                  flexShrink: 0,
-                  alignSelf: 'center',
-                  boxShadow: '0 2px 10px rgba(59, 94, 255, 0.4)',
+                  boxShadow: '0 4px 14px rgba(59, 94, 255, 0.4)',
                 }}
               >
-                GOT IT
+                Got It
               </button>
             </div>
-          );
-        }
-
-        return (
-          <div
-            id="artwork-adjustment-hint-banner"
-            className={`artwork-adjustment-hint-banner ${isAnimated ? 'with-animation' : ''}`}
-          >
-            <div className="hint-banner-icon">
-              ⚠️
-            </div>
-
-            <div className="hint-banner-content">
-              <div className="hint-banner-title-row">
-                <span className="hint-banner-title">
-                  3D Placement Notice &amp; Quick Guide
-                </span>
-              </div>
-              <p className="hint-banner-desc">
-                Automatic placement is approximate. <strong>Click &amp; drag directly on the 3D shirt</strong> to move, use corner handles to scale, or top circle to rotate.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              className="hint-banner-dismiss-btn"
-              onClick={hideInstruction}
-            >
-              GOT IT
-            </button>
           </div>
-        );
-      })()}
+        </div>
+      )}
     </div>
   );
 };

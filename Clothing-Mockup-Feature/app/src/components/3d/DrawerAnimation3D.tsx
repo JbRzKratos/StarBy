@@ -1,5 +1,4 @@
-﻿import React from 'react';
-import { Play, Pause, Activity, Zap, RotateCcw } from 'lucide-react';
+import React from 'react';
 import type { AnimationActionName } from '../../types/threeD';
 
 interface DrawerAnimation3DProps {
@@ -64,7 +63,7 @@ export const DrawerAnimation3D: React.FC<DrawerAnimation3DProps> = ({
     <div className="drawer-content" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
       <div className="drawer-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Zap size={18} className="text-accent" />
+          <span style={{ fontSize: '16px' }}>∿</span>
           <h2 style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>Motion & Animation</h2>
         </div>
         <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -117,12 +116,12 @@ export const DrawerAnimation3D: React.FC<DrawerAnimation3DProps> = ({
         >
           {isAnimated ? (
             <>
-              <RotateCcw size={14} />
+              <span>⟳</span>
               <span>Restore Static Rest Pose</span>
             </>
           ) : (
             <>
-              <Play size={14} />
+              <span>▶</span>
               <span>Enable Animation Mode</span>
             </>
           )}
@@ -159,7 +158,7 @@ export const DrawerAnimation3D: React.FC<DrawerAnimation3DProps> = ({
             gap: '6px',
           }}
         >
-          {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+          {isPlaying ? <span>❚❚</span> : <span>▶</span>}
           <span>{isPlaying ? 'Pause Motion' : 'Play Motion'}</span>
         </button>
 
@@ -199,7 +198,7 @@ export const DrawerAnimation3D: React.FC<DrawerAnimation3DProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Activity size={16} color={secondaryMotionEnabled ? '#10b981' : '#888'} />
+          <span style={{ color: secondaryMotionEnabled ? '#10b981' : '#888', fontSize: '15px' }}>∿</span>
           <div>
             <div style={{ fontSize: '12px', fontWeight: 600 }}>Secondary Bone Motion</div>
             <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>

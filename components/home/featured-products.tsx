@@ -289,27 +289,31 @@ export function FeaturedProducts({ initialProducts }: { initialProducts?: Produc
           </Link>
         </div>
 
-        {/* Category Tabs */}
-        <div
-          role="tablist"
-          aria-label="Product categories"
-          className="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-6 mb-8 border-b border-smoke/30"
-        >
-          {CATEGORY_TABS.map((tab) => (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`font-mono text-caption uppercase tracking-widest px-4 py-2.5 rounded-full whitespace-nowrap transition-all ${
-                activeTab === tab.id
-                  ? 'bg-bone text-charcoal font-bold shadow-md'
-                  : 'bg-smoke/10 text-pearl hover:text-bone hover:bg-smoke/20 border border-smoke/30'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Category Tabs with Edge Fade Scroll Affordance */}
+        <div className="relative mb-8 border-b border-smoke/30">
+          <div
+            role="tablist"
+            aria-label="Product categories"
+            className="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-6 pr-12 scroll-smooth"
+          >
+            {CATEGORY_TABS.map((tab) => (
+              <button
+                key={tab.id}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`font-mono text-caption uppercase tracking-widest px-4 py-2.5 rounded-full whitespace-nowrap transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-bone text-charcoal font-bold shadow-md'
+                    : 'bg-smoke/10 text-pearl hover:text-bone hover:bg-smoke/20 border border-smoke/30'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          {/* Subtle right-edge fade gradient cue */}
+          <div className="pointer-events-none absolute right-0 top-0 bottom-6 w-10 bg-gradient-to-l from-[#0A0A0A] to-transparent" />
         </div>
 
         {/* Dynamic Content: Coming Soon showcase vs Active Products Grid */}

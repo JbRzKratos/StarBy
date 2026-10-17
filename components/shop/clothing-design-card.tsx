@@ -33,7 +33,7 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
       aria-label={`Select design ${design.name}`}
     >
       {/* Visual Canvas Area */}
-      <div className="relative aspect-[3/4] w-full bg-[#181A20] overflow-hidden flex items-center justify-center p-6">
+      <div className="relative aspect-[3/4] w-full bg-[#181A20] overflow-hidden flex items-center justify-center p-3 sm:p-5">
         {/* Skeleton while loading */}
         {!isLoaded && !imageError && (
           <div className="absolute inset-0 bg-[#14161C] animate-pulse flex items-center justify-center">
@@ -55,12 +55,6 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
           <svg viewBox="0 0 100 100" className="w-[88%] h-[88%] stroke-white/20 fill-white/[0.02] stroke-[1.2] transition-transform duration-500 group-hover:scale-105">
             <path d="M 33 20 C 40 24 60 24 67 20 L 86 32 L 78 44 L 70 40 L 70 82 C 70 83 69 84 68 84 L 32 84 C 31 84 30 83 30 82 L 30 40 L 22 44 L 14 32 Z" />
           </svg>
-        </div>
-
-        {/* Apparel Design Type Badge */}
-        <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-md border border-white/10 rounded-full px-2.5 py-1 z-10 pointer-events-none">
-          <span className="text-[10px]">👕</span>
-          <span className="font-mono text-[9px] uppercase tracking-wider text-white/90 font-semibold">Tee &amp; Hoodie Canvas</span>
         </div>
 
         {/* The Protected Preview Image */}
@@ -86,10 +80,10 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
           </div>
         )}
 
-        {/* Multi-surface Pills if both Front & Back exist */}
+        {/* Multi-surface Pills if both Front & Back exist (Clean top-right placement with zero collisions) */}
         {design.availableSurfaces.length > 1 && (
           <div
-            className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full p-1 z-10"
+            className="absolute top-2.5 right-2.5 flex items-center gap-0.5 bg-black/70 backdrop-blur-md border border-white/10 rounded-full p-0.5 z-10 shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
             {design.availableSurfaces.map((s) => (
@@ -100,9 +94,9 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
                   e.stopPropagation();
                   setActiveSurface(s);
                 }}
-                className={`px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider rounded-full transition-colors ${
+                className={`px-1.5 sm:px-2 py-0.5 text-[8.5px] sm:text-[9px] font-mono uppercase tracking-wider rounded-full transition-colors ${
                   activeSurface === s
-                    ? 'bg-white text-black font-semibold'
+                    ? 'bg-white text-black font-bold shadow-sm'
                     : 'text-white/60 hover:text-white'
                 }`}
               >
@@ -124,29 +118,30 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
         </div>
       </div>
 
-      {/* Info Bar */}
-      <div className="p-4 flex flex-col gap-1.5 bg-[#111216] border-t border-white/5">
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-[10px] text-white/40 uppercase tracking-widest">
+      {/* Info Bar: Engineered for perfect, non-overlapping responsive flow */}
+      <div className="p-3 sm:p-4 flex flex-col gap-1 sm:gap-1.5 bg-[#111216] border-t border-white/5">
+        <div className="flex items-center justify-between gap-1.5 min-w-0">
+          <span className="font-mono text-[9.5px] sm:text-[10px] text-white/40 uppercase tracking-wider truncate shrink-0">
             {design.id.toUpperCase()}
           </span>
-          <div className="flex items-center gap-1.5">
-            {design.artworks && design.artworks.length > 1 && (
-              <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">
-                {design.artworks.length} Artworks
+          <div className="flex items-center gap-1 shrink-0">
+            {design.artworks && design.artworks.length > 1 ? (
+              <span className="text-[9px] sm:text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20 whitespace-nowrap">
+                {design.artworks.length} Prints
+              </span>
+            ) : (
+              <span className="text-[9px] sm:text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 whitespace-nowrap">
+                3D Studio
               </span>
             )}
-            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-              3D Canvas
-            </span>
           </div>
         </div>
 
-        <h3 className="font-mono text-sm text-white/90 group-hover:text-white font-medium uppercase tracking-wider truncate">
+        <h3 className="font-mono text-xs sm:text-sm text-white/90 group-hover:text-white font-medium uppercase tracking-wider truncate">
           {design.name}
         </h3>
 
-        <p className="font-mono text-[11px] text-white/50">
+        <div className="flex items-center gap-1 font-mono text-[10.5px] sm:text-[11px] text-white/50 truncate">
           {typeof design.basePrice === 'number' ? (
             <span className={design.basePrice === 1 ? 'text-emerald-400 font-bold' : 'text-white/90 font-medium'}>
               {design.basePrice === 1 ? '₹1' : `From ₹${design.basePrice.toLocaleString()}`}
@@ -155,9 +150,9 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
             <span className="text-emerald-400 font-bold">₹1</span>
           ) : (
             'From ₹799'
-          )}{' '}
-          <span className="text-white/30">• Heavyweight Tee / Hoodie</span>
-        </p>
+          )}
+          <span className="text-white/30 truncate">• Tee / Hoodie</span>
+        </div>
       </div>
     </div>
   );

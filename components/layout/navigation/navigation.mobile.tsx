@@ -13,15 +13,20 @@ import { useSearchStore } from '@/lib/stores/search-store';
 
 import { OfferBannerMobile } from '@/components/home/offer-banner/offer-banner.mobile';
 import { FregoroLogo } from '@/components/ui/fregoro-logo';
+interface MenuLinkItem {
+  href: string;
+  label: string;
+  symbol: string;
+}
 
-const menuLinks = [
+const menuLinks: MenuLinkItem[] = [
   { href: '/', label: 'Home', symbol: '✦' },
-  { href: '/products/all', label: 'Shop All', symbol: '👕' },
-  { href: '/products/posters', label: 'Posters', symbol: '🖼️' },
+  { href: '/products/all', label: 'Shop All', symbol: '◈' },
+  { href: '/products/posters', label: 'Posters', symbol: '▦' },
   { href: '/split-poster', label: 'Split Posters', symbol: '⊞' },
-  { href: '/wall-studio', label: 'Wall Studio', symbol: '🎨' },
-  { href: '/bulk-orders', label: 'Bulk & Custom Orders', symbol: '📦' },
-  { href: '/magazine', label: 'Magazine Studio', symbol: '📖' },
+  { href: '/wall-studio', label: 'Wall Studio', symbol: '❖' },
+  { href: '/bulk-orders', label: 'Bulk & Custom Orders', symbol: '▨' },
+  { href: '/magazine', label: 'Magazine Studio', symbol: '▤' },
   { href: '/studio', label: '360° Studio', symbol: '↺' },
   { href: '/faq', label: 'FAQ & Shipping', symbol: '✈' },
   { href: '/contact', label: 'Contact', symbol: '✉' },
@@ -286,15 +291,17 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
               </button>
             </div>
 
-            <div ref={linksRef} className="flex flex-col gap-4">
+            <div ref={linksRef} className="flex flex-col gap-3.5">
               {menuLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={onClose}
-                  className="font-display text-2xl font-bold text-[#F5F1EA] hover:text-[#ED9518] transition-colors flex items-center gap-3"
+                  className="font-display text-2xl font-bold text-[#F5F1EA] hover:text-[#ED9518] transition-colors flex items-center gap-3.5 group py-1"
                 >
-                  <span className="text-lg opacity-80 shrink-0">{link.symbol}</span>
+                  <span className="text-xl text-[#F5F1EA]/60 group-hover:text-[#ED9518] font-mono select-none w-6 text-center shrink-0 transition-colors">
+                    {link.symbol}
+                  </span>
                   <span>{link.label}</span>
                 </Link>
               ))}

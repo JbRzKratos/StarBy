@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Plus, Minus } from 'lucide-react';
 
 interface CustomQuantityStepperProps {
   value: number;
@@ -71,9 +70,9 @@ export function CustomQuantityStepper({
           type="button"
           onClick={handleDecrement}
           disabled={disabled || value <= min}
-          className={`${btnSizes[size]} rounded-lg bg-white/5 hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-white/5 text-pearl hover:text-white flex items-center justify-center transition-colors cursor-pointer select-none`}
+          className={`${btnSizes[size]} rounded-lg bg-white/5 hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-white/5 text-pearl hover:text-white flex items-center justify-center transition-colors cursor-pointer select-none font-bold text-sm`}
         >
-          <Minus className="w-3.5 h-3.5" />
+          <span>−</span>
         </button>
 
         <input
@@ -90,9 +89,9 @@ export function CustomQuantityStepper({
           type="button"
           onClick={handleIncrement}
           disabled={disabled || value >= max}
-          className={`${btnSizes[size]} rounded-lg bg-white/5 hover:bg-[#3B5EFF] disabled:opacity-30 disabled:hover:bg-white/5 text-pearl hover:text-white flex items-center justify-center transition-colors cursor-pointer select-none`}
+          className={`${btnSizes[size]} rounded-lg bg-white/5 hover:bg-[#3B5EFF] disabled:opacity-30 disabled:hover:bg-white/5 text-pearl hover:text-white flex items-center justify-center transition-colors cursor-pointer select-none font-bold text-sm`}
         >
-          <Plus className="w-3.5 h-3.5" />
+          <span>+</span>
         </button>
       </div>
     </div>

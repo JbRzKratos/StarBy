@@ -1,15 +1,4 @@
 import React, { useState } from 'react';
-import {
-  X,
-  ShoppingBag,
-  Check,
-  Loader2,
-  AlertCircle,
-  Eye,
-  Shirt,
-  Sparkles,
-  Maximize2,
-} from 'lucide-react';
 import type { ArtworkLayer3D } from '../../types/threeD';
 
 export interface AddToCartModal3DProps {
@@ -131,7 +120,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
         <div className="add-to-cart-header">
           <div className="add-to-cart-title-wrap">
             <div className="add-to-cart-badge">
-              <Shirt size={14} />
+              <span>👕</span>
               <span>3D Studio Order</span>
             </div>
             <h2 id="add-to-cart-title" className="add-to-cart-title">
@@ -147,7 +136,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
             disabled={isSubmitting}
             aria-label="Close dialog"
           >
-            <X size={18} />
+            <span>✕</span>
           </button>
         </div>
 
@@ -185,7 +174,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
             <div className="preview-canvas-container">
               {isGeneratingSnapshots ? (
                 <div className="preview-loading-state">
-                  <Loader2 size={32} className="animate-spin text-accent" />
+                  <span className="animate-spin text-accent" style={{ fontSize: '28px', display: 'inline-block' }}>⟳</span>
                   <p className="preview-loading-text">Rendering 3D Mockup Snapshots…</p>
                   <span className="preview-loading-sub">
                     Capturing front and back camera proof angles
@@ -251,7 +240,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
                       onClick={() => setIsZoomModalOpen(true)}
                       title="Enlarge proof preview"
                     >
-                      <Maximize2 size={14} />
+                      <span>⤢</span>
                       <span>Inspect</span>
                     </button>
                   )}
@@ -262,7 +251,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
             {/* Uploaded Artwork Assets Section */}
             <div className="uploaded-artworks-section">
               <div className="uploaded-artworks-title">
-                <Sparkles size={13} className="text-accent" />
+                <span className="text-accent">✦</span>
                 <span>Original Uploaded Design Files ({artworkLayers.length})</span>
               </div>
               {artworkLayers.length === 0 ? (
@@ -292,7 +281,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
                         className="artwork-mini-link"
                         title="View full source image"
                       >
-                        <Eye size={12} />
+                        <span>👁</span>
                       </a>
                     </div>
                   ))}
@@ -306,7 +295,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
             {/* 1. Crucial Warning / Notice Box for Fregoro Studios */}
             <div className="studio-warning-box">
               <div className="studio-warning-header">
-                <AlertCircle size={17} className="studio-warning-icon" />
+                <span className="studio-warning-icon" style={{ fontSize: '15px' }}>⚠</span>
                 <span className="studio-warning-title">Notice for Fregoro Studios Production</span>
               </div>
               <p className="studio-warning-text">
@@ -427,7 +416,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
 
             {/* Studio Guarantee Badge */}
             <div className="studio-guarantee-pill">
-              <Check size={13} className="text-emerald" />
+              <span className="text-emerald">✓</span>
               <span>Includes Free Shipping &amp; Studio Print Quality Check</span>
             </div>
 
@@ -450,12 +439,12 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 size={16} className="animate-spin" />
+                    <span className="animate-spin" style={{ display: 'inline-block' }}>⟳</span>
                     <span>Adding to Bag…</span>
                   </>
                 ) : (
                   <>
-                    <ShoppingBag size={16} />
+                    <span>🛍</span>
                     <span>Add to Bag &amp; Send to Studio</span>
                   </>
                 )}
@@ -478,7 +467,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
               onClick={() => setIsZoomModalOpen(false)}
               aria-label="Close zoom"
             >
-              <X size={20} />
+              <span>✕</span>
             </button>
             <img
               src={

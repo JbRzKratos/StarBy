@@ -220,7 +220,10 @@ export class SceneManager3D {
 
   public setCameraFraming(target: [number, number, number], distance: number, fov = 45, defaultPreset: CameraPreset3D = 'front'): void {
     this.currentTarget.set(...target);
-    this.currentDistance = distance;
+    // On desktop screens, frame garment more prominently so it fills viewport without vast empty dead space
+    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
+    const effectiveDistance = isDesktop ? distance * 0.86 : distance;
+    this.currentDistance = effectiveDistance;
     this.camera.fov = fov;
     this.camera.updateProjectionMatrix();
 

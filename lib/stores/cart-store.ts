@@ -174,13 +174,35 @@ export const useCartStore = create<CartState & CartActions>()(
                 }
               }
 
-              // For custom clothing mockup items, each uploaded design adds ₹119 to base garment price
-              if (item.customization && typeof item.customization.customArtworkCount === 'number' && !item.customization.designId) {
-                const count = item.customization.customArtworkCount as number;
-                const feePerDesign = 119;
-                const customPrintFee = count * feePerDesign;
-                if (typeof livePrice === 'number' && livePrice >= 0) {
-                  livePrice = livePrice + customPrintFee;
+              // For custom clothing mockup items, preserve garment base price and print fees accurately
+              if (
+                item.customization?.is3dMockup ||
+                item.customization?.is2dMockup ||
+                item.productId === 'clothing-mockup' ||
+                item.variantId?.startsWith('mockup-3d-') ||
+                item.variantId?.startsWith('mockup-2d-')
+              ) {
+                if (item.customization?.designId === 'design-001' || item.productId === 'design-001') {
+                  livePrice = 1;
+                } else if (item.customization?.isPlain || !item.customization?.designId) {
+                  if (typeof item.price === 'number' && item.price >= 799) {
+                    livePrice = item.price;
+                  } else {
+                    const base =
+                      typeof item.customization?.basePrice === 'number' && item.customization.basePrice > 0
+                        ? (item.customization.basePrice as number)
+                        : 799;
+                    const count =
+                      typeof item.customization?.customArtworkCount === 'number'
+                        ? (item.customization.customArtworkCount as number)
+                        : 0;
+                    livePrice = base + count * 119;
+                  }
+                } else if (item.customization?.designId) {
+                  const dId = item.customization.designId as string;
+                  livePrice = data.products?.[dId] ?? item.price;
+                } else {
+                  livePrice = item.price;
                 }
               }
 

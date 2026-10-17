@@ -1,26 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import {
-  ZoomIn,
-  ZoomOut,
-  RotateCcw,
-  Grid,
-  Layers,
-  Eye,
-  EyeOff,
-  Move,
-  Trash2,
-  Copy,
-  ChevronRight,
-  ChevronLeft,
-  Sparkles,
-  Lock,
-  Unlock,
-  Tag,
-  ArrowLeft,
-  Upload,
-  Save,
-  Check,
-} from 'lucide-react';
 import * as THREE from 'three';
 import type { ArtworkLayer3D, Garment3DConfig } from '../../types/threeD';
 import {
@@ -1137,7 +1115,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
             title="Expand UV Editor (2D Placement)"
             aria-label="Expand UV Editor"
           >
-            <ChevronLeft size={20} />
+            <span style={{ fontSize: '18px', lineHeight: 1 }}>‹</span>
           </button>
 
           {/* Floating Pill Handle extending into the 3D viewport */}
@@ -1151,13 +1129,13 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
             title="Open UV Placement Editor"
             aria-label="Open UV Placement Editor"
           >
-            <ChevronLeft size={14} />
+            <span style={{ fontSize: '13px', lineHeight: 1 }}>‹</span>
             <span>UV Editor</span>
           </button>
 
           {/* Icon */}
           <div className="uv-collapsed-icon-wrap" title="UV Placement Editor">
-            <Layers size={18} className="text-accent" />
+            <span className="text-accent" style={{ fontSize: '16px' }}>⊞</span>
           </div>
 
           {/* Vertical Rotated Text */}
@@ -1167,7 +1145,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
 
           {/* Subtle Bottom Chevron Hint */}
           <div className="uv-collapsed-bottom-hint">
-            <ChevronLeft size={16} />
+            <span style={{ fontSize: '14px', lineHeight: 1 }}>‹</span>
           </div>
         </div>
       ) : (
@@ -1186,12 +1164,12 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                   }}
                   title="Return to 3D Garment Viewport"
                 >
-                  <ArrowLeft size={16} />
+                  <span style={{ fontSize: '14px', lineHeight: 1 }}>←</span>
                   <span>Back to 3D</span>
                 </button>
               )}
 
-              <Layers size={16} className="text-accent uv-desktop-only-icon" />
+              <span className="text-accent uv-desktop-only-icon" style={{ fontSize: '14px', marginRight: '4px' }}>⊞</span>
               <span className="uv-header-title-text">Full UV Atlas Editor</span>
               <span className="badge badge-accent">Live 3D Sync</span>
             </div>
@@ -1202,7 +1180,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                   className="uv-upload-header-btn"
                   title="Upload custom graphic or print"
                 >
-                  <Upload size={14} />
+                  <span style={{ fontSize: '13px' }}>↑</span>
                   <span>Upload Design</span>
                   <input
                     type="file"
@@ -1225,7 +1203,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                   onClick={onToggleOpen}
                   title="Collapse UV Editor"
                 >
-                  <ChevronRight size={16} />
+                  <span style={{ fontSize: '14px' }}>✕</span>
                 </button>
               )}
             </div>
@@ -1265,14 +1243,14 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
             {artworkLayers.length === 0 && onAddArtwork && (
               <div className="uv-canvas-empty-cta">
                 <div className="uv-canvas-empty-icon">
-                  <Upload size={26} />
+                  <span style={{ fontSize: '24px' }}>↑</span>
                 </div>
                 <div className="uv-canvas-empty-title">No Graphics on Garment</div>
                 <div className="uv-canvas-empty-desc">
                   Upload an image to place and position on this UV layout
                 </div>
                 <label className="uv-canvas-empty-btn">
-                  <Upload size={14} />
+                  <span style={{ fontSize: '13px' }}>↑</span>
                   <span>Choose Image File</span>
                   <input
                     type="file"
@@ -1297,7 +1275,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                 onClick={() => setShowWireframe(!showWireframe)}
                 title="Toggle Model UV Wireframe"
               >
-                <Grid size={14} />
+                <span style={{ fontSize: '12px' }}>▦</span>
                 <span>Wireframe</span>
               </button>
 
@@ -1306,7 +1284,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                 onClick={() => setShowPanelLabels(!showPanelLabels)}
                 title="Toggle Verified Garment Panel Badges"
               >
-                <Tag size={14} />
+                <span style={{ fontSize: '12px' }}>🏷</span>
                 <span>Panels</span>
               </button>
 
@@ -1315,7 +1293,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                 onClick={() => setShowChecker(!showChecker)}
                 title="Toggle Labeled UV Island Checker"
               >
-                <Sparkles size={14} />
+                <span style={{ fontSize: '12px' }}>✦</span>
                 <span>Checker</span>
               </button>
 
@@ -1324,7 +1302,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                 onClick={() => setShowDiffuse(!showDiffuse)}
                 title="Toggle Fabric Seams Underlay"
               >
-                {showDiffuse ? <Eye size={14} /> : <EyeOff size={14} />}
+                <span>{showDiffuse ? '👁' : '∅'}</span>
                 <span>Seams</span>
               </button>
 
@@ -1335,7 +1313,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                 onClick={() => setZoom((z) => Math.min(6.0, z * 1.25))}
                 title="Zoom In"
               >
-                <ZoomIn size={14} />
+                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>+</span>
               </button>
 
               <button
@@ -1343,7 +1321,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                 onClick={() => setZoom((z) => Math.max(0.5, z * 0.8))}
                 title="Zoom Out"
               >
-                <ZoomOut size={14} />
+                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>−</span>
               </button>
 
               <button
@@ -1351,7 +1329,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                 onClick={handleFitAtlas}
                 title="Reset View"
               >
-                <RotateCcw size={14} />
+                <span style={{ fontSize: '14px' }}>⟳</span>
               </button>
             </div>
           </div>
@@ -1360,7 +1338,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
           <div className="uv-panels-bar" style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '10px 14px', background: 'rgba(255, 255, 255, 0.02)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <Tag size={12} className="text-accent" />
+                <span className="text-accent" style={{ fontSize: '12px' }}>🏷</span>
                 Verified Panels ({panels.length}):
               </span>
               {selectedPanelId && (
@@ -1443,14 +1421,14 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                     onClick={() => onDuplicateLayer(selectedLayer.id)}
                     title="Duplicate Layer"
                   >
-                    <Copy size={14} />
+                    <span>⧉</span>
                   </button>
                   <button
                     className="btn-icon-subtle text-danger"
                     onClick={() => onDeleteLayer(selectedLayer.id)}
                     title="Delete Layer"
                   >
-                    <Trash2 size={14} />
+                    <span>✕</span>
                   </button>
                 </div>
               </div>
@@ -1486,12 +1464,12 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                 >
                   {justSaved ? (
                     <>
-                      <Check size={14} />
+                      <span>✓</span>
                       <span>Saved Placements for {garmentConfig.name}!</span>
                     </>
                   ) : (
                     <>
-                      <Save size={14} />
+                      <span>💾</span>
                       <span>Save Placements ({garmentConfig.name})</span>
                     </>
                   )}
@@ -1653,7 +1631,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
                     title="Lock Aspect Ratio"
                     style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
                   >
-                    {selectedLayer.lockAspectRatio !== false ? <Lock size={12} /> : <Unlock size={12} />}
+                    <span>{selectedLayer.lockAspectRatio !== false ? '🔒' : '🔓'}</span>
                     <span>{selectedLayer.lockAspectRatio !== false ? 'Aspect Locked' : 'Aspect Free'}</span>
                   </button>
 
@@ -1685,7 +1663,7 @@ export const UVCanvasEditor3D: React.FC<UVCanvasEditor3DProps> = ({
             </div>
           ) : (
             <div className="uv-editor-empty">
-              <Move size={24} className="text-muted" />
+              <span className="text-muted" style={{ fontSize: '24px' }}>✥</span>
               <span>Select or upload an artwork layer to edit its UV transform</span>
             </div>
           )}

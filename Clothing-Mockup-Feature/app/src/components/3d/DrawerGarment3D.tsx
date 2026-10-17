@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Shirt, Check, Search } from 'lucide-react';
 import { GARMENT_3D_CATALOG } from '../../engine/3d/registry';
 import type { Garment3DConfig } from '../../types/threeD';
 
@@ -37,7 +36,7 @@ export const DrawerGarment3D: React.FC<DrawerGarment3DProps> = ({
     <div className="drawer-content" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div className="drawer-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Shirt size={18} className="text-accent" />
+          <span style={{ fontSize: '16px' }}>👕</span>
           <h2 style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>3D Garment Catalog</h2>
         </div>
         <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -47,10 +46,11 @@ export const DrawerGarment3D: React.FC<DrawerGarment3DProps> = ({
 
       {/* Search Input */}
       <div style={{ position: 'relative' }}>
-        <Search
-          size={14}
-          style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}
-        />
+        <span
+          style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', fontSize: '13px' }}
+        >
+          ⚲
+        </span>
         <input
           type="text"
           placeholder="Search garments..."
@@ -181,7 +181,7 @@ export const DrawerGarment3D: React.FC<DrawerGarment3DProps> = ({
                     justifyContent: 'center',
                   }}
                 >
-                  <Check size={12} strokeWidth={3} />
+                  <span style={{ fontSize: '11px', fontWeight: 900 }}>✓</span>
                 </div>
               )}
             </div>

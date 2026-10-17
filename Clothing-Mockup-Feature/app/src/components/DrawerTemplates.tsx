@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { CATALOG, getGarmentUrl } from '../data/catalog';
-import { Search } from 'lucide-react';
 import type { GarmentSide } from '../types/mockup';
 
 interface DrawerTemplatesProps {
@@ -34,7 +33,7 @@ export const DrawerTemplates: React.FC<DrawerTemplatesProps> = ({
       <div className="drawer-content">
         {/* Search */}
         <div className="hex-input-row" style={{ padding: '6px 10px' }}>
-          <Search size={15} style={{ color: 'var(--text-dim)' }} />
+          <span style={{ color: 'var(--text-dim)', fontSize: '13px' }}>⚲</span>
           <input
             type="text"
             className="hex-text-input"

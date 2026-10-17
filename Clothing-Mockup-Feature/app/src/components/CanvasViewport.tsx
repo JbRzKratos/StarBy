@@ -1,18 +1,4 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import {
-  AlignCenter,
-  AlignVerticalJustifyCenter,
-  Copy,
-  FlipHorizontal,
-  FlipVertical,
-  Trash2,
-  ZoomIn,
-  ZoomOut,
-  Maximize2,
-  Loader2,
-  RefreshCw,
-  Upload,
-} from 'lucide-react';
 import type {
   ArtworkLayer,
   BackgroundSettings,
@@ -721,7 +707,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
         <span style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#fff' }}>
           {activeSide} View
         </span>
-        <RefreshCw size={13} style={{ color: 'var(--text-muted)' }} />
+        <span style={{ color: 'var(--text-muted)', fontSize: '13px' }}>⟳</span>
       </button>
 
       {/* Floating Action Bar for Selected Layer */}
@@ -732,14 +718,14 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
             title="Center Horizontally"
             onClick={() => onCenterHorizontal(selectedLayer.id)}
           >
-            <AlignCenter size={15} />
+            <span>⬌</span>
           </button>
           <button
             className="selection-btn"
             title="Center Vertically"
             onClick={() => onCenterVertical(selectedLayer.id)}
           >
-            <AlignVerticalJustifyCenter size={15} />
+            <span>⬍</span>
           </button>
           <button
             className="selection-btn"
@@ -752,7 +738,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
               onCommitHistory();
             }}
           >
-            <FlipHorizontal size={15} />
+            <span>⇄</span>
           </button>
           <button
             className="selection-btn"
@@ -765,7 +751,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
               onCommitHistory();
             }}
           >
-            <FlipVertical size={15} />
+            <span>⇅</span>
           </button>
 
           <div className="divider-vert" />
@@ -775,14 +761,14 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
             title="Duplicate Layer"
             onClick={() => onDuplicateLayer(selectedLayer.id)}
           >
-            <Copy size={15} />
+            <span>⧉</span>
           </button>
           <button
             className="selection-btn danger"
             title="Delete Layer"
             onClick={() => onDeleteLayer(selectedLayer.id)}
           >
-            <Trash2 size={15} />
+            <span>✕</span>
           </button>
 
           {resInfo && (
@@ -839,7 +825,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
             zIndex: 10,
           }}
         >
-          <Loader2 size={13} className="animate-spin" />
+          <span className="animate-spin" style={{ display: 'inline-block' }}>⟳</span>
           <span>Updating View...</span>
         </div>
       )}
@@ -848,8 +834,9 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
       {onUploadFile && (!isCuratedDesign || isDesignerMode) && (
         <div className="viewport-2d-floating-actions">
           <label className="quick-action-pill quick-action-upload" title="Upload custom graphic or print">
-            <Upload size={14} />
-            <span>Upload Design</span>
+            <span style={{ fontSize: '13px' }}>↑</span>
+            <span className="quick-action-full">Upload Design</span>
+            <span className="quick-action-short">Upload</span>
             <input
               type="file"
               accept="image/png,image/jpeg,image/webp,image/svg+xml"
@@ -873,7 +860,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
           title="Zoom Out"
           onClick={() => setZoom((prev) => Math.max(0.3, prev * 0.85))}
         >
-          <ZoomOut size={16} />
+          <span style={{ fontSize: '16px', fontWeight: 'bold' }}>−</span>
         </button>
         <span className="zoom-indicator">{Math.round(zoom * 100)}%</span>
         <button
@@ -881,7 +868,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
           title="Zoom In"
           onClick={() => setZoom((prev) => Math.min(3.5, prev * 1.15))}
         >
-          <ZoomIn size={16} />
+          <span style={{ fontSize: '16px', fontWeight: 'bold' }}>+</span>
         </button>
         <div className="divider-vert" />
         <button
@@ -892,7 +879,7 @@ export const CanvasViewport: React.FC<CanvasViewportProps> = ({
             setPan({ x: 0, y: 0 });
           }}
         >
-          <Maximize2 size={15} />
+          <span>⤢</span>
         </button>
       </div>
     </div>

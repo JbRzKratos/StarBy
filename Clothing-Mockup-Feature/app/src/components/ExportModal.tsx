@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { X, Download, Check, Loader2 } from 'lucide-react';
 import type { ExportOptions, ProjectState } from '../types/mockup';
 import { exportManager } from '../engine/exportManager';
 
@@ -67,7 +66,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             onClick={onClose}
             style={{ width: '28px', height: '28px', borderRadius: '50%' }}
           >
-            <X size={18} />
+            <span style={{ fontSize: '15px' }}>✕</span>
           </button>
         </div>
 
@@ -154,7 +153,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                       <div style={{ fontSize: '13px', fontWeight: 600, color: '#fff' }}>{preset.label}</div>
                       <div style={{ fontSize: '11px', color: 'var(--text-dim)' }}>{preset.desc}</div>
                     </div>
-                    {isSelected && <Check size={16} style={{ color: 'var(--accent)' }} />}
+                    {isSelected && <span style={{ color: 'var(--accent)', fontWeight: 'bold', fontSize: '14px' }}>✓</span>}
                   </div>
                 );
               })}
@@ -233,12 +232,12 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           >
             {isExporting ? (
               <>
-                <Loader2 size={16} className="animate-spin" />
+                <span className="animate-spin" style={{ display: 'inline-block' }}>⟳</span>
                 <span>{progressMsg || 'Rendering...'}</span>
               </>
             ) : (
               <>
-                <Download size={16} />
+                <span style={{ fontSize: '15px' }}>⤓</span>
                 <span>Download Export</span>
               </>
             )}

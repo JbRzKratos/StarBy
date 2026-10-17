@@ -1,5 +1,4 @@
 import React from 'react';
-import { Palette, Check, Sparkles } from 'lucide-react';
 
 interface DrawerColor3DProps {
   garmentId?: string;
@@ -51,7 +50,7 @@ export const DrawerColor3D: React.FC<DrawerColor3DProps> = ({
     <div className="drawer-content" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
       <div className="drawer-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Palette size={18} className="text-accent" />
+          <span style={{ fontSize: '16px', color: 'var(--accent, #3B5EFF)' }}>●</span>
           <h2 style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>Garment Color & Fabric</h2>
         </div>
         <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -94,11 +93,7 @@ export const DrawerColor3D: React.FC<DrawerColor3DProps> = ({
                 }}
               >
                 {isSelected && (
-                  <Check
-                    size={16}
-                    strokeWidth={3}
-                    style={{ color: isLight ? '#000' : '#fff' }}
-                  />
+                  <span style={{ color: isLight ? '#000' : '#fff', fontWeight: 900, fontSize: '15px' }}>✓</span>
                 )}
               </button>
             );
@@ -168,7 +163,7 @@ export const DrawerColor3D: React.FC<DrawerColor3DProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#38bdf8', fontWeight: 700 }}>
-          <Sparkles size={14} />
+          <span>✦</span>
           <span>Color &amp; Print Quality Guarantee</span>
         </div>
         <div style={{ color: '#fbbf24', fontSize: '10.5px' }}>
@@ -192,7 +187,7 @@ export const DrawerColor3D: React.FC<DrawerColor3DProps> = ({
         }}
       >
         <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-main, #fff)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Sparkles size={14} color="#3B5EFF" />
+          <span style={{ color: '#3B5EFF' }}>✦</span>
           <span>Surface & Textile Character</span>
         </div>
 

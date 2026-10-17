@@ -1,20 +1,4 @@
 import React, { useRef, useState } from 'react';
-import {
-  Upload,
-  Eye,
-  EyeOff,
-  Lock,
-  Unlock,
-  Trash2,
-  Copy,
-  ChevronUp,
-  ChevronDown,
-  AlignCenter,
-  AlignVerticalJustifyCenter,
-  AlertTriangle,
-  Info,
-  Sparkles,
-} from 'lucide-react';
 import type { ArtworkLayer, GarmentSide } from '../types/mockup';
 import { checkEffectiveResolution } from '../engine/validation';
 import { parseNaturalLanguagePlacement } from '../engine/3d/placementParser';
@@ -274,7 +258,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
                   color: '#A5B4FC',
                 }}
               >
-                <Sparkles size={15} />
+                <span style={{ fontSize: '14px' }}>✦</span>
               </div>
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: '11px', fontWeight: 700, color: '#fff' }}>
@@ -311,7 +295,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
             style={{ marginBottom: '10px', padding: '12px' }}
           >
             <div className="dropzone-icon">
-              <Upload size={18} />
+              <span style={{ fontSize: '18px' }}>↑</span>
             </div>
             <div>
               <div className="dropzone-title" style={{ fontSize: '12px' }}>Upload Design</div>
@@ -331,7 +315,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
         {/* Validation Warning Alert */}
         {uploadWarning && (
           <div className="warning-box">
-            <AlertTriangle size={16} style={{ flexShrink: 0 }} />
+            <span style={{ flexShrink: 0, fontSize: '15px' }}>⚠</span>
             <div>{uploadWarning}</div>
           </div>
         )}
@@ -599,7 +583,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
             <div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <span style={{ fontSize: '10px', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Sparkles size={12} />
+                  <span>✦</span>
                   <span>Type Placement Place</span>
                 </span>
                 <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>
@@ -765,14 +749,14 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
                   title="Center Horizontally"
                   onClick={() => onCenterHorizontal(selectedLayer.id)}
                 >
-                  <AlignCenter size={14} />
+                  <span>⬌</span>
                 </button>
                 <button
                   className="layer-action-btn"
                   title="Center Vertically"
                   onClick={() => onCenterVertical(selectedLayer.id)}
                 >
-                  <AlignVerticalJustifyCenter size={14} />
+                  <span>⬍</span>
                 </button>
               </div>
             </div>
@@ -848,7 +832,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
           if (resCheck.dpiQuality === 'low') {
             return (
               <div className="warning-box" style={{ marginBottom: '10px' }}>
-                <AlertTriangle size={16} style={{ flexShrink: 0 }} />
+                <span style={{ flexShrink: 0, fontSize: '15px' }}>⚠</span>
                 <div>{resCheck.warning}</div>
               </div>
             );
@@ -894,7 +878,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
                         title={layer.visible ? 'Hide Layer' : 'Show Layer'}
                         onClick={() => onUpdateLayer(layer.id, { visible: !layer.visible })}
                       >
-                        {layer.visible ? <Eye size={14} /> : <EyeOff size={14} />}
+                        {layer.visible ? <span>👁</span> : <span style={{ opacity: 0.5 }}>👁</span>}
                       </button>
 
                       <button
@@ -902,7 +886,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
                         title={layer.locked ? 'Unlock Layer' : 'Lock Layer'}
                         onClick={() => onUpdateLayer(layer.id, { locked: !layer.locked })}
                       >
-                        {layer.locked ? <Lock size={14} /> : <Unlock size={14} />}
+                        {layer.locked ? <span>🔒</span> : <span>🔓</span>}
                       </button>
 
                       <button
@@ -911,7 +895,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
                         disabled={originalIndex === layers.length - 1}
                         onClick={() => onMoveLayerUp(layer.id)}
                       >
-                        <ChevronUp size={14} />
+                        <span>▴</span>
                       </button>
 
                       <button
@@ -920,7 +904,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
                         disabled={originalIndex === 0}
                         onClick={() => onMoveLayerDown(layer.id)}
                       >
-                        <ChevronDown size={14} />
+                        <span>▾</span>
                       </button>
 
                       <button
@@ -928,7 +912,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
                         title="Duplicate"
                         onClick={() => onDuplicateLayer(layer.id)}
                       >
-                        <Copy size={14} />
+                        <span>⧉</span>
                       </button>
 
                       <button
@@ -937,7 +921,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
                         data-testid="btn-delete-layer"
                         onClick={() => onDeleteLayer(layer.id)}
                       >
-                        <Trash2 size={14} />
+                        <span>✕</span>
                       </button>
                     </div>
                   </div>
@@ -949,7 +933,7 @@ export const DrawerArtwork: React.FC<DrawerArtworkProps> = ({
 
         {/* Tip */}
         <div className="info-box" style={{ marginTop: '12px' }}>
-          <Info size={16} style={{ flexShrink: 0 }} />
+          <span style={{ flexShrink: 0, fontSize: '15px' }}>ℹ</span>
           <div>Original artwork pixels are preserved cleanly. Click and drag handles on the canvas to move, rotate, and scale.</div>
         </div>
       </div>

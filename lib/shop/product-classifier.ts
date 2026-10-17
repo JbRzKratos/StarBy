@@ -363,18 +363,18 @@ export interface QuickFilterPreset {
 }
 
 export const QUICK_FILTER_PRESETS: QuickFilterPreset[] = [
-  { id: 'all', label: 'All Catalog', icon: '✨' },
-  { id: 'plain-blanks', label: 'Plain Essentials (Blanks)', icon: '👕', badge: 'Blanks' },
-  { id: 'tees-designs', label: 'Tees & Hoodie Graphics', icon: '⚡', badge: '3D Canvas' },
-  { id: 'posters', label: 'Posters', icon: '🖼️', badge: 'Wall Art' },
-  { id: 'split-posters', label: 'Split Posters', icon: '🔲', badge: 'Multi-Panel' },
-  { id: 'oversized', label: 'Oversized Fits', icon: '🔥' },
-  { id: 'hoodies', label: 'Hoodies', icon: '🧥' },
-  { id: 'anime', label: 'Anime & Manga', icon: '⚡' },
-  { id: 'automotive', label: 'Cars & JDM', icon: '🏎️' },
-  { id: 'football', label: 'Football & Sports', icon: '⚽' },
-  { id: 'marvel', label: 'Superheroes', icon: '🦸' },
-  { id: 'vintage', label: 'Vintage Washed', icon: '🌪️' },
+  { id: 'all', label: 'All Catalog', icon: '✦' },
+  { id: 'plain-blanks', label: 'Plain Essentials (Blanks)', icon: '◻', badge: 'Blanks' },
+  { id: 'tees-designs', label: 'Tees & Hoodie Graphics', icon: '◈', badge: '3D Canvas' },
+  { id: 'posters', label: 'Posters', icon: '▦', badge: 'Wall Art' },
+  { id: 'split-posters', label: 'Split Posters', icon: '⊞', badge: 'Multi-Panel' },
+  { id: 'oversized', label: 'Oversized Fits', icon: '▲' },
+  { id: 'hoodies', label: 'Hoodies', icon: '⌂' },
+  { id: 'anime', label: 'Anime & Manga', icon: '✧' },
+  { id: 'automotive', label: 'Cars & JDM', icon: '⚙' },
+  { id: 'football', label: 'Football & Sports', icon: '◎' },
+  { id: 'marvel', label: 'Superheroes', icon: '🛡' },
+  { id: 'vintage', label: 'Vintage Washed', icon: '↺' },
 ];
 
 /**

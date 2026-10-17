@@ -2,16 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import {
-  X,
-  Sparkles,
-  Check,
-  ArrowRight,
-  Layers,
-  Crosshair,
-  MousePointerClick,
-  RotateCw,
-} from 'lucide-react';
 import type { ClothingModalState } from './clothing-product-modal.shared';
 import { isBackPlacement, getPlacementRegion } from './clothing-product-modal.shared';
 import type { DesignPlacementTarget } from '@/lib/clothing-designs/types';
@@ -81,7 +71,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
           className="absolute top-4 right-4 z-40 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all backdrop-blur-md border border-white/15 shadow-lg cursor-pointer hover:scale-105 active:scale-95"
           aria-label="Close modal"
         >
-          <X className="w-5 h-5" />
+          <span className="text-lg">✕</span>
         </button>
 
         {/* ── Left Side: Interactive Mockup Visualizer with Click-to-Place ────── */}
@@ -160,7 +150,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
               </span>
 
               <div className="absolute top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-black/70 px-2 py-0.5 rounded-full text-[8px] font-mono text-emerald-300 pointer-events-none">
-                <MousePointerClick className="w-2.5 h-2.5" />
+                <span>⚲</span>
                 <span>Click to place</span>
               </div>
             </div>
@@ -182,7 +172,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   style={{ top: '28%', left: '64%', transform: 'translate(-50%, -50%)' }}
                   title="Wearer Left Chest Pocket"
                 >
-                  <Crosshair className="w-3 h-3" />
+                  <span className="text-xs font-bold">+</span>
                 </button>
 
                 <button
@@ -199,7 +189,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   style={{ top: '46%', left: '50%', transform: 'translate(-50%, -50%)' }}
                   title="Front Center Chest"
                 >
-                  <Crosshair className="w-3 h-3" />
+                  <span className="text-xs font-bold">+</span>
                 </button>
 
                 <button
@@ -216,7 +206,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   style={{ top: '28%', left: '36%', transform: 'translate(-50%, -50%)' }}
                   title="Wearer Right Chest"
                 >
-                  <Crosshair className="w-3 h-3" />
+                  <span className="text-xs font-bold">+</span>
                 </button>
 
                 <button
@@ -233,7 +223,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   style={{ top: '76%', left: '50%', transform: 'translate(-50%, -50%)' }}
                   title="Bottom Hem Accent"
                 >
-                  <Crosshair className="w-3 h-3" />
+                  <span className="text-xs font-bold">+</span>
                 </button>
               </>
             ) : (
@@ -252,7 +242,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   style={{ top: '19%', left: '50%', transform: 'translate(-50%, -50%)' }}
                   title="Back Collar (Nape)"
                 >
-                  <Crosshair className="w-3 h-3" />
+                  <span className="text-xs font-bold">+</span>
                 </button>
 
                 <button
@@ -269,7 +259,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   style={{ top: '46%', left: '50%', transform: 'translate(-50%, -50%)' }}
                   title="Back Center"
                 >
-                  <Crosshair className="w-3 h-3" />
+                  <span className="text-xs font-bold">+</span>
                 </button>
               </>
             )}
@@ -306,7 +296,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                 className="z-20 px-3.5 py-2 bg-neutral-900/95 border border-emerald-500/50 rounded-xl text-center flex items-center gap-2 cursor-pointer shadow-2xl hover:bg-emerald-950/60 hover:border-emerald-400 transition-all scale-100 hover:scale-105"
                 title={`Click to move this artwork to the ${previewSide === 'front' ? 'Front' : 'Back'}`}
               >
-                <RotateCw className="w-4 h-4 text-emerald-400" />
+                <span className="text-emerald-400 text-sm">⟳</span>
                 <span className="font-mono text-[10px] text-white">
                   Placed on {previewSide === 'front' ? 'Back' : 'Front'} &bull;{' '}
                   <strong className="text-emerald-400 underline">Tap to move here</strong>
@@ -341,7 +331,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
               {/* Header with clearance from close button */}
               <div className="pr-12">
                 <div className="flex items-center gap-2 mb-1">
-                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <span className="text-emerald-400">✦</span>
                   <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-widest font-semibold">
                     Configure Your Apparel
                   </span>
@@ -424,15 +414,17 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                         aria-label={color.name}
                       >
                         {isSelected && (
-                          <Check
-                            className={`w-4 h-4 ${
+                          <span
+                            className={`text-xs font-bold ${
                               color.hex === '#FFFFFF' ||
                               color.hex === '#D4C5B9' ||
                               color.hex === '#E5E5E5'
                                 ? 'text-black'
                                 : 'text-white'
                             }`}
-                          />
+                          >
+                            ✓
+                          </span>
                         )}
                       </button>
                     );
@@ -470,7 +462,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <label className="font-mono text-[11px] text-white/70 uppercase tracking-wider font-semibold flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-white/50" />
+                    <span className="text-white/50 text-xs">⊞</span>
                     <span>Artwork Images in this Design ({artworks.length})</span>
                   </label>
                   <span className="font-mono text-[10px] text-white/40">
@@ -587,7 +579,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                                   : 'bg-transparent border-white/20'
                               }`}
                             >
-                              {isIncluded && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                              {isIncluded && <span className="text-[10px] font-bold">✓</span>}
                             </div>
                           </div>
                         )}
@@ -630,7 +622,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   <div className="flex flex-col gap-2 p-3.5 rounded-2xl bg-gradient-to-r from-emerald-950/20 via-white/[0.03] to-cyan-950/20 border border-white/10">
                     <div className="flex items-center justify-between">
                       <label className="font-mono text-[11px] text-white/90 uppercase tracking-wider font-bold flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                        <span className="text-emerald-400">✦</span>
                         <span>Type where you want it placed</span>
                       </label>
                       <span className="text-[10px] font-mono text-emerald-400 font-medium">
@@ -660,7 +652,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                             className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-1"
                             title="Clear input"
                           >
-                            <X className="w-3.5 h-3.5" />
+                            <span className="text-xs">✕</span>
                           </button>
                         )}
                       </div>
@@ -671,14 +663,14 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                         }}
                         className="px-3.5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md shrink-0 cursor-pointer"
                       >
-                        <ArrowRight className="w-3.5 h-3.5" />
+                        <span>→</span>
                         <span>Place</span>
                       </button>
                     </div>
 
                     {nlpParsed && (
                       <div className="flex items-center gap-2 text-[10px] font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-2.5 py-1.5 rounded-lg">
-                        <Check className="w-3 h-3 text-emerald-400 shrink-0" />
+                        <span className="text-emerald-400 shrink-0 font-bold">✓</span>
                         <span>
                           Understood: <strong>{nlpParsed.description}</strong>
                         </span>
@@ -704,7 +696,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   <div className="flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
                     <div className="flex items-center justify-between">
                       <label className="font-mono text-[11px] text-white/90 uppercase tracking-wider font-bold flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                        <span className="text-emerald-400">✦</span>
                         <span>Choose Where to Print This Artwork</span>
                       </label>
                       <span className="font-mono text-[10px] text-emerald-400 uppercase font-bold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
@@ -877,7 +869,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
               className="flex-1 py-3.5 px-6 bg-white hover:bg-white/90 text-black font-mono text-xs font-bold uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-xl hover:shadow-white/10 cursor-pointer"
             >
               <span>OPEN IN 3D STUDIO [360°]</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>→</span>
             </button>
           </div>
         </div>

@@ -2,15 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import {
-  X,
-  Sparkles,
-  Check,
-  ArrowRight,
-  Layers,
-  Crosshair,
-  RotateCw,
-} from 'lucide-react';
 import type { ClothingModalState } from './clothing-product-modal.shared';
 import { isBackPlacement, getPlacementRegion } from './clothing-product-modal.shared';
 import type { DesignPlacementTarget } from '@/lib/clothing-designs/types';
@@ -84,7 +75,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
           className="w-9 h-9 rounded-full bg-white/10 active:bg-white/20 text-white flex items-center justify-center transition-all border border-white/15 cursor-pointer shrink-0"
           aria-label="Close modal"
         >
-          <X className="w-5 h-5" />
+          <span className="text-base">✕</span>
         </button>
       </header>
 
@@ -157,7 +148,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 style={{ top: '28%', left: '64%', transform: 'translate(-50%, -50%)' }}
                 title="Wearer Left Chest"
               >
-                <Crosshair className="w-2.5 h-2.5" />
+                <span className="text-[10px] font-bold">+</span>
               </button>
 
               {/* Front Center Chest */}
@@ -175,7 +166,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 style={{ top: '46%', left: '50%', transform: 'translate(-50%, -50%)' }}
                 title="Front Center"
               >
-                <Crosshair className="w-2.5 h-2.5" />
+                <span className="text-[10px] font-bold">+</span>
               </button>
 
               {/* Wearer Right Chest */}
@@ -193,7 +184,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 style={{ top: '28%', left: '36%', transform: 'translate(-50%, -50%)' }}
                 title="Wearer Right Chest"
               >
-                <Crosshair className="w-2.5 h-2.5" />
+                <span className="text-[10px] font-bold">+</span>
               </button>
 
               {/* Bottom Hem */}
@@ -211,7 +202,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 style={{ top: '76%', left: '50%', transform: 'translate(-50%, -50%)' }}
                 title="Bottom Hem"
               >
-                <Crosshair className="w-2.5 h-2.5" />
+                <span className="text-[10px] font-bold">+</span>
               </button>
             </>
           ) : (
@@ -231,7 +222,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 style={{ top: '19%', left: '50%', transform: 'translate(-50%, -50%)' }}
                 title="Back Collar"
               >
-                <Crosshair className="w-2.5 h-2.5" />
+                <span className="text-[10px] font-bold">+</span>
               </button>
 
               {/* Back Center */}
@@ -249,7 +240,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 style={{ top: '46%', left: '50%', transform: 'translate(-50%, -50%)' }}
                 title="Back Center"
               >
-                <Crosshair className="w-2.5 h-2.5" />
+                <span className="text-[10px] font-bold">+</span>
               </button>
             </>
           )}
@@ -285,7 +276,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
               }}
               className="z-20 px-3 py-1.5 bg-neutral-900/95 border border-emerald-500/50 rounded-xl text-center flex items-center gap-1.5 cursor-pointer shadow-xl active:scale-95"
             >
-              <RotateCw className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-emerald-400">⟳</span>
               <span className="font-mono text-[9px] text-white">
                 On {previewSide === 'front' ? 'Back' : 'Front'} &bull;{' '}
                 <strong className="text-emerald-400 underline">Tap to move here</strong>
@@ -308,7 +299,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
         {/* Title and Garment Info */}
         <div>
           <div className="flex items-center gap-1.5 mb-1">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="text-emerald-400">✦</span>
             <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-widest font-semibold">
               Configure Your Apparel
             </span>
@@ -392,15 +383,17 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                   aria-label={color.name}
                 >
                   {isSelected && (
-                    <Check
-                      className={`w-4 h-4 ${
+                    <span
+                      className={`text-xs font-bold ${
                         color.hex === '#FFFFFF' ||
                         color.hex === '#D4C5B9' ||
                         color.hex === '#E5E5E5'
                           ? 'text-black'
                           : 'text-white'
                       }`}
-                    />
+                    >
+                      ✓
+                    </span>
                   )}
                 </button>
               );
@@ -438,7 +431,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <label className="font-mono text-[11px] text-white/80 uppercase tracking-wider font-semibold flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5 text-white/50" />
+              <span className="text-white/50 text-xs">⊞</span>
               <span>Artwork Images in this Design ({artworks.length})</span>
             </label>
             <span className="font-mono text-[9px] text-white/40">Tap to select</span>
@@ -541,7 +534,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                             : 'bg-transparent border-white/20'
                         }`}
                       >
-                        {isIncluded && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                        {isIncluded && <span className="text-[10px] font-bold">✓</span>}
                       </div>
                     </div>
                   )}
@@ -584,7 +577,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
             <div className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/10">
               <div className="flex items-center justify-between">
                 <label className="font-mono text-[10px] text-white/90 uppercase tracking-wider font-bold flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-emerald-400" />
+                  <span className="text-emerald-400">✦</span>
                   <span>Smart AI Placement</span>
                 </label>
                 <span className="text-[9px] font-mono text-emerald-400">Natural Language</span>
@@ -611,7 +604,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
 
               {nlpParsed && (
                 <div className="text-[9px] font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-2 py-1 rounded flex items-center gap-1.5">
-                  <Check className="w-3 h-3 text-emerald-400 shrink-0" />
+                  <span className="text-emerald-400 shrink-0 font-bold">✓</span>
                   <span>
                     Placed on: <strong>{nlpParsed.description}</strong>
                   </span>
@@ -793,7 +786,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
           className="flex-1 py-3 px-5 bg-white active:bg-white/90 text-black font-mono text-xs font-bold uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-xl cursor-pointer"
         >
           <span>OPEN IN 3D STUDIO [360°]</span>
-          <ArrowRight className="w-4 h-4" />
+          <span>→</span>
         </button>
       </footer>
     </div>

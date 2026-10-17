@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Download, Video, Image, Film, Zap, Sparkles } from 'lucide-react';
 import type { SceneManager3D } from '../../engine/3d/sceneManager';
 import type { TextureCompositor3D } from '../../engine/3d/textureCompositor';
 import { Export3DManager, type ExportResolutionPreset } from '../../engine/3d/export3D';
@@ -91,7 +90,7 @@ export const DrawerExport3D: React.FC<DrawerExport3DProps> = ({
     <div className="drawer-content" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       <div className="drawer-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Download size={18} className="text-accent" />
+          <span style={{ fontSize: '16px' }}>⤓</span>
           <h2 style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>Export 3D Mockup</h2>
         </div>
         <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -112,7 +111,7 @@ export const DrawerExport3D: React.FC<DrawerExport3DProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700 }}>
-          <Image size={15} color="#3B5EFF" />
+          <span style={{ color: '#3B5EFF', fontSize: '14px' }}>🖼</span>
           <span>Still Image Render (PNG)</span>
         </div>
 
@@ -127,13 +126,13 @@ export const DrawerExport3D: React.FC<DrawerExport3DProps> = ({
                 id: 'standard' as ExportResolutionPreset,
                 label: 'Standard',
                 sub: '2048 px',
-                icon: <Zap size={13} />,
+                icon: <span>⚡</span>,
               },
               {
                 id: 'high' as ExportResolutionPreset,
                 label: 'High',
                 sub: '4096 px',
-                icon: <Sparkles size={13} />,
+                icon: <span>✦</span>,
               },
             ] as const).map((opt) => (
               <button
@@ -274,7 +273,7 @@ export const DrawerExport3D: React.FC<DrawerExport3DProps> = ({
             transition: 'background 0.15s ease',
           }}
         >
-          <Download size={14} />
+          <span>⤓</span>
           <span>
             {isExportingStill
               ? 'Rendering High-Res PNG…'
@@ -302,7 +301,7 @@ export const DrawerExport3D: React.FC<DrawerExport3DProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700 }}>
-          <Film size={15} color="#10b981" />
+          <span style={{ color: '#10b981', fontSize: '14px' }}>▶</span>
           <span>Motion Video Export (WebM)</span>
         </div>
 
@@ -409,7 +408,7 @@ export const DrawerExport3D: React.FC<DrawerExport3DProps> = ({
               marginTop: '4px',
             }}
           >
-            <Video size={14} />
+            <span>▶</span>
             <span>Record &amp; Download WebM</span>
           </button>
         )}

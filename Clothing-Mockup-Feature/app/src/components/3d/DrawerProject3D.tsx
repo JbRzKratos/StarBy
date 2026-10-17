@@ -1,5 +1,4 @@
-﻿import React, { useEffect, useState, useRef } from 'react';
-import { Save, FolderOpen, Trash2, Download, Upload, Check, Clock } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Storage3D } from '../../engine/3d/storage3D';
 import type { ProjectState3D } from '../../types/threeD';
 
@@ -106,7 +105,7 @@ export const DrawerProject3D: React.FC<DrawerProject3DProps> = ({
     <div className="drawer-content" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
       <div className="drawer-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <FolderOpen size={18} className="text-accent" />
+          <span style={{ fontSize: '16px' }}>📁</span>
           <h2 style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>Project Management</h2>
         </div>
         <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -162,7 +161,7 @@ export const DrawerProject3D: React.FC<DrawerProject3DProps> = ({
             transition: 'background 0.2s ease',
           }}
         >
-          {saveSuccess ? <Check size={14} /> : <Save size={14} />}
+          {saveSuccess ? <span>✓</span> : <span>💾</span>}
           <span>{saveSuccess ? 'Project Saved!' : 'Save Current Project'}</span>
         </button>
 
@@ -185,7 +184,7 @@ export const DrawerProject3D: React.FC<DrawerProject3DProps> = ({
               gap: '4px',
             }}
           >
-            <Download size={12} />
+            <span>⤓</span>
             <span>Export JSON</span>
           </button>
           <button
@@ -205,7 +204,7 @@ export const DrawerProject3D: React.FC<DrawerProject3DProps> = ({
               gap: '4px',
             }}
           >
-            <Upload size={12} />
+            <span>↑</span>
             <span>Import JSON</span>
           </button>
           <input
@@ -248,7 +247,7 @@ export const DrawerProject3D: React.FC<DrawerProject3DProps> = ({
                     {p.name}
                   </div>
                   <div style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
-                    <Clock size={10} />
+                    <span style={{ fontSize: '10px' }}>🕒</span>
                     <span>{new Date(p.updatedAt).toLocaleDateString()}</span>
                   </div>
                 </div>
@@ -280,7 +279,7 @@ export const DrawerProject3D: React.FC<DrawerProject3DProps> = ({
                     }}
                     title="Delete"
                   >
-                    <Trash2 size={13} />
+                    <span style={{ fontSize: '13px' }}>✕</span>
                   </button>
                 </div>
               </div>

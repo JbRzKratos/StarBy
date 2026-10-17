@@ -2,7 +2,6 @@
 
 import React, { useRef, useState } from 'react';
 import { useCartStore } from '@/lib/stores/cart-store';
-import { Camera, CheckCircle2, Loader2 } from 'lucide-react';
 import type { ProductType } from '@/lib/config/printSpecs';
 
 interface SimpleCustomizerLayoutProps {
@@ -205,7 +204,7 @@ export function SimpleCustomizerLayout({
               onClick={() => fileInputRef.current?.click()}
               className="w-full h-28 border-2 border-dashed border-[#F5F1EA]/20 rounded-xl flex flex-col items-center justify-center gap-2 text-ash hover:text-bone hover:border-bone/50 hover:bg-[#F5F1EA]/5 transition-all"
             >
-              <Camera className="w-6 h-6 text-[#3B5EFF]" />
+              <span className="text-2xl text-[#3B5EFF]">📷</span>
               <span className="text-xs font-medium">Click to upload original artwork(s)</span>
               <span className="text-[10px] opacity-70">PNG, JPG, SVG, WebP • Multi-file support</span>
             </button>
@@ -237,7 +236,7 @@ export function SimpleCustomizerLayout({
                   </div>
                 ))}
                 <div className="p-2 rounded-lg border bg-emerald-500/10 border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span className="font-bold shrink-0">✓</span>
                   <span>{artworks.length} artwork file{artworks.length > 1 ? 's' : ''} ready</span>
                 </div>
               </div>
@@ -285,7 +284,7 @@ export function SimpleCustomizerLayout({
             >
               {isSaving ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="w-4 h-4 animate-spin text-sm">⟳</span>
                   <span>Adding to Bag...</span>
                 </>
               ) : (

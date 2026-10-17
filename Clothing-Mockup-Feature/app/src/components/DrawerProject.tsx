@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Save, FolderOpen, RotateCcw, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 interface DrawerProjectProps {
   onSaveProject: () => void;
@@ -40,7 +39,7 @@ export const DrawerProject: React.FC<DrawerProjectProps> = ({
             style={{ width: '100%', justifyContent: 'center' }}
             onClick={onSaveProject}
           >
-            <Save size={15} />
+            <span>💾</span>
             <span>Download Project State (.json)</span>
           </button>
         </div>
@@ -56,7 +55,7 @@ export const DrawerProject: React.FC<DrawerProjectProps> = ({
             style={{ width: '100%', justifyContent: 'center' }}
             onClick={() => fileInputRef.current?.click()}
           >
-            <FolderOpen size={15} />
+            <span>📁</span>
             <span>Load Project File (.json)</span>
           </button>
           <input
@@ -81,7 +80,7 @@ export const DrawerProject: React.FC<DrawerProjectProps> = ({
               style={{ width: '100%', justifyContent: 'center', borderColor: 'rgba(239,68,68,0.3)', color: '#f87171' }}
               onClick={() => setShowConfirmReset(true)}
             >
-              <RotateCcw size={15} />
+              <span>⟳</span>
               <span>Reset All Edits...</span>
             </button>
           ) : (
@@ -97,7 +96,7 @@ export const DrawerProject: React.FC<DrawerProjectProps> = ({
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f87171', fontSize: '13px', fontWeight: 600 }}>
-                <AlertTriangle size={16} />
+                <span>⚠</span>
                 <span>Confirm Reset?</span>
               </div>
               <p style={{ fontSize: '11px', color: 'var(--text-dim)', lineHeight: 1.4 }}>
@@ -129,7 +128,7 @@ export const DrawerProject: React.FC<DrawerProjectProps> = ({
 
         {/* Third-Party Notices & Licensing */}
         <div className="info-box" style={{ marginTop: '20px' }}>
-          <ShieldCheck size={16} style={{ flexShrink: 0 }} />
+          <span style={{ flexShrink: 0, fontSize: '15px' }}>✓</span>
           <div>
             <strong>Asset Notice:</strong> Reference mockup assets and gobo lighting textures are provided for local inspection. Maintain third-party rights and obtain appropriate licenses before public or commercial distribution.
           </div>

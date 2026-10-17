@@ -1,12 +1,4 @@
 import React, { useRef, useState } from 'react';
-import {
-  Upload,
-  Trash2,
-  Copy,
-  Eye,
-  EyeOff,
-  Sparkles,
-} from 'lucide-react';
 import type {
   ArtworkLayer3D,
   Garment3DConfig,
@@ -260,7 +252,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                 color: '#A5B4FC',
               }}
             >
-              <Sparkles size={17} />
+              <span style={{ fontSize: '16px' }}>✦</span>
             </div>
             <div style={{ textAlign: 'left' }}>
               <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff' }}>
@@ -353,7 +345,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
               justifyContent: 'center',
             }}
           >
-            <Upload size={18} />
+            <span style={{ fontSize: '18px' }}>↑</span>
           </div>
           <div>
             <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main, #fff)' }}>
@@ -384,7 +376,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
             gap: '10px',
           }}
         >
-          <Sparkles size={18} style={{ color: '#38bdf8', flexShrink: 0 }} />
+          <span style={{ color: '#38bdf8', flexShrink: 0, fontSize: '16px' }}>✦</span>
           <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.4 }}>
             You are viewing a <strong>StarBy Curated Design</strong>. Calibrated placements are locked for production quality. Browse our library above if you want to switch designs!
           </div>
@@ -491,7 +483,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                           }}
                           title={layer.opacity > 0 ? 'Hide' : 'Show'}
                         >
-                          {layer.opacity > 0 ? <Eye size={14} /> : <EyeOff size={14} />}
+                          {layer.opacity > 0 ? <span style={{ fontSize: '13px' }}>👁</span> : <span style={{ fontSize: '13px', opacity: 0.5 }}>✕</span>}
                         </button>
                         <button
                           onClick={(e) => {
@@ -501,7 +493,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                           style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
                           title="Duplicate"
                         >
-                          <Copy size={13} />
+                          <span style={{ fontSize: '13px' }}>⧉</span>
                         </button>
                         <button
                           onClick={(e) => {
@@ -511,7 +503,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                           style={{ background: 'transparent', border: 'none', color: '#ff4d4d', cursor: 'pointer', padding: '4px' }}
                           title="Delete"
                         >
-                          <Trash2 size={13} />
+                          <span style={{ fontSize: '13px' }}>✕</span>
                         </button>
                       </>
                     )}
@@ -819,7 +811,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '10px', fontWeight: 700, color: '#34d399', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Sparkles size={12} />
+                    <span style={{ fontSize: '12px' }}>✦</span>
                     <span>Step 2: Target Spot ({activeRegion.toUpperCase()})</span>
                   </span>
                   <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>

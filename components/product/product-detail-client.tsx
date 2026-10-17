@@ -21,7 +21,6 @@ import {
   type ApparelProductConfig,
   type ApparelColorSwatch,
 } from '@/lib/config/apparel-variants';
-import { Check, Sparkles } from 'lucide-react';
 import { isProductComingSoon } from '@/data/categories';
 
 // ── Lazy-loaded modals: only downloaded when the user triggers them ───────────
@@ -461,13 +460,15 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                           aria-label={color.name}
                         >
                           {isSelected && (
-                            <Check
-                              className={`w-4 h-4 ${
+                            <span
+                              className={`text-xs font-bold leading-none ${
                                 color.hex === '#FFFFFF' || color.hex === '#D4C5B9' || color.hex === '#E5E5E5'
                                   ? 'text-black'
                                   : 'text-white'
                               }`}
-                            />
+                            >
+                              ✓
+                            </span>
                           )}
                         </button>
                       );
@@ -507,7 +508,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                         onClick={() => setSizeFinder(true)}
                         className="font-mono text-[10px] text-cobalt uppercase tracking-widest underline underline-offset-4 hover:text-bone transition-colors font-semibold flex items-center gap-1"
                       >
-                        <Sparkles className="w-3 h-3 text-cobalt" />
+                        <span className="text-xs text-cobalt">✦</span>
                         <span>Find My Size →</span>
                       </button>
                     )}
@@ -591,7 +592,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                           onClick={() => setIsClothingModalOpen(true)}
                           className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold shadow-lg"
                         >
-                          <Sparkles className="w-4 h-4 text-bone" />
+                          <span className="text-sm text-bone">✦</span>
                           <span>Customize Design</span>
                         </button>
                       ) : (
@@ -603,7 +604,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                           }
                           className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold"
                         >
-                          <Sparkles className="w-4 h-4 text-bone" />
+                          <span className="text-sm text-bone">✦</span>
                           <span>Customize Design</span>
                         </Link>
                       )}

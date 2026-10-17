@@ -1,5 +1,4 @@
-﻿import React from 'react';
-import { Sun, Sliders } from 'lucide-react';
+import React from 'react';
 import type { LightingConfig3D } from '../../types/threeD';
 
 interface DrawerLighting3DProps {
@@ -69,7 +68,7 @@ export const DrawerLighting3D: React.FC<DrawerLighting3DProps> = ({
     <div className="drawer-content" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
       <div className="drawer-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Sun size={18} className="text-accent" />
+          <span style={{ fontSize: '16px' }}>☼</span>
           <h2 style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>Studio Environment</h2>
         </div>
         <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -127,7 +126,7 @@ export const DrawerLighting3D: React.FC<DrawerLighting3DProps> = ({
         }}
       >
         <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-main, #fff)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Sliders size={14} color="#3B5EFF" />
+          <span style={{ color: '#3B5EFF', fontSize: '14px' }}>⚙</span>
           <span>Illumination Controls</span>
         </div>
 

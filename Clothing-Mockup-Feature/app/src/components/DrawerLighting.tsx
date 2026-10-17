@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { Play, Pause, Upload, Sparkles } from 'lucide-react';
 import type { BackgroundSettings, LightingSettings } from '../types/mockup';
 import { assetManager } from '../engine/assetManager';
 
@@ -104,7 +103,7 @@ export const DrawerLighting: React.FC<DrawerLightingProps> = ({
               style={{ padding: '6px' }}
             >
               <div style={{ height: '56px', borderRadius: '4px', background: 'var(--bg-card)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed var(--border-medium)' }}>
-                <Upload size={18} style={{ color: 'var(--text-dim)' }} />
+                <span style={{ color: 'var(--text-dim)', fontSize: '18px' }}>↑</span>
               </div>
               <span style={{ fontSize: '11px', fontWeight: 600, color: '#fff', textAlign: 'center' }}>
                 Custom Upload
@@ -170,9 +169,9 @@ export const DrawerLighting: React.FC<DrawerLightingProps> = ({
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {lighting.animated ? (
-              <Play size={16} style={{ color: 'var(--success)' }} />
+              <span style={{ color: 'var(--success)', fontSize: '14px' }}>▶</span>
             ) : (
-              <Pause size={16} style={{ color: 'var(--text-dim)' }} />
+              <span style={{ color: 'var(--text-dim)', fontSize: '14px' }}>❚❚</span>
             )}
             <div>
               <div style={{ fontSize: '13px', fontWeight: 600, color: '#fff' }}>Moving Sun Shadows</div>
@@ -248,7 +247,7 @@ export const DrawerLighting: React.FC<DrawerLightingProps> = ({
 
         {/* Lighting Info */}
         <div className="info-box">
-          <Sparkles size={16} style={{ flexShrink: 0 }} />
+          <span style={{ flexShrink: 0, fontSize: '15px' }}>✦</span>
           <div>
             The 180-frame tree shadow sequence naturally passes sunlight across the garment and backdrop. Exports capture the exact selected frame.
           </div>
