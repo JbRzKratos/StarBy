@@ -105,6 +105,7 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
             <Link
               key={link.href}
               href={link.href}
+              prefetch={true}
               className={`font-mono text-caption uppercase tracking-widest font-bold transition-colors whitespace-nowrap ${
                 textIsDark
                   ? 'text-[#0A0A0A] hover:text-[#B45309]'

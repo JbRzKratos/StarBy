@@ -5,7 +5,8 @@ import { notFound } from 'next/navigation';
 import { ShopPage } from '@/components/shop';
 import { Suspense } from 'react';
 
-export const dynamic = 'force-dynamic';
+// ISR: Cache statically for 60 seconds with on-demand admin revalidation
+export const revalidate = 60;
 
 interface CategoryPageProps {
   params: { category: string };

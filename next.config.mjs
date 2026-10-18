@@ -6,12 +6,20 @@ const nextConfig = {
 
   // Transpile ESM packages for SSR compatibility on Node & Vercel
   transpilePackages: ['gsap', '@gsap/react'],
+  compress: true,
 
   experimental: {
     optimizePackageImports: [
-      'lucide-react',   // icon library — large barrel, only subset used
-      'recharts',       // chart library — only used in /admin
+      'lucide-react',       // icon library — large barrel, only subset used
+      'recharts',           // chart library — only used in /admin
       '@aws-sdk/client-s3', // AWS SDK — tree-shake S3 commands
+      'three',              // 3D engine — avoid barrel parsing
+      '@react-three/fiber', // React Three Fiber
+      '@react-three/drei',  // Drei helpers
+      '@supabase/supabase-js', // Supabase client
+      'fabric',             // 2D Canvas library
+      'clsx',
+      'tailwind-merge',
     ],
   },
 

@@ -90,6 +90,7 @@ function MobileProductCard({
   return (
     <Link
       href={productHref}
+      prefetch={true}
       className="group flex flex-col gap-0 col-span-1"
     >
       {/* Standard Hover Image wrapper */}

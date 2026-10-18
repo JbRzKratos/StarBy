@@ -261,6 +261,37 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
     }
   };
 
+  const isPoster =
+    product.categorySlug === 'posters' ||
+    product.categorySlug === 'split-posters' ||
+    Boolean(product.tags?.includes('posters')) ||
+    Boolean(product.tags?.includes('split-posters'));
+
+  // Gallery images logic: ensure non-apparel never falls back to plain t-shirt images
+  const galleryImages = useMemo(() => {
+    if (isApparel) {
+      if (clothingDesign?.artworks && clothingDesign.artworks.length > 0) {
+        return clothingDesign.artworks.map((a) => a.previewUrl);
+      }
+      if (selectedApparelColor?.allImages && selectedApparelColor.allImages.length > 0) {
+        return selectedApparelColor.allImages;
+      }
+      if (variant?.images && variant.images.length > 0) {
+        return variant.images;
+      }
+      return [product.variants?.[0]?.images?.[0] || ''];
+    }
+
+    // Posters & Wall Art: strictly use variant images
+    if (variant?.images && variant.images.length > 0) {
+      return variant.images;
+    }
+    if (product.variants?.[0]?.images && product.variants[0].images.length > 0) {
+      return product.variants[0].images;
+    }
+    return [];
+  }, [isApparel, clothingDesign, selectedApparelColor, variant, product.variants]);
+
   const handleAddToCart = () => {
     if (isComingSoon) return;
 
@@ -298,6 +329,9 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
     addItem({
       productId: product.id,
       variantId: variant.id,
+      name: product.name,
+      variant: variant.name,
+      image: variant.images?.[0] || product.variants?.[0]?.images?.[0] || '',
       quantity: 1,
       price: variant.price,
       ...(product.sizes && { size: selectedSize }),
@@ -317,15 +351,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
           <ImageGallery
             colorHex={isApparel ? selectedApparelColor.hex : variant?.colorHex ?? '#1A1A1E'}
             productName={product.name}
-            images={
-              selectedApparelColor?.allImages && selectedApparelColor.allImages.length > 0
-                ? selectedApparelColor.allImages
-                : variant?.images && variant.images.length > 0 && !clothingDesign?.artworks?.length
-                ? variant.images
-                : clothingDesign?.artworks && clothingDesign.artworks.length > 0
-                ? clothingDesign.artworks.map((a) => a.previewUrl)
-                : variant?.images
-            }
+            images={galleryImages}
           />
 
           {/* Right: Info */}
@@ -476,6 +502,66 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   </div>
                 </div>
               </div>
+            ) : isPoster ? (
+              /* Dedicated Paper Finish Selector for Posters & Wall Art (No color swatches) */
+              product.variants.length > 1 && (
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-caption text-ash uppercase tracking-widest font-semibold">
+                      Paper Finish —{' '}
+                      <span className="text-bone font-bold">
+                        {product.variants[selectedVariant]?.name || 'Archival Matte'}
+                      </span>
+                    </span>
+                    <span className="font-mono text-[10px] text-pearl/70 uppercase tracking-wider">
+                      Museum Archival Grade
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {product.variants.map((v, idx) => {
+                      const isSelected = selectedVariant === idx;
+                      const isMatte = v.name.toLowerCase().includes('matte');
+                      return (
+                        <button
+                          key={v.id || idx}
+                          type="button"
+                          onClick={() => setSelectedVariant(idx)}
+                          className={`p-3.5 rounded-xl border text-left flex flex-col gap-1 transition-all relative ${
+                            isSelected
+                              ? 'bg-cobalt/15 border-cobalt text-white shadow-lg ring-1 ring-cobalt/50'
+                              : 'bg-smoke/10 border-smoke/30 text-pearl hover:bg-smoke/20 hover:border-smoke hover:text-bone'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                              <span className={isSelected ? 'text-cobalt' : 'text-ash'}>
+                                {isMatte ? '✦' : '✧'}
+                              </span>
+                              <span>
+                                {isMatte ? 'Archival Matte' : 'Metallic Lustre / Gloss'}
+                              </span>
+                            </span>
+                            {isSelected && (
+                              <span className="text-cobalt text-xs font-bold">✓</span>
+                            )}
+                          </div>
+                          <div className="flex items-center justify-between mt-1">
+                            <span className="font-mono text-[11px] text-ash">
+                              {isMatte
+                                ? '300 GSM • Smooth Non-Reflective'
+                                : '310 GSM • Vibrant Lustre Gloss'}
+                            </span>
+                            <span className="font-mono text-[11px] text-bone font-semibold">
+                              ₹{v.price}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )
             ) : (
               /* Non-apparel product variant selector */
               product.variants.length > 1 && (
@@ -581,6 +667,39 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   </Link>
                 </div>
               </div>
+            ) : isPoster ? (
+              /* Dedicated Poster & Split Poster CTA — Direct Add to Cart & Wall Studio */
+              <div className="flex flex-col gap-3 mt-2">
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  className="w-full py-4 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold shadow-lg shadow-cobalt/25 flex items-center justify-center gap-2"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                  </svg>
+                  <span>Add to Cart</span>
+                </button>
+
+                <Link
+                  href={`/wall-studio?theme=${product.tags?.[0] || 'all'}&poster=${product.id}`}
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500/15 via-[#3B5EFF]/20 to-amber-500/15 border border-amber-400/40 hover:border-amber-300 text-white font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all font-bold group"
+                >
+                  <span className="text-amber-400 text-sm">✦</span>
+                  <span>Build A Wall Around This</span>
+                </Link>
+              </div>
             ) : (
               <div className="flex flex-col gap-3 mt-2">
                 <div className="flex flex-col sm:flex-row gap-3">
@@ -612,7 +731,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                         onClick={handleAddToCart}
                         className="flex-1 py-3.5 border border-smoke/70 text-pearl font-mono text-caption uppercase tracking-widest hover:border-pearl hover:text-bone hover:bg-white/[0.03] transition-colors"
                       >
-                        {clothingDesign ? 'Add to Cart' : 'Add to Cart (Plain)'}
+                        {isPlainApparel ? 'Add to Cart (Plain)' : 'Add to Cart'}
                       </button>
                     </>
                   ) : (
@@ -624,18 +743,6 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                     </button>
                   )}
                 </div>
-
-                {/* Build A Wall Around This Button for Posters & Split Posters */}
-                {(product.categorySlug === 'posters' ||
-                  product.categorySlug === 'split-posters') && (
-                  <Link
-                    href={`/wall-studio?theme=${product.tags?.[0] || 'all'}&poster=${product.id}`}
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500/15 via-[#3B5EFF]/20 to-amber-500/15 border border-amber-400/40 hover:border-amber-300 text-white font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all font-bold group"
-                  >
-                    <span className="text-amber-400 text-sm">✦</span>
-                    <span>Build A Wall Around This</span>
-                  </Link>
-                )}
               </div>
             )}
           </div>

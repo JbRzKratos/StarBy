@@ -1,8 +1,16 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import {
+  getCachedPricesPayload,
+  setCachedPricesPayload,
+  invalidateProductsCache,
+} from '@/lib/services/products-service';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+
+export function invalidatePricesCache() {
+  invalidateProductsCache();
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -47,10 +55,20 @@ export async function GET(request: NextRequest) {
         },
         {
           headers: {
-            'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+            'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
           },
         },
       );
+    }
+
+    // Check fast in-memory cache for bulk prices
+    const cachedPayload = getCachedPricesPayload();
+    if (cachedPayload) {
+      return NextResponse.json(cachedPayload, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+        },
+      });
     }
 
     // Return complete price & name dictionary for fast client sync across all products, walls, splits, and magazines
@@ -113,19 +131,22 @@ export async function GET(request: NextRequest) {
       variantPriceMap[v.id] = { price: v.price, inStock: v.inStock };
     }
 
+    const payload = {
+      success: true,
+      timestamp: Date.now(),
+      products: productPriceMap,
+      names: productNameMap,
+      variants: variantPriceMap,
+      wallLayouts: wallLayoutPriceMap,
+      prebuiltWalls: prebuiltPriceMap,
+    };
+    setCachedPricesPayload(payload);
+
     return NextResponse.json(
-      {
-        success: true,
-        timestamp: Date.now(),
-        products: productPriceMap,
-        names: productNameMap,
-        variants: variantPriceMap,
-        wallLayouts: wallLayoutPriceMap,
-        prebuiltWalls: prebuiltPriceMap,
-      },
+      payload,
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
         },
       },
     );

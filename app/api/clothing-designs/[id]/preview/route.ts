@@ -46,9 +46,14 @@ export async function GET(req: Request, { params }: RouteProps) {
 
     const filename = result.fileName || `${id}_${artIdParam || 'artwork'}.${result.contentType.includes('png') ? 'png' : 'webp'}`;
 
+    const hasVersion = searchParams.has('v');
+    const cacheControl = hasVersion
+      ? 'public, max-age=31536000, immutable'
+      : 'public, max-age=3600, stale-while-revalidate=86400';
+
     const headers: Record<string, string> = {
       'Content-Type': result.contentType,
-      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Cache-Control': cacheControl,
       'X-Content-Type-Options': 'nosniff',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',

@@ -91,8 +91,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back ( From collor to full back).png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -100,8 +100,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front ( Left Chest).png",
         "suggestedPlacement": "left-chest",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio&v=v2"
       },
       {
         "id": "art-3",
@@ -109,13 +109,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Sleeve (on any side bottom).png",
         "suggestedPlacement": "left-sleeve",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=studio"
+        "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-002",
@@ -141,8 +141,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front ( full front only for black tees).png",
         "suggestedPlacement": "front-center",
         "colorHint": "black",
-        "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -150,13 +150,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front ( full front only for white tees).png",
         "suggestedPlacement": "front-center",
         "colorHint": "white",
-        "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-003",
@@ -182,8 +182,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back ( From Collor to full back).png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -191,13 +191,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-004",
@@ -223,13 +223,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-005",
@@ -255,8 +255,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -264,13 +264,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-006",
@@ -296,13 +296,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-007",
@@ -328,13 +328,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-008",
@@ -360,13 +360,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-009",
@@ -392,8 +392,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -401,13 +401,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-010",
@@ -433,8 +433,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back ( Black tees).png",
         "suggestedPlacement": "back-center",
         "colorHint": "black",
-        "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -442,8 +442,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back ( white tees).png",
         "suggestedPlacement": "back-center",
         "colorHint": "white",
-        "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=studio&v=v2"
       },
       {
         "id": "art-3",
@@ -451,8 +451,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front ( Black tees).png",
         "suggestedPlacement": "front-center",
         "colorHint": "black",
-        "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio"
+        "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio&v=v2"
       },
       {
         "id": "art-4",
@@ -460,13 +460,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front ( White tees).png",
         "suggestedPlacement": "front-center",
         "colorHint": "white",
-        "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=studio"
+        "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-3",
-    "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio"
+    "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio&v=v2"
   },
   {
     "id": "design-011",
@@ -491,8 +491,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back (White tees).png",
         "suggestedPlacement": "back-center",
         "colorHint": "white",
-        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -500,8 +500,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back (black tees).png",
         "suggestedPlacement": "back-center",
         "colorHint": "black",
-        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=studio&v=v2"
       },
       {
         "id": "art-3",
@@ -509,8 +509,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front (Black Tees).png",
         "suggestedPlacement": "front-center",
         "colorHint": "black",
-        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio"
+        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio&v=v2"
       },
       {
         "id": "art-4",
@@ -518,8 +518,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front (White Tees).png",
         "suggestedPlacement": "front-center",
         "colorHint": "white",
-        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=studio"
+        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=studio&v=v2"
       },
       {
         "id": "art-5",
@@ -527,8 +527,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Sleeve ( Black Tees).png",
         "suggestedPlacement": "left-sleeve",
         "colorHint": "black",
-        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=studio"
+        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=studio&v=v2"
       },
       {
         "id": "art-6",
@@ -536,13 +536,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Sleeve ( White Tees).png",
         "suggestedPlacement": "left-sleeve",
         "colorHint": "white",
-        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=studio"
+        "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-3",
-    "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio"
+    "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio&v=v2"
   },
   {
     "id": "design-012",
@@ -568,8 +568,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -577,13 +577,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-013",
@@ -609,13 +609,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back ( Black tees).png",
         "suggestedPlacement": "back-center",
         "colorHint": "black",
-        "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-014",
@@ -641,8 +641,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -650,13 +650,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front Rotated.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-015",
@@ -683,8 +683,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -692,13 +692,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-016",
@@ -725,8 +725,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -734,13 +734,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-017",
@@ -766,13 +766,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front Bottom.png",
         "suggestedPlacement": "bottom-hem",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-018",
@@ -798,8 +798,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -807,13 +807,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-019",
@@ -840,13 +840,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-020",
@@ -872,8 +872,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -881,13 +881,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-021",
@@ -912,13 +912,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-022",
@@ -944,13 +944,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-023",
@@ -976,13 +976,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-024",
@@ -1008,13 +1008,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-025",
@@ -1040,13 +1040,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-026",
@@ -1072,13 +1072,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-027",
@@ -1104,13 +1104,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-028",
@@ -1136,13 +1136,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-029",
@@ -1168,13 +1168,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-030",
@@ -1199,13 +1199,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-031",
@@ -1231,13 +1231,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-032",
@@ -1264,13 +1264,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-033",
@@ -1296,13 +1296,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-034",
@@ -1328,13 +1328,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-035",
@@ -1359,8 +1359,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -1368,13 +1368,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-036",
@@ -1400,13 +1400,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-037",
@@ -1432,13 +1432,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-038",
@@ -1464,13 +1464,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-039",
@@ -1497,22 +1497,22 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
         "name": "Supra Chest Badge",
         "fileName": "Toyota-Supra-Logo.png",
-        "suggestedPlacement": "front-center",
+        "suggestedPlacement": "left-chest",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-040",
@@ -1534,17 +1534,26 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
     "artworks": [
       {
         "id": "art-1",
-        "name": "Full Front & Back",
-        "fileName": "Both Front and Back.png",
+        "name": "Back Graphic",
+        "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=studio&v=v2"
+      },
+      {
+        "id": "art-2",
+        "name": "Front Graphic",
+        "fileName": "Front.png",
+        "suggestedPlacement": "front-center",
+        "colorHint": "any",
+        "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=studio&v=v2"
       }
     ],
-    "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=studio"
+    "defaultArtworkId": "art-2",
+    "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-041",
@@ -1570,13 +1579,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-042",
@@ -1602,27 +1611,30 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-043",
     "folder": "Design 43",
-    "name": "Dodge Ram Muscle Wordmark",
+    "name": "Dodge Challenger SRT Racing Stripes",
     "themeCategory": "automotive",
     "tags": [
       "automotive",
       "dodge",
+      "challenger",
+      "srt",
       "muscle-car",
       "automotive",
       "hemi",
-      "ram",
+      "racing",
       "v8",
+      "stripes",
       "apparel",
       "clothing-design"
     ],
@@ -1634,8 +1646,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -1643,13 +1655,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-044",
@@ -1675,8 +1687,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -1684,13 +1696,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-045",
@@ -1716,8 +1728,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -1725,13 +1737,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-046",
@@ -1757,13 +1769,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-047",
@@ -1789,13 +1801,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-048",
@@ -1821,13 +1833,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "BAck.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-049",
@@ -1852,13 +1864,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-050",
@@ -1884,8 +1896,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -1893,13 +1905,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-051",
@@ -1926,13 +1938,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-052",
@@ -1957,8 +1969,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back full back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -1966,13 +1978,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-053",
@@ -1997,8 +2009,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2006,13 +2018,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-054",
@@ -2038,8 +2050,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2047,13 +2059,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-055",
@@ -2079,13 +2091,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-056",
@@ -2111,8 +2123,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2120,13 +2132,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-057",
@@ -2152,8 +2164,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2161,13 +2173,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-058",
@@ -2193,8 +2205,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2202,13 +2214,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-059",
@@ -2234,13 +2246,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-060",
@@ -2266,8 +2278,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2275,13 +2287,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-061",
@@ -2307,8 +2319,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Boy tees front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2316,13 +2328,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Girl Tees Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-062",
@@ -2348,8 +2360,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2357,13 +2369,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-063",
@@ -2389,13 +2401,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-064",
@@ -2421,8 +2433,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2430,13 +2442,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-065",
@@ -2462,8 +2474,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2471,8 +2483,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio&v=v2"
       },
       {
         "id": "art-3",
@@ -2480,13 +2492,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Sleeve.png",
         "suggestedPlacement": "left-sleeve",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=studio"
+        "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-066",
@@ -2511,8 +2523,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2520,13 +2532,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-067",
@@ -2548,17 +2560,17 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
     "artworks": [
       {
         "id": "art-1",
-        "name": "Make Things Happen Orbital Typography",
+        "name": "Make Things Happen Orbital Graphic",
         "fileName": "Make Things Happen Orbital Typography.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-068",
@@ -2584,8 +2596,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2593,13 +2605,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-069",
@@ -2625,8 +2637,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back bottom.png",
         "suggestedPlacement": "bottom-hem",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2634,13 +2646,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front bottom.png",
         "suggestedPlacement": "bottom-hem",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-070",
@@ -2666,13 +2678,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-071",
@@ -2697,13 +2709,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-072",
@@ -2729,13 +2741,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-073",
@@ -2760,8 +2772,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2769,13 +2781,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-074",
@@ -2801,8 +2813,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2810,13 +2822,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-075",
@@ -2842,8 +2854,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -2851,13 +2863,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-076",
@@ -2879,17 +2891,17 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
     "artworks": [
       {
         "id": "art-1",
-        "name": "Spiderman Miles tees Design",
+        "name": "Spider-Man Miles Morales Graphic",
         "fileName": "Spiderman Miles tees Design.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-077",
@@ -2915,22 +2927,22 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
-        "name": "Luffy King of Pirates Graphic",
+        "name": "Luffy King of Pirates Back Print",
         "fileName": "Luffy_ King of Pirates Graphic.png",
-        "suggestedPlacement": "front-center",
+        "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-078",
@@ -2956,22 +2968,22 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
-        "name": "Iron Tees Design",
+        "name": "Iron Man Hero Back Print",
         "fileName": "Iron Tees Design.png",
-        "suggestedPlacement": "front-center",
+        "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-079",
@@ -2993,17 +3005,17 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
     "artworks": [
       {
         "id": "art-1",
-        "name": "Do It With Love Typographic Design",
+        "name": "Do It With Love Graphic",
         "fileName": "Do It With Love Typographic Design.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-080",
@@ -3029,8 +3041,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3038,13 +3050,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-081",
@@ -3070,13 +3082,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-082",
@@ -3102,8 +3114,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3111,13 +3123,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-083",
@@ -3142,8 +3154,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3151,13 +3163,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-084",
@@ -3183,8 +3195,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3192,13 +3204,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-085",
@@ -3224,8 +3236,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3233,13 +3245,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-086",
@@ -3261,17 +3273,17 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
     "artworks": [
       {
         "id": "art-1",
-        "name": "Cyber Samurai Walk Your Own Path",
+        "name": "Cyber Samurai Graphic",
         "fileName": "Cyber Samurai_ Walk Your Own Path.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-087",
@@ -3292,26 +3304,26 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
     "artworks": [
       {
         "id": "art-1",
-        "name": "Straw Hat Crew One Piece Manga Print",
+        "name": "Straw Hat Manga Back Print",
         "fileName": "Straw Hat Crew_ One Piece Manga Print.png",
-        "suggestedPlacement": "front-center",
+        "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
-        "name": "Vintage Straw Hat Crew Logo",
+        "name": "Straw Hat Chest Badge",
         "fileName": "Vintage Straw Hat Crew Logo.png",
-        "suggestedPlacement": "front-center",
+        "suggestedPlacement": "left-chest",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-088",
@@ -3336,8 +3348,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3345,13 +3357,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-089",
@@ -3377,8 +3389,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3386,13 +3398,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-090",
@@ -3418,8 +3430,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3427,13 +3439,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-091",
@@ -3459,8 +3471,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3468,13 +3480,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-092",
@@ -3499,8 +3511,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3508,13 +3520,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-093",
@@ -3540,13 +3552,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio&v=v2"
   },
   {
     "id": "design-094",
@@ -3571,8 +3583,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3580,13 +3592,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-095",
@@ -3611,8 +3623,8 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Back.png",
         "suggestedPlacement": "back-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=studio&v=v2"
       },
       {
         "id": "art-2",
@@ -3620,13 +3632,13 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio"
+        "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-2",
-    "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio"
+    "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio&v=v2"
   },
   {
     "id": "design-096",
@@ -3652,12 +3664,12 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
         "fileName": "Front.png",
         "suggestedPlacement": "front-center",
         "colorHint": "any",
-        "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail",
-        "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio"
+        "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail&v=v2",
+        "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio&v=v2"
       }
     ],
     "defaultArtworkId": "art-1",
-    "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail",
-    "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio"
+    "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail&v=v2",
+    "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio&v=v2"
   }
 ];

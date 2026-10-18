@@ -6,6 +6,7 @@ import { CustomCursor } from '@/components/layout/custom-cursor';
 import { FloatingActions } from '@/components/layout/floating-actions';
 import { DeviceProvider } from '@/lib/providers/device-provider';
 import { TawkToWidget } from '@/components/layout/tawk-to-widget';
+import { TopProgressBar } from '@/components/layout/top-progress-bar';
 import './globals.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fregorostudios.com';
@@ -104,6 +105,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body suppressHydrationWarning>
+        <TopProgressBar />
         {/* Skip-to-content: first focusable element for keyboard/screen-reader users */}
         <a href="#main-content" className="skip-to-content">
           Skip to main content

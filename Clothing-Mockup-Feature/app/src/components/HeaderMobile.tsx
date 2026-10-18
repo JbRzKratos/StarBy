@@ -13,6 +13,7 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
   isDesignerMode = false,
   onToggleDesignerMode,
   price,
+  isAddingToCart = false,
 }) => {
   return (
     <header className="app-header header-mobile" aria-label="Mobile Navigation Header">
@@ -188,8 +189,10 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
             id="mobile-btn-add-to-cart"
             className="mobile-add-to-cart-btn"
             onClick={onOpenAddToCart}
-            title="Add Mockup to Shopping Bag"
+            disabled={isAddingToCart}
+            title={isAddingToCart ? 'Adding to Shopping Bag...' : 'Add Mockup to Shopping Bag'}
             aria-label="Add to Bag"
+            style={isAddingToCart ? { opacity: 0.75, cursor: 'wait' } : undefined}
           >
             <svg
               width="14"
@@ -200,14 +203,27 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
               strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="shrink-0"
+              className={`shrink-0 ${isAddingToCart ? 'animate-spin' : ''}`}
             >
-              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <path d="M16 10a4 4 0 0 1-8 0"></path>
+              {isAddingToCart ? (
+                <>
+                  <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
+                  <path d="M12 2a10 10 0 0 1 10 10" />
+                </>
+              ) : (
+                <>
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </>
+              )}
             </svg>
             <span style={{ fontWeight: 700, letterSpacing: '0.02em' }}>
-              {typeof price === 'number' && price > 0 ? `Add · ₹${price}` : 'Add to Bag'}
+              {isAddingToCart
+                ? 'Adding...'
+                : typeof price === 'number' && price > 0
+                ? `Add · ₹${price}`
+                : 'Add to Bag'}
             </span>
           </button>
         )}

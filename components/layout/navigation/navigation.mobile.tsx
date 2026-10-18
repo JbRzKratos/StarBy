@@ -296,6 +296,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
                 <Link
                   key={link.href}
                   href={link.href}
+                  prefetch={true}
                   onClick={onClose}
                   className="font-display text-2xl font-bold text-[#F5F1EA] hover:text-[#ED9518] transition-colors flex items-center gap-3.5 group py-1"
                 >

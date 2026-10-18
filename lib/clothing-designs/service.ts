@@ -47,11 +47,20 @@ export async function getPreviewImageStream(
 
   // Resolve target artwork:
   // 1. By exact artwork ID (e.g. "art-1", "art-2")
-  // 2. By suggested placement (e.g. "front", "back", "sleeve")
+  // 2. By suggested placement or surface keyword (e.g. "front", "back", "sleeve")
   // 3. Fallback to defaultArtworkId or first artwork
-  let art = design.artworks.find((a) => a.id === artIdOrSurface);
+  let art = design.artworks.find((a) => a.id.toLowerCase() === artIdOrSurface?.toLowerCase());
   if (!art && artIdOrSurface) {
-    art = design.artworks.find((a) => a.suggestedPlacement === artIdOrSurface);
+    const s = artIdOrSurface.toLowerCase();
+    art = design.artworks.find(
+      (a) =>
+        a.suggestedPlacement.toLowerCase() === s ||
+        a.suggestedPlacement.toLowerCase().startsWith(s) ||
+        a.suggestedPlacement.toLowerCase().includes(s) ||
+        (s === 'front' && (a.fileName.toLowerCase().includes('front') || a.name.toLowerCase().includes('front'))) ||
+        (s === 'back' && (a.fileName.toLowerCase().includes('back') || a.name.toLowerCase().includes('back'))) ||
+        (s === 'sleeve' && (a.fileName.toLowerCase().includes('sleeve') || a.name.toLowerCase().includes('sleeve')))
+    );
   }
   if (!art) {
     art = design.artworks.find((a) => a.id === design.defaultArtworkId) || design.artworks[0];

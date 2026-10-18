@@ -20,7 +20,7 @@ export interface CalibratedPlacement {
   opacity?: number;
 }
 
-const STORAGE_KEY = 'fregoro_curated_placements';
+const STORAGE_KEY = 'fregoro_curated_placements_v2';
 
 /**
  * Standard calibrated default coordinates per garment cut.
@@ -477,6 +477,10 @@ export function getRegionForTarget(target: string): 'front' | 'back' {
 export function getAllSavedPlacements(): Record<string, CalibratedPlacement> {
   if (typeof window === 'undefined') return {};
   try {
+    // Purge deprecated v1 placements cache
+    if (window.localStorage.getItem('fregoro_curated_placements')) {
+      window.localStorage.removeItem('fregoro_curated_placements');
+    }
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return {};
     return JSON.parse(raw);
@@ -807,11 +811,17 @@ export async function syncServerPlacements(
     });
     if (!res.ok) return {};
     const data = await res.json();
-    if (data?.success && data.placements) {
+    if (data?.success) {
       const all = getAllSavedPlacements();
-      const merged = { ...all, ...data.placements };
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged, null, 2));
-      return merged;
+      const prefix = `${designId}__`;
+      for (const k of Object.keys(all)) {
+        if (k.startsWith(prefix)) {
+          delete all[k];
+        }
+      }
+      const updated = { ...all, ...(data.placements || {}) };
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(updated, null, 2));
+      return updated;
     }
   } catch {
     /* ignore fetch error */

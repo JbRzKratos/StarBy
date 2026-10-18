@@ -109,6 +109,7 @@ function DesktopProductCard({
   return (
     <Link
       href={productHref}
+      prefetch={true}
       className="group flex flex-col gap-0"
       style={{ perspective: '1000px' }}
     >

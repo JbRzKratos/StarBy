@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import type { Metadata } from 'next';
 import { getLiveProductBySlug } from '@/lib/services/products-service';
 import { ProductDetailClient } from '@/components/product/product-detail-client';
@@ -6,11 +7,33 @@ import { PrebuiltWallDetail } from '@/components/wall-studio/prebuilt-wall-detai
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
+// ISR: Cache statically for 60 seconds with on-demand admin revalidation
+export const revalidate = 60;
 
 interface ProductPageProps {
   params: { category: string; slug: string };
 }
+
+const getProductRating = cache(async (productId: string) => {
+  try {
+    const aggregate = await prisma.review.aggregate({
+      where: { productId },
+      _avg: { rating: true },
+      _count: { id: true },
+    });
+
+    if (aggregate._count.id > 0) {
+      return {
+        '@type': 'AggregateRating',
+        ratingValue: aggregate._avg.rating?.toFixed(1),
+        reviewCount: aggregate._count.id,
+      };
+    }
+  } catch (error) {
+    console.error('Failed to fetch aggregate rating for SEO', error);
+  }
+  return undefined;
+});
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const prebuilt = getPrebuiltWallBySlug(params.slug);
@@ -41,25 +64,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const productUrl = `${baseUrl}/products/${params.category}/${params.slug}`;
 
-  // Fetch aggregate rating for SEO
-  let aggregateRating = undefined;
-  try {
-    const aggregate = await prisma.review.aggregate({
-      where: { productId: product.id },
-      _avg: { rating: true },
-      _count: { id: true },
-    });
-
-    if (aggregate._count.id > 0) {
-      aggregateRating = {
-        '@type': 'AggregateRating',
-        ratingValue: aggregate._avg.rating?.toFixed(1),
-        reviewCount: aggregate._count.id,
-      };
-    }
-  } catch (error) {
-    console.error('Failed to fetch aggregate rating for SEO', error);
-  }
+  // Fetch aggregate rating for SEO (memoized per-request)
+  const aggregateRating = await getProductRating(product.id);
 
   // Compute real stock status: in stock if at least one variant has inStock: true
   const isInStock = product.variants.some((v) => v.inStock !== false);

@@ -270,10 +270,10 @@ const DESIGN_METADATA: Record<number, {
     description: 'Y2K cyber-acid balloon chrome lettering with green orbital rings and futuristic badges.',
   },
   43: {
-    name: 'Dodge Ram Muscle Wordmark',
+    name: 'Dodge Challenger SRT Racing Stripes',
     themeCategory: 'automotive',
-    tags: ['dodge', 'muscle-car', 'automotive', 'hemi', 'ram', 'v8'],
-    description: 'Dodge Ram automotive front grille emblem and wide-spaced muscular wordmark.',
+    tags: ['dodge', 'challenger', 'srt', 'muscle-car', 'automotive', 'hemi', 'racing', 'v8', 'stripes'],
+    description: 'Dodge Challenger muscle car aerial perspective with dual orange racing stripes on back, paired with official Dodge wordmark on front.',
   },
   44: {
     name: 'The Weeknd XO Glow Signature',
@@ -617,6 +617,14 @@ function cleanArtworkLabel(fileName: string): string {
   if (/^Front bottom$/i.test(base)) return 'Front Hem Graphic';
   if (/^Back bottom$/i.test(base)) return 'Back Hem Graphic';
   if (/^Toyota-Supra-Logo$/i.test(base)) return 'Supra Chest Badge';
+  if (/^Vintage Straw Hat Crew Logo$/i.test(base)) return 'Straw Hat Chest Badge';
+  if (/^Straw Hat Crew_ One Piece Manga Print$/i.test(base)) return 'Straw Hat Manga Back Print';
+  if (/^Luffy_ King of Pirates Graphic$/i.test(base)) return 'Luffy King of Pirates Back Print';
+  if (/^Iron Tees Design$/i.test(base)) return 'Iron Man Hero Back Print';
+  if (/^Cyber Samurai_ Walk Your Own Path$/i.test(base)) return 'Cyber Samurai Graphic';
+  if (/^Spiderman Miles tees Design$/i.test(base)) return 'Spider-Man Miles Morales Graphic';
+  if (/^Make Things Happen Orbital Typography$/i.test(base)) return 'Make Things Happen Orbital Graphic';
+  if (/^Do It With Love Typographic Design$/i.test(base)) return 'Do It With Love Graphic';
   if (/^Both Front and Back$/i.test(base)) return 'Full Front & Back';
   if (/^Front$/i.test(base) || /^front$/i.test(base)) return 'Front Graphic';
   if (/^Back$/i.test(base) || /^BAck$/i.test(base)) return 'Back Graphic';
@@ -625,13 +633,17 @@ function cleanArtworkLabel(fileName: string): string {
   return base.replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-function deducePlacement(fileName: string): DesignPlacementTarget {
+function deducePlacement(fileName: string, folderName?: string): DesignPlacementTarget {
   const lower = fileName.toLowerCase();
   if (lower.includes('left chest')) return 'left-chest';
   if (lower.includes('right chest')) return 'right-chest';
   if (lower.includes('sleeve')) return 'left-sleeve';
   if (lower.includes('collar') || lower.includes('collor')) return 'back-center';
   if (lower.includes('bottom') || lower.includes('hem')) return 'bottom-hem';
+  if (lower.includes('toyota') || lower.includes('supra') || lower.includes('vintage straw hat')) return 'left-chest';
+  if (lower.includes('straw hat crew') && lower.includes('manga')) return 'back-center';
+  if (folderName === 'Design 77' && lower.includes('luffy')) return 'back-center';
+  if (folderName === 'Design 78' && lower.includes('iron')) return 'back-center';
   if (lower.includes('back')) return 'back-center';
   if (lower.includes('front')) return 'front-center';
   return 'front-center';
@@ -691,14 +703,14 @@ async function run() {
         id: artId,
         fileName: file,
         name: cleanArtworkLabel(file),
-        suggestedPlacement: deducePlacement(file),
+        suggestedPlacement: deducePlacement(file, folder),
         colorHint: deduceColorHint(file),
         originalPath: file,
         originalObjectKey: `clothing-designs/${designId}/original/${file}`,
         thumbnailObjectKey: `clothing-designs/${designId}/previews/thumb_${artId}.webp`,
         previewObjectKey: `clothing-designs/${designId}/previews/studio_${artId}.webp`,
-        previewUrl: `/api/clothing-designs/${designId}/preview?artId=${artId}&type=thumbnail`,
-        studioPreviewUrl: `/api/clothing-designs/${designId}/preview?artId=${artId}&type=studio`,
+        previewUrl: `/api/clothing-designs/${designId}/preview?artId=${artId}&type=thumbnail&v=v2`,
+        studioPreviewUrl: `/api/clothing-designs/${designId}/preview?artId=${artId}&type=studio&v=v2`,
       };
     });
 

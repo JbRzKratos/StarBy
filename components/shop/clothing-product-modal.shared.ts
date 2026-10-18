@@ -174,9 +174,9 @@ export function useClothingProductModalState({
         originalObjectKey: `clothing-designs/${design.id}/original/artwork.png`,
         thumbnailObjectKey: `clothing-designs/${design.id}/previews/thumb_front.webp`,
         previewObjectKey: `clothing-designs/${design.id}/previews/studio_front.webp`,
-        previewUrl: design.previewUrl || `/api/clothing-designs/${design.id}/preview?type=thumbnail`,
+        previewUrl: design.previewUrl || `/api/clothing-designs/${design.id}/preview?type=thumbnail&v=v2`,
         studioPreviewUrl:
-          design.studioPreviewUrl || `/api/clothing-designs/${design.id}/preview?type=studio`,
+          design.studioPreviewUrl || `/api/clothing-designs/${design.id}/preview?type=studio&v=v2`,
       },
     ];
   }, [design]);

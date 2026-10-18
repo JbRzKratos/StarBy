@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { assertAdmin, assertStaff } from './auth';
 import { dispatchNotification } from '@/lib/notifications';
+import { invalidateProductsCache } from '@/lib/services/products-service';
 
 // ═══════════════════════════════════════
 // ORDERS
@@ -177,6 +178,7 @@ export async function updateProductPrice(
   }
 
   // Bust cache across entire storefront and admin paths
+  invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/${productId}/edit`);
   revalidatePath('/products');
@@ -213,6 +215,7 @@ export async function updateVariantPrice(variantId: string, newPrice: number) {
     data: { price: sanitized },
   });
 
+  invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/${updatedVariant.productId}/edit`);
   revalidatePath('/products');
@@ -273,6 +276,7 @@ export async function batchUpdateCategoryPrice(
     });
   }
 
+  invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath('/products');
   revalidatePath('/products/[category]', 'page');
@@ -291,12 +295,14 @@ export async function batchUpdateCategoryPrice(
 export async function toggleVariantStock(variantId: string, inStock: boolean) {
   await assertStaff();
   await prisma.productVariant.update({ where: { id: variantId }, data: { inStock } });
+  invalidateProductsCache();
   revalidatePath('/admin/products');
 }
 
 export async function deleteProduct(productId: string) {
   await assertAdmin();
   await prisma.product.delete({ where: { id: productId } });
+  invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath('/products');
   revalidatePath('/api/products/prices');

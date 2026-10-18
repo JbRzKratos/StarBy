@@ -103,8 +103,8 @@ export async function GET(req: Request) {
         defaultSurface: d.defaultSurface,
         availableSurfaces: d.availableSurfaces,
         defaultArtworkId: d.defaultArtworkId,
-        previewUrl: d.previewUrl,
-        studioPreviewUrl: d.studioPreviewUrl,
+        previewUrl: d.previewUrl.includes('&v=') ? d.previewUrl : `${d.previewUrl}&v=v2`,
+        studioPreviewUrl: d.studioPreviewUrl.includes('&v=') ? d.studioPreviewUrl : `${d.studioPreviewUrl}&v=v2`,
         compatibleGarments: d.compatibleGarments,
         artworks: (d.artworks || []).map((a) => {
           const targetGarment = (garment || 'regular-t-shirt').toLowerCase();
@@ -125,8 +125,8 @@ export async function GET(req: Request) {
             hidden: isHidden,
             removed: isRemoved,
             colorHint: a.colorHint,
-            previewUrl: a.previewUrl,
-            studioPreviewUrl: a.studioPreviewUrl,
+            previewUrl: a.previewUrl.includes('&v=') ? a.previewUrl : `${a.previewUrl}&v=v2`,
+            studioPreviewUrl: a.studioPreviewUrl.includes('&v=') ? a.studioPreviewUrl : `${a.studioPreviewUrl}&v=v2`,
           };
         }),
       };

@@ -316,6 +316,20 @@ export const App: React.FC = () => {
     return 999;
   });
 
+  const [selectedGarmentSize, setSelectedGarmentSize] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        return sp.get('size') || 'L';
+      } catch {
+        return 'L';
+      }
+    }
+    return 'L';
+  });
+
+  const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
+
   const isCuratedDesign = Boolean(
     !isPlainParam && (
       activeCuratedDesign ||
@@ -986,8 +1000,13 @@ export const App: React.FC = () => {
       previewUrl?: string | null;
       layers?: any;
       price?: string | null;
+      size?: string | null;
     }) => {
       if (!params.designId && !params.previewUrl && !params.garment && !params.layers) return;
+
+      if (params.size) {
+        setSelectedGarmentSize(params.size);
+      }
 
       const curated = params.designId
         ? CURATED_CLOTHING_DESIGNS.find((d) => d.id === params.designId)
@@ -1388,6 +1407,7 @@ export const App: React.FC = () => {
       const previewUrl = sp.get('previewUrl');
       const layers = sp.get('layers');
       const price = sp.get('price');
+      const size = sp.get('size');
 
       if (designId || previewUrl || garment || layers) {
         applyInitParams({
@@ -1400,6 +1420,7 @@ export const App: React.FC = () => {
           previewUrl,
           layers,
           price,
+          size,
         });
       }
     } catch {
@@ -2723,6 +2744,86 @@ export const App: React.FC = () => {
   };
 
   const handleOpenAddToCart = async () => {
+    if (isAddingToCart) return;
+
+    if (isCuratedDesign) {
+      // User request: For curated designs placement tees, bypass the popup modal and add to cart directly!
+      setIsAddingToCart(true);
+      setIsCapturingCartSnapshots(true);
+      try {
+        let frontSnapshot: string | null = null;
+        let backSnapshot: string | null = null;
+
+        if (mode === '3d' && sceneManager3DRef.current) {
+          // Fast, high-clarity 600x600 cart snapshot (keeps storage under 50KB)
+          frontSnapshot = await export3DManager.captureSnapshotDataUrl(
+            sceneManager3DRef.current,
+            {
+              view: 'front',
+              transparent: false,
+              resolution: 'cart',
+              width: 600,
+              height: 600,
+              format: 'jpeg',
+              quality: 0.85,
+            },
+            compositor3DRef.current ?? undefined
+          );
+
+          backSnapshot = await export3DManager.captureSnapshotDataUrl(
+            sceneManager3DRef.current,
+            {
+              view: 'back',
+              transparent: false,
+              resolution: 'cart',
+              width: 600,
+              height: 600,
+              format: 'jpeg',
+              quality: 0.85,
+            },
+            compositor3DRef.current ?? undefined
+          );
+        } else {
+          // 2D mode: render composite canvases for front and back at 600x600
+          const frontCanvas = await exportManager.renderSideCanvas(project2D, 'front', {
+            scope: 'current',
+            dimensions: '600x600',
+            transparentBg: false,
+            includeShadow: true,
+          });
+          frontSnapshot = frontCanvas.toDataURL('image/jpeg', 0.85);
+
+          const backCanvas = await exportManager.renderSideCanvas(project2D, 'back', {
+            scope: 'current',
+            dimensions: '600x600',
+            transparentBg: false,
+            includeShadow: true,
+          });
+          backSnapshot = backCanvas.toDataURL('image/jpeg', 0.85);
+        }
+
+        setCartFrontSnapshot(frontSnapshot);
+        setCartBackSnapshot(backSnapshot);
+
+        await handleConfirmAddToCart(
+          {
+            size: selectedGarmentSize || 'L',
+            quantity: 1,
+            printInstructions: 'Curated studio placement as shown.',
+          },
+          frontSnapshot,
+          backSnapshot
+        );
+      } catch (err) {
+        console.error('[App] Direct add to cart for curated design failed:', err);
+      } finally {
+        setIsCapturingCartSnapshots(false);
+        setIsAddingToCart(false);
+      }
+      return;
+    }
+
+    // For custom designs (user uploaded onto plain blank tee), open the review modal:
     setIsAddToCartOpen(true);
     setIsCapturingCartSnapshots(true);
     setCartFrontSnapshot(null);
@@ -2785,13 +2886,17 @@ export const App: React.FC = () => {
     }
   };
 
-  const handleConfirmAddToCart = async (data: {
-    size: string;
-    quantity: number;
-    printInstructions: string;
-  }) => {
-    let frontSnapshot = cartFrontSnapshot;
-    let backSnapshot = cartBackSnapshot;
+  const handleConfirmAddToCart = async (
+    data: {
+      size: string;
+      quantity: number;
+      printInstructions: string;
+    },
+    frontSnapshotOverride?: string | null,
+    backSnapshotOverride?: string | null
+  ) => {
+    let frontSnapshot = frontSnapshotOverride || cartFrontSnapshot;
+    let backSnapshot = backSnapshotOverride || cartBackSnapshot;
 
     if (mode === '2d' && (!frontSnapshot || !backSnapshot)) {
       try {
@@ -3041,6 +3146,7 @@ export const App: React.FC = () => {
         isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
         onToggleDesignerMode={isDesignerAuthorized ? handleToggleDesignerMode : undefined}
         price={effectivePrice}
+        isAddingToCart={isAddingToCart}
       />
 
       {/* Floating Save Confirmation Notification Banner */}

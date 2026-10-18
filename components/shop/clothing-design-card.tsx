@@ -15,7 +15,7 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeSurface, setActiveSurface] = useState<'front' | 'back' | 'sleeve'>(design.defaultSurface);
 
-  const previewSrc = `/api/clothing-designs/${design.id}/preview?type=thumbnail&surface=${activeSurface}`;
+  const previewSrc = `/api/clothing-designs/${design.id}/preview?type=thumbnail&surface=${activeSurface}&v=v2`;
 
   return (
     <div
