@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { Suspense, useEffect, useState, useRef } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 /**
@@ -9,24 +9,27 @@ import { usePathname, useSearchParams } from 'next/navigation';
  * Appears the exact millisecond a user clicks any link or navigates,
  * eliminating the "frozen" feeling during network transfers and route compilation.
  */
-export function TopProgressBar() {
+function TopProgressBarInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const crawlRef = useRef<NodeJS.Timeout | null>(null);
+  const isFirstRender = useRef(true);
 
   // Complete and hide progress bar whenever pathname or search params change
   useEffect(() => {
-    if (visible) {
-      setProgress(100);
-      const hideTimer = setTimeout(() => {
-        setVisible(false);
-        setProgress(0);
-      }, 250);
-      return () => clearTimeout(hideTimer);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
     }
+    setProgress(100);
+    const hideTimer = setTimeout(() => {
+      setVisible(false);
+      setProgress(0);
+    }, 250);
+    return () => clearTimeout(hideTimer);
   }, [pathname, searchParams]);
 
   // Global link click listener to start progress bar immediately (0ms delay)
@@ -128,5 +131,13 @@ export function TopProgressBar() {
         }}
       />
     </div>
+  );
+}
+
+export function TopProgressBar() {
+  return (
+    <Suspense fallback={null}>
+      <TopProgressBarInner />
+    </Suspense>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import type { ReactNode } from 'react';
+import { type ReactNode, Suspense } from 'react';
 import { fontDisplay, fontMono } from '@/lib/fonts';
 import { GsapProvider } from '@/components/animations/gsap-provider';
 import { CustomCursor } from '@/components/layout/custom-cursor';
@@ -105,7 +105,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body suppressHydrationWarning>
-        <TopProgressBar />
+        <Suspense fallback={null}>
+          <TopProgressBar />
+        </Suspense>
         {/* Skip-to-content: first focusable element for keyboard/screen-reader users */}
         <a href="#main-content" className="skip-to-content">
           Skip to main content

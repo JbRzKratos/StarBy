@@ -6,7 +6,9 @@ import {
   type ProductVariant,
 } from '@/data/products';
 
-const memoize = typeof cache === 'function' ? cache : <T extends (...args: any[]) => any>(fn: T): T => fn;
+function memoize<Args extends unknown[], Return>(fn: (...args: Args) => Return): (...args: Args) => Return {
+  return typeof cache === 'function' ? cache(fn) : fn;
+}
 
 /**
  * High-Performance In-Memory & Edge-Optimized Product Service.
@@ -39,17 +41,17 @@ const CACHE_TTL_MS = 60 * 1000; // 60 seconds memory TTL
 const cachedProductMap = new Map<string, Product>();
 
 // In-memory cache for API price dictionaries
-let cachedPricesPayload: any = null;
+let cachedPricesPayload: Record<string, unknown> | null = null;
 let cachedPricesTimestamp = 0;
 
-export function getCachedPricesPayload<T = any>(): T | null {
+export function getCachedPricesPayload<T = Record<string, unknown>>(): T | null {
   if (cachedPricesPayload && Date.now() - cachedPricesTimestamp < CACHE_TTL_MS) {
     return cachedPricesPayload as T;
   }
   return null;
 }
 
-export function setCachedPricesPayload(payload: any) {
+export function setCachedPricesPayload(payload: Record<string, unknown>) {
   cachedPricesPayload = payload;
   cachedPricesTimestamp = Date.now();
 }
