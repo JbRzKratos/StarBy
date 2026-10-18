@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getManifest } from '@/lib/clothing-designs/manifest';
-import { getAllServerPlacements } from '@/lib/clothing-designs/placements-store';
+import { getAllServerPlacements, isCoordinatePhysicallyInRegion, type SavedPlacementItem } from '@/lib/clothing-designs/placements-store';
 import { rateLimit } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
@@ -103,30 +103,61 @@ export async function GET(req: Request) {
         defaultSurface: d.defaultSurface,
         availableSurfaces: d.availableSurfaces,
         defaultArtworkId: d.defaultArtworkId,
-        previewUrl: d.previewUrl.includes('&v=') ? d.previewUrl : `${d.previewUrl}&v=v2`,
-        studioPreviewUrl: d.studioPreviewUrl.includes('&v=') ? d.studioPreviewUrl : `${d.studioPreviewUrl}&v=v2`,
+        previewUrl: (d.previewUrl && d.previewUrl.includes('&v=')) ? d.previewUrl : (d.previewUrl ? `${d.previewUrl}&v=v2` : `/api/clothing-designs/${d.id}/preview?type=thumbnail&v=v2`),
+        studioPreviewUrl: (d.studioPreviewUrl && d.studioPreviewUrl.includes('&v=')) ? d.studioPreviewUrl : (d.studioPreviewUrl ? `${d.studioPreviewUrl}&v=v2` : `/api/clothing-designs/${d.id}/preview?type=studio&v=v2`),
         compatibleGarments: d.compatibleGarments,
         artworks: (d.artworks || []).map((a) => {
           const targetGarment = (garment || 'regular-t-shirt').toLowerCase();
           const aId = a.id.toLowerCase();
           const artKey = `${d.id}__${targetGarment}__${aId}`;
           const targetKey = `${d.id}__${targetGarment}__${a.suggestedPlacement}`;
-          const savedPlacement =
-            serverPlacements[artKey] ||
-            (serverPlacements[targetKey]?.removed ? null : serverPlacements[targetKey]);
+
+          const reqIsBack = a.suggestedPlacement.includes('back') || a.suggestedPlacement.includes('collar');
+          const reqIsSleeve = a.suggestedPlacement.includes('sleeve');
+
+          const isRegionConsistent = (cand?: SavedPlacementItem | null): boolean => {
+            if (!cand || typeof cand.u !== 'number' || typeof cand.v !== 'number') return false;
+            const expectedRegion: 'front' | 'back' | 'sleeve' = reqIsBack ? 'back' : reqIsSleeve ? 'sleeve' : 'front';
+            return isCoordinatePhysicallyInRegion(targetGarment, expectedRegion, cand.u, cand.v);
+          };
+
+          const candArt = serverPlacements[artKey];
+          const candTarget = serverPlacements[targetKey];
+          const candFrontCenter = serverPlacements[`${d.id}__${targetGarment}__front-center`];
+          const candRegion = serverPlacements[`${d.id}__${targetGarment}__${reqIsBack ? 'back' : 'front'}`];
+
+          let savedPlacement: SavedPlacementItem | null = null;
+          if (isRegionConsistent(candArt)) {
+            savedPlacement = candArt;
+          } else if (isRegionConsistent(candTarget)) {
+            savedPlacement = candTarget;
+          } else if (!reqIsBack && !reqIsSleeve && isRegionConsistent(candFrontCenter)) {
+            savedPlacement = candFrontCenter;
+          } else if (isRegionConsistent(candRegion)) {
+            savedPlacement = candRegion;
+          } else if (candArt && !candTarget) {
+            savedPlacement = candArt;
+          } else {
+            savedPlacement = candTarget || null;
+          }
+
+          if (savedPlacement?.removed) {
+            savedPlacement = null;
+          }
+
           const isRemoved = savedPlacement?.removed === true;
           const isHidden = savedPlacement?.hidden === true || savedPlacement?.opacity === 0;
           return {
             id: a.id,
             name: a.name,
             fileName: a.fileName,
-            suggestedPlacement: savedPlacement?.placementTarget || a.suggestedPlacement,
+            suggestedPlacement: (savedPlacement && isRegionConsistent(savedPlacement)) ? (savedPlacement.placementTarget || a.suggestedPlacement) : a.suggestedPlacement,
             calibratedPlacement: savedPlacement || null,
             hidden: isHidden,
             removed: isRemoved,
             colorHint: a.colorHint,
-            previewUrl: a.previewUrl.includes('&v=') ? a.previewUrl : `${a.previewUrl}&v=v2`,
-            studioPreviewUrl: a.studioPreviewUrl.includes('&v=') ? a.studioPreviewUrl : `${a.studioPreviewUrl}&v=v2`,
+            previewUrl: (a.previewUrl && a.previewUrl.includes('&v=')) ? a.previewUrl : (a.previewUrl ? `${a.previewUrl}&v=v2` : `/api/clothing-designs/${d.id}/preview?artId=${a.id}&type=thumbnail&v=v2`),
+            studioPreviewUrl: (a.studioPreviewUrl && a.studioPreviewUrl.includes('&v=')) ? a.studioPreviewUrl : (a.studioPreviewUrl ? `${a.studioPreviewUrl}&v=v2` : `/api/clothing-designs/${d.id}/preview?artId=${a.id}&type=studio&v=v2`),
           };
         }),
       };

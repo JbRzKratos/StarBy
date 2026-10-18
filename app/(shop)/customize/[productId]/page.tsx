@@ -36,12 +36,26 @@ function mapCategoryToProductType(categorySlug: string): ProductType | null {
   }
 }
 
+import { Suspense } from 'react';
 import { getLiveProductBySlug } from '@/lib/services/products-service';
 
 export default async function CustomizePage({ params }: CustomizePageProps) {
   // Direct clothing-mockup studio entry
   if (params.productId === 'clothing-mockup') {
-    return <ClothingMockupIframe />;
+    return (
+      <Suspense
+        fallback={
+          <div className="w-full h-[100dvh] bg-[#0c0e12] flex flex-col items-center justify-center gap-4 text-white">
+            <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-[#3B5EFF] animate-spin" />
+            <p className="font-mono text-xs uppercase tracking-widest text-white/60">
+              Opening 3D Studio...
+            </p>
+          </div>
+        }
+      >
+        <ClothingMockupIframe />
+      </Suspense>
+    );
   }
 
   // If user requests a curated clothing design by ID, direct them to its artwork detail page
@@ -76,12 +90,23 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
   // Use the new 2D + 3D Clothing Mockup Studio for t-shirts and hoodies
   if (productType === 't-shirt' || productType === 'hoodie') {
     return (
-      <ClothingMockupIframe
-        productId={product.id}
-        productName={product.name}
-        basePrice={price}
-        isPlain={isPlain}
-      />
+      <Suspense
+        fallback={
+          <div className="w-full h-[100dvh] bg-[#0c0e12] flex flex-col items-center justify-center gap-4 text-white">
+            <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-[#3B5EFF] animate-spin" />
+            <p className="font-mono text-xs uppercase tracking-widest text-white/60">
+              Opening 3D Studio...
+            </p>
+          </div>
+        }
+      >
+        <ClothingMockupIframe
+          productId={product.id}
+          productName={product.name}
+          basePrice={price}
+          isPlain={isPlain}
+        />
+      </Suspense>
     );
   }
 

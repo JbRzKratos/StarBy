@@ -476,17 +476,16 @@ export function getRegionForTarget(target: string): 'front' | 'back' {
  */
 export function getAllSavedPlacements(): Record<string, CalibratedPlacement> {
   if (typeof window === 'undefined') return {};
+  const merged: Record<string, CalibratedPlacement> = {};
   try {
-    // Purge deprecated v1 placements cache
-    if (window.localStorage.getItem('fregoro_curated_placements')) {
-      window.localStorage.removeItem('fregoro_curated_placements');
-    }
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return {};
-    return JSON.parse(raw);
-  } catch {
-    return {};
-  }
+    const raw1 = window.localStorage.getItem('fregoro_curated_placements');
+    if (raw1) Object.assign(merged, JSON.parse(raw1));
+  } catch {}
+  try {
+    const raw2 = window.localStorage.getItem(STORAGE_KEY);
+    if (raw2) Object.assign(merged, JSON.parse(raw2));
+  } catch {}
+  return merged;
 }
 
 /**
@@ -565,7 +564,8 @@ export function getCuratedPlacement(
   // Helper validator: strictly verify candidate placement matches the intended target & region
   const isValidCandidate = (c: CalibratedPlacement | undefined, isExplicitKey = false): boolean => {
     if (!c || typeof c.u !== 'number' || typeof c.v !== 'number') return false;
-    // Explicit user-calibrated placements for this artwork or target must ALWAYS be honored
+    // Physical boundary verification prevents wrong panel coordinates (e.g. front coords on back)
+    if (!isCoordinateInCorrectPanel(garmentKey, target, c.u, c.v)) return false;
     if (isExplicitKey) return true;
 
     // For generic fallback keys, verify region consistency
@@ -702,7 +702,9 @@ export function saveCuratedPlacement(
     delete all[`${designId}__${garmentKey}`];
     delete all[`curated-design__${garmentKey}`];
 
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(all, null, 2));
+    const jsonStr = JSON.stringify(all, null, 2);
+    window.localStorage.setItem(STORAGE_KEY, jsonStr);
+    window.localStorage.setItem('fregoro_curated_placements', jsonStr);
 
     // Persist to backend server API
     try {
@@ -813,14 +815,11 @@ export async function syncServerPlacements(
     const data = await res.json();
     if (data?.success) {
       const all = getAllSavedPlacements();
-      const prefix = `${designId}__`;
-      for (const k of Object.keys(all)) {
-        if (k.startsWith(prefix)) {
-          delete all[k];
-        }
-      }
+      // Safely merge server placements without wiping unreturned local keys
       const updated = { ...all, ...(data.placements || {}) };
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(updated, null, 2));
+      const jsonStr = JSON.stringify(updated, null, 2);
+      window.localStorage.setItem(STORAGE_KEY, jsonStr);
+      window.localStorage.setItem('fregoro_curated_placements', jsonStr);
       return updated;
     }
   } catch {

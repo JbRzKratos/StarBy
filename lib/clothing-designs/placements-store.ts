@@ -5,6 +5,53 @@ import type { SavedPlacementItem } from './types';
 
 export type { SavedPlacementItem };
 
+export function isCoordinatePhysicallyInRegion(
+  garment3dId: string,
+  region: 'front' | 'back' | 'sleeve',
+  u?: number,
+  v?: number
+): boolean {
+  if (u === undefined || v === undefined) return true;
+  const g = (garment3dId || 'regular-t-shirt').toLowerCase();
+
+  if (g.includes('oversized') || g.includes('acid')) {
+    // Oversized & Acid Wash: Front is U: [0.51..0.99], Back is U: [0.01..0.49], Sleeves: Left [0.01..0.37], Right [0.58..0.94]
+    if (region === 'back') {
+      return u <= 0.50 && v <= 0.65;
+    }
+    if (region === 'front') {
+      return u >= 0.50 && v >= 0.35;
+    }
+    if (region === 'sleeve') {
+      return (u < 0.45 && v > 0.60) || (u > 0.55 && v < 0.40);
+    }
+  } else if (g.includes('hoodie')) {
+    // Hoodie: Front torso V: [0.18..0.60], Back torso V: [0.59..0.99], Sleeves U: [0.39..0.71]
+    if (region === 'back') {
+      return v >= 0.58 && u <= 0.45;
+    }
+    if (region === 'front') {
+      return v <= 0.60 && u <= 0.45;
+    }
+    if (region === 'sleeve') {
+      return u >= 0.38 && u <= 0.75;
+    }
+  } else {
+    // Regular T-Shirt: Front is U: [0.01..0.49], Back is U: [0.51..0.99], Sleeves V: [0.14..0.34]
+    if (region === 'back') {
+      return u >= 0.50 && v >= 0.35;
+    }
+    if (region === 'front') {
+      return u <= 0.50 && v >= 0.35;
+    }
+    if (region === 'sleeve') {
+      return v <= 0.38;
+    }
+  }
+
+  return true;
+}
+
 const PLACEMENTS_FILE_PATH = path.resolve(process.cwd(), 'lib', 'clothing-designs', 'custom-placements.json');
 
 /**

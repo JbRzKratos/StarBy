@@ -246,12 +246,21 @@ export function useClothingProductModalState({
       .then((data) => {
         if (isCancelled || !data?.success || !data.placements) return;
         try {
-          const STORAGE_KEY = 'fregoro_curated_placements';
-          const raw = window.localStorage.getItem(STORAGE_KEY) || '{}';
-          const all = JSON.parse(raw);
-          const merged = { ...all, ...data.placements };
-          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged, null, 2));
-          setArtworkCalibratedCoords((prev) => ({ ...prev, ...data.placements }));
+          const placements = data.placements;
+          const KEY1 = 'fregoro_curated_placements';
+          const KEY2 = 'fregoro_curated_placements_v2';
+          
+          let existing1: Record<string, SavedPlacementItem> = {};
+          let existing2: Record<string, SavedPlacementItem> = {};
+          try { existing1 = JSON.parse(window.localStorage.getItem(KEY1) || '{}'); } catch {}
+          try { existing2 = JSON.parse(window.localStorage.getItem(KEY2) || '{}'); } catch {}
+
+          const merged = { ...existing1, ...existing2, ...placements };
+          const jsonStr = JSON.stringify(merged, null, 2);
+          window.localStorage.setItem(KEY1, jsonStr);
+          window.localStorage.setItem(KEY2, jsonStr);
+
+          setArtworkCalibratedCoords((prev) => ({ ...prev, ...merged }));
           setPlacementSaveVersion((v) => v + 1);
         } catch {
           /* ignore */
@@ -268,50 +277,65 @@ export function useClothingProductModalState({
     (garment3dId: string, artId?: string, target?: string) => {
       if (typeof window === 'undefined' || !design) return null;
       try {
-        const raw = window.localStorage.getItem('fregoro_curated_placements');
-        if (!raw) return null;
-        const all: Record<string, SavedPlacementItem> = JSON.parse(raw);
+        const all: Record<string, SavedPlacementItem> = {};
+        try {
+          const raw1 = window.localStorage.getItem('fregoro_curated_placements');
+          if (raw1) Object.assign(all, JSON.parse(raw1));
+        } catch {}
+        try {
+          const raw2 = window.localStorage.getItem('fregoro_curated_placements_v2');
+          if (raw2) Object.assign(all, JSON.parse(raw2));
+        } catch {}
+        if (artworkCalibratedCoords && Object.keys(artworkCalibratedCoords).length > 0) {
+          Object.assign(all, artworkCalibratedCoords);
+        }
 
-        const validateCandidate = (candidate: Partial<SavedPlacementItem> | null | undefined, isExplicit = false): boolean => {
+        const normGarment = garment3dId.toLowerCase();
+        const reqIsBack = target ? (target.includes('back') || target.includes('collar')) : false;
+        const reqIsSleeve = target ? target.includes('sleeve') : false;
+        const expectedRegion: 'front' | 'back' | 'sleeve' = reqIsBack ? 'back' : reqIsSleeve ? 'sleeve' : 'front';
+
+        const validateCandidate = (candidate: Partial<SavedPlacementItem> | null | undefined): boolean => {
           if (!candidate || typeof candidate.u !== 'number' || typeof candidate.v !== 'number') return false;
-          // Explicit user-calibrated keys for artwork or target are always honored
-          if (isExplicit) return true;
           if (target) {
-            const reqIsBack = target.includes('back') || target.includes('collar');
-            const reqIsSleeve = target.includes('sleeve');
-            const expectedRegion: 'front' | 'back' | 'sleeve' = reqIsBack ? 'back' : reqIsSleeve ? 'sleeve' : 'front';
-            if (!isCoordinatePhysicallyInRegion(garment3dId, expectedRegion, candidate.u, candidate.v)) {
+            if (!isCoordinatePhysicallyInRegion(normGarment, expectedRegion, candidate.u, candidate.v)) {
               return false;
             }
           }
           return true;
         };
 
+        // 1. Exact artId match IF it's physically in the correct garment panel
         if (artId) {
-          const artKey = `${design.id}__${garment3dId}__${artId}`;
-          if (all[artKey] && validateCandidate(all[artKey], true)) return all[artKey];
+          const cleanArt = artId.toLowerCase().trim();
+          const artKey = `${design.id}__${normGarment}__${cleanArt}`;
+          if (all[artKey] && validateCandidate(all[artKey])) return all[artKey];
         }
+
+        // 2. Exact placement target match (e.g. design-001__oversized-t-shirt__front-center)
         if (target) {
-          const targetKey = `${design.id}__${garment3dId}__${target}`;
-          if (all[targetKey] && validateCandidate(all[targetKey], true)) return all[targetKey];
-          const region = target.includes('back') || target.includes('collar') ? 'back' : 'front';
-          const regionKey = `${design.id}__${garment3dId}__${region}`;
-          if (all[regionKey] && validateCandidate(all[regionKey], false)) return all[regionKey];
+          const targetKey = `${design.id}__${normGarment}__${target}`;
+          if (all[targetKey] && validateCandidate(all[targetKey])) return all[targetKey];
+          const region = reqIsBack ? 'back' : 'front';
+          const regionKey = `${design.id}__${normGarment}__${region}`;
+          if (all[regionKey] && validateCandidate(all[regionKey])) return all[regionKey];
         }
-        const specificKey = `${design.id}__${garment3dId}`;
+
+        // 3. Fallback to generic design + target key
+        if (target) {
+          const designTargetKey = `${design.id}__${target}`;
+          if (all[designTargetKey] && validateCandidate(all[designTargetKey])) return all[designTargetKey];
+        }
+
+        const specificKey = `${design.id}__${normGarment}`;
         const item = all[specificKey];
-        if (item && target) {
-          const reqIsBack = target.includes('back') || target.includes('collar');
-          const itemIsBack = item.regionId === 'back' || (item.placementTarget && item.placementTarget.includes('back'));
-          if (reqIsBack === itemIsBack && validateCandidate(item, false)) return item;
-          return null;
-        }
-        return (item && validateCandidate(item, false)) ? item : null;
+        if (item && validateCandidate(item)) return item;
+        return null;
       } catch {
         return null;
       }
     },
-    [design]
+    [design, artworkCalibratedCoords]
   );
 
   // Initialize placements, scales, and included artworks when design changes or garment changes
@@ -456,11 +480,15 @@ export function useClothingProductModalState({
     });
 
     const artPlacement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
-    const isBack =
-      artPlacement === 'back' ||
-      artPlacement === 'back-center' ||
-      artPlacement === 'back-collar' ||
-      artPlacement === 'full-back';
+    const saved = getSavedPlacementForDesign(selectedGarment.garment3dId, art.id, artPlacement) || art.calibratedPlacement;
+    if (saved) {
+      setArtworkCalibratedCoords((prev) => ({
+        ...prev,
+        [art.id]: saved,
+      }));
+    }
+
+    const isBack = isBackPlacement(artPlacement);
     setPreviewSide(isBack ? 'back' : 'front');
 
     if (art.colorHint === 'black') {
@@ -482,6 +510,15 @@ export function useClothingProductModalState({
       ...prev,
       [currentActiveArt.id]: placement,
     }));
+
+    // Immediately resolve and apply calibrated coords for the newly selected target
+    const saved = getSavedPlacementForDesign(selectedGarment.garment3dId, currentActiveArt.id, placement);
+    if (saved) {
+      setArtworkCalibratedCoords((prev) => ({
+        ...prev,
+        [currentActiveArt.id]: saved,
+      }));
+    }
 
     const isBack = isBackPlacement(placement);
     setPreviewSide(isBack ? 'back' : 'front');
@@ -590,91 +627,138 @@ export function useClothingProductModalState({
   const handleLaunch3D = () => {
     if (!design) return;
 
-    const layersToLoad = Array.from(includedArtworks).map((id, index) => {
-      const art = artworks.find((a) => a.id === id) || artworks[0];
-      const placement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
-      const scalePreset =
-        artworkScales[art.id] ||
-        (placement === 'left-chest' || placement === 'right-chest' ? 'compact' : 'standard');
-      const calibrated =
-        artworkCalibratedCoords[art.id] ||
-        getSavedPlacementForDesign(selectedGarment.garment3dId, art.id, placement) ||
-        art.calibratedPlacement;
+    try {
+      const layersToLoad = Array.from(includedArtworks).map((id, index) => {
+        const art = artworks.find((a) => a.id === id) || (artworks && artworks.length > 0 ? artworks[0] : null);
+        const artId = art?.id || id;
+        const artName = art?.name || `Artwork ${index + 1}`;
+        const placement = artworkPlacements[artId] || art?.suggestedPlacement || 'front-center';
+        const scalePreset =
+          artworkScales[artId] ||
+          (placement === 'left-chest' || placement === 'right-chest' ? 'compact' : 'standard');
+        const calibrated =
+          artworkCalibratedCoords[artId] ||
+          getSavedPlacementForDesign(selectedGarment?.garment3dId || 'regular-t-shirt', artId, placement) ||
+          art?.calibratedPlacement;
 
-      return {
-        id: `fregor-art-${art.id}-${index}`,
-        name: art.name,
-        previewUrl: art.studioPreviewUrl,
-        placement,
-        scalePreset,
-        scale: scalePreset,
-        curatedDesignId: design.id,
-        isCurated: true,
-        ...(calibrated
-          ? {
-              u: calibrated.u,
-              v: calibrated.v,
-              uvWidth: calibrated.uvWidth,
-              uvHeight: calibrated.uvHeight || calibrated.uvWidth,
-              scale: calibrated.scale,
-              rotation: calibrated.rotation || 0,
-              regionId: calibrated.regionId,
-              placementTarget: calibrated.placementTarget || placement,
-            }
-          : {}),
-      };
-    });
+        const artStudioUrl =
+          art?.studioPreviewUrl ||
+          art?.previewUrl ||
+          `/api/clothing-designs/${design.id}/preview?artId=${artId}&type=studio&v=v2`;
 
-    const primaryArt = currentActiveArt || artworks[0];
-    const primaryPlacement =
-      artworkPlacements[primaryArt.id] || primaryArt.suggestedPlacement || 'front-center';
-    const primaryScale = artworkScales[primaryArt.id] || 'standard';
-    const primaryCalibrated =
-      artworkCalibratedCoords[primaryArt.id] ||
-      getSavedPlacementForDesign(selectedGarment.garment3dId, primaryArt.id, primaryPlacement) ||
-      primaryArt.calibratedPlacement;
+        return {
+          id: `fregor-art-${artId}-${index}`,
+          name: artName,
+          previewUrl: artStudioUrl,
+          placement,
+          scalePreset,
+          scale: scalePreset,
+          curatedDesignId: design.id,
+          isCurated: true,
+          ...(calibrated
+            ? {
+                u: calibrated.u,
+                v: calibrated.v,
+                uvWidth: calibrated.uvWidth,
+                uvHeight: calibrated.uvHeight || calibrated.uvWidth,
+                scale: calibrated.scale,
+                rotation: calibrated.rotation || 0,
+                regionId: calibrated.regionId,
+                placementTarget: calibrated.placementTarget || placement,
+              }
+            : {}),
+        };
+      });
 
-    const isOneRupee =
-      design.basePrice === 1 ||
-      (design.id === 'design-001' && selectedGarmentId !== 'hoodie') ||
-      ((design.id === 'design-001' || design.id === 'design-002') && selectedGarmentId === 'hoodie');
-    const unitPrice = isOneRupee
-      ? 1
-      : typeof design.basePrice === 'number' && design.basePrice > 0
-        ? design.basePrice
-        : selectedGarment.basePrice;
+      const primaryArt = currentActiveArt || (artworks && artworks.length > 0 ? artworks[0] : null);
+      const primaryArtId = primaryArt?.id || 'art-1';
+      const primaryPlacement =
+        (primaryArt && artworkPlacements[primaryArt.id]) || primaryArt?.suggestedPlacement || 'front-center';
+      const primaryScale = (primaryArt && artworkScales[primaryArt.id]) || 'standard';
+      const primaryCalibrated =
+        (primaryArt && artworkCalibratedCoords[primaryArt.id]) ||
+        getSavedPlacementForDesign(selectedGarment?.garment3dId || 'regular-t-shirt', primaryArtId, primaryPlacement) ||
+        primaryArt?.calibratedPlacement;
 
-    const removedArtIds = artworks
-      .filter((a) => !includedArtworks.has(a.id))
-      .map((a) => a.id.toLowerCase());
+      const isOneRupee =
+        design.basePrice === 1 ||
+        (design.id === 'design-001' && selectedGarmentId !== 'hoodie') ||
+        ((design.id === 'design-001' || design.id === 'design-002') && selectedGarmentId === 'hoodie');
+      const unitPrice = isOneRupee
+        ? 1
+        : typeof design.basePrice === 'number' && design.basePrice > 0
+          ? design.basePrice
+          : selectedGarment?.basePrice || 799;
 
-    const params = new URLSearchParams({
-      designId: design.id,
-      curated: 'true',
-      designName: design.name,
-      garment: selectedGarment.garment3dId,
-      garmentName: selectedGarment.name,
-      color: selectedColor.hex,
-      colorName: selectedColor.name,
-      size: selectedSize,
-      placement: primaryPlacement,
-      scale: primaryScale,
-      previewUrl: primaryArt.studioPreviewUrl,
-      layers: JSON.stringify(layersToLoad),
-      price: unitPrice.toString(),
-      ...(removedArtIds.length > 0 ? { removedArtIds: JSON.stringify(removedArtIds) } : {}),
-      ...(primaryCalibrated?.u !== undefined ? { u: primaryCalibrated.u.toString() } : {}),
-      ...(primaryCalibrated?.v !== undefined ? { v: primaryCalibrated.v.toString() } : {}),
-    });
+      const removedArtIds = (artworks || [])
+        .filter((a) => !includedArtworks.has(a.id))
+        .map((a) => a.id.toLowerCase());
 
-    router.push(`/customize/clothing-mockup?${params.toString()}`);
+      const garment3dId = selectedGarment?.garment3dId || 'regular-t-shirt';
+      const garmentName = selectedGarment?.name || 'Regular T-Shirt';
+      const colorHex = selectedColor?.hex || selectedGarment?.colors?.[0]?.hex || '#FFFFFF';
+      const colorName = selectedColor?.name || selectedGarment?.colors?.[0]?.name || 'White';
+      const primaryPreviewUrl =
+        primaryArt?.studioPreviewUrl ||
+        primaryArt?.previewUrl ||
+        design.studioPreviewUrl ||
+        design.previewUrl ||
+        `/api/clothing-designs/${design.id}/preview?artId=${primaryArtId}&type=studio&v=v2`;
+
+      const params = new URLSearchParams({
+        designId: design.id,
+        curated: 'true',
+        designName: design.name,
+        garment: garment3dId,
+        garmentName: garmentName,
+        color: colorHex,
+        colorName: colorName,
+        size: selectedSize || 'L',
+        placement: primaryPlacement,
+        scale: primaryScale,
+        previewUrl: primaryPreviewUrl,
+        layers: JSON.stringify(layersToLoad),
+        price: unitPrice.toString(),
+        ...(removedArtIds.length > 0 ? { removedArtIds: JSON.stringify(removedArtIds) } : {}),
+        ...(primaryCalibrated?.u !== undefined ? { u: primaryCalibrated.u.toString() } : {}),
+        ...(primaryCalibrated?.v !== undefined ? { v: primaryCalibrated.v.toString() } : {}),
+      });
+
+      // Close modal first to unlock body scroll and unmount modal overlay
+      try {
+        onClose();
+      } catch {
+        /* ignore */
+      }
+
+      const studioUrl = `/customize/clothing-mockup?${params.toString()}`;
+      if (typeof window !== 'undefined') {
+        window.location.href = studioUrl;
+      } else {
+        router.push(studioUrl);
+      }
+    } catch (err) {
+      console.error('[ClothingProductModal] Failed to launch 3D studio:', err);
+      try {
+        onClose();
+      } catch {
+        /* ignore */
+      }
+      const fallbackUrl = `/customize/clothing-mockup?designId=${encodeURIComponent(design.id)}&garment=${encodeURIComponent(selectedGarment?.garment3dId || 'regular-t-shirt')}`;
+      if (typeof window !== 'undefined') {
+        window.location.href = fallbackUrl;
+      } else {
+        router.push(fallbackUrl);
+      }
+    }
   };
 
   const getPreviewPlacementStyles = (
     placement: DesignPlacementTarget,
     scale: DesignScalePreset,
     isMobile?: boolean,
-    calibrated?: { u?: number; v?: number; uvWidth?: number; scale?: number; rotation?: number; regionId?: string } | null
+    calibrated?: { u?: number; v?: number; uvWidth?: number; scale?: number; rotation?: number; regionId?: string } | null,
+    garmentIdOverride?: string
   ): CSSProperties => {
     let scaleMultiplier = isMobile ? 0.65 : 1.0;
     if (scale === 'compact') scaleMultiplier *= 0.8;
@@ -686,11 +770,51 @@ export function useClothingProductModalState({
     let rotationDeg = 0;
 
     if (calibrated && typeof calibrated.u === 'number' && typeof calibrated.v === 'number') {
+      const g = (garmentIdOverride || selectedGarment?.garment3dId || 'regular-t-shirt').toLowerCase();
       const isBack = placement.includes('back') || placement.includes('collar') || calibrated.regionId === 'back';
       const isSleeve = placement.includes('sleeve');
 
-      const centerU = isBack ? 0.758 : isSleeve ? (placement === 'right-sleeve' ? 0.21 : 0.75) : 0.25;
-      const centerV = isBack ? 0.64 : isSleeve ? 0.24 : 0.635;
+      let centerU = 0.25;
+      let centerV = 0.635;
+
+      if (g.includes('oversized') || g.includes('acid')) {
+        if (isBack) {
+          centerU = 0.25;
+          centerV = 0.30;
+        } else if (isSleeve) {
+          centerU = placement === 'right-sleeve' ? 0.76 : 0.18;
+          centerV = placement === 'right-sleeve' ? 0.25 : 0.80;
+        } else {
+          // Front
+          centerU = 0.75;
+          centerV = 0.66;
+        }
+      } else if (g.includes('hoodie')) {
+        if (isBack) {
+          centerU = 0.20;
+          centerV = 0.79;
+        } else if (isSleeve) {
+          centerU = 0.55;
+          centerV = placement === 'right-sleeve' ? 0.47 : 0.82;
+        } else {
+          // Front
+          centerU = 0.21;
+          centerV = 0.38;
+        }
+      } else {
+        // Regular T-Shirt & standard default
+        if (isBack) {
+          centerU = 0.75;
+          centerV = 0.66;
+        } else if (isSleeve) {
+          centerU = placement === 'right-sleeve' ? 0.21 : 0.75;
+          centerV = 0.26;
+        } else {
+          // Front
+          centerU = 0.25;
+          centerV = 0.635;
+        }
+      }
 
       const baseTopPct = isBack ? 46 : isSleeve ? 35 : 46;
       const baseLeftPct = isBack ? 50 : isSleeve ? (placement === 'right-sleeve' ? 18 : 82) : 50;
