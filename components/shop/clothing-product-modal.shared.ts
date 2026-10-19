@@ -661,8 +661,8 @@ export function useClothingProductModalState({
           art?.calibratedPlacement;
 
         const artStudioUrl =
-          art?.studioPreviewUrl ||
-          art?.previewUrl ||
+          (art?.studioPreviewUrl && !art.studioPreviewUrl.includes('r2.dev') ? art.studioPreviewUrl : null) ||
+          (art?.previewUrl && !art.previewUrl.includes('r2.dev') ? art.previewUrl : null) ||
           `/api/clothing-designs/${design.id}/preview?artId=${artId}&type=studio&v=v3`;
 
         return {
@@ -723,10 +723,10 @@ export function useClothingProductModalState({
       const colorHex = selectedColor?.hex || selectedGarment?.colors?.[0]?.hex || '#FFFFFF';
       const colorName = selectedColor?.name || selectedGarment?.colors?.[0]?.name || 'White';
       const primaryPreviewUrl =
-        primaryArt?.studioPreviewUrl ||
-        primaryArt?.previewUrl ||
-        design.studioPreviewUrl ||
-        design.previewUrl ||
+        (primaryArt?.studioPreviewUrl && !primaryArt.studioPreviewUrl.includes('r2.dev') ? primaryArt.studioPreviewUrl : null) ||
+        (primaryArt?.previewUrl && !primaryArt.previewUrl.includes('r2.dev') ? primaryArt.previewUrl : null) ||
+        (design.studioPreviewUrl && !design.studioPreviewUrl.includes('r2.dev') ? design.studioPreviewUrl : null) ||
+        (design.previewUrl && !design.previewUrl.includes('r2.dev') ? design.previewUrl : null) ||
         `/api/clothing-designs/${design.id}/preview?artId=${primaryArtId}&type=studio&v=v3`;
 
       const params = new URLSearchParams({

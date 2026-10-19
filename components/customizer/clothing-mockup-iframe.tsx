@@ -129,6 +129,31 @@ export function ClothingMockupIframe({
       .catch(() => {});
   }, [searchParams]);
 
+  // Safety timeout and readyState watcher so the studio NEVER gets stuck behind the loading screen
+  useEffect(() => {
+    const checkReady = () => {
+      try {
+        const doc = iframeRef.current?.contentDocument;
+        if (doc && (doc.readyState === 'complete' || doc.readyState === 'interactive')) {
+          setIsLoading(false);
+        }
+      } catch {
+        /* cross-origin fallback */
+      }
+    };
+    checkReady();
+
+    const interval = setInterval(checkReady, 250);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  }, []);
+
   const iframeSrc = React.useMemo(() => {
     const sp = new URLSearchParams(searchParams?.toString() || '');
     if (productId && !sp.has('productId')) sp.set('productId', productId);
@@ -136,18 +161,15 @@ export function ClothingMockupIframe({
     if (basePrice !== undefined && !sp.has('price')) sp.set('price', basePrice.toString());
     if (isPlain && !sp.has('plain')) sp.set('plain', 'true');
 
-    if (!isDesignerAuthorized) {
-      // Strip any designer query parameters if user is not authorized
-      sp.delete('designer');
-      sp.delete('mode');
-      sp.delete('admin');
-      sp.delete('designerAuth');
-    } else {
-      sp.set('designerAuth', '1');
-    }
+    // Strip query auth params; authorization is communicated securely via postMessage
+    sp.delete('designer');
+    sp.delete('mode');
+    sp.delete('admin');
+    sp.delete('designerAuth');
+
     const qs = sp.toString();
     return qs ? `/tools/clothing-mockup/index.html?${qs}` : '/tools/clothing-mockup/index.html';
-  }, [searchParams, isDesignerAuthorized, productId, productName, basePrice, isPlain]);
+  }, [searchParams, productId, productName, basePrice, isPlain]);
 
   // Apply body class while the studio is mounted and aggressively suppress
   // the Tawk.to widget, WhatsApp button, and other floating UI in both 2D and 3D.
@@ -233,6 +255,10 @@ export function ClothingMockupIframe({
   // PostMessage coordinate listener and cart bridge
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
+      if (e.data && typeof e.data === 'object') {
+        setIsLoading(false);
+      }
+
       if (e.data && e.data.type === 'CUSTOM_CURSOR_MOVE') {
         const iframe = iframeRef.current;
         if (!iframe) return;

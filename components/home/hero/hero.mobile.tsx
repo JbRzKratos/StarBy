@@ -5,7 +5,7 @@ import { HeroThreeCharacters } from './HeroThreeCharacters';
 
 export function HeroMobile() {
   return (
-    <section className="relative w-full min-h-[100dvh] bg-[#F5F1EA] text-[#0A0A0A] overflow-hidden flex flex-col justify-between pt-24 pb-6 px-5 select-none">
+    <section className="relative w-full min-h-[100dvh] bg-[#F5F1EA] text-[#0A0A0A] overflow-x-clip flex flex-col justify-between pt-[clamp(4.5rem,4rem+1vh,5.5rem)] pb-[clamp(1rem,1vh+0.5rem,1.5rem)] px-5 select-none">
       {/* ── 1. Top Kicker Text ── */}
       <div className="relative z-20">
         <p className="font-mono text-xs font-black tracking-[0.2em] uppercase leading-tight text-[#0A0A0A]">
@@ -17,7 +17,7 @@ export function HeroMobile() {
       </div>
 
       {/* ── 2. Middle Visual Stage: FREGORO Wordmark + Three Characters ── */}
-      <div className="relative flex-1 flex items-center justify-center my-auto min-h-[300px] max-h-[52vh] py-1">
+      <div className="relative flex-1 w-full min-h-0 flex items-center justify-center my-auto py-1">
         {/* Giant FREGORO Wordmark in Background */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
           <h1
@@ -29,7 +29,7 @@ export function HeroMobile() {
         </div>
 
         {/* 3-Character Visual in Foreground */}
-        <div className="relative z-10 w-full max-w-[440px] aspect-[1230/977] flex items-end justify-center pointer-events-none">
+        <div className="relative z-10 w-auto h-full max-h-[clamp(220px,44vh,380px)] aspect-[1230/977] max-w-[min(92vw,420px)] flex items-end justify-center pointer-events-none">
           <HeroThreeCharacters priority isMobile />
         </div>
       </div>

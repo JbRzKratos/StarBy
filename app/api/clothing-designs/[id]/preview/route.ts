@@ -75,6 +75,7 @@ export async function GET(req: Request, { params }: RouteProps) {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
                 'Access-Control-Allow-Headers': '*',
+                'Vary': 'Origin',
                 'X-Content-Type-Options': 'nosniff',
               },
             });
@@ -99,6 +100,7 @@ export async function GET(req: Request, { params }: RouteProps) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
       'Access-Control-Allow-Headers': '*',
+      'Vary': 'Origin',
     };
 
     if (isDownload) {

@@ -5,7 +5,7 @@ import { HeroThreeCharacters } from './HeroThreeCharacters';
 
 export function HeroDesktop() {
   return (
-    <section className="relative w-full min-h-[96dvh] lg:min-h-[100dvh] bg-[#F5F1EA] text-[#0A0A0A] overflow-hidden flex flex-col justify-between pt-[clamp(6rem,5rem+2.5vw,8rem)] pb-[clamp(1.5rem,1rem+1.5vw,2.5rem)] px-[clamp(1.5rem,1rem+2.5vw,4rem)] select-none">
+    <section className="relative w-full min-h-[100dvh] bg-[#F5F1EA] text-[#0A0A0A] overflow-x-clip flex flex-col justify-between pt-[clamp(7.5rem,6.75rem+1.5vh,8.5rem)] pb-[clamp(1rem,1vh+0.5rem,1.75rem)] px-[clamp(1.25rem,1rem+2vw,3.5rem)] select-none">
       {/* ── 1. Kicker Text (top-left) ── */}
       <div className="relative z-20 max-w-xs">
         <p className="font-mono text-xs md:text-sm font-black tracking-[0.25em] uppercase leading-relaxed text-[#0A0A0A]">
@@ -13,12 +13,12 @@ export function HeroDesktop() {
           <br />
           MADE FOR YOU.
         </p>
-        <div className="w-14 h-[2.5px] bg-[#ED9518] mt-3" />
+        <div className="w-14 h-[2.5px] bg-[#ED9518] mt-2.5" />
       </div>
 
       {/* ── 2. Top-Right Rotating "NEW DROP" Stamp Badge ── */}
-      <div className="absolute top-[clamp(5rem,4.5rem+2vw,7rem)] right-[clamp(1.5rem,1rem+2.5vw,4rem)] z-20 hidden md:block pointer-events-none">
-        <div className="relative w-20 h-20 lg:w-24 lg:h-24 animate-[spin_18s_linear_infinite]">
+      <div className="absolute top-[clamp(7.5rem,6.75rem+1.5vh,8.5rem)] right-[clamp(1.25rem,1rem+2vw,3.5rem)] z-20 hidden md:block pointer-events-none">
+        <div className="relative w-16 h-16 lg:w-20 lg:h-20 animate-[spin_18s_linear_infinite]">
           <svg viewBox="0 0 100 100" className="w-full h-full">
             <path
               id="heroCirclePath"
@@ -35,36 +35,34 @@ export function HeroDesktop() {
       </div>
 
       {/* ── 3. Giant Official FREGORO Wordmark Behind Models ── */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
-        <div className="relative w-full text-center px-2 flex items-center justify-center">
-          <h1
-            className="font-display font-black tracking-tighter text-[#0A0A0A] leading-none select-none flex items-center justify-center whitespace-nowrap uppercase opacity-95"
-            style={{ fontSize: 'clamp(4.5rem, 18vw, 25rem)' }}
-          >
-            <span className="inline-flex items-center whitespace-nowrap">
-              <span className="leading-none">FREGORO</span>
-            </span>
-          </h1>
+      <div className="relative flex-1 w-full min-h-0 flex items-center justify-center my-auto py-1 md:py-2">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
+          <div className="relative w-full text-center px-2 flex items-center justify-center">
+            <h1
+              className="font-display font-black tracking-tighter text-[#0A0A0A] leading-none select-none flex items-center justify-center whitespace-nowrap uppercase opacity-95"
+              style={{ fontSize: 'clamp(4rem, 17vw, 19rem)' }}
+            >
+              FREGORO
+            </h1>
+          </div>
         </div>
-      </div>
 
-      {/* ── 4. Centered Extra-Large Three-Character Group Visual ── */}
-      <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-10 pt-10 pb-0">
-        <div className="relative w-[95vw] sm:w-[85vw] md:w-[75vw] lg:w-[65vw] max-w-[1300px] aspect-[1230/977] max-h-[85vh]">
+        {/* ── 4. Centered Proportional Three-Character Group Visual ── */}
+        <div className="relative z-10 w-auto h-full max-h-[clamp(320px,58vh,640px)] aspect-[1230/977] max-w-[min(94vw,1180px)] flex items-end justify-center pointer-events-none">
           <HeroThreeCharacters priority />
         </div>
       </div>
 
       {/* ── 5. Bottom Section: Editorial Headline, CTAs, and Need Help ── */}
-      <div className="relative z-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-8 mt-auto pt-8">
+      <div className="relative z-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-3 md:gap-6 mt-auto pt-2 md:pt-3">
         {/* Left Side: Headline & CTAs */}
-        <div className="max-w-md flex flex-col gap-3">
+        <div className="max-w-md flex flex-col gap-2 md:gap-2.5">
           <div className="flex items-center gap-2.5 font-mono text-[11px] font-bold tracking-[0.25em] uppercase text-[#0A0A0A]/85">
             <span className="w-5 h-[1.5px] bg-[#0A0A0A]" />
             <span>MADE TO STAND OUT</span>
           </div>
 
-          <h2 className="font-display font-black text-2xl sm:text-3xl lg:text-[2.5rem] tracking-tight leading-[1.05] text-[#0A0A0A] uppercase">
+          <h2 className="font-display font-black text-2xl sm:text-3xl lg:text-[clamp(1.75rem,1.4rem+1vw,2.25rem)] tracking-tight leading-[1.08] text-[#0A0A0A] uppercase">
             DESIGNS THAT
             <br />
             SPEAK FOR YOU.
@@ -74,17 +72,17 @@ export function HeroDesktop() {
             Minimal designs. Maximum impact.
           </p>
 
-          <div className="flex items-center gap-4 pt-2">
+          <div className="flex items-center gap-3.5 pt-1">
             <Link
               href="/products/tees"
-              className="group relative inline-flex items-center justify-center bg-[#0A0A0A] text-[#F5F1EA] px-8 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] transition-all duration-300 hover:bg-[#ED9518] hover:border-[#ED9518] hover:text-[#0A0A0A] hover:shadow-[0_0_25px_rgba(237,149,24,0.4)]"
+              className="group relative inline-flex items-center justify-center bg-[#0A0A0A] text-[#F5F1EA] px-7 py-3 md:px-8 md:py-3.5 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] transition-all duration-300 hover:bg-[#ED9518] hover:border-[#ED9518] hover:text-[#0A0A0A] hover:shadow-[0_0_25px_rgba(237,149,24,0.4)]"
             >
               <span className="relative z-10">SHOP NOW</span>
             </Link>
 
             <Link
               href="/customize/clothing-mockup"
-              className="group relative inline-flex items-center gap-2.5 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#0A0A0A] border-2 border-[#0A0A0A] px-7 py-3.5 transition-all duration-300 hover:bg-[#0A0A0A] hover:text-[#F5F1EA] hover:border-[#0A0A0A]"
+              className="group relative inline-flex items-center gap-2.5 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#0A0A0A] border-2 border-[#0A0A0A] px-6 py-2.5 md:px-7 md:py-3 transition-all duration-300 hover:bg-[#0A0A0A] hover:text-[#F5F1EA] hover:border-[#0A0A0A]"
             >
               <span className="w-2 h-2 rounded-full bg-[#ED9518] animate-pulse" />
               <span>ENTER 3D STUDIO [360°]</span>

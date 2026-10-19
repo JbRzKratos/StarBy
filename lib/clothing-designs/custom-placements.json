@@ -1,61 +1,73 @@
 {
   "design-001__regular-t-shirt__art-1": {
-    "u": 0.25,
-    "v": 0.635,
-    "uvWidth": 0.24,
-    "scale": 0.6857,
-    "rotation": 0,
-    "regionId": "front",
-    "placementTarget": "front-center",
-    "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:18:31.241Z"
-  },
-  "design-001__regular-t-shirt__back-center": {
     "u": 0.74547,
     "v": 0.69208,
-    "uvWidth": 0.2975,
-    "scale": 0.85,
-    "rotation": 0,
-    "regionId": "back",
-    "placementTarget": "back-center",
-    "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:18:31.241Z"
-  },
-  "design-001__regular-t-shirt__back": {
-    "u": 0.74547,
-    "v": 0.69208,
-    "uvWidth": 0.2975,
-    "scale": 0.85,
-    "rotation": 0,
-    "regionId": "back",
-    "placementTarget": "back-center",
-    "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:18:31.241Z"
-  },
-  "design-003__regular-t-shirt__front-center": {
-    "u": 0.25678,
-    "v": 0.65036,
-    "uvWidth": 0.175,
-    "scale": 0.5,
-    "rotation": 0,
-    "regionId": "front",
-    "placementTarget": "front-center",
-    "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:09:08.014Z"
-  },
-  "design-003__regular-t-shirt__art-2": {
-    "u": 0.74263,
-    "v": 0.66437,
     "uvWidth": 0.35,
     "scale": 1,
     "rotation": 0,
     "regionId": "back",
     "placementTarget": "back-center",
-    "scalePreset": "compact",
+    "scalePreset": "standard",
     "hidden": false,
     "removed": false,
     "opacity": 1,
-    "savedAt": "2026-10-15T20:46:08.338Z"
+    "savedAt": "2026-10-19T17:26:35.221Z"
+  },
+  "design-001__regular-t-shirt__back-center": {
+    "u": 0.74547,
+    "v": 0.69208,
+    "uvWidth": 0.35,
+    "scale": 1,
+    "rotation": 0,
+    "regionId": "back",
+    "placementTarget": "back-center",
+    "scalePreset": "standard",
+    "hidden": false,
+    "removed": false,
+    "opacity": 1,
+    "savedAt": "2026-10-19T17:26:35.221Z"
+  },
+  "design-001__regular-t-shirt__back": {
+    "u": 0.74547,
+    "v": 0.69208,
+    "uvWidth": 0.35,
+    "scale": 1,
+    "rotation": 0,
+    "regionId": "back",
+    "placementTarget": "back-center",
+    "scalePreset": "standard",
+    "hidden": false,
+    "removed": false,
+    "opacity": 1,
+    "savedAt": "2026-10-19T17:26:35.221Z"
+  },
+  "design-003__regular-t-shirt__front-center": {
+    "u": 0.25678,
+    "v": 0.65036,
+    "uvWidth": 0.245,
+    "scale": 0.7,
+    "rotation": 0,
+    "regionId": "front",
+    "placementTarget": "front-center",
+    "scalePreset": "standard",
+    "hidden": false,
+    "removed": false,
+    "opacity": 1,
+    "savedAt": "2026-10-19T17:26:35.221Z"
+  },
+  "design-003__regular-t-shirt__art-2": {
+    "u": 0.25678,
+    "v": 0.65036,
+    "uvWidth": 0.245,
+    "scale": 0.7,
+    "rotation": 0,
+    "regionId": "front",
+    "placementTarget": "front-center",
+    "scalePreset": "standard",
+    "hidden": false,
+    "removed": false,
+    "opacity": 1,
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-003__regular-t-shirt__back-center": {
     "u": 0.74263,
@@ -65,17 +77,17 @@
     "rotation": 0,
     "regionId": "back",
     "placementTarget": "back-center",
-    "scalePreset": "compact",
+    "scalePreset": "standard",
     "hidden": false,
     "removed": false,
     "opacity": 1,
-    "savedAt": "2026-10-15T20:46:08.338Z"
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-003__regular-t-shirt__art-1": {
-    "u": 0.25678,
-    "v": 0.65036,
-    "uvWidth": 0.175,
-    "scale": 0.5,
+    "u": 0.74263,
+    "v": 0.66437,
+    "uvWidth": 0.35,
+    "scale": 1,
     "rotation": 0,
     "regionId": "back",
     "placementTarget": "back-center",
@@ -83,18 +95,21 @@
     "hidden": false,
     "removed": false,
     "opacity": 1,
-    "savedAt": "2026-10-15T20:46:08.338Z"
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-003__regular-t-shirt__front": {
-    "u": 0.75581,
-    "v": 0.29658,
-    "uvWidth": 0.0525,
-    "scale": 0.15,
+    "u": 0.25678,
+    "v": 0.65036,
+    "uvWidth": 0.245,
+    "scale": 0.7,
     "rotation": 0,
     "regionId": "front",
-    "placementTarget": "left-sleeve",
+    "placementTarget": "front-center",
     "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:11:38.085Z"
+    "hidden": false,
+    "removed": false,
+    "opacity": 1,
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-003__regular-t-shirt__back": {
     "u": 0.74263,
@@ -104,11 +119,11 @@
     "rotation": 0,
     "regionId": "back",
     "placementTarget": "back-center",
-    "scalePreset": "compact",
+    "scalePreset": "standard",
     "hidden": false,
     "removed": false,
     "opacity": 1,
-    "savedAt": "2026-10-15T20:46:08.338Z"
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-003__regular-t-shirt__left-chest": {
     "u": 0.75936,
@@ -144,15 +159,18 @@
     "savedAt": "2026-10-15T19:11:38.085Z"
   },
   "design-001__regular-t-shirt__art-2": {
-    "u": 0.74547,
-    "v": 0.69208,
-    "uvWidth": 0.2975,
-    "scale": 0.85,
+    "u": 0.312,
+    "v": 0.638,
+    "uvWidth": 0.12,
+    "scale": 0.5,
     "rotation": 0,
-    "regionId": "back",
-    "placementTarget": "back-center",
-    "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:18:31.241Z"
+    "regionId": "front",
+    "placementTarget": "left-chest",
+    "scalePreset": "compact",
+    "hidden": false,
+    "removed": false,
+    "opacity": 1,
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-001__regular-t-shirt__front-center": {
     "u": 0.25,
@@ -205,15 +223,15 @@
     "savedAt": "2026-10-15T20:44:47.564Z"
   },
   "design-002__regular-t-shirt__back-center": {
-    "u": 0.2705,
-    "v": 0.70538,
-    "uvWidth": 0.2625,
-    "scale": 0.75,
+    "u": 0.758,
+    "v": 0.63,
+    "uvWidth": 0.35,
+    "scale": 1,
     "rotation": 0,
     "regionId": "back",
     "placementTarget": "back-center",
     "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:25:19.989Z"
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-002__regular-t-shirt__front": {
     "u": 0.25117,
@@ -255,15 +273,15 @@
     "savedAt": "2026-10-15T20:44:47.564Z"
   },
   "design-002__regular-t-shirt__back": {
-    "u": 0.2705,
-    "v": 0.70538,
-    "uvWidth": 0.2625,
-    "scale": 0.75,
+    "u": 0.758,
+    "v": 0.63,
+    "uvWidth": 0.35,
+    "scale": 1,
     "rotation": 0,
     "regionId": "back",
     "placementTarget": "back-center",
     "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:25:19.984Z"
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-004__regular-t-shirt__back-center": {
     "u": 0.75261,
@@ -299,15 +317,15 @@
     "savedAt": "2026-10-15T19:16:30.659Z"
   },
   "design-004__regular-t-shirt__art-1": {
-    "u": 0.26682,
-    "v": 0.70492,
-    "uvWidth": 0.26,
-    "scale": 0.7429,
+    "u": 0.75261,
+    "v": 0.65933,
+    "uvWidth": 0.3675,
+    "scale": 1.05,
     "rotation": 0,
-    "regionId": "front",
-    "placementTarget": "front-center",
+    "regionId": "back",
+    "placementTarget": "back-center",
     "scalePreset": "standard",
-    "savedAt": "2026-10-15T19:16:30.659Z"
+    "savedAt": "2026-10-19T17:26:35.221Z"
   },
   "design-004__regular-t-shirt__front": {
     "u": 0.26682,
@@ -1174,5 +1192,19 @@
     "removed": false,
     "opacity": 1,
     "savedAt": "2026-10-15T20:48:31.527Z"
+  },
+  "design-001__regular-t-shirt__left-chest": {
+    "u": 0.312,
+    "v": 0.638,
+    "uvWidth": 0.12,
+    "scale": 0.5,
+    "rotation": 0,
+    "regionId": "front",
+    "placementTarget": "left-chest",
+    "scalePreset": "compact",
+    "hidden": false,
+    "removed": false,
+    "opacity": 1,
+    "savedAt": "2026-10-19T17:26:35.221Z"
   }
 }
