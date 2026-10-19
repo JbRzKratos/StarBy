@@ -261,7 +261,18 @@ export function useClothingProductModalState({
           window.localStorage.setItem(KEY1, jsonStr);
           window.localStorage.setItem(KEY2, jsonStr);
 
-          setArtworkCalibratedCoords((prev) => ({ ...prev, ...merged }));
+          const mappedByArtId: Record<string, SavedPlacementItem> = {};
+          if (design?.artworks) {
+            const normGarment = (selectedGarment?.garment3dId || 'regular-t-shirt').toLowerCase();
+            design.artworks.forEach((art) => {
+              const artKey = `${design.id}__${normGarment}__${art.id.toLowerCase()}`;
+              const targetKey = `${design.id}__${normGarment}__${art.suggestedPlacement}`;
+              if (merged[artKey]) mappedByArtId[art.id] = merged[artKey];
+              else if (merged[targetKey]) mappedByArtId[art.id] = merged[targetKey];
+            });
+          }
+
+          setArtworkCalibratedCoords((prev) => ({ ...prev, ...merged, ...mappedByArtId }));
           setPlacementSaveVersion((v) => v + 1);
         } catch {
           /* ignore */
@@ -271,7 +282,7 @@ export function useClothingProductModalState({
     return () => {
       isCancelled = true;
     };
-  }, [design?.id]);
+  }, [design?.id, design?.artworks, selectedGarment?.garment3dId]);
 
   // Helper to load calibrated placement from localStorage with target & artId isolation
   const getSavedPlacementForDesign = useCallback(
@@ -901,7 +912,10 @@ export function useClothingProductModalState({
       }
     }
 
-    const sizePx = Math.round(baseSizePx * (calibrated?.uvWidth ? 1.0 : scaleMultiplier));
+    const rawSize = Math.round(baseSizePx * (calibrated?.uvWidth ? 1.0 : scaleMultiplier));
+    const maxAllowed = isMobile ? 120 : 165;
+    const minAllowed = isMobile ? 35 : 45;
+    const sizePx = Math.min(maxAllowed, Math.max(minAllowed, rawSize));
 
     return {
       position: 'absolute',
@@ -909,6 +923,8 @@ export function useClothingProductModalState({
       left: leftPercent,
       width: `${sizePx}px`,
       height: `${sizePx}px`,
+      maxWidth: `${maxAllowed}px`,
+      maxHeight: `${maxAllowed}px`,
       transform: `translate(-50%, -50%) rotate(${rotationDeg}deg)`,
     };
   };

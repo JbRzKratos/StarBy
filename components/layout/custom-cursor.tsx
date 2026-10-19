@@ -440,16 +440,30 @@ export function CustomCursor() {
         }
       };
 
-      if (iframe.contentDocument?.readyState === 'complete') {
-        attachBridge();
-      } else {
-        iframe.addEventListener('load', attachBridge, { once: true });
+      try {
+        let isReady = false;
+        try {
+          // Accessing contentDocument on cross-origin iframes (e.g. Tawk.to, Cashfree) throws SecurityError
+          isReady = iframe.contentDocument?.readyState === 'complete';
+        } catch {
+          // Cross-origin iframe: skip DOM bridging safely
+          return;
+        }
+
+        if (isReady) {
+          attachBridge();
+        } else {
+          iframe.addEventListener('load', attachBridge, { once: true });
+        }
+      } catch {
+        // Cross-origin iframe: ignore
       }
     };
 
     try {
-      // Attach single, deduplicated Pointer Event listeners
+      // Attach single, deduplicated Pointer Event listeners to both window and document
       window.addEventListener('pointermove', onPointerMove, { passive: true });
+      document.addEventListener('pointermove', onPointerMove, { passive: true });
       window.addEventListener('custom-cursor-coords', onCustomCoords);
       window.addEventListener('pointerdown', onPointerDown, { passive: true });
       window.addEventListener('pointerup', onPointerUp, { passive: true });
@@ -465,7 +479,7 @@ export function CustomCursor() {
       document.addEventListener('mouseleave', hideCursor);
       document.addEventListener('mouseenter', showCursor);
 
-      // Connect existing iframes
+      // Connect existing iframes safely
       document.querySelectorAll('iframe').forEach(bridgeIframe);
 
       // Scoped observer for iframe mounting

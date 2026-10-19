@@ -79,10 +79,12 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
           className="w-[45%] p-6 flex flex-col justify-between items-center border-r border-white/10 relative overflow-hidden transition-colors duration-500"
           style={{ backgroundColor: selectedColor.hex === '#FFFFFF' ? '#181A20' : '#14161B' }}
         >
-          {/* Subtle Ambient Color Glow */}
+          {/* Subtle Ambient Color Glow (Contained Radial Gradient, No Screen-Bleeding Blur) */}
           <div
-            className="absolute inset-0 opacity-20 pointer-events-none transition-colors duration-500 blur-3xl"
-            style={{ backgroundColor: selectedColor.hex }}
+            className="absolute inset-0 opacity-10 pointer-events-none transition-colors duration-500"
+            style={{
+              background: `radial-gradient(circle at 50% 50%, ${selectedColor.hex} 0%, transparent 75%)`,
+            }}
           />
 
           {/* Top Bar: Design ID & Side Flip Toggle */}
@@ -126,33 +128,47 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
           {/* Canvas Preview Area with Click-to-Pinpoint Hotspots */}
           <div
             onClick={handleGarmentMockupClick}
-            className="group relative w-full aspect-square max-w-[340px] my-auto flex items-center justify-center select-none cursor-crosshair"
+            className="group relative w-full aspect-square max-w-[340px] my-auto flex items-center justify-center select-none cursor-crosshair rounded-3xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-300"
+            style={{
+              backgroundColor: selectedColor.hex === '#FFFFFF' ? '#F4F4F6' : selectedColor.hex,
+            }}
             title="Click anywhere on the shirt to position the graphic"
           >
-            {/* Simulated Garment Background Plate */}
-            <div
-              className="absolute inset-0 rounded-3xl border transition-all duration-300 shadow-2xl overflow-hidden flex items-center justify-center pointer-events-none"
-              style={{
-                backgroundColor: selectedColor.hex,
-                borderColor: selectedColor.hex === '#FFFFFF' ? '#33353F' : 'rgba(255,255,255,0.08)',
-              }}
-            >
-              <div
-                className="absolute inset-0 opacity-[0.06] pointer-events-none"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.4) 0%, transparent 70%)',
-                }}
-              />
+            {/* Real Plain Garment Mockup Image */}
+            {(() => {
+              const garmentImg =
+                previewSide === 'front'
+                  ? selectedColor.garmentFrontImage
+                  : selectedColor.garmentBackImage;
+              return garmentImg ? (
+                <div className="absolute inset-0 flex items-center justify-center p-2 pointer-events-none select-none">
+                  <Image
+                    src={garmentImg}
+                    alt={`${selectedGarment.name} - ${selectedColor.name}`}
+                    fill
+                    unoptimized
+                    priority
+                    className="object-contain pointer-events-none"
+                    sizes="340px"
+                  />
+                </div>
+              ) : (
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    backgroundColor: selectedColor.hex,
+                  }}
+                />
+              );
+            })()}
 
-              <span className="absolute top-3 left-4 font-mono text-[9px] text-white/30 uppercase tracking-widest pointer-events-none">
-                {previewSide === 'front' ? 'FRONT VIEW' : 'BACK VIEW'}
-              </span>
+            <span className="absolute top-3 left-4 font-mono text-[9px] text-white/50 bg-black/40 px-2 py-0.5 rounded-md uppercase tracking-widest pointer-events-none z-20 backdrop-blur-sm">
+              {previewSide === 'front' ? 'FRONT VIEW' : 'BACK VIEW'}
+            </span>
 
-              <div className="absolute top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-black/70 px-2 py-0.5 rounded-full text-[8px] font-mono text-emerald-300 pointer-events-none">
-                <span>⚲</span>
-                <span>Click to place</span>
-              </div>
+            <div className="absolute top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-black/70 px-2 py-0.5 rounded-full text-[8px] font-mono text-emerald-300 pointer-events-none z-20">
+              <span>⚲</span>
+              <span>Click to place</span>
             </div>
 
             {/* Interactive Hotspot Targets */}
@@ -273,15 +289,15 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                   false,
                   artworkCalibratedCoords[currentActiveArt.id]
                 )}
-                className="z-10 flex items-center justify-center transition-all duration-300 drop-shadow-xl pointer-events-none"
+                className="z-10 flex items-center justify-center transition-all duration-300 drop-shadow-[0_4px_10px_rgba(0,0,0,0.45)] pointer-events-none"
               >
                 <Image
                   src={currentActiveArt.previewUrl}
                   alt={currentActiveArt.name}
                   fill
                   unoptimized
-                  className="object-contain"
-                  sizes="320px"
+                  className="object-contain pointer-events-none"
+                  sizes="220px"
                 />
               </div>
             )}

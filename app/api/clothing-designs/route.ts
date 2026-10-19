@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { getManifest } from '@/lib/clothing-designs/manifest';
 import { getAllServerPlacements, isCoordinatePhysicallyInRegion, type SavedPlacementItem } from '@/lib/clothing-designs/placements-store';
 import { rateLimit } from '@/lib/rate-limit';
+import { getR2AssetUrl } from '@/lib/r2';
 
 export const dynamic = 'force-dynamic';
 
@@ -93,6 +94,10 @@ export async function GET(req: Request) {
               : 999;
       const liveName = dbProduct?.name || d.name;
 
+      const defaultArt = (d.artworks || []).find((a) => a.id === d.defaultArtworkId) || d.artworks?.[0];
+      const defaultThumbKey = defaultArt?.thumbnailObjectKey || `clothing-designs/${d.id}/previews/thumb_${d.defaultArtworkId || 'art-1'}.webp`;
+      const defaultStudioKey = defaultArt?.previewObjectKey || `clothing-designs/${d.id}/previews/studio_${d.defaultArtworkId || 'art-1'}.webp`;
+
       return {
         id: d.id,
         name: liveName,
@@ -103,8 +108,8 @@ export async function GET(req: Request) {
         defaultSurface: d.defaultSurface,
         availableSurfaces: d.availableSurfaces,
         defaultArtworkId: d.defaultArtworkId,
-        previewUrl: (d.previewUrl && d.previewUrl.includes('&v=')) ? d.previewUrl : (d.previewUrl ? `${d.previewUrl}&v=v2` : `/api/clothing-designs/${d.id}/preview?type=thumbnail&v=v2`),
-        studioPreviewUrl: (d.studioPreviewUrl && d.studioPreviewUrl.includes('&v=')) ? d.studioPreviewUrl : (d.studioPreviewUrl ? `${d.studioPreviewUrl}&v=v2` : `/api/clothing-designs/${d.id}/preview?type=studio&v=v2`),
+        previewUrl: getR2AssetUrl(defaultThumbKey),
+        studioPreviewUrl: getR2AssetUrl(defaultStudioKey),
         compatibleGarments: d.compatibleGarments,
         artworks: (d.artworks || []).map((a) => {
           const targetGarment = (garment || 'regular-t-shirt').toLowerCase();
@@ -156,8 +161,8 @@ export async function GET(req: Request) {
             hidden: isHidden,
             removed: isRemoved,
             colorHint: a.colorHint,
-            previewUrl: (a.previewUrl && a.previewUrl.includes('&v=')) ? a.previewUrl : (a.previewUrl ? `${a.previewUrl}&v=v2` : `/api/clothing-designs/${d.id}/preview?artId=${a.id}&type=thumbnail&v=v2`),
-            studioPreviewUrl: (a.studioPreviewUrl && a.studioPreviewUrl.includes('&v=')) ? a.studioPreviewUrl : (a.studioPreviewUrl ? `${a.studioPreviewUrl}&v=v2` : `/api/clothing-designs/${d.id}/preview?artId=${a.id}&type=studio&v=v2`),
+            previewUrl: getR2AssetUrl(a.thumbnailObjectKey || `clothing-designs/${d.id}/previews/thumb_${a.id}.webp`),
+            studioPreviewUrl: getR2AssetUrl(a.previewObjectKey || `clothing-designs/${d.id}/previews/studio_${a.id}.webp`),
           };
         }),
       };

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getPreviewImageStream, getDesignById } from '@/lib/clothing-designs/service';
 import { rateLimit } from '@/lib/rate-limit';
+import { getR2AssetUrl } from '@/lib/r2';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,6 +39,37 @@ export async function GET(req: Request, { params }: RouteProps) {
       typeReq === 'original' ? 'original' : typeReq === 'studio' ? 'studio' : 'thumbnail';
     const artIdParam = searchParams.get('artId') || searchParams.get('surface') || design.defaultArtworkId;
     const isDownload = searchParams.get('download') === '1' || searchParams.has('download');
+
+    // Lightning-fast CDN path: redirect directly to Cloudflare R2 edge for instant image delivery
+    if (!isDownload && typeParam !== 'original') {
+      let art = design.artworks?.find((a) => a.id.toLowerCase() === artIdParam?.toLowerCase());
+      if (!art && artIdParam) {
+        const s = artIdParam.toLowerCase();
+        art = design.artworks?.find(
+          (a) =>
+            a.suggestedPlacement?.toLowerCase() === s ||
+            a.suggestedPlacement?.toLowerCase().startsWith(s) ||
+            a.suggestedPlacement?.toLowerCase().includes(s) ||
+            (s === 'front' && (a.fileName?.toLowerCase().includes('front') || a.name?.toLowerCase().includes('front'))) ||
+            (s === 'back' && (a.fileName?.toLowerCase().includes('back') || a.name?.toLowerCase().includes('back'))) ||
+            (s === 'sleeve' && (a.fileName?.toLowerCase().includes('sleeve') || a.name?.toLowerCase().includes('sleeve')))
+        );
+      }
+      if (!art) {
+        art = design.artworks?.find((a) => a.id === design.defaultArtworkId) || design.artworks?.[0];
+      }
+      const r2Key = art ? (typeParam === 'studio' ? art.previewObjectKey : art.thumbnailObjectKey) : null;
+      if (r2Key) {
+        const cdnUrl = getR2AssetUrl(r2Key);
+        return NextResponse.redirect(cdnUrl, {
+          status: 307,
+          headers: {
+            'Cache-Control': 'public, max-age=31536000, immutable',
+            'CDN-Cache-Control': 'public, max-age=31536000, immutable',
+          },
+        });
+      }
+    }
 
     const result = await getPreviewImageStream(id, typeParam, artIdParam);
     if (!result) {

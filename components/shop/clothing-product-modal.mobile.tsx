@@ -86,8 +86,10 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
       >
         {/* Subtle Ambient Glow */}
         <div
-          className="absolute inset-0 opacity-20 pointer-events-none transition-colors duration-500 blur-2xl"
-          style={{ backgroundColor: selectedColor.hex }}
+          className="absolute inset-0 opacity-10 pointer-events-none transition-colors duration-500"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${selectedColor.hex} 0%, transparent 75%)`,
+          }}
         />
 
         {/* Floating Front / Back Segmented Switch Inside Canvas (Top Right) */}
@@ -121,12 +123,40 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
           onClick={handleGarmentMockupClick}
           className="group relative w-full h-[180px] max-w-[280px] flex items-center justify-center select-none cursor-crosshair rounded-2xl border transition-all duration-300 shadow-xl overflow-hidden"
           style={{
-            backgroundColor: selectedColor.hex,
+            backgroundColor: selectedColor.hex === '#FFFFFF' ? '#F4F4F6' : selectedColor.hex,
             borderColor: selectedColor.hex === '#FFFFFF' ? '#33353F' : 'rgba(255,255,255,0.08)',
           }}
         >
+          {/* Real Plain Garment Mockup Image */}
+          {(() => {
+            const garmentImg =
+              previewSide === 'front'
+                ? selectedColor.garmentFrontImage
+                : selectedColor.garmentBackImage;
+            return garmentImg ? (
+              <div className="absolute inset-0 flex items-center justify-center p-1.5 pointer-events-none select-none">
+                <Image
+                  src={garmentImg}
+                  alt={`${selectedGarment.name} - ${selectedColor.name}`}
+                  fill
+                  unoptimized
+                  priority
+                  className="object-contain pointer-events-none"
+                  sizes="280px"
+                />
+              </div>
+            ) : (
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  backgroundColor: selectedColor.hex,
+                }}
+              />
+            );
+          })()}
+
           {/* Subtle watermark / view text */}
-          <span className="absolute top-2.5 left-3 font-mono text-[8px] text-white/30 uppercase tracking-widest pointer-events-none">
+          <span className="absolute top-2.5 left-3 font-mono text-[8px] text-white/50 bg-black/40 px-2 py-0.5 rounded-md uppercase tracking-widest pointer-events-none z-20 backdrop-blur-sm">
             {previewSide === 'front' ? 'FRONT VIEW' : 'BACK VIEW'}
           </span>
 
@@ -254,15 +284,15 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 true,
                 artworkCalibratedCoords[currentActiveArt.id]
               )}
-              className="z-10 flex items-center justify-center transition-all duration-300 drop-shadow-xl pointer-events-none"
+              className="z-10 flex items-center justify-center transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] pointer-events-none"
             >
               <Image
                 src={currentActiveArt.previewUrl}
                 alt={currentActiveArt.name}
                 fill
                 unoptimized
-                className="object-contain"
-                sizes="240px"
+                className="object-contain pointer-events-none"
+                sizes="160px"
               />
             </div>
           )}

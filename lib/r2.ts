@@ -73,9 +73,14 @@ export function getR2PublicUrl(objectKey: string): string {
 // Safe to call from both client and server code.
 
 export function getR2AssetUrl(assetPath: string): string {
-  const base = process.env.NEXT_PUBLIC_R2_PUBLIC_URL || '';
+  if (!assetPath) return '';
+  if (assetPath.startsWith('http://') || assetPath.startsWith('https://')) {
+    return assetPath;
+  }
+  const base =
+    process.env.NEXT_PUBLIC_R2_PUBLIC_URL || 'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev';
   const cleanPath = assetPath.replace(/^\/+/, '');
-  return base ? `${base}/${cleanPath}` : `/${cleanPath}`;
+  return `${base.replace(/\/+$/, '')}/${cleanPath}`;
 }
 
 // ─── Types ──────────────────────────────────────────────────────────────────

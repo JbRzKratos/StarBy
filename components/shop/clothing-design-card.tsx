@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
+import { getR2AssetUrl } from '@/lib/r2';
 
 interface ClothingDesignCardProps {
   design: ClothingDesignEntry;
@@ -15,7 +16,16 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeSurface, setActiveSurface] = useState<'front' | 'back' | 'sleeve'>(design.defaultSurface);
 
-  const previewSrc = `/api/clothing-designs/${design.id}/preview?type=thumbnail&surface=${activeSurface}&v=v2`;
+  const activeArt = design.artworks?.find((a) => {
+    if (activeSurface === 'back') return a.suggestedPlacement?.includes('back');
+    if (activeSurface === 'sleeve') return a.suggestedPlacement?.includes('sleeve');
+    return !a.suggestedPlacement?.includes('back') && !a.suggestedPlacement?.includes('sleeve');
+  }) || design.artworks?.[0];
+
+  const previewSrc =
+    activeArt?.previewUrl ||
+    design.previewUrl ||
+    getR2AssetUrl(`clothing-designs/${design.id}/previews/thumb_${activeArt?.id || design.defaultArtworkId || 'art-1'}.webp`);
 
   return (
     <div

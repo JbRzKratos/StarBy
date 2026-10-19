@@ -202,11 +202,26 @@ export function ShopDesktop({ category, products }: { category: string; products
   const [selectedClothingDesign, setSelectedClothingDesign] = useState<ClothingDesignEntry | null>(null);
 
   const handleSelectDesign = async (designId: string) => {
+    // Instant cache check
+    if (typeof window !== 'undefined') {
+      const win = window as unknown as { _fregoroDesignCache?: Map<string, ClothingDesignEntry> };
+      if (!win._fregoroDesignCache) win._fregoroDesignCache = new Map();
+      const cached = win._fregoroDesignCache.get(designId);
+      if (cached) {
+        setSelectedClothingDesign(cached);
+        return;
+      }
+    }
+
     try {
       const res = await fetch(`/api/clothing-designs?id=${designId}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.designs && data.designs.length > 0) {
+          if (typeof window !== 'undefined') {
+            const win = window as unknown as { _fregoroDesignCache?: Map<string, ClothingDesignEntry> };
+            win._fregoroDesignCache?.set(designId, data.designs[0]);
+          }
           setSelectedClothingDesign(data.designs[0]);
           return;
         }

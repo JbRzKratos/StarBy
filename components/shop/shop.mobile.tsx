@@ -9,9 +9,14 @@ import { SHOP_CATEGORIES } from './shop.shared';
 import { CategoryComingSoonPage } from './category-coming-soon-page';
 import { getR2AssetUrl } from '@/lib/r2';
 import { usePrice } from '@/lib/hooks/usePrice';
+import dynamic from 'next/dynamic';
 import { isProductComingSoon, isCategoryComingSoon } from '@/data/categories';
 import { ClothingDesignsGallery } from './clothing-designs-gallery';
-import { ClothingProductModal } from './clothing-product-modal';
+// Lazy loaded to keep initial mobile bundle minimal
+const ClothingProductModal = dynamic(
+  () => import('./clothing-product-modal').then((m) => m.ClothingProductModal),
+  { ssr: false },
+);
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
 import {
   classifyProduct,
@@ -164,11 +169,26 @@ export function ShopMobile({ category, products }: { category: string; products:
   const [selectedClothingDesign, setSelectedClothingDesign] = useState<ClothingDesignEntry | null>(null);
 
   const handleSelectDesign = async (designId: string) => {
+    // Instant cache check
+    if (typeof window !== 'undefined') {
+      const win = window as unknown as { _fregoroDesignCache?: Map<string, ClothingDesignEntry> };
+      if (!win._fregoroDesignCache) win._fregoroDesignCache = new Map();
+      const cached = win._fregoroDesignCache.get(designId);
+      if (cached) {
+        setSelectedClothingDesign(cached);
+        return;
+      }
+    }
+
     try {
       const res = await fetch(`/api/clothing-designs?id=${designId}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.designs && data.designs.length > 0) {
+          if (typeof window !== 'undefined') {
+            const win = window as unknown as { _fregoroDesignCache?: Map<string, ClothingDesignEntry> };
+            win._fregoroDesignCache?.set(designId, data.designs[0]);
+          }
           setSelectedClothingDesign(data.designs[0]);
           return;
         }
