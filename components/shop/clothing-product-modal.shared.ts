@@ -175,9 +175,9 @@ export function useClothingProductModalState({
         originalObjectKey: `clothing-designs/${design.id}/original/artwork.png`,
         thumbnailObjectKey: `clothing-designs/${design.id}/previews/thumb_front.webp`,
         previewObjectKey: `clothing-designs/${design.id}/previews/studio_front.webp`,
-        previewUrl: design.previewUrl || `/api/clothing-designs/${design.id}/preview?type=thumbnail&v=v2`,
+        previewUrl: design.previewUrl || `/api/clothing-designs/${design.id}/preview?type=thumbnail&v=v3`,
         studioPreviewUrl:
-          design.studioPreviewUrl || `/api/clothing-designs/${design.id}/preview?type=studio&v=v2`,
+          design.studioPreviewUrl || `/api/clothing-designs/${design.id}/preview?type=studio&v=v3`,
       },
     ];
   }, [design]);
@@ -420,13 +420,8 @@ export function useClothingProductModalState({
     setActiveArtId(defaultId);
 
     const defaultArt = artworks.find((a) => a.id === defaultId) || artworks[0];
-    const initialSide =
-      defaultArt.suggestedPlacement === 'back' ||
-      defaultArt.suggestedPlacement === 'back-center' ||
-      defaultArt.suggestedPlacement === 'back-collar' ||
-      defaultArt.suggestedPlacement === 'full-back'
-        ? 'back'
-        : 'front';
+    const targetPlacement = (defaultId && initialPlacements[defaultId]) || defaultArt?.suggestedPlacement || 'front-center';
+    const initialSide = isBackPlacement(targetPlacement) ? 'back' : 'front';
     setPreviewSide(initialSide);
 
     // Auto-match colorHint if specified on default artwork
@@ -556,6 +551,18 @@ export function useClothingProductModalState({
     }
   };
 
+  const handleSwitchSide = (side: 'front' | 'back') => {
+    setPreviewSide(side);
+    const artOnNewSide = artworks.find((art) => {
+      if (!includedArtworks.has(art.id)) return false;
+      const placement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
+      return side === 'back' ? isBackPlacement(placement) : !isBackPlacement(placement);
+    });
+    if (artOnNewSide) {
+      setActiveArtId(artOnNewSide.id);
+    }
+  };
+
   const handleUpdateScale = (scale: DesignScalePreset) => {
     if (!currentActiveArt) return;
     setArtworkScales((prev) => ({
@@ -656,7 +663,7 @@ export function useClothingProductModalState({
         const artStudioUrl =
           art?.studioPreviewUrl ||
           art?.previewUrl ||
-          `/api/clothing-designs/${design.id}/preview?artId=${artId}&type=studio&v=v2`;
+          `/api/clothing-designs/${design.id}/preview?artId=${artId}&type=studio&v=v3`;
 
         return {
           id: `fregor-art-${artId}-${index}`,
@@ -720,7 +727,7 @@ export function useClothingProductModalState({
         primaryArt?.previewUrl ||
         design.studioPreviewUrl ||
         design.previewUrl ||
-        `/api/clothing-designs/${design.id}/preview?artId=${primaryArtId}&type=studio&v=v2`;
+        `/api/clothing-designs/${design.id}/preview?artId=${primaryArtId}&type=studio&v=v3`;
 
       const params = new URLSearchParams({
         designId: design.id,
@@ -786,10 +793,14 @@ export function useClothingProductModalState({
     let leftPercent = '50%';
     let rotationDeg = 0;
 
-    if (calibrated && typeof calibrated.u === 'number' && typeof calibrated.v === 'number') {
+    const isBack = isBackPlacement(placement);
+    const isSleeve = placement.includes('sleeve');
+    const isRegionMatch =
+      !calibrated?.regionId ||
+      (isBack ? calibrated.regionId === 'back' : isSleeve ? calibrated.regionId === 'sleeve' : calibrated.regionId === 'front');
+
+    if (calibrated && typeof calibrated.u === 'number' && typeof calibrated.v === 'number' && isRegionMatch) {
       const g = (garmentIdOverride || selectedGarment?.garment3dId || 'regular-t-shirt').toLowerCase();
-      const isBack = placement.includes('back') || placement.includes('collar') || calibrated.regionId === 'back';
-      const isSleeve = placement.includes('sleeve');
 
       let centerU = 0.25;
       let centerV = 0.635;
@@ -986,6 +997,7 @@ export function useClothingProductModalState({
     handleSelectArtwork,
     handleUpdatePlacement,
     handleUpdateSide,
+    handleSwitchSide,
     handleUpdateScale,
     handleNlpInputChange,
     handleApplyQuickPrompt,

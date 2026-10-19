@@ -69,7 +69,11 @@ function getPlacementsFromFile(): Record<string, SavedPlacementItem> {
   return {};
 }
 
-let tableChecked = false;
+let cachedPlacements: Record<string, SavedPlacementItem> | null = null;
+let lastPlacementsFetchTime = 0;
+const PLACEMENTS_CACHE_TTL_MS = 60 * 1000; // 60-second in-memory TTL
+
+let tableChecked = true;
 async function ensurePlacementsTable(): Promise<void> {
   if (tableChecked) return;
   try {
@@ -88,12 +92,16 @@ async function ensurePlacementsTable(): Promise<void> {
 
 /**
  * Read all server-persisted calibrated placements.
- * Reads directly from PostgreSQL database ("ClothingCuratedPlacement" table)
- * and falls back to bundled JSON file if DB is empty or unreachable.
+ * Returns sub-millisecond from in-memory cache, falls back to PostgreSQL table,
+ * and finally to local custom-placements.json.
  */
-export async function getAllServerPlacements(): Promise<Record<string, SavedPlacementItem>> {
+export async function getAllServerPlacements(forceRefresh = false): Promise<Record<string, SavedPlacementItem>> {
+  const now = Date.now();
+  if (!forceRefresh && cachedPlacements && now - lastPlacementsFetchTime < PLACEMENTS_CACHE_TTL_MS) {
+    return cachedPlacements;
+  }
+
   try {
-    await ensurePlacementsTable();
     const rows = await prisma.$queryRawUnsafe<Array<{ key: string; data: unknown }>>(
       `SELECT "key", "data" FROM "ClothingCuratedPlacement"`
     );
@@ -105,24 +113,38 @@ export async function getAllServerPlacements(): Promise<Record<string, SavedPlac
       }
       // Merge with file fallbacks so any non-overridden presets remain intact
       const filePlacements = getPlacementsFromFile();
-      return {
+      const merged = {
         ...filePlacements,
         ...dbPlacements,
       };
+      cachedPlacements = merged;
+      lastPlacementsFetchTime = now;
+      return merged;
     }
   } catch (err) {
     console.warn('[placements-store] Failed to read from DB, using file fallback:', err);
   }
 
-  return getPlacementsFromFile();
+  const fallback = getPlacementsFromFile();
+  cachedPlacements = fallback;
+  lastPlacementsFetchTime = now;
+  return fallback;
 }
 
 /**
  * Persist placement updates to PostgreSQL database table.
+ * Immediately invalidates and updates in-memory cache for instant reflection.
  * Also best-effort writes to local file if writable (local development).
  */
 export async function saveServerPlacements(updates: Record<string, SavedPlacementItem>): Promise<boolean> {
   let dbOk = false;
+
+  // Immediately reflect updates in memory cache
+  cachedPlacements = {
+    ...(cachedPlacements || getPlacementsFromFile()),
+    ...updates,
+  };
+  lastPlacementsFetchTime = Date.now();
 
   try {
     await ensurePlacementsTable();

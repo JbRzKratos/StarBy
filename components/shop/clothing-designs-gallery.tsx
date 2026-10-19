@@ -221,7 +221,7 @@ export function ClothingDesignsGallery({
 
         {/* Category Pills Filter Bar */}
         <div className="relative">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 pt-1 no-scrollbar scroll-smooth pr-10">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 pt-1 hide-scrollbar scroll-smooth pr-10">
             {THEME_CATEGORIES.map((cat) => {
               const isActive = activeTheme === cat.id;
               return (

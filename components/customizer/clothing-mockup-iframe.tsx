@@ -99,10 +99,7 @@ export function ClothingMockupIframe({
     const garmentId = searchParams?.get('garment') || searchParams?.get('garmentId');
     if (!designId) return;
 
-    fetch(`/api/clothing-designs/save-placement?designId=${encodeURIComponent(designId)}&_t=${Date.now()}`, {
-      cache: 'no-store',
-      headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
-    })
+    fetch(`/api/clothing-designs/save-placement?designId=${encodeURIComponent(designId)}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data?.success || !data.placements) return;

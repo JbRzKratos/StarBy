@@ -30,8 +30,8 @@
           "originalObjectKey": "clothing-designs/design-001/original/Back ( From collor to full back).png",
           "thumbnailObjectKey": "clothing-designs/design-001/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-001/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -43,8 +43,8 @@
           "originalObjectKey": "clothing-designs/design-001/original/Front ( Left Chest).png",
           "thumbnailObjectKey": "clothing-designs/design-001/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-001/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio&v=v3"
         },
         {
           "id": "art-3",
@@ -56,8 +56,8 @@
           "originalObjectKey": "clothing-designs/design-001/original/Sleeve (on any side bottom).png",
           "thumbnailObjectKey": "clothing-designs/design-001/previews/thumb_art-3.webp",
           "previewObjectKey": "clothing-designs/design-001/previews/studio_art-3.webp",
-          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-3&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -67,8 +67,8 @@
         "front",
         "sleeve"
       ],
-      "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-001/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -105,8 +105,8 @@
           "originalObjectKey": "clothing-designs/design-002/original/Front ( full front only for black tees).png",
           "thumbnailObjectKey": "clothing-designs/design-002/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-002/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -118,8 +118,8 @@
           "originalObjectKey": "clothing-designs/design-002/original/Front ( full front only for white tees).png",
           "thumbnailObjectKey": "clothing-designs/design-002/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-002/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -127,8 +127,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-002/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -165,8 +165,8 @@
           "originalObjectKey": "clothing-designs/design-003/original/Back ( From Collor to full back).png",
           "thumbnailObjectKey": "clothing-designs/design-003/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-003/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -178,8 +178,8 @@
           "originalObjectKey": "clothing-designs/design-003/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-003/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-003/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -188,8 +188,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-003/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -226,8 +226,8 @@
           "originalObjectKey": "clothing-designs/design-004/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-004/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-004/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -235,8 +235,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-004/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -273,8 +273,8 @@
           "originalObjectKey": "clothing-designs/design-005/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-005/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-005/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -286,8 +286,8 @@
           "originalObjectKey": "clothing-designs/design-005/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-005/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-005/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -296,8 +296,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-005/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -334,8 +334,8 @@
           "originalObjectKey": "clothing-designs/design-006/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-006/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-006/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -343,8 +343,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-006/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -381,8 +381,8 @@
           "originalObjectKey": "clothing-designs/design-007/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-007/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-007/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -390,8 +390,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-007/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -428,8 +428,8 @@
           "originalObjectKey": "clothing-designs/design-008/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-008/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-008/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -437,8 +437,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-008/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -475,8 +475,8 @@
           "originalObjectKey": "clothing-designs/design-009/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-009/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-009/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -488,8 +488,8 @@
           "originalObjectKey": "clothing-designs/design-009/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-009/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-009/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -498,8 +498,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-009/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -536,8 +536,8 @@
           "originalObjectKey": "clothing-designs/design-010/original/Back ( Black tees).png",
           "thumbnailObjectKey": "clothing-designs/design-010/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-010/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -549,8 +549,8 @@
           "originalObjectKey": "clothing-designs/design-010/original/Back ( white tees).png",
           "thumbnailObjectKey": "clothing-designs/design-010/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-010/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-2&type=studio&v=v3"
         },
         {
           "id": "art-3",
@@ -562,8 +562,8 @@
           "originalObjectKey": "clothing-designs/design-010/original/Front ( Black tees).png",
           "thumbnailObjectKey": "clothing-designs/design-010/previews/thumb_art-3.webp",
           "previewObjectKey": "clothing-designs/design-010/previews/studio_art-3.webp",
-          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio&v=v3"
         },
         {
           "id": "art-4",
@@ -575,8 +575,8 @@
           "originalObjectKey": "clothing-designs/design-010/original/Front ( White tees).png",
           "thumbnailObjectKey": "clothing-designs/design-010/previews/thumb_art-4.webp",
           "previewObjectKey": "clothing-designs/design-010/previews/studio_art-4.webp",
-          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-4&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-3",
@@ -585,8 +585,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-010/preview?artId=art-3&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -622,8 +622,8 @@
           "originalObjectKey": "clothing-designs/design-011/original/Back (White tees).png",
           "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-011/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -635,8 +635,8 @@
           "originalObjectKey": "clothing-designs/design-011/original/Back (black tees).png",
           "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-011/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-2&type=studio&v=v3"
         },
         {
           "id": "art-3",
@@ -648,8 +648,8 @@
           "originalObjectKey": "clothing-designs/design-011/original/Front (Black Tees).png",
           "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-3.webp",
           "previewObjectKey": "clothing-designs/design-011/previews/studio_art-3.webp",
-          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio&v=v3"
         },
         {
           "id": "art-4",
@@ -661,8 +661,8 @@
           "originalObjectKey": "clothing-designs/design-011/original/Front (White Tees).png",
           "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-4.webp",
           "previewObjectKey": "clothing-designs/design-011/previews/studio_art-4.webp",
-          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-4&type=studio&v=v3"
         },
         {
           "id": "art-5",
@@ -674,8 +674,8 @@
           "originalObjectKey": "clothing-designs/design-011/original/Sleeve ( Black Tees).png",
           "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-5.webp",
           "previewObjectKey": "clothing-designs/design-011/previews/studio_art-5.webp",
-          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-5&type=studio&v=v3"
         },
         {
           "id": "art-6",
@@ -687,8 +687,8 @@
           "originalObjectKey": "clothing-designs/design-011/original/Sleeve ( White Tees).png",
           "thumbnailObjectKey": "clothing-designs/design-011/previews/thumb_art-6.webp",
           "previewObjectKey": "clothing-designs/design-011/previews/studio_art-6.webp",
-          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-6&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-3",
@@ -698,8 +698,8 @@
         "front",
         "sleeve"
       ],
-      "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-011/preview?artId=art-3&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -736,8 +736,8 @@
           "originalObjectKey": "clothing-designs/design-012/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-012/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-012/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -749,8 +749,8 @@
           "originalObjectKey": "clothing-designs/design-012/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-012/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-012/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -759,8 +759,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-012/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -797,8 +797,8 @@
           "originalObjectKey": "clothing-designs/design-013/original/Back ( Black tees).png",
           "thumbnailObjectKey": "clothing-designs/design-013/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-013/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -806,8 +806,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-013/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -844,8 +844,8 @@
           "originalObjectKey": "clothing-designs/design-014/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-014/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-014/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -857,8 +857,8 @@
           "originalObjectKey": "clothing-designs/design-014/original/Front Rotated.png",
           "thumbnailObjectKey": "clothing-designs/design-014/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-014/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -867,8 +867,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-014/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -906,8 +906,8 @@
           "originalObjectKey": "clothing-designs/design-015/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-015/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-015/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -919,8 +919,8 @@
           "originalObjectKey": "clothing-designs/design-015/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-015/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-015/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -929,8 +929,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-015/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -968,8 +968,8 @@
           "originalObjectKey": "clothing-designs/design-016/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-016/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-016/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -981,8 +981,8 @@
           "originalObjectKey": "clothing-designs/design-016/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-016/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-016/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -991,8 +991,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-016/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1029,8 +1029,8 @@
           "originalObjectKey": "clothing-designs/design-017/original/Front Bottom.png",
           "thumbnailObjectKey": "clothing-designs/design-017/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-017/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1038,8 +1038,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-017/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1076,8 +1076,8 @@
           "originalObjectKey": "clothing-designs/design-018/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-018/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-018/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -1089,8 +1089,8 @@
           "originalObjectKey": "clothing-designs/design-018/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-018/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-018/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -1099,8 +1099,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-018/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1138,8 +1138,8 @@
           "originalObjectKey": "clothing-designs/design-019/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-019/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-019/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1147,8 +1147,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-019/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1185,8 +1185,8 @@
           "originalObjectKey": "clothing-designs/design-020/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-020/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-020/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -1198,8 +1198,8 @@
           "originalObjectKey": "clothing-designs/design-020/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-020/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-020/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -1208,8 +1208,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-020/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1245,8 +1245,8 @@
           "originalObjectKey": "clothing-designs/design-021/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-021/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-021/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1254,8 +1254,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-021/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1292,8 +1292,8 @@
           "originalObjectKey": "clothing-designs/design-022/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-022/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-022/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1301,8 +1301,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-022/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1339,8 +1339,8 @@
           "originalObjectKey": "clothing-designs/design-023/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-023/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-023/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1348,8 +1348,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-023/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1386,8 +1386,8 @@
           "originalObjectKey": "clothing-designs/design-024/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-024/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-024/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1395,8 +1395,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-024/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1433,8 +1433,8 @@
           "originalObjectKey": "clothing-designs/design-025/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-025/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-025/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1442,8 +1442,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-025/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1480,8 +1480,8 @@
           "originalObjectKey": "clothing-designs/design-026/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-026/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-026/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1489,8 +1489,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-026/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1527,8 +1527,8 @@
           "originalObjectKey": "clothing-designs/design-027/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-027/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-027/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1536,8 +1536,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-027/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1574,8 +1574,8 @@
           "originalObjectKey": "clothing-designs/design-028/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-028/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-028/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1583,8 +1583,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-028/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1621,8 +1621,8 @@
           "originalObjectKey": "clothing-designs/design-029/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-029/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-029/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1630,8 +1630,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-029/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1667,8 +1667,8 @@
           "originalObjectKey": "clothing-designs/design-030/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-030/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-030/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1676,8 +1676,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-030/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1714,8 +1714,8 @@
           "originalObjectKey": "clothing-designs/design-031/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-031/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-031/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1723,8 +1723,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-031/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1762,8 +1762,8 @@
           "originalObjectKey": "clothing-designs/design-032/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-032/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-032/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1771,8 +1771,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-032/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1809,8 +1809,8 @@
           "originalObjectKey": "clothing-designs/design-033/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-033/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-033/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1818,8 +1818,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-033/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1856,8 +1856,8 @@
           "originalObjectKey": "clothing-designs/design-034/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-034/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-034/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1865,8 +1865,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-034/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1902,8 +1902,8 @@
           "originalObjectKey": "clothing-designs/design-035/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-035/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-035/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -1915,8 +1915,8 @@
           "originalObjectKey": "clothing-designs/design-035/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-035/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-035/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -1925,8 +1925,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-035/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -1963,8 +1963,8 @@
           "originalObjectKey": "clothing-designs/design-036/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-036/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-036/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -1972,8 +1972,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-036/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2010,8 +2010,8 @@
           "originalObjectKey": "clothing-designs/design-037/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-037/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-037/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2019,8 +2019,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-037/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2057,8 +2057,8 @@
           "originalObjectKey": "clothing-designs/design-038/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-038/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-038/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2066,8 +2066,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-038/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2105,8 +2105,8 @@
           "originalObjectKey": "clothing-designs/design-039/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-039/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-039/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2118,8 +2118,8 @@
           "originalObjectKey": "clothing-designs/design-039/original/Toyota-Supra-Logo.png",
           "thumbnailObjectKey": "clothing-designs/design-039/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-039/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2128,8 +2128,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-039/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2166,8 +2166,8 @@
           "originalObjectKey": "clothing-designs/design-040/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-040/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-040/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2179,8 +2179,8 @@
           "originalObjectKey": "clothing-designs/design-040/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-040/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-040/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -2189,8 +2189,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-040/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2227,8 +2227,8 @@
           "originalObjectKey": "clothing-designs/design-041/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-041/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-041/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2236,8 +2236,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-041/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2274,8 +2274,8 @@
           "originalObjectKey": "clothing-designs/design-042/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-042/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-042/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2283,8 +2283,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-042/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2324,8 +2324,8 @@
           "originalObjectKey": "clothing-designs/design-043/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-043/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-043/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2337,8 +2337,8 @@
           "originalObjectKey": "clothing-designs/design-043/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-043/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-043/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -2347,8 +2347,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-043/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2385,8 +2385,8 @@
           "originalObjectKey": "clothing-designs/design-044/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-044/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-044/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2398,8 +2398,8 @@
           "originalObjectKey": "clothing-designs/design-044/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-044/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-044/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -2408,8 +2408,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-044/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2446,8 +2446,8 @@
           "originalObjectKey": "clothing-designs/design-045/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-045/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-045/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2459,8 +2459,8 @@
           "originalObjectKey": "clothing-designs/design-045/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-045/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-045/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -2469,8 +2469,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-045/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2507,8 +2507,8 @@
           "originalObjectKey": "clothing-designs/design-046/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-046/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-046/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2516,8 +2516,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-046/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2554,8 +2554,8 @@
           "originalObjectKey": "clothing-designs/design-047/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-047/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-047/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2563,8 +2563,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-047/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2601,8 +2601,8 @@
           "originalObjectKey": "clothing-designs/design-048/original/BAck.png",
           "thumbnailObjectKey": "clothing-designs/design-048/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-048/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2610,8 +2610,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-048/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2647,8 +2647,8 @@
           "originalObjectKey": "clothing-designs/design-049/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-049/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-049/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2656,8 +2656,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-049/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2694,8 +2694,8 @@
           "originalObjectKey": "clothing-designs/design-050/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-050/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-050/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2707,8 +2707,8 @@
           "originalObjectKey": "clothing-designs/design-050/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-050/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-050/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -2717,8 +2717,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-050/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2756,8 +2756,8 @@
           "originalObjectKey": "clothing-designs/design-051/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-051/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-051/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2765,8 +2765,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-051/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2802,8 +2802,8 @@
           "originalObjectKey": "clothing-designs/design-052/original/Back full back.png",
           "thumbnailObjectKey": "clothing-designs/design-052/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-052/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2815,8 +2815,8 @@
           "originalObjectKey": "clothing-designs/design-052/original/front.png",
           "thumbnailObjectKey": "clothing-designs/design-052/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-052/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -2825,8 +2825,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-052/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2862,8 +2862,8 @@
           "originalObjectKey": "clothing-designs/design-053/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-053/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-053/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2875,8 +2875,8 @@
           "originalObjectKey": "clothing-designs/design-053/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-053/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-053/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -2885,8 +2885,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-053/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2923,8 +2923,8 @@
           "originalObjectKey": "clothing-designs/design-054/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-054/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-054/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -2936,8 +2936,8 @@
           "originalObjectKey": "clothing-designs/design-054/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-054/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-054/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -2946,8 +2946,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-054/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -2984,8 +2984,8 @@
           "originalObjectKey": "clothing-designs/design-055/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-055/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-055/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -2993,8 +2993,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-055/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3031,8 +3031,8 @@
           "originalObjectKey": "clothing-designs/design-056/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-056/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-056/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3044,8 +3044,8 @@
           "originalObjectKey": "clothing-designs/design-056/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-056/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-056/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3054,8 +3054,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-056/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3092,8 +3092,8 @@
           "originalObjectKey": "clothing-designs/design-057/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-057/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-057/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3105,8 +3105,8 @@
           "originalObjectKey": "clothing-designs/design-057/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-057/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-057/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3115,8 +3115,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-057/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3153,8 +3153,8 @@
           "originalObjectKey": "clothing-designs/design-058/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-058/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-058/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3166,8 +3166,8 @@
           "originalObjectKey": "clothing-designs/design-058/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-058/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-058/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3176,8 +3176,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-058/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3214,8 +3214,8 @@
           "originalObjectKey": "clothing-designs/design-059/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-059/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-059/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -3223,8 +3223,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-059/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3261,8 +3261,8 @@
           "originalObjectKey": "clothing-designs/design-060/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-060/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-060/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3274,8 +3274,8 @@
           "originalObjectKey": "clothing-designs/design-060/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-060/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-060/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3284,8 +3284,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-060/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3322,8 +3322,8 @@
           "originalObjectKey": "clothing-designs/design-061/original/Boy tees front.png",
           "thumbnailObjectKey": "clothing-designs/design-061/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-061/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3335,8 +3335,8 @@
           "originalObjectKey": "clothing-designs/design-061/original/Girl Tees Front.png",
           "thumbnailObjectKey": "clothing-designs/design-061/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-061/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -3344,8 +3344,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-061/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3382,8 +3382,8 @@
           "originalObjectKey": "clothing-designs/design-062/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-062/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-062/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3395,8 +3395,8 @@
           "originalObjectKey": "clothing-designs/design-062/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-062/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-062/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3405,8 +3405,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-062/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3443,8 +3443,8 @@
           "originalObjectKey": "clothing-designs/design-063/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-063/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-063/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -3452,8 +3452,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-063/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3490,8 +3490,8 @@
           "originalObjectKey": "clothing-designs/design-064/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-064/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-064/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3503,8 +3503,8 @@
           "originalObjectKey": "clothing-designs/design-064/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-064/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-064/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3513,8 +3513,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-064/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3551,8 +3551,8 @@
           "originalObjectKey": "clothing-designs/design-065/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-065/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-065/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3564,8 +3564,8 @@
           "originalObjectKey": "clothing-designs/design-065/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-065/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-065/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio&v=v3"
         },
         {
           "id": "art-3",
@@ -3577,8 +3577,8 @@
           "originalObjectKey": "clothing-designs/design-065/original/Sleeve.png",
           "thumbnailObjectKey": "clothing-designs/design-065/previews/thumb_art-3.webp",
           "previewObjectKey": "clothing-designs/design-065/previews/studio_art-3.webp",
-          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-3&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3588,8 +3588,8 @@
         "front",
         "sleeve"
       ],
-      "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-065/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3625,8 +3625,8 @@
           "originalObjectKey": "clothing-designs/design-066/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-066/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-066/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3638,8 +3638,8 @@
           "originalObjectKey": "clothing-designs/design-066/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-066/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-066/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3648,8 +3648,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-066/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3686,8 +3686,8 @@
           "originalObjectKey": "clothing-designs/design-067/original/Make Things Happen Orbital Typography.png",
           "thumbnailObjectKey": "clothing-designs/design-067/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-067/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -3695,8 +3695,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-067/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3733,8 +3733,8 @@
           "originalObjectKey": "clothing-designs/design-068/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-068/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-068/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3746,8 +3746,8 @@
           "originalObjectKey": "clothing-designs/design-068/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-068/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-068/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3756,8 +3756,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-068/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3794,8 +3794,8 @@
           "originalObjectKey": "clothing-designs/design-069/original/Back bottom.png",
           "thumbnailObjectKey": "clothing-designs/design-069/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-069/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -3807,8 +3807,8 @@
           "originalObjectKey": "clothing-designs/design-069/original/Front bottom.png",
           "thumbnailObjectKey": "clothing-designs/design-069/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-069/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -3816,8 +3816,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-069/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3854,8 +3854,8 @@
           "originalObjectKey": "clothing-designs/design-070/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-070/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-070/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -3863,8 +3863,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-070/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3900,8 +3900,8 @@
           "originalObjectKey": "clothing-designs/design-071/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-071/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-071/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -3909,8 +3909,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-071/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3947,8 +3947,8 @@
           "originalObjectKey": "clothing-designs/design-072/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-072/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-072/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -3956,8 +3956,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-072/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -3993,8 +3993,8 @@
           "originalObjectKey": "clothing-designs/design-073/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-073/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-073/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4006,8 +4006,8 @@
           "originalObjectKey": "clothing-designs/design-073/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-073/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-073/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4016,8 +4016,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-073/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4054,8 +4054,8 @@
           "originalObjectKey": "clothing-designs/design-074/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-074/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-074/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4067,8 +4067,8 @@
           "originalObjectKey": "clothing-designs/design-074/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-074/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-074/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4077,8 +4077,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-074/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4115,8 +4115,8 @@
           "originalObjectKey": "clothing-designs/design-075/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-075/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-075/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4128,8 +4128,8 @@
           "originalObjectKey": "clothing-designs/design-075/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-075/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-075/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4138,8 +4138,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-075/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4176,8 +4176,8 @@
           "originalObjectKey": "clothing-designs/design-076/original/Spiderman Miles tees Design.png",
           "thumbnailObjectKey": "clothing-designs/design-076/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-076/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -4185,8 +4185,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-076/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4223,8 +4223,8 @@
           "originalObjectKey": "clothing-designs/design-077/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-077/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-077/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4236,8 +4236,8 @@
           "originalObjectKey": "clothing-designs/design-077/original/Luffy_ King of Pirates Graphic.png",
           "thumbnailObjectKey": "clothing-designs/design-077/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-077/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -4246,8 +4246,8 @@
         "front",
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-077/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4284,8 +4284,8 @@
           "originalObjectKey": "clothing-designs/design-078/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-078/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-078/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4297,8 +4297,8 @@
           "originalObjectKey": "clothing-designs/design-078/original/Iron Tees Design.png",
           "thumbnailObjectKey": "clothing-designs/design-078/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-078/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -4307,8 +4307,8 @@
         "front",
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-078/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4345,8 +4345,8 @@
           "originalObjectKey": "clothing-designs/design-079/original/Do It With Love Typographic Design.png",
           "thumbnailObjectKey": "clothing-designs/design-079/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-079/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -4354,8 +4354,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-079/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4392,8 +4392,8 @@
           "originalObjectKey": "clothing-designs/design-080/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-080/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-080/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4405,8 +4405,8 @@
           "originalObjectKey": "clothing-designs/design-080/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-080/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-080/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4415,8 +4415,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-080/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4453,8 +4453,8 @@
           "originalObjectKey": "clothing-designs/design-081/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-081/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-081/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -4462,8 +4462,8 @@
       "availableSurfaces": [
         "back"
       ],
-      "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-081/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4500,8 +4500,8 @@
           "originalObjectKey": "clothing-designs/design-082/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-082/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-082/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4513,8 +4513,8 @@
           "originalObjectKey": "clothing-designs/design-082/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-082/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-082/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4523,8 +4523,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-082/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4560,8 +4560,8 @@
           "originalObjectKey": "clothing-designs/design-083/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-083/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-083/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4573,8 +4573,8 @@
           "originalObjectKey": "clothing-designs/design-083/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-083/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-083/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4583,8 +4583,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-083/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4621,8 +4621,8 @@
           "originalObjectKey": "clothing-designs/design-084/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-084/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-084/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4634,8 +4634,8 @@
           "originalObjectKey": "clothing-designs/design-084/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-084/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-084/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4644,8 +4644,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-084/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4682,8 +4682,8 @@
           "originalObjectKey": "clothing-designs/design-085/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-085/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-085/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4695,8 +4695,8 @@
           "originalObjectKey": "clothing-designs/design-085/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-085/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-085/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4705,8 +4705,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-085/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4743,8 +4743,8 @@
           "originalObjectKey": "clothing-designs/design-086/original/Cyber Samurai_ Walk Your Own Path.png",
           "thumbnailObjectKey": "clothing-designs/design-086/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-086/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -4752,8 +4752,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-086/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4789,8 +4789,8 @@
           "originalObjectKey": "clothing-designs/design-087/original/Straw Hat Crew_ One Piece Manga Print.png",
           "thumbnailObjectKey": "clothing-designs/design-087/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-087/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4802,8 +4802,8 @@
           "originalObjectKey": "clothing-designs/design-087/original/Vintage Straw Hat Crew Logo.png",
           "thumbnailObjectKey": "clothing-designs/design-087/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-087/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -4812,8 +4812,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-087/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4849,8 +4849,8 @@
           "originalObjectKey": "clothing-designs/design-088/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-088/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-088/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4862,8 +4862,8 @@
           "originalObjectKey": "clothing-designs/design-088/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-088/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-088/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4872,8 +4872,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-088/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4910,8 +4910,8 @@
           "originalObjectKey": "clothing-designs/design-089/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-089/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-089/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4923,8 +4923,8 @@
           "originalObjectKey": "clothing-designs/design-089/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-089/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-089/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4933,8 +4933,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-089/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -4971,8 +4971,8 @@
           "originalObjectKey": "clothing-designs/design-090/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-090/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-090/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -4984,8 +4984,8 @@
           "originalObjectKey": "clothing-designs/design-090/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-090/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-090/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -4994,8 +4994,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-090/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -5032,8 +5032,8 @@
           "originalObjectKey": "clothing-designs/design-091/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-091/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-091/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -5045,8 +5045,8 @@
           "originalObjectKey": "clothing-designs/design-091/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-091/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-091/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -5055,8 +5055,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-091/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -5092,8 +5092,8 @@
           "originalObjectKey": "clothing-designs/design-092/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-092/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-092/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -5105,8 +5105,8 @@
           "originalObjectKey": "clothing-designs/design-092/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-092/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-092/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -5115,8 +5115,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-092/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -5153,8 +5153,8 @@
           "originalObjectKey": "clothing-designs/design-093/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-093/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-093/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -5162,8 +5162,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-093/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -5199,8 +5199,8 @@
           "originalObjectKey": "clothing-designs/design-094/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-094/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-094/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -5212,8 +5212,8 @@
           "originalObjectKey": "clothing-designs/design-094/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-094/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-094/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -5222,8 +5222,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-094/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -5259,8 +5259,8 @@
           "originalObjectKey": "clothing-designs/design-095/original/Back.png",
           "thumbnailObjectKey": "clothing-designs/design-095/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-095/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-1&type=studio&v=v3"
         },
         {
           "id": "art-2",
@@ -5272,8 +5272,8 @@
           "originalObjectKey": "clothing-designs/design-095/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-095/previews/thumb_art-2.webp",
           "previewObjectKey": "clothing-designs/design-095/previews/studio_art-2.webp",
-          "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-2",
@@ -5282,8 +5282,8 @@
         "back",
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-095/preview?artId=art-2&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",
@@ -5320,8 +5320,8 @@
           "originalObjectKey": "clothing-designs/design-096/original/Front.png",
           "thumbnailObjectKey": "clothing-designs/design-096/previews/thumb_art-1.webp",
           "previewObjectKey": "clothing-designs/design-096/previews/studio_art-1.webp",
-          "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail&v=v2",
-          "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio&v=v2"
+          "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail&v=v3",
+          "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio&v=v3"
         }
       ],
       "defaultArtworkId": "art-1",
@@ -5329,8 +5329,8 @@
       "availableSurfaces": [
         "front"
       ],
-      "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail&v=v2",
-      "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio&v=v2",
+      "previewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=thumbnail&v=v3",
+      "studioPreviewUrl": "/api/clothing-designs/design-096/preview?artId=art-1&type=studio&v=v3",
       "status": "active",
       "compatibleGarments": [
         "regular-t-shirt",

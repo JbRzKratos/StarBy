@@ -709,8 +709,8 @@ async function run() {
         originalObjectKey: `clothing-designs/${designId}/original/${file}`,
         thumbnailObjectKey: `clothing-designs/${designId}/previews/thumb_${artId}.webp`,
         previewObjectKey: `clothing-designs/${designId}/previews/studio_${artId}.webp`,
-        previewUrl: `/api/clothing-designs/${designId}/preview?artId=${artId}&type=thumbnail&v=v2`,
-        studioPreviewUrl: `/api/clothing-designs/${designId}/preview?artId=${artId}&type=studio&v=v2`,
+        previewUrl: `/api/clothing-designs/${designId}/preview?artId=${artId}&type=thumbnail&v=v3`,
+        studioPreviewUrl: `/api/clothing-designs/${designId}/preview?artId=${artId}&type=studio&v=v3`,
       };
     });
 

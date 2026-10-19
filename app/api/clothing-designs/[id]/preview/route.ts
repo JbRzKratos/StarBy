@@ -40,7 +40,7 @@ export async function GET(req: Request, { params }: RouteProps) {
     const artIdParam = searchParams.get('artId') || searchParams.get('surface') || design.defaultArtworkId;
     const isDownload = searchParams.get('download') === '1' || searchParams.has('download');
 
-    // Lightning-fast CDN path: redirect directly to Cloudflare R2 edge for instant image delivery
+    // Serve directly with CORS headers so Three.js / WebGL / Canvas2D can safely composite textures without cross-origin blocks
     if (!isDownload && typeParam !== 'original') {
       let art = design.artworks?.find((a) => a.id.toLowerCase() === artIdParam?.toLowerCase());
       if (!art && artIdParam) {
@@ -61,13 +61,27 @@ export async function GET(req: Request, { params }: RouteProps) {
       const r2Key = art ? (typeParam === 'studio' ? art.previewObjectKey : art.thumbnailObjectKey) : null;
       if (r2Key) {
         const cdnUrl = getR2AssetUrl(r2Key);
-        return NextResponse.redirect(cdnUrl, {
-          status: 307,
-          headers: {
-            'Cache-Control': 'public, max-age=31536000, immutable',
-            'CDN-Cache-Control': 'public, max-age=31536000, immutable',
-          },
-        });
+        try {
+          const cdnRes = await fetch(cdnUrl, { next: { revalidate: 86400 } });
+          if (cdnRes.ok) {
+            const arrayBuf = await cdnRes.arrayBuffer();
+            const contentType =
+              cdnRes.headers.get('content-type') || (r2Key.endsWith('.png') ? 'image/png' : 'image/webp');
+            return new Response(new Uint8Array(arrayBuf), {
+              status: 200,
+              headers: {
+                'Content-Type': contentType,
+                'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+                'Access-Control-Allow-Headers': '*',
+                'X-Content-Type-Options': 'nosniff',
+              },
+            });
+          }
+        } catch {
+          // Fall through to getPreviewImageStream
+        }
       }
     }
 
@@ -78,17 +92,13 @@ export async function GET(req: Request, { params }: RouteProps) {
 
     const filename = result.fileName || `${id}_${artIdParam || 'artwork'}.${result.contentType.includes('png') ? 'png' : 'webp'}`;
 
-    const hasVersion = searchParams.has('v');
-    const cacheControl = hasVersion
-      ? 'public, max-age=31536000, immutable'
-      : 'public, max-age=3600, stale-while-revalidate=86400';
-
     const headers: Record<string, string> = {
       'Content-Type': result.contentType,
-      'Cache-Control': cacheControl,
+      'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
       'X-Content-Type-Options': 'nosniff',
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
     };
 
     if (isDownload) {
@@ -103,4 +113,16 @@ export async function GET(req: Request, { params }: RouteProps) {
     console.error(`[API /api/clothing-designs/${params.id}/preview] Error:`, err);
     return new NextResponse('Internal server error', { status: 500 });
   }
+}
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Max-Age': '86400',
+    },
+  });
 }

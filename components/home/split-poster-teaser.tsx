@@ -8,7 +8,7 @@ import { gsap } from '@/lib/gsap-config';
 import { getR2AssetUrl } from '@/lib/r2';
 
 const VENOM_POSTER_IMAGE = getR2AssetUrl(
-  'Posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_87b422a5-0502-4254-a066-f733dc0af620_3.webp'
+  'posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_87b422a5-0502-4254-a066-f733dc0af620_3.webp'
 );
 
 export function SplitPosterTeaser() {

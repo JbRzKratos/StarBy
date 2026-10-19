@@ -21,6 +21,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
     activeArtId,
     setActiveArtId,
     artworkPlacements,
+    artworkScales,
     artworkCalibratedCoords,
     includedArtworks,
     setIncludedArtworks,
@@ -36,6 +37,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
     handleSelectArtwork,
     handleUpdatePlacement,
     handleUpdateSide,
+    handleSwitchSide,
     handleUpdateScale,
     handleNlpInputChange,
     handleApplyQuickPrompt,
@@ -102,7 +104,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
             <div className="flex items-center gap-1 bg-black/60 border border-white/10 p-0.5 rounded-full">
               <button
                 type="button"
-                onClick={() => setPreviewSide('front')}
+                onClick={() => handleSwitchSide('front')}
                 className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded-full transition-all flex items-center gap-1 ${
                   previewSide === 'front'
                     ? 'bg-white text-black font-bold shadow-sm'
@@ -113,7 +115,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
               </button>
               <button
                 type="button"
-                onClick={() => setPreviewSide('back')}
+                onClick={() => handleSwitchSide('back')}
                 className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded-full transition-all flex items-center gap-1 ${
                   previewSide === 'back'
                     ? 'bg-white text-black font-bold shadow-sm'
@@ -280,45 +282,65 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
               </>
             )}
 
-            {/* Render Graphic with Placement & Scale Applied */}
-            {currentActiveArt && isCurrentPlacementOnCurrentSide && (
-              <div
-                style={getPreviewPlacementStyles(
-                  currentPlacement,
-                  currentScale,
-                  false,
-                  artworkCalibratedCoords[currentActiveArt.id]
-                )}
-                className="z-10 flex items-center justify-center transition-all duration-300 drop-shadow-[0_4px_10px_rgba(0,0,0,0.45)] pointer-events-none"
-              >
-                <Image
-                  src={currentActiveArt.previewUrl}
-                  alt={currentActiveArt.name}
-                  fill
-                  unoptimized
-                  className="object-contain pointer-events-none"
-                  sizes="220px"
-                />
-              </div>
-            )}
+            {/* Render Graphics with Placement & Scale Applied for current side */}
+            {artworks
+              .filter((art) => {
+                if (!includedArtworks.has(art.id)) return false;
+                const placement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
+                return previewSide === 'back' ? isBackPlacement(placement) : !isBackPlacement(placement);
+              })
+              .map((art) => {
+                const artPlacement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
+                const artScale = artworkScales[art.id] || 'standard';
+                const isSelected = art.id === activeArtId;
+                const coords = artworkCalibratedCoords[art.id];
 
-            {/* Opposite side notice */}
-            {currentActiveArt && !isCurrentPlacementOnCurrentSide && (
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleUpdatePlacement(previewSide === 'front' ? 'front-center' : 'back-center');
-                }}
-                className="z-20 px-3.5 py-2 bg-neutral-900/95 border border-emerald-500/50 rounded-xl text-center flex items-center gap-2 cursor-pointer shadow-2xl hover:bg-emerald-950/60 hover:border-emerald-400 transition-all scale-100 hover:scale-105"
-                title={`Click to move this artwork to the ${previewSide === 'front' ? 'Front' : 'Back'}`}
-              >
-                <span className="text-emerald-400 text-sm">⟳</span>
-                <span className="font-mono text-[10px] text-white">
-                  Placed on {previewSide === 'front' ? 'Back' : 'Front'} &bull;{' '}
-                  <strong className="text-emerald-400 underline">Tap to move here</strong>
-                </span>
-              </div>
-            )}
+                return (
+                  <div
+                    key={art.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveArtId(art.id);
+                    }}
+                    style={getPreviewPlacementStyles(artPlacement, artScale, false, coords)}
+                    className={`z-10 flex items-center justify-center transition-all duration-300 drop-shadow-[0_4px_10px_rgba(0,0,0,0.45)] cursor-pointer ${
+                      isSelected ? 'ring-2 ring-emerald-400/80' : 'opacity-90 hover:opacity-100'
+                    }`}
+                  >
+                    <Image
+                      src={art.previewUrl}
+                      alt={art.name}
+                      fill
+                      unoptimized
+                      className="object-contain pointer-events-none"
+                      sizes="220px"
+                    />
+                  </div>
+                );
+              })}
+
+            {/* Opposite side notice if no graphic is on current side */}
+            {currentActiveArt &&
+              !artworks.some((art) => {
+                if (!includedArtworks.has(art.id)) return false;
+                const placement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
+                return previewSide === 'back' ? isBackPlacement(placement) : !isBackPlacement(placement);
+              }) && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleUpdatePlacement(previewSide === 'front' ? 'front-center' : 'back-center');
+                  }}
+                  className="z-20 px-3.5 py-2 bg-neutral-900/95 border border-emerald-500/50 rounded-xl text-center flex items-center gap-2 cursor-pointer shadow-2xl hover:bg-emerald-950/60 hover:border-emerald-400 transition-all scale-100 hover:scale-105"
+                  title={`Click to move this artwork to the ${previewSide === 'front' ? 'Front' : 'Back'}`}
+                >
+                  <span className="text-emerald-400 text-sm">⟳</span>
+                  <span className="font-mono text-[10px] text-white">
+                    Placed on {previewSide === 'front' ? 'Back' : 'Front'} &bull;{' '}
+                    <strong className="text-emerald-400 underline">Tap to move here</strong>
+                  </span>
+                </div>
+              )}
 
             {/* Print Configuration Pill Label */}
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 px-3 py-1 bg-black/85 backdrop-blur-md rounded-full border border-white/10 text-[9px] font-mono text-white/90 uppercase tracking-wider whitespace-nowrap shadow-lg flex items-center gap-1.5">

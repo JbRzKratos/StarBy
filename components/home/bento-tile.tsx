@@ -34,11 +34,11 @@ export const CATEGORY_IMAGE_OVERRIDES: Record<string, string> = {
   tees: 'plain-tees/Oversized-French-Terry-240GSM/Black/Plain_Oversized-French-Terry-240GSM_Black_01_Model-Front.jpg',
   hoodies: 'plain-tees/Hoodie-Brushed-Fleece-300GSM/Black/Plain_Hoodie-Brushed-Fleece-300GSM_Black_01_Model-Front.jpg',
   'split-posters':
-    'Posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2097d66e-d042-46a0-a7ac-2fa51c635caf_3.webp',
+    'posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_2097d66e-d042-46a0-a7ac-2fa51c635caf_3.webp',
   posters:
-    'Posters/Fregoro_Studios_Batman_standing_alone_on_a_rain_soaked_gothic_r_c46d574d-e4ce-4dea-abdd-eb59f01017eb.webp',
+    'posters/Fregoro_Studios_Batman_standing_alone_on_a_rain_soaked_gothic_r_c46d574d-e4ce-4dea-abdd-eb59f01017eb.webp',
   'wall-studio':
-    'Posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3d45351d-0d64-4e6c-91eb-a97f774dea00_2.webp',
+    'posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_3d45351d-0d64-4e6c-91eb-a97f774dea00_2.webp',
   magazine: 'templates/canva/fashion-1/thumbnail.webp',
   skins: 'images/products/phantom-skin.webp',
   stationery: 'images/products/chronicle-diary.webp',

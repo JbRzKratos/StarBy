@@ -558,6 +558,7 @@ export async function updateProductName(productId: string, newName: string) {
   }
 
   // Bust cache across entire storefront and customer routes
+  invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/${productId}/edit`);
   revalidatePath('/products');
