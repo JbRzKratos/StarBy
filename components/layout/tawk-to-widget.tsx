@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 
@@ -36,6 +36,37 @@ export function TawkToWidget() {
   const pathname = usePathname();
   const propertyId = process.env.NEXT_PUBLIC_TAWKTO_PROPERTY_ID || '';
   const widgetId = process.env.NEXT_PUBLIC_TAWKTO_WIDGET_ID || 'default';
+
+  const [isReadyToLoad, setIsReadyToLoad] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const enableTawk = () => {
+      setIsReadyToLoad(true);
+      cleanup();
+    };
+
+    // Defer loading until user interacts or 3.5s idle timer expires
+    const timer = setTimeout(() => {
+      setIsReadyToLoad(true);
+    }, 3500);
+
+    const cleanup = () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', enableTawk);
+      window.removeEventListener('pointerdown', enableTawk);
+      window.removeEventListener('touchstart', enableTawk);
+      window.removeEventListener('keydown', enableTawk);
+    };
+
+    window.addEventListener('scroll', enableTawk, { passive: true, once: true });
+    window.addEventListener('pointerdown', enableTawk, { passive: true, once: true });
+    window.addEventListener('touchstart', enableTawk, { passive: true, once: true });
+    window.addEventListener('keydown', enableTawk, { passive: true, once: true });
+
+    return cleanup;
+  }, []);
 
   const isExcluded = Boolean(
     pathname?.startsWith('/magazine/editor') ||
@@ -165,7 +196,7 @@ export function TawkToWidget() {
       .catch(() => {});
   }, []);
 
-  if (!propertyId || propertyId === 'REPLACE_ME') {
+  if (!propertyId || propertyId === 'REPLACE_ME' || !isReadyToLoad) {
     return null;
   }
 

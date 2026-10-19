@@ -99,6 +99,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <head>
+        <link rel="preconnect" href="https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev" />
+        <link
+          rel="preload"
+          as="image"
+          href="https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/images/hero-three-models-mobile.webp"
+          media="(max-width: 767px)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/images/hero-three-models.webp"
+          media="(min-width: 768px)"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

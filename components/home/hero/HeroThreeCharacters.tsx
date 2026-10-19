@@ -1,31 +1,39 @@
-'use client';
-
-import Image from 'next/image';
 import { getR2AssetUrl } from '@/lib/r2';
 
 interface HeroThreeCharactersProps {
-  priority?: boolean;
   className?: string;
+  priority?: boolean;
   isMobile?: boolean;
 }
 
-export function HeroThreeCharacters({ priority = true, className = '' }: HeroThreeCharactersProps) {
+export function HeroThreeCharacters({
+  className = '',
+  isMobile = false,
+}: HeroThreeCharactersProps) {
+  const desktopSrc = getR2AssetUrl('images/hero-three-models.webp');
+  const mobileSrc = getR2AssetUrl('images/hero-three-models-mobile.webp');
+
   return (
     <div
       className={`relative w-full h-full flex items-end justify-center select-none pointer-events-none ${className}`}
     >
-      <div className="relative w-full h-full z-10">
-        <Image
-          src={getR2AssetUrl('images/hero-three-models.webp')}
+      <picture className="relative w-full h-full flex items-end justify-center pointer-events-none">
+        {/* Mobile viewport (<768px): load 58.7 KB optimized WebP */}
+        <source media="(max-width: 767px)" srcSet={mobileSrc} type="image/webp" />
+        {/* Desktop viewport (>=768px): load high-res WebP */}
+        <source media="(min-width: 768px)" srcSet={desktopSrc} type="image/webp" />
+        <img
+          src={isMobile ? mobileSrc : desktopSrc}
           alt="Fregoro Studios Hero Models - Three Men in Navy Blue Suits"
-          fill
-          quality={85}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, (max-width: 1536px) 85vw, 1440px"
-          priority={priority}
-          className="object-contain object-bottom"
+          width={1230}
+          height={977}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
           draggable={false}
+          className="w-full h-full object-contain object-bottom pointer-events-none"
         />
-      </div>
+      </picture>
     </div>
   );
 }

@@ -41,8 +41,8 @@ export function FregoroLogo({
 
   const logoSrc =
     variant === 'mark'
-      ? getR2AssetUrl('images/fregoro-emblem.png')
-      : getR2AssetUrl('images/fregoro-logo.png');
+      ? getR2AssetUrl('images/fregoro-emblem.webp')
+      : getR2AssetUrl('images/fregoro-logo.webp');
 
   const content = (
     <span className={`inline-flex items-center gap-2.5 sm:gap-3 select-none ${className}`}>
