@@ -280,10 +280,10 @@ export const App: React.FC = () => {
   });
 
   const GARMENT_DEFAULT_BASE_PRICES: Record<string, number> = {
-    'regular-t-shirt': 799,
-    'oversized-t-shirt': 999,
-    'acid-wash-t-shirt': 1099,
-    'hoodie': 1499,
+    'regular-t-shirt': 600,
+    'oversized-t-shirt': 670,
+    'acid-wash-t-shirt': 699,
+    'hoodie': 750,
   };
 
   const initialPriceRef = useRef<number | null>(null);
@@ -299,7 +299,7 @@ export const App: React.FC = () => {
         /* ignore */
       }
     }
-    return 799;
+    return 600;
   });
 
   const [unitPrice, setUnitPrice] = useState<number>(() => {
@@ -313,7 +313,7 @@ export const App: React.FC = () => {
         /* ignore */
       }
     }
-    return 999;
+    return 600;
   });
 
   const [selectedGarmentSize, setSelectedGarmentSize] = useState<string>(() => {
@@ -338,7 +338,7 @@ export const App: React.FC = () => {
     )
   );
 
-  // Custom design uploads pricing (+₹119 for each custom design uploaded)
+  // Custom design uploads pricing (+₹29 for each custom design uploaded)
   const customArtworkCount3D = project3D.artworkLayers.filter(
     (l) => !l.isCurated && !l.curatedDesignId && !l.hidden && (l.opacity === undefined || l.opacity > 0)
   ).length;
@@ -348,9 +348,9 @@ export const App: React.FC = () => {
   ).length;
 
   const activeCustomArtworkCount = mode === '3d' ? customArtworkCount3D : customArtworkCount2D;
-  const customPrintFee = isCuratedDesign ? 0 : activeCustomArtworkCount * 119;
+  const customPrintFee = isCuratedDesign ? 0 : activeCustomArtworkCount * 29;
   const effectivePrice = isCuratedDesign
-    ? (unitPrice ?? (initialDesignId === 'design-001' ? 1 : 999))
+    ? (unitPrice ?? (initialDesignId === 'design-001' ? 1 : 600))
     : (basePrice + customPrintFee);
 
   // Modal Placement State

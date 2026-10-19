@@ -384,7 +384,7 @@ export function ClothingMockupIframe({
                     }
                   }
                 } catch {
-                  resolvedPrice = 999;
+                  resolvedPrice = 600;
                 }
               }
             }
@@ -460,11 +460,11 @@ export function ClothingMockupIframe({
             const customPrintFee =
               typeof payload.customPrintFee === 'number'
                 ? payload.customPrintFee
-                : customArtworkCount * 119;
+                : customArtworkCount * 29;
             const itemBasePrice =
               typeof payload.basePrice === 'number'
                 ? payload.basePrice
-                : (typeof resolvedPrice === 'number' ? resolvedPrice - customPrintFee : 799);
+                : (typeof resolvedPrice === 'number' ? resolvedPrice - customPrintFee : 600);
 
             const isCustomUpload = !payload.designId || Boolean(payload.plain);
             const itemDisplayName = isCustomUpload
@@ -477,7 +477,7 @@ export function ClothingMockupIframe({
               name: itemDisplayName,
               variant: `${payload.garmentColor || 'Custom'} / ${payload.size || 'L'}`,
               quantity: payload.quantity || 1,
-              price: typeof resolvedPrice === 'number' && resolvedPrice >= 0 ? resolvedPrice : 999,
+              price: typeof resolvedPrice === 'number' && resolvedPrice >= 0 ? resolvedPrice : 600,
               size: payload.size || 'L',
               image: safeImage,
               customization: {

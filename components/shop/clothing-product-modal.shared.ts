@@ -13,6 +13,7 @@ import { parseNaturalLanguagePlacement } from '@/lib/clothing-designs/placement-
 import {
   APPAREL_CONFIG,
   APPAREL_LIST,
+  getApparelPrice,
   type ApparelProductConfig,
   type ApparelColorSwatch,
 } from '@/lib/config/apparel-variants';
@@ -684,11 +685,16 @@ export function useClothingProductModalState({
         design.basePrice === 1 ||
         (design.id === 'design-001' && selectedGarmentId !== 'hoodie') ||
         ((design.id === 'design-001' || design.id === 'design-002') && selectedGarmentId === 'hoodie');
+      const sUpper = (selectedSize || 'L').trim().toUpperCase();
+      const customSizePrice =
+        design.sizePrices && typeof design.sizePrices === 'object'
+          ? (design.sizePrices[sUpper] ?? (sUpper === '3XL' || sUpper === 'XXXL' ? (design.sizePrices['3XL'] ?? design.sizePrices['XXXL']) : (design.sizePrices['2XL'] ?? design.sizePrices['XXL'])))
+          : undefined;
       const unitPrice = isOneRupee
         ? 1
-        : typeof design.basePrice === 'number' && design.basePrice > 0
-          ? design.basePrice
-          : selectedGarment?.basePrice || 799;
+        : typeof customSizePrice === 'number'
+          ? customSizePrice
+          : getApparelPrice(selectedGarmentId, selectedSize || 'L');
 
       const removedArtIds = (artworks || [])
         .filter((a) => !includedArtworks.has(a.id))
@@ -922,11 +928,16 @@ export function useClothingProductModalState({
     design?.basePrice === 1 ||
     (design?.id === 'design-001' && selectedGarmentId !== 'hoodie') ||
     ((design?.id === 'design-001' || design?.id === 'design-002') && selectedGarmentId === 'hoodie');
+  const selSizeUpper = (selectedSize || 'L').trim().toUpperCase();
+  const customDesignSizePrice =
+    design?.sizePrices && typeof design.sizePrices === 'object'
+      ? (design.sizePrices[selSizeUpper] ?? (selSizeUpper === '3XL' || selSizeUpper === 'XXXL' ? (design.sizePrices['3XL'] ?? design.sizePrices['XXXL']) : (design.sizePrices['2XL'] ?? design.sizePrices['XXL'])))
+      : undefined;
   const unitPrice = isOneRupee
     ? 1
-    : typeof design?.basePrice === 'number' && design.basePrice > 0
-      ? design.basePrice
-      : selectedGarment.basePrice;
+    : typeof customDesignSizePrice === 'number'
+      ? customDesignSizePrice
+      : getApparelPrice(selectedGarmentId, selectedSize || 'L');
 
   return {
     mounted,

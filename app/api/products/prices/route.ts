@@ -44,6 +44,8 @@ export async function GET(request: NextRequest) {
             slug: product.slug,
             name: product.name,
             basePrice: product.basePrice,
+            sizes: product.sizes,
+            sizePrices: product.sizePrices,
             variants: product.variants.map((v) => ({
               id: v.id,
               name: v.name,

@@ -102,7 +102,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
     }, 400);
   };
 
-  const unitPrice = typeof propUnitPrice === 'number' && propUnitPrice >= 0 ? propUnitPrice : 999;
+  const unitPrice = typeof propUnitPrice === 'number' && propUnitPrice >= 0 ? propUnitPrice : 600;
   const totalPrice = unitPrice * quantity;
 
   return (
@@ -403,7 +403,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
                     <div>Base Garment: <strong style={{ color: '#e2e8f0' }}>₹{basePrice}</strong></div>
                     {customArtworkCount > 0 ? (
                       <div style={{ color: '#38bdf8' }}>
-                        Custom Prints ({customArtworkCount} × ₹119): <strong style={{ color: '#38bdf8' }}>+₹{customPrintFee || customArtworkCount * 119}</strong>
+                        Custom Prints ({customArtworkCount} × ₹29): <strong style={{ color: '#38bdf8' }}>+₹{customPrintFee || customArtworkCount * 29}</strong>
                       </div>
                     ) : (
                       <div style={{ color: '#64748b' }}>No custom prints uploaded yet (+₹0)</div>

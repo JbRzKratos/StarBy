@@ -42,6 +42,7 @@ interface ProductFormClientProps {
     featured: boolean;
     tags: string[];
     sizes: string[];
+    sizePrices?: Record<string, number> | null;
   };
   initialVariants?: VariantData[];
 }
@@ -57,6 +58,7 @@ const BLANK_PRODUCT = {
   featured: false,
   tags: [] as string[],
   sizes: [] as string[],
+  sizePrices: null as Record<string, number> | null,
 };
 
 const BLANK_VARIANT = {
@@ -83,6 +85,9 @@ export function ProductFormClient({
   const [form, setForm] = useState(initialData);
   const [tagsInput, setTagsInput] = useState(initialData.tags.join(', '));
   const [sizesInput, setSizesInput] = useState(initialData.sizes.join(', '));
+  const [sizePrices, setSizePrices] = useState<Record<string, number>>(() => {
+    return (initialData.sizePrices as Record<string, number>) || {};
+  });
   const [variants, setVariants] = useState<VariantData[]>(initialVariants);
   const [newVariant, setNewVariant] = useState({ ...BLANK_VARIANT });
   const [showVariantForm, setShowVariantForm] = useState(false);
@@ -90,16 +95,31 @@ export function ProductFormClient({
   function handleSubmit() {
     startTransition(async () => {
       try {
+        const activeSizes = sizesInput
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+        const cleanSizePrices: Record<string, number> = {};
+        activeSizes.forEach((s) => {
+          const upper = s.toUpperCase();
+          const p = sizePrices[s] ?? sizePrices[upper] ?? form.basePrice;
+          cleanSizePrices[s] = p;
+          cleanSizePrices[upper] = p;
+          if (upper === '2XL') cleanSizePrices['XXL'] = p;
+          if (upper === 'XXL') cleanSizePrices['2XL'] = p;
+          if (upper === '3XL') cleanSizePrices['XXXL'] = p;
+          if (upper === 'XXXL') cleanSizePrices['3XL'] = p;
+        });
+
         const data = {
           ...form,
           tags: tagsInput
             .split(',')
             .map((t) => t.trim())
             .filter(Boolean),
-          sizes: sizesInput
-            .split(',')
-            .map((s) => s.trim())
-            .filter(Boolean),
+          sizes: activeSizes,
+          sizePrices: Object.keys(cleanSizePrices).length > 0 ? cleanSizePrices : null,
         };
         if (mode === 'create') {
           await createProduct(data);
@@ -251,9 +271,149 @@ export function ProductFormClient({
             value={sizesInput}
             onChange={(e) => setSizesInput(e.target.value)}
             className={inputClass}
-            placeholder="e.g. S, M, L, XL"
+            placeholder="e.g. S, M, L, XL, 2XL, 3XL"
           />
         </div>
+
+        {/* Size-Based Pricing Box */}
+        {(() => {
+          const parsedSizes = sizesInput
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean);
+
+          if (parsedSizes.length === 0) return null;
+
+          return (
+            <div className="bg-black/30 rounded-xl border border-white/10 p-4 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-xs font-semibold text-bone uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="text-[#3B5EFF]">✦</span> Pricing by Size (₹)
+                  </h3>
+                  <p className="text-[11px] text-ash mt-0.5">
+                    Set selling price for each size (defaults to Base Price ₹{form.basePrice || 0} if not custom set)
+                  </p>
+                </div>
+
+                {/* Quick Auto-Fill Buttons from Excel Catalog */}
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[10px] text-ash uppercase font-mono">Fill:</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = { ...sizePrices };
+                      parsedSizes.forEach((s) => {
+                        const u = s.toUpperCase();
+                        updated[s] = u === '3XL' || u === 'XXXL' ? 645 : 600;
+                      });
+                      setSizePrices(updated);
+                      show('Applied Regular Tee prices (₹600 / 3XL: ₹645)', 'success');
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-white/90 border border-white/10 cursor-pointer"
+                  >
+                    Regular (600/645)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = { ...sizePrices };
+                      parsedSizes.forEach((s) => {
+                        const u = s.toUpperCase();
+                        updated[s] = u === '3XL' || u === 'XXXL' ? 699 : 670;
+                      });
+                      setSizePrices(updated);
+                      show('Applied Oversized Tee prices (₹670 / 3XL: ₹699)', 'success');
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-white/90 border border-white/10 cursor-pointer"
+                  >
+                    Oversized (670/699)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = { ...sizePrices };
+                      parsedSizes.forEach((s) => {
+                        const u = s.toUpperCase();
+                        updated[s] = u === '3XL' || u === 'XXXL' ? 720 : 699;
+                      });
+                      setSizePrices(updated);
+                      show('Applied Acid Wash prices (₹699 / 3XL: ₹720)', 'success');
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-white/90 border border-white/10 cursor-pointer"
+                  >
+                    Acid Wash (699/720)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = { ...sizePrices };
+                      parsedSizes.forEach((s) => {
+                        const u = s.toUpperCase();
+                        updated[s] = u === '3XL' || u === 'XXXL' ? 780 : 750;
+                      });
+                      setSizePrices(updated);
+                      show('Applied Hoodie prices (₹750 / 3XL: ₹780)', 'success');
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-white/90 border border-white/10 cursor-pointer"
+                  >
+                    Hoodie (750/780)
+                  </button>
+                </div>
+              </div>
+
+              {/* Grid of Size Price Input Boxes */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 pt-1">
+                {parsedSizes.map((size) => {
+                  const upper = size.toUpperCase();
+                  const currentVal =
+                    sizePrices[size] !== undefined
+                      ? sizePrices[size]
+                      : sizePrices[upper] !== undefined
+                      ? sizePrices[upper]
+                      : form.basePrice;
+
+                  return (
+                    <div
+                      key={size}
+                      className="bg-black/50 border border-white/10 rounded-lg p-2.5 flex flex-col gap-1 focus-within:border-[#3B5EFF]"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono font-bold text-white/80 uppercase">
+                          Size {size}
+                        </span>
+                        {(upper === '3XL' || upper === 'XXXL') && (
+                          <span className="text-[8px] font-mono bg-purple-500/20 text-purple-300 px-1 py-0.2 rounded border border-purple-500/30">
+                            Extended
+                          </span>
+                        )}
+                      </div>
+                      <div className="relative mt-0.5">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-mono text-ash pointer-events-none">
+                          ₹
+                        </span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={currentVal ?? 0}
+                          onChange={(e) => {
+                            const val = parseFloat(e.target.value) || 0;
+                            setSizePrices((prev) => ({
+                              ...prev,
+                              [size]: val,
+                              [upper]: val,
+                            }));
+                          }}
+                          className="w-full pl-6 pr-2 py-1 bg-black/60 border border-white/15 rounded text-xs font-mono text-white focus:outline-none focus:border-[#3B5EFF]"
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
         <div className="flex items-center gap-6">
           <label className="flex items-center gap-2 cursor-pointer">
             <input

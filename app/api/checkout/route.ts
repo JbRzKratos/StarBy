@@ -295,12 +295,12 @@ export async function POST(request: Request) {
           customData?.designId === 'design-001' ||
           (typeof item.price === 'number' && item.price === 1 && (item.productId.includes('design-001') || customData?.designId === 'design-001'));
 
-        let unitPrice = 999;
+        let unitPrice = 600;
 
         if (isDesign001) {
           unitPrice = 1;
-        } else if (typeof item.price === 'number' && item.price >= 799) {
-          // Exact cart price from 3D/2D studio customizer (base garment ₹799-₹1499 + ₹119 per custom print).
+        } else if (typeof item.price === 'number' && item.price >= 1) {
+          // Exact cart price from 3D/2D studio customizer (base garment ₹600-₹780 + ₹29 per custom print).
           // Always respect the exact customer cart total so Cashfree payment gateway matches to the exact rupee!
           unitPrice = item.price;
         } else {
@@ -315,15 +315,15 @@ export async function POST(request: Request) {
             (typeof item.productId === 'string' ? item.productId : '')
           ).toLowerCase();
 
-          let garmentBasePrice = 799;
+          let garmentBasePrice = 600;
           if (typeof customData?.basePrice === 'number' && customData.basePrice > 0) {
             garmentBasePrice = customData.basePrice;
           } else if (garmentKey.includes('hoodie')) {
-            garmentBasePrice = 1499;
+            garmentBasePrice = 750;
           } else if (garmentKey.includes('acid')) {
-            garmentBasePrice = 1099;
+            garmentBasePrice = 699;
           } else if (garmentKey.includes('oversized') || garmentKey.includes('french-terry')) {
-            garmentBasePrice = 999;
+            garmentBasePrice = 670;
           }
 
           const isCurated = Boolean(customData?.designId && !customData?.isPlain);
@@ -332,12 +332,12 @@ export async function POST(request: Request) {
             const curatedDbProduct = customData?.designId ? productMap.get(customData.designId) : productMap.get(item.productId);
             const designBase = (curatedDbProduct && typeof curatedDbProduct.basePrice === 'number' && curatedDbProduct.basePrice > 0)
               ? curatedDbProduct.basePrice
-              : 999;
+              : 600;
 
             if (garmentKey.includes('hoodie')) {
-              unitPrice = Math.max(designBase, 1499);
+              unitPrice = Math.max(designBase, 750);
             } else if (garmentKey.includes('acid')) {
-              unitPrice = Math.max(designBase, 1099);
+              unitPrice = Math.max(designBase, 699);
             } else {
               unitPrice = designBase;
             }
@@ -348,7 +348,7 @@ export async function POST(request: Request) {
                 : Array.isArray(customData?.uploadedArtworks)
                   ? customData.uploadedArtworks.length
                   : 0;
-            const printFee = artworkCount * 119;
+            const printFee = artworkCount * 29;
             unitPrice = garmentBasePrice + printFee;
           }
         }

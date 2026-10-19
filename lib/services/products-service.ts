@@ -132,6 +132,8 @@ export async function getLiveProducts(forceRefresh = false): Promise<Product[]> 
         basePrice: dbProduct.basePrice,
         featured: dbProduct.featured,
         customizable: dbProduct.customizable,
+        sizes: Array.isArray(dbProduct.sizes) && dbProduct.sizes.length > 0 ? dbProduct.sizes : fallback.sizes,
+        sizePrices: (dbProduct.sizePrices as Record<string, number> | null) ?? fallback.sizePrices,
         variants: updatedVariants,
       };
     });
@@ -154,6 +156,7 @@ export async function getLiveProducts(forceRefresh = false): Promise<Product[]> 
           featured: dbP.featured,
           tags: dbP.tags,
           sizes: dbP.sizes,
+          sizePrices: dbP.sizePrices as Record<string, number> | null,
           variants: dbP.variants.map((v) => ({
             id: v.id,
             name: v.name,

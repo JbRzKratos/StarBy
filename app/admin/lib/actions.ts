@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import { assertAdmin, assertStaff } from './auth';
 import { dispatchNotification } from '@/lib/notifications';
 import { invalidateProductsCache } from '@/lib/services/products-service';
@@ -320,11 +321,16 @@ export async function createProduct(data: {
   featured: boolean;
   tags: string[];
   sizes: string[];
+  sizePrices?: Record<string, number> | null;
 }) {
   await assertAdmin();
+  const { sizePrices, ...rest } = data;
   const product = await prisma.product.create({
     data: {
-      ...data,
+      ...rest,
+      ...(sizePrices !== undefined
+        ? { sizePrices: sizePrices ? (sizePrices as Prisma.InputJsonValue) : Prisma.DbNull }
+        : {}),
       variants: {
         create: [
           {
@@ -362,16 +368,25 @@ export async function updateProduct(
     featured?: boolean;
     tags?: string[];
     sizes?: string[];
+    sizePrices?: Record<string, number> | null;
   },
 ) {
   // Price changes strictly require admin access
-  if (data.basePrice !== undefined) {
+  if (data.basePrice !== undefined || data.sizePrices !== undefined) {
     await assertAdmin();
   } else {
     await assertStaff();
   }
 
-  const updated = await prisma.product.update({ where: { id: productId }, data });
+  const { sizePrices, ...rest } = data;
+  const updatePayload: Prisma.ProductUpdateInput = {
+    ...rest,
+    ...(sizePrices !== undefined
+      ? { sizePrices: sizePrices ? (sizePrices as Prisma.InputJsonValue) : Prisma.DbNull }
+      : {}),
+  };
+
+  const updated = await prisma.product.update({ where: { id: productId }, data: updatePayload });
 
   // Revalidate across all storefront and admin paths
   revalidatePath('/admin/products');

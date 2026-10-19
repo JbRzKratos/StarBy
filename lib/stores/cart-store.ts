@@ -185,18 +185,18 @@ export const useCartStore = create<CartState & CartActions>()(
                 if (item.customization?.designId === 'design-001' || item.productId === 'design-001') {
                   livePrice = 1;
                 } else if (item.customization?.isPlain || !item.customization?.designId) {
-                  if (typeof item.price === 'number' && item.price >= 799) {
+                  if (typeof item.price === 'number' && item.price >= 1) {
                     livePrice = item.price;
                   } else {
                     const base =
                       typeof item.customization?.basePrice === 'number' && item.customization.basePrice > 0
                         ? (item.customization.basePrice as number)
-                        : 799;
+                        : 600;
                     const count =
                       typeof item.customization?.customArtworkCount === 'number'
                         ? (item.customization.customArtworkCount as number)
                         : 0;
-                    livePrice = base + count * 119;
+                    livePrice = base + count * 29;
                   }
                 } else if (item.customization?.designId) {
                   const dId = item.customization.designId as string;

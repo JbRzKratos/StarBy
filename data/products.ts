@@ -25,6 +25,7 @@ export interface Product {
   tags: string[];
   featured: boolean;
   sizes?: string[];
+  sizePrices?: Record<string, number> | null;
   comingSoon?: boolean;
 }
 
