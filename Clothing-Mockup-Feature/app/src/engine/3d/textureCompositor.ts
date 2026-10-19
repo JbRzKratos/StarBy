@@ -271,6 +271,33 @@ export class TextureCompositor3D {
     return img;
   }
 
+  private fallbackImageLoad(
+    url: string,
+    resolve: (img: HTMLImageElement) => void,
+    reject: (err: unknown) => void
+  ) {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = async () => {
+      try {
+        if ('decode' in img) {
+          await img.decode();
+        }
+      } catch {
+        // ignore non-fatal decode errors
+      }
+      this.imageCache.set(url, img);
+      this.pendingImagePromises.delete(url);
+      resolve(img);
+    };
+    img.onerror = (err) => {
+      console.warn(`[TextureCompositor3D] Failed to load image: ${url}`, err);
+      this.pendingImagePromises.delete(url);
+      reject(err);
+    };
+    img.src = url;
+  }
+
   private loadImage(url: string): Promise<HTMLImageElement> {
     if (this.imageCache.has(url)) {
       const cached = this.imageCache.get(url)!;
@@ -282,27 +309,38 @@ export class TextureCompositor3D {
       return this.pendingImagePromises.get(url)!;
     }
 
-    const promise = new Promise<HTMLImageElement>((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = async () => {
-        try {
-          if ('decode' in img) {
-            await img.decode();
-          }
-        } catch {
-          // ignore non-fatal decode errors
+    const promise = new Promise<HTMLImageElement>(async (resolve, reject) => {
+      // 1. Try fetching via blob first to guarantee CORS compliance and prevent Canvas tainting
+      try {
+        const response = await fetch(url, { mode: 'cors' });
+        if (response.ok) {
+          const blob = await response.blob();
+          const objectUrl = URL.createObjectURL(blob);
+          const img = new Image();
+          img.onload = async () => {
+            try {
+              if ('decode' in img) {
+                await img.decode();
+              }
+            } catch {
+              // ignore
+            }
+            this.imageCache.set(url, img);
+            this.pendingImagePromises.delete(url);
+            resolve(img);
+          };
+          img.onerror = () => {
+            this.fallbackImageLoad(url, resolve, reject);
+          };
+          img.src = objectUrl;
+          return;
         }
-        this.imageCache.set(url, img);
-        this.pendingImagePromises.delete(url);
-        resolve(img);
-      };
-      img.onerror = (err) => {
-        console.warn(`[TextureCompositor3D] Failed to load image: ${url}`, err);
-        this.pendingImagePromises.delete(url);
-        reject(err);
-      };
-      img.src = url;
+      } catch {
+        // Fall through to fallback
+      }
+
+      // 2. Fallback to standard Image tag loading
+      this.fallbackImageLoad(url, resolve, reject);
     });
 
     this.pendingImagePromises.set(url, promise);
@@ -356,7 +394,7 @@ export class TextureCompositor3D {
     this.baseTexture.needsUpdate = true;
 
     // ── Step 3: Isolated Artwork Pass ────────────────────────────────────────
-    const activeLayers = artworkLayers.filter((l) => l.opacity > 0);
+    const activeLayers = artworkLayers.filter((l) => l.opacity > 0 && !l.hidden);
 
     if (activeLayers.length > 0) {
       const artCtx = this.artworkCtx;
@@ -822,7 +860,7 @@ export class TextureCompositor3D {
     }
 
     // Composite all layers except the dragging one
-    const otherLayers = artworkLayers.filter((l) => l.id !== layerId && l.opacity > 0);
+    const otherLayers = artworkLayers.filter((l) => l.id !== layerId && l.opacity > 0 && !l.hidden);
 
     if (otherLayers.length > 0) {
       const artCtx = this.artworkCtx;

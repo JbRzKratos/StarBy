@@ -408,6 +408,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    gap: '8px',
                     padding: '8px 10px',
                     borderRadius: 'var(--radius-md, 8px)',
                     background: isSelected ? 'rgba(0, 214, 255, 0.12)' : 'var(--bg-card, #131722)',
@@ -415,9 +416,11 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                       ? '1px solid var(--accent, #3B5EFF)'
                       : '1px solid var(--border-subtle, rgba(255,255,255,0.08))',
                     cursor: 'pointer',
+                    width: '100%',
+                    boxSizing: 'border-box',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flex: 1, overflow: 'hidden' }}>
                     <div
                       style={{
                         width: '28px',
@@ -428,6 +431,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        flexShrink: 0,
                       }}
                     >
                       <img
@@ -436,74 +440,165 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                       />
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <span style={{ fontSize: '12px', fontWeight: 600, color: isSelected ? '#3B5EFF' : '#fff' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, flex: 1, overflow: 'hidden' }}>
+                      <span
+                        title={layer.name}
+                        style={{
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          color: isSelected ? '#3B5EFF' : '#fff',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: 'block',
+                        }}
+                      >
                         {layer.name}
                       </span>
-                      <span style={{ fontSize: '9px', color: mode === 'surface' ? '#38bdf8' : '#c084fc' }}>
+                      <span style={{ fontSize: '9px', color: mode === 'surface' ? '#38bdf8' : '#c084fc', whiteSpace: 'nowrap' }}>
                         {mode === 'surface' ? '3D Surface Projector' : 'Full Atlas'}
                       </span>
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      flexShrink: 0,
+                      marginLeft: 'auto',
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     {layer.locked && !isDesignerMode ? (
-                      <span
-                        style={{
-                          fontSize: '9px',
-                          color: '#38bdf8',
-                          padding: '3px 7px',
-                          borderRadius: '4px',
-                          background: 'rgba(56, 189, 248, 0.12)',
-                          border: '1px solid rgba(56, 189, 248, 0.3)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '3px',
-                          fontWeight: 700,
-                          fontFamily: 'monospace',
-                        }}
-                        title="Placement locked by designer"
-                      >
-                        🔒 LOCKED
-                      </span>
-                    ) : (
-                      <>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span
+                          style={{
+                            fontSize: '9px',
+                            color: '#38bdf8',
+                            padding: '3px 6px',
+                            borderRadius: '4px',
+                            background: 'rgba(56, 189, 248, 0.12)',
+                            border: '1px solid rgba(56, 189, 248, 0.3)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            fontWeight: 700,
+                            fontFamily: 'monospace',
+                            whiteSpace: 'nowrap',
+                          }}
+                          title="Placement locked by designer"
+                        >
+                          🔒 LOCKED
+                        </span>
                         <button
+                          type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            const nextHidden = layer.opacity > 0;
-                            onUpdateLayer(layer.id, { opacity: nextHidden ? 0 : 1.0, hidden: nextHidden });
+                            const isCurrentlyHidden = layer.hidden === true || layer.opacity === 0;
+                            onUpdateLayer(layer.id, {
+                              opacity: isCurrentlyHidden ? 1.0 : 0,
+                              hidden: !isCurrentlyHidden,
+                            });
                           }}
                           style={{
-                            background: 'transparent',
-                            border: 'none',
-                            color: layer.opacity > 0 ? '#fff' : 'var(--text-muted)',
+                            background: (layer.hidden || layer.opacity === 0) ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255, 255, 255, 0.08)',
+                            border: (layer.hidden || layer.opacity === 0) ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(255, 255, 255, 0.15)',
+                            borderRadius: '5px',
+                            color: (layer.hidden || layer.opacity === 0) ? '#f87171' : '#fff',
                             cursor: 'pointer',
-                            padding: '4px',
+                            padding: '4px 6px',
+                            fontSize: '12px',
+                            lineHeight: 1,
                           }}
-                          title={layer.opacity > 0 ? 'Hide' : 'Show'}
+                          title={(layer.hidden || layer.opacity === 0) ? 'Show Artwork' : 'Hide Artwork'}
                         >
-                          {layer.opacity > 0 ? <span style={{ fontSize: '13px' }}>👁</span> : <span style={{ fontSize: '13px', opacity: 0.5 }}>✕</span>}
+                          {(layer.hidden || layer.opacity === 0) ? '👁‍🗨' : '👁'}
                         </button>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Hide / Show Toggle Button */}
                         <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const isCurrentlyHidden = layer.hidden === true || layer.opacity === 0;
+                            onUpdateLayer(layer.id, {
+                              opacity: isCurrentlyHidden ? 1.0 : 0,
+                              hidden: !isCurrentlyHidden,
+                            });
+                          }}
+                          style={{
+                            background: (layer.hidden || layer.opacity === 0) ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255, 255, 255, 0.08)',
+                            border: (layer.hidden || layer.opacity === 0) ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(255, 255, 255, 0.15)',
+                            borderRadius: '5px',
+                            color: (layer.hidden || layer.opacity === 0) ? '#f87171' : '#fff',
+                            cursor: 'pointer',
+                            padding: '5px 7px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px',
+                            lineHeight: 1,
+                            transition: 'all 0.15s ease',
+                          }}
+                          title={(layer.hidden || layer.opacity === 0) ? 'Show Artwork Layer' : 'Hide Artwork Layer'}
+                        >
+                          {(layer.hidden || layer.opacity === 0) ? '👁‍🗨' : '👁'}
+                        </button>
+
+                        {/* Duplicate Button */}
+                        <button
+                          type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             onDuplicateLayer(layer.id);
                           }}
-                          style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
-                          title="Duplicate"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            borderRadius: '5px',
+                            color: 'rgba(255, 255, 255, 0.85)',
+                            cursor: 'pointer',
+                            padding: '5px 7px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px',
+                            lineHeight: 1,
+                            transition: 'all 0.15s ease',
+                          }}
+                          title="Duplicate Artwork Layer"
                         >
-                          <span style={{ fontSize: '13px' }}>⧉</span>
+                          ⧉
                         </button>
+
+                        {/* Remove / Delete Button */}
                         <button
+                          type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             onDeleteLayer(layer.id);
                           }}
-                          style={{ background: 'transparent', border: 'none', color: '#ff4d4d', cursor: 'pointer', padding: '4px' }}
-                          title="Delete"
+                          style={{
+                            background: 'rgba(239, 68, 68, 0.15)',
+                            border: '1px solid rgba(239, 68, 68, 0.4)',
+                            borderRadius: '5px',
+                            color: '#f87171',
+                            cursor: 'pointer',
+                            padding: '5px 7px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px',
+                            lineHeight: 1,
+                            transition: 'all 0.15s ease',
+                          }}
+                          title="Remove Artwork Layer"
                         >
-                          <span style={{ fontSize: '13px' }}>✕</span>
+                          🗑
                         </button>
                       </>
                     )}
@@ -621,6 +716,95 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                   🛠️ Designer Placement Mode Active
                 </div>
               )}
+
+              {/* Quick Action Toolbar for Selected Layer */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '6px',
+                  padding: '8px',
+                  borderRadius: '8px',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    const isCurrentlyHidden = selectedLayer.hidden === true || selectedLayer.opacity === 0;
+                    onUpdateLayer(selectedLayer.id, {
+                      opacity: isCurrentlyHidden ? 1.0 : 0,
+                      hidden: !isCurrentlyHidden,
+                    });
+                  }}
+                  style={{
+                    padding: '7px 6px',
+                    borderRadius: '6px',
+                    background: (selectedLayer.hidden || selectedLayer.opacity === 0) ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255, 255, 255, 0.06)',
+                    border: (selectedLayer.hidden || selectedLayer.opacity === 0) ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(255, 255, 255, 0.15)',
+                    color: (selectedLayer.hidden || selectedLayer.opacity === 0) ? '#f87171' : '#fff',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '5px',
+                  }}
+                  title={selectedLayer.hidden || selectedLayer.opacity === 0 ? 'Show Artwork Layer' : 'Hide Artwork Layer'}
+                >
+                  <span>{(selectedLayer.hidden || selectedLayer.opacity === 0) ? '👁‍🗨' : '👁'}</span>
+                  <span>{(selectedLayer.hidden || selectedLayer.opacity === 0) ? 'Show' : 'Hide'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => onDuplicateLayer(selectedLayer.id)}
+                  style={{
+                    padding: '7px 6px',
+                    borderRadius: '6px',
+                    background: 'rgba(59, 94, 255, 0.12)',
+                    border: '1px solid rgba(59, 94, 255, 0.3)',
+                    color: '#93c5fd',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '5px',
+                  }}
+                  title="Duplicate This Graphic"
+                >
+                  <span>⧉</span>
+                  <span>Duplicate</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => onDeleteLayer(selectedLayer.id)}
+                  style={{
+                    padding: '7px 6px',
+                    borderRadius: '6px',
+                    background: 'rgba(239, 68, 68, 0.15)',
+                    border: '1px solid rgba(239, 68, 68, 0.4)',
+                    color: '#f87171',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '5px',
+                  }}
+                  title="Remove This Graphic"
+                >
+                  <span>🗑</span>
+                  <span>Remove</span>
+                </button>
+              </div>
+
           {/* Customer Print Surface Selector: FRONT vs BACK vs SLEEVE */}
           {(() => {
             const isBack = selectedLayer.regionId === 'back' || (selectedLayer.placementTarget && selectedLayer.placementTarget.includes('back'));
@@ -1162,6 +1346,33 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
               }}
             >
               Flip Vertical
+            </button>
+          </div>
+
+          {/* Danger Zone: Full-Width Remove Button */}
+          <div style={{ marginTop: '6px', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <button
+              type="button"
+              onClick={() => onDeleteLayer(selectedLayer.id)}
+              style={{
+                width: '100%',
+                padding: '9px 12px',
+                borderRadius: '7px',
+                background: 'rgba(239, 68, 68, 0.12)',
+                border: '1px solid rgba(239, 68, 68, 0.35)',
+                color: '#f87171',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <span>🗑</span>
+              <span>Remove This Artwork from Garment</span>
             </button>
           </div>
             </>

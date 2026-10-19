@@ -4,6 +4,7 @@ import {
   getCachedPricesPayload,
   setCachedPricesPayload,
   invalidateProductsCache,
+  getLiveProductBySlug,
 } from '@/lib/services/products-service';
 
 export const dynamic = 'force-dynamic';
@@ -19,6 +20,39 @@ export async function GET(request: NextRequest) {
     const slug = searchParams.get('slug');
 
     if (productId || slug) {
+      const targetQuery = productId || slug || '';
+      // 1. Instant sub-millisecond memory cache lookup
+      const cached = await getLiveProductBySlug(targetQuery);
+      if (cached) {
+        return NextResponse.json(
+          {
+            success: true,
+            product: {
+              id: cached.id,
+              slug: cached.slug,
+              name: cached.name,
+              basePrice: cached.basePrice,
+              sizes: cached.sizes,
+              sizePrices: cached.sizePrices,
+              variants:
+                cached.variants?.map((v) => ({
+                  id: v.id,
+                  name: v.name,
+                  color: v.color,
+                  price: v.price,
+                  inStock: v.inStock,
+                })) || [],
+            },
+          },
+          {
+            headers: {
+              'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+            },
+          },
+        );
+      }
+
+      // 2. Direct DB fallback if not found in cache
       const product = await prisma.product.findFirst({
         where: productId ? { id: productId } : { slug: slug ?? '' },
         include: { variants: true },

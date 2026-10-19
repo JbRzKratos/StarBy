@@ -44,6 +44,12 @@ export async function GET(req: Request, { params }: RouteProps) {
     if (!isDownload && typeParam !== 'original') {
       let art = design.artworks?.find((a) => a.id.toLowerCase() === artIdParam?.toLowerCase());
       if (!art && artIdParam) {
+        const normId = artIdParam.toLowerCase().replace(/^art-?0*(\d+)$/, 'art-$1');
+        art = design.artworks?.find(
+          (a) => a.id.toLowerCase().replace(/^art-?0*(\d+)$/, 'art-$1') === normId
+        );
+      }
+      if (!art && artIdParam) {
         const s = artIdParam.toLowerCase();
         art = design.artworks?.find(
           (a) =>
