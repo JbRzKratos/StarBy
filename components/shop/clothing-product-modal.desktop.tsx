@@ -33,7 +33,6 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
     currentActiveArt,
     currentPlacement,
     currentScale,
-    isCurrentPlacementOnCurrentSide,
     handleSelectArtwork,
     handleUpdatePlacement,
     handleUpdateSide,

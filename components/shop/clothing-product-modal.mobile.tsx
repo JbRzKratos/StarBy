@@ -31,7 +31,6 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
     currentActiveArt,
     currentPlacement,
     currentScale,
-    isCurrentPlacementOnCurrentSide,
     handleSelectArtwork,
     handleUpdatePlacement,
     handleUpdateSide,
