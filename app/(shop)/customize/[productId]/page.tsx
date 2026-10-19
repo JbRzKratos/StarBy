@@ -112,7 +112,7 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
 
   // Use simple customizer for cups, mugs, posters, stationery, etc.
   const mockupImageSrc =
-    product.variants?.[0]?.images?.[0] || getR2AssetUrl('images/mockups/tee-black-front.png');
+    product.variants?.[0]?.images?.[0] || getR2AssetUrl('images/mockups/tee-black-front.webp');
 
   const variantId = defaultVariant?.id || 'default';
 

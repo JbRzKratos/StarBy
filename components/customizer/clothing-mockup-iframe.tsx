@@ -440,12 +440,12 @@ export function ClothingMockupIframe({
             const candidateImage =
               uploadResult.frontPreviewUrl ||
               uploadResult.previewFileUrl ||
-              '/images/mockups/tee-black-front.png';
+              '/images/mockups/tee-black-front.webp';
             const safeImage =
               typeof candidateImage === 'string' &&
               candidateImage.startsWith('data:') &&
               candidateImage.length > 80000
-                ? '/images/mockups/tee-black-front.png'
+                ? '/images/mockups/tee-black-front.webp'
                 : candidateImage;
 
             const is2d = payload.mode === '2d';

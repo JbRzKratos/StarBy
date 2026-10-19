@@ -95,7 +95,7 @@ const COMING_SOON_SHOWCASES: Record<string, ComingSoonShowcaseConfig> = {
       {
         name: 'Classic Ceramic Mug 11oz',
         tagline: 'High-density ceramic stoneware with ergonomic grip and glossy thermal glaze.',
-        image: getR2AssetUrl('images/products/classic_mug_11oz.png'),
+        image: getR2AssetUrl('images/products/classic_mug_11oz.webp'),
         stage: 'Kiln Formulation',
         category: 'Stoneware',
         href: '/products/mugs-cups/classic-mug-11oz',
@@ -103,7 +103,7 @@ const COMING_SOON_SHOWCASES: Record<string, ComingSoonShowcaseConfig> = {
       {
         name: 'Magic Heat-Reveal Mug',
         tagline: 'Thermo-reactive pigment coating that transforms when hot liquid is poured.',
-        image: getR2AssetUrl('images/products/magic_mug.png'),
+        image: getR2AssetUrl('images/products/magic_mug.webp'),
         stage: 'Thermal Testing',
         category: 'Reactive Glaze',
         href: '/products/mugs-cups/magic-mug',
@@ -111,7 +111,7 @@ const COMING_SOON_SHOWCASES: Record<string, ComingSoonShowcaseConfig> = {
       {
         name: 'Enamel Studio Camping Mug',
         tagline: 'Rugged stainless steel core coated with vintage-fired enamel glaze.',
-        image: getR2AssetUrl('images/products/enamel_mug.png'),
+        image: getR2AssetUrl('images/products/enamel_mug.webp'),
         stage: 'Prototyping',
         category: 'Outdoor Steel',
         href: '/products/mugs-cups/enamel-camping-mug',
@@ -119,7 +119,7 @@ const COMING_SOON_SHOWCASES: Record<string, ComingSoonShowcaseConfig> = {
       {
         name: 'Travel Insulated Tumbler',
         tagline: 'Double-wall vacuum insulation with splash-proof slider lid.',
-        image: getR2AssetUrl('images/products/tumbler.png'),
+        image: getR2AssetUrl('images/products/tumbler.webp'),
         stage: 'Tooling & Mold',
         category: 'Vacuum Insulated',
         href: '/products/mugs-cups/travel-tumbler',

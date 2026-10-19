@@ -63,7 +63,7 @@ export const categories: Category[] = [
     productCount: 0,
     featured: false,
     gradient: 'linear-gradient(135deg, #1a1a2e 0%, #4a1942 100%)',
-    image: getR2AssetUrl('images/mockups/oversized-tee-black-front.png'),
+    image: getR2AssetUrl('images/mockups/oversized-tee-black-front.webp'),
     comingSoon: false,
   },
   {
@@ -130,7 +130,7 @@ export const categories: Category[] = [
     productCount: 8,
     featured: true,
     gradient: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
-    image: getR2AssetUrl('images/products/classic_mug_11oz.png'),
+    image: getR2AssetUrl('images/products/classic_mug_11oz.webp'),
     comingSoon: true,
   },
   {

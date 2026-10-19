@@ -59,11 +59,11 @@ export function CustomizerLayout({
     if (selectedColor === 'Black' || selectedColor === 'White') {
       const colorKey = selectedColor.toLowerCase();
       finalMockupImageSrc = getR2AssetUrl(
-        `images/mockups/${prefix}-${colorKey}-${selectedSide}.png`,
+        `images/mockups/${prefix}-${colorKey}-${selectedSide}.webp`,
       );
     } else {
       // Fallback to white and use color overlay
-      finalMockupImageSrc = getR2AssetUrl(`images/mockups/${prefix}-white-${selectedSide}.png`);
+      finalMockupImageSrc = getR2AssetUrl(`images/mockups/${prefix}-white-${selectedSide}.webp`);
       requiresColorOverlay = true;
       selectedHexColor = colors[selectedColor] || '#FFFFFF';
     }

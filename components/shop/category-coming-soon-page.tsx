@@ -242,7 +242,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'High-density ceramic stoneware with ergonomic C-handle grip and glossy thermal glaze.',
         features: ['11oz Studio Spec', 'Glossy Hydrophobic Glaze', 'Microwave & Dishwasher Safe'],
-        image: getR2AssetUrl('images/products/classic_mug_11oz.png'),
+        image: getR2AssetUrl('images/products/classic_mug_11oz.webp'),
         badge: 'Kiln Formulation',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -254,7 +254,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Matte black magic glaze that reveals full-color custom artwork when filled with hot liquid.',
         features: ['Heat-Sensitive Pigment Matrix', 'Reveal Full Color Art', 'Matte Black Stealth Base'],
-        image: getR2AssetUrl('images/products/magic_mug.png'),
+        image: getR2AssetUrl('images/products/magic_mug.webp'),
         badge: 'Thermal Testing',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -266,7 +266,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Rugged stainless steel core coated with vintage-fired enamel glaze for studio or outdoor use.',
         features: ['Stainless Steel Core', 'Fired Vitreous Enamel Rim', 'Shatterproof Architecture'],
-        image: getR2AssetUrl('images/products/enamel_mug.png'),
+        image: getR2AssetUrl('images/products/enamel_mug.webp'),
         badge: 'Prototyping',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -278,7 +278,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Double-wall vacuum insulated 304 stainless steel tumbler with splash-proof slider lid.',
         features: ['Double-Wall 304 Steel', '12-Hour Heat / 24-Hour Cold', 'Car Cup Holder Optimized'],
-        image: getR2AssetUrl('images/products/tumbler.png'),
+        image: getR2AssetUrl('images/products/tumbler.webp'),
         badge: 'Tooling & Mold',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -290,7 +290,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Generous 15oz ceramic mug for extra caffeine runs, tailored for edge-to-edge custom wrap.',
         features: ['15oz Heavyweight Volume', 'Ergonomic Wide Grip', 'Scratch-Proof Color Lock'],
-        image: getR2AssetUrl('images/products/classic_mug_15oz.png'),
+        image: getR2AssetUrl('images/products/classic_mug_15oz.webp'),
         badge: 'In Development',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -302,7 +302,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Conical flared stoneware mug engineered for latte art and smooth sipping ergonomics.',
         features: ['Conical Flare Silhouette', 'Comfort Taper Lip', 'Commercial Cafe Durable'],
-        image: getR2AssetUrl('images/products/latte_mug.png'),
+        image: getR2AssetUrl('images/products/latte_mug.webp'),
         badge: 'Sampling',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -372,7 +372,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Premium daily archival diary with custom debossed personalization and lay-flat binding.',
         features: ['120 GSM Bleed-Proof Stock', 'Fountain Pen Safe', 'Lay-Flat 180° Smyth Sewn'],
-        image: getR2AssetUrl('images/products/chronicle-diary.png'),
+        image: getR2AssetUrl('images/products/chronicle-diary.webp'),
         badge: 'Paper Formulation',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -384,7 +384,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Rigid hardcover notebook wrapped in tactile bookcloth with expandable rear document pocket.',
         features: ['Tactile Linen Hardcover', 'Rear Storage Gusset', 'Dual Woven Ribbon Bookmarks'],
-        image: getR2AssetUrl('images/products/atlas-notebook.png'),
+        image: getR2AssetUrl('images/products/atlas-notebook.webp'),
         badge: 'Tooling & Die',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -396,7 +396,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           '5mm precision dot grid matrix designed for rapid visual mapping, habit tracking, and sketching.',
         features: ['5mm Subtle Dot Grid', 'Numbered Pages + Index', 'Elastic Enclosure Band'],
-        image: getR2AssetUrl('images/products/cipher-journal.png'),
+        image: getR2AssetUrl('images/products/cipher-journal.webp'),
         badge: 'In Development',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -408,7 +408,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Undated 12-month productivity system with weekly spreads, milestone trackers, and pen loop.',
         features: ['Undated Flexible Spreads', 'Quarterly Milestone Maps', 'Integrated Pen Loop'],
-        image: getR2AssetUrl('images/products/apex-planner.png'),
+        image: getR2AssetUrl('images/products/apex-planner.webp'),
         badge: 'Layout Testing',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -420,7 +420,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Featherweight flexible cardstock cover with perforated tear-out notes for field ideas.',
         features: ['Flex Cardstock Cover', 'Perforated Rear Notes', 'Acid-Free Archival Paper'],
-        image: getR2AssetUrl('images/products/lumina-notebook.png'),
+        image: getR2AssetUrl('images/products/lumina-notebook.webp'),
         badge: 'Sampling',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -432,7 +432,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Heavyweight 160 GSM art paper crafted for ink washes, fineliners, markers, and mixed media.',
         features: ['160 GSM Heavyweight Paper', 'Zero Ghosting / Bleed', 'Hand-Stitched Spine'],
-        image: getR2AssetUrl('images/products/nexus-diary.png'),
+        image: getR2AssetUrl('images/products/nexus-diary.webp'),
         badge: 'Prototyping',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -502,7 +502,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Precision CNC-machined alloy keychain with braided steel cable and laser engraved branding.',
         features: ['6061 Aerospace Aluminum', 'Braided Steel Wire', 'Matte PVD Finish'],
-        image: getR2AssetUrl('images/products/signal-keychain.png'),
+        image: getR2AssetUrl('images/products/signal-keychain.webp'),
         badge: 'Sampling',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -514,7 +514,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Monolithic matte black hardware engineered for understated style and rugged daily pocket carry.',
         features: ['Hard Anodized Matte', 'Threaded Fastener', 'Micro-Chamfered Edges'],
-        image: getR2AssetUrl('images/products/onyx-keychain.png'),
+        image: getR2AssetUrl('images/products/onyx-keychain.webp'),
         badge: 'Prototyping',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -526,7 +526,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Chiseled faceted geometric geometry that catches light and feels ultra-satisfying in hand.',
         features: ['Faceted Geometry', 'Featherweight Alloy', 'Scratch-Proof Coating'],
-        image: getR2AssetUrl('images/products/pulse-keychain.png'),
+        image: getR2AssetUrl('images/products/pulse-keychain.webp'),
         badge: 'Tooling',
         dropTimeline: 'Q4 2026 Drop',
       },
@@ -538,7 +538,7 @@ const SHOWCASE_DATA: Record<string, CategoryShowcaseData> = {
         description:
           'Industrial circular carabiner clip with spring-tensioned quick release and bead-blast texture.',
         features: ['Quick-Release Spring Gate', 'Heavy Tensile Rating', 'Compact Profile'],
-        image: getR2AssetUrl('images/products/core-keychain.png'),
+        image: getR2AssetUrl('images/products/core-keychain.webp'),
         badge: 'Testing',
         dropTimeline: 'Q4 2026 Drop',
       },

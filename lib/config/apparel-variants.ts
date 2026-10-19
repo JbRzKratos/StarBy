@@ -264,11 +264,13 @@ export function getApparelPrice(garmentId: string, size?: string): number {
   if (size && config.sizePrices) {
     const s = size.toUpperCase().trim();
     if (typeof config.sizePrices[s] === 'number') return config.sizePrices[s];
-    if ((s === '3XL' || s === 'XXXL') && typeof (config.sizePrices['3XL'] ?? config.sizePrices['XXXL']) === 'number') {
-      return (config.sizePrices['3XL'] ?? config.sizePrices['XXXL'])!;
+    if (s === '3XL' || s === 'XXXL') {
+      const p3 = config.sizePrices['3XL'] ?? config.sizePrices['XXXL'];
+      if (typeof p3 === 'number') return p3;
     }
-    if ((s === '2XL' || s === 'XXL') && typeof (config.sizePrices['2XL'] ?? config.sizePrices['XXL']) === 'number') {
-      return (config.sizePrices['2XL'] ?? config.sizePrices['XXL'])!;
+    if (s === '2XL' || s === 'XXL') {
+      const p2 = config.sizePrices['2XL'] ?? config.sizePrices['XXL'];
+      if (typeof p2 === 'number') return p2;
     }
   }
 

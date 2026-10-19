@@ -16,7 +16,7 @@ export function HeroThreeCharacters({ priority = true, className = '' }: HeroThr
     >
       <div className="relative w-full h-full z-10">
         <Image
-          src={getR2AssetUrl('images/hero-three-models.png')}
+          src={getR2AssetUrl('images/hero-three-models.webp')}
           alt="Fregoro Studios Hero Models - Three Men in Navy Blue Suits"
           fill
           quality={85}
