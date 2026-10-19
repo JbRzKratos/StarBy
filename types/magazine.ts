@@ -318,6 +318,7 @@ export interface MagazineTemplate {
   spreadPreviews: string[];
   featured?: boolean;
   badge?: string;
+  price?: number;
   pages: MagazinePage[];
 }
 

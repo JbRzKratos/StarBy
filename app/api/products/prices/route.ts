@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
     // Return complete price & name dictionary for fast client sync across all products, walls, splits, and magazines
     const [products, variants, wallLayouts, prebuiltWalls] = await Promise.all([
       prisma.product.findMany({
-        select: { id: true, basePrice: true, slug: true, categorySlug: true, name: true },
+        select: { id: true, basePrice: true, slug: true, categorySlug: true, name: true, sizePrices: true, sizeStock: true },
       }),
       prisma.productVariant.findMany({
         select: { id: true, price: true, inStock: true, productId: true },
@@ -91,12 +91,22 @@ export async function GET(request: NextRequest) {
 
     const productPriceMap: Record<string, number> = {};
     const productNameMap: Record<string, string> = {};
+    const productSizePricesMap: Record<string, Record<string, number>> = {};
+    const productSizeStockMap: Record<string, Record<string, unknown>> = {};
     for (const p of products) {
       productPriceMap[p.id] = p.basePrice;
       if (p.slug) productPriceMap[p.slug] = p.basePrice;
       if (p.name) {
         productNameMap[p.id] = p.name;
         if (p.slug) productNameMap[p.slug] = p.name;
+      }
+      if (p.sizePrices && typeof p.sizePrices === 'object') {
+        productSizePricesMap[p.id] = p.sizePrices as Record<string, number>;
+        if (p.slug) productSizePricesMap[p.slug] = p.sizePrices as Record<string, number>;
+      }
+      if (p.sizeStock && typeof p.sizeStock === 'object') {
+        productSizeStockMap[p.id] = p.sizeStock as Record<string, unknown>;
+        if (p.slug) productSizeStockMap[p.slug] = p.sizeStock as Record<string, unknown>;
       }
     }
 
@@ -138,6 +148,8 @@ export async function GET(request: NextRequest) {
       timestamp: Date.now(),
       products: productPriceMap,
       names: productNameMap,
+      sizePrices: productSizePricesMap,
+      sizeStock: productSizeStockMap,
       variants: variantPriceMap,
       wallLayouts: wallLayoutPriceMap,
       prebuiltWalls: prebuiltPriceMap,

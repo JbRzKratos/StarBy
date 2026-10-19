@@ -290,11 +290,13 @@ export default function MagazineStudioLanding() {
                     <h3 className="font-display text-lg font-bold text-white group-hover:text-[#0057FF] transition-colors">
                       {tpl.name}
                     </h3>
-                    {tpl.id === 'tpl_fashion_1' && (
-                      <span className="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-mono text-xs font-bold whitespace-nowrap">
-                        ₹1 Test
-                      </span>
-                    )}
+                    <span className={`px-2 py-0.5 rounded font-mono text-xs font-bold whitespace-nowrap border ${
+                      (tpl.price ?? (tpl.id === 'tpl_fashion_1' ? 1 : 499)) === 1
+                        ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+                        : 'bg-[#0057FF]/20 border-[#0057FF]/40 text-[#3B82F6]'
+                    }`}>
+                      ₹{tpl.price ?? (tpl.id === 'tpl_fashion_1' ? 1 : 499)}
+                    </span>
                   </div>
                   <p className="font-mono text-xs text-[#F5F1EA]/70 mt-1 line-clamp-2">
                     {tpl.description}
@@ -310,12 +312,12 @@ export default function MagazineStudioLanding() {
                   className="flex w-full items-center justify-center gap-1.5 py-2.5 rounded-lg font-mono text-xs font-bold text-white uppercase transition-all shadow-md shadow-[#0057FF]/20"
                   style={{
                     background:
-                      tpl.id === 'tpl_fashion_1'
+                      (tpl.price ?? (tpl.id === 'tpl_fashion_1' ? 1 : 499)) === 1
                         ? 'linear-gradient(135deg, #059669, #047857)'
                         : 'linear-gradient(135deg, #0057FF, #003FBF)',
                   }}
                 >
-                  ✦ Fill With My Content {tpl.id === 'tpl_fashion_1' ? '(₹1 Test)' : ''}
+                  ✦ Fill With My Content (₹{tpl.price ?? (tpl.id === 'tpl_fashion_1' ? 1 : 499)})
                 </Link>
                 {/* Secondary actions */}
                 <div className="flex items-center gap-2">
@@ -329,7 +331,7 @@ export default function MagazineStudioLanding() {
                     href={`/magazine/editor?template=${tpl.id}`}
                     className="flex-1 py-2 text-center rounded-lg bg-white/5 hover:bg-white/10 font-mono text-[10px] font-bold text-white/70 uppercase transition-colors border border-white/10"
                   >
-                    Full Editor {tpl.id === 'tpl_fashion_1' ? '(₹1)' : ''}
+                    Full Editor
                   </Link>
                 </div>
               </div>

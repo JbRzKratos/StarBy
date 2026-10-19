@@ -23,6 +23,8 @@ import {
   updateProductName,
   updateVariantPrice,
   batchUpdateCategoryPrice,
+  updateProductSizePricingAndStock,
+  updateVariantStockQuantity,
 } from '@/app/admin/lib/actions';
 import { isCategoryComingSoon } from '@/data/categories';
 
@@ -50,6 +52,8 @@ interface ProductRow {
   featured: boolean;
   tags: string[];
   sizes: string[];
+  sizePrices?: Record<string, number> | null;
+  sizeStock?: Record<string, unknown> | null;
   createdAt: string;
   variants: VariantRow[];
 }
@@ -219,6 +223,12 @@ export function ProductsClient({
   const [batchSyncVariants, setBatchSyncVariants] = useState<boolean>(true);
   const [isBatchSaving, setIsBatchSaving] = useState<boolean>(false);
 
+  // Size pricing and stock editing state (keyed by productId)
+  const [sizePricesState, setSizePricesState] = useState<Record<string, Record<string, number>>>({});
+  const [sizeStockState, setSizeStockState] = useState<Record<string, Record<string, { quantity: number; inStock: boolean }>>>({});
+  const [savingSizeId, setSavingSizeId] = useState<string | null>(null);
+  const [recentlySavedSizeId, setRecentlySavedSizeId] = useState<string | null>(null);
+
   useEffect(() => {
     setProductList(products);
   }, [products]);
@@ -266,17 +276,53 @@ export function ProductsClient({
         }
       }
 
-      // 4. Stock Filter
-      const matchStock =
-        stockFilter === 'all' ||
-        (stockFilter === 'instock' && p.variants.some((v) => v.inStock)) ||
-        (stockFilter === 'outofstock' && p.variants.every((v) => !v.inStock)) ||
-        (stockFilter === 'lowstock' &&
-          p.variants.some((v) => v.inStock && v.stockQuantity <= v.reorderThreshold));
+      // 4. Stock Filter (considers sizeStock if configured, otherwise variants)
+      let matchStock = true;
+      if (stockFilter !== 'all') {
+        const hasSizes = Array.isArray(p.sizes) && p.sizes.length > 0;
+        if (hasSizes) {
+          const raw = sizeStockState[p.id] || (p.sizeStock as Record<string, unknown>) || {};
+          const uniqueSizes = Array.from(new Set(p.sizes.map((s) => s.toUpperCase())));
+          let totalQty = 0;
+          let inStockSizesCount = 0;
+          uniqueSizes.forEach((s) => {
+            const rawItem = (raw as Record<string, unknown>)[s] ?? (raw as Record<string, unknown>)[s.toLowerCase()];
+            if (typeof rawItem === 'number') {
+              totalQty += rawItem;
+              if (rawItem > 0) inStockSizesCount++;
+            } else if (rawItem && typeof rawItem === 'object') {
+              const item = rawItem as { quantity?: unknown; inStock?: unknown };
+              const q = typeof item.quantity === 'number' ? item.quantity : 50;
+              totalQty += q;
+              if (item.inStock !== false && q > 0) inStockSizesCount++;
+            } else {
+              totalQty += 50;
+              inStockSizesCount++;
+            }
+          });
+          if (stockFilter === 'instock') {
+            matchStock = inStockSizesCount > 0 && totalQty > 0;
+          } else if (stockFilter === 'outofstock') {
+            matchStock = inStockSizesCount === 0 || totalQty === 0;
+          } else if (stockFilter === 'lowstock') {
+            matchStock = inStockSizesCount < uniqueSizes.length || totalQty < 30;
+          }
+        } else {
+          if (stockFilter === 'instock') {
+            matchStock = p.variants.some((v) => v.inStock && v.stockQuantity > 0);
+          } else if (stockFilter === 'outofstock') {
+            matchStock = p.variants.every((v) => !v.inStock || v.stockQuantity === 0);
+          } else if (stockFilter === 'lowstock') {
+            matchStock = p.variants.some(
+              (v) => v.inStock && v.stockQuantity <= v.reorderThreshold
+            );
+          }
+        }
+      }
 
       return matchSearch && matchCustomerCat && matchStatus && matchStock;
     });
-  }, [productList, search, selectedCustomerCat, sellingStatusFilter, stockFilter]);
+  }, [productList, search, selectedCustomerCat, sellingStatusFilter, stockFilter, sizeStockState]);
 
   // Current selected category metadata
   const currentCategoryMeta = useMemo(() => {
@@ -386,6 +432,88 @@ export function ProductsClient({
     }
   }
 
+  function getProductSizePrices(p: ProductRow): Record<string, number> {
+    if (sizePricesState[p.id]) return sizePricesState[p.id];
+    const initial = (p.sizePrices as Record<string, number>) || {};
+    const result: Record<string, number> = {};
+    (p.sizes || []).forEach((s) => {
+      const u = s.toUpperCase();
+      result[s] = initial[s] ?? initial[u] ?? p.basePrice;
+      result[u] = result[s];
+    });
+    return result;
+  }
+
+  function getProductSizeStock(p: ProductRow): Record<string, { quantity: number; inStock: boolean }> {
+    if (sizeStockState[p.id]) return sizeStockState[p.id];
+    const initial = (p.sizeStock as Record<string, unknown>) || {};
+    const result: Record<string, { quantity: number; inStock: boolean }> = {};
+    (p.sizes || []).forEach((s) => {
+      const u = s.toUpperCase();
+      const raw = initial[s] ?? initial[u];
+      if (typeof raw === 'number') {
+        result[s] = { quantity: raw, inStock: raw > 0 };
+      } else if (raw && typeof raw === 'object') {
+        const item = raw as { quantity?: unknown; inStock?: unknown };
+        result[s] = {
+          quantity: typeof item.quantity === 'number' ? item.quantity : 50,
+          inStock: item.inStock !== false,
+        };
+      } else {
+        result[s] = { quantity: 50, inStock: true };
+      }
+      result[u] = result[s];
+    });
+    return result;
+  }
+
+  async function handleSaveSizePricingAndStock(productId: string) {
+    const product = productList.find((p) => p.id === productId);
+    if (!product) return;
+    const currentPrices = getProductSizePrices(product);
+    const currentStock = getProductSizeStock(product);
+
+    setSavingSizeId(productId);
+    try {
+      await updateProductSizePricingAndStock(productId, currentPrices, currentStock);
+
+      let totalUnits = 0;
+      let hasAnyInStock = false;
+      Object.values(currentStock).forEach((val) => {
+        if (val) {
+          totalUnits += val.quantity || 0;
+          if (val.inStock && val.quantity > 0) hasAnyInStock = true;
+        }
+      });
+
+      setProductList((prev) =>
+        prev.map((p) => {
+          if (p.id === productId) {
+            const perVarQty = p.variants.length > 0 ? Math.floor(totalUnits / p.variants.length) : totalUnits;
+            return {
+              ...p,
+              sizePrices: currentPrices,
+              sizeStock: currentStock,
+              variants: p.variants.map((v) => ({
+                ...v,
+                inStock: hasAnyInStock,
+                stockQuantity: perVarQty,
+              })),
+            };
+          }
+          return p;
+        })
+      );
+      setRecentlySavedSizeId(productId);
+      setTimeout(() => setRecentlySavedSizeId(null), 3000);
+      show(`Saved size pricing & stock for ${product.name}!`, 'success');
+    } catch (err) {
+      show(err instanceof Error ? err.message : 'Failed to save size pricing and stock', 'error');
+    } finally {
+      setSavingSizeId(null);
+    }
+  }
+
   async function handleApplyBatchCategoryPrice() {
     if (!batchModalCategory) return;
     const newPrice = parseFloat(batchPriceValue);
@@ -459,6 +587,29 @@ export function ProductsClient({
         show(msg, 'error');
       }
     });
+  }
+
+  async function handleUpdateVariantStockQty(productId: string, variantId: string, newQty: number) {
+    try {
+      await updateVariantStockQuantity(variantId, newQty);
+      setProductList((prev) =>
+        prev.map((p) => {
+          if (p.id === productId) {
+            return {
+              ...p,
+              variants: p.variants.map((v) =>
+                v.id === variantId ? { ...v, stockQuantity: newQty, inStock: newQty > 0 } : v
+              ),
+            };
+          }
+          return p;
+        })
+      );
+      show(`Stock updated to ${newQty} units!`, 'success');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to update stock quantity';
+      show(msg, 'error');
+    }
   }
 
   return (
@@ -978,17 +1129,54 @@ export function ProductsClient({
 
   // Helper to render individual product row with fast inline price editor
   function renderProductRow(product: ProductRow) {
-    const inStockCount = product.variants.filter((v) => v.inStock).length;
-    const lowStock = product.variants.some(
-      (v) => v.inStock && v.stockQuantity <= v.reorderThreshold && v.stockQuantity > 0
-    );
-    const outOfStock = product.variants.every((v) => !v.inStock);
-    const stockVariant = outOfStock ? 'out-of-stock' : lowStock ? 'low-stock' : 'active';
-    const stockLabel = outOfStock
-      ? 'Out of stock'
-      : lowStock
-      ? `Low (${inStockCount}/${product.variants.length})`
-      : `${inStockCount}/${product.variants.length} in stock`;
+    const hasSizes = Array.isArray(product.sizes) && product.sizes.length > 0;
+    const sizeStockMap = hasSizes ? getProductSizeStock(product) : null;
+
+    let stockVariant: 'active' | 'low-stock' | 'out-of-stock' = 'active';
+    let stockLabel = '';
+
+    if (hasSizes && sizeStockMap) {
+      const uniqueSizes = Array.from(new Set(product.sizes.map((s) => s.toUpperCase())));
+      let totalQty = 0;
+      let inStockSizesCount = 0;
+      uniqueSizes.forEach((s) => {
+        const item = sizeStockMap[s] || sizeStockMap[s.toLowerCase()];
+        if (item) {
+          totalQty += item.quantity || 0;
+          if (item.inStock && (item.quantity || 0) > 0) inStockSizesCount++;
+        }
+      });
+
+      if (inStockSizesCount === 0 || totalQty === 0) {
+        stockVariant = 'out-of-stock';
+        stockLabel = 'Out of stock (0 pcs)';
+      } else if (inStockSizesCount < uniqueSizes.length) {
+        stockVariant = 'low-stock';
+        stockLabel = `${totalQty} pcs (${inStockSizesCount}/${uniqueSizes.length} sizes in stock)`;
+      } else {
+        stockVariant = 'active';
+        stockLabel = `${totalQty} pcs in stock (${uniqueSizes.length} sizes)`;
+      }
+    } else {
+      const totalVariantQty = product.variants.reduce((sum, v) => sum + (v.stockQuantity || 0), 0);
+      const allOut =
+        product.variants.length > 0 &&
+        product.variants.every((v) => !v.inStock || v.stockQuantity === 0);
+      const lowStock = product.variants.some(
+        (v) => v.inStock && v.stockQuantity <= v.reorderThreshold && v.stockQuantity > 0
+      );
+
+      if (allOut) {
+        stockVariant = 'out-of-stock';
+        stockLabel = 'Out of stock';
+      } else if (lowStock) {
+        stockVariant = 'low-stock';
+        stockLabel = `${totalVariantQty} pcs (Low stock)`;
+      } else {
+        stockVariant = 'active';
+        stockLabel = totalVariantQty > 0 ? `${totalVariantQty} pcs in stock` : 'In stock';
+      }
+    }
 
     const isExpanded = expandedId === product.id;
     const isEditingPrice = editingProductId === product.id;
@@ -1232,7 +1420,312 @@ export function ProductsClient({
         {/* ── Expanded Variants Row with Variant Price Editor ───────────── */}
         {isExpanded && (
           <tr key={`${product.id}-expanded`}>
-            <td colSpan={7} className="px-4 py-3 bg-[#111319] border-y border-white/10">
+            <td colSpan={7} className="px-4 py-4 bg-[#111319] border-y border-white/10 space-y-4">
+              {/* ── Size-Specific Pricing & Stock Management Section ────────── */}
+              {product.sizes && product.sizes.length > 0 && (
+                <div className="bg-black/40 rounded-xl p-3.5 border border-white/10 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-bone uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="text-[#3B5EFF]">📏</span>
+                        <span>Sizes Pricing &amp; Stock Inventory</span>
+                      </span>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 border border-white/10 text-ash">
+                        {product.sizes.length} sizes configured
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {/* Excel Quick Fill for Apparel */}
+                      <div className="flex items-center gap-1 bg-black/50 p-1 rounded-lg border border-white/10 text-[10px] font-mono">
+                        <span className="text-ash/60 px-1">Excel:</span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const current = { ...getProductSizePrices(product) };
+                            product.sizes.forEach((s) => {
+                              const u = s.toUpperCase();
+                              const val = u === '3XL' || u === 'XXXL' ? 645 : 600;
+                              current[s] = val;
+                              current[u] = val;
+                            });
+                            setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
+                            show('Applied Regular Tee rates (₹600 / 3XL: ₹645)', 'success');
+                          }}
+                          className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                        >
+                          Reg (600/645)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const current = { ...getProductSizePrices(product) };
+                            product.sizes.forEach((s) => {
+                              const u = s.toUpperCase();
+                              const val = u === '3XL' || u === 'XXXL' ? 699 : 670;
+                              current[s] = val;
+                              current[u] = val;
+                            });
+                            setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
+                            show('Applied Oversized Tee rates (₹670 / 3XL: ₹699)', 'success');
+                          }}
+                          className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                        >
+                          Over (670/699)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const current = { ...getProductSizePrices(product) };
+                            product.sizes.forEach((s) => {
+                              const u = s.toUpperCase();
+                              const val = u === '3XL' || u === 'XXXL' ? 720 : 699;
+                              current[s] = val;
+                              current[u] = val;
+                            });
+                            setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
+                            show('Applied Acid Wash rates (₹699 / 3XL: ₹720)', 'success');
+                          }}
+                          className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                        >
+                          Acid (699/720)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const current = { ...getProductSizePrices(product) };
+                            product.sizes.forEach((s) => {
+                              const u = s.toUpperCase();
+                              const val = u === '3XL' || u === 'XXXL' ? 780 : 750;
+                              current[s] = val;
+                              current[u] = val;
+                            });
+                            setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
+                            show('Applied Hoodie rates (₹750 / 3XL: ₹780)', 'success');
+                          }}
+                          className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                        >
+                          Hoodie (750/780)
+                        </button>
+                      </div>
+
+                      {/* Save Size Pricing & Stock Button */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSaveSizePricingAndStock(product.id);
+                        }}
+                        disabled={savingSizeId === product.id}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
+                          recentlySavedSizeId === product.id
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                            : 'bg-[#3B5EFF] hover:bg-[#2b4be0] text-white shadow-md shadow-[#3B5EFF]/20'
+                        }`}
+                      >
+                        {savingSizeId === product.id ? (
+                          <span>Saving…</span>
+                        ) : recentlySavedSizeId === product.id ? (
+                          <>
+                            <span>✓</span>
+                            <span>Saved Live!</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>💾</span>
+                            <span>Save Sizes &amp; Stock</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Stock Quick Controls */}
+                  <div className="flex items-center justify-between border-t border-white/5 pt-2 flex-wrap gap-2 text-xs">
+                    <span className="text-[11px] text-ash/70 font-mono">Quick Stock Presets:</span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const currentStock = { ...getProductSizeStock(product) };
+                          product.sizes.forEach((s) => {
+                            const u = s.toUpperCase();
+                            currentStock[s] = { quantity: 50, inStock: true };
+                            currentStock[u] = { quantity: 50, inStock: true };
+                          });
+                          setSizeStockState((prev) => ({ ...prev, [product.id]: currentStock }));
+                          show('Set 50 stock for all sizes', 'success');
+                        }}
+                        className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/20 cursor-pointer"
+                      >
+                        Set All 50
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const currentStock = { ...getProductSizeStock(product) };
+                          product.sizes.forEach((s) => {
+                            const u = s.toUpperCase();
+                            currentStock[s] = { quantity: 100, inStock: true };
+                            currentStock[u] = { quantity: 100, inStock: true };
+                          });
+                          setSizeStockState((prev) => ({ ...prev, [product.id]: currentStock }));
+                          show('Set 100 stock for all sizes', 'success');
+                        }}
+                        className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/20 cursor-pointer"
+                      >
+                        Set All 100
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const currentStock = { ...getProductSizeStock(product) };
+                          product.sizes.forEach((s) => {
+                            const u = s.toUpperCase();
+                            const cur = currentStock[s] || currentStock[u] || { quantity: 50, inStock: true };
+                            currentStock[s] = { ...cur, inStock: true };
+                            currentStock[u] = { ...cur, inStock: true };
+                          });
+                          setSizeStockState((prev) => ({ ...prev, [product.id]: currentStock }));
+                          show('Marked all sizes in stock', 'success');
+                        }}
+                        className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 cursor-pointer"
+                      >
+                        All In Stock
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const currentStock = { ...getProductSizeStock(product) };
+                          product.sizes.forEach((s) => {
+                            const u = s.toUpperCase();
+                            const cur = currentStock[s] || currentStock[u] || { quantity: 0, inStock: false };
+                            currentStock[s] = { ...cur, inStock: false };
+                            currentStock[u] = { ...cur, inStock: false };
+                          });
+                          setSizeStockState((prev) => ({ ...prev, [product.id]: currentStock }));
+                          show('Marked all sizes out of stock', 'success');
+                        }}
+                        className="text-[10px] px-2 py-0.5 rounded bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/20 cursor-pointer"
+                      >
+                        All Out of Stock
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Sizes Cards Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 pt-1">
+                    {product.sizes.map((size) => {
+                      const upper = size.toUpperCase();
+                      const pricesMap = getProductSizePrices(product);
+                      const stockMap = getProductSizeStock(product);
+                      const curPrice = pricesMap[size] ?? pricesMap[upper] ?? product.basePrice;
+                      const curStock = stockMap[size] ?? stockMap[upper] ?? { quantity: 50, inStock: true };
+
+                      return (
+                        <div
+                          key={size}
+                          className="bg-black/60 rounded-xl p-2.5 border border-white/10 flex flex-col gap-1.5 focus-within:border-[#3B5EFF] transition-colors"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-mono font-bold text-white uppercase">
+                              Size {size}
+                            </span>
+                            {(upper === '3XL' || upper === 'XXXL') && (
+                              <span className="text-[8px] font-mono bg-purple-500/20 text-purple-300 px-1 py-0.2 rounded border border-purple-500/30">
+                                Extended
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Price */}
+                          <div>
+                            <span className="block text-[9px] font-mono text-ash/70 mb-0.5">Price</span>
+                            <div className="relative">
+                              <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-mono text-ash pointer-events-none">
+                                ₹
+                              </span>
+                              <input
+                                type="number"
+                                min={0}
+                                value={curPrice ?? 0}
+                                onChange={(e) => {
+                                  const val = parseFloat(e.target.value) || 0;
+                                  setSizePricesState((prev) => ({
+                                    ...prev,
+                                    [product.id]: {
+                                      ...(prev[product.id] || pricesMap),
+                                      [size]: val,
+                                      [upper]: val,
+                                    },
+                                  }));
+                                }}
+                                className="w-full pl-5 pr-1.5 py-1 bg-black/80 border border-white/15 rounded text-xs font-mono text-white focus:outline-none focus:border-[#3B5EFF]"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Stock Qty */}
+                          <div>
+                            <span className="block text-[9px] font-mono text-ash/70 mb-0.5">Stock (qty)</span>
+                            <input
+                              type="number"
+                              min={0}
+                              value={curStock.quantity}
+                              onChange={(e) => {
+                                const qty = parseInt(e.target.value, 10) || 0;
+                                setSizeStockState((prev) => ({
+                                  ...prev,
+                                  [product.id]: {
+                                    ...(prev[product.id] || stockMap),
+                                    [size]: { quantity: qty, inStock: qty > 0 ? curStock.inStock : false },
+                                    [upper]: { quantity: qty, inStock: qty > 0 ? curStock.inStock : false },
+                                  },
+                                }));
+                              }}
+                              className="w-full px-2 py-1 bg-black/80 border border-white/15 rounded text-xs font-mono text-white focus:outline-none focus:border-[#3B5EFF]"
+                            />
+                          </div>
+
+                          {/* In-Stock Toggle */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const nextInStock = !curStock.inStock;
+                              setSizeStockState((prev) => ({
+                                ...prev,
+                                [product.id]: {
+                                  ...(prev[product.id] || stockMap),
+                                  [size]: { ...curStock, inStock: nextInStock },
+                                  [upper]: { ...curStock, inStock: nextInStock },
+                                },
+                              }));
+                            }}
+                            className={`text-[10px] py-1 px-1 rounded font-mono font-bold transition-all border text-center cursor-pointer ${
+                              curStock.inStock
+                                ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25'
+                                : 'bg-red-500/15 border-red-500/30 text-red-400 hover:bg-red-500/25'
+                            }`}
+                          >
+                            {curStock.inStock ? '✓ In Stock' : '✕ Out'}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Variants Row ─────────────────────────────────────────── */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-xs font-bold text-ash/80 uppercase tracking-wider flex items-center gap-1.5">
@@ -1316,6 +1809,32 @@ export function ProductsClient({
                               </button>
                             </div>
                           )}
+
+                          {/* Variant Stock Qty Editor */}
+                          <div
+                            className="flex items-center gap-1 bg-black/60 px-1.5 py-0.5 rounded border border-white/10"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <span className="text-[10px] text-ash/60 font-mono">Qty:</span>
+                            <input
+                              type="number"
+                              min={0}
+                              defaultValue={v.stockQuantity}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  const val = parseInt((e.target as HTMLInputElement).value, 10);
+                                  if (!isNaN(val)) handleUpdateVariantStockQty(product.id, v.id, val);
+                                }
+                              }}
+                              onBlur={(e) => {
+                                const val = parseInt(e.target.value, 10);
+                                if (!isNaN(val) && val !== v.stockQuantity) {
+                                  handleUpdateVariantStockQty(product.id, v.id, val);
+                                }
+                              }}
+                              className="w-14 px-1 py-0.5 text-xs bg-black border border-white/15 rounded text-bone font-mono focus:border-[#3B5EFF] focus:outline-none text-center"
+                            />
+                          </div>
 
                           {/* Stock Toggle Button */}
                           <button

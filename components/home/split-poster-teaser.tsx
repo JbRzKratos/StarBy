@@ -5,9 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
-import { getR2AssetUrl } from '@/lib/r2';
 
-
+const VENOM_POSTER_IMAGE =
+  '/Posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_87b422a5-0502-4254-a066-f733dc0af620_3.webp';
 
 export function SplitPosterTeaser() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -45,7 +45,7 @@ export function SplitPosterTeaser() {
       const tl = gsap.timeline({ paused: true });
 
       Array.from(panels).forEach((panel, i) => {
-        const offset = (i - (panels.length - 1) / 2) * 12;
+        const offset = (i - (panels.length - 1) / 2) * 14;
         tl.to(panel, { x: offset, y: -4, duration: 0.4, ease: 'power2.out' }, 0);
       });
 
@@ -64,30 +64,36 @@ export function SplitPosterTeaser() {
     { scope: panelsRef, dependencies: [panelCount] },
   );
 
+  const totalWidth = 320;
+  const panelHeight = 360;
+
   return (
     <section ref={sectionRef} className="py-[var(--section-py)] grain-overlay overflow-hidden">
       <div className="section-container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
-          {/* Visual */}
+          {/* Visual — Venom Split Poster Preview */}
           <div className="flex justify-center">
             <div ref={panelsRef} className="flex gap-1.5 cursor-pointer select-none" data-cursor-hover>
               {Array.from({ length: panelCount }).map((_, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden rounded-sm shadow-elevated flex-shrink-0"
-                  style={{ width: `${280 / panelCount}px`, height: '320px' }}
+                  className="relative overflow-hidden rounded-md shadow-elevated flex-shrink-0 border border-white/10"
+                  style={{ width: `${totalWidth / panelCount}px`, height: `${panelHeight}px` }}
                 >
                   <div
                     className="absolute inset-0"
-                    style={{ width: `${panelCount * (280 / panelCount)}px`, left: `-${i * (280 / panelCount)}px` }}
+                    style={{
+                      width: `${totalWidth}px`,
+                      left: `-${i * (totalWidth / panelCount)}px`,
+                    }}
                   >
                     <Image
-                      src={getR2AssetUrl('images/hero/posters.webp')}
-                      alt={`Split poster panel ${i + 1}`}
+                      src={VENOM_POSTER_IMAGE}
+                      alt={`Venom split poster panel ${i + 1}`}
                       fill
                       unoptimized
                       className="object-cover"
-                      sizes="280px"
+                      sizes="320px"
                     />
                   </div>
                 </div>
@@ -102,7 +108,7 @@ export function SplitPosterTeaser() {
               Split Poster
             </h2>
             <p className="text-pearl text-body-lg max-w-md mb-6 leading-relaxed">
-              One image. Multiple panels. Transform any photo into a stunning multi-panel wall art
+              One image. Multiple panels. Transform any photo or artwork into a stunning multi-panel wall art
               installation. Hover over the panels to see the effect.
             </p>
 

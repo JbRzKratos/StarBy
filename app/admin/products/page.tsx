@@ -16,6 +16,8 @@ export default async function AdminProductsPage() {
     featured: boolean;
     tags: string[];
     sizes: string[];
+    sizePrices?: Record<string, number> | null;
+    sizeStock?: Record<string, unknown> | null;
     createdAt: string;
     variants: Array<{
       id: string;
@@ -53,6 +55,8 @@ export default async function AdminProductsPage() {
       featured: Boolean(p.featured),
       tags: Array.isArray(p.tags) ? p.tags : [],
       sizes: Array.isArray(p.sizes) ? p.sizes : [],
+      sizePrices: (p.sizePrices as Record<string, number>) || null,
+      sizeStock: (p.sizeStock as Record<string, unknown>) || null,
       createdAt: p.createdAt ? p.createdAt.toISOString() : new Date().toISOString(),
       variants: Array.isArray(p.variants)
         ? p.variants.map((v) => ({

@@ -37,6 +37,7 @@ export default async function EditProductPage({ params }: PageProps) {
           tags: product.tags,
           sizes: product.sizes,
           sizePrices: product.sizePrices as Record<string, number> | null,
+          sizeStock: product.sizeStock as Record<string, unknown> | null,
         }}
         initialVariants={product.variants.map((v) => ({
           id: v.id,

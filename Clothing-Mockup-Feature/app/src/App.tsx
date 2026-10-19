@@ -286,6 +286,13 @@ export const App: React.FC = () => {
     'hoodie': 750,
   };
 
+  const garmentPriceMapRef = useRef<Record<string, number>>({
+    'regular-t-shirt': 600,
+    'oversized-t-shirt': 670,
+    'acid-wash-t-shirt': 699,
+    'hoodie': 750,
+  });
+
   const initialPriceRef = useRef<number | null>(null);
   const [basePrice, setBasePrice] = useState<number>(() => {
     if (typeof window !== 'undefined') {
@@ -338,7 +345,33 @@ export const App: React.FC = () => {
     )
   );
 
-  // Custom design uploads pricing (+₹29 for each custom design uploaded)
+  useEffect(() => {
+    fetch('/api/products/prices', { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.success && data.products) {
+          const p = data.products;
+          if (typeof p['plain_regular_tee'] === 'number') garmentPriceMapRef.current['regular-t-shirt'] = p['plain_regular_tee'];
+          if (typeof p['regular-t-shirt'] === 'number') garmentPriceMapRef.current['regular-t-shirt'] = p['regular-t-shirt'];
+          if (typeof p['plain_oversized_tee'] === 'number') garmentPriceMapRef.current['oversized-t-shirt'] = p['plain_oversized_tee'];
+          if (typeof p['oversized-t-shirt'] === 'number') garmentPriceMapRef.current['oversized-t-shirt'] = p['oversized-t-shirt'];
+          if (typeof p['plain_acid_wash_tee'] === 'number') garmentPriceMapRef.current['acid-wash-t-shirt'] = p['plain_acid_wash_tee'];
+          if (typeof p['acid-wash-t-shirt'] === 'number') garmentPriceMapRef.current['acid-wash-t-shirt'] = p['acid-wash-t-shirt'];
+          if (typeof p['plain_hoodie'] === 'number') garmentPriceMapRef.current['hoodie'] = p['plain_hoodie'];
+          if (typeof p['hoodie'] === 'number') garmentPriceMapRef.current['hoodie'] = p['hoodie'];
+
+          if (!isCuratedDesign) {
+            const currentG = project3D.garmentId || 'regular-t-shirt';
+            if (garmentPriceMapRef.current[currentG]) {
+              setBasePrice(garmentPriceMapRef.current[currentG]);
+            }
+          }
+        }
+      })
+      .catch(() => {});
+  }, [isCuratedDesign, project3D.garmentId]);
+
+  // Custom design uploads pricing (+₹49 for each custom design uploaded)
   const customArtworkCount3D = project3D.artworkLayers.filter(
     (l) => !l.isCurated && !l.curatedDesignId && !l.hidden && (l.opacity === undefined || l.opacity > 0)
   ).length;
@@ -348,7 +381,7 @@ export const App: React.FC = () => {
   ).length;
 
   const activeCustomArtworkCount = mode === '3d' ? customArtworkCount3D : customArtworkCount2D;
-  const customPrintFee = isCuratedDesign ? 0 : activeCustomArtworkCount * 29;
+  const customPrintFee = isCuratedDesign ? 0 : activeCustomArtworkCount * 49;
   const effectivePrice = isCuratedDesign
     ? (unitPrice ?? (initialDesignId === 'design-001' ? 1 : 600))
     : (basePrice + customPrintFee);
@@ -2068,8 +2101,9 @@ export const App: React.FC = () => {
     const config = typeof garment === 'string' ? getGarmentConfig(garmentId) : garment;
     const approvedColors = getApprovedColorsForGarment(garmentId);
 
-    if (!isCuratedDesign && GARMENT_DEFAULT_BASE_PRICES[garmentId]) {
-      setBasePrice(GARMENT_DEFAULT_BASE_PRICES[garmentId]);
+    if (!isCuratedDesign) {
+      const livePrice = garmentPriceMapRef.current[garmentId] || GARMENT_DEFAULT_BASE_PRICES[garmentId];
+      if (livePrice) setBasePrice(livePrice);
     }
 
     setProject3D((prev) => {
@@ -3012,7 +3046,17 @@ export const App: React.FC = () => {
     const garmentId = mode === '3d' ? project3D.garmentId : project2D.templateId;
     const garmentColor = mode === '3d' ? project3D.garmentColor : project2D.garmentColor;
 
-    const finalPrice = effectivePrice;
+    const is3XL = (data.size || '').toUpperCase() === '3XL' || (data.size || '').toUpperCase() === 'XXXL';
+    let sizeAdjustedBasePrice = basePrice;
+    if (is3XL && !isCuratedDesign) {
+      if (garmentId === 'regular-t-shirt') sizeAdjustedBasePrice = 645;
+      else if (garmentId === 'oversized-t-shirt') sizeAdjustedBasePrice = 699;
+      else if (garmentId === 'acid-wash-t-shirt') sizeAdjustedBasePrice = 720;
+      else if (garmentId === 'hoodie') sizeAdjustedBasePrice = 780;
+      else sizeAdjustedBasePrice = basePrice + 45;
+    }
+
+    const finalPrice = isCuratedDesign ? effectivePrice : (sizeAdjustedBasePrice + customPrintFee);
 
     let urlProductId: string | null = null;
     if (typeof window !== 'undefined') {
@@ -3031,7 +3075,7 @@ export const App: React.FC = () => {
       size: data.size,
       quantity: data.quantity,
       price: finalPrice,
-      basePrice,
+      basePrice: sizeAdjustedBasePrice,
       customArtworkCount: activeCustomArtworkCount,
       customPrintFee,
       plain: isPlainParam || !initialDesignId,
@@ -3782,10 +3826,12 @@ export const App: React.FC = () => {
                     color: '#ffffff',
                   }}
                 >
-                  3D Placement &amp; Studio Guide
+                  {isCuratedDesign ? 'Curated Design 3D Preview' : '3D Placement & Studio Guide'}
                 </h3>
                 <p style={{ margin: '2px 0 0 0', fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>
-                  Your graphics have been placed onto the 3D apparel
+                  {isCuratedDesign
+                    ? 'Official design placement pre-calibrated on this garment'
+                    : 'Your graphics have been placed onto the 3D apparel'}
                 </p>
               </div>
 
@@ -3829,10 +3875,18 @@ export const App: React.FC = () => {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#7B9EFF', fontWeight: 700, fontSize: '12px' }}>
                 <span>ℹ</span>
-                <span>Placement Alignment Notice</span>
+                <span>{isCuratedDesign ? 'Official Artist-Calibrated Placement' : 'Placement Alignment Notice'}</span>
               </div>
               <p style={{ margin: 0, color: 'rgba(255,255,255,0.85)' }}>
-                Automated artwork placement provides a calibrated starting position. Because garment draping, fits, and graphic dimensions vary, we recommend checking both <strong>Front &amp; Back</strong> views. You can freely drag, scale, and adjust your design directly in the 3D Studio!
+                {isCuratedDesign ? (
+                  <>
+                    This design has been <strong>professionally calibrated and positioned</strong> by our design team for optimal drape and aesthetics. You can inspect all angles in 360°, check <strong>Front &amp; Back</strong> views, or freely adjust the scale, position, and rotation to make it your own!
+                  </>
+                ) : (
+                  <>
+                    Automated artwork placement provides a calibrated starting position. Because garment draping, fits, and graphic dimensions vary, we recommend checking both <strong>Front &amp; Back</strong> views. You can freely drag, scale, and adjust your design directly in the 3D Studio!
+                  </>
+                )}
               </p>
             </div>
 
@@ -3858,7 +3912,7 @@ export const App: React.FC = () => {
                   1
                 </span>
                 <span>
-                  <strong>Select Graphic:</strong> Click or tap directly on any artwork on the 3D t-shirt to activate its boundary handles.
+                  <strong>Select Graphic:</strong> Click or tap directly on any artwork on the 3D garment to activate its boundary handles.
                 </span>
               </div>
 
@@ -3935,7 +3989,7 @@ export const App: React.FC = () => {
                 e.currentTarget.style.boxShadow = '0 4px 20px rgba(59, 94, 255, 0.4)';
               }}
             >
-              GOT IT, START CUSTOMIZING IN 3D
+              {isCuratedDesign ? 'EXPLORE IN 3D STUDIO' : 'GOT IT, START CUSTOMIZING IN 3D'}
             </button>
           </div>
         </div>

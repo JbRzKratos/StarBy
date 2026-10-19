@@ -732,7 +732,24 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
       doc.title?.toLowerCase().includes('fashion magazine 1') ||
       doc.title?.toLowerCase().includes('fashion editorial');
 
-    const itemPrice = isFirstFashionMagazine ? 1 : 499;
+    let dynamicPrice: number | null = null;
+    let dynamicName: string | null = null;
+    try {
+      const checkId = doc.templateId || 'prod_mag_01';
+      const pRes = await fetch(`/api/products/prices?id=${encodeURIComponent(checkId)}`, { cache: 'no-store' });
+      if (pRes.ok) {
+        const pData = await pRes.json();
+        if (pData?.product?.basePrice !== undefined) {
+          dynamicPrice = pData.product.basePrice;
+        }
+        if (pData?.product?.name) {
+          dynamicName = pData.product.name;
+        }
+      }
+    } catch {}
+
+    const itemPrice = dynamicPrice !== null ? dynamicPrice : (isFirstFashionMagazine ? 1 : 499);
+    const resolvedName = dynamicName || (isFirstFashionMagazine ? 'Fashion Magazine 1' : 'FREGORO Magazine');
 
     let printPdfUrl: string | null = null;
     try {
@@ -764,11 +781,9 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     }
 
     addItem({
-      productId: 'prod_mag_01',
-      variantId: 'v_mag_12p',
-      name: isFirstFashionMagazine
-        ? `Fashion Magazine 1 (Test ₹1) · ${doc.title}`
-        : `FREGORO Magazine · ${doc.title}`,
+      productId: doc.templateId || 'prod_mag_01',
+      variantId: `v_${doc.templateId || 'mag'}_12p`,
+      name: `${resolvedName} · ${doc.title || 'Custom Edition'}`,
       price: itemPrice,
       image:
         doc.pages[0]?.elements?.find((e) => e.type === 'image')?.content ||

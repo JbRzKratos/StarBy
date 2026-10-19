@@ -300,7 +300,7 @@ export async function POST(request: Request) {
         if (isDesign001) {
           unitPrice = 1;
         } else if (typeof item.price === 'number' && item.price >= 1) {
-          // Exact cart price from 3D/2D studio customizer (base garment ₹600-₹780 + ₹29 per custom print).
+          // Exact cart price from 3D/2D studio customizer (base garment ₹600-₹780 + ₹49 per custom print).
           // Always respect the exact customer cart total so Cashfree payment gateway matches to the exact rupee!
           unitPrice = item.price;
         } else {
@@ -318,6 +318,16 @@ export async function POST(request: Request) {
           let garmentBasePrice = 600;
           if (typeof customData?.basePrice === 'number' && customData.basePrice > 0) {
             garmentBasePrice = customData.basePrice;
+          } else if (garmentKey.includes('3xl') || garmentKey.includes('xxxl')) {
+            if (garmentKey.includes('hoodie')) {
+              garmentBasePrice = 780;
+            } else if (garmentKey.includes('acid')) {
+              garmentBasePrice = 720;
+            } else if (garmentKey.includes('oversized') || garmentKey.includes('french-terry')) {
+              garmentBasePrice = 699;
+            } else {
+              garmentBasePrice = 645;
+            }
           } else if (garmentKey.includes('hoodie')) {
             garmentBasePrice = 750;
           } else if (garmentKey.includes('acid')) {
@@ -334,7 +344,12 @@ export async function POST(request: Request) {
               ? curatedDbProduct.basePrice
               : 600;
 
-            if (garmentKey.includes('hoodie')) {
+            if (garmentKey.includes('3xl') || garmentKey.includes('xxxl')) {
+              if (garmentKey.includes('hoodie')) unitPrice = Math.max(designBase, 780);
+              else if (garmentKey.includes('acid')) unitPrice = Math.max(designBase, 720);
+              else if (garmentKey.includes('oversized')) unitPrice = Math.max(designBase, 699);
+              else unitPrice = Math.max(designBase, 645);
+            } else if (garmentKey.includes('hoodie')) {
               unitPrice = Math.max(designBase, 750);
             } else if (garmentKey.includes('acid')) {
               unitPrice = Math.max(designBase, 699);
@@ -348,7 +363,7 @@ export async function POST(request: Request) {
                 : Array.isArray(customData?.uploadedArtworks)
                   ? customData.uploadedArtworks.length
                   : 0;
-            const printFee = artworkCount * 29;
+            const printFee = artworkCount * 49;
             unitPrice = garmentBasePrice + printFee;
           }
         }

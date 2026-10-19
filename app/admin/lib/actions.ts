@@ -300,6 +300,18 @@ export async function toggleVariantStock(variantId: string, inStock: boolean) {
   revalidatePath('/admin/products');
 }
 
+export async function updateVariantStockQuantity(variantId: string, stockQuantity: number) {
+  await assertStaff();
+  const sanitized = Math.max(0, Math.floor(stockQuantity));
+  const updated = await prisma.productVariant.update({
+    where: { id: variantId },
+    data: { stockQuantity: sanitized, inStock: sanitized > 0 },
+  });
+  invalidateProductsCache();
+  revalidatePath('/admin/products');
+  return { success: true, variant: updated };
+}
+
 export async function deleteProduct(productId: string) {
   await assertAdmin();
   await prisma.product.delete({ where: { id: productId } });
@@ -322,14 +334,18 @@ export async function createProduct(data: {
   tags: string[];
   sizes: string[];
   sizePrices?: Record<string, number> | null;
+  sizeStock?: Record<string, unknown> | null;
 }) {
   await assertAdmin();
-  const { sizePrices, ...rest } = data;
+  const { sizePrices, sizeStock, ...rest } = data;
   const product = await prisma.product.create({
     data: {
       ...rest,
       ...(sizePrices !== undefined
         ? { sizePrices: sizePrices ? (sizePrices as Prisma.InputJsonValue) : Prisma.DbNull }
+        : {}),
+      ...(sizeStock !== undefined
+        ? { sizeStock: sizeStock ? (sizeStock as Prisma.InputJsonValue) : Prisma.DbNull }
         : {}),
       variants: {
         create: [
@@ -348,8 +364,12 @@ export async function createProduct(data: {
     },
     include: { variants: true },
   });
+  invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath('/products');
+  revalidatePath('/magazine');
+  revalidatePath('/magazine/templates');
+  revalidatePath('/api/admin/magazine-templates');
   revalidatePath('/api/products/prices');
   revalidatePath('/', 'layout');
   return product;
@@ -369,31 +389,39 @@ export async function updateProduct(
     tags?: string[];
     sizes?: string[];
     sizePrices?: Record<string, number> | null;
+    sizeStock?: Record<string, unknown> | null;
   },
 ) {
-  // Price changes strictly require admin access
-  if (data.basePrice !== undefined || data.sizePrices !== undefined) {
+  // Price and stock changes strictly require admin access
+  if (data.basePrice !== undefined || data.sizePrices !== undefined || data.sizeStock !== undefined) {
     await assertAdmin();
   } else {
     await assertStaff();
   }
 
-  const { sizePrices, ...rest } = data;
+  const { sizePrices, sizeStock, ...rest } = data;
   const updatePayload: Prisma.ProductUpdateInput = {
     ...rest,
     ...(sizePrices !== undefined
       ? { sizePrices: sizePrices ? (sizePrices as Prisma.InputJsonValue) : Prisma.DbNull }
+      : {}),
+    ...(sizeStock !== undefined
+      ? { sizeStock: sizeStock ? (sizeStock as Prisma.InputJsonValue) : Prisma.DbNull }
       : {}),
   };
 
   const updated = await prisma.product.update({ where: { id: productId }, data: updatePayload });
 
   // Revalidate across all storefront and admin paths
+  invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/${productId}/edit`);
   revalidatePath('/products');
   revalidatePath('/products/[category]', 'page');
   revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/magazine');
+  revalidatePath('/magazine/templates');
+  revalidatePath('/api/admin/magazine-templates');
   revalidatePath('/api/products');
   revalidatePath('/api/products/prices');
   revalidatePath('/cart');
@@ -401,6 +429,72 @@ export async function updateProduct(
   revalidatePath('/', 'layout');
 
   return updated;
+}
+
+/**
+ * Fast update of size pricing and size stock inventory from the admin products table.
+ */
+export async function updateProductSizePricingAndStock(
+  productId: string,
+  sizePrices: Record<string, number>,
+  sizeStock: Record<string, unknown>,
+) {
+  await assertAdmin();
+
+  // Compute total units and overall inStock status across sizes
+  let totalUnits = 0;
+  let hasAnyInStock = false;
+  if (sizeStock && typeof sizeStock === 'object') {
+    Object.values(sizeStock).forEach((val) => {
+      if (typeof val === 'number') {
+        totalUnits += val;
+        if (val > 0) hasAnyInStock = true;
+      } else if (val && typeof val === 'object') {
+        const item = val as { quantity?: unknown; inStock?: unknown };
+        const q = typeof item.quantity === 'number' ? item.quantity : 0;
+        totalUnits += q;
+        if (item.inStock !== false && q > 0) hasAnyInStock = true;
+      }
+    });
+  }
+
+  const updated = await prisma.product.update({
+    where: { id: productId },
+    data: {
+      sizePrices: sizePrices ? (sizePrices as Prisma.InputJsonValue) : Prisma.DbNull,
+      sizeStock: sizeStock ? (sizeStock as Prisma.InputJsonValue) : Prisma.DbNull,
+    },
+  });
+
+  // Also sync the product variants so variant-level queries reflect the size stock quantities
+  try {
+    const variants = await prisma.productVariant.findMany({ where: { productId } });
+    if (variants.length > 0) {
+      const perVariantQty = Math.max(0, Math.floor(totalUnits / variants.length));
+      await prisma.productVariant.updateMany({
+        where: { productId },
+        data: {
+          inStock: hasAnyInStock,
+          stockQuantity: perVariantQty,
+        },
+      });
+    }
+  } catch (err) {
+    console.warn('[updateProductSizePricingAndStock] Could not sync variant quantities:', err);
+  }
+
+  invalidateProductsCache();
+  revalidatePath('/admin/products');
+  revalidatePath(`/admin/products/${productId}/edit`);
+  revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/cart');
+  revalidatePath('/checkout');
+  revalidatePath('/', 'layout');
+
+  return { success: true, product: updated };
 }
 
 /**

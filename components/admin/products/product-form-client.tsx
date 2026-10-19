@@ -9,6 +9,8 @@ import {
   createVariant,
   deleteVariant,
   updateVariantPrice,
+  toggleVariantStock,
+  updateVariantStockQuantity,
 } from '@/app/admin/lib/actions';
 
 interface CategoryOption {
@@ -43,6 +45,7 @@ interface ProductFormClientProps {
     tags: string[];
     sizes: string[];
     sizePrices?: Record<string, number> | null;
+    sizeStock?: Record<string, unknown> | null;
   };
   initialVariants?: VariantData[];
 }
@@ -59,6 +62,7 @@ const BLANK_PRODUCT = {
   tags: [] as string[],
   sizes: [] as string[],
   sizePrices: null as Record<string, number> | null,
+  sizeStock: null as Record<string, unknown> | null,
 };
 
 const BLANK_VARIANT = {
@@ -88,6 +92,22 @@ export function ProductFormClient({
   const [sizePrices, setSizePrices] = useState<Record<string, number>>(() => {
     return (initialData.sizePrices as Record<string, number>) || {};
   });
+  const [sizeStock, setSizeStock] = useState<Record<string, { quantity: number; inStock: boolean }>>(() => {
+    const raw = (initialData.sizeStock as Record<string, unknown>) || {};
+    const result: Record<string, { quantity: number; inStock: boolean }> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      if (typeof v === 'number') {
+        result[k] = { quantity: v, inStock: v > 0 };
+      } else if (v && typeof v === 'object') {
+        const item = v as { quantity?: unknown; inStock?: unknown };
+        result[k] = {
+          quantity: typeof item.quantity === 'number' ? item.quantity : 50,
+          inStock: item.inStock !== false,
+        };
+      }
+    });
+    return result;
+  });
   const [variants, setVariants] = useState<VariantData[]>(initialVariants);
   const [newVariant, setNewVariant] = useState({ ...BLANK_VARIANT });
   const [showVariantForm, setShowVariantForm] = useState(false);
@@ -101,6 +121,8 @@ export function ProductFormClient({
           .filter(Boolean);
 
         const cleanSizePrices: Record<string, number> = {};
+        const cleanSizeStock: Record<string, { quantity: number; inStock: boolean }> = {};
+
         activeSizes.forEach((s) => {
           const upper = s.toUpperCase();
           const p = sizePrices[s] ?? sizePrices[upper] ?? form.basePrice;
@@ -110,6 +132,14 @@ export function ProductFormClient({
           if (upper === 'XXL') cleanSizePrices['2XL'] = p;
           if (upper === '3XL') cleanSizePrices['XXXL'] = p;
           if (upper === 'XXXL') cleanSizePrices['3XL'] = p;
+
+          const stockItem = sizeStock[s] ?? sizeStock[upper] ?? { quantity: 50, inStock: true };
+          cleanSizeStock[s] = stockItem;
+          cleanSizeStock[upper] = stockItem;
+          if (upper === '2XL') cleanSizeStock['XXL'] = stockItem;
+          if (upper === 'XXL') cleanSizeStock['2XL'] = stockItem;
+          if (upper === '3XL') cleanSizeStock['XXXL'] = stockItem;
+          if (upper === 'XXXL') cleanSizeStock['3XL'] = stockItem;
         });
 
         const data = {
@@ -120,6 +150,7 @@ export function ProductFormClient({
             .filter(Boolean),
           sizes: activeSizes,
           sizePrices: Object.keys(cleanSizePrices).length > 0 ? cleanSizePrices : null,
+          sizeStock: Object.keys(cleanSizeStock).length > 0 ? cleanSizeStock : null,
         };
         if (mode === 'create') {
           await createProduct(data);
@@ -285,20 +316,20 @@ export function ProductFormClient({
           if (parsedSizes.length === 0) return null;
 
           return (
-            <div className="bg-black/30 rounded-xl border border-white/10 p-4 space-y-3">
+            <div className="bg-black/30 rounded-xl border border-white/10 p-4 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <h3 className="text-xs font-semibold text-bone uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="text-[#3B5EFF]">✦</span> Pricing by Size (₹)
+                    <span className="text-[#3B5EFF]">✦</span> Pricing &amp; Stock Inventory by Size
                   </h3>
                   <p className="text-[11px] text-ash mt-0.5">
-                    Set selling price for each size (defaults to Base Price ₹{form.basePrice || 0} if not custom set)
+                    Set selling price and inventory stock per size (defaults to Base Price ₹{form.basePrice || 0} and 50 stock)
                   </p>
                 </div>
 
                 {/* Quick Auto-Fill Buttons from Excel Catalog */}
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[10px] text-ash uppercase font-mono">Fill:</span>
+                  <span className="text-[10px] text-ash uppercase font-mono">Excel Prices:</span>
                   <button
                     type="button"
                     onClick={() => {
@@ -362,24 +393,106 @@ export function ProductFormClient({
                 </div>
               </div>
 
-              {/* Grid of Size Price Input Boxes */}
+              {/* Stock Quick Presets Bar */}
+              <div className="flex items-center justify-between border-t border-white/5 pt-2 flex-wrap gap-2">
+                <span className="text-[11px] text-ash font-medium flex items-center gap-1">
+                  <span>📦 Size Inventory:</span>
+                </span>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = { ...sizeStock };
+                      parsedSizes.forEach((s) => {
+                        const u = s.toUpperCase();
+                        updated[s] = { quantity: 50, inStock: true };
+                        updated[u] = { quantity: 50, inStock: true };
+                      });
+                      setSizeStock(updated);
+                      show('Set 50 stock for all sizes', 'success');
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/20 cursor-pointer"
+                  >
+                    Set All 50
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = { ...sizeStock };
+                      parsedSizes.forEach((s) => {
+                        const u = s.toUpperCase();
+                        updated[s] = { quantity: 100, inStock: true };
+                        updated[u] = { quantity: 100, inStock: true };
+                      });
+                      setSizeStock(updated);
+                      show('Set 100 stock for all sizes', 'success');
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/20 cursor-pointer"
+                  >
+                    Set All 100
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = { ...sizeStock };
+                      parsedSizes.forEach((s) => {
+                        const u = s.toUpperCase();
+                        const cur = updated[s] || updated[u] || { quantity: 50, inStock: true };
+                        updated[s] = { ...cur, inStock: true };
+                        updated[u] = { ...cur, inStock: true };
+                      });
+                      setSizeStock(updated);
+                      show('Marked all sizes in stock', 'success');
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 cursor-pointer"
+                  >
+                    All In Stock
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = { ...sizeStock };
+                      parsedSizes.forEach((s) => {
+                        const u = s.toUpperCase();
+                        const cur = updated[s] || updated[u] || { quantity: 0, inStock: false };
+                        updated[s] = { ...cur, inStock: false };
+                        updated[u] = { ...cur, inStock: false };
+                      });
+                      setSizeStock(updated);
+                      show('Marked all sizes out of stock', 'success');
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/20 cursor-pointer"
+                  >
+                    All Out of Stock
+                  </button>
+                </div>
+              </div>
+
+              {/* Grid of Size Price & Stock Input Boxes */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 pt-1">
                 {parsedSizes.map((size) => {
                   const upper = size.toUpperCase();
-                  const currentVal =
+                  const currentPrice =
                     sizePrices[size] !== undefined
                       ? sizePrices[size]
                       : sizePrices[upper] !== undefined
                       ? sizePrices[upper]
                       : form.basePrice;
 
+                  const currentStockItem =
+                    sizeStock[size] ??
+                    sizeStock[upper] ?? {
+                      quantity: 50,
+                      inStock: true,
+                    };
+
                   return (
                     <div
                       key={size}
-                      className="bg-black/50 border border-white/10 rounded-lg p-2.5 flex flex-col gap-1 focus-within:border-[#3B5EFF]"
+                      className="bg-black/50 border border-white/10 rounded-xl p-3 flex flex-col gap-2 focus-within:border-[#3B5EFF] transition-colors"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono font-bold text-white/80 uppercase">
+                        <span className="text-[11px] font-mono font-bold text-white uppercase">
                           Size {size}
                         </span>
                         {(upper === '3XL' || upper === 'XXXL') && (
@@ -388,25 +501,69 @@ export function ProductFormClient({
                           </span>
                         )}
                       </div>
-                      <div className="relative mt-0.5">
-                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-mono text-ash pointer-events-none">
-                          ₹
-                        </span>
+
+                      {/* Selling Price */}
+                      <div>
+                        <span className="block text-[10px] text-ash/70 font-mono mb-0.5">Price</span>
+                        <div className="relative">
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-mono text-ash pointer-events-none">
+                            ₹
+                          </span>
+                          <input
+                            type="number"
+                            min={0}
+                            value={currentPrice ?? 0}
+                            onChange={(e) => {
+                              const val = parseFloat(e.target.value) || 0;
+                              setSizePrices((prev) => ({
+                                ...prev,
+                                [size]: val,
+                                [upper]: val,
+                              }));
+                            }}
+                            className="w-full pl-5 pr-2 py-1 bg-black/60 border border-white/15 rounded text-xs font-mono text-white focus:outline-none focus:border-[#3B5EFF]"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Stock Quantity */}
+                      <div>
+                        <span className="block text-[10px] text-ash/70 font-mono mb-0.5">Stock (qty)</span>
                         <input
                           type="number"
                           min={0}
-                          value={currentVal ?? 0}
+                          value={currentStockItem.quantity}
                           onChange={(e) => {
-                            const val = parseFloat(e.target.value) || 0;
-                            setSizePrices((prev) => ({
+                            const qty = parseInt(e.target.value, 10) || 0;
+                            setSizeStock((prev) => ({
                               ...prev,
-                              [size]: val,
-                              [upper]: val,
+                              [size]: { quantity: qty, inStock: qty > 0 ? (prev[size]?.inStock ?? true) : false },
+                              [upper]: { quantity: qty, inStock: qty > 0 ? (prev[upper]?.inStock ?? true) : false },
                             }));
                           }}
-                          className="w-full pl-6 pr-2 py-1 bg-black/60 border border-white/15 rounded text-xs font-mono text-white focus:outline-none focus:border-[#3B5EFF]"
+                          className="w-full px-2 py-1 bg-black/60 border border-white/15 rounded text-xs font-mono text-white focus:outline-none focus:border-[#3B5EFF]"
                         />
                       </div>
+
+                      {/* In-Stock Toggle Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nextInStock = !currentStockItem.inStock;
+                          setSizeStock((prev) => ({
+                            ...prev,
+                            [size]: { ...currentStockItem, inStock: nextInStock },
+                            [upper]: { ...currentStockItem, inStock: nextInStock },
+                          }));
+                        }}
+                        className={`text-[10px] py-1 px-1.5 rounded font-mono font-bold transition-all border text-center ${
+                          currentStockItem.inStock
+                            ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25'
+                            : 'bg-red-500/15 border-red-500/30 text-red-400 hover:bg-red-500/25'
+                        }`}
+                      >
+                        {currentStockItem.inStock ? '✓ In Stock' : '✕ Out'}
+                      </button>
                     </div>
                   );
                 })}
@@ -576,11 +733,53 @@ export function ProductFormClient({
                   className="w-20 px-2 py-1 text-xs bg-black/60 border border-white/20 rounded text-bone font-mono focus:border-[#3B5EFF] focus:outline-none"
                 />
               </div>
-              <span
-                className={`text-xs font-medium ${v.inStock ? 'text-green-500' : 'text-red-400'}`}
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-ash/70 font-mono">Stock:</span>
+                <input
+                  type="number"
+                  min={0}
+                  defaultValue={v.stockQuantity}
+                  onBlur={async (e) => {
+                    const q = parseInt(e.target.value, 10);
+                    if (!isNaN(q) && q >= 0 && q !== v.stockQuantity) {
+                      try {
+                        await updateVariantStockQuantity(v.id, q);
+                        setVariants((prev) =>
+                          prev.map((item) =>
+                            item.id === v.id ? { ...item, stockQuantity: q, inStock: q > 0 } : item
+                          )
+                        );
+                        show(`Variant stock updated to ${q} units`, 'success');
+                      } catch (err: unknown) {
+                        const msg = err instanceof Error ? err.message : 'Failed to update stock';
+                        show(msg, 'error');
+                      }
+                    }
+                  }}
+                  className="w-16 px-2 py-1 text-xs bg-black/60 border border-white/20 rounded text-bone font-mono focus:border-[#3B5EFF] focus:outline-none text-center"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await toggleVariantStock(v.id, !v.inStock);
+                    setVariants((prev) =>
+                      prev.map((item) => (item.id === v.id ? { ...item, inStock: !v.inStock } : item))
+                    );
+                    show(`Variant marked ${!v.inStock ? 'in stock' : 'out of stock'}`, 'success');
+                  } catch (err: unknown) {
+                    show(err instanceof Error ? err.message : 'Failed to toggle stock', 'error');
+                  }
+                }}
+                className={`text-xs px-2.5 py-1 rounded font-mono font-medium transition-colors ${
+                  v.inStock
+                    ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
+                    : 'bg-red-500/10 text-red-400 hover:bg-red-500/20'
+                }`}
               >
-                {v.inStock ? `${v.stockQuantity} in stock` : 'Out of stock'}
-              </span>
+                {v.inStock ? 'In stock' : 'Out'}
+              </button>
               <button
                 onClick={() => handleDeleteVariant(v.id)}
                 className="text-xs text-red-400 hover:text-red-300 ml-2"

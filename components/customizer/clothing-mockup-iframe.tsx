@@ -460,7 +460,7 @@ export function ClothingMockupIframe({
             const customPrintFee =
               typeof payload.customPrintFee === 'number'
                 ? payload.customPrintFee
-                : customArtworkCount * 29;
+                : customArtworkCount * 49;
             const itemBasePrice =
               typeof payload.basePrice === 'number'
                 ? payload.basePrice

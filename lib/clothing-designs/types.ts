@@ -58,6 +58,7 @@ export interface ClothingDesignEntry {
   price?: number;
   sizes?: string[];
   sizePrices?: Record<string, number> | null;
+  sizeStock?: Record<string, { quantity?: number; inStock?: boolean } | number> | null;
   artworks: DesignArtworkOption[]; // All artwork options from this folder
   defaultArtworkId: string;
   defaultSurface: 'front' | 'back';

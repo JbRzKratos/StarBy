@@ -27,14 +27,21 @@ function ReviewInner() {
     fetch('/api/products/prices', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
-        if (data?.products?.['prod_test_magazine'] !== undefined) {
-          setLiveMagPrice(data.products['prod_test_magazine']);
-        } else if (data?.products?.['fregoro-custom-magazine'] !== undefined) {
-          setLiveMagPrice(data.products['fregoro-custom-magazine']);
+        if (data?.products) {
+          const p = data.products;
+          if (typeof p[templateId] === 'number') {
+            setLiveMagPrice(p[templateId]);
+          } else if (template?.slug && typeof p[template.slug] === 'number') {
+            setLiveMagPrice(p[template.slug]);
+          } else if (typeof p['fregoro-custom-magazine'] === 'number') {
+            setLiveMagPrice(p['fregoro-custom-magazine']);
+          } else if (typeof p['prod_mag_01'] === 'number') {
+            setLiveMagPrice(p['prod_mag_01']);
+          }
         }
       })
       .catch((err) => console.warn('Could not fetch live magazine price:', err));
-  }, []);
+  }, [templateId, template?.slug]);
 
   useEffect(() => {
     const saved = sessionStorage.getItem(`wizard-review-${templateId}`);
@@ -159,16 +166,14 @@ function ReviewInner() {
         console.warn('Could not generate or upload print PDF during add to cart:', pdfErr);
       }
 
-      const finalPrice = isFirstFashionMagazine ? 1 : (liveMagPrice ?? 499);
+      const finalPrice = liveMagPrice ?? (template.price ?? (isFirstFashionMagazine ? 1 : 499));
 
       addItem({
-        productId: 'prod_test_magazine',
-        variantId: 'var_test_magazine_01',
+        productId: template.id || 'prod_mag_01',
+        variantId: `var_${template.id || 'mag'}_a4`,
         quantity: 1,
         price: finalPrice,
-        name: isFirstFashionMagazine
-          ? `Fashion Magazine 1 (Test ₹1) · ${template.name}`
-          : `Custom Magazine (₹${finalPrice}) · ${template.name}`,
+        name: `${template.name} · ${template.category.toUpperCase()}`,
         image: template.coverImage,
         customization: {
           magazineId: doc.id,

@@ -102,7 +102,20 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
     }, 400);
   };
 
-  const unitPrice = typeof propUnitPrice === 'number' && propUnitPrice >= 0 ? propUnitPrice : 600;
+  const is3XL = selectedSize === '3XL' || selectedSize === 'XXXL';
+  let adjustedBasePrice = typeof basePrice === 'number' && basePrice > 0 ? basePrice : 600;
+  if (is3XL && !isCuratedDesign) {
+    const lowerName = garmentName.toLowerCase();
+    if (lowerName.includes('oversized')) adjustedBasePrice = 699;
+    else if (lowerName.includes('acid')) adjustedBasePrice = 720;
+    else if (lowerName.includes('hoodie')) adjustedBasePrice = 780;
+    else adjustedBasePrice = 645;
+  }
+
+  const effectivePrintFee = customPrintFee || (customArtworkCount * 49);
+  const unitPrice = isCuratedDesign
+    ? (typeof propUnitPrice === 'number' && propUnitPrice >= 0 ? propUnitPrice : 600)
+    : (adjustedBasePrice + effectivePrintFee);
   const totalPrice = unitPrice * quantity;
 
   return (
@@ -400,10 +413,10 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
                 <span className="price-val">₹{totalPrice.toLocaleString('en-IN')}</span>
                 {!isCuratedDesign && typeof basePrice === 'number' && (
                   <div style={{ fontSize: '11px', color: '#94a3b8', margin: '4px 0 2px 0', lineHeight: '1.4' }}>
-                    <div>Base Garment: <strong style={{ color: '#e2e8f0' }}>₹{basePrice}</strong></div>
+                    <div>Base Garment ({selectedSize}): <strong style={{ color: '#e2e8f0' }}>₹{adjustedBasePrice}</strong></div>
                     {customArtworkCount > 0 ? (
                       <div style={{ color: '#38bdf8' }}>
-                        Custom Prints ({customArtworkCount} × ₹29): <strong style={{ color: '#38bdf8' }}>+₹{customPrintFee || customArtworkCount * 29}</strong>
+                        Custom Prints ({customArtworkCount} × ₹49): <strong style={{ color: '#38bdf8' }}>+₹{effectivePrintFee}</strong>
                       </div>
                     ) : (
                       <div style={{ color: '#64748b' }}>No custom prints uploaded yet (+₹0)</div>
