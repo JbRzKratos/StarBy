@@ -22,8 +22,14 @@ export function BulkOrderHero({ onStartClick }: BulkOrderHeroProps) {
   return (
     <section className="relative overflow-hidden bg-[#0A0A0A] text-[#F5F1EA] pt-28 pb-16 md:pt-36 md:pb-24 border-b border-white/10">
       {/* Background radial glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#3B5EFF]/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-2/3 right-10 w-[350px] h-[350px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
+      <div
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(59,94,255,0.10) 0%, transparent 70%)' }}
+      />
+      <div
+        className="absolute top-2/3 right-10 w-[350px] h-[350px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%)' }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto space-y-6">

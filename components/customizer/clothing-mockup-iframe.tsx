@@ -104,11 +104,16 @@ export function ClothingMockupIframe({
       .then((data) => {
         if (!data?.success || !data.placements) return;
         try {
-          const STORAGE_KEY = 'fregoro_curated_placements';
-          const raw = window.localStorage.getItem(STORAGE_KEY) || '{}';
-          const all = JSON.parse(raw);
-          const merged = { ...all, ...data.placements };
-          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged, null, 2));
+          // Keep both placement stores in sync. The studio reads the v2 key and
+          // gives it priority, so writing only the legacy key lets stale local
+          // calibrations silently override the server values we just fetched.
+          const STORAGE_KEYS = ['fregoro_curated_placements', 'fregoro_curated_placements_v2'];
+          for (const storageKey of STORAGE_KEYS) {
+            const raw = window.localStorage.getItem(storageKey) || '{}';
+            const all = JSON.parse(raw);
+            const merged = { ...all, ...data.placements };
+            window.localStorage.setItem(storageKey, JSON.stringify(merged, null, 2));
+          }
 
           // Post to iframe to guarantee real-time reflection
           if (iframeRef.current?.contentWindow) {
@@ -259,19 +264,6 @@ export function ClothingMockupIframe({
         setIsLoading(false);
       }
 
-      if (e.data && e.data.type === 'CUSTOM_CURSOR_MOVE') {
-        const iframe = iframeRef.current;
-        if (!iframe) return;
-        const rect = iframe.getBoundingClientRect();
-        window.dispatchEvent(
-          new MouseEvent('mousemove', {
-            clientX: e.data.clientX + rect.left,
-            clientY: e.data.clientY + rect.top,
-            bubbles: true,
-          }),
-        );
-      }
-
       if (e.data && (e.data.type === 'STARBY_PLACEMENT_SAVED' || e.data.type === 'STARBY_ALL_PLACEMENTS_SAVED')) {
         try {
           const { designId, garmentId, target, artId, placement, layers } = e.data;
@@ -399,7 +391,7 @@ export function ClothingMockupIframe({
               } else {
                 try {
                   const checkId = payload.designId || 'clothing-mockup';
-                  const res = await fetch(`/api/products/prices?id=${encodeURIComponent(checkId)}`, { cache: 'no-store' });
+                  const res = await fetch(`/api/products/prices?id=${encodeURIComponent(checkId)}`);
                   if (res.ok) {
                     const data = await res.json();
                     if (data.success && typeof data.product?.basePrice === 'number') {
@@ -592,7 +584,6 @@ export function ClothingMockupIframe({
       const iframe = iframeRef.current;
       if (!iframe) return;
 
-      const doc = iframe.contentDocument;
       const win = iframe.contentWindow;
 
       // Send designer authorization status to the iframe
@@ -604,119 +595,15 @@ export function ClothingMockupIframe({
           },
           '*'
         );
-      }
 
-      // 1. Sync cursor-ready class from parent to iframe document and suppress native cursor inside iframe
-      if (doc) {
-        doc.documentElement.classList.add('cursor-ready');
-        doc.documentElement.classList.remove('cursor-hidden');
-
-        // Inject strong cursor suppression style inside iframe
-        let styleEl = doc.getElementById('starby-iframe-cursor-suppress') as HTMLStyleElement | null;
-        if (!styleEl) {
-          styleEl = doc.createElement('style');
-          styleEl.id = 'starby-iframe-cursor-suppress';
-          styleEl.textContent = `
-            html.cursor-ready:not(.cursor-hidden),
-            html.cursor-ready:not(.cursor-hidden) * {
-              cursor: none !important;
-            }
-            html.cursor-ready:not(.cursor-hidden) input,
-            html.cursor-ready:not(.cursor-hidden) textarea,
-            html.cursor-ready:not(.cursor-hidden) [contenteditable="true"] {
-              cursor: text !important;
-            }
-          `;
-          doc.head?.appendChild(styleEl);
-        }
-
-        const observer = new MutationObserver(() => {
-          if (document.documentElement.classList.contains('cursor-ready')) {
-            doc.documentElement.classList.add('cursor-ready');
-          } else {
-            doc.documentElement.classList.remove('cursor-ready');
-          }
-        });
-        observer.observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ['class'],
-        });
-      }
-
-      // 2. Direct same-origin event forwarding for buttery smooth 60fps tracking
-      if (win) {
+        // The parent CustomCursor owns the cursor bridge (coordinates, hover,
+        // native-cursor suppression and cleanup). Disable the studio's legacy
+        // mousemove forwarder so every pointer move is processed exactly once.
         (win as Window & { __parentCursorBridgeActive?: boolean }).__parentCursorBridgeActive =
           true;
-        let pendingMove: MouseEvent | null = null;
-        let rafId: number | null = null;
-        let lastInteractive: boolean | null = null;
-
-        const forwardMove = () => {
-          rafId = null;
-          if (!pendingMove || !iframeRef.current) return;
-          const rect = iframeRef.current.getBoundingClientRect();
-          const clientX = pendingMove.clientX + rect.left;
-          const clientY = pendingMove.clientY + rect.top;
-
-          window.dispatchEvent(
-            new PointerEvent('pointermove', {
-              clientX,
-              clientY,
-              bubbles: true,
-              pointerType: 'mouse',
-            }),
-          );
-          window.dispatchEvent(
-            new CustomEvent('custom-cursor-coords', {
-              detail: { clientX, clientY },
-            }),
-          );
-        };
-
-        win.addEventListener(
-          'mousemove',
-          (e: MouseEvent) => {
-            pendingMove = e;
-            if (rafId === null) {
-              rafId = requestAnimationFrame(forwardMove);
-            }
-
-            const target = e.target as HTMLElement | null;
-            const isInteractive = !!target?.closest(
-              'button, a, input, select, textarea, [role="button"], .interactive, .nav-tab-btn, .side-btn, .header-btn, .btn-card-subtle, .quick-action-pill, .color-swatch-btn, .catalog-card, .layer-item, .toggle-row, .camera-preset-btn, .uv-tab-btn, .uv-tool-btn, .btn-add-to-cart',
-            );
-            if (isInteractive !== lastInteractive) {
-              lastInteractive = isInteractive;
-              window.dispatchEvent(
-                new CustomEvent('custom-cursor-hover', {
-                  detail: { isInteractive },
-                }),
-              );
-            }
-          },
-          { passive: true },
-        );
-
-        win.addEventListener('pointerdown', (e: PointerEvent) => {
-          if (e.pointerType === 'touch') return;
-          window.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', bubbles: true }));
-        });
-
-        win.addEventListener('pointerup', (e: PointerEvent) => {
-          if (e.pointerType === 'touch') return;
-          window.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-        });
-
-        win.addEventListener('mousedown', () => {
-          window.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-        });
-
-        win.addEventListener('mouseup', () => {
-          window.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
-        });
       }
     } catch (err) {
-      console.warn('[ClothingMockupIframe] Cursor bridge notice:', err);
+      console.warn('[ClothingMockupIframe] Iframe bridge notice:', err);
     }
   };
 

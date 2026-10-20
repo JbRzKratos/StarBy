@@ -1,1 +1,1 @@
-export { OfferBannerClient as OfferBanner } from './offer-banner.client';
+export { OfferBanner } from './offer-banner';

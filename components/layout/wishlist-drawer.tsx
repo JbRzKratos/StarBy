@@ -356,7 +356,7 @@ export function WishlistDrawer() {
                 return (
                   <div
                     key={product.id}
-                    className="wishlist-item group relative flex flex-col gap-4 p-6 bg-graphite/40 border border-smoke/50 hover:border-ember/50 hover:bg-graphite/80 transition-all duration-300 rounded-lg"
+                    className="wishlist-item group relative flex flex-col gap-4 p-6 bg-graphite/40 border border-smoke/50 hover:border-ember/50 hover:bg-graphite/80 transition-colors duration-300 rounded-lg"
                   >
                     <Link
                       href={`/products/${product.categorySlug}/${product.slug}`}

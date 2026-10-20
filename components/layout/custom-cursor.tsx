@@ -22,23 +22,40 @@
  *    Automatically pauses the animation loop when cursor is stationary at rest.
  * 7. ZERO DESIGN CHANGE:
  *    Preserves 100% of the original dual-contour styling, colors, glow, hover size (1.45),
- *    click compression, crosshair mode, and iframe bridging for the 3D studio.
+ *    click compression, crosshair mode, and same-origin iframe bridging for the 3D studio.
  */
 
 import { useRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { usePathname } from 'next/navigation';
 
 export function CustomCursor() {
+  const pathname = usePathname();
   const cursorRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
+
+  // Admin, editors and the wall studio restore the native cursor and do not
+  // pay for the RAF loop, iframe bridge or pointer listeners. The clothing
+  // mockup studio under /customize is deliberately NOT disabled: it is a
+  // same-origin iframe and the bridge below is what draws the cursor inside it.
+  const disabled = Boolean(
+    pathname?.startsWith('/admin') ||
+      pathname?.startsWith('/magazine/editor') ||
+      pathname?.startsWith('/magazine/content-wizard') ||
+      pathname?.startsWith('/wall-studio') ||
+      pathname?.startsWith('/checkout'),
+  );
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || disabled) {
+      document.documentElement.classList.remove('cursor-ready');
+      return;
+    }
 
     // ── Step 1: Accessibility & Capability Detection ──────────────────────────
     const prefersReducedMotion =
@@ -61,6 +78,10 @@ export function CustomCursor() {
       document.documentElement.classList.remove('cursor-ready');
       return;
     }
+
+    // Cache the breakpoint instead of reading window.innerWidth on every
+    // pointermove/mouseover event (the studio can emit hundreds per second).
+    let isDesktop = true;
 
     // ── Step 2: DOM Element Guards ───────────────────────────────────────────
     const cursor = cursorRef.current;
@@ -87,6 +108,23 @@ export function CustomCursor() {
     let lastTime = 0;
     let isLoopRunning = false;
 
+    // Avoid re-writing identical transforms every frame. The dot is painted
+    // immediately from the pointer event, then only re-painted when its scale
+    // is still animating.
+    let lastDotX = Number.NaN;
+    let lastDotY = Number.NaN;
+    let lastDotScale = Number.NaN;
+
+    const writeDot = (x: number, y: number, scale: number) => {
+      if (x === lastDotX && y === lastDotY && Math.abs(scale - lastDotScale) < 0.0005) {
+        return;
+      }
+      lastDotX = x;
+      lastDotY = y;
+      lastDotScale = scale;
+      dot.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale})`;
+    };
+
     // Physics parameters:
     // Exponential damping rate for outer ring (higher = snappier, lower = more floaty)
     // 28.0 gives instantaneous response with organic smooth follow-through
@@ -98,6 +136,7 @@ export function CustomCursor() {
         isCursorVisible = true;
         document.documentElement.classList.add('cursor-ready');
         document.documentElement.classList.remove('cursor-hidden');
+        syncIframeCursorState();
         cursor.style.opacity = '1';
         dot.style.opacity = '1';
         startLoop();
@@ -108,6 +147,7 @@ export function CustomCursor() {
       if (isCursorVisible) {
         isCursorVisible = false;
         document.documentElement.classList.add('cursor-hidden');
+        syncIframeCursorState();
         cursor.style.opacity = '0';
         dot.style.opacity = '0';
       }
@@ -172,7 +212,7 @@ export function CustomCursor() {
       lastTime = now;
 
       // 1. Center dot: 1:1 hardware pointer synchronization with immediate transform
-      dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%) scale(${currentDotScale})`;
+      writeDot(targetX, targetY, currentDotScale);
 
       // 2. Outer ring: Frame-rate independent exponential decay
       const ringFactor = 1 - Math.exp(-RING_DECAY * dt);
@@ -197,7 +237,7 @@ export function CustomCursor() {
         currentRingScale = targetRingScale;
         currentDotScale = targetDotScale;
         cursor.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${currentRingScale})`;
-        dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%) scale(${currentDotScale})`;
+        writeDot(targetX, targetY, currentDotScale);
 
         isLoopRunning = false;
         rafId = null;
@@ -227,6 +267,11 @@ export function CustomCursor() {
       }
 
       showCursor();
+
+      // Paint the center dot in the same input task instead of waiting for the
+      // next RAF. This is the difference between "feels attached" and "laggy".
+      writeDot(clientX, clientY, currentDotScale);
+
       startLoop();
     };
 
@@ -236,7 +281,7 @@ export function CustomCursor() {
         return;
       }
 
-      if (window.innerWidth < 768) {
+      if (!isDesktop) {
         hideCursor();
         document.documentElement.classList.remove('cursor-ready');
         return;
@@ -246,7 +291,7 @@ export function CustomCursor() {
     };
 
     const onCustomCoords = (e: Event) => {
-      if (window.innerWidth < 768) return;
+      if (!isDesktop) return;
       const customEv = e as CustomEvent<{ clientX: number; clientY: number }>;
       if (typeof customEv.detail?.clientX === 'number' && typeof customEv.detail?.clientY === 'number') {
         setCoords(customEv.detail.clientX, customEv.detail.clientY);
@@ -258,7 +303,7 @@ export function CustomCursor() {
         hideCursor();
         return;
       }
-      if (window.innerWidth >= 768) {
+      if (isDesktop) {
         isMouseDown = true;
         updateTargetScales();
       }
@@ -266,7 +311,7 @@ export function CustomCursor() {
 
     const onPointerUp = (e: PointerEvent) => {
       if (e.pointerType === 'touch') return;
-      if (window.innerWidth >= 768) {
+      if (isDesktop) {
         isMouseDown = false;
         updateTargetScales();
       }
@@ -281,7 +326,7 @@ export function CustomCursor() {
       'a, button, select, [role="button"], .cursor-pointer, [data-cursor-hover], input[type="button"], input[type="submit"], input[type="radio"], input[type="checkbox"], input[type="range"], input[type="color"], label[for], .clickable, .side-btn, .nav-tab-btn, .header-btn, .btn-card-subtle, .quick-action-pill, .color-swatch-btn, .catalog-card, .layer-item, .toggle-row, .camera-preset-btn, .uv-tab-btn, .uv-tool-btn, .btn-add-to-cart, .interactive';
 
     const onMouseOver = (e: MouseEvent) => {
-      if (window.innerWidth < 768) return;
+      if (!isDesktop) return;
       const target = e.target as HTMLElement;
       if (!target || !target.closest) return;
 
@@ -346,38 +391,85 @@ export function CustomCursor() {
     };
 
     const onCustomHover = (e: Event) => {
-      if (window.innerWidth < 768) return;
+      if (!isDesktop) return;
       const customEv = e as CustomEvent<{ isInteractive?: boolean }>;
       const isInteractive = !!customEv.detail?.isInteractive;
       setHoverMode(isInteractive);
     };
 
     const onResize = () => {
-      if (window.innerWidth < 768) {
+      isDesktop = window.innerWidth >= 768;
+      if (!isDesktop) {
         hideCursor();
         document.documentElement.classList.remove('cursor-ready');
+        syncIframeCursorState();
       }
+      refreshIframeRects();
     };
 
     // ── Step 8: Same-Origin Iframe Bridge (for 3D Mockup Studio) ──────────────
-    const bridgedIframes = new WeakSet<HTMLIFrameElement>();
+    const bridgedIframes = new Set<HTMLIFrameElement>();
+    const iframeDocs = new Set<Document>();
+    const iframeRects = new WeakMap<HTMLIFrameElement, { left: number; top: number }>();
     const iframeCleanups: (() => void)[] = [];
+
+    // Keep the native cursor inside the iframe hidden only while the parent
+    // cursor is actually visible. This prevents the "invisible cursor" state
+    // that occurred on mobile, reduced-motion, or before the first pointer move.
+    function syncIframeCursorState() {
+      const parentReady = document.documentElement.classList.contains('cursor-ready');
+      const parentHidden = document.documentElement.classList.contains('cursor-hidden');
+      // The studio's own stylesheet keys off cursor-ready alone, so remove the
+      // class whenever the parent cursor is hidden (e.g. over a text input).
+      const iframeCursorActive = parentReady && !parentHidden;
+      iframeDocs.forEach((doc) => {
+        try {
+          doc.documentElement.classList.toggle('cursor-ready', iframeCursorActive);
+          doc.documentElement.classList.toggle('cursor-hidden', parentHidden);
+        } catch {}
+      });
+    }
+
+    // getBoundingClientRect() inside a pointermove handler forces a layout read
+    // on every event. Cache it and refresh only when layout can have changed.
+    function refreshIframeRects() {
+      if (bridgedIframes.size === 0) return;
+      bridgedIframes.forEach((iframe) => {
+        try {
+          const rect = iframe.getBoundingClientRect();
+          iframeRects.set(iframe, { left: rect.left, top: rect.top });
+        } catch {}
+      });
+    }
 
     const bridgeIframe = (iframe: HTMLIFrameElement) => {
       if (bridgedIframes.has(iframe)) return;
       bridgedIframes.add(iframe);
 
+      // Re-attach after every iframe navigation. A React iframe starts on
+      // about:blank, so a one-shot bridge can bind to the wrong document.
+      let bridgedDoc: Document | null = null;
+      let detachDoc: (() => void) | null = null;
+
       const attachBridge = () => {
         try {
           const doc = iframe.contentDocument;
           const win = iframe.contentWindow;
-          if (!doc || !win) return;
+          if (!doc || !win || doc === bridgedDoc) return;
 
-          // 1. Sync cursor-ready class to iframe root
-          doc.documentElement.classList.add('cursor-ready');
-          doc.documentElement.classList.remove('cursor-hidden');
+          detachDoc?.();
+          bridgedDoc = doc;
+          iframeDocs.add(doc);
 
-          // 2. Inject strong cursor suppression style inside iframe
+          // The studio still dispatches hover hints from its 3D viewport, but
+          // its legacy mousemove forwarder must not duplicate the parent bridge.
+          try {
+            (win as Window & { __parentCursorBridgeActive?: boolean }).__parentCursorBridgeActive =
+              true;
+          } catch {}
+
+          // Inject strong cursor suppression style inside the iframe. The
+          // cursor-ready class is toggled by syncIframeCursorState().
           let styleEl = doc.getElementById('starby-iframe-cursor-suppress') as HTMLStyleElement | null;
           if (!styleEl) {
             styleEl = doc.createElement('style');
@@ -396,14 +488,27 @@ export function CustomCursor() {
             doc.head?.appendChild(styleEl);
           }
 
+          syncIframeCursorState();
+          refreshIframeRects();
+
+          const getRect = () => {
+            let rect = iframeRects.get(iframe);
+            if (!rect) {
+              const measured = iframe.getBoundingClientRect();
+              rect = { left: measured.left, top: measured.top };
+              iframeRects.set(iframe, rect);
+            }
+            return rect;
+          };
+
           const onIframePointerMove = (e: PointerEvent) => {
             if (e.pointerType === 'touch') {
               hideCursor();
               return;
             }
-            if (window.innerWidth < 768) return;
+            if (!isDesktop) return;
 
-            const rect = iframe.getBoundingClientRect();
+            const rect = getRect();
             setCoords(e.clientX + rect.left, e.clientY + rect.top);
           };
 
@@ -418,7 +523,7 @@ export function CustomCursor() {
           };
 
           const onIframeMouseOver = (e: MouseEvent) => {
-            if (window.innerWidth < 768) return;
+            if (!isDesktop) return;
             onMouseOver(e);
           };
 
@@ -427,48 +532,57 @@ export function CustomCursor() {
           win.addEventListener('pointerup', onIframePointerUp, { passive: true });
           win.addEventListener('mouseover', onIframeMouseOver, { passive: true });
 
-          iframeCleanups.push(() => {
+          detachDoc = () => {
             try {
               win.removeEventListener('pointermove', onIframePointerMove);
               win.removeEventListener('pointerdown', onIframePointerDown);
               win.removeEventListener('pointerup', onIframePointerUp);
               win.removeEventListener('mouseover', onIframeMouseOver);
+              doc.documentElement.classList.remove('cursor-ready', 'cursor-hidden');
             } catch {}
-          });
+            iframeDocs.delete(doc);
+          };
         } catch {
           // Cross-origin iframe or restricted
         }
       };
 
+      const onLoad = () => attachBridge();
       try {
-        let isReady = false;
-        try {
-          // Accessing contentDocument on cross-origin iframes (e.g. Tawk.to, Cashfree) throws SecurityError
-          isReady = iframe.contentDocument?.readyState === 'complete';
-        } catch {
-          // Cross-origin iframe: skip DOM bridging safely
-          return;
-        }
+        iframe.addEventListener('load', onLoad);
+      } catch {}
 
-        if (isReady) {
+      try {
+        // Accessing contentDocument on cross-origin iframes (e.g. Tawk.to,
+        // Cashfree) throws SecurityError. If it is already complete we can
+        // attach immediately; the load listener above covers navigation.
+        if (iframe.contentDocument?.readyState === 'complete') {
           attachBridge();
-        } else {
-          iframe.addEventListener('load', attachBridge, { once: true });
         }
       } catch {
-        // Cross-origin iframe: ignore
+        // Cross-origin iframe: skip DOM bridging safely
       }
+
+      iframeCleanups.push(() => {
+        try {
+          iframe.removeEventListener('load', onLoad);
+        } catch {}
+        detachDoc?.();
+        iframeRects.delete(iframe);
+        bridgedIframes.delete(iframe);
+      });
     };
 
     try {
-      // Attach single, deduplicated Pointer Event listeners to both window and document
+      // A single pointer listener on window is enough — document also received the
+      // same bubbling event, which made every movement run twice.
       window.addEventListener('pointermove', onPointerMove, { passive: true });
-      document.addEventListener('pointermove', onPointerMove, { passive: true });
       window.addEventListener('custom-cursor-coords', onCustomCoords);
       window.addEventListener('pointerdown', onPointerDown, { passive: true });
       window.addEventListener('pointerup', onPointerUp, { passive: true });
       window.addEventListener('mouseover', onMouseOver, { passive: true });
       window.addEventListener('resize', onResize, { passive: true });
+      window.addEventListener('scroll', refreshIframeRects, { passive: true, capture: true });
       window.addEventListener('custom-cursor-hover', onCustomHover);
 
       // Window blur & focus handlers ensure native cursor is restored when user alt-tabs
@@ -481,10 +595,12 @@ export function CustomCursor() {
 
       // Connect existing iframes safely
       document.querySelectorAll('iframe').forEach(bridgeIframe);
+      refreshIframeRects();
 
       // Scoped observer for iframe mounting
       const handleIframeMount = () => {
         document.querySelectorAll('iframe').forEach(bridgeIframe);
+        refreshIframeRects();
       };
       window.addEventListener('clothing-mockup-mounted', handleIframeMount);
       iframeCleanups.push(() => window.removeEventListener('clothing-mockup-mounted', handleIframeMount));
@@ -498,12 +614,14 @@ export function CustomCursor() {
     return () => {
       document.documentElement.classList.remove('cursor-ready');
       document.documentElement.classList.remove('cursor-hidden');
+      syncIframeCursorState();
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('custom-cursor-coords', onCustomCoords);
       window.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('mouseover', onMouseOver);
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', refreshIframeRects, { capture: true });
       window.removeEventListener('custom-cursor-hover', onCustomHover);
       window.removeEventListener('blur', hideCursor);
       window.removeEventListener('focus', showCursor);
@@ -512,9 +630,9 @@ export function CustomCursor() {
       if (rafId !== null) cancelAnimationFrame(rafId);
       iframeCleanups.forEach((fn) => fn());
     };
-  }, [mounted]);
+  }, [mounted, disabled]);
 
-  if (!mounted) return null;
+  if (!mounted || disabled) return null;
 
   return createPortal(
     <>

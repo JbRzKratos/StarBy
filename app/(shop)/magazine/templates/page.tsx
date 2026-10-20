@@ -3,8 +3,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MAGAZINE_TEMPLATES as INITIAL_TEMPLATES } from '@/data/magazineTemplates';
-import type { MagazineCategory, MagazineTemplate } from '@/types/magazine';
+import { MAGAZINE_TEMPLATE_CATALOG as INITIAL_TEMPLATES } from '@/data/magazineTemplates/catalog';
+import type { MagazineCategory, MagazineTemplateMeta } from '@/types/magazine';
 
 const CATEGORIES: Array<{ id: MagazineCategory | 'all'; label: string }> = [
   { id: 'all', label: 'All Templates' },
@@ -23,8 +23,8 @@ export default function MagazineTemplatesDirectory() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFormat, setSelectedFormat] = useState<string>('all');
   const [favorites, setFavorites] = useState<string[]>([]);
-  const [previewTemplate, setPreviewTemplate] = useState<MagazineTemplate | null>(null);
-  const [dbTemplates, setDbTemplates] = useState<MagazineTemplate[]>([]);
+  const [previewTemplate, setPreviewTemplate] = useState<MagazineTemplateMeta | null>(null);
+  const [dbTemplates, setDbTemplates] = useState<MagazineTemplateMeta[]>([]);
 
   useEffect(() => {
     fetch('/api/admin/magazine-templates')
@@ -38,7 +38,7 @@ export default function MagazineTemplatesDirectory() {
   }, []);
 
   const allTemplates = useMemo(() => {
-    const map = new Map<string, MagazineTemplate>();
+    const map = new Map<string, MagazineTemplateMeta>();
     INITIAL_TEMPLATES.forEach((tpl) => map.set(tpl.id, tpl));
     dbTemplates.forEach((tpl) => map.set(tpl.id, tpl));
     return Array.from(map.values());
@@ -264,6 +264,7 @@ export default function MagazineTemplatesDirectory() {
                     src={previewTemplate.coverImage}
                     alt="cover"
                     fill
+                    sizes="(max-width: 640px) 90vw, 320px"
                     className="object-cover"
                   />
                   <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/70 rounded text-[9px] font-mono">
@@ -277,6 +278,7 @@ export default function MagazineTemplatesDirectory() {
                       src={previewTemplate.spreadPreviews[0]}
                       alt="spread"
                       fill
+                      sizes="(max-width: 640px) 90vw, 320px"
                       className="object-cover"
                     />
                     <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/70 rounded text-[9px] font-mono">

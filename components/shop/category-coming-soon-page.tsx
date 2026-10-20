@@ -619,7 +619,10 @@ export function CategoryComingSoonPage({ category }: { category: string }) {
     <div ref={containerRef} className="w-full text-[#F5F1EA]">
       {/* ── 1. Hero Showcase Section ── */}
       <section className="relative overflow-hidden pt-12 pb-16 md:pb-24 border-b border-[#F5F1EA]/10">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#0057FF]/10 blur-[120px] pointer-events-none rounded-full" />
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] pointer-events-none rounded-full"
+          style={{ background: 'radial-gradient(ellipse, rgba(0,87,255,0.10) 0%, transparent 70%)' }}
+        />
 
         <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10 px-4 sm:px-6">
           {/* Status Chip */}
@@ -720,7 +723,7 @@ export function CategoryComingSoonPage({ category }: { category: string }) {
                   </span>
                 </div>
 
-                {/* Concept Product Visual with unoptimized Image */}
+                {/* Concept Product Visual */}
                 <div className="relative aspect-square w-full my-4 flex items-center justify-center overflow-hidden rounded-xl bg-[#16161A]/80 border border-white/5 group-hover:border-[#ED9518]/30 transition-colors">
                   <div
                     className="absolute inset-0 pointer-events-none opacity-40"
@@ -732,7 +735,6 @@ export function CategoryComingSoonPage({ category }: { category: string }) {
                     src={item.image}
                     alt={item.name}
                     fill
-                    unoptimized
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-contain p-6 transition-transform duration-700 ease-out group-hover:scale-108 relative z-10 drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)]"
                   />

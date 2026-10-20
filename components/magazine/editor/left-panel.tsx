@@ -904,7 +904,6 @@ export function LeftPanel({
                         alt={tpl.name}
                         fill
                         className="object-cover"
-                        unoptimized
                       />
                     )}
                   </div>

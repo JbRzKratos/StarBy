@@ -140,7 +140,6 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                   src={garmentImg}
                   alt={`${selectedGarment.name} - ${selectedColor.name}`}
                   fill
-                  unoptimized
                   priority
                   className="object-contain pointer-events-none"
                   sizes="280px"
@@ -305,7 +304,6 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                     src={art.previewUrl}
                     alt={art.name}
                     fill
-                    unoptimized
                     className="object-contain pointer-events-none"
                     sizes="160px"
                   />
@@ -516,7 +514,6 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                       src={art.previewUrl}
                       alt={art.name}
                       fill
-                      unoptimized
                       className="object-contain p-1"
                       sizes="120px"
                     />

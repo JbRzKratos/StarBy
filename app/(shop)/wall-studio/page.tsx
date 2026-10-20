@@ -2,8 +2,6 @@ import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { WallStudioEditor } from '@/components/wall-studio/wall-studio-editor';
 
-export const dynamic = 'force-dynamic';
-
 export const metadata: Metadata = {
   title: 'Fregoro Wall Studio — Physical Wall Art Composition Engine',
   description:

@@ -1,32 +1,67 @@
+import { getImageProps } from 'next/image';
 import { getR2AssetUrl } from '@/lib/r2';
 
 interface HeroThreeCharactersProps {
   className?: string;
-  priority?: boolean;
-  isMobile?: boolean;
 }
 
-export function HeroThreeCharacters({
-  className = '',
-  isMobile = false,
-}: HeroThreeCharactersProps) {
+/**
+ * Hero artwork with art direction.
+ *
+ * Two source crops are used (mobile / desktop). `getImageProps` lets us keep the
+ * <picture> element while still routing both crops through the Next.js image
+ * optimizer, so each breakpoint receives a correctly sized AVIF/WebP variant.
+ */
+export function HeroThreeCharacters({ className = '' }: HeroThreeCharactersProps) {
+  const alt = 'Fregoro Studios Hero Models - Three Men in Navy Blue Suits';
   const desktopSrc = getR2AssetUrl('images/hero-three-models.webp');
   const mobileSrc = getR2AssetUrl('images/hero-three-models-mobile.webp');
+
+  const mobile = getImageProps({
+    src: mobileSrc,
+    alt,
+    width: 1230,
+    height: 977,
+    quality: 78,
+    sizes: '(max-width: 767px) 92vw',
+  });
+  const desktop = getImageProps({
+    src: desktopSrc,
+    alt,
+    width: 1230,
+    height: 977,
+    quality: 80,
+    sizes: '(min-width: 768px) 90vw',
+  });
 
   return (
     <div
       className={`relative w-full h-full flex items-end justify-center select-none pointer-events-none ${className}`}
     >
+      {/* Preload the correct crop for the active breakpoint (LCP) */}
+      <link
+        rel="preload"
+        as="image"
+        media="(max-width: 767px)"
+        href={mobile.props.src}
+        imageSrcSet={mobile.props.srcSet}
+        imageSizes={mobile.props.sizes}
+      />
+      <link
+        rel="preload"
+        as="image"
+        media="(min-width: 768px)"
+        href={desktop.props.src}
+        imageSrcSet={desktop.props.srcSet}
+        imageSizes={desktop.props.sizes}
+      />
+
       <picture className="relative w-full h-full flex items-end justify-center pointer-events-none">
-        {/* Mobile viewport (<768px): load 58.7 KB optimized WebP */}
-        <source media="(max-width: 767px)" srcSet={mobileSrc} type="image/webp" />
-        {/* Desktop viewport (>=768px): load high-res WebP */}
-        <source media="(min-width: 768px)" srcSet={desktopSrc} type="image/webp" />
+        <source media="(max-width: 767px)" srcSet={mobile.props.srcSet} sizes={mobile.props.sizes} />
+        <source media="(min-width: 768px)" srcSet={desktop.props.srcSet} sizes={desktop.props.sizes} />
         <img
-          src={isMobile ? mobileSrc : desktopSrc}
-          alt="Fregoro Studios Hero Models - Three Men in Navy Blue Suits"
-          width={1230}
-          height={977}
+          {...desktop.props}
+          alt={alt}
           fetchPriority="high"
           loading="eager"
           decoding="async"

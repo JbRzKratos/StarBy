@@ -24,7 +24,7 @@ function ReviewInner() {
   const [liveMagPrice, setLiveMagPrice] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/products/prices', { cache: 'no-store' })
+    fetch('/api/products/prices')
       .then((res) => res.json())
       .then((data) => {
         if (data?.products) {

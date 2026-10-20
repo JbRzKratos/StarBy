@@ -297,7 +297,7 @@ export function SearchOverlay() {
                             alt={product.name}
                             fill
                             sizes="(max-width: 424px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                            className="object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
+                            className="object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-[transform,opacity] duration-500"
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center">

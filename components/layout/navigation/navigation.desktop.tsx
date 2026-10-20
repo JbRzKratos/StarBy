@@ -9,7 +9,7 @@ import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { useCurrencyStore, type CurrencyCode } from '@/lib/stores/currency-store';
 import { useSearchStore } from '@/lib/stores/search-store';
 
-import { OfferBannerDesktop } from '@/components/home/offer-banner/offer-banner.desktop';
+import { OfferBanner } from '@/components/home/offer-banner';
 import { FregoroLogo } from '@/components/ui/fregoro-logo';
 
 const navLinks = [
@@ -58,14 +58,29 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
   useEffect(() => {
     setMounted(true);
 
+    // Anonymous visitors make up most traffic. Without a Supabase auth cookie
+    // there is no session to resolve, so skip downloading the SDK entirely.
+    if (!document.cookie.includes('-auth-token')) return;
+
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
+
     import('@/lib/supabase/client').then(({ createClient }) => {
+      if (cancelled) return;
       const supabase = createClient();
-      supabase.auth.getUser().then(({ data }) => setUser(data.user));
+      supabase.auth.getUser().then(({ data }) => {
+        if (!cancelled) setUser(data.user);
+      });
       const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
         setUser(session?.user ?? null);
       });
-      return () => authListener.subscription.unsubscribe();
+      unsubscribe = () => authListener.subscription.unsubscribe();
     });
+
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
   }, []);
 
   // Scroll listener for sticky header background transition
@@ -90,11 +105,11 @@ export function NavigationDesktop({ variant: _variant = 'solid' }: NavigationDes
       data-host-nav
     >
       <div className="pointer-events-auto">
-        <OfferBannerDesktop />
+        <OfferBanner />
       </div>
       <nav
         ref={containerRef}
-        className={`pointer-events-auto w-full px-[clamp(1rem,2vw+0.5rem,3rem)] py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
+        className={`pointer-events-auto w-full px-[clamp(1rem,2vw+0.5rem,3rem)] py-3.5 flex items-center justify-between transition-[background-color,border-color,box-shadow] duration-300 ease-out antialiased ${navClasses}`}
       >
         {/* Logo */}
         <FregoroLogo textIsDark={textIsDark} size="md" />

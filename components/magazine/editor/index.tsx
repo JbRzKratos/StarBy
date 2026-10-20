@@ -736,7 +736,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     let dynamicName: string | null = null;
     try {
       const checkId = doc.templateId || 'prod_mag_01';
-      const pRes = await fetch(`/api/products/prices?id=${encodeURIComponent(checkId)}`, { cache: 'no-store' });
+      const pRes = await fetch(`/api/products/prices?id=${encodeURIComponent(checkId)}`);
       if (pRes.ok) {
         const pData = await pRes.json();
         if (pData?.product?.basePrice !== undefined) {

@@ -314,7 +314,6 @@ export function AddSheetContent({
                       fill
                       className="object-cover"
                       sizes="64px"
-                      unoptimized
                     />
                   </button>
                 ))}

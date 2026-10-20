@@ -24,11 +24,15 @@ const nextConfig = {
   },
 
   images: {
-    // All images are served directly from Cloudflare R2 CDN via getR2AssetUrl().
-    // Next.js image optimization is disabled to avoid unnecessary Vercel proxy hops —
-    // R2 already delivers optimised WebP/AVIF assets with global edge caching.
-    // remotePatterns still required for <Image> domain allowlist validation.
-    unoptimized: true,
+    // R2 stores the original uploads. Next.js resizes and transcodes them on demand,
+    // then caches the result at the edge. This gives every viewport a correctly sized
+    // AVIF/WebP image instead of the full-resolution original.
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [360, 480, 640, 828, 1080, 1200, 1600, 1920],
+    imageSizes: [64, 80, 128, 160, 256, 384],
+    // 30 days: long enough for CDN efficiency, short enough that re-uploaded
+    // product artwork does not stay stale for a full year.
+    minimumCacheTTL: 2592000,
     remotePatterns: [
       {
         protocol: 'https',
@@ -54,6 +58,22 @@ const nextConfig = {
         hostname: 'pub-911817f7f441483a9ef72eecab9dbf49.r2.dev',
       },
     ],
+  },
+
+  webpack: (config) => {
+    // webpack's filesystem cache prints a non-actionable performance notice when
+    // it serializes the large inline catalogue/manifest strings used by the
+    // magazine and wall editors. It is an internal cache hint, not a build
+    // problem, so keep the build output clean.
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings ?? []),
+      /PackFileCacheStrategy/,
+    ];
+    config.infrastructureLogging = {
+      ...(config.infrastructureLogging ?? {}),
+      level: 'error',
+    };
+    return config;
   },
 
   async headers() {

@@ -3,8 +3,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MAGAZINE_TEMPLATES as INITIAL_TEMPLATES } from '@/data/magazineTemplates';
-import type { MagazineCategory, MagazineTemplate } from '@/types/magazine';
+import { MAGAZINE_TEMPLATE_CATALOG as INITIAL_TEMPLATES } from '@/data/magazineTemplates/catalog';
+import type { MagazineCategory, MagazineTemplateMeta } from '@/types/magazine';
 
 const CATEGORIES: Array<{ id: MagazineCategory | 'all'; label: string }> = [
   { id: 'all', label: 'All Templates' },
@@ -22,8 +22,8 @@ export default function MagazineStudioLanding() {
   const [activeCategory, setActiveCategory] = useState<MagazineCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTemplateForPreview, setSelectedTemplateForPreview] =
-    useState<MagazineTemplate | null>(null);
-  const [dbTemplates, setDbTemplates] = useState<MagazineTemplate[]>([]);
+    useState<MagazineTemplateMeta | null>(null);
+  const [dbTemplates, setDbTemplates] = useState<MagazineTemplateMeta[]>([]);
 
   useEffect(() => {
     fetch('/api/admin/magazine-templates')
@@ -46,7 +46,7 @@ export default function MagazineStudioLanding() {
   }, [selectedTemplateForPreview]);
 
   const allTemplates = useMemo(() => {
-    const map = new Map<string, MagazineTemplate>();
+    const map = new Map<string, MagazineTemplateMeta>();
     INITIAL_TEMPLATES.forEach((tpl) => map.set(tpl.id, tpl));
     dbTemplates.forEach((tpl) => map.set(tpl.id, tpl));
     return Array.from(map.values());
@@ -65,7 +65,10 @@ export default function MagazineStudioLanding() {
     <div className="min-h-screen bg-[#0D0D0E] text-[#F5F1EA] pt-24 pb-20">
       {/* ── 1. Hero Section ── */}
       <section className="section-container relative overflow-hidden pt-8 pb-16 md:pb-24">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#0057FF]/15 blur-[140px] pointer-events-none rounded-full" />
+        <div
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] pointer-events-none rounded-full"
+          style={{ background: 'radial-gradient(ellipse, rgba(0,87,255,0.15) 0%, transparent 70%)' }}
+        />
 
         <div className="max-w-4xl mx-auto text-center space-y-6 relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1A1A1E] border border-[#F5F1EA]/15">
@@ -369,6 +372,7 @@ export default function MagazineStudioLanding() {
                     src={selectedTemplateForPreview.coverImage}
                     alt="cover"
                     fill
+                    sizes="(max-width: 640px) 90vw, 320px"
                     className="object-cover"
                   />
                   <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/70 rounded text-[9px] font-mono">
@@ -382,6 +386,7 @@ export default function MagazineStudioLanding() {
                       src={selectedTemplateForPreview.spreadPreviews[0]}
                       alt="spread"
                       fill
+                      sizes="(max-width: 640px) 90vw, 320px"
                       className="object-cover"
                     />
                     <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/70 rounded text-[9px] font-mono">

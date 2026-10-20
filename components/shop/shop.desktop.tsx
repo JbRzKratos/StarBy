@@ -62,8 +62,7 @@ function DesktopProductCard({
             src={imgSrc}
             alt={product.name}
             fill
-            unoptimized
-            priority={index < 8}
+            priority={index === 0}
             className="object-contain p-4 transition-transform duration-[600ms] ease-out group-hover:scale-105"
             sizes="(max-width: 1024px) 33vw, 25vw"
             onError={() => setImgError(true)}
@@ -77,7 +76,7 @@ function DesktopProductCard({
 
           {/* Hover overlay with button */}
           <div className="absolute inset-0 bg-charcoal/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-            <span className="bg-white text-black font-mono text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-lg shadow-xl translate-y-3 group-hover:translate-y-0 transition-all duration-300">
+            <span className="bg-white text-black font-mono text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-lg shadow-xl translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
               Customize in 3D
             </span>
           </div>
@@ -119,8 +118,7 @@ function DesktopProductCard({
           src={imgSrc}
           alt={product.name}
           fill
-          unoptimized
-          priority={index < 8}
+          priority={index === 0}
           className={`${isComingSoon ? 'object-contain p-4' : 'object-cover'} transition-transform duration-[600ms] ease-out group-hover:scale-105`}
           sizes="(max-width: 1024px) 33vw, 25vw"
           onError={() => setImgError(true)}
@@ -147,7 +145,7 @@ function DesktopProductCard({
         {/* Hover overlay with button */}
         <div className="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
           <span
-            className={`font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg shadow-xl translate-y-4 group-hover:translate-y-0 transition-all duration-300 ${
+            className={`font-mono text-[10px] uppercase tracking-widest px-6 py-3 rounded-lg shadow-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300 ${
               isComingSoon
                 ? 'bg-amber-500 text-black font-semibold'
                 : isPlainApparel

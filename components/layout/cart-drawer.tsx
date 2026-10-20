@@ -228,7 +228,7 @@ export function CartDrawer() {
                           item.customization?.thumbnail ||
                           item.image ||
                           product?.variants[0]?.images[0] ||
-                          getR2AssetUrl('images/placeholder.png')
+                          getR2AssetUrl('images/placeholder.webp')
                         }
                         alt={item.name || displayName}
                         fill
@@ -492,7 +492,7 @@ export function CartDrawer() {
                 return (
                   <div
                     key={`${item.productId}-${item.variantId}-${index}`}
-                    className="cart-item group relative flex flex-row gap-6 p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-all duration-300 rounded-xl"
+                    className="cart-item group relative flex flex-row gap-6 p-6 bg-graphite/40 border border-smoke/50 hover:border-cobalt/50 hover:bg-graphite/80 transition-colors duration-300 rounded-xl"
                   >
                     {/* Thumbnail */}
                     <div className="relative w-32 h-32 bg-[#121214] rounded-lg overflow-hidden shrink-0 border border-[#F5F1EA]/10">
@@ -502,7 +502,7 @@ export function CartDrawer() {
                           item.customization?.thumbnail ||
                           item.image ||
                           product?.variants[0]?.images[0] ||
-                          getR2AssetUrl('images/placeholder.png')
+                          getR2AssetUrl('images/placeholder.webp')
                         }
                         alt={item.name || displayName}
                         fill

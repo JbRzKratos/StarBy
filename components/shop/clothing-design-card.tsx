@@ -30,7 +30,7 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
   return (
     <div
       onClick={() => onSelect(design)}
-      className="group relative flex flex-col bg-[#111216] border border-white/5 hover:border-white/20 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-black/50"
+      className="group relative flex flex-col bg-[#111216] border border-white/5 hover:border-white/20 rounded-2xl overflow-hidden cursor-pointer transition-[border-color,box-shadow] duration-300 hover:shadow-2xl hover:shadow-black/50"
       style={{ perspective: '1000px' }}
       role="button"
       tabIndex={0}
@@ -74,11 +74,10 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
               src={previewSrc}
               alt={design.name}
               fill
-              unoptimized
               priority={priority}
               onLoad={() => setIsLoaded(true)}
               onError={() => setImageError(true)}
-              className={`object-contain transition-all duration-500 ease-out group-hover:scale-105 ${
+              className={`object-contain transition-transform duration-500 ease-out group-hover:scale-105 ${
                 isLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

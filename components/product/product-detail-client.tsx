@@ -13,7 +13,6 @@ import { SizeSelector } from './size-selector';
 import { ProductReviews } from './product-reviews';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
-import { getDesignById } from '@/lib/clothing-designs/manifest';
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
 import {
   APPAREL_CONFIG,
@@ -42,12 +41,20 @@ const SizeChartModal = dynamic(
 
 interface ProductDetailClientProps {
   product: Product;
+  /**
+   * Resolved on the server so the ~190 KB design manifest is not shipped in the
+   * product-page client bundle.
+   */
+  clothingDesign?: ClothingDesignEntry | null;
 }
 
 // Only apparel products get the body-measurement size finder
 const APPAREL_CATEGORIES = ['tees', 'hoodies', 'oversized-tees'];
 
-export function ProductDetailClient({ product }: ProductDetailClientProps) {
+export function ProductDetailClient({
+  product,
+  clothingDesign: initialClothingDesign = null,
+}: ProductDetailClientProps) {
   const isApparelCategory =
     APPAREL_CATEGORIES.includes(product.categorySlug) ||
     product.tags?.includes('clothing-design') ||
@@ -60,8 +67,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   );
 
   const resolvedClothingDesign: ClothingDesignEntry | null =
-    getDesignById(product.id) ||
-    getDesignById(product.slug) ||
+    initialClothingDesign ||
     (!isPlainApparel && isApparelCategory
       ? {
           id: product.id,

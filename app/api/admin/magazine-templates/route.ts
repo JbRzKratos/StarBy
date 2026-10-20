@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { MAGAZINE_TEMPLATES } from '@/data/magazineTemplates';
+import { MAGAZINE_TEMPLATE_CATALOG } from '@/data/magazineTemplates/catalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,13 +17,17 @@ export async function GET() {
       },
     });
 
-    const productMap = new Map<string, { id: string; name: string; basePrice: number; description: string }>();
+    const productMap = new Map<
+      string,
+      { id: string; name: string; basePrice: number; description: string }
+    >();
     for (const p of products) {
       productMap.set(p.id, p);
       if (p.slug) productMap.set(p.slug, p);
     }
 
-    const liveTemplates = MAGAZINE_TEMPLATES.map((tpl) => {
+    // Metadata only — never ship the full template page trees to the landing page.
+    const liveTemplates = MAGAZINE_TEMPLATE_CATALOG.map((tpl) => {
       const match = productMap.get(tpl.id) || productMap.get(tpl.slug);
       return {
         ...tpl,
@@ -35,14 +39,14 @@ export async function GET() {
 
     return NextResponse.json(liveTemplates, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
       },
     });
   } catch (err) {
     console.error('[MagazineTemplatesAPI] Error merging live DB data:', err);
-    return NextResponse.json(MAGAZINE_TEMPLATES, {
+    return NextResponse.json(MAGAZINE_TEMPLATE_CATALOG, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
       },
     });
   }

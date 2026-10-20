@@ -93,7 +93,6 @@ export function SplitPosterTeaser() {
                       src={VENOM_POSTER_IMAGE}
                       alt={`Venom split poster panel ${i + 1}`}
                       fill
-                      unoptimized
                       className="object-cover"
                       sizes="320px"
                     />

@@ -23,7 +23,7 @@ export default function UploadPdfPortalPage() {
   const [livePrice, setLivePrice] = useState<number>(649);
 
   useEffect(() => {
-    fetch('/api/products/prices', { cache: 'no-store' })
+    fetch('/api/products/prices')
       .then((res) => res.json())
       .then((data) => {
         if (data?.variants?.['v_mag_16p']?.price) {

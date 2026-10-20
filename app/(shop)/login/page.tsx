@@ -169,11 +169,16 @@ function LoginContent() {
     <main className="min-h-[calc(100dvh-60px)] w-full bg-[#0A0A0C] text-[#F5F1EA] font-sans pt-28 sm:pt-32 md:pt-36 pb-16 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
       {/* Background Decorative Ambient Glows */}
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-tr from-[#3B5EFF]/10 via-[#ED9518]/10 to-transparent blur-[120px] pointer-events-none rounded-full"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none rounded-full"
+        style={{
+          background:
+            'radial-gradient(ellipse at 30% 30%, rgba(59,94,255,0.10) 0%, rgba(237,149,24,0.08) 45%, transparent 72%)',
+        }}
         aria-hidden="true"
       />
       <div
-        className="absolute bottom-10 right-10 w-[350px] h-[350px] bg-[#3B5EFF]/5 blur-[100px] pointer-events-none rounded-full"
+        className="absolute bottom-10 right-10 w-[350px] h-[350px] pointer-events-none rounded-full"
+        style={{ background: 'radial-gradient(circle, rgba(59,94,255,0.05) 0%, transparent 70%)' }}
         aria-hidden="true"
       />
 
@@ -387,6 +392,7 @@ function LoginContent() {
                 src={item.image}
                 alt={item.title}
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 priority={idx === 0}
                 className="object-cover object-center"
               />

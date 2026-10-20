@@ -8,6 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      // The StarBy host page owns the custom cursor for this embedded studio.
+      // Set this before the app module runs so its legacy RAF forwarder never
+      // registers a duplicate mousemove listener.
+      if (window.parent && window.parent !== window) {
+        window.__parentCursorBridgeActive = true;
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

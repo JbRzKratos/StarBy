@@ -147,7 +147,6 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                     src={garmentImg}
                     alt={`${selectedGarment.name} - ${selectedColor.name}`}
                     fill
-                    unoptimized
                     priority
                     className="object-contain pointer-events-none"
                     sizes="340px"
@@ -310,7 +309,6 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                       src={art.previewUrl}
                       alt={art.name}
                       fill
-                      unoptimized
                       className="object-contain pointer-events-none"
                       sizes="220px"
                     />
@@ -533,7 +531,6 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                             src={art.previewUrl}
                             alt={art.name}
                             fill
-                            unoptimized
                             className="object-contain p-1"
                             sizes="120px"
                           />

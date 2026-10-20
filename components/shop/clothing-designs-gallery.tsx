@@ -275,7 +275,7 @@ export function ClothingDesignsGallery({
         <div className="flex flex-col gap-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {plainProductsForCategory.map((product, idx) => (
-              <PlainApparelCard key={product.id} product={product} priority={idx < 4} />
+              <PlainApparelCard key={product.id} product={product} priority={idx === 0} />
             ))}
           </div>
         </div>
@@ -286,7 +286,7 @@ export function ClothingDesignsGallery({
               key={design.id}
               design={design}
               onSelect={setSelectedDesign}
-              priority={idx < 8}
+              priority={idx === 0}
             />
           ))}
         </div>

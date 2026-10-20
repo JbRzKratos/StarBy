@@ -48,7 +48,7 @@ export function Hero() {
 
         {/* 3-Character Visual in Foreground (Enlarged & proportionally balanced) */}
         <div className="relative z-10 w-auto h-full max-h-[clamp(320px,58vh,640px)] aspect-[1230/977] max-w-[min(94vw,1180px)] flex items-end justify-center pointer-events-none">
-          <HeroThreeCharacters priority />
+          <HeroThreeCharacters />
         </div>
       </div>
 

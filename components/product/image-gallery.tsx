@@ -80,7 +80,7 @@ export function ImageGallery({ colorHex, productName, images }: ImageGalleryProp
               aria-label={`View ${productName} image ${i + 1}`}
               aria-pressed={i === activeIndex}
               onClick={() => handleThumbnailClick(i)}
-              className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+              className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-[border-color,box-shadow] duration-300 ${
                 i === activeIndex
                   ? 'border-cobalt opacity-100 ring-2 ring-cobalt/20 ring-offset-2 ring-offset-graphite'
                   : 'border-transparent opacity-60 hover:opacity-100 hover:border-smoke/50'

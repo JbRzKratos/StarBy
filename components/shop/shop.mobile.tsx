@@ -58,8 +58,7 @@ function MobileProductCard({
             src={imgSrc}
             alt={product.name}
             fill
-            unoptimized
-            priority={index < 6}
+            priority={index === 0}
             className="object-contain p-3 transition-transform duration-500 active:scale-105"
             sizes="(max-width: 768px) 50vw"
             onError={() => setImgError(true)}
@@ -104,8 +103,7 @@ function MobileProductCard({
           src={imgSrc}
           alt={product.name}
           fill
-          unoptimized
-          priority={index < 6}
+          priority={index === 0}
           className={`${isComingSoon ? 'object-contain p-3' : 'object-cover'} transition-transform duration-500 active:scale-105`}
           sizes="(max-width: 768px) 50vw"
           onError={() => setImgError(true)}

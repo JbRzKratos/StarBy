@@ -11,7 +11,7 @@ import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { useCurrencyStore, type CurrencyCode } from '@/lib/stores/currency-store';
 import { useSearchStore } from '@/lib/stores/search-store';
 
-import { OfferBannerMobile } from '@/components/home/offer-banner/offer-banner.mobile';
+import { OfferBanner } from '@/components/home/offer-banner';
 import { FregoroLogo } from '@/components/ui/fregoro-logo';
 interface MenuLinkItem {
   href: string;
@@ -57,15 +57,28 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
   useEffect(() => {
     setMounted(true);
 
-    // Check auth status
+    // Check auth status — skip the Supabase SDK when no auth cookie exists.
+    if (!document.cookie.includes('-auth-token')) return;
+
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
+
     import('@/lib/supabase/client').then(({ createClient }) => {
+      if (cancelled) return;
       const supabase = createClient();
-      supabase.auth.getUser().then(({ data }) => setUser(data.user));
+      supabase.auth.getUser().then(({ data }) => {
+        if (!cancelled) setUser(data.user);
+      });
       const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
         setUser(session?.user ?? null);
       });
-      return () => authListener.subscription.unsubscribe();
+      unsubscribe = () => authListener.subscription.unsubscribe();
     });
+
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
   }, []);
 
   const navRef = useRef<HTMLElement>(null);
@@ -166,11 +179,11 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
         data-host-nav
       >
         <div className="pointer-events-auto">
-          <OfferBannerMobile />
+          <OfferBanner />
         </div>
         <nav
           ref={navRef}
-          className={`pointer-events-auto w-full px-3 sm:px-5 py-3.5 flex items-center justify-between transition-all duration-300 ease-out antialiased ${navClasses}`}
+          className={`pointer-events-auto w-full px-3 sm:px-5 py-3.5 flex items-center justify-between transition-[background-color,border-color,box-shadow] duration-300 ease-out antialiased ${navClasses}`}
         >
           <FregoroLogo textIsDark={textIsDark} size="sm" />
 

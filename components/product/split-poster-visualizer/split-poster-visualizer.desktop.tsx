@@ -48,7 +48,7 @@ export function SplitPosterVisualizerDesktop() {
 
   // Fetch live split poster prices from DB
   useEffect(() => {
-    fetch('/api/products/prices', { cache: 'no-store' })
+    fetch('/api/products/prices')
       .then((res) => res.json())
       .then((data) => {
         if (data?.products) setSplitPrices(data.products);

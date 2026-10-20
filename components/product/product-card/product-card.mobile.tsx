@@ -52,7 +52,6 @@ export const ProductCardMobile = memo(function ProductCardMobile({ product, onCa
               src={imgSrc}
               alt={product.name}
               fill
-              unoptimized
               onError={() => setImgError(true)}
               className="object-cover"
               sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
@@ -109,7 +108,7 @@ export const ProductCardMobile = memo(function ProductCardMobile({ product, onCa
           e.stopPropagation();
           toggleWishlist(product.id);
         }}
-        className={`absolute top-2 right-2 z-10 w-11 h-11 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 ${
+        className={`absolute top-2 right-2 z-10 w-11 h-11 flex items-center justify-center rounded-full backdrop-blur-md border transition-colors duration-300 ${
           isWishlisted
             ? 'bg-ember/20 border-ember text-ember shadow-[0_0_15px_rgba(255,51,51,0.3)]'
             : 'bg-charcoal/40 border-smoke/50 text-pearl'

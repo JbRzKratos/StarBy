@@ -160,7 +160,7 @@ export function BentoGrid() {
             <div
               role="tablist"
               aria-label="Canvas medium categories"
-              className="inline-flex items-center p-1 rounded-full bg-smoke/20 border border-smoke/30 backdrop-blur-md"
+              className="inline-flex items-center p-1 rounded-full bg-smoke/20 border border-smoke/30"
             >
               {TABS.map((tab) => {
                 const isActive = activeTab === tab.id;
@@ -194,7 +194,7 @@ export function BentoGrid() {
 
         {/* ── Bento Grid ── */}
         <div ref={gridRef} className={gridContainerClass}>
-          {displayedCategories.map((cat, i) => {
+          {displayedCategories.map((cat) => {
             const layout = getTileLayout(cat);
             return (
               <BentoTile
@@ -202,7 +202,6 @@ export function BentoGrid() {
                 category={cat}
                 className={layout.className}
                 sizeVariant={layout.sizeVariant}
-                priority={i < 2}
               />
             );
           })}

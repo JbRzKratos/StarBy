@@ -146,7 +146,7 @@ export const useCartStore = create<CartState & CartActions>()(
           const currentItems = get().items;
           if (currentItems.length === 0) return;
           try {
-            const res = await fetch('/api/products/prices', { cache: 'no-store' });
+            const res = await fetch('/api/products/prices');
             if (!res.ok) return;
             const data = await res.json();
             if (!data?.success) return;

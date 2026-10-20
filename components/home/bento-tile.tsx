@@ -60,14 +60,12 @@ export const CATEGORY_GROUPS: Record<string, 'wearables' | 'wall' | 'editorial'>
 interface BentoTileProps {
   category: Category;
   className?: string;
-  priority?: boolean;
   sizeVariant?: 'hero' | 'wide' | 'compact';
 }
 
 export function BentoTile({
   category,
   className = '',
-  priority = false,
   sizeVariant = 'wide',
 }: BentoTileProps) {
   const href = CATEGORY_HREFS[category.slug] || `/products/${category.slug}`;
@@ -78,7 +76,7 @@ export function BentoTile({
   return (
     <Link
       href={href}
-      className={`group relative overflow-hidden rounded-2xl border border-white/[0.08] hover:border-white/30 bg-[#121215] flex flex-col justify-between transition-all duration-500 ease-out-expo hover:shadow-[0_0_30px_rgba(59,94,255,0.15)] ${className}`}
+      className={`group relative overflow-hidden rounded-2xl border border-white/[0.08] hover:border-white/30 bg-[#121215] flex flex-col justify-between transition-[border-color,box-shadow] duration-500 ease-out-expo hover:shadow-[0_0_30px_rgba(59,94,255,0.15)] ${className}`}
     >
       {/* Background Image — our authentic mockups and artworks */}
       {imageSrc && (
@@ -86,10 +84,8 @@ export function BentoTile({
           src={imageSrc}
           alt={category.name}
           fill
-          unoptimized
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          priority={priority}
-          className="absolute inset-0 object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none"
+          className="absolute inset-0 object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-[transform,opacity] duration-700 ease-out pointer-events-none"
         />
       )}
 
@@ -101,13 +97,13 @@ export function BentoTile({
       <div className="relative z-10 flex items-center justify-between p-4 md:p-5">
         <div>
           {category.comingSoon && (
-            <span className="font-mono text-[10px] tracking-wider uppercase text-pearl/70 bg-charcoal/60 backdrop-blur-md border border-white/10 px-2.5 py-0.5 rounded-full">
+            <span className="font-mono text-[10px] tracking-wider uppercase text-pearl/70 bg-charcoal/80 border border-white/10 px-2.5 py-0.5 rounded-full">
               Coming Soon
             </span>
           )}
         </div>
 
-        <span className="w-7 h-7 rounded-full bg-charcoal/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-pearl/70 group-hover:text-bone group-hover:bg-cobalt group-hover:border-cobalt transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-sm">
+        <span className="w-7 h-7 rounded-full bg-charcoal/80 border border-white/10 flex items-center justify-center text-pearl/70 group-hover:text-bone group-hover:bg-cobalt group-hover:border-cobalt transition-colors duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-sm">
           <ArrowUpRight className="w-3.5 h-3.5" />
         </span>
       </div>

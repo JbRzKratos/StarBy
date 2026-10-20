@@ -17,6 +17,9 @@ export function Testimonials() {
       // overwrite: 'auto' lets the marquee co-exist without fighting over opacity.
       gsap.set(trackRef.current.children, { y: 40, opacity: 0 });
 
+      let marquee: gsap.core.Tween | null = null;
+      let isSectionVisible = false;
+
       // Reveal cards when the section scrolls into view.
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -33,17 +36,39 @@ export function Testimonials() {
             overwrite: 'auto',
             onComplete: () => {
               // Start the endless marquee only after cards are revealed.
-              gsap.to(trackRef.current, {
+              marquee = gsap.to(trackRef.current, {
                 xPercent: -50,
                 ease: 'none',
                 duration: 40,
                 repeat: -1,
                 force3D: true,
               });
+              if (isSectionVisible) marquee.play();
+              else marquee.pause();
             },
           });
         },
       });
+
+      // Pause the marquee whenever the section is off-screen. Without this the
+      // compositor keeps animating a 2× card track for the entire session.
+      const visibility = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        onToggle: (self) => {
+          isSectionVisible = self.isActive;
+          if (!marquee) return;
+          if (self.isActive) marquee.play();
+          else marquee.pause();
+        },
+      });
+      isSectionVisible = visibility.isActive;
+
+      return () => {
+        visibility.kill();
+        marquee?.kill();
+      };
     },
     { scope: sectionRef },
   );
@@ -79,7 +104,7 @@ export function Testimonials() {
           ref={trackRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="flex gap-4 md:gap-6 px-4 md:px-8 w-max [will-change:transform]"
+          className="flex gap-4 md:gap-6 px-4 md:px-8 w-max"
         >
           {[
             ...testimonials.map((t) => ({ ...t, _key: `orig-${t.id}` })),

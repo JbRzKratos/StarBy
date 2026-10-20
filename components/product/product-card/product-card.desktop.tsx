@@ -48,7 +48,6 @@ export const ProductCardDesktop = memo(function ProductCardDesktop({ product, on
               src={imgSrc}
               alt={product.name}
               fill
-              unoptimized
               onError={() => setImgError(true)}
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
@@ -105,7 +104,7 @@ export const ProductCardDesktop = memo(function ProductCardDesktop({ product, on
           e.stopPropagation();
           toggleWishlist(product.id);
         }}
-        className={`absolute top-3 right-3 z-10 p-2 rounded-full backdrop-blur-md border transition-all duration-300 ${
+        className={`absolute top-3 right-3 z-10 p-2 rounded-full backdrop-blur-md border transition-colors duration-300 ${
           isWishlisted
             ? 'bg-ember/20 border-ember text-ember shadow-[0_0_15px_rgba(255,51,51,0.3)]'
             : 'bg-charcoal/40 border-smoke/50 text-pearl hover:text-bone hover:border-smoke'

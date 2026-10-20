@@ -156,7 +156,6 @@ function ShowcasePreviewCardImage({
           src={src}
           alt={alt}
           fill
-          unoptimized
           onError={() => setImgError(true)}
           className="object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-108 relative z-10 drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -324,7 +323,13 @@ export function FeaturedProducts({ initialProducts }: { initialProducts?: Produc
               <div className="space-y-12">
                 {/* Coming Soon Hero Banner */}
                 <div className="p-8 md:p-12 rounded-2xl bg-[#121214] border border-[#ED9518]/30 shadow-2xl relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-[#ED9518]/10 blur-[100px] pointer-events-none rounded-full" />
+                  <div
+                    className="absolute top-0 right-0 w-96 h-96 pointer-events-none rounded-full"
+                    style={{
+                      background:
+                        'radial-gradient(circle, rgba(237,149,24,0.10) 0%, transparent 70%)',
+                    }}
+                  />
                   <div className="max-w-3xl space-y-4 relative z-10">
                     <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#1A1A1E] border border-[#ED9518]/40">
                       <span className="w-2 h-2 rounded-full bg-[#ED9518] animate-pulse" />
@@ -378,7 +383,7 @@ export function FeaturedProducts({ initialProducts }: { initialProducts?: Produc
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="group block relative bg-[#121214] border border-[#F5F1EA]/10 hover:border-[#ED9518]/40 rounded-2xl p-5 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-[#ED9518]/5"
+                      className="group block relative bg-[#121214] border border-[#F5F1EA]/10 hover:border-[#ED9518]/40 rounded-2xl p-5 transition-[border-color,box-shadow] duration-300 shadow-lg hover:shadow-2xl hover:shadow-[#ED9518]/5"
                     >
                       <div className="flex items-center justify-between gap-2 mb-2">
                         <span className="px-2.5 py-0.5 rounded-full bg-[#1A1A1E] border border-[#ED9518]/30 text-[#ED9518] font-mono text-[9px] uppercase tracking-widest font-bold">

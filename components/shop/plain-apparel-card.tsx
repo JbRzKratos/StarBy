@@ -68,11 +68,10 @@ export function PlainApparelCard({ product, priority = false }: PlainApparelCard
               src={currentImage}
               alt={`${product.name} - ${currentVariant.name}`}
               fill
-              unoptimized
               priority={priority}
               onLoad={() => setIsLoaded(true)}
               onError={() => setImageError(true)}
-              className={`object-contain transition-all duration-500 ease-out group-hover:scale-105 ${
+              className={`object-contain transition-transform duration-500 ease-out group-hover:scale-105 ${
                 isLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

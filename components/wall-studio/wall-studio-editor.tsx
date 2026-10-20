@@ -40,7 +40,7 @@ export const WallStudioEditor: React.FC = () => {
   useEffect(() => {
     async function fetchLivePrices() {
       try {
-        const res = await fetch('/api/products/prices', { cache: 'no-store' });
+        const res = await fetch('/api/products/prices');
         if (res.ok) {
           const data = await res.json();
           if (data.wallLayouts) {

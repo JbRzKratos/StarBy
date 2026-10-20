@@ -322,6 +322,14 @@ export interface MagazineTemplate {
   pages: MagazinePage[];
 }
 
+/**
+ * Card/preview metadata for a template, without the heavy `pages` tree.
+ * Used by the landing page and the public template API.
+ */
+export type MagazineTemplateMeta = Omit<MagazineTemplate, 'pages' | 'theme'> & {
+  theme?: MagazineTheme;
+};
+
 export interface PreflightIssue {
   id: string;
   severity: 'error' | 'warning' | 'info';

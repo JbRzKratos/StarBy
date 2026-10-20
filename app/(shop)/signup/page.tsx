@@ -60,6 +60,7 @@ export default function SignUpPage() {
             src={getR2AssetUrl('images/login_side_image.webp')}
             alt="Premium device skin design"
             fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover opacity-60"
             priority
           />
