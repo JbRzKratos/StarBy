@@ -3,15 +3,10 @@ import { prisma } from '@/lib/prisma';
 import {
   getCachedPricesPayload,
   setCachedPricesPayload,
-  invalidateProductsCache,
   getLiveProductBySlug,
 } from '@/lib/services/products-service';
 
 export const dynamic = 'force-dynamic';
-
-export function invalidatePricesCache() {
-  invalidateProductsCache();
-}
 
 export async function GET(request: NextRequest) {
   try {

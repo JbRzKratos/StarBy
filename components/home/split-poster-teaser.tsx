@@ -1,10 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useGSAP } from '@gsap/react';
-import { gsap } from '@/lib/gsap-config';
 import { getR2AssetUrl } from '@/lib/r2';
 
 const VENOM_POSTER_IMAGE = getR2AssetUrl(
@@ -12,75 +10,29 @@ const VENOM_POSTER_IMAGE = getR2AssetUrl(
 );
 
 export function SplitPosterTeaser() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const panelsRef = useRef<HTMLDivElement>(null);
   const [panelCount, setPanelCount] = useState(3);
-
-  useGSAP(
-    () => {
-      if (!sectionRef.current) return;
-
-      gsap.fromTo(
-        sectionRef.current,
-        { opacity: 0, y: 60 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            once: true,
-          },
-        },
-      );
-    },
-    { scope: sectionRef },
-  );
-
-  /* Animate panel separation on hover */
-  useGSAP(
-    () => {
-      if (!panelsRef.current) return;
-      const panels = panelsRef.current.children;
-
-      const tl = gsap.timeline({ paused: true });
-
-      Array.from(panels).forEach((panel, i) => {
-        const offset = (i - (panels.length - 1) / 2) * 14;
-        tl.to(panel, { x: offset, y: -4, duration: 0.4, ease: 'power2.out' }, 0);
-      });
-
-      const container = panelsRef.current;
-      const onEnter = () => tl.play();
-      const onLeave = () => tl.reverse();
-
-      container.addEventListener('mouseenter', onEnter);
-      container.addEventListener('mouseleave', onLeave);
-
-      return () => {
-        container.removeEventListener('mouseenter', onEnter);
-        container.removeEventListener('mouseleave', onLeave);
-      };
-    },
-    { scope: panelsRef, dependencies: [panelCount] },
-  );
 
   const totalWidth = 320;
   const panelHeight = 360;
 
   return (
-    <section ref={sectionRef} className="py-[var(--section-py)] grain-overlay overflow-hidden">
+    <section className="py-[var(--section-py)] grain-overlay overflow-hidden">
       <div className="section-container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
           {/* Visual — Venom Split Poster Preview */}
           <div className="flex justify-center">
-            <div ref={panelsRef} className="flex gap-1.5 cursor-pointer select-none" data-cursor-hover>
+            <div className="split-panels flex gap-1.5 cursor-pointer select-none" data-cursor-hover>
               {Array.from({ length: panelCount }).map((_, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden rounded-md shadow-elevated flex-shrink-0 border border-white/10"
-                  style={{ width: `${totalWidth / panelCount}px`, height: `${panelHeight}px` }}
+                  className="split-panel relative overflow-hidden rounded-md shadow-elevated flex-shrink-0 border border-white/10"
+                  style={
+                    {
+                      width: `${totalWidth / panelCount}px`,
+                      height: `${panelHeight}px`,
+                      '--split-offset': `${(i - (panelCount - 1) / 2) * 14}px`,
+                    } as CSSProperties
+                  }
                 >
                   <div
                     className="absolute inset-0"

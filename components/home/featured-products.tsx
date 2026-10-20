@@ -3,9 +3,7 @@
 import { useState, useRef, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useGSAP } from '@gsap/react';
-import { gsap, ScrollTrigger } from '@/lib/gsap-config';
-import { products, type Product } from '@/data/products';
+import type { Product } from '@/data/products';
 import { isProductComingSoon } from '@/data/categories';
 import { getR2AssetUrl } from '@/lib/r2';
 import { ProductCard } from '@/components/product/product-card';
@@ -158,7 +156,7 @@ function ShowcasePreviewCardImage({
           fill
           onError={() => setImgError(true)}
           className="object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-108 relative z-10 drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)]"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          sizes="(max-width: 640px) 90vw, (max-width: 1024px) 48vw, 24vw"
         />
       ) : (
         <div className="relative z-10 flex flex-col items-center gap-2 text-center p-4">
@@ -172,8 +170,8 @@ function ShowcasePreviewCardImage({
   );
 }
 
-export function FeaturedProducts({ initialProducts }: { initialProducts?: Product[] } = {}) {
-  const productList = initialProducts || products;
+export function FeaturedProducts({ initialProducts }: { initialProducts: Product[] }) {
+  const productList = initialProducts;
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState('all');
@@ -187,25 +185,6 @@ export function FeaturedProducts({ initialProducts }: { initialProducts?: Produc
     setWaitlistDone(false);
     setWaitlistEmail('');
   }, [activeTab]);
-
-  useGSAP(
-    () => {
-      if (!gridRef.current) return;
-
-      ScrollTrigger.batch(gridRef.current.children, {
-        onEnter: (elements) => {
-          gsap.fromTo(
-            elements,
-            { y: 40, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power3.out' },
-          );
-        },
-        start: 'top 85%',
-        once: true,
-      });
-    },
-    { scope: sectionRef, dependencies: [activeTab] },
-  );
 
   const filtered = useMemo(() => {
     // Filter out test items (basePrice === 1 are test/dummy products)
@@ -269,7 +248,7 @@ export function FeaturedProducts({ initialProducts }: { initialProducts?: Produc
   };
 
   return (
-    <section ref={sectionRef} className="py-[var(--section-py)] bg-charcoal relative">
+    <section ref={sectionRef} className="cv-auto py-[var(--section-py)] bg-charcoal relative">
       <div className="section-container">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">

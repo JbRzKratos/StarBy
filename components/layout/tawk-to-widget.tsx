@@ -47,23 +47,22 @@ export function TawkToWidget() {
       cleanup();
     };
 
-    // Defer loading until user interacts or 3.5s idle timer expires
-    const timer = setTimeout(() => {
-      setIsReadyToLoad(true);
-    }, 3500);
-
+    // The chat bundle is ~240 KB and blocks the main thread. Load it only
+    // after a real interaction (or pointer movement) instead of on a timer
+    // that fires during the critical page-load window.
     const cleanup = () => {
-      clearTimeout(timer);
       window.removeEventListener('scroll', enableTawk);
       window.removeEventListener('pointerdown', enableTawk);
       window.removeEventListener('touchstart', enableTawk);
       window.removeEventListener('keydown', enableTawk);
+      window.removeEventListener('mousemove', enableTawk);
     };
 
     window.addEventListener('scroll', enableTawk, { passive: true, once: true });
     window.addEventListener('pointerdown', enableTawk, { passive: true, once: true });
     window.addEventListener('touchstart', enableTawk, { passive: true, once: true });
     window.addEventListener('keydown', enableTawk, { passive: true, once: true });
+    window.addEventListener('mousemove', enableTawk, { passive: true, once: true });
 
     return cleanup;
   }, []);
@@ -177,7 +176,10 @@ export function TawkToWidget() {
     // Initial sync
     syncWidgetVisibility();
 
-    // Optionally set visitor attributes if logged in with Supabase
+    // Optionally set visitor attributes if logged in with Supabase.
+    // Never download the Supabase SDK for anonymous visitors.
+    if (!document.cookie.includes('-auth-token')) return;
+
     import('@/lib/supabase/client')
       .then(({ createClient }) => {
         const supabase = createClient();

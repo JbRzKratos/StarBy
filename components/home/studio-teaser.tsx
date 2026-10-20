@@ -1,47 +1,17 @@
 'use client';
 
-import { useRef } from 'react';
 import Link from 'next/link';
-import { useGSAP } from '@gsap/react';
-import { gsap } from '@/lib/gsap-config';
 
 export function StudioTeaser() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      if (!sectionRef.current || !textRef.current) return;
-
-      gsap.fromTo(
-        textRef.current.children,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-            once: true,
-          },
-        },
-      );
-    },
-    { scope: sectionRef },
-  );
-
   return (
     <section
-      ref={sectionRef}
       className="relative py-[clamp(5rem,4rem+6vw,10rem)] grain-overlay overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #0E0E0F 0%, #1A1A1E 40%, #2d1b69 100%)',
       }}
     >
       <div className="section-container relative z-10">
-        <div ref={textRef} className="max-w-2xl mx-auto text-center">
+        <div className="max-w-2xl mx-auto text-center">
           <span className="overline-label block mb-6">The Studio</span>
           <h2 className="font-display text-display-lg md:text-display-xl font-bold text-bone mb-6 text-balance">
             We Don&apos;t Sell Products.

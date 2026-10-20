@@ -2,8 +2,6 @@
 
 import { useRef, useState, useMemo } from 'react';
 import Link from 'next/link';
-import { useGSAP } from '@gsap/react';
-import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { getFeaturedCategories, type Category } from '@/data/categories';
 import { BentoTile, CATEGORY_GROUPS } from './bento-tile';
 import { ArrowUpRight } from 'lucide-react';
@@ -31,37 +29,10 @@ export function BentoGrid() {
   }, [categories, activeTab]);
 
   // Initial scroll-triggered reveal
-  useGSAP(
-    () => {
-      if (!gridRef.current) return;
-
-      ScrollTrigger.batch(gridRef.current.children, {
-        onEnter: (elements) => {
-          gsap.fromTo(
-            elements,
-            { y: 40, opacity: 0, scale: 0.98 },
-            { y: 0, opacity: 1, scale: 1, duration: 0.55, stagger: 0.06, ease: 'power3.out' },
-          );
-        },
-        start: 'top 85%',
-        once: true,
-      });
-    },
-    { scope: sectionRef, dependencies: [activeTab] },
-  );
-
   // Tab switch micro-animation
   const handleTabChange = (tabId: TabId) => {
     if (tabId === activeTab) return;
     setActiveTab(tabId);
-
-    if (gridRef.current) {
-      gsap.fromTo(
-        gridRef.current.children,
-        { opacity: 0, y: 15, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.35, stagger: 0.03, ease: 'power2.out' },
-      );
-    }
   };
 
   // Compute layout classes based on activeTab and category slug
@@ -138,7 +109,7 @@ export function BentoGrid() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 md:py-24 bg-[#0A0A0C] border-t border-b border-white/[0.04] overflow-hidden"
+      className="cv-auto-lg relative py-16 md:py-24 bg-[#0A0A0C] border-t border-b border-white/[0.04] overflow-hidden"
     >
       <div className="section-container relative z-10">
         {/* ── Minimalist Section Header ── */}

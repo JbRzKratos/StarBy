@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { ProductCardDesktop } from './product-card.desktop';
 import { ProductCardMobile } from './product-card.mobile';
+import { useDevice } from '@/lib/providers/device-provider';
 import type { Product } from '@/data/products';
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
 
@@ -21,6 +22,12 @@ interface ProductCardProps {
 export function ProductCardClient({ product, onSelectDesign }: ProductCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resolvedDesign, setResolvedDesign] = useState<ClothingDesignEntry | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const device = useDevice();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Design products are identifiable without the 190 KB manifest. The manifest
   // itself is imported only when a shopper actually opens the product.
@@ -55,18 +62,32 @@ export function ProductCardClient({ product, onSelectDesign }: ProductCardProps)
 
   return (
     <>
-      <div className="hidden md:block">
+      {!mounted ? (
+        <>
+          <div className="hidden md:block">
+            <ProductCardDesktop
+              product={product}
+              onCardClick={isDesignProduct ? handleCardClick : undefined}
+            />
+          </div>
+          <div className="block md:hidden">
+            <ProductCardMobile
+              product={product}
+              onCardClick={isDesignProduct ? handleCardClick : undefined}
+            />
+          </div>
+        </>
+      ) : device === 'desktop' ? (
         <ProductCardDesktop
           product={product}
           onCardClick={isDesignProduct ? handleCardClick : undefined}
         />
-      </div>
-      <div className="block md:hidden">
+      ) : (
         <ProductCardMobile
           product={product}
           onCardClick={isDesignProduct ? handleCardClick : undefined}
         />
-      </div>
+      )}
 
       {isModalOpen && resolvedDesign && (
         <ClothingProductModal

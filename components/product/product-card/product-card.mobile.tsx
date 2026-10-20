@@ -54,7 +54,7 @@ export const ProductCardMobile = memo(function ProductCardMobile({ product, onCa
               fill
               onError={() => setImgError(true)}
               className="object-cover"
-              sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
+              sizes="(max-width: 639px) 90vw, (max-width: 1023px) 46vw, 23vw"
             />
           </div>
 

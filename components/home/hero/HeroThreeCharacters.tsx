@@ -22,15 +22,15 @@ export function HeroThreeCharacters({ className = '' }: HeroThreeCharactersProps
     alt,
     width: 1230,
     height: 977,
-    quality: 78,
-    sizes: '(max-width: 767px) 92vw',
+    quality: 72,
+    sizes: '(max-width: 767px) 80vw',
   });
   const desktop = getImageProps({
     src: desktopSrc,
     alt,
     width: 1230,
     height: 977,
-    quality: 80,
+    quality: 78,
     sizes: '(min-width: 768px) 90vw',
   });
 
@@ -46,6 +46,7 @@ export function HeroThreeCharacters({ className = '' }: HeroThreeCharactersProps
         href={mobile.props.src}
         imageSrcSet={mobile.props.srcSet}
         imageSizes={mobile.props.sizes}
+        fetchPriority="high"
       />
       <link
         rel="preload"
@@ -54,6 +55,7 @@ export function HeroThreeCharacters({ className = '' }: HeroThreeCharactersProps
         href={desktop.props.src}
         imageSrcSet={desktop.props.srcSet}
         imageSizes={desktop.props.sizes}
+        fetchPriority="high"
       />
 
       <picture className="relative w-full h-full flex items-end justify-center pointer-events-none">

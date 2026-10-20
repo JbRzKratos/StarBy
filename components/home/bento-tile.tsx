@@ -84,7 +84,7 @@ export function BentoTile({
           src={imageSrc}
           alt={category.name}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="(max-width: 640px) 90vw, (max-width: 1024px) 48vw, 32vw"
           className="absolute inset-0 object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-[transform,opacity] duration-700 ease-out pointer-events-none"
         />
       )}

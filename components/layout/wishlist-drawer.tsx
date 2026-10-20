@@ -7,7 +7,7 @@ import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import Link from 'next/link';
 import Image from 'next/image';
-import { products } from '@/data/products';
+import type { Product } from '@/data/products';
 
 export function WishlistDrawer() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,6 +23,8 @@ export function WishlistDrawer() {
   const { formatPrice } = usePrice();
 
   const [mounted, setMounted] = useState(false);
+  const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
   useEffect(() => {
     setMounted(true);
 
@@ -34,6 +36,44 @@ export function WishlistDrawer() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Wishlist stores only product IDs. Resolve them on demand instead of
+  // bundling the entire 500+ product catalogue into this drawer chunk.
+  useEffect(() => {
+    if (!isOpen) return;
+    if (items.length === 0) {
+      setSavedProducts([]);
+      setWishlistLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setWishlistLoading(true);
+
+    fetch(`/api/products?ids=${encodeURIComponent(items.join(','))}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled || !data.success || !Array.isArray(data.products)) return;
+        const byId = new Map<string, Product>(
+          (data.products as Product[]).map((product) => [product.id, product]),
+        );
+        setSavedProducts(
+          items
+            .map((id) => byId.get(id))
+            .filter((product): product is Product => Boolean(product)),
+        );
+      })
+      .catch((err) => {
+        console.warn('[wishlist-drawer] Failed to load wishlist products:', err);
+      })
+      .finally(() => {
+        if (!cancelled) setWishlistLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, items]);
 
   useGSAP(
     () => {
@@ -125,14 +165,10 @@ export function WishlistDrawer() {
         tl.to(bgRef.current, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.1);
       }
     },
-    { dependencies: [isOpen], scope: containerRef },
+    { dependencies: [isOpen, mounted], scope: containerRef },
   );
 
   if (!mounted) return null;
-
-  const savedProducts = items
-    .map((id) => products.find((p) => p.id === id))
-    .filter(Boolean) as typeof products;
 
   return (
     <div
@@ -180,7 +216,11 @@ export function WishlistDrawer() {
 
         {/* Scrollable Items List */}
         <div className="flex-1 overflow-y-auto p-4 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] custom-scrollbar">
-          {savedProducts.length === 0 ? (
+          {wishlistLoading ? (
+            <div className="flex h-full min-h-[300px] items-center justify-center font-mono text-xs text-ash">
+              Loading wishlist…
+            </div>
+          ) : savedProducts.length === 0 ? (
             <div className="empty-state h-full min-h-[300px] flex flex-col items-center justify-center text-center p-6">
               <div className="w-20 h-20 rounded-full border border-smoke/50 flex items-center justify-center mb-5">
                 <svg
@@ -320,7 +360,11 @@ export function WishlistDrawer() {
           ref={rightColRef}
           className="w-7/12 flex-1 h-full overflow-y-auto p-8 lg:p-20 custom-scrollbar"
         >
-          {savedProducts.length === 0 ? (
+          {wishlistLoading ? (
+            <div className="flex h-full min-h-[300px] items-center justify-center font-mono text-xs text-ash">
+              Loading wishlist…
+            </div>
+          ) : savedProducts.length === 0 ? (
             <div className="empty-state h-full flex flex-col items-center justify-center text-center">
               <div className="w-24 h-24 rounded-full border border-smoke/50 flex items-center justify-center mb-6">
                 <svg

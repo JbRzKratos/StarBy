@@ -1,15 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { gsap } from '@/lib/gsap-config';
 import Link from 'next/link';
 
 export function FloatingActions() {
   const pathname = usePathname();
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const scrollTopRef = useRef<HTMLButtonElement>(null);
-  const waRef = useRef<HTMLAnchorElement>(null);
 
   const isExcludedRoute =
     pathname?.startsWith('/magazine/editor') ||
@@ -34,42 +31,8 @@ export function FloatingActions() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isExcludedRoute]);
 
-  useEffect(() => {
-    if (!scrollTopRef.current) return;
-
-    if (showScrollTop) {
-      gsap.to(scrollTopRef.current, {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.4,
-        ease: 'back.out(1.5)',
-      });
-    } else {
-      gsap.to(scrollTopRef.current, {
-        autoAlpha: 0,
-        y: 20,
-        scale: 0.8,
-        duration: 0.3,
-        ease: 'power2.in',
-      });
-    }
-  }, [showScrollTop]);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleHoverEnter = (el: HTMLElement | null) => {
-    if (el) {
-      gsap.to(el, { scale: 1.1, duration: 0.3, ease: 'back.out(2)' });
-    }
-  };
-
-  const handleHoverLeave = (el: HTMLElement | null) => {
-    if (el) {
-      gsap.to(el, { scale: 1, duration: 0.3, ease: 'power2.out' });
-    }
   };
 
   if (isExcludedRoute) {
@@ -81,12 +44,15 @@ export function FloatingActions() {
       {/* Scroll to Top - Bottom Right (elevated on mobile to prevent collision with chat widget) */}
       <div className="floating-scroll-top-btn fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] right-4 sm:bottom-24 sm:right-6 z-[90] flex flex-col gap-4">
         <button
-          ref={scrollTopRef}
           onClick={scrollToTop}
-          onMouseEnter={() => handleHoverEnter(scrollTopRef.current)}
-          onMouseLeave={() => handleHoverLeave(scrollTopRef.current)}
-          className="w-10 h-10 sm:w-12 sm:h-12 bg-graphite border border-smoke rounded-full flex items-center justify-center text-pearl hover:text-bone hover:border-cobalt transition-colors shadow-lg opacity-0 pointer-events-auto"
+          className={`w-10 h-10 sm:w-12 sm:h-12 bg-graphite border border-smoke rounded-full flex items-center justify-center text-pearl hover:text-bone hover:border-cobalt shadow-lg transition-all duration-300 hover:scale-110 ${
+            showScrollTop
+              ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
+              : 'opacity-0 translate-y-5 scale-75 pointer-events-none'
+          }`}
           aria-label="Scroll to top"
+          aria-hidden={!showScrollTop}
+          tabIndex={showScrollTop ? 0 : -1}
         >
           <svg
             width="24"
@@ -113,9 +79,6 @@ export function FloatingActions() {
           }
           target="_blank"
           rel="noopener noreferrer"
-          ref={waRef}
-          onMouseEnter={() => handleHoverEnter(waRef.current)}
-          onMouseLeave={() => handleHoverLeave(waRef.current)}
           className="w-11 h-11 sm:w-14 sm:h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-xl pointer-events-auto hover:bg-[#20bd5a] transition-transform hover:scale-105"
           aria-label="Chat on WhatsApp"
         >

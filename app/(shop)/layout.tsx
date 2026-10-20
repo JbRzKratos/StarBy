@@ -1,17 +1,13 @@
 import type { ReactNode } from 'react';
 import { Navigation } from '@/components/layout/navigation';
 import { Footer } from '@/components/layout/footer';
-import { CartDrawer } from '@/components/layout/cart-drawer';
-import { WishlistDrawer } from '@/components/layout/wishlist-drawer';
-import { SearchOverlay } from '@/components/layout/search-overlay';
+import { GlobalOverlays } from '@/components/layout/global-overlays';
 
 export default function ShopLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Navigation variant="solid" />
-      <CartDrawer />
-      <WishlistDrawer />
-      <SearchOverlay />
+      <GlobalOverlays />
       {children}
       <Footer />
     </>

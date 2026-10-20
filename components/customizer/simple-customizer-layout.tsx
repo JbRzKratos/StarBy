@@ -115,6 +115,7 @@ export function SimpleCustomizerLayout({
       addItem({
         productId,
         variantId,
+        name: productName,
         quantity: 1,
         price,
         image: uploadResult.previewFileUrl || mockupImageSrc,

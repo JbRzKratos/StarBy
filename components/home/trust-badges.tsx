@@ -1,8 +1,6 @@
 'use client';
 
 import { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 
 const BADGES = [
   {
@@ -79,27 +77,8 @@ const BADGES = [
 export function TrustBadges() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      if (!containerRef.current) return;
-
-      ScrollTrigger.batch(containerRef.current.children, {
-        onEnter: (elements) => {
-          gsap.fromTo(
-            elements,
-            { y: 30, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' },
-          );
-        },
-        start: 'top 85%',
-        once: true,
-      });
-    },
-    { scope: containerRef },
-  );
-
   return (
-    <section className="py-8 sm:py-12 bg-graphite border-y border-smoke/30">
+    <section className="cv-auto-sm py-8 sm:py-12 bg-graphite border-y border-smoke/30">
       <div className="section-container px-4 sm:px-6">
         <div ref={containerRef} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {BADGES.map((badge, idx) => (

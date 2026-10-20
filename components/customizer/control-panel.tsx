@@ -185,6 +185,11 @@ export function ControlPanel() {
       addItem({
         productId,
         variantId: variantIdToUse,
+        name: currentProd?.name,
+        variant:
+          (typeof activeVariant?.name === 'string' ? activeVariant.name : undefined) ||
+          matchingVariant?.name ||
+          selectedColor,
         quantity: 1,
         price: variantPrice,
         size: selectedSize,

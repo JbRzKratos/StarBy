@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useMemo } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import { useSearchStore } from '@/lib/stores/search-store';
-import { products, type Product } from '@/data/products';
+import type { Product } from '@/data/products';
 import { usePrice } from '@/lib/hooks/usePrice';
 import { isProductComingSoon, isCategoryComingSoon } from '@/data/categories';
 import Link from 'next/link';
@@ -44,23 +44,35 @@ export function SearchOverlay() {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [allProducts, setAllProducts] = useState<Product[]>(products);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(false);
   const { formatPrice } = usePrice();
 
-  // Load live products from DB on first open so full catalogue (including all posters) is searchable
+  // Load the live catalogue only when search is opened. Keeping the 500+ item
+  // catalogue out of this chunk avoids shipping it on every storefront page.
   useEffect(() => {
-    if (isOpen && allProducts.length <= products.length) {
-      fetch('/api/products')
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success && Array.isArray(data.products) && data.products.length > 0) {
-            setAllProducts(data.products);
-          }
-        })
-        .catch((err) => {
-          console.warn('[search-overlay] Error fetching live products, using fallback:', err);
-        });
-    }
+    if (!isOpen || allProducts.length > 0) return;
+
+    let cancelled = false;
+    setCatalogLoading(true);
+
+    fetch('/api/products')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && data.success && Array.isArray(data.products)) {
+          setAllProducts(data.products);
+        }
+      })
+      .catch((err) => {
+        console.warn('[search-overlay] Error fetching live products:', err);
+      })
+      .finally(() => {
+        if (!cancelled) setCatalogLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [isOpen, allProducts.length]);
 
   // Debounce the query by 250ms
@@ -128,7 +140,7 @@ export function SearchOverlay() {
   }, [debouncedQuery, selectedCategory, allProducts]);
 
   const hasFilters = !!selectedCategory || debouncedQuery.trim() !== '';
-  const isEmpty = debouncedQuery.trim() !== '' && results.length === 0;
+  const isEmpty = !catalogLoading && debouncedQuery.trim() !== '' && results.length === 0;
 
   // Show top results with responsive scroll
   const displayResults = results.slice(0, 24);

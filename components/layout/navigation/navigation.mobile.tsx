@@ -1,11 +1,9 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
-import { gsap } from '@/lib/gsap-config';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { useCurrencyStore, type CurrencyCode } from '@/lib/stores/currency-store';
@@ -85,6 +83,7 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
+  const hasOpenedRef = useRef(false);
 
   // Hide Tawk.to chat widget & floating actions when mobile menu is open
   useEffect(() => {
@@ -135,10 +134,18 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
       ? 'bg-[#0E0E10] text-[#F5F1EA] border-b border-[#F5F1EA]/15 shadow-2xl'
       : 'bg-transparent border-b border-transparent';
 
-  // Menu Drawer Animation
-  useGSAP(
-    () => {
-      if (!overlayRef.current || !panelRef.current || !linksRef.current) return;
+  // Menu Drawer Animation — load GSAP only after the menu is first opened.
+  useEffect(() => {
+    if (isOpen) {
+      hasOpenedRef.current = true;
+    } else if (!hasOpenedRef.current) {
+      return;
+    }
+
+    let cancelled = false;
+
+    import('@/lib/gsap-config').then(({ gsap }) => {
+      if (cancelled || !overlayRef.current || !panelRef.current || !linksRef.current) return;
 
       if (isOpen) {
         document.body.style.overflow = 'hidden';
@@ -166,9 +173,12 @@ export function NavigationMobile({ variant: _variant = 'solid' }: NavigationMobi
           },
         });
       }
-    },
-    { dependencies: [isOpen], scope: overlayRef },
-  );
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen]);
 
   const onClose = () => setIsOpen(false);
 

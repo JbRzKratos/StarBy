@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { type ReactNode, Suspense } from 'react';
 import { fontDisplay, fontMono } from '@/lib/fonts';
-import { GsapProvider } from '@/components/animations/gsap-provider';
 import { CustomCursor } from '@/components/layout/custom-cursor';
 import { FloatingActions } from '@/components/layout/floating-actions';
 import { DeviceProvider } from '@/lib/providers/device-provider';
@@ -115,12 +114,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Skip to main content
         </a>
         <DeviceProvider initialDevice="desktop">
-          <GsapProvider>
-            <CustomCursor />
-            <FloatingActions />
-            <TawkToWidget />
-            <div id="main-content">{children}</div>
-          </GsapProvider>
+          <CustomCursor />
+          <FloatingActions />
+          <TawkToWidget />
+          <div id="main-content">{children}</div>
         </DeviceProvider>
       </body>
     </html>

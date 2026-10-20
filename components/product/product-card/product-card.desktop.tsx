@@ -50,7 +50,7 @@ export const ProductCardDesktop = memo(function ProductCardDesktop({ product, on
               fill
               onError={() => setImgError(true)}
               className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 424px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
+              sizes="(max-width: 639px) 90vw, (max-width: 1023px) 46vw, 23vw"
             />
           </div>
 

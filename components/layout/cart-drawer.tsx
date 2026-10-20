@@ -7,7 +7,6 @@ import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import Link from 'next/link';
 import Image from 'next/image';
-import { products } from '@/data/products';
 import { getR2AssetUrl } from '@/lib/r2';
 
 export function CartDrawer() {
@@ -132,7 +131,7 @@ export function CartDrawer() {
         tl.to(bgRef.current, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.1);
       }
     },
-    { dependencies: [isOpen], scope: containerRef },
+    { dependencies: [isOpen, mounted], scope: containerRef },
   );
 
   if (!mounted) return null;
@@ -208,12 +207,10 @@ export function CartDrawer() {
           ) : (
             <div className="flex flex-col gap-3">
               {items.map((item, index) => {
-                const product = products.find((p) => p.id === item.productId);
-                const variant = product?.variants.find((v) => v.id === item.variantId);
                 const displayName =
-                  item.name || (product ? product.name : item.productId.replace(/[-_]/g, ' '));
+                  item.name || item.productId.replace(/[-_]/g, ' ');
                 const displayVariantName =
-                  item.variant || (variant ? variant.name : item.variantId.replace(/[-_]/g, ' '));
+                  item.variant || item.variantId.replace(/[-_]/g, ' ');
 
                 return (
                   <div
@@ -227,7 +224,6 @@ export function CartDrawer() {
                           item.customization?.previewFileUrl ||
                           item.customization?.thumbnail ||
                           item.image ||
-                          product?.variants[0]?.images[0] ||
                           getR2AssetUrl('images/placeholder.webp')
                         }
                         alt={item.name || displayName}
@@ -482,12 +478,10 @@ export function CartDrawer() {
               </div>
 
               {items.map((item, index) => {
-                const product = products.find((p) => p.id === item.productId);
-                const variant = product?.variants.find((v) => v.id === item.variantId);
                 const displayName =
-                  item.name || (product ? product.name : item.productId.replace(/[-_]/g, ' '));
+                  item.name || item.productId.replace(/[-_]/g, ' ');
                 const displayVariantName =
-                  item.variant || (variant ? variant.name : item.variantId.replace(/[-_]/g, ' '));
+                  item.variant || item.variantId.replace(/[-_]/g, ' ');
 
                 return (
                   <div
@@ -501,7 +495,6 @@ export function CartDrawer() {
                           item.customization?.previewFileUrl ||
                           item.customization?.thumbnail ||
                           item.image ||
-                          product?.variants[0]?.images[0] ||
                           getR2AssetUrl('images/placeholder.webp')
                         }
                         alt={item.name || displayName}
