@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import {
   getAllServerPlacements,
+  getServerPlacementsForDesign,
   saveServerPlacements,
   type SavedPlacementItem,
 } from '@/lib/clothing-designs/placements-store';
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
   try {
     // Verify that the caller is authorized as a designer (gokul30sep@gmail.com / superadmin)
     const supabase = createClient();
-    let authUser: { id: string; email?: string } | null = null;
+    const authCandidates: Array<{ id: string; email?: string }> = [];
 
     // Check Authorization header for Bearer token first
     const authHeader = req.headers.get('authorization');
@@ -54,24 +55,30 @@ export async function POST(req: Request) {
       if (token) {
         try {
           const { data: tokenData } = await supabase.auth.getUser(token);
-          if (tokenData?.user) authUser = tokenData.user;
+          if (tokenData?.user) authCandidates.push(tokenData.user);
         } catch {}
       }
     }
 
-    if (!authUser) {
+    if (!authCandidates.some((candidate) => isSuperAdminEmail(candidate.email))) {
       try {
         const { data: { user }, error } = await supabase.auth.getUser();
-        if (user && !error) authUser = user;
+        if (user && !error) authCandidates.push(user);
       } catch {}
     }
-    if (!authUser) {
+    if (!authCandidates.some((candidate) => isSuperAdminEmail(candidate.email))) {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) authUser = session.user;
+        if (session?.user) authCandidates.push(session.user);
       } catch {}
     }
 
+    // Prefer a candidate that is actually the super admin. A stale/non-admin
+    // bearer token must not shadow a valid first-party admin cookie session.
+    const authUser =
+      authCandidates.find((candidate) => isSuperAdminEmail(candidate.email)) ||
+      authCandidates[0] ||
+      null;
     const email = authUser?.email?.trim().toLowerCase();
     const isAuthorized = Boolean(
       email && isSuperAdminEmail(email)
@@ -105,7 +112,7 @@ export async function POST(req: Request) {
     }
 
     const garmentKey = (garmentId || 'regular-t-shirt').toLowerCase();
-    const all = await getAllServerPlacements();
+    const all = await getServerPlacementsForDesign(designId, garmentKey);
     const updates: Record<string, SavedPlacementItem> = {};
     const now = new Date().toISOString();
     const activeArtIds = new Set<string>();

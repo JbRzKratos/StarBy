@@ -119,23 +119,71 @@ export async function getAllServerPlacements(): Promise<Record<string, SavedPlac
 }
 
 /**
+ * Read only the placements for one design/garment pair. The admin save flow
+ * needs at most a handful of keys, so reading the entire catalogue on every
+ * save adds avoidable latency and cold-start time.
+ */
+export async function getServerPlacementsForDesign(
+  designId: string,
+  garmentId: string
+): Promise<Record<string, SavedPlacementItem>> {
+  const prefix = `${designId}__${garmentId.toLowerCase()}__`;
+  const filePlacements = getPlacementsFromFile();
+  const fileForDesign = Object.fromEntries(
+    Object.entries(filePlacements).filter(([key]) => key.startsWith(prefix))
+  );
+
+  try {
+    const rows = await prisma.$queryRawUnsafe<Array<{ key: string; data: unknown }>>(
+      `SELECT "key", "data" FROM "ClothingCuratedPlacement" WHERE "key" LIKE $1`,
+      `${prefix}%`
+    );
+
+    if (rows && rows.length > 0) {
+      const dbPlacements: Record<string, SavedPlacementItem> = {};
+      for (const row of rows) {
+        dbPlacements[row.key] =
+          typeof row.data === 'string' ? JSON.parse(row.data) : (row.data as SavedPlacementItem);
+      }
+      return {
+        ...fileForDesign,
+        ...dbPlacements,
+      };
+    }
+  } catch (err) {
+    console.warn('[placements-store] Failed to read design placements from DB, using file fallback:', err);
+  }
+
+  return fileForDesign;
+}
+
+/**
  * Persist placement updates to PostgreSQL database table.
  * Also best-effort writes to local file if writable (local development).
  */
 export async function saveServerPlacements(updates: Record<string, SavedPlacementItem>): Promise<boolean> {
+  const entries = Object.entries(updates);
   let dbOk = false;
 
   try {
     await ensurePlacementsTable();
-    for (const [key, val] of Object.entries(updates)) {
+
+    if (entries.length > 0) {
+      // One round-trip instead of one query per placement. A typical save
+      // touches 5-10 keys; issuing those sequentially against a remote
+      // Postgres pooler could take 15-30 seconds and exceed the platform
+      // request timeout, which surfaced to designers as a failed save even
+      // though some rows had already been written.
+      const payload = entries.map(([key, data]) => ({ key, data }));
       await prisma.$executeRawUnsafe(
         `INSERT INTO "ClothingCuratedPlacement" ("key", "data", "updatedAt")
-         VALUES ($1, $2::jsonb, NOW())
+         SELECT x."key", x."data", NOW()
+         FROM jsonb_to_recordset($1::jsonb) AS x("key" text, "data" jsonb)
          ON CONFLICT ("key") DO UPDATE SET "data" = EXCLUDED."data", "updatedAt" = EXCLUDED."updatedAt"`,
-        key,
-        JSON.stringify(val)
+        JSON.stringify(payload)
       );
     }
+
     dbOk = true;
   } catch (err) {
     console.error('[placements-store] Failed to save placements to PostgreSQL DB:', err);

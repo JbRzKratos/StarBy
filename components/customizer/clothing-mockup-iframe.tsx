@@ -353,61 +353,102 @@ export function ClothingMockupIframe({
 
           // Forward to server save-placement API with first-party session token to guarantee DB persistence
           const sourceWindow = e.source as Window | null;
-          try {
-            const supabase = createClient();
-            supabase.auth
-              .getSession()
-              .then(({ data: { session } }) => {
-                const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-                if (session?.access_token) {
-                  headers['Authorization'] = `Bearer ${session.access_token}`;
+          const requestId =
+            typeof e.data.requestId === 'string' ? e.data.requestId : undefined;
+          const sendResult = (ok: boolean, error?: string | null) => {
+            sourceWindow?.postMessage(
+              {
+                type: 'STARBY_PLACEMENT_SAVE_RESULT',
+                requestId,
+                designId: e.data.designId,
+                garmentId: e.data.garmentId,
+                ok,
+                error: ok ? null : error,
+              },
+              '*'
+            );
+          };
+
+          void (async () => {
+            try {
+              const supabase = createClient();
+              let { data: { session } } = await supabase.auth.getSession();
+              if (
+                session?.expires_at &&
+                session.expires_at * 1000 <= Date.now() + 60_000
+              ) {
+                try {
+                  const { data: refreshed } = await supabase.auth.refreshSession();
+                  session = refreshed.session ?? session;
+                } catch {
+                  // Keep the existing session; the API also accepts the
+                  // first-party cookie session as a fallback.
                 }
-                return fetch('/api/clothing-designs/save-placement', {
+              }
+              const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+              if (session?.access_token) {
+                headers['Authorization'] = `Bearer ${session.access_token}`;
+              }
+
+              // artworkLayers can contain large image URLs (including data
+              // URLs for uploaded artwork). The save endpoint only needs the
+              // placement fields, so keep the request small and avoid hitting
+              // the platform's request-body limit.
+              const layers = Array.isArray(e.data.layers)
+                ? e.data.layers.map((layer: Record<string, unknown>) => ({
+                    id: layer.id,
+                    name: layer.name,
+                    regionId: layer.regionId,
+                    placementTarget: layer.placementTarget,
+                    u: layer.u,
+                    v: layer.v,
+                    uvWidth: layer.uvWidth,
+                    uvHeight: layer.uvHeight,
+                    scale: layer.scale,
+                    rotation: layer.rotation,
+                    opacity: layer.opacity,
+                    hidden: layer.hidden,
+                    removed: layer.removed,
+                    scalePreset: layer.scalePreset,
+                  }))
+                : undefined;
+
+              const body = JSON.stringify({
+                designId: e.data.designId,
+                garmentId: e.data.garmentId,
+                layers,
+                placement: e.data.placement,
+                target: e.data.target,
+                artId: e.data.artId,
+                removedArtIds: e.data.removedArtIds,
+                hiddenArtIds: e.data.hiddenArtIds,
+              });
+
+              const postSave = () =>
+                fetch('/api/clothing-designs/save-placement', {
                   method: 'POST',
                   headers,
                   credentials: 'include',
-                  body: JSON.stringify({
-                    designId: e.data.designId,
-                    garmentId: e.data.garmentId,
-                    layers: e.data.layers,
-                    placement: e.data.placement,
-                    target: e.data.target,
-                    artId: e.data.artId,
-                    removedArtIds: e.data.removedArtIds,
-                    hiddenArtIds: e.data.hiddenArtIds,
-                  }),
+                  body,
                 });
-              })
-              .then(async (res) => {
-                const ok = res.ok;
-                const payload = ok ? null : await res.json().catch(() => null);
-                sourceWindow?.postMessage(
-                  {
-                    type: 'STARBY_PLACEMENT_SAVE_RESULT',
-                    designId: e.data.designId,
-                    garmentId: e.data.garmentId,
-                    ok,
-                    error: ok ? null : payload?.error || `Server returned ${res.status}`,
-                  },
-                  '*'
-                );
-              })
-              .catch((err) => {
-                console.warn('[ClothingMockupIframe] Failed to forward placement to server:', err);
-                sourceWindow?.postMessage(
-                  {
-                    type: 'STARBY_PLACEMENT_SAVE_RESULT',
-                    designId: e.data.designId,
-                    garmentId: e.data.garmentId,
-                    ok: false,
-                    error: 'Network error while saving placement',
-                  },
-                  '*'
-                );
-              });
-          } catch {
-            /* ignore */
-          }
+
+              let res = await postSave();
+              // A 5xx/504 can happen if a cold serverless instance is slow to
+              // accept the request. Saving is an idempotent upsert, so retry
+              // once instead of surfacing a false failure to the designer.
+              if (!res.ok && res.status >= 500) {
+                await new Promise((resolve) => setTimeout(resolve, 600));
+                res = await postSave();
+              }
+
+              const ok = res.ok;
+              const payload = ok ? null : await res.json().catch(() => null);
+              sendResult(ok, ok ? null : payload?.error || `Server returned ${res.status}`);
+            } catch (err) {
+              console.warn('[ClothingMockupIframe] Failed to forward placement to server:', err);
+              sendResult(false, 'Network error while saving placement');
+            }
+          })();
         } catch {
           /* ignore */
         }

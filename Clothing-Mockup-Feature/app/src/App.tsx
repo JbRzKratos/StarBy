@@ -393,7 +393,9 @@ export const App: React.FC = () => {
   const [modalFeedbackMessage, setModalFeedbackMessage] = useState<string | null>(null);
   const [showSaveSuccessBanner, setShowSaveSuccessBanner] = useState<boolean>(false);
   const [saveErrorMessage, setSaveErrorMessage] = useState<string | null>(null);
-  const saveResultResolverRef = useRef<((result: { ok: boolean; error?: string }) => void) | null>(null);
+  const saveResultResolversRef = useRef<
+    Map<string, { resolve: (result: { ok: boolean; error?: string }) => void; timeout: number }>
+  >(new Map());
 
   // Designer Authorization & Calibration Mode State (Restricted exclusively to gokul30sep@gmail.com / superadmin)
   const [isDesignerAuthorized, setIsDesignerAuthorized] = useState<boolean>(false);
@@ -457,10 +459,16 @@ export const App: React.FC = () => {
       }
 
       if (e.data && e.data.type === 'STARBY_PLACEMENT_SAVE_RESULT') {
-        const resolver = saveResultResolverRef.current;
-        if (resolver) {
-          saveResultResolverRef.current = null;
-          resolver({ ok: Boolean(e.data.ok), error: e.data.error || undefined });
+        const requestId = typeof e.data.requestId === 'string' ? e.data.requestId : '';
+        const pendingEntries = requestId
+          ? [[requestId, saveResultResolversRef.current.get(requestId)] as const]
+          : Array.from(saveResultResolversRef.current.entries());
+
+        for (const [id, pending] of pendingEntries) {
+          if (!pending) continue;
+          clearTimeout(pending.timeout);
+          saveResultResolversRef.current.delete(id);
+          pending.resolve({ ok: Boolean(e.data.ok), error: e.data.error || undefined });
         }
       }
     };
@@ -603,24 +611,99 @@ export const App: React.FC = () => {
     // acknowledgement so the UI reflects the real outcome instead of always
     // claiming success. Standalone studio usage posts directly with cookies.
     const embedded = typeof window !== 'undefined' && !!window.parent && window.parent !== window;
+    const saveStartedAt = Date.now();
+
+    // Only placement fields need to cross the postMessage/HTTP boundary.
+    // Uploaded artwork can carry multi-megabyte data URLs in imageUrl, which
+    // used to make otherwise valid saves fail the request body limit.
+    const layersForSave = project3D.artworkLayers.map((layer) => ({
+      id: layer.id,
+      name: layer.name,
+      regionId: layer.regionId,
+      placementTarget: layer.placementTarget,
+      u: layer.u,
+      v: layer.v,
+      uvWidth: layer.uvWidth,
+      uvHeight: layer.uvHeight,
+      scale: layer.scale,
+      rotation: layer.rotation,
+      opacity: layer.opacity,
+      hidden: layer.hidden,
+      removed: layer.removed,
+      scalePreset: layer.scalePreset,
+    }));
+
+    // If an acknowledgement is lost (for example the host tab was throttled),
+    // confirm against the persisted rows before telling the designer the save
+    // failed. This keeps a successful database write from looking like an error.
+    const verifyPlacementPersisted = async (): Promise<boolean> => {
+      try {
+        const response = await fetch(
+          `/api/clothing-designs/save-placement?designId=${encodeURIComponent(primaryDesignId)}&_t=${Date.now()}`,
+          { cache: 'no-store', credentials: 'include' }
+        );
+        if (!response.ok) return false;
+
+        const payload = await response.json().catch(() => null);
+        const placements = payload?.placements as
+          | Record<string, { u?: number; v?: number; uvWidth?: number; hidden?: boolean; removed?: boolean; savedAt?: string }>
+          | undefined;
+        if (!placements) return false;
+
+        const garmentKey = (project3D.garmentId || 'regular-t-shirt').toLowerCase();
+        const prefix = `${primaryDesignId}__${garmentKey}__`;
+        const config = placements[`${prefix}config`];
+        const configSavedAt = Date.parse(config?.savedAt || '');
+        if (!Number.isFinite(configSavedAt) || configSavedAt < saveStartedAt - 5 * 60_000) {
+          return false;
+        }
+
+        const visibleLayers = project3D.artworkLayers.filter(
+          (layer) => layer.opacity !== 0 && !(layer as { hidden?: boolean }).hidden
+        );
+
+        return visibleLayers.every((layer) => {
+          const artMatch = layer.id.match(/art-\d+/i);
+          if (!artMatch) return true;
+
+          const saved = placements[`${prefix}${artMatch[0].toLowerCase()}`];
+          if (!saved || saved.hidden || saved.removed) return false;
+
+          const closeEnough = (a: number | undefined, b: number | undefined, tolerance: number) =>
+            Math.abs((typeof a === 'number' ? a : 0) - (typeof b === 'number' ? b : 0)) <= tolerance;
+
+          return (
+            closeEnough(saved.u, layer.u ?? 0.25, 0.003) &&
+            closeEnough(saved.v, layer.v ?? 0.63, 0.003) &&
+            closeEnough(saved.uvWidth, layer.uvWidth ?? 0.26, 0.003)
+          );
+        });
+      } catch {
+        return false;
+      }
+    };
 
     if (embedded) {
+      // Correlate each save with its own acknowledgement. Without an ID a
+      // slow earlier response can resolve a newer save (or a retry), which
+      // made a successful write look like a database failure.
+      const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
       const parentResult = new Promise<{ ok: boolean; error?: string }>((resolve) => {
-        saveResultResolverRef.current = resolve;
-        window.setTimeout(() => {
-          if (saveResultResolverRef.current === resolve) {
-            saveResultResolverRef.current = null;
-            resolve({ ok: true });
-          }
-        }, 10000);
+        const timeout = window.setTimeout(() => {
+          saveResultResolversRef.current.delete(requestId);
+          resolve({ ok: false, error: 'The server did not confirm the save in time.' });
+        }, 30000);
+
+        saveResultResolversRef.current.set(requestId, { resolve, timeout });
       });
 
       window.parent.postMessage(
         {
           type: 'STARBY_ALL_PLACEMENTS_SAVED',
+          requestId,
           designId: primaryDesignId,
           garmentId: project3D.garmentId,
-          layers: project3D.artworkLayers,
+          layers: layersForSave,
           removedArtIds: removedArtIdsList,
           hiddenArtIds: hiddenArtIdsList,
         },
@@ -629,10 +712,21 @@ export const App: React.FC = () => {
 
       const result = await parentResult;
       if (!result.ok) {
-        console.error('[App] Host reported placement save failure:', result.error);
-        setSaveErrorMessage('Could not save placement to the database. Please try again.');
-        setTimeout(() => setSaveErrorMessage(null), 5000);
-        return;
+        const persisted = await verifyPlacementPersisted();
+        if (!persisted) {
+          console.error('[App] Host reported placement save failure:', result.error);
+          setSaveErrorMessage(
+            result.error
+              ? `Could not save placement: ${result.error}`
+              : 'Could not save placement to the database. Please try again.'
+          );
+          setTimeout(() => setSaveErrorMessage(null), 8000);
+          return;
+        }
+        console.warn(
+          '[App] Save acknowledgement failed, but the latest placement is already persisted:',
+          result.error
+        );
       }
     } else {
       try {
@@ -643,7 +737,7 @@ export const App: React.FC = () => {
           body: JSON.stringify({
             designId: primaryDesignId,
             garmentId: project3D.garmentId,
-            layers: project3D.artworkLayers,
+            layers: layersForSave,
             removedArtIds: removedArtIdsList,
             hiddenArtIds: hiddenArtIdsList,
           }),
@@ -654,10 +748,18 @@ export const App: React.FC = () => {
           throw new Error(payload?.error || `Server returned ${response.status}`);
         }
       } catch (err) {
-        console.error('[App] Failed to save placement to server API:', err);
-        setSaveErrorMessage('Could not save placement to the database. Please try again.');
-        setTimeout(() => setSaveErrorMessage(null), 5000);
-        return;
+        const persisted = await verifyPlacementPersisted();
+        if (!persisted) {
+          console.error('[App] Failed to save placement to server API:', err);
+          setSaveErrorMessage(
+            err instanceof Error && err.message
+              ? `Could not save placement: ${err.message}`
+              : 'Could not save placement to the database. Please try again.'
+          );
+          setTimeout(() => setSaveErrorMessage(null), 8000);
+          return;
+        }
+        console.warn('[App] Save request failed, but the latest placement is already persisted:', err);
       }
     }
 
