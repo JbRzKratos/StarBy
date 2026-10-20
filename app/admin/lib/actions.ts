@@ -7,6 +7,31 @@ import { assertAdmin, assertStaff } from './auth';
 import { dispatchNotification } from '@/lib/notifications';
 import { invalidateProductsCache } from '@/lib/services/products-service';
 
+function deepEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  const aKeys = Object.keys(a as Record<string, unknown>);
+  const bKeys = Object.keys(b as Record<string, unknown>);
+  if (aKeys.length !== bKeys.length) return false;
+  return aKeys.every((key) =>
+    deepEqual(
+      (a as Record<string, unknown>)[key],
+      (b as Record<string, unknown>)[key],
+    ),
+  );
+}
+
+/** Size maps historically stored both "M" and "m"; compare case-insensitively. */
+function normalizeSizeMap(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const normalized: Record<string, unknown> = {};
+  for (const [key, entry] of Object.entries(value as Record<string, unknown>)) {
+    normalized[key.trim().toUpperCase()] = entry;
+  }
+  return normalized;
+}
+
 // ═══════════════════════════════════════
 // ORDERS
 // ═══════════════════════════════════════
@@ -62,6 +87,11 @@ export async function updateOrderStatus(orderId: string, status: string, note?: 
 
   revalidatePath('/admin/orders');
   revalidatePath(`/admin/orders/${orderId}`);
+  if (order.userId) {
+    revalidatePath(`/admin/customers/${order.userId}`);
+  }
+  revalidatePath('/account/orders');
+  revalidatePath(`/account/orders/${orderId}`);
   revalidatePath(`/account/orders/${orderId}/track`);
 }
 
@@ -97,7 +127,9 @@ export async function updateOrderTracking(
       },
     },
   });
+  revalidatePath('/admin/orders');
   revalidatePath(`/admin/orders/${orderId}`);
+  revalidatePath(`/account/orders/${orderId}`);
   revalidatePath(`/account/orders/${orderId}/track`);
 }
 
@@ -239,7 +271,7 @@ export async function updateVariantPrice(variantId: string, newPrice: number) {
  * STRICT SECURITY: ONLY ADMIN access users can change product prices.
  */
 export async function batchUpdateCategoryPrice(
-  categorySlug: string,
+  categorySlug: string | string[],
   newBasePrice: number,
   syncVariants: boolean = true,
 ) {
@@ -251,10 +283,21 @@ export async function batchUpdateCategoryPrice(
 
   const sanitized = Math.round(newBasePrice * 100) / 100;
 
-  const targetCategories =
-    categorySlug === 'tees'
-      ? ['tees', 'oversized-tees']
-      : [categorySlug];
+  const requestedSlugs = (Array.isArray(categorySlug) ? categorySlug : [categorySlug])
+    .map((slug) => slug.trim())
+    .filter(Boolean);
+
+  const targetCategories = Array.from(
+    new Set(
+      requestedSlugs.flatMap((slug) =>
+        slug === 'tees' ? ['tees', 'oversized-tees'] : [slug],
+      ),
+    ),
+  );
+
+  if (targetCategories.length === 0) {
+    throw new Error('No category selected.');
+  }
 
   const products = await prisma.product.findMany({
     where: { categorySlug: { in: targetCategories } },
@@ -262,7 +305,7 @@ export async function batchUpdateCategoryPrice(
   });
 
   if (products.length === 0) {
-    throw new Error(`No products found in category "${categorySlug}".`);
+    throw new Error(`No products found in category "${targetCategories.join(' / ')}".`);
   }
 
   await prisma.product.updateMany({
@@ -318,6 +361,9 @@ export async function deleteProduct(productId: string) {
   invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/api/products');
   revalidatePath('/api/products/prices');
   revalidatePath('/', 'layout');
 }
@@ -367,9 +413,12 @@ export async function createProduct(data: {
   invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
   revalidatePath('/magazine');
   revalidatePath('/magazine/templates');
   revalidatePath('/api/admin/magazine-templates');
+  revalidatePath('/api/products');
   revalidatePath('/api/products/prices');
   revalidatePath('/', 'layout');
   return product;
@@ -392,11 +441,26 @@ export async function updateProduct(
     sizeStock?: Record<string, unknown> | null;
   },
 ) {
-  // Price and stock changes strictly require admin access
-  if (data.basePrice !== undefined || data.sizePrices !== undefined || data.sizeStock !== undefined) {
+  await assertStaff();
+
+  const existing = await prisma.product.findUnique({
+    where: { id: productId },
+    select: { basePrice: true, sizePrices: true, sizeStock: true },
+  });
+  if (!existing) throw new Error('Product not found');
+
+  // Price and stock changes strictly require admin access. A staff member can
+  // still edit copy (name, description, tags) without tripping the price gate.
+  const priceChanged = data.basePrice !== undefined && data.basePrice !== existing.basePrice;
+  const sizePricesChanged =
+    data.sizePrices !== undefined &&
+    !deepEqual(normalizeSizeMap(data.sizePrices), normalizeSizeMap(existing.sizePrices));
+  const sizeStockChanged =
+    data.sizeStock !== undefined &&
+    !deepEqual(normalizeSizeMap(data.sizeStock), normalizeSizeMap(existing.sizeStock));
+
+  if (priceChanged || sizePricesChanged || sizeStockChanged) {
     await assertAdmin();
-  } else {
-    await assertStaff();
   }
 
   const { sizePrices, sizeStock, ...rest } = data;
@@ -441,23 +505,6 @@ export async function updateProductSizePricingAndStock(
 ) {
   await assertAdmin();
 
-  // Compute total units and overall inStock status across sizes
-  let totalUnits = 0;
-  let hasAnyInStock = false;
-  if (sizeStock && typeof sizeStock === 'object') {
-    Object.values(sizeStock).forEach((val) => {
-      if (typeof val === 'number') {
-        totalUnits += val;
-        if (val > 0) hasAnyInStock = true;
-      } else if (val && typeof val === 'object') {
-        const item = val as { quantity?: unknown; inStock?: unknown };
-        const q = typeof item.quantity === 'number' ? item.quantity : 0;
-        totalUnits += q;
-        if (item.inStock !== false && q > 0) hasAnyInStock = true;
-      }
-    });
-  }
-
   const updated = await prisma.product.update({
     where: { id: productId },
     data: {
@@ -466,22 +513,9 @@ export async function updateProductSizePricingAndStock(
     },
   });
 
-  // Also sync the product variants so variant-level queries reflect the size stock quantities
-  try {
-    const variants = await prisma.productVariant.findMany({ where: { productId } });
-    if (variants.length > 0) {
-      const perVariantQty = Math.max(0, Math.floor(totalUnits / variants.length));
-      await prisma.productVariant.updateMany({
-        where: { productId },
-        data: {
-          inStock: hasAnyInStock,
-          stockQuantity: perVariantQty,
-        },
-      });
-    }
-  } catch (err) {
-    console.warn('[updateProductSizePricingAndStock] Could not sync variant quantities:', err);
-  }
+  // Note: size-level inventory is stored on Product.sizeStock. Do not
+  // redistribute it across variants — variant stock is managed separately and
+  // an even split destroys the real per-colour quantities.
 
   invalidateProductsCache();
   revalidatePath('/admin/products');
@@ -585,10 +619,17 @@ export async function createVariant(data: {
   reorderThreshold: number;
 }) {
   await assertAdmin();
-  await prisma.productVariant.create({ data });
+  const variant = await prisma.productVariant.create({ data });
+  invalidateProductsCache();
   revalidatePath(`/admin/products/${data.productId}/edit`);
   revalidatePath('/admin/products');
   revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/api/products');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/', 'layout');
+  return variant;
 }
 
 export async function updateVariant(
@@ -610,17 +651,36 @@ export async function updateVariant(
     await assertStaff();
   }
   const variant = await prisma.productVariant.update({ where: { id: variantId }, data });
+  invalidateProductsCache();
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/${variant.productId}/edit`);
   revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/api/products');
+  revalidatePath('/api/products/prices');
   revalidatePath('/', 'layout');
+  return variant;
 }
 
 export async function deleteVariant(variantId: string) {
   await assertAdmin();
+  const existing = await prisma.productVariant.findUnique({
+    where: { id: variantId },
+    select: { productId: true },
+  });
   await prisma.productVariant.delete({ where: { id: variantId } });
+  invalidateProductsCache();
   revalidatePath('/admin/products');
+  if (existing?.productId) {
+    revalidatePath(`/admin/products/${existing.productId}/edit`);
+  }
   revalidatePath('/products');
+  revalidatePath('/products/[category]', 'page');
+  revalidatePath('/products/[category]/[slug]', 'page');
+  revalidatePath('/api/products');
+  revalidatePath('/api/products/prices');
+  revalidatePath('/', 'layout');
 }
 
 // ═══════════════════════════════════════
@@ -765,24 +825,20 @@ export async function updateSettings(data: {
   id?: string;
   storeName: string;
   contactEmail: string;
-  currency: string;
   taxRate: number;
-  maintenanceMode: boolean;
 }) {
   await assertAdmin();
+  const targetId = data.id?.trim() || 'singleton';
+  const payload = {
+    storeName: data.storeName,
+    contactEmail: data.contactEmail,
+    taxRate: data.taxRate,
+  };
+
   await prisma.storeSettings.upsert({
-    where: { id: 'singleton' },
-    create: {
-      id: 'singleton',
-      storeName: data.storeName,
-      contactEmail: data.contactEmail,
-      taxRate: data.taxRate,
-    },
-    update: {
-      storeName: data.storeName,
-      contactEmail: data.contactEmail,
-      taxRate: data.taxRate,
-    },
+    where: { id: targetId },
+    create: { id: targetId, ...payload },
+    update: payload,
   });
   revalidatePath('/admin/settings');
 }

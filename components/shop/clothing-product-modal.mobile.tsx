@@ -15,7 +15,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
     selectedGarment,
     unitPrice,
     selectedColor,
-    setSelectedColor,
+    handleSelectColor,
     selectedSize,
     setSelectedSize,
     activeArtId,
@@ -415,7 +415,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 <button
                   key={color.name}
                   type="button"
-                  onClick={() => setSelectedColor(color)}
+                  onClick={() => handleSelectColor(color)}
                   className={`group relative w-9 h-9 rounded-full flex items-center justify-center transition-all ${
                     isSelected
                       ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0c0e12] scale-110 shadow'

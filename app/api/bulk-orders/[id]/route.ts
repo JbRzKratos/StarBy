@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createClient } from '@/lib/supabase/server';
+import {
+  canMutateBulkOrder,
+  canReadBulkOrder,
+  resolveBulkOrderActor,
+} from '@/lib/bulk-orders/access';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,16 +12,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
   try {
     const { id } = params;
 
-    const supabase = createClient();
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-
-    let isStaff = false;
-    if (authUser) {
-      const dbUser = await prisma.user.findUnique({ where: { id: authUser.id } });
-      isStaff = dbUser?.role === 'ADMIN' || dbUser?.role === 'STAFF';
-    }
+    const actor = await resolveBulkOrderActor();
+    const { isStaff } = actor;
 
     const bulkRequest = await prisma.bulkOrderRequest.findFirst({
       where: {
@@ -35,6 +31,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
         messages: {
           orderBy: { createdAt: 'asc' },
         },
+        emailEvents: {
+          orderBy: { createdAt: 'desc' },
+        },
       },
     });
 
@@ -42,8 +41,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
       return NextResponse.json({ success: false, message: 'Request not found' }, { status: 404 });
     }
 
-    // Access control: if request belongs to a user, non-staff users must match userId
-    if (!isStaff && bulkRequest.userId && authUser && bulkRequest.userId !== authUser.id) {
+    // Access control: owners may read their request; anonymous requests are
+    // readable only through the public requestNumber, never the internal id.
+    if (!canReadBulkOrder(bulkRequest, actor, id)) {
       return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 403 });
     }
 
@@ -66,18 +66,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     const { id } = params;
     const body = await request.json();
 
-    const supabase = createClient();
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-
-    let isStaff = false;
-    let actorName = 'Customer';
-    if (authUser) {
-      const dbUser = await prisma.user.findUnique({ where: { id: authUser.id } });
-      isStaff = dbUser?.role === 'ADMIN' || dbUser?.role === 'STAFF';
-      actorName = dbUser?.fullName || (isStaff ? 'Admin' : 'Customer');
-    }
+    const actor = await resolveBulkOrderActor();
+    const { isStaff, actorName } = actor;
 
     const existing = await prisma.bulkOrderRequest.findFirst({
       where: {
@@ -93,6 +83,13 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
     if (!existing) {
       return NextResponse.json({ success: false, message: 'Request not found' }, { status: 404 });
+    }
+
+    const isCustomerAction =
+      body.action === 'accept_quote' || body.action === 'request_changes';
+
+    if (isCustomerAction && !canMutateBulkOrder(existing, actor, id)) {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 403 });
     }
 
     // 1. Customer Accepting Quote

@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
+import { getAdminUser } from '@/app/admin/lib/auth';
 import { FREGORO_LAYOUTS } from '@/lib/wall-studio/layouts-data';
 
 export const dynamic = 'force-dynamic';
@@ -30,6 +32,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const admin = await getAdminUser();
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: 'Unauthorized. Admin access is required.' },
+        { status: 401 },
+      );
+    }
+
     const body = await request.json();
     const {
       name,
@@ -51,9 +61,32 @@ export async function POST(request: Request) {
       published = true,
     } = body;
 
-    if (!name || !slug || !slots || !wallWidthMm || !wallHeightMm) {
+    if (!name || !slug || !Array.isArray(slots) || !wallWidthMm || !wallHeightMm) {
       return NextResponse.json(
         { success: false, message: 'Missing required layout parameters' },
+        { status: 400 },
+      );
+    }
+
+    const parsedBasePrice = Number(basePrice);
+    const parsedCompareAtPrice =
+      compareAtPrice === null || compareAtPrice === undefined || compareAtPrice === ''
+        ? null
+        : Number(compareAtPrice);
+
+    if (!Number.isFinite(parsedBasePrice) || parsedBasePrice < 0) {
+      return NextResponse.json(
+        { success: false, message: 'Base price must be a positive number' },
+        { status: 400 },
+      );
+    }
+
+    if (
+      parsedCompareAtPrice !== null &&
+      (!Number.isFinite(parsedCompareAtPrice) || parsedCompareAtPrice < 0)
+    ) {
+      return NextResponse.json(
+        { success: false, message: 'Compare-at price must be a positive number' },
         { status: 400 },
       );
     }
@@ -78,8 +111,8 @@ export async function POST(request: Request) {
         recommendedRoom,
         recommendedWallWidth,
         recommendedThemes: recommendedThemes || [],
-        basePrice: parseFloat(basePrice) || 999,
-        compareAtPrice: compareAtPrice ? parseFloat(compareAtPrice) : null,
+        basePrice: parsedBasePrice,
+        compareAtPrice: parsedCompareAtPrice,
         slots,
         splitGroups: splitGroups || [],
         published,
@@ -101,8 +134,8 @@ export async function POST(request: Request) {
         recommendedRoom,
         recommendedWallWidth,
         recommendedThemes: recommendedThemes || [],
-        basePrice: parseFloat(basePrice) || 999,
-        compareAtPrice: compareAtPrice ? parseFloat(compareAtPrice) : null,
+        basePrice: parsedBasePrice,
+        compareAtPrice: parsedCompareAtPrice,
         slots,
         splitGroups: splitGroups || [],
         published,
@@ -124,6 +157,9 @@ export async function POST(request: Request) {
         wallHeightMm,
       },
     });
+
+    revalidatePath('/wall-studio');
+    revalidatePath('/api/wall-studio/layouts');
 
     return NextResponse.json({ success: true, layout });
   } catch (err: unknown) {

@@ -27,7 +27,14 @@ export function isCategoryComingSoon(categorySlug?: string): boolean {
   if (!categorySlug) return false;
   const slug = categorySlug.toLowerCase().trim();
   if (slug === 'all' || slug === 'all-designs' || slug === 'all designs') return false;
-  return !ACTIVE_PRODUCT_CATEGORIES.has(slug);
+
+  // The static catalogue is the source of truth for known categories. Any
+  // category created in the admin panel is a real, live category — treating it
+  // as "coming soon" would hide a category the admin just published.
+  const known = categories.find((category) => category.slug === slug);
+  if (known) return Boolean(known.comingSoon);
+
+  return false;
 }
 
 export function isProductComingSoon(product?: {

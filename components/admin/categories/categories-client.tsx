@@ -90,6 +90,8 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         setShowCreate(false);
         router.refresh();
       } catch (e) {
+        // Roll the optimistic row back to the server state.
+        router.refresh();
         show(e instanceof Error ? e.message : 'Error', 'error');
       }
     });
@@ -108,6 +110,8 @@ export function CategoriesClient({ categories }: { categories: CategoryRow[] }) 
         show('Category deleted', 'success');
         router.refresh();
       } catch (e) {
+        // Restore the row that was optimistically removed.
+        router.refresh();
         show(e instanceof Error ? e.message : 'Cannot delete', 'error');
       } finally {
         setDeleteId(null);

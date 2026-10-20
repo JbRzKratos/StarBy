@@ -76,6 +76,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
         show('Coupon status updated', 'success');
         router.refresh();
       } catch {
+        router.refresh();
         show('Error updating coupon', 'error');
       }
     });
@@ -94,6 +95,7 @@ export function CouponsClient({ coupons }: { coupons: CouponRow[] }) {
         show('Coupon deleted', 'success');
         router.refresh();
       } catch (e) {
+        router.refresh();
         show(e instanceof Error ? e.message : 'Cannot delete', 'error');
       } finally {
         setDeleteId(null);

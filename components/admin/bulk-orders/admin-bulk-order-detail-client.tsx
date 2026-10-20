@@ -32,6 +32,7 @@ import {
   type BulkOrderAddressData,
 } from '@/lib/bulk-orders/types';
 import { formatAdminToCustomerWhatsappMessage, getWhatsappLink } from '@/lib/whatsapp';
+import { mapSizeColorMatrixToColorRows } from '@/lib/bulk-orders/mappers';
 
 interface AdminBulkOrderDetailClientProps {
   request: BulkOrderDetailData;
@@ -127,8 +128,19 @@ export function AdminBulkOrderDetailClient({
       const res = await fetch(`/api/bulk-orders/${request.id}`);
       const json = await res.json();
       if (json.success && json.request) {
-        setRequest(json.request);
-        setSelectedStatus(json.request.status);
+        const next = json.request;
+        if (Array.isArray(next.items)) {
+          next.items = next.items.map(
+            (item: BulkOrderItemData & { sizeColorMatrix?: unknown }) => ({
+              ...item,
+              colorRows: item.colorRows?.length
+                ? item.colorRows
+                : mapSizeColorMatrixToColorRows(item.sizeColorMatrix),
+            }),
+          );
+        }
+        setRequest(next);
+        setSelectedStatus(next.status);
       }
     } catch (e) {
       console.error(e);
@@ -146,6 +158,7 @@ export function AdminBulkOrderDetailClient({
         body: JSON.stringify({
           status: selectedStatus,
           adminNotes: statusNote.trim() || undefined,
+          note: statusNote.trim() || undefined,
         }),
       });
       const data = await res.json();

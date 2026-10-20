@@ -15,7 +15,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
     selectedGarment,
     unitPrice,
     selectedColor,
-    setSelectedColor,
+    handleSelectColor,
     selectedSize,
     setSelectedSize,
     activeArtId,
@@ -432,7 +432,7 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                       <button
                         key={color.name}
                         type="button"
-                        onClick={() => setSelectedColor(color)}
+                        onClick={() => handleSelectColor(color)}
                         className={`group relative w-9 h-9 rounded-full flex items-center justify-center transition-all ${
                           isSelected
                             ? 'ring-2 ring-white ring-offset-2 ring-offset-[#111216] scale-110 shadow-lg'

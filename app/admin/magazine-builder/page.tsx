@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Loader2, Plus, Trash2, Save, Type, ImageIcon } from 'lucide-react';
@@ -23,11 +23,27 @@ export default function MagazineBuilder() {
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null);
 
-  const canvasRef = (el: HTMLDivElement | null) => {
-    if (el) {
-      setContainerRect(el.getBoundingClientRect());
+  const canvasRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = canvasRef.current;
+    if (!el) {
+      setContainerRect(null);
+      return;
     }
-  };
+
+    const updateRect = () => setContainerRect(el.getBoundingClientRect());
+    updateRect();
+
+    const observer = new ResizeObserver(updateRect);
+    observer.observe(el);
+    window.addEventListener('resize', updateRect);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateRect);
+    };
+  }, [activePageIndex, pages.length]);
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -45,7 +61,15 @@ export default function MagazineBuilder() {
         method: 'POST',
         body: formData,
       });
-      const data = (await res.json()) as { url?: string };
+      const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Upload failed. Please try again.');
+      }
+
+      if (!data.url) {
+        throw new Error('Upload did not return a file URL.');
+      }
 
       if (data.url) {
         if (isCover) {
@@ -217,14 +241,20 @@ export default function MagazineBuilder() {
           badge: 'NEW',
         }),
       });
-      if (res.ok) {
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: boolean;
+        error?: string;
+      };
+
+      if (res.ok && data.success) {
         alert('Template saved successfully!');
-        router.push('/magazine/templates');
+        router.push('/admin/magazines');
       } else {
-        alert('Failed to save template. Please try again.');
+        alert(data.error || 'Failed to save template. Please try again.');
       }
     } catch (err) {
       console.error(err);
+      alert('Failed to save template. Please try again.');
     } finally {
       setIsSaving(false);
     }

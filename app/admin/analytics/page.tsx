@@ -1,15 +1,17 @@
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/app/admin/lib/auth';
 import { AnalyticsClient } from '@/components/admin/analytics/analytics-client';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminAnalyticsPage() {
+  await requireAdmin();
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
   // Daily revenue aggregation initialization
   const dailyMap: Record<string, number> = {};
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i <= 30; i++) {
     const d = new Date(thirtyDaysAgo);
     d.setDate(d.getDate() + i);
     const dayKey = d.toISOString().split('T')[0] ?? '';
@@ -40,6 +42,12 @@ export default async function AdminAnalyticsPage() {
       prisma.orderItem
         .groupBy({
           by: ['productId'],
+          where: {
+            order: {
+              createdAt: { gte: thirtyDaysAgo },
+              paymentStatus: { in: ['paid', 'completed'] },
+            },
+          },
           _sum: { quantity: true },
           orderBy: { _sum: { quantity: 'desc' } },
           take: 5,

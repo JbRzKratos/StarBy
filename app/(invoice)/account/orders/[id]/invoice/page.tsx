@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { PrintInvoiceButton, AutoPrintTrigger } from '@/components/print-invoice-button';
+import { verifyInvoiceToken } from '@/lib/invoice-token';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,7 +12,7 @@ export default async function InvoicePage({
   searchParams,
 }: {
   params: { id: string };
-  searchParams?: { email?: string; print?: string; autoPrint?: string };
+  searchParams?: { email?: string; token?: string; print?: string; autoPrint?: string };
 }) {
   const supabase = createClient();
   const {
@@ -42,10 +43,15 @@ export default async function InvoicePage({
 
   if (!isAdmin && user?.id) {
     const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-    isAdmin = dbUser?.role === 'ADMIN' || dbUser?.role === 'STAFF';
+    isAdmin = dbUser?.role === 'STAFF';
   }
 
-  const isEmailVerifiedLink = Boolean(searchEmail && orderEmail && searchEmail === orderEmail);
+  const isEmailVerifiedLink = Boolean(
+    searchEmail &&
+      orderEmail &&
+      searchEmail === orderEmail &&
+      verifyInvoiceToken(params.id, searchEmail, searchParams?.token),
+  );
 
   // Restrict to admin, owner, or verified order recipient link
   if (!isOwner && !isAdmin && !isEmailVerifiedLink) {

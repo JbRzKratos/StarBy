@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { requireStaff } from '@/app/admin/lib/auth';
+import { getStaffUser } from '@/app/admin/lib/auth';
 import { listR2Objects, getR2ObjectBuffer } from '@/lib/r2';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
@@ -9,8 +9,8 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {
-    const user = await requireStaff();
-    if (!user) {
+    const staff = await getStaffUser();
+    if (!staff) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

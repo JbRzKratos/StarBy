@@ -57,9 +57,25 @@ export async function POST(request: Request, { params }: { params: { id: string 
     const latestVersion = bulkRequest.quotes[0]?.version || 0;
     const newVersion = latestVersion + 1;
 
-    const expiresDays = parseInt(body.expiresDays || '14', 10);
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + expiresDays);
+    const parsedDays = Number.parseInt(String(body.expiresDays ?? '14'), 10);
+    const expiresDays = Number.isFinite(parsedDays)
+      ? Math.min(90, Math.max(1, parsedDays))
+      : 14;
+
+    let expiresAt: Date;
+    const requestedExpiry =
+      typeof body.expiresAt === 'string' ? new Date(body.expiresAt) : null;
+
+    if (
+      requestedExpiry &&
+      !Number.isNaN(requestedExpiry.getTime()) &&
+      requestedExpiry.getTime() > Date.now()
+    ) {
+      expiresAt = requestedExpiry;
+    } else {
+      expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + expiresDays);
+    }
 
     const newQuote = await prisma.$transaction(async (tx) => {
       // Mark any prior active quote as superseded

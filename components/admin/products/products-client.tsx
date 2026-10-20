@@ -437,9 +437,8 @@ export function ProductsClient({
     const initial = (p.sizePrices as Record<string, number>) || {};
     const result: Record<string, number> = {};
     (p.sizes || []).forEach((s) => {
-      const u = s.toUpperCase();
-      result[s] = initial[s] ?? initial[u] ?? p.basePrice;
-      result[u] = result[s];
+      const u = s.trim().toUpperCase();
+      result[u] = initial[u] ?? initial[s] ?? p.basePrice;
     });
     return result;
   }
@@ -449,20 +448,19 @@ export function ProductsClient({
     const initial = (p.sizeStock as Record<string, unknown>) || {};
     const result: Record<string, { quantity: number; inStock: boolean }> = {};
     (p.sizes || []).forEach((s) => {
-      const u = s.toUpperCase();
-      const raw = initial[s] ?? initial[u];
+      const u = s.trim().toUpperCase();
+      const raw = initial[u] ?? initial[s];
       if (typeof raw === 'number') {
-        result[s] = { quantity: raw, inStock: raw > 0 };
+        result[u] = { quantity: raw, inStock: raw > 0 };
       } else if (raw && typeof raw === 'object') {
         const item = raw as { quantity?: unknown; inStock?: unknown };
-        result[s] = {
+        result[u] = {
           quantity: typeof item.quantity === 'number' ? item.quantity : 50,
           inStock: item.inStock !== false,
         };
       } else {
-        result[s] = { quantity: 50, inStock: true };
+        result[u] = { quantity: 50, inStock: true };
       }
-      result[u] = result[s];
     });
     return result;
   }
@@ -477,32 +475,16 @@ export function ProductsClient({
     try {
       await updateProductSizePricingAndStock(productId, currentPrices, currentStock);
 
-      let totalUnits = 0;
-      let hasAnyInStock = false;
-      Object.values(currentStock).forEach((val) => {
-        if (val) {
-          totalUnits += val.quantity || 0;
-          if (val.inStock && val.quantity > 0) hasAnyInStock = true;
-        }
-      });
-
       setProductList((prev) =>
-        prev.map((p) => {
-          if (p.id === productId) {
-            const perVarQty = p.variants.length > 0 ? Math.floor(totalUnits / p.variants.length) : totalUnits;
-            return {
-              ...p,
-              sizePrices: currentPrices,
-              sizeStock: currentStock,
-              variants: p.variants.map((v) => ({
-                ...v,
-                inStock: hasAnyInStock,
-                stockQuantity: perVarQty,
-              })),
-            };
-          }
-          return p;
-        })
+        prev.map((p) =>
+          p.id === productId
+            ? {
+                ...p,
+                sizePrices: currentPrices,
+                sizeStock: currentStock,
+              }
+            : p,
+        ),
       );
       setRecentlySavedSizeId(productId);
       setTimeout(() => setRecentlySavedSizeId(null), 3000);
@@ -524,8 +506,11 @@ export function ProductsClient({
 
     setIsBatchSaving(true);
     try {
-      const primarySlug = batchModalCategory.categorySlugs[0];
-      const res = await batchUpdateCategoryPrice(primarySlug, newPrice, batchSyncVariants);
+      const res = await batchUpdateCategoryPrice(
+        batchModalCategory.categorySlugs,
+        newPrice,
+        batchSyncVariants,
+      );
 
       setProductList((prev) =>
         prev.map((p) => {
@@ -1447,7 +1432,6 @@ export function ProductsClient({
                             product.sizes.forEach((s) => {
                               const u = s.toUpperCase();
                               const val = u === '3XL' || u === 'XXXL' ? 645 : 600;
-                              current[s] = val;
                               current[u] = val;
                             });
                             setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
@@ -1465,7 +1449,6 @@ export function ProductsClient({
                             product.sizes.forEach((s) => {
                               const u = s.toUpperCase();
                               const val = u === '3XL' || u === 'XXXL' ? 699 : 670;
-                              current[s] = val;
                               current[u] = val;
                             });
                             setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
@@ -1483,7 +1466,6 @@ export function ProductsClient({
                             product.sizes.forEach((s) => {
                               const u = s.toUpperCase();
                               const val = u === '3XL' || u === 'XXXL' ? 720 : 699;
-                              current[s] = val;
                               current[u] = val;
                             });
                             setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
@@ -1501,7 +1483,6 @@ export function ProductsClient({
                             product.sizes.forEach((s) => {
                               const u = s.toUpperCase();
                               const val = u === '3XL' || u === 'XXXL' ? 780 : 750;
-                              current[s] = val;
                               current[u] = val;
                             });
                             setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
@@ -1555,7 +1536,6 @@ export function ProductsClient({
                           const currentStock = { ...getProductSizeStock(product) };
                           product.sizes.forEach((s) => {
                             const u = s.toUpperCase();
-                            currentStock[s] = { quantity: 50, inStock: true };
                             currentStock[u] = { quantity: 50, inStock: true };
                           });
                           setSizeStockState((prev) => ({ ...prev, [product.id]: currentStock }));
@@ -1572,7 +1552,6 @@ export function ProductsClient({
                           const currentStock = { ...getProductSizeStock(product) };
                           product.sizes.forEach((s) => {
                             const u = s.toUpperCase();
-                            currentStock[s] = { quantity: 100, inStock: true };
                             currentStock[u] = { quantity: 100, inStock: true };
                           });
                           setSizeStockState((prev) => ({ ...prev, [product.id]: currentStock }));
@@ -1589,8 +1568,7 @@ export function ProductsClient({
                           const currentStock = { ...getProductSizeStock(product) };
                           product.sizes.forEach((s) => {
                             const u = s.toUpperCase();
-                            const cur = currentStock[s] || currentStock[u] || { quantity: 50, inStock: true };
-                            currentStock[s] = { ...cur, inStock: true };
+                            const cur = currentStock[u] || currentStock[s] || { quantity: 50, inStock: true };
                             currentStock[u] = { ...cur, inStock: true };
                           });
                           setSizeStockState((prev) => ({ ...prev, [product.id]: currentStock }));
@@ -1607,8 +1585,7 @@ export function ProductsClient({
                           const currentStock = { ...getProductSizeStock(product) };
                           product.sizes.forEach((s) => {
                             const u = s.toUpperCase();
-                            const cur = currentStock[s] || currentStock[u] || { quantity: 0, inStock: false };
-                            currentStock[s] = { ...cur, inStock: false };
+                            const cur = currentStock[u] || currentStock[s] || { quantity: 0, inStock: false };
                             currentStock[u] = { ...cur, inStock: false };
                           });
                           setSizeStockState((prev) => ({ ...prev, [product.id]: currentStock }));
@@ -1627,8 +1604,8 @@ export function ProductsClient({
                       const upper = size.toUpperCase();
                       const pricesMap = getProductSizePrices(product);
                       const stockMap = getProductSizeStock(product);
-                      const curPrice = pricesMap[size] ?? pricesMap[upper] ?? product.basePrice;
-                      const curStock = stockMap[size] ?? stockMap[upper] ?? { quantity: 50, inStock: true };
+                      const curPrice = pricesMap[upper] ?? pricesMap[size] ?? product.basePrice;
+                      const curStock = stockMap[upper] ?? stockMap[size] ?? { quantity: 50, inStock: true };
 
                       return (
                         <div
@@ -1664,7 +1641,6 @@ export function ProductsClient({
                                     ...prev,
                                     [product.id]: {
                                       ...(prev[product.id] || pricesMap),
-                                      [size]: val,
                                       [upper]: val,
                                     },
                                   }));
@@ -1687,7 +1663,6 @@ export function ProductsClient({
                                   ...prev,
                                   [product.id]: {
                                     ...(prev[product.id] || stockMap),
-                                    [size]: { quantity: qty, inStock: qty > 0 ? curStock.inStock : false },
                                     [upper]: { quantity: qty, inStock: qty > 0 ? curStock.inStock : false },
                                   },
                                 }));
@@ -1705,7 +1680,6 @@ export function ProductsClient({
                                 ...prev,
                                 [product.id]: {
                                   ...(prev[product.id] || stockMap),
-                                  [size]: { ...curStock, inStock: nextInStock },
                                   [upper]: { ...curStock, inStock: nextInStock },
                                 },
                               }));

@@ -90,17 +90,22 @@ export function ProductFormClient({
   const [tagsInput, setTagsInput] = useState(initialData.tags.join(', '));
   const [sizesInput, setSizesInput] = useState(initialData.sizes.join(', '));
   const [sizePrices, setSizePrices] = useState<Record<string, number>>(() => {
-    return (initialData.sizePrices as Record<string, number>) || {};
+    const raw = (initialData.sizePrices as Record<string, number>) || {};
+    const normalized: Record<string, number> = {};
+    Object.entries(raw).forEach(([key, value]) => {
+      normalized[key.trim().toUpperCase()] = value;
+    });
+    return normalized;
   });
   const [sizeStock, setSizeStock] = useState<Record<string, { quantity: number; inStock: boolean }>>(() => {
     const raw = (initialData.sizeStock as Record<string, unknown>) || {};
     const result: Record<string, { quantity: number; inStock: boolean }> = {};
     Object.entries(raw).forEach(([k, v]) => {
       if (typeof v === 'number') {
-        result[k] = { quantity: v, inStock: v > 0 };
+        result[k.trim().toUpperCase()] = { quantity: v, inStock: v > 0 };
       } else if (v && typeof v === 'object') {
         const item = v as { quantity?: unknown; inStock?: unknown };
-        result[k] = {
+        result[k.trim().toUpperCase()] = {
           quantity: typeof item.quantity === 'number' ? item.quantity : 50,
           inStock: item.inStock !== false,
         };
@@ -124,17 +129,15 @@ export function ProductFormClient({
         const cleanSizeStock: Record<string, { quantity: number; inStock: boolean }> = {};
 
         activeSizes.forEach((s) => {
-          const upper = s.toUpperCase();
-          const p = sizePrices[s] ?? sizePrices[upper] ?? form.basePrice;
-          cleanSizePrices[s] = p;
+          const upper = s.trim().toUpperCase();
+          const p = sizePrices[upper] ?? sizePrices[s] ?? form.basePrice;
           cleanSizePrices[upper] = p;
           if (upper === '2XL') cleanSizePrices['XXL'] = p;
           if (upper === 'XXL') cleanSizePrices['2XL'] = p;
           if (upper === '3XL') cleanSizePrices['XXXL'] = p;
           if (upper === 'XXXL') cleanSizePrices['3XL'] = p;
 
-          const stockItem = sizeStock[s] ?? sizeStock[upper] ?? { quantity: 50, inStock: true };
-          cleanSizeStock[s] = stockItem;
+          const stockItem = sizeStock[upper] ?? sizeStock[s] ?? { quantity: 50, inStock: true };
           cleanSizeStock[upper] = stockItem;
           if (upper === '2XL') cleanSizeStock['XXL'] = stockItem;
           if (upper === 'XXL') cleanSizeStock['2XL'] = stockItem;
@@ -173,8 +176,21 @@ export function ProductFormClient({
     }
     startTransition(async () => {
       try {
-        await createVariant({ productId, ...newVariant });
-        setVariants((prev) => [...prev, { id: Date.now().toString(), ...newVariant }]);
+        const created = await createVariant({ productId, ...newVariant });
+        setVariants((prev) => [
+          ...prev,
+          {
+            id: created.id,
+            name: created.name,
+            color: created.color,
+            colorHex: created.colorHex,
+            price: created.price,
+            images: created.images,
+            inStock: created.inStock,
+            stockQuantity: created.stockQuantity,
+            reorderThreshold: created.reorderThreshold,
+          },
+        ]);
         setNewVariant({ ...BLANK_VARIANT });
         setShowVariantForm(false);
         show('Variant added', 'success');

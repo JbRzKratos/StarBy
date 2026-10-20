@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { requireStaff } from '@/app/admin/lib/auth';
 import { AdminBulkOrderDetailClient } from '@/components/admin/bulk-orders/admin-bulk-order-detail-client';
+import { mapSizeColorMatrixToColorRows } from '@/lib/bulk-orders/mappers';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,5 +47,15 @@ export default async function AdminBulkOrderDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  return <AdminBulkOrderDetailClient request={request} />;
+  return (
+    <AdminBulkOrderDetailClient
+      request={{
+        ...request,
+        items: request.items.map((item) => ({
+          ...item,
+          colorRows: mapSizeColorMatrixToColorRows(item.sizeColorMatrix),
+        })),
+      }}
+    />
+  );
 }

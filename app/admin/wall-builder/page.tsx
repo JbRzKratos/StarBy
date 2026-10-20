@@ -45,6 +45,15 @@ export default function AdminWallBuilderPage() {
         const data = await res.json();
         if (data.success && Array.isArray(data.layouts) && data.layouts.length > 0) {
           setLayouts(data.layouts);
+          const preferred =
+            data.layouts.find(
+              (layout: WallLayout) => layout.slug === FREGORO_LAYOUTS[4].slug,
+            ) || data.layouts[0];
+          if (preferred) {
+            setSelectedLayoutId(preferred.id);
+            setActiveLayout(JSON.parse(JSON.stringify(preferred)));
+            setSelectedSlotId(null);
+          }
         }
       } catch (err) {
         console.warn('Could not load layouts from server, using local data', err);
@@ -281,13 +290,18 @@ export default function AdminWallBuilderPage() {
       });
 
       const data = await res.json();
-      if (data.success) {
+      if (res.ok && data.success && data.layout) {
         setSaveStatus(`Saved successfully! Version updated to v${data.layout.version}.`);
         setActiveLayout(data.layout);
-        setLayouts((prev) => prev.map((l) => (l.id === data.layout.id ? data.layout : l)));
+        setSelectedLayoutId(data.layout.id);
+        setLayouts((prev) => {
+          const exists = prev.some((l) => l.slug === data.layout.slug);
+          if (!exists) return [...prev, data.layout];
+          return prev.map((l) => (l.slug === data.layout.slug ? data.layout : l));
+        });
         setTimeout(() => setSaveStatus(null), 4000);
       } else {
-        setSaveStatus(`Error saving: ${data.message}`);
+        setSaveStatus(`Error saving: ${data.message || 'Unauthorized or invalid layout'}`);
       }
     } catch (err) {
       setSaveStatus(`Network error while saving layout: ${String(err)}`);

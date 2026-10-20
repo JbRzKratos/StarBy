@@ -27,7 +27,14 @@ interface MagazinePageSummary {
   [key: string]: unknown;
 }
 
-type OrderStatus = 'placed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+type OrderStatus =
+  | 'pending_payment'
+  | 'placed'
+  | 'processing'
+  | 'shipped'
+  | 'delivered'
+  | 'cancelled'
+  | 'refunded';
 
 const STATUS_STEPS: OrderStatus[] = ['placed', 'processing', 'shipped', 'delivered'];
 
@@ -102,6 +109,7 @@ interface OrderDetailProps {
 }
 
 const ALL_STATUSES: OrderStatus[] = [
+  'pending_payment',
   'placed',
   'processing',
   'shipped',

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { createCashfreeOrder, getCashfreeEnvironment } from '@/lib/cashfree';
+import { canMutateBulkOrder, resolveBulkOrderActor } from '@/lib/bulk-orders/access';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,6 +15,8 @@ function getSiteUrl(request: Request): string {
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
+
+    const actor = await resolveBulkOrderActor();
 
     const bulkRequest = await prisma.bulkOrderRequest.findFirst({
       where: {
@@ -30,6 +33,10 @@ export async function POST(request: Request, { params }: { params: { id: string 
 
     if (!bulkRequest) {
       return NextResponse.json({ success: false, message: 'Request not found' }, { status: 404 });
+    }
+
+    if (!canMutateBulkOrder(bulkRequest, actor, id)) {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 403 });
     }
 
     const acceptedQuote = bulkRequest.quotes[0];

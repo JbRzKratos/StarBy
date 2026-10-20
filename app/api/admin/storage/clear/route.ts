@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server';
-import { requireStaff } from '@/app/admin/lib/auth';
+import { getAdminUser } from '@/app/admin/lib/auth';
 import { listR2Objects, deleteR2Objects } from '@/lib/r2';
 
 export const dynamic = 'force-dynamic';
 
 export async function DELETE() {
   try {
-    const user = await requireStaff();
-    if (!user || user.role !== 'ADMIN') {
+    const admin = await getAdminUser();
+    if (!admin) {
       return NextResponse.json(
-        { error: 'Unauthorized. Only admins can clear storage.' },
+        { error: 'Unauthorized. Only the super admin can clear storage.' },
         { status: 401 },
       );
     }

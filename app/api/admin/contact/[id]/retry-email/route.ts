@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '@/app/admin/lib/auth';
+import { getStaffUser } from '@/app/admin/lib/auth';
 import { sendContactSubmission } from '@/lib/email/emailService';
 
 export const dynamic = 'force-dynamic';
@@ -13,7 +13,10 @@ interface RouteParams {
 
 export async function POST(request: Request, { params }: RouteParams) {
   try {
-    await requireStaff();
+    const staff = await getStaffUser();
+    if (!staff) {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
 
     const submission = await prisma.contactSubmission.findUnique({
       where: { id: params.id },
@@ -37,26 +40,27 @@ export async function POST(request: Request, { params }: RouteParams) {
       createdAt: submission.createdAt,
     });
 
+    const bothSent = emailResult.adminEmailSent && emailResult.customerEmailSent;
+    const anySent = emailResult.adminEmailSent || emailResult.customerEmailSent;
+
     await prisma.contactSubmission.update({
       where: { id: submission.id },
       data: {
-        emailStatus: emailResult.success
-          ? 'sent'
-          : emailResult.adminEmailSent
-            ? 'partial'
-            : 'failed',
+        emailStatus: bothSent ? 'sent' : anySent ? 'partial' : 'failed',
         emailError: emailResult.errors.length > 0 ? emailResult.errors.join('; ') : null,
       },
     });
 
     return NextResponse.json({
-      success: emailResult.success,
+      success: anySent,
       adminEmailSent: emailResult.adminEmailSent,
       customerEmailSent: emailResult.customerEmailSent,
       errors: emailResult.errors,
-      message: emailResult.success
+      message: bothSent
         ? 'Enquiry email resent successfully'
-        : 'Failed to resend enquiry email',
+        : anySent
+          ? 'Enquiry email partially resent — check the delivery log'
+          : 'Failed to resend enquiry email',
     });
   } catch (error) {
     console.error('[Admin Contact Retry Email] Error:', error);

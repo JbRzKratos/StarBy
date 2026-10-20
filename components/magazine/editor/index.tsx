@@ -83,6 +83,60 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     };
   });
 
+  // Templates created in the admin builder live in the database, not in the
+  // static catalogue. Load them on demand so their editor link works too.
+  useEffect(() => {
+    if (!templateId || initialDocument) return;
+    const isStatic = MAGAZINE_TEMPLATES.some(
+      (t) => t.id === templateId || t.slug === templateId,
+    );
+    if (isStatic) return;
+
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        const res = await fetch(
+          `/api/admin/magazine-templates?id=${encodeURIComponent(templateId)}&full=1`,
+          { cache: 'no-store' },
+        );
+        if (!res.ok) return;
+        const data = (await res.json()) as {
+          success?: boolean;
+          template?: {
+            id?: string;
+            name?: string;
+            dimensionKey?: string;
+            theme?: MagazineTheme;
+            pages?: MagazinePage[];
+          };
+        };
+        const tpl = data?.template;
+        const pages = tpl?.pages;
+        if (!tpl || !Array.isArray(pages) || cancelled) return;
+
+        setDoc((prev) => ({
+          ...prev,
+          title: typeof tpl.name === 'string' ? tpl.name : prev.title,
+          templateId: typeof tpl.id === 'string' ? tpl.id : prev.templateId,
+          dimensionKey:
+            typeof tpl.dimensionKey === 'string' ? tpl.dimensionKey : prev.dimensionKey,
+          theme: tpl.theme || prev.theme,
+          pages,
+          pageCount: pages.length,
+        }));
+        setCurrentPageIndex(0);
+        setSelectedElementIds([]);
+      } catch (err) {
+        console.error('[MagazineEditor] Failed to load database template:', err);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [templateId, initialDocument]);
+
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [selectedElementIds, setSelectedElementIds] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'page' | 'spread'>('page');

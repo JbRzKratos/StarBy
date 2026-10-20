@@ -40,7 +40,7 @@ export async function GET() {
 
     const email = authUser?.email?.trim().toLowerCase() || null;
     const isAuthorized = Boolean(
-      email && (email === 'gokul30sep@gmail.com' || isSuperAdminEmail(email))
+      email && isSuperAdminEmail(email)
     );
 
     return NextResponse.json({

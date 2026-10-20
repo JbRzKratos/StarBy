@@ -45,7 +45,7 @@ async function syncAdminUser(user: {
         dbUser = await prisma.user.create({
           data: {
             id: user.id,
-            email: user.email?.toLowerCase() || 'gokul30sep@gmail.com',
+            email: user.email?.toLowerCase() || `${user.id}@supabase.local`,
             role: 'ADMIN',
             fullName: (user.user_metadata?.full_name as string) || 'Admin',
           },
@@ -61,8 +61,10 @@ async function syncAdminUser(user: {
     if (dbUser) {
       return {
         ...dbUser,
-        isAdmin: dbUser.role === 'ADMIN' || isSuperAdmin,
-        isStaff: dbUser.role === 'STAFF' || dbUser.role === 'ADMIN' || isSuperAdmin,
+        // Full admin access is reserved for the single super-admin account.
+        // A stale DB role of ADMIN must never grant another account access.
+        isAdmin: isSuperAdmin,
+        isStaff: dbUser.role === 'STAFF' || isSuperAdmin,
       };
     }
   } catch (err) {
@@ -71,7 +73,7 @@ async function syncAdminUser(user: {
     if (isSuperAdmin) {
       return {
         id: user.id,
-        email: user.email?.toLowerCase() || 'gokul30sep@gmail.com',
+        email: user.email?.toLowerCase() || `${user.id}@supabase.local`,
         role: 'ADMIN',
         fullName: (user.user_metadata?.full_name as string) || 'Admin',
         isAdmin: true,
@@ -88,7 +90,7 @@ async function syncAdminUser(user: {
   if (isSuperAdmin) {
     return {
       id: user.id,
-      email: user.email?.toLowerCase() || 'gokul30sep@gmail.com',
+      email: user.email?.toLowerCase() || `${user.id}@supabase.local`,
       role: 'ADMIN',
       fullName: (user.user_metadata?.full_name as string) || 'Admin',
       isAdmin: true,
@@ -117,42 +119,86 @@ function getCurrentAdminPath(): string {
 }
 
 /**
+ * Resolve the current Supabase user without redirecting.
+ * Tries the verified getUser() first, then the cookie session as a resilience fallback.
+ */
+async function resolveAuthUser(): Promise<{
+  id: string;
+  email?: string;
+  user_metadata?: Record<string, unknown>;
+} | null> {
+  const supabase = createClient();
+
+  try {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+    if (user && !authError) return user;
+  } catch (userErr) {
+    console.warn('[AdminAuth] getUser() check error, attempting session fallback:', userErr);
+  }
+
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (session?.user) return session.user;
+  } catch (sessionErr) {
+    console.warn('[AdminAuth] getSession() fallback failed:', sessionErr);
+  }
+
+  return null;
+}
+
+/**
+ * Non-redirecting admin check for API route handlers.
+ * Returns null when unauthenticated or not the super admin.
+ */
+export async function getAdminUser(): Promise<AdminUser | null> {
+  try {
+    const authUser = await resolveAuthUser();
+    if (!authUser) return null;
+
+    const adminUser = await syncAdminUser(authUser);
+    const isSuperAdmin = isSuperAdminEmail(authUser.email);
+    if (!adminUser || (!adminUser.isAdmin && !isSuperAdmin)) return null;
+    return adminUser;
+  } catch (error) {
+    console.error('[AdminAuth] Error in getAdminUser:', error);
+    return null;
+  }
+}
+
+/**
+ * Non-redirecting staff check for API route handlers.
+ * Returns null when unauthenticated or lacking staff access.
+ */
+export async function getStaffUser(): Promise<AdminUser | null> {
+  try {
+    const authUser = await resolveAuthUser();
+    if (!authUser) return null;
+
+    const adminUser = await syncAdminUser(authUser);
+    const isSuperAdmin = isSuperAdminEmail(authUser.email);
+    if (!adminUser || (!adminUser.isAdmin && !adminUser.isStaff && !isSuperAdmin)) {
+      return null;
+    }
+    return adminUser;
+  } catch (error) {
+    console.error('[AdminAuth] Error in getStaffUser:', error);
+    return null;
+  }
+}
+
+/**
  * Call from any /admin page or server action.
  * Returns the authenticated DB user if they have ADMIN or STAFF role.
  * Redirects to /login?redirectTo=... otherwise.
  */
 export const requireStaff = cache(async (): Promise<AdminUser> => {
   try {
-    const supabase = createClient();
-    let authUser: { id: string; email?: string; user_metadata?: Record<string, unknown> } | null = null;
-
-    // 1. Primary: getUser()
-    try {
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
-
-      if (user && !authError) {
-        authUser = user;
-      }
-    } catch (userErr) {
-      console.warn('[AdminAuth] getUser() check error, attempting session fallback:', userErr);
-    }
-
-    // 2. Resilient Fallback: getSession()
-    if (!authUser) {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (session?.user) {
-          authUser = session.user;
-        }
-      } catch (sessionErr) {
-        console.warn('[AdminAuth] getSession() fallback failed:', sessionErr);
-      }
-    }
+    const authUser = await resolveAuthUser();
 
     if (!authUser) {
       const path = getCurrentAdminPath();
@@ -202,54 +248,17 @@ export async function requireAdmin(): Promise<AdminUser> {
  * Throws on failure so the action surfaces an error.
  */
 export async function assertAdmin() {
-  const supabase = createClient();
-  let authUser: { id: string; email?: string; user_metadata?: Record<string, unknown> } | null = null;
-
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) authUser = user;
-  } catch {}
-
-  if (!authUser) {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) authUser = session.user;
-    } catch {}
-  }
-
-  if (!authUser) throw new Error('Not authenticated: please log in');
-
-  const adminUser = await syncAdminUser(authUser);
-  const isSuperAdmin = isSuperAdminEmail(authUser.email);
-
-  if (!adminUser || (!adminUser.isAdmin && !isSuperAdmin)) {
-    throw new Error('Forbidden: Only admin access users can change product prices');
+  const adminUser = await getAdminUser();
+  if (!adminUser) {
+    throw new Error('Forbidden: Admin access is required for this action');
   }
   return adminUser;
 }
 
 export async function assertStaff() {
-  const supabase = createClient();
-  let authUser: { id: string; email?: string; user_metadata?: Record<string, unknown> } | null = null;
-
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) authUser = user;
-  } catch {}
-
-  if (!authUser) {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) authUser = session.user;
-    } catch {}
+  const staffUser = await getStaffUser();
+  if (!staffUser) {
+    throw new Error('Forbidden: Admin panel access is required for this action');
   }
-
-  if (!authUser) throw new Error('Not authenticated');
-
-  const adminUser = await syncAdminUser(authUser);
-  const isSuperAdmin = isSuperAdminEmail(authUser.email);
-  if (!adminUser || (!adminUser.isAdmin && !adminUser.isStaff && !isSuperAdmin)) {
-    throw new Error('Forbidden');
-  }
-  return adminUser;
+  return staffUser;
 }

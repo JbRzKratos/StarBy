@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback, type CSSProperties, type MouseEvent } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef, type CSSProperties, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import type {
   ClothingDesignEntry,
@@ -199,6 +199,22 @@ export function useClothingProductModalState({
     }
     return selectedGarment.colors[0];
   });
+
+  // Once the customer explicitly picks a colour, artwork selection must not
+  // silently override it with the artwork's colourHint. This was making the
+  // swatches look broken: pick a colour, tap an artwork, and the colour
+  // snapped back to black/white. A ref keeps the guard without re-running
+  // the placement initialiser every time a swatch is clicked.
+  const colorManuallySelectedRef = useRef(false);
+  const handleSelectColor = useCallback((color: ApparelColorSwatch) => {
+    colorManuallySelectedRef.current = true;
+    setSelectedColor(color);
+  }, []);
+
+  // A new design / garment starts from its recommended colour again.
+  useEffect(() => {
+    colorManuallySelectedRef.current = false;
+  }, [design?.id, selectedGarmentId]);
 
   // Size selection
   const [selectedSize, setSelectedSize] = useState<string>('L');
@@ -424,17 +440,20 @@ export function useClothingProductModalState({
     const initialSide = isBackPlacement(targetPlacement) ? 'back' : 'front';
     setPreviewSide(initialSide);
 
-    // Auto-match colorHint if specified on default artwork
-    if (defaultArt.colorHint === 'black') {
-      const blackSwatch = selectedGarment.colors.find((c) =>
-        c.name.toLowerCase().includes('black')
-      );
-      if (blackSwatch) setSelectedColor(blackSwatch);
-    } else if (defaultArt.colorHint === 'white') {
-      const whiteSwatch = selectedGarment.colors.find((c) =>
-        c.name.toLowerCase().includes('white')
-      );
-      if (whiteSwatch) setSelectedColor(whiteSwatch);
+    // Auto-match colorHint if specified on default artwork, unless the
+    // customer has already chosen a colour for this design.
+    if (!colorManuallySelectedRef.current) {
+      if (defaultArt.colorHint === 'black') {
+        const blackSwatch = selectedGarment.colors.find((c) =>
+          c.name.toLowerCase().includes('black')
+        );
+        if (blackSwatch) setSelectedColor(blackSwatch);
+      } else if (defaultArt.colorHint === 'white') {
+        const whiteSwatch = selectedGarment.colors.find((c) =>
+          c.name.toLowerCase().includes('white')
+        );
+        if (whiteSwatch) setSelectedColor(whiteSwatch);
+      }
     }
   }, [design, artworks, selectedGarment.colors, selectedGarment.garment3dId, getSavedPlacementForDesign, placementSaveVersion]);
 
@@ -498,16 +517,18 @@ export function useClothingProductModalState({
     const isBack = isBackPlacement(artPlacement);
     setPreviewSide(isBack ? 'back' : 'front');
 
-    if (art.colorHint === 'black') {
-      const blackSwatch = selectedGarment.colors.find((c) =>
-        c.name.toLowerCase().includes('black')
-      );
-      if (blackSwatch) setSelectedColor(blackSwatch);
-    } else if (art.colorHint === 'white') {
-      const whiteSwatch = selectedGarment.colors.find((c) =>
-        c.name.toLowerCase().includes('white')
-      );
-      if (whiteSwatch) setSelectedColor(whiteSwatch);
+    if (!colorManuallySelectedRef.current) {
+      if (art.colorHint === 'black') {
+        const blackSwatch = selectedGarment.colors.find((c) =>
+          c.name.toLowerCase().includes('black')
+        );
+        if (blackSwatch) setSelectedColor(blackSwatch);
+      } else if (art.colorHint === 'white') {
+        const whiteSwatch = selectedGarment.colors.find((c) =>
+          c.name.toLowerCase().includes('white')
+        );
+        if (whiteSwatch) setSelectedColor(whiteSwatch);
+      }
     }
   };
 
@@ -976,6 +997,7 @@ export function useClothingProductModalState({
     unitPrice,
     selectedColor,
     setSelectedColor,
+    handleSelectColor,
     selectedSize,
     setSelectedSize,
     activeArtId,

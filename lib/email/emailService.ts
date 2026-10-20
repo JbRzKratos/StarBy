@@ -287,34 +287,39 @@ export interface BulkOrderSubmissionResult {
  */
 export async function sendBulkOrderSubmission(
   data: BulkOrderEmailData,
+  options: { force?: boolean } = {},
 ): Promise<BulkOrderSubmissionResult> {
   const errors: string[] = [];
   const adminRecipient = getAdminContactEmail();
 
-  // Idempotency check: if an email was already sent within the last 10 minutes for this request, skip sending duplicates
-  try {
-    const existingSentEvent = await prisma.emailEvent.findFirst({
-      where: {
-        requestId: data.id,
-        type: 'bulk_admin',
-        status: 'sent',
-      },
-    });
+  // Idempotency check: if an email was already sent for this request, skip
+  // duplicates. Admin-initiated retries pass { force: true } so a failed
+  // customer confirmation can be resent.
+  if (!options.force) {
+    try {
+      const existingSentEvent = await prisma.emailEvent.findFirst({
+        where: {
+          requestId: data.id,
+          type: 'bulk_admin',
+          status: 'sent',
+        },
+      });
 
-    if (existingSentEvent) {
-      console.log(
-        `[EmailService] Idempotency: Bulk order email already sent for request #${data.requestNumber}. Skipping duplicate.`,
-      );
-      return {
-        success: true,
-        requestId: data.id,
-        adminEmailSent: true,
-        customerEmailSent: true,
-        errors: [],
-      };
+      if (existingSentEvent) {
+        console.log(
+          `[EmailService] Idempotency: Bulk order email already sent for request #${data.requestNumber}. Skipping duplicate.`,
+        );
+        return {
+          success: true,
+          requestId: data.id,
+          adminEmailSent: true,
+          customerEmailSent: true,
+          errors: [],
+        };
+      }
+    } catch (idempErr) {
+      console.warn('[EmailService] Idempotency check warning:', idempErr);
     }
-  } catch (idempErr) {
-    console.warn('[EmailService] Idempotency check warning:', idempErr);
   }
 
   // 1. Build and send Admin Notification Email

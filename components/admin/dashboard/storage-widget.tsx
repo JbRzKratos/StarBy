@@ -84,7 +84,7 @@ export function StorageWidget() {
 
     if (
       !window.confirm(
-        'Are you sure you want to permanently delete all customer design files from Cloudflare R2? Make sure you have downloaded a backup first!',
+        'Are you sure you want to permanently delete all customer design files from Cloudflare R2? Make sure you have downloaded the assets first!',
       )
     ) {
       return;
@@ -151,7 +151,7 @@ export function StorageWidget() {
               <div className="flex items-center justify-between text-sm mb-2">
                 <span className="text-slate-200 font-semibold flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-                  Supabase PostgreSQL
+                  Database Asset Records
                 </span>
                 <span className="text-emerald-400 font-mono text-xs font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                   {supabaseStats.percentage}% used
@@ -185,7 +185,7 @@ export function StorageWidget() {
                   className="py-1.5 px-3 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  Download Backup
+                  Download Assets
                 </button>
               </div>
             </div>
@@ -234,7 +234,7 @@ export function StorageWidget() {
                   className="py-1.5 px-3 bg-cobalt/15 hover:bg-cobalt/25 border border-cobalt/30 text-blue-300 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  Download Backup
+                  Download Assets
                 </button>
                 <button
                   onClick={handleClearR2}

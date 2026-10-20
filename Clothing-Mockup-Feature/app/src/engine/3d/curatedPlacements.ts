@@ -659,7 +659,8 @@ export function saveCuratedPlacement(
   garmentId: string,
   placement: CalibratedPlacement,
   targetOrLayerId?: string,
-  artId?: string
+  artId?: string,
+  syncServer = true
 ): void {
   if (typeof window === 'undefined') return;
   try {
@@ -706,35 +707,39 @@ export function saveCuratedPlacement(
     window.localStorage.setItem(STORAGE_KEY, jsonStr);
     window.localStorage.setItem('fregoro_curated_placements', jsonStr);
 
-    // Persist to backend server API
-    try {
-      const payload: any = {
-        designId,
-        garmentId: garmentKey,
-      };
-
-      if (cleanedPlacement.removed && artId) {
-        payload.removedArtIds = [artId];
-      } else if (cleanedPlacement.hidden && artId) {
-        payload.hiddenArtIds = [artId];
-      } else {
-        const specificKeyWithTarget = `${designId}__${garmentKey}__${target}`;
-        payload.placements = {
-          [specificKeyWithTarget]: cleanedPlacement,
-          ...(artId ? { [`${designId}__${garmentKey}__${artId}`]: cleanedPlacement } : {}),
+    // Persist to backend server API. Bulk saves disable this so one request
+    // (with the full layer list) is authoritative instead of racing a POST
+    // for every layer.
+    if (syncServer) {
+      try {
+        const payload: any = {
+          designId,
+          garmentId: garmentKey,
         };
-      }
 
-      fetch('/api/clothing-designs/save-placement', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(payload),
-      }).catch((err) => {
-        console.warn('[CuratedPlacements] Server persistence notice:', err);
-      });
-    } catch {
-      /* ignore fetch error */
+        if (cleanedPlacement.removed && artId) {
+          payload.removedArtIds = [artId];
+        } else if (cleanedPlacement.hidden && artId) {
+          payload.hiddenArtIds = [artId];
+        } else {
+          const specificKeyWithTarget = `${designId}__${garmentKey}__${target}`;
+          payload.placements = {
+            [specificKeyWithTarget]: cleanedPlacement,
+            ...(artId ? { [`${designId}__${garmentKey}__${artId}`]: cleanedPlacement } : {}),
+          };
+        }
+
+        fetch('/api/clothing-designs/save-placement', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(payload),
+        }).catch((err) => {
+          console.warn('[CuratedPlacements] Server persistence notice:', err);
+        });
+      } catch {
+        /* ignore fetch error */
+      }
     }
 
     // Broadcast across frames & tabs
@@ -744,7 +749,7 @@ export function saveCuratedPlacement(
           detail: { designId, garmentId, placement: cleanedPlacement, target, artId },
         })
       );
-      if (window.parent && window.parent !== window) {
+      if (syncServer && window.parent && window.parent !== window) {
         window.parent.postMessage(
           {
             type: 'STARBY_PLACEMENT_SAVED',

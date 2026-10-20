@@ -55,7 +55,7 @@ export function ClothingMockupIframe({
         if (!isMounted) return;
         const email = data.user?.email;
         const authorized = Boolean(
-          email && (email.toLowerCase() === 'gokul30sep@gmail.com' || isSuperAdminEmail(email))
+          email && isSuperAdminEmail(email)
         );
         setIsDesignerAuthorized(authorized);
         if (iframeRef.current?.contentWindow) {
@@ -70,7 +70,7 @@ export function ClothingMockupIframe({
         if (!isMounted) return;
         const email = session?.user?.email;
         const authorized = Boolean(
-          email && (email.toLowerCase() === 'gokul30sep@gmail.com' || isSuperAdminEmail(email))
+          email && isSuperAdminEmail(email)
         );
         setIsDesignerAuthorized(authorized);
         if (iframeRef.current?.contentWindow) {
@@ -99,7 +99,10 @@ export function ClothingMockupIframe({
     const garmentId = searchParams?.get('garment') || searchParams?.get('garmentId');
     if (!designId) return;
 
-    fetch(`/api/clothing-designs/save-placement?designId=${encodeURIComponent(designId)}`)
+    fetch(`/api/clothing-designs/save-placement?designId=${encodeURIComponent(designId)}&_t=${Date.now()}`, {
+      cache: 'no-store',
+      credentials: 'same-origin',
+    })
       .then((res) => res.json())
       .then((data) => {
         if (!data?.success || !data.placements) return;
@@ -267,8 +270,8 @@ export function ClothingMockupIframe({
       if (e.data && (e.data.type === 'STARBY_PLACEMENT_SAVED' || e.data.type === 'STARBY_ALL_PLACEMENTS_SAVED')) {
         try {
           const { designId, garmentId, target, artId, placement, layers } = e.data;
-          const STORAGE_KEY = 'fregoro_curated_placements';
-          const raw = window.localStorage.getItem(STORAGE_KEY) || '{}';
+          const STORAGE_KEYS = ['fregoro_curated_placements', 'fregoro_curated_placements_v2'];
+          const raw = window.localStorage.getItem(STORAGE_KEYS[0]) || '{}';
           const all = JSON.parse(raw);
           const garmentKey = (garmentId || 'regular-t-shirt').toLowerCase();
 
@@ -340,35 +343,68 @@ export function ClothingMockupIframe({
               };
             });
           }
-          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(all, null, 2));
+          // Keep the legacy and v2 stores identical. The studio gives v2
+          // priority, so writing only the legacy key leaves stale coordinates
+          // behind and makes a successful save look like it did nothing.
+          for (const storageKey of STORAGE_KEYS) {
+            window.localStorage.setItem(storageKey, JSON.stringify(all, null, 2));
+          }
           window.dispatchEvent(new CustomEvent('starby:placement-saved', { detail: e.data }));
 
           // Forward to server save-placement API with first-party session token to guarantee DB persistence
+          const sourceWindow = e.source as Window | null;
           try {
             const supabase = createClient();
-            supabase.auth.getSession().then(({ data: { session } }) => {
-              const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-              if (session?.access_token) {
-                headers['Authorization'] = `Bearer ${session.access_token}`;
-              }
-              fetch('/api/clothing-designs/save-placement', {
-                method: 'POST',
-                headers,
-                credentials: 'include',
-                body: JSON.stringify({
-                  designId: e.data.designId,
-                  garmentId: e.data.garmentId,
-                  layers: e.data.layers,
-                  placement: e.data.placement,
-                  target: e.data.target,
-                  artId: e.data.artId,
-                  removedArtIds: e.data.removedArtIds,
-                  hiddenArtIds: e.data.hiddenArtIds,
-                }),
-              }).catch((err) => {
+            supabase.auth
+              .getSession()
+              .then(({ data: { session } }) => {
+                const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+                if (session?.access_token) {
+                  headers['Authorization'] = `Bearer ${session.access_token}`;
+                }
+                return fetch('/api/clothing-designs/save-placement', {
+                  method: 'POST',
+                  headers,
+                  credentials: 'include',
+                  body: JSON.stringify({
+                    designId: e.data.designId,
+                    garmentId: e.data.garmentId,
+                    layers: e.data.layers,
+                    placement: e.data.placement,
+                    target: e.data.target,
+                    artId: e.data.artId,
+                    removedArtIds: e.data.removedArtIds,
+                    hiddenArtIds: e.data.hiddenArtIds,
+                  }),
+                });
+              })
+              .then(async (res) => {
+                const ok = res.ok;
+                const payload = ok ? null : await res.json().catch(() => null);
+                sourceWindow?.postMessage(
+                  {
+                    type: 'STARBY_PLACEMENT_SAVE_RESULT',
+                    designId: e.data.designId,
+                    garmentId: e.data.garmentId,
+                    ok,
+                    error: ok ? null : payload?.error || `Server returned ${res.status}`,
+                  },
+                  '*'
+                );
+              })
+              .catch((err) => {
                 console.warn('[ClothingMockupIframe] Failed to forward placement to server:', err);
+                sourceWindow?.postMessage(
+                  {
+                    type: 'STARBY_PLACEMENT_SAVE_RESULT',
+                    designId: e.data.designId,
+                    garmentId: e.data.garmentId,
+                    ok: false,
+                    error: 'Network error while saving placement',
+                  },
+                  '*'
+                );
               });
-            });
           } catch {
             /* ignore */
           }

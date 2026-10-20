@@ -109,7 +109,7 @@ export default async function AdminOrdersPage() {
           productName: i.productNameSnapshot || i.productId || 'Product',
           quantity: i.quantity || 1,
           size: i.size || null,
-          price: i.unitPrice || i.price || (i.quantity ? i.totalPrice / i.quantity : 0) || 0,
+          price: i.unitPrice ?? i.price ?? (i.quantity ? i.totalPrice / i.quantity : 0),
           totalPrice: i.totalPrice || (i.price ? i.price * (i.quantity || 1) : 0) || 0,
           artworkUrl: i.orderCustomization?.designFileUrl || null,
         })),

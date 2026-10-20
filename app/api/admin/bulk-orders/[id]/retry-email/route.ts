@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '@/app/admin/lib/auth';
+import { getStaffUser } from '@/app/admin/lib/auth';
 import { sendBulkOrderSubmission } from '@/lib/email/emailService';
 import type { SizeColorMatrixRow } from '@/lib/bulk-orders/types';
 
@@ -14,7 +14,10 @@ interface RouteParams {
 
 export async function POST(request: Request, { params }: RouteParams) {
   try {
-    await requireStaff();
+    const staff = await getStaffUser();
+    if (!staff) {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
 
     const bulkOrder = await prisma.bulkOrderRequest.findFirst({
       where: {
@@ -81,7 +84,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         printSize: a.printSize || undefined,
         dimensionsMm: a.dimensionsMm || undefined,
       })),
-    });
+    }, { force: true });
 
     return NextResponse.json({
       success: result.success,

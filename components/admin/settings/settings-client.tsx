@@ -40,11 +40,10 @@ export function SettingsClient({
     startTransition(async () => {
       try {
         await updateSettings({
+          id: form.id,
           storeName: form.storeName,
           contactEmail: form.contactEmail,
           taxRate: form.taxRate,
-          currency: 'INR',
-          maintenanceMode: false,
         });
         show('Settings saved successfully', 'success');
         router.refresh();

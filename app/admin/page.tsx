@@ -13,6 +13,7 @@ export default async function AdminDashboardPage() {
     const [
       totalOrdersResult,
       totalRevenueResult,
+      paidOrdersCountResult,
       ordersTodayResult,
       totalCustomersResult,
       recentOrdersResult,
@@ -25,6 +26,7 @@ export default async function AdminDashboardPage() {
         _sum: { total: true },
         where: { paymentStatus: { in: ['paid', 'completed'] } },
       }),
+      prisma.order.count({ where: { paymentStatus: { in: ['paid', 'completed'] } } }),
       prisma.order.count({ where: { createdAt: { gte: todayStart } } }),
       prisma.user.count({ where: { role: 'CUSTOMER' } }),
       prisma.order.findMany({
@@ -66,6 +68,8 @@ export default async function AdminDashboardPage() {
     const totalOrders = totalOrdersResult.status === 'fulfilled' ? totalOrdersResult.value : 0;
     const totalRevenueData =
       totalRevenueResult.status === 'fulfilled' ? totalRevenueResult.value : { _sum: { total: 0 } };
+    const paidOrdersCount =
+      paidOrdersCountResult.status === 'fulfilled' ? paidOrdersCountResult.value : 0;
     const ordersToday = ordersTodayResult.status === 'fulfilled' ? ordersTodayResult.value : 0;
     const totalCustomers =
       totalCustomersResult.status === 'fulfilled' ? totalCustomersResult.value : 0;
@@ -106,7 +110,8 @@ export default async function AdminDashboardPage() {
     });
 
     const totalRevenue = totalRevenueData._sum?.total || 0;
-    const aov = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+    // Average order value must use the same paid/completed population as revenue.
+    const aov = paidOrdersCount > 0 ? totalRevenue / paidOrdersCount : 0;
 
     return (
       <DashboardClient
@@ -165,7 +170,7 @@ export default async function AdminDashboardPage() {
                   name: i.productNameSnapshot || i.productId,
                   quantity: i.quantity || 1,
                   size: i.size || null,
-                  unitPrice: i.unitPrice || i.price || 0,
+                  unitPrice: i.unitPrice ?? i.price ?? 0,
                   totalPrice: i.totalPrice || (i.price ? i.price * (i.quantity || 1) : 0),
                 }))
               : [],

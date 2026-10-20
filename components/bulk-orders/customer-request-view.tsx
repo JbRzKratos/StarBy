@@ -32,6 +32,7 @@ import {
   type BulkOrderAddressData,
 } from '@/lib/bulk-orders/types';
 import { getWhatsappLink } from '@/lib/whatsapp';
+import { mapSizeColorMatrixToColorRows } from '@/lib/bulk-orders/mappers';
 
 interface CustomerRequestViewProps {
   requestId: string;
@@ -72,7 +73,18 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
       if (!res.ok || !json.success) {
         throw new Error(json.message || 'Bulk request not found');
       }
-      setData(json.request);
+      const request = json.request;
+      if (request && Array.isArray(request.items)) {
+        request.items = request.items.map(
+          (item: BulkOrderItemData & { sizeColorMatrix?: unknown }) => ({
+            ...item,
+            colorRows: item.colorRows?.length
+              ? item.colorRows
+              : mapSizeColorMatrixToColorRows(item.sizeColorMatrix),
+          }),
+        );
+      }
+      setData(request);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to load request details');
     } finally {
@@ -102,7 +114,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
     setIsAccepting(true);
     setActionAlert(null);
     try {
-      const res = await fetch(`/api/bulk-orders/${data.id}`, {
+      const res = await fetch(`/api/bulk-orders/${data.requestNumber || data.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'accept_quote' }),
@@ -132,7 +144,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
     setIsPaying(true);
     setActionAlert(null);
     try {
-      const res = await fetch(`/api/bulk-orders/${data.id}/checkout`, {
+      const res = await fetch(`/api/bulk-orders/${data.requestNumber || data.id}/checkout`, {
         method: 'POST',
       });
       const result = await res.json();
@@ -163,7 +175,7 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
     if (!revisionNotes.trim() || !data?.id) return;
     setIsSubmittingRevision(true);
     try {
-      const res = await fetch(`/api/bulk-orders/${data.id}`, {
+      const res = await fetch(`/api/bulk-orders/${data.requestNumber || data.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -198,12 +210,11 @@ export function CustomerRequestView({ requestId }: CustomerRequestViewProps) {
     if (!replyMessage.trim() || !data?.id) return;
     setIsSendingMessage(true);
     try {
-      const res = await fetch(`/api/bulk-orders/${data.id}/messages`, {
+      const res = await fetch(`/api/bulk-orders/${data.requestNumber || data.id}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: replyMessage.trim(),
-          senderName: data.contactName,
         }),
       });
       const result = await res.json();

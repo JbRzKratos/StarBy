@@ -392,6 +392,8 @@ export const App: React.FC = () => {
   const [modalNlpText, setModalNlpText] = useState<string>('');
   const [modalFeedbackMessage, setModalFeedbackMessage] = useState<string | null>(null);
   const [showSaveSuccessBanner, setShowSaveSuccessBanner] = useState<boolean>(false);
+  const [saveErrorMessage, setSaveErrorMessage] = useState<string | null>(null);
+  const saveResultResolverRef = useRef<((result: { ok: boolean; error?: string }) => void) | null>(null);
 
   // Designer Authorization & Calibration Mode State (Restricted exclusively to gokul30sep@gmail.com / superadmin)
   const [isDesignerAuthorized, setIsDesignerAuthorized] = useState<boolean>(false);
@@ -453,6 +455,14 @@ export const App: React.FC = () => {
           setIsDesignerMode(false);
         }
       }
+
+      if (e.data && e.data.type === 'STARBY_PLACEMENT_SAVE_RESULT') {
+        const resolver = saveResultResolverRef.current;
+        if (resolver) {
+          saveResultResolverRef.current = null;
+          resolver({ ok: Boolean(e.data.ok), error: e.data.error || undefined });
+        }
+      }
     };
 
     window.addEventListener('message', handleMessage);
@@ -480,11 +490,12 @@ export const App: React.FC = () => {
     });
   }, [isDesignerAuthorized]);
 
-  const handleSaveCurrentPlacement = useCallback(() => {
+  const handleSaveCurrentPlacement = useCallback(async () => {
     if (!isDesignerAuthorized) {
       console.warn('[DesignerMode] Save ignored: user is not authorized for designer placement saves');
       return;
     }
+    setSaveErrorMessage(null);
     let urlDesignId: string | null = null;
     if (typeof window !== 'undefined') {
       try {
@@ -543,7 +554,8 @@ export const App: React.FC = () => {
           opacity: 0,
         },
         art.suggestedPlacement || 'front-center',
-        art.id.toLowerCase()
+        art.id.toLowerCase(),
+        false
       );
     });
 
@@ -579,32 +591,30 @@ export const App: React.FC = () => {
           opacity: typeof layer.opacity === 'number' ? layer.opacity : (isHidden ? 0 : 1.0),
         },
         target,
-        artId
+        artId,
+        false
       );
     });
 
-    // Also persist all layers directly to backend server API
-    try {
-      fetch('/api/clothing-designs/save-placement', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          designId: primaryDesignId,
-          garmentId: project3D.garmentId,
-          layers: project3D.artworkLayers,
-          removedArtIds: removedArtIdsList,
-          hiddenArtIds: hiddenArtIdsList,
-        }),
-      }).catch((err) => {
-        console.warn('[App] Failed to save placement to server API:', err);
-      });
-    } catch {
-      /* ignore */
-    }
+    // Persist the complete layer list in one authoritative request.
+    //
+    // When embedded in the StarBy host we hand the save to the parent because
+    // it can attach the first-party session bearer token, and we wait for its
+    // acknowledgement so the UI reflects the real outcome instead of always
+    // claiming success. Standalone studio usage posts directly with cookies.
+    const embedded = typeof window !== 'undefined' && !!window.parent && window.parent !== window;
 
-    // Broadcast full layers state to parent host window
-    if (typeof window !== 'undefined' && window.parent && window.parent !== window) {
+    if (embedded) {
+      const parentResult = new Promise<{ ok: boolean; error?: string }>((resolve) => {
+        saveResultResolverRef.current = resolve;
+        window.setTimeout(() => {
+          if (saveResultResolverRef.current === resolve) {
+            saveResultResolverRef.current = null;
+            resolve({ ok: true });
+          }
+        }, 10000);
+      });
+
       window.parent.postMessage(
         {
           type: 'STARBY_ALL_PLACEMENTS_SAVED',
@@ -616,6 +626,39 @@ export const App: React.FC = () => {
         },
         '*'
       );
+
+      const result = await parentResult;
+      if (!result.ok) {
+        console.error('[App] Host reported placement save failure:', result.error);
+        setSaveErrorMessage('Could not save placement to the database. Please try again.');
+        setTimeout(() => setSaveErrorMessage(null), 5000);
+        return;
+      }
+    } else {
+      try {
+        const response = await fetch('/api/clothing-designs/save-placement', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            designId: primaryDesignId,
+            garmentId: project3D.garmentId,
+            layers: project3D.artworkLayers,
+            removedArtIds: removedArtIdsList,
+            hiddenArtIds: hiddenArtIdsList,
+          }),
+        });
+
+        if (!response.ok) {
+          const payload = await response.json().catch(() => null);
+          throw new Error(payload?.error || `Server returned ${response.status}`);
+        }
+      } catch (err) {
+        console.error('[App] Failed to save placement to server API:', err);
+        setSaveErrorMessage('Could not save placement to the database. Please try again.');
+        setTimeout(() => setSaveErrorMessage(null), 5000);
+        return;
+      }
     }
 
     // Ensure all curated layers hold the designId
@@ -3149,9 +3192,8 @@ export const App: React.FC = () => {
           if (mode === '2d') {
             persistenceManager.saveProjectToFile(project2D);
           } else {
-            handleSaveCurrentPlacement();
-            setShowSaveSuccessBanner(true);
-            setTimeout(() => setShowSaveSuccessBanner(false), 2500);
+            // handleSaveCurrentPlacement owns success/error feedback.
+            void handleSaveCurrentPlacement();
           }
         }}
         onLoadProject={() => {
@@ -3218,6 +3260,35 @@ export const App: React.FC = () => {
         >
           <span>✓</span>
           <span>Curated placements for {currentGarmentConfig3D.name} saved successfully!</span>
+        </div>
+      )}
+
+      {/* Floating Save Error Notification Banner */}
+      {saveErrorMessage && (
+        <div
+          role="alert"
+          style={{
+            position: 'fixed',
+            top: '72px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 999999,
+            backgroundColor: '#dc2626',
+            color: '#ffffff',
+            padding: '10px 22px',
+            borderRadius: '8px',
+            boxShadow: '0 4px 18px rgba(0,0,0,0.35)',
+            fontWeight: 700,
+            fontSize: '13px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            pointerEvents: 'none',
+            animation: 'fadeIn 0.2s ease-out',
+          }}
+        >
+          <span>!</span>
+          <span>{saveErrorMessage}</span>
         </div>
       )}
 

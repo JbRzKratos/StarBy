@@ -119,7 +119,14 @@ export async function POST(request: Request) {
 
     // 4. ──── SECURITY FIX: Server-side price recalculation ────
     // NEVER trust client-sent prices. Fetch real prices from DB.
-    const productIds = Array.from(new Set(items.map((i) => i.productId)));
+    const designIds = items
+      .map((i) => {
+        const c = i.customization as Record<string, unknown> | null | undefined;
+        return typeof c?.designId === 'string' ? c.designId : null;
+      })
+      .filter((id): id is string => Boolean(id));
+
+    const productIds = Array.from(new Set([...items.map((i) => i.productId), ...designIds]));
     const variantIds = Array.from(
       new Set(items.map((i) => i.variantId).filter((v) => v && v !== 'default')),
     );
@@ -143,15 +150,23 @@ export async function POST(request: Request) {
       ),
     );
 
-    let dbProducts: { id: string; name: string; basePrice: number; customizable: boolean }[] = [];
+    let dbProducts: {
+      id: string;
+      slug: string;
+      name: string;
+      basePrice: number;
+      customizable: boolean;
+    }[] = [];
     let dbVariants: { id: string; productId: string; price: number; inStock: boolean; stockQuantity: number; name: string }[] = [];
     let dbWallLayouts: { id: string; slug: string; basePrice: number; compareAtPrice: number | null }[] = [];
 
     const fetchCatalogData = async () => {
       return await Promise.all([
         prisma.product.findMany({
-          where: { id: { in: productIds } },
-          select: { id: true, name: true, basePrice: true, customizable: true },
+          where: {
+            OR: [{ id: { in: productIds } }, { slug: { in: productIds } }],
+          },
+          select: { id: true, slug: true, name: true, basePrice: true, customizable: true },
         }),
         variantIds.length > 0
           ? prisma.productVariant.findMany({
@@ -201,7 +216,11 @@ export async function POST(request: Request) {
     }
 
     // Build lookup maps
-    const productMap = new Map(dbProducts.map((p) => [p.id, p]));
+    const productMap = new Map<string, (typeof dbProducts)[number]>();
+    for (const product of dbProducts) {
+      productMap.set(product.id, product);
+      if (product.slug) productMap.set(product.slug, product);
+    }
     const variantMap = new Map(dbVariants.map((v) => [v.id, v]));
     // Index wall layouts by both slug and id for O(1) lookup inside the item loop
     const wallLayoutMap = new Map(
@@ -295,16 +314,15 @@ export async function POST(request: Request) {
           customData?.designId === 'design-001' ||
           (typeof item.price === 'number' && item.price === 1 && (item.productId.includes('design-001') || customData?.designId === 'design-001'));
 
+        // Server-side price only. The client-submitted `item.price` and
+        // `customData.basePrice` are never trusted — both are editable in the
+        // browser. Prices below come from the DB catalogue or the fixed garment
+        // price table in this file.
         let unitPrice = 600;
 
         if (isDesign001) {
           unitPrice = 1;
-        } else if (typeof item.price === 'number' && item.price >= 1) {
-          // Exact cart price from 3D/2D studio customizer (base garment ₹600-₹780 + ₹49 per custom print).
-          // Always respect the exact customer cart total so Cashfree payment gateway matches to the exact rupee!
-          unitPrice = item.price;
         } else {
-          // Fallback calculation if item.price is missing or invalid
           const garmentKey = (
             (typeof customData?.garment === 'string' ? customData.garment : '') +
             ' ' +
@@ -316,9 +334,7 @@ export async function POST(request: Request) {
           ).toLowerCase();
 
           let garmentBasePrice = 600;
-          if (typeof customData?.basePrice === 'number' && customData.basePrice > 0) {
-            garmentBasePrice = customData.basePrice;
-          } else if (garmentKey.includes('3xl') || garmentKey.includes('xxxl')) {
+          if (garmentKey.includes('3xl') || garmentKey.includes('xxxl')) {
             if (garmentKey.includes('hoodie')) {
               garmentBasePrice = 780;
             } else if (garmentKey.includes('acid')) {
@@ -339,10 +355,15 @@ export async function POST(request: Request) {
           const isCurated = Boolean(customData?.designId && !customData?.isPlain);
 
           if (isCurated) {
-            const curatedDbProduct = customData?.designId ? productMap.get(customData.designId) : productMap.get(item.productId);
-            const designBase = (curatedDbProduct && typeof curatedDbProduct.basePrice === 'number' && curatedDbProduct.basePrice > 0)
-              ? curatedDbProduct.basePrice
-              : 600;
+            const curatedDbProduct = customData?.designId
+              ? productMap.get(customData.designId)
+              : productMap.get(item.productId);
+            const designBase =
+              curatedDbProduct &&
+              typeof curatedDbProduct.basePrice === 'number' &&
+              curatedDbProduct.basePrice > 0
+                ? curatedDbProduct.basePrice
+                : 600;
 
             if (garmentKey.includes('3xl') || garmentKey.includes('xxxl')) {
               if (garmentKey.includes('hoodie')) unitPrice = Math.max(designBase, 780);
@@ -357,12 +378,13 @@ export async function POST(request: Request) {
               unitPrice = designBase;
             }
           } else {
-            const artworkCount =
+            const rawArtworkCount =
               typeof customData?.customArtworkCount === 'number'
                 ? customData.customArtworkCount
                 : Array.isArray(customData?.uploadedArtworks)
                   ? customData.uploadedArtworks.length
                   : 0;
+            const artworkCount = Math.min(20, Math.max(0, Math.trunc(rawArtworkCount)));
             const printFee = artworkCount * 49;
             unitPrice = garmentBasePrice + printFee;
           }

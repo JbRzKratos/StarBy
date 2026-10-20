@@ -18,7 +18,14 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-type OrderStatus = 'placed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+type OrderStatus =
+  | 'pending_payment'
+  | 'placed'
+  | 'processing'
+  | 'shipped'
+  | 'delivered'
+  | 'cancelled'
+  | 'refunded';
 
 export interface OrderRow {
   id: string;
@@ -60,6 +67,7 @@ export interface OrderRow {
 }
 
 const STATUS_OPTIONS: OrderStatus[] = [
+  'pending_payment',
   'placed',
   'processing',
   'shipped',
@@ -67,6 +75,10 @@ const STATUS_OPTIONS: OrderStatus[] = [
   'cancelled',
   'refunded',
 ];
+
+function formatStatus(status: string): string {
+  return status.replace(/_/g, ' ').toUpperCase();
+}
 
 export function OrdersClient({ orders }: { orders: OrderRow[] }) {
   const { toast, show, dismiss } = useToast();
@@ -180,7 +192,7 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                   : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/5'
               }`}
             >
-              {s}
+              {formatStatus(s)}
             </button>
           ))}
         </div>
@@ -277,7 +289,7 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                         >
                           {STATUS_OPTIONS.map((s) => (
                             <option key={s} value={s} className="bg-[#1A1A1E] text-white">
-                              {s.toUpperCase()}
+                              {formatStatus(s)}
                             </option>
                           ))}
                         </select>

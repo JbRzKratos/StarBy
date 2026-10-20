@@ -64,7 +64,7 @@ export default async function AdminProductsPage() {
             name: v.name,
             color: v.color || '',
             colorHex: v.colorHex || '#000000',
-            price: v.price || p.basePrice || 0,
+            price: v.price ?? p.basePrice ?? 0,
             images: Array.isArray(v.images) ? v.images : [],
             inStock: Boolean(v.inStock),
             stockQuantity: typeof v.stockQuantity === 'number' ? v.stockQuantity : 0,

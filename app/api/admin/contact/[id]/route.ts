@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '@/app/admin/lib/auth';
+import { getStaffUser } from '@/app/admin/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,10 @@ type ContactStatus = (typeof VALID_STATUSES)[number];
 
 export async function PATCH(request: Request, { params }: RouteParams) {
   try {
-    await requireStaff();
+    const staff = await getStaffUser();
+    if (!staff) {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
 
     const body = await request.json();
     const { status } = body;
@@ -51,7 +54,10 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
-    await requireStaff();
+    const staff = await getStaffUser();
+    if (!staff) {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
 
     await prisma.contactSubmission.delete({
       where: { id: params.id },

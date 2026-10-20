@@ -86,7 +86,10 @@ export function AdminBulkOrdersClient({ initialOrders }: AdminBulkOrdersClientPr
         }
 
         // Order Type
-        if (typeFilter !== 'all' && order.orderType !== typeFilter) {
+        if (
+          typeFilter !== 'all' &&
+          order.orderType.trim().toLowerCase() !== typeFilter.toLowerCase()
+        ) {
           return false;
         }
 
@@ -250,10 +253,14 @@ export function AdminBulkOrdersClient({ initialOrders }: AdminBulkOrdersClientPr
               <option value="under_review">Under Review</option>
               <option value="need_more_info">Need More Info</option>
               <option value="quote_sent">Quote Sent</option>
+              <option value="customer_reviewing">Customer Reviewing</option>
               <option value="approved">Approved</option>
               <option value="payment_pending">Payment Pending</option>
               <option value="paid">Paid</option>
               <option value="production">Production</option>
+              <option value="quality_check">Quality Check</option>
+              <option value="packed">Packed</option>
+              <option value="shipped">Shipped</option>
               <option value="completed">Completed</option>
               <option value="cancelled">Cancelled</option>
             </select>

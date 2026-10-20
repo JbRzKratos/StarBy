@@ -1,20 +1,13 @@
-export const SUPER_ADMIN_EMAILS = [
-  'gokul30sep@gmail.com',
-  'fregorostudios@gmail.com',
-  'admin@fregorostudios.com',
-  'gokul@fregorostudios.com',
-];
+/**
+ * Single source of truth for full-admin access.
+ *
+ * Only this account is allowed to administer the storefront and save curated
+ * 3D artwork placements. Do not derive this list from environment variables:
+ * otherwise a stale/misconfigured ADMIN_EMAIL can silently grant admin access.
+ */
+export const SUPER_ADMIN_EMAILS = ['gokul30sep@gmail.com'];
 
 export function isSuperAdminEmail(email?: string | null): boolean {
   if (!email) return false;
-  const normalized = email.trim().toLowerCase();
-  const envAdmin =
-    (typeof process !== 'undefined' &&
-      (process.env.NEXT_PUBLIC_ADMIN_EMAIL?.trim().toLowerCase() ||
-        process.env.ADMIN_EMAIL?.trim().toLowerCase())) ||
-    '';
-  return (
-    SUPER_ADMIN_EMAILS.includes(normalized) ||
-    (Boolean(envAdmin) && normalized === envAdmin)
-  );
+  return SUPER_ADMIN_EMAILS.includes(email.trim().toLowerCase());
 }

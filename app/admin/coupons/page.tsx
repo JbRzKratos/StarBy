@@ -1,11 +1,11 @@
 import { prisma } from '@/lib/prisma';
-import { requireStaff } from '../lib/auth';
+import { requireAdmin } from '../lib/auth';
 import { CouponsClient } from '@/components/admin/coupons/coupons-client';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminCouponsPage() {
-  await requireStaff();
+  await requireAdmin();
 
   let mappedCoupons: Array<{
     id: string;

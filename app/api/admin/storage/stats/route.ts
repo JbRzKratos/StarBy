@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createClient } from '@/lib/supabase/server';
+import { getStaffUser } from '@/app/admin/lib/auth';
 import { getR2StorageUsage } from '@/lib/r2';
 
 export const dynamic = 'force-dynamic';
@@ -10,44 +10,9 @@ export async function GET() {
   const SUPABASE_MAX_BYTES = 500 * 1024 * 1024; // 500 MB (Supabase free tier DB allowance)
 
   try {
-    const supabase = createClient();
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
+    const staff = await getStaffUser();
+    if (!staff) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { isSuperAdminEmail } = await import('@/app/admin/lib/auth');
-    const isSuperAdmin = isSuperAdminEmail(user.email);
-
-    let dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-    if (!dbUser && user.email) {
-      dbUser = await prisma.user.findUnique({ where: { email: user.email.toLowerCase() } });
-    }
-
-    if (isSuperAdmin) {
-      if (!dbUser) {
-        dbUser = await prisma.user.create({
-          data: {
-            id: user.id,
-            email: user.email?.toLowerCase() || 'gokul30sep@gmail.com',
-            role: 'ADMIN',
-            fullName: (user.user_metadata?.full_name as string) || 'Admin',
-          },
-        });
-      } else if (dbUser.role !== 'ADMIN') {
-        dbUser = await prisma.user.update({
-          where: { id: dbUser.id },
-          data: { role: 'ADMIN' },
-        });
-      }
-    }
-
-    if (!dbUser || (dbUser.role !== 'ADMIN' && dbUser.role !== 'STAFF' && !isSuperAdmin)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // 1. Calculate Real Cloudflare R2 Storage (all files and assets)

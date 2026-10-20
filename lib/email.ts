@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Resend } from 'resend';
 import { generateInvoicePdf } from './invoice';
+import { createInvoiceToken } from './invoice-token';
 import fs from 'fs';
 import path from 'path';
 
@@ -550,7 +551,10 @@ export async function sendOrderConfirmationEmail(
           },
         ];
 
-  const invoiceUrl = toAbsoluteUrl(`/account/orders/${encodeURIComponent(orderId)}/invoice?email=${encodeURIComponent(toEmail)}`);
+  const invoiceToken = createInvoiceToken(orderId, toEmail);
+  const invoiceUrl = toAbsoluteUrl(
+    `/account/orders/${encodeURIComponent(orderId)}/invoice?email=${encodeURIComponent(toEmail)}&token=${encodeURIComponent(invoiceToken)}`,
+  );
   const trackingUrl = toAbsoluteUrl(`/track?orderId=${encodeURIComponent(safeOrderId)}&email=${encodeURIComponent(toEmail)}`);
 
   // Build items HTML

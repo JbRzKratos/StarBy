@@ -24,7 +24,9 @@ export default async function AdminSettingsPage() {
 
   try {
     const [settings, shippingZones] = await Promise.all([
-      prisma.storeSettings.findFirst().catch(() => null),
+      prisma.storeSettings
+        .findFirst({ orderBy: { updatedAt: 'desc' } })
+        .catch(() => null),
       prisma.shippingZone.findMany().catch(() => []),
     ]);
 
