@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { PrintInvoiceButton, AutoPrintTrigger } from '@/components/print-invoice-button';
 import { verifyInvoiceToken } from '@/lib/invoice-token';
+import { formatPaymentProvider } from '@/lib/payment-display';
 
 export const dynamic = 'force-dynamic';
 
@@ -155,9 +156,7 @@ export default async function InvoicePage({
             <p className="text-sm text-slate-700">
               Payment Method:{' '}
               <span className="font-semibold text-slate-900 capitalize">
-                {order.paymentProvider === 'cod'
-                  ? 'Cash on Delivery (COD)'
-                  : `Online Payment (${order.paymentProvider || 'Cashfree'})`}
+                {formatPaymentProvider(order.paymentProvider)}
               </span>
             </p>
             <p className="text-sm text-slate-700 mt-1">

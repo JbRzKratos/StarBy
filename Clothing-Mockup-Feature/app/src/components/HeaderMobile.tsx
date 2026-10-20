@@ -2,8 +2,6 @@ import React from 'react';
 import type { HeaderProps } from './HeaderDesktop';
 
 export const HeaderMobile: React.FC<HeaderProps> = ({
-  mode,
-  onModeChange,
   onOpenExport,
   onOpenAddToCart,
   onOpenDesignSetup,
@@ -17,7 +15,7 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
 }) => {
   return (
     <header className="app-header header-mobile" aria-label="Mobile Navigation Header">
-      {/* ── Left Side: Back Arrow, Brand & 2D/3D Mode Pill ── */}
+      {/* ── Left Side: Back Arrow & Brand ── */}
       <div className="mobile-header-left">
         {/* Back to Shop */}
         <a
@@ -50,36 +48,12 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
             }}
           />
         </a>
-
-        {/* Compact Mode Pill (2D / 3D) */}
-        <div className="mobile-mode-switcher" role="tablist" aria-label="Editor Mode">
-          <button
-            type="button"
-            id="mobile-btn-mode-2d"
-            className={`mobile-mode-btn ${mode === '2d' ? 'active' : ''}`}
-            onClick={() => onModeChange('2d')}
-            role="tab"
-            aria-selected={mode === '2d'}
-          >
-            2D
-          </button>
-          <button
-            type="button"
-            id="mobile-btn-mode-3d"
-            className={`mobile-mode-btn ${mode === '3d' ? 'active' : ''}`}
-            onClick={() => onModeChange('3d')}
-            role="tab"
-            aria-selected={mode === '3d'}
-          >
-            3D
-          </button>
-        </div>
       </div>
 
       {/* ── Right Side: Action Icons & Prominent Add to Bag ── */}
       <div className="mobile-header-right">
         {/* 3D Placement & Studio Guide button */}
-        {mode === '3d' && onOpenInstructions && (
+        {onOpenInstructions && (
           <button
             type="button"
             id="mobile-btn-3d-instructions"
@@ -139,7 +113,7 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
         )}
 
         {/* Designer Mode icon button on Mobile */}
-        {mode === '3d' && isDesignerAuthorized && onToggleDesignerMode && (
+        {isDesignerAuthorized && onToggleDesignerMode && (
           <button
             type="button"
             id="mobile-btn-designer-mode"
@@ -163,7 +137,7 @@ export const HeaderMobile: React.FC<HeaderProps> = ({
           id="mobile-btn-export"
           className="mobile-icon-btn export-btn"
           onClick={onOpenExport}
-          title={mode === '3d' ? 'Download / Export 3D Render' : 'Export Mockup'}
+          title="Download / Export 3D Render"
           aria-label="Download / Export"
         >
           <svg

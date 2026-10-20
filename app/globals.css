@@ -249,7 +249,7 @@
    * the high-specificity un-layered ruleset at the bottom of this file. */
 
   /* ── Clothing Mockup Studio active ────────────────────────────────────────
-   * When the 2D+3D garment editor is mounted, hide the site Footer and all
+   * When the 3D garment editor is mounted, hide the site Footer and all
    * floating widgets so the studio occupies the full viewport below the nav.
    * The body class is toggled by ClothingMockupIframe via useEffect.
    */

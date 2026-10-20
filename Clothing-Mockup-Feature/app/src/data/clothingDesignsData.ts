@@ -120,7 +120,7 @@ export const CURATED_CLOTHING_DESIGNS: CuratedClothingDesign[] = [
   {
     "id": "design-002",
     "folder": "Design 2",
-    "name": "Not Rich Yet (Loading...)",
+    "name": "Not Rich Yet",
     "themeCategory": "streetwear",
     "tags": [
       "streetwear",

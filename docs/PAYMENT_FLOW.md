@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-StarBy uses **Cashfree Payments (API Version `2025-01-01`)** as its primary online payment gateway, supporting UPI (Google Pay, PhonePe, Paytm, BHIM), Credit/Debit Cards (Visa, Mastercard, RuPay), Netbanking, and Wallets, alongside Cash on Delivery (COD).
+StarBy uses **Cashfree Payments (API Version `2025-01-01`)** as its online payment gateway, supporting UPI (Google Pay, PhonePe, Paytm, BHIM), Credit/Debit Cards (Visa, Mastercard, RuPay), Netbanking, and Wallets. Cash on Delivery is no longer offered — every order is paid online before dispatch.
 
 ---
 
@@ -92,8 +92,7 @@ v                       v
     "paymentSessionId": "session_...",
     "cashfreeOrderId": "STB_2026_10492AB",
     "cashfreeEnvironment": "sandbox",
-    "amount": 1499,
-    "isCod": false
+    "amount": 1499
   }
   ```
 

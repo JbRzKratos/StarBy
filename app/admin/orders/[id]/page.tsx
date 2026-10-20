@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { OrderDetailClient } from '@/components/admin/orders/order-detail-client';
+import { formatPaymentProvider } from '@/lib/payment-display';
 
 export const dynamic = 'force-dynamic';
 
@@ -96,7 +97,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
         publicOrderId: order.publicOrderId || null,
         status: order.status,
         paymentStatus: order.paymentStatus,
-        paymentProvider: order.paymentProvider || 'cashfree',
+        paymentProvider: formatPaymentProvider(order.paymentProvider),
         paymentGatewayOrderId: order.paymentGatewayOrderId || null,
         paymentGatewayPaymentId: order.paymentGatewayPaymentId || null,
         subtotal: order.subtotal,

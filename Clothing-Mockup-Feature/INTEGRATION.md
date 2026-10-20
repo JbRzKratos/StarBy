@@ -32,10 +32,6 @@ your-project/
     tools/
       mockup/            ← copy contents of app/dist/ here
     3d-assets/           ← copy contents of assets/3d-assets/ here
-    designs/             ← copy contents of assets/2d-assets/designs/ here
-    backgrounds/         ← copy contents of assets/2d-assets/backgrounds/ here
-    gobo/                ← copy contents of assets/2d-assets/gobo/ here
-    2d-catalog.json      ← copy assets/2d-catalog.json here
 ```
 
 > **Important:** The 3D assets are large (≈ 400 MB of GLB + textures).
@@ -95,10 +91,6 @@ Configure your Vite / webpack / Next.js server to serve:
 | URL prefix       | Folder                                |
 |------------------|---------------------------------------|
 | `/3d-assets/`    | `Clothing-Mockup-Feature/assets/3d-assets/` |
-| `/designs/`      | `Clothing-Mockup-Feature/assets/2d-assets/designs/` |
-| `/backgrounds/`  | `Clothing-Mockup-Feature/assets/2d-assets/backgrounds/` |
-| `/gobo/`         | `Clothing-Mockup-Feature/assets/2d-assets/gobo/` |
-| `/2d-catalog.json` | `Clothing-Mockup-Feature/assets/2d-catalog.json` |
 
 For Vite, copy the middleware block from
 `Clothing-Mockup-Feature/app/vite.config.ts` into your own `vite.config.ts`.

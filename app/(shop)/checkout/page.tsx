@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
@@ -11,11 +10,9 @@ import { createClient } from '@/lib/supabase/client';
 type Step = 'shipping' | 'payment' | 'review';
 
 export default function CheckoutPage() {
-  const router = useRouter();
   const [step, setStep] = useState<Step>('shipping');
   const [mounted, setMounted] = useState(false);
   const cartItems = useCartStore((s) => s.items);
-  const clearCart = useCartStore((s) => s.clearCart);
   const totalPrice = useCartStore((s) => s.items.reduce((sum, i) => sum + i.price * i.quantity, 0));
   const { formatPrice } = usePrice();
   // Guard against duplicate order submissions
@@ -34,7 +31,6 @@ export default function CheckoutPage() {
   });
 
   const [shippingError, setShippingError] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<'cashfree' | 'cod'>('cashfree');
   const [loading, setLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
@@ -185,7 +181,7 @@ export default function CheckoutPage() {
           country: 'India',
           phone: shippingAddress.phone || undefined,
         },
-        paymentMethod: paymentMethod === 'cod' ? 'cod' : 'cashfree',
+        paymentMethod: 'cashfree',
         couponCode: appliedCoupon || undefined,
       };
 
@@ -199,7 +195,6 @@ export default function CheckoutPage() {
         success: boolean;
         message?: string;
         errors?: Record<string, string[]>;
-        isCod?: boolean;
         cashfreeOrderId?: string;
         orderId?: string;
         paymentSessionId?: string;
@@ -231,48 +226,43 @@ export default function CheckoutPage() {
         return;
       }
 
-      if (data.isCod) {
-        clearCart();
-        router.push(`/payment/status?order_id=${data.cashfreeOrderId || data.orderId}`);
-      } else {
-        if (!data.paymentSessionId) {
-          setCheckoutError('Payment session could not be initialized. Please try again.');
-          setLoading(false);
-          submittingRef.current = false;
-          return;
-        }
-
-        // Cashfree PG v3 Hosted Checkout:
-        // Cashfree's official checkout endpoint receives payment_session_id via HTTP POST.
-        // This immediately opens Cashfree's secure payment gateway with full support for:
-        // UPI (Google Pay, PhonePe, Paytm, QR code), Cards, Net Banking, and Wallets.
-        // Completely avoids third-party script injection failures, ad-blocker stalls, and mobile iframe issues.
-        const checkoutUrl =
-          data.cashfreeEnvironment === 'production'
-            ? 'https://api.cashfree.com/pg/view/sessions/checkout'
-            : 'https://sandbox.cashfree.com/pg/view/sessions/checkout';
-
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = checkoutUrl;
-        form.target = '_self';
-        form.style.display = 'none';
-
-        const sessionInput = document.createElement('input');
-        sessionInput.type = 'hidden';
-        sessionInput.name = 'payment_session_id';
-        sessionInput.value = data.paymentSessionId;
-        form.appendChild(sessionInput);
-
-        document.body.appendChild(form);
-        form.submit();
-
-        // Safety timeout: if browser fails to unload within 10 seconds, reset loading state
-        setTimeout(() => {
-          setLoading(false);
-          submittingRef.current = false;
-        }, 10000);
+      if (!data.paymentSessionId) {
+        setCheckoutError('Payment session could not be initialized. Please try again.');
+        setLoading(false);
+        submittingRef.current = false;
+        return;
       }
+
+      // Cashfree PG v3 Hosted Checkout:
+      // Cashfree's official checkout endpoint receives payment_session_id via HTTP POST.
+      // This immediately opens Cashfree's secure payment gateway with full support for:
+      // UPI (Google Pay, PhonePe, Paytm, QR code), Cards, Net Banking, and Wallets.
+      // Completely avoids third-party script injection failures, ad-blocker stalls, and mobile iframe issues.
+      const checkoutUrl =
+        data.cashfreeEnvironment === 'production'
+          ? 'https://api.cashfree.com/pg/view/sessions/checkout'
+          : 'https://sandbox.cashfree.com/pg/view/sessions/checkout';
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = checkoutUrl;
+      form.target = '_self';
+      form.style.display = 'none';
+
+      const sessionInput = document.createElement('input');
+      sessionInput.type = 'hidden';
+      sessionInput.name = 'payment_session_id';
+      sessionInput.value = data.paymentSessionId;
+      form.appendChild(sessionInput);
+
+      document.body.appendChild(form);
+      form.submit();
+
+      // Safety timeout: if browser fails to unload within 10 seconds, reset loading state
+      setTimeout(() => {
+        setLoading(false);
+        submittingRef.current = false;
+      }, 10000);
     } catch (err) {
       console.error('Checkout execution error:', err);
       const msg = err instanceof Error ? err.message : 'Unknown error';
@@ -486,20 +476,9 @@ export default function CheckoutPage() {
                   Payment Method
                 </h2>
                 <div className="flex flex-col gap-4">
-                  <label
-                    className={`flex items-center gap-3 p-4 border rounded-sm cursor-pointer transition-colors ${
-                      paymentMethod === 'cashfree'
-                        ? 'border-cobalt bg-cobalt/5'
-                        : 'border-smoke hover:border-pearl'
-                    }`}
-                    onClick={() => setPaymentMethod('cashfree')}
-                  >
-                    <div
-                      className={`w-4 h-4 border rounded-full flex items-center justify-center ${paymentMethod === 'cashfree' ? 'border-cobalt' : 'border-pearl'}`}
-                    >
-                      {paymentMethod === 'cashfree' && (
-                        <div className="w-2 h-2 bg-cobalt rounded-full" />
-                      )}
+                  <div className="flex items-center gap-3 p-4 border border-cobalt bg-cobalt/5 rounded-sm">
+                    <div className="w-4 h-4 border border-cobalt rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-cobalt rounded-full" />
                     </div>
                     <div>
                       <span className="font-mono text-body-sm text-bone block font-bold">
@@ -509,32 +488,7 @@ export default function CheckoutPage() {
                         Secured via Cashfree Payments
                       </span>
                     </div>
-                  </label>
-
-                  <label
-                    className={`flex items-center gap-3 p-4 border rounded-sm cursor-pointer transition-colors ${
-                      paymentMethod === 'cod'
-                        ? 'border-cobalt bg-cobalt/5'
-                        : 'border-smoke hover:border-pearl'
-                    }`}
-                    onClick={() => setPaymentMethod('cod')}
-                  >
-                    <div
-                      className={`w-4 h-4 border rounded-full flex items-center justify-center ${paymentMethod === 'cod' ? 'border-cobalt' : 'border-pearl'}`}
-                    >
-                      {paymentMethod === 'cod' && (
-                        <div className="w-2 h-2 bg-cobalt rounded-full" />
-                      )}
-                    </div>
-                    <div>
-                      <span className="font-mono text-body-sm text-bone block font-bold">
-                        Cash on Delivery (COD)
-                      </span>
-                      <span className="font-mono text-caption text-pearl block mt-0.5">
-                        Pay upon physical delivery at your doorstep
-                      </span>
-                    </div>
-                  </label>
+                  </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 mt-4">
                     <button
@@ -566,8 +520,7 @@ export default function CheckoutPage() {
                     {shippingAddress.state} {shippingAddress.pinCode}
                   </p>
                   <p>
-                    <strong>Payment Method:</strong>{' '}
-                    {paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment (Cashfree)'}
+                    <strong>Payment Method:</strong> Online Payment (Cashfree)
                   </p>
                   <p>
                     <strong>Items ({cartItems.length}):</strong>

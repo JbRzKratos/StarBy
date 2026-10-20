@@ -1,22 +1,7 @@
 import React from 'react';
-import type { GarmentSide } from '../types/mockup';
 
 export interface HeaderProps {
-  mode: '2d' | '3d';
-  onModeChange: (mode: '2d' | '3d') => void;
   templateName: string;
-  activeSide: GarmentSide;
-  onSideChange: (side: GarmentSide) => void;
-  frontLayerCount: number;
-  backLayerCount: number;
-  canUndo: boolean;
-  canRedo: boolean;
-  onUndo: () => void;
-  onRedo: () => void;
-  zoom: number;
-  onZoomIn: () => void;
-  onZoomOut: () => void;
-  onZoomFit: () => void;
   onOpenExport: () => void;
   onSaveProject: () => void;
   onLoadProject: () => void;
@@ -34,21 +19,7 @@ export interface HeaderProps {
 }
 
 export const HeaderDesktop: React.FC<HeaderProps> = ({
-  mode,
-  onModeChange,
   templateName,
-  activeSide,
-  onSideChange,
-  frontLayerCount,
-  backLayerCount,
-  canUndo,
-  canRedo,
-  onUndo,
-  onRedo,
-  zoom,
-  onZoomIn,
-  onZoomOut,
-  onZoomFit,
   onOpenExport,
   onSaveProject: _onSaveProject,
   onLoadProject: _onLoadProject,
@@ -100,7 +71,7 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
               <span
                 className="brand-badge"
                 style={{
-                  background: mode === '3d' ? 'var(--accent, #3B5EFF)' : 'rgba(255,255,255,0.1)',
+                  background: 'var(--accent, #3B5EFF)',
                   color: '#fff',
                   fontSize: '9.5px',
                   padding: '1px 7px',
@@ -109,7 +80,7 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
                   letterSpacing: '0.04em',
                 }}
               >
-                {mode === '3d' ? '3D STUDIO' : '2D STUDIO'}
+                3D STUDIO
               </span>
             </div>
             <div className="brand-template-name" style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.65)', fontWeight: 500 }}>
@@ -119,99 +90,8 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
         </a>
       </div>
 
-      {/* ── Center: Unified Mode & View Capsule ── */}
-      <div className="header-center-capsule">
-        {/* 2D / 3D Switcher */}
-        <div className="mode-toggle-group">
-          <button
-            id="btn-mode-2d"
-            type="button"
-            className={`mode-toggle-btn ${mode === '2d' ? 'active' : ''}`}
-            onClick={() => onModeChange('2d')}
-          >
-            <span>2D</span>
-          </button>
-          <button
-            id="btn-mode-3d"
-            type="button"
-            className={`mode-toggle-btn ${mode === '3d' ? 'active' : ''}`}
-            onClick={() => onModeChange('3d')}
-          >
-            <span>3D</span>
-          </button>
-        </div>
-
-        {/* 2D Canvas Side Switcher (Only in 2D; in 3D, camera presets are in the floating viewport bar) */}
-        {mode === '2d' && (
-          <div className="side-switcher">
-            <button
-              id="btn-switch-front"
-              type="button"
-              className={`side-btn ${activeSide === 'front' ? 'active' : ''}`}
-              onClick={() => onSideChange('front')}
-            >
-              <span>Front</span>
-              {frontLayerCount > 0 && <span className="side-layer-count">{frontLayerCount}</span>}
-            </button>
-            <button
-              id="btn-switch-back"
-              type="button"
-              className={`side-btn ${activeSide === 'back' ? 'active' : ''}`}
-              onClick={() => onSideChange('back')}
-            >
-              <span>Back</span>
-              {backLayerCount > 0 && <span className="side-layer-count">{backLayerCount}</span>}
-            </button>
-          </div>
-        )}
-      </div>
-
       {/* ── Right: Tool Actions & Primary CTA ── */}
       <div className="header-actions">
-        {mode === '2d' && (
-          <>
-            {/* History Controls */}
-            <div style={{ display: 'flex', gap: '3px' }}>
-              <button
-                id="btn-undo"
-                type="button"
-                className="header-btn header-btn-icon"
-                onClick={onUndo}
-                disabled={!canUndo}
-                title="Undo"
-              >
-                <span className="symbol-icon">↶</span>
-              </button>
-              <button
-                id="btn-redo"
-                type="button"
-                className="header-btn header-btn-icon"
-                onClick={onRedo}
-                disabled={!canRedo}
-                title="Redo"
-              >
-                <span className="symbol-icon">↷</span>
-              </button>
-            </div>
-
-            {/* Zoom Controls */}
-            <div className="desktop-only-zoom" style={{ display: 'flex', alignItems: 'center', gap: '2px', background: 'var(--bg-card)', padding: '2px 5px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-              <button type="button" className="viewport-btn" onClick={onZoomOut} title="Zoom Out">
-                <span className="symbol-icon">－</span>
-              </button>
-              <span style={{ fontSize: '11px', fontWeight: 600, minWidth: '38px', textAlign: 'center', fontFamily: 'monospace' }}>
-                {Math.round(zoom * 100)}%
-              </span>
-              <button type="button" className="viewport-btn" onClick={onZoomIn} title="Zoom In">
-                <span className="symbol-icon">＋</span>
-              </button>
-              <button type="button" className="viewport-btn" onClick={onZoomFit} title="Fit to View">
-                <span className="symbol-icon">⤢</span>
-              </button>
-            </div>
-          </>
-        )}
-
         {/* Graphic Library Button */}
         {onOpenDesignsLibrary && (
           <button
@@ -227,7 +107,7 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
         )}
 
         {/* Guide / Info Tooltip Trigger */}
-        {mode === '3d' && onOpenInstructions && (
+        {onOpenInstructions && (
           <button
             id="btn-3d-instructions"
             type="button"
@@ -240,7 +120,7 @@ export const HeaderDesktop: React.FC<HeaderProps> = ({
         )}
 
         {/* Designer Mode Unlock Trigger */}
-        {mode === '3d' && isDesignerAuthorized && onToggleDesignerMode && (
+        {isDesignerAuthorized && onToggleDesignerMode && (
           <button
             id="btn-designer-mode-toggle"
             type="button"

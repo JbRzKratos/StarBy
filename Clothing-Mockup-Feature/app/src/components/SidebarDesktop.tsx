@@ -1,16 +1,9 @@
 import React from 'react';
 
 export type SidebarTab =
-  | 'library'
   | 'library3d'
-  | 'templates'
-  | 'artwork'
-  | 'garment'
-  | 'fabric'
-  | 'lighting'
-  | 'project'
-  | 'garment3d'
   | 'artwork3d'
+  | 'garment3d'
   | 'uv3d'
   | 'color3d'
   | 'animation3d'
@@ -19,7 +12,6 @@ export type SidebarTab =
   | 'project3d';
 
 export interface SidebarTabsProps {
-  mode: '2d' | '3d';
   activeTab: SidebarTab;
   onTabChange: (tab: SidebarTab) => void;
   layerCount: number;
@@ -27,23 +19,12 @@ export interface SidebarTabsProps {
 }
 
 export const SidebarDesktop: React.FC<SidebarTabsProps> = ({
-  mode,
   activeTab,
   onTabChange,
   layerCount,
   isDrawerOpen = true,
 }) => {
-  const tabs2D = [
-    { id: 'library' as SidebarTab, label: 'Designs', symbol: '✦' },
-    { id: 'artwork' as SidebarTab, label: 'Artwork', symbol: '↑', badge: layerCount },
-    { id: 'garment' as SidebarTab, label: 'Color', symbol: '●' },
-    { id: 'templates' as SidebarTab, label: 'Catalog', symbol: '◻' },
-    { id: 'fabric' as SidebarTab, label: 'Warp', symbol: '∿' },
-    { id: 'lighting' as SidebarTab, label: 'Light', symbol: '☼' },
-    { id: 'project' as SidebarTab, label: 'Project', symbol: '⚙' },
-  ];
-
-  const tabs3D = [
+  const tabs = [
     { id: 'library3d' as SidebarTab, label: 'Designs', symbol: '✦' },
     { id: 'artwork3d' as SidebarTab, label: 'Artwork', symbol: '↑', badge: layerCount },
     { id: 'color3d' as SidebarTab, label: 'Color', symbol: '●' },
@@ -53,8 +34,6 @@ export const SidebarDesktop: React.FC<SidebarTabsProps> = ({
     { id: 'uv3d' as SidebarTab, label: 'UV Editor', symbol: '⊞' },
     { id: 'export3d' as SidebarTab, label: 'Export', symbol: '⤓' },
   ];
-
-  const tabs = mode === '3d' ? tabs3D : tabs2D;
 
   return (
     <nav className="nav-sidebar sidebar-desktop" aria-label="Desktop Studio Tools">

@@ -2,7 +2,14 @@
 const nextConfig = {
   // Disable X-Powered-By header for security
   poweredByHeader: false,
-  distDir: process.env.NEXT_DIST_DIR || '.next',
+  // `next build` and `next dev` must not share a build folder: a production
+  // build overwrites the dev webpack cache, so the next `next dev` has to
+  // recompile all ~3 000 modules from scratch (25 s+ on Windows). The dev
+  // server therefore gets its own persistent folder.
+  // Override with NEXT_DIST_DIR if you need a different location.
+  distDir:
+    process.env.NEXT_DIST_DIR ||
+    (process.env.NODE_ENV === 'development' ? '.next-dev' : '.next'),
 
   // Transpile ESM packages for SSR compatibility on Node & Vercel
   transpilePackages: ['gsap', '@gsap/react'],
@@ -185,20 +192,6 @@ const nextConfig = {
         ],
       },
       {
-        // Cache 2D mockup assets (designs, backgrounds, gobos)
-        source: '/(designs|backgrounds|gobo)/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*',
-          },
-        ],
-      },
-      {
         // Cache plain mockups permanently
         source: '/plain-mockups/:path*',
         headers: [
@@ -238,18 +231,6 @@ const nextConfig = {
       {
         source: '/3d-assets/:path*',
         destination: `${r2Base}/3d-assets/:path*`,
-      },
-      {
-        source: '/designs/:path*',
-        destination: `${r2Base}/designs/:path*`,
-      },
-      {
-        source: '/backgrounds/:path*',
-        destination: `${r2Base}/backgrounds/:path*`,
-      },
-      {
-        source: '/gobo/:path*',
-        destination: `${r2Base}/gobo/:path*`,
       },
     ];
   },

@@ -6,6 +6,7 @@ node_modules/
 
 # Next.js & Subproject Build Output
 .next/
+.next-dev/
 out/
 build/
 dist/
@@ -118,19 +119,16 @@ temp/
 /public/Plain_Tees_mockups/
 
 # ─── Clothing Mockup Feature Assets (served from CDN / local public) ────────
-# Heavy 3D/2D asset binaries (~710 MB total) — keep out of git repository
+# Heavy 3D asset binaries — keep out of git repository
 /public/3d-assets/
-/public/designs/
-/public/backgrounds/
-/public/gobo/
 Clothing-Mockup-Feature/assets/
 
 # Subproject dependencies and build caches
 Clothing-Mockup-Feature/app/node_modules/
 Clothing-Mockup-Feature/app/dist/
 
-# ─── Note: Production Mockup App & Catalog ──────────────────────────────────
-# Do NOT ignore /public/tools/clothing-mockup/ (1.2 MB compiled app)
-# or /public/2d-catalog.json (20 KB). They must be tracked so production
-# deployments (e.g. Vercel) can serve the iframe customizer without 404s.
+# ─── Note: Production Mockup App ─────────────────────────────────────────────
+# Do NOT ignore /public/tools/clothing-mockup/ (compiled 3D studio app).
+# It must be tracked so production deployments (e.g. Vercel) can serve the
+# iframe customizer without 404s.
 

@@ -87,7 +87,7 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
     product.id.startsWith('plain_') ||
     product.slug?.startsWith('plain');
 
-  // Use the new 2D + 3D Clothing Mockup Studio for t-shirts and hoodies
+  // Use the 3D Clothing Mockup Studio for t-shirts and hoodies
   if (productType === 't-shirt' || productType === 'hoodie') {
     return (
       <Suspense

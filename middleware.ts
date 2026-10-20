@@ -136,6 +136,6 @@ export const config = {
      * not on asset requests — avoiding unnecessary edge CPU and preventing
      * Set-Cookie headers that would break CDN cache-ability of assets.
      */
-    '/((?!_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap\\.xml|site\\.webmanifest|images|3d-assets|designs|backgrounds|gobo|tools/clothing-mockup|.*\\.(?:png|jpg|jpeg|gif|webp|avif|svg|ico|woff|woff2|ttf|eot|otf|mp4|webm|ogg|mp3|wav)).*)',
+    '/((?!_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap\\.xml|site\\.webmanifest|images|3d-assets|tools/clothing-mockup|.*\\.(?:png|jpg|jpeg|gif|webp|avif|svg|ico|woff|woff2|ttf|eot|otf|mp4|webm|ogg|mp3|wav)).*)',
   ],
 };

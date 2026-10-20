@@ -28,6 +28,7 @@ export const CartItemSchema = z
 export const CheckoutSchema = z.object({
   items: z.array(CartItemSchema).min(1, 'Cart cannot be empty'),
   address: AddressSchema,
-  paymentMethod: z.enum(['upi', 'card', 'netbanking', 'cashfree', 'cod']).default('cashfree'),
+  // Online payment only — Cash on Delivery has been removed.
+  paymentMethod: z.enum(['upi', 'card', 'netbanking', 'cashfree']).default('cashfree'),
   couponCode: z.string().optional(),
 });

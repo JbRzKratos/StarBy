@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { OrdersClient } from '@/components/admin/orders/orders-client';
+import { formatPaymentProvider } from '@/lib/payment-display';
 
 export const dynamic = 'force-dynamic';
 
@@ -94,7 +95,7 @@ export default async function AdminOrdersPage() {
         },
         status: o.status || 'pending',
         paymentStatus: o.paymentStatus || 'unpaid',
-        paymentProvider: o.paymentProvider || 'Cashfree',
+        paymentProvider: formatPaymentProvider(o.paymentProvider),
         total: o.total || 0,
         itemCount: itemsList.reduce((sum, i) => sum + (i.quantity || 1), 0),
         createdAt: o.createdAt ? o.createdAt.toISOString() : new Date().toISOString(),

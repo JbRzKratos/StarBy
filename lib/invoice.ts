@@ -171,12 +171,16 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
         year: 'numeric',
       });
 
-      const isCod =
+      // Historical orders (Cash on Delivery was removed from checkout) may still
+      // carry the old provider value — label them accurately.
+      const isCashOnDelivery =
         order.paymentProvider === 'cod' ||
         order.paymentMethod?.toLowerCase().includes('cod') ||
         order.paymentMethod?.toLowerCase().includes('cash');
 
-      const paymentStatus = (order.paymentStatus || (isCod ? 'Pending on Delivery' : 'Paid Online')).toUpperCase();
+      const paymentStatus = (
+        order.paymentStatus || (isCashOnDelivery ? 'Pending on Delivery' : 'Paid Online')
+      ).toUpperCase();
 
       // Parse structured address
       const addr = (order.shippingAddress as InvoiceAddress | null | undefined) || {};
@@ -229,10 +233,10 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
       const stripY = 108;
       const stripHeight = 38;
 
-      if (isCod) {
-        // Red / Amber Alert strip for Cash on Delivery
+      if (isCashOnDelivery) {
+        // Alert strip for legacy Cash on Delivery orders
         doc.rect(pageLeft + 12, stripY, pageWidth - 24, stripHeight).lineWidth(1).strokeColor('#F87171').fill('#FEF2F2');
-        doc.fillColor('#991B1B').font('Helvetica-Bold').fontSize(10).text('CASH ON DELIVERY (COD)', pageLeft + 20, stripY + 7);
+        doc.fillColor('#991B1B').font('Helvetica-Bold').fontSize(10).text('CASH ON DELIVERY', pageLeft + 20, stripY + 7);
         doc.font('Helvetica-Bold').fontSize(8.5).fillColor('#B91C1C').text(
           `COLLECT FROM CUSTOMER: INR ${order.total.toFixed(2)}`,
           pageLeft + 20,
@@ -295,7 +299,7 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
 
       doc.font('Helvetica').fontSize(7.5).fillColor('#334155');
       doc.text('Shipped By: Fregoro Studios Hub (Thiruvallur)', rightColX + 8, addressBoxY + 24);
-      doc.text(`Payment Mode: ${isCod ? 'Cash on Delivery' : 'Online Payment (Prepaid)'}`, rightColX + 8, addressBoxY + 35);
+      doc.text(`Payment Mode: ${isCashOnDelivery ? 'Cash on Delivery' : 'Online Payment (Prepaid)'}`, rightColX + 8, addressBoxY + 35);
       doc.text(`Payment Status: ${paymentStatus}`, rightColX + 8, addressBoxY + 46);
       if (order.paymentGatewayPaymentId) {
         doc.text(`Gateway Txn ID: ${order.paymentGatewayPaymentId}`, rightColX + 8, addressBoxY + 57);

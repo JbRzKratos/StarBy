@@ -13,12 +13,11 @@ I have a self-contained clothing mockup feature package in the folder
 
 ## What the feature is
 
-A full 2D + 3D garment mockup editor built with React 19, TypeScript, Three.js,
+A full 3D garment mockup editor built with React 19, TypeScript, Three.js,
 and Vite. It lets users:
 - Upload artwork and preview it on t-shirts, hoodies, sweatpants, and 8 other
   garments in an interactive 3D scene with animated walk cycles.
-- Use the 2D canvas editor to apply artwork to flat garment mockups with fabric
-  warping, studio lighting, and high-res export.
+- Place artwork precisely with the UV atlas editor and export high-res renders.
 
 ## What I want you to do
 
@@ -38,8 +37,6 @@ and Vite. It lets users:
    The `Clothing-Mockup-Feature/assets/` folder contains ~400 MB of 3D models
    and textures. You must serve them at the correct URL prefixes:
    - `/3d-assets/` → `assets/3d-assets/`
-   - `/designs/`, `/backgrounds/`, `/gobo/` → `assets/2d-assets/<folder>/`
-   - `/2d-catalog.json` → `assets/2d-catalog.json`
 
    For Option B, add the Vite middleware from
    `Clothing-Mockup-Feature/app/vite.config.ts` to this project's
@@ -59,7 +56,6 @@ and Vite. It lets users:
 
 7. After integration, verify:
    - The mockup loads without 404 errors for GLB models and textures.
-   - The 2D editor shows garment thumbnails and backgrounds.
    - The 3D studio renders a garment with a sample design.
    - Exporting a PNG works.
 

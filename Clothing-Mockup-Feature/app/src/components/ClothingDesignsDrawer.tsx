@@ -9,7 +9,7 @@ import {
 export const CATEGORY_SYMBOLS: Record<string, string> = {
   all: '✦',
   anime: '✧',
-  marvel: '🛡',
+  marvel: '◆',
   automotive: '⚙',
   gaming: '⌗',
   streetwear: '▲',
@@ -29,20 +29,29 @@ export interface ApplyDesignEvent {
 interface ClothingDesignsDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  mode: '2d' | '3d';
-  onApplyDesign2D?: (event: ApplyDesignEvent) => Promise<void> | void;
   onApplyDesign3D?: (event: ApplyDesignEvent) => Promise<void> | void;
-  onApplyAllArtworks2D?: (design: CuratedClothingDesign) => Promise<void> | void;
   onApplyAllArtworks3D?: (design: CuratedClothingDesign) => Promise<void> | void;
 }
+
+type PlacementKind = 'front' | 'back' | 'sleeve';
+
+function getPlacementKind(target: string): PlacementKind {
+  const t = (target || '').toLowerCase();
+  if (t.includes('back')) return 'back';
+  if (t.includes('sleeve')) return 'sleeve';
+  return 'front';
+}
+
+const PLACEMENT_LABEL: Record<PlacementKind, string> = {
+  front: 'Front',
+  back: 'Back',
+  sleeve: 'Sleeve',
+};
 
 export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
   isOpen,
   onClose,
-  mode,
-  onApplyDesign2D,
   onApplyDesign3D,
-  onApplyAllArtworks2D,
   onApplyAllArtworks3D,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,7 +61,7 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
   const [appliedDesignId, setAppliedDesignId] = useState<string | null>(null);
   const [appliedArtId, setAppliedArtId] = useState<string | null>(null);
 
-  // Close on Escape key
+  // Close on Escape key (first Escape leaves the detail view, second closes)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -67,7 +76,6 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, activeDesign, onClose]);
 
-  // Filtered designs
   const filteredDesigns = useMemo(() => {
     let list = CURATED_CLOTHING_DESIGNS;
 
@@ -90,7 +98,18 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
     return list;
   }, [selectedCategory, searchQuery]);
 
-  // Pre-warm all artworks for the active design so clicks respond in under 50ms
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: CURATED_CLOTHING_DESIGNS.length };
+    for (const cat of CLOTHING_DESIGN_CATEGORIES) {
+      if (cat.id === 'all') continue;
+      counts[cat.id] = CURATED_CLOTHING_DESIGNS.filter(
+        (d) => d.themeCategory === cat.id || d.tags.includes(cat.id)
+      ).length;
+    }
+    return counts;
+  }, []);
+
+  // Pre-warm the artwork bitmaps so clicks feel instant
   useEffect(() => {
     if (!activeDesign) return;
     activeDesign.artworks.forEach((art) => {
@@ -103,21 +122,25 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
     });
   }, [activeDesign]);
 
-  // Pre-warm first batch of designs when the drawer is opened
+  // Pre-warm the first batch of designs when the drawer opens (both the grid
+  // thumbnail and the full studio bitmap) so the first click feels instant.
   useEffect(() => {
     if (!isOpen) return;
-    const initialBatch = CURATED_CLOTHING_DESIGNS.slice(0, 12);
-    initialBatch.forEach((d) => {
-      d.artworks.forEach((art) => {
-        const url = art.studioPreviewUrl || art.previewUrl;
-        if (url) {
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.src = url;
-        }
+    CURATED_CLOTHING_DESIGNS.slice(0, 12).forEach((d) => {
+      const urls = [d.previewUrl, ...d.artworks.map((art) => art.studioPreviewUrl || art.previewUrl)];
+      urls.forEach((url) => {
+        if (!url) return;
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = url;
       });
     });
   }, [isOpen]);
+
+  const flash = (message: string) => {
+    setFeedbackMessage(message);
+    window.setTimeout(() => setFeedbackMessage(null), 3200);
+  };
 
   const handleApplyArtwork = async (
     design: CuratedClothingDesign,
@@ -135,423 +158,262 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
       targetSide,
     };
 
-    if (mode === '2d' && onApplyDesign2D) {
-      await onApplyDesign2D(event);
-      setFeedbackMessage(`✓ Placed "${artwork.name}" on ${targetSide.toUpperCase()} view!`);
-    } else if (mode === '3d' && onApplyDesign3D) {
+    if (onApplyDesign3D) {
       await onApplyDesign3D(event);
-      setFeedbackMessage(`✓ Placed "${artwork.name}" on 3D garment!`);
+      flash(`“${artwork.name}” placed on the ${PLACEMENT_LABEL[getPlacementKind(finalPlacement)].toLowerCase()}`);
     }
 
-    setAppliedArtId(`${artwork.id}-${finalPlacement}`);
-    setTimeout(() => {
-      setAppliedArtId((curr) => (curr === `${artwork.id}-${finalPlacement}` ? null : curr));
-    }, 2000);
+    const artKey = `${artwork.id}-${finalPlacement}`;
+    setAppliedArtId(artKey);
+    window.setTimeout(() => {
+      setAppliedArtId((curr) => (curr === artKey ? null : curr));
+    }, 1800);
 
-    setTimeout(() => {
-      setFeedbackMessage(null);
-    }, 3500);
-
-    // On mobile screens, auto-close promptly so user sees full garment; on desktop, keep drawer open so user can rapidly try different graphics
+    // On mobile close promptly so the user sees the garment; on desktop keep
+    // the drawer open so different graphics can be tried quickly.
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      setTimeout(() => {
-        onClose();
-      }, 100);
+      window.setTimeout(onClose, 120);
     }
   };
 
   const handleApplyAllArtworks = async (design: CuratedClothingDesign) => {
-    if (mode === '3d' && onApplyAllArtworks3D) {
+    if (onApplyAllArtworks3D) {
       await onApplyAllArtworks3D(design);
-      setFeedbackMessage(`✓ Applied "${design.name}" complete set (Front, Back & Sleeves) on 3D garment!`);
-    } else if (mode === '2d' && onApplyAllArtworks2D) {
-      await onApplyAllArtworks2D(design);
-      setFeedbackMessage(`✓ Applied "${design.name}" all artworks to 2D editor!`);
+      flash(`“${design.name}” applied — ${design.artworks.length} artwork${design.artworks.length === 1 ? '' : 's'} placed`);
     }
 
     setAppliedDesignId(design.id);
-    setTimeout(() => {
+    window.setTimeout(() => {
       setAppliedDesignId((curr) => (curr === design.id ? null : curr));
-    }, 2200);
+    }, 2000);
 
-    setTimeout(() => {
-      setFeedbackMessage(null);
-    }, 4000);
-
-    // Promptly close so user can immediately view their selected design in 3D
-    setTimeout(() => {
-      onClose();
-    }, 150);
+    // Close so the user immediately sees the applied design in the studio
+    window.setTimeout(onClose, 160);
   };
 
   if (!isOpen) return null;
 
   return (
     <>
-      {/* ── Backdrop Overlay (Click canvas to close) ── */}
       <div
         className="clothing-drawer-backdrop"
         onClick={onClose}
-        title="Click canvas to close library"
+        title="Click the canvas to close the library"
         aria-hidden="true"
       />
 
-      {/* ── Main Sidebar Drawer ── */}
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label="StarBy Graphic Library"
+        aria-label="Graphic Library"
         className="clothing-designs-drawer"
       >
         {/* ── Header ── */}
-        <div className="clothing-drawer-header">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <div
-                style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '8px',
-                  background: 'linear-gradient(135deg, #6366f1 0%, #38bdf8 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 2px 10px rgba(99, 102, 241, 0.4)',
-                }}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                  <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
-                  <circle cx="12" cy="13" r="2.5" fill="currentColor" fillOpacity="0.4" />
-                </svg>
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-bold tracking-wide text-white">
-                    StarBy Graphic Library
-                  </h2>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">
-                    {CURATED_CLOTHING_DESIGNS.length} Designs
-                  </span>
-                </div>
-                <p className="text-[11px] text-white/50 leading-tight mt-0.5">
-                  Official apparel collections calibrated for 360° Studio
-                </p>
-              </div>
+        <div className="library-header">
+          <div className="library-header-row">
+            <span className="library-logo" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
+                <circle cx="12" cy="13" r="2.4" fill="currentColor" fillOpacity="0.35" />
+              </svg>
+            </span>
+
+            <div className="library-header-copy">
+              <h2 className="library-title">Graphic Library</h2>
+              <p className="library-subtitle">
+                {CURATED_CLOTHING_DESIGNS.length} designs · studio-calibrated
+              </p>
             </div>
 
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
+              className="library-icon-btn"
               title="Close library (Esc)"
               aria-label="Close library"
             >
-              <span style={{ fontSize: '16px' }}>✕</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
             </button>
           </div>
 
-          {/* Search Input */}
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" style={{ fontSize: '13px' }}>⚲</span>
+          {/* Search */}
+          <div className="library-search">
+            <svg className="library-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-3.2-3.2" />
+            </svg>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by anime, character, automotive, streetwear, quotes..."
-              className="clothing-drawer-search-input"
+              placeholder="Search designs, characters, styles…"
+              className="library-search-input"
+              aria-label="Search designs"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white text-xs"
+                className="library-search-clear"
+                aria-label="Clear search"
               >
-                Clear
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
               </button>
             )}
           </div>
 
-          {/* Category Filter Pills */}
-          <div style={{ position: 'relative' }}>
-            <div className="clothing-drawer-categories" style={{ paddingRight: '28px' }}>
-              {CLOTHING_DESIGN_CATEGORIES.map((cat) => {
-                const isActive = selectedCategory === cat.id;
-                const count =
-                  cat.id === 'all'
-                    ? CURATED_CLOTHING_DESIGNS.length
-                    : CURATED_CLOTHING_DESIGNS.filter(
-                        (d) => d.themeCategory === cat.id || d.tags.includes(cat.id)
-                      ).length;
-
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => {
-                      setSelectedCategory(cat.id);
-                      setActiveDesign(null);
-                    }}
-                    className={`clothing-drawer-cat-btn ${isActive ? 'active' : ''}`}
-                  >
-                    <span className="text-[11px] opacity-90">{CATEGORY_SYMBOLS[cat.id] || '✦'}</span>
-                    <span>{cat.label}</span>
-                    <span className="text-[9.5px] opacity-70">({count})</span>
-                  </button>
-                );
-              })}
-            </div>
-            <div
-              style={{
-                position: 'absolute',
-                right: 0,
-                top: 0,
-                bottom: '4px',
-                width: '32px',
-                background: 'linear-gradient(to left, rgba(14, 18, 26, 0.96), transparent)',
-                pointerEvents: 'none',
-              }}
-            />
+          {/* Category filters */}
+          <div className="library-filters" role="tablist" aria-label="Design categories">
+            {CLOTHING_DESIGN_CATEGORIES.map((cat) => {
+              const isActive = selectedCategory === cat.id;
+              const count = categoryCounts[cat.id] ?? 0;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => {
+                    setSelectedCategory(cat.id);
+                    setActiveDesign(null);
+                  }}
+                  className={`library-chip ${isActive ? 'is-active' : ''}`}
+                >
+                  <span className="library-chip-symbol">{CATEGORY_SYMBOLS[cat.id] || '✦'}</span>
+                  <span>{cat.label}</span>
+                  <span className="library-chip-count">{count}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* ── Feedback Toast ── */}
+        {/* ── Toast ── */}
         {feedbackMessage && (
-          <div className="clothing-drawer-toast">
-            <span className="text-emerald-400 shrink-0 font-bold">✓</span>
+          <div className="library-toast" role="status">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
             <span>{feedbackMessage}</span>
           </div>
         )}
 
-        {/* ── Content View Area ── */}
-        <div className="clothing-drawer-body hide-scrollbar">
+        {/* ── Body ── */}
+        <div className="library-body hide-scrollbar">
           {activeDesign ? (
-            /* ── DETAIL BREAKDOWN VIEW (When a design is opened) ── */
-            <div className="clothing-drawer-detail-view">
-              <button
-                type="button"
-                onClick={() => setActiveDesign(null)}
-                className="clothing-drawer-back-btn"
-              >
-                <span>←</span>
-                <span>Back to Graphic Library</span>
+            /* ── Design detail ── */
+            <div className="library-detail">
+              <button type="button" onClick={() => setActiveDesign(null)} className="library-back">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M11 18l-6-6 6-6" />
+                </svg>
+                <span>All designs</span>
               </button>
 
-              {/* Design Hero Card */}
-              <div className="clothing-detail-hero-card">
-                <div className="clothing-detail-hero-thumb">
+              <div className="library-detail-hero">
+                <div className="library-detail-thumb">
                   <img
                     src={activeDesign.previewUrl}
                     alt={activeDesign.name}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      maxWidth: '100%',
-                      maxHeight: '100%',
-                      objectFit: 'contain',
-                      display: 'block',
-                    }}
+                    loading="lazy"
+                    onLoad={(e) => { e.currentTarget.classList.add('is-loaded'); e.currentTarget.parentElement?.classList.add('is-loaded'); }}
                   />
                 </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-bold uppercase tracking-wider border border-sky-500/30">
-                      {activeDesign.themeCategory}
-                    </span>
-                    <span className="text-[10px] text-indigo-300 font-mono bg-indigo-500/15 border border-indigo-500/25 px-2 py-0.5 rounded">
-                      {activeDesign.artworks.length} {activeDesign.artworks.length === 1 ? 'Artwork' : 'Artworks'} Set
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-bold text-white mt-1.5 truncate">{activeDesign.name}</h3>
-                  <p className="text-[11px] text-white/60 mt-1 leading-relaxed">
-                    {activeDesign.artworks.map((a) => a.name).join(' • ')}
+                <div className="library-detail-copy">
+                  <span className="library-tag">{activeDesign.themeCategory}</span>
+                  <h3 className="library-detail-title">{activeDesign.name}</h3>
+                  <p className="library-detail-meta">
+                    {activeDesign.artworks.length} artwork{activeDesign.artworks.length === 1 ? '' : 's'} ·{' '}
+                    {activeDesign.artworks
+                      .map((a) => PLACEMENT_LABEL[getPlacementKind(a.suggestedPlacement || 'front-center')])
+                      .join(' · ')}
                   </p>
                 </div>
               </div>
 
-              {/* Primary "Apply Complete Design" Action Button */}
               <button
                 type="button"
                 onClick={() => handleApplyAllArtworks(activeDesign)}
-                className={`clothing-detail-apply-all-btn ${appliedDesignId === activeDesign.id ? 'applied' : ''}`}
+                className={`library-btn library-btn--primary library-btn--lg ${appliedDesignId === activeDesign.id ? 'is-done' : ''}`}
               >
                 {appliedDesignId === activeDesign.id ? (
                   <>
-                    <span style={{ fontSize: '16px', fontWeight: 'bold' }}>✓</span>
-                    <span>Applied Complete Set to 3D Garment!</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                    <span>Applied to 3D garment</span>
                   </>
                 ) : (
                   <>
-                    <span style={{ fontSize: '15px' }}>👕</span>
-                    <span>
-                      Apply Complete Set ({activeDesign.artworks.length > 1 ? 'Front & Back' : 'Single Placement'})
-                    </span>
+                    <span>Apply complete set</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
                   </>
                 )}
               </button>
 
-              {/* Studio Adjustment Helper Card */}
-              <div
-                style={{
-                  backgroundColor: 'rgba(99, 102, 241, 0.08)',
-                  border: '1px solid rgba(99, 102, 241, 0.2)',
-                  borderRadius: '12px',
-                  padding: '11px 14px',
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '10px',
-                }}
-              >
-                <span className="text-indigo-400 shrink-0 mt-0.5" style={{ fontSize: '14px', fontWeight: 'bold' }}>ℹ</span>
-                <p style={{ margin: 0, fontSize: '11px', lineHeight: '1.45', color: 'rgba(255, 255, 255, 0.75)' }}>
-                  Artworks are pre-calibrated for Front Chest, Full Back & Sleeves. You can apply the full set above, or place individual pieces below.
-                </p>
-              </div>
+              <p className="library-hint">
+                Applying a set replaces the artwork currently on the garment. Every graphic uses its
+                saved, artist-calibrated placement.
+              </p>
 
-              {/* Individual Artworks List */}
-              <div className="flex flex-col gap-2.5 mt-1">
-                <h4 className="text-[11px] font-mono uppercase tracking-wider text-white/50 px-1">
-                  Individual Artworks in this Set ({activeDesign.artworks.length})
-                </h4>
+              <div className="library-section-title">Individual artworks</div>
 
+              <div className="library-art-list">
                 {activeDesign.artworks.map((art) => {
                   const target = art.suggestedPlacement || 'front-center';
-                  const isBack = target.includes('back');
-                  const isSleeve = target.includes('sleeve');
-                  const placementBadge = isBack ? 'Back Placement' : isSleeve ? 'Sleeve Graphic' : 'Front Placement';
-                  const actionTarget = isBack ? 'Back' : isSleeve ? 'Sleeve' : 'Front';
-                  const artActionKey = `${art.id}-${target}`;
-                  const isArtApplied = appliedArtId === artActionKey;
+                  const kind = getPlacementKind(target);
+                  const artKey = `${art.id}-${target}`;
+                  const isApplied = appliedArtId === artKey;
 
                   return (
-                    <div
-                      key={art.id}
-                      className="clothing-detail-art-card"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="clothing-detail-art-thumb">
-                          <img
-                            src={art.previewUrl}
-                            alt={art.name}
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              maxWidth: '100%',
-                              maxHeight: '100%',
-                              objectFit: 'contain',
-                              display: 'block',
-                            }}
-                          />
-                        </div>
-
-                        <div className="min-w-0 flex-1">
-                          <h5 className="text-xs font-semibold text-white truncate">{art.name}</h5>
-                          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                            <span
-                              style={{
-                                fontSize: '9px',
-                                fontFamily: 'monospace',
-                                padding: '2px 6px',
-                                borderRadius: '4px',
-                                backgroundColor: isBack ? 'rgba(56, 189, 248, 0.15)' : isSleeve ? 'rgba(168, 85, 247, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                                color: isBack ? '#38bdf8' : isSleeve ? '#c084fc' : '#34d399',
-                                border: `1px solid ${isBack ? 'rgba(56, 189, 248, 0.3)' : isSleeve ? 'rgba(168, 85, 247, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
-                                fontWeight: 700,
-                              }}
-                            >
-                              {placementBadge}
-                            </span>
-                            {art.colorHint !== 'any' && (
-                              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">
-                                Best on {art.colorHint}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                    <div key={art.id} className="library-art-row">
+                      <div className="library-art-thumb">
+                        <img
+                          src={art.previewUrl}
+                          alt={art.name}
+                          loading="lazy"
+                          onLoad={(e) => { e.currentTarget.classList.add('is-loaded'); e.currentTarget.parentElement?.classList.add('is-loaded'); }}
+                        />
                       </div>
 
-                      {/* Action Row for Individual Artwork */}
-                      <div className="flex items-center gap-2 pt-2 border-t border-white/5">
-                        {/* Primary default placement button */}
+                      <div className="library-art-copy">
+                        <strong>{art.name}</strong>
+                        <span className={`library-tag library-tag--${kind}`}>{PLACEMENT_LABEL[kind]}</span>
+                        {art.colorHint !== 'any' && (
+                          <span className="library-art-hint">Best on {art.colorHint}</span>
+                        )}
+                      </div>
+
+                      <div className="library-art-actions">
                         <button
                           type="button"
                           onClick={() => handleApplyArtwork(activeDesign, art, target)}
-                          style={{
-                            flex: 1,
-                            padding: '8px 12px',
-                            borderRadius: '8px',
-                            background: isArtApplied
-                              ? 'linear-gradient(135deg, #059669 0%, #10b981 100%)'
-                              : isBack
-                              ? 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)'
-                              : isSleeve
-                              ? 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)'
-                              : 'linear-gradient(135deg, #059669 0%, #047857 100%)',
-                            color: '#ffffff',
-                            fontSize: '11px',
-                            fontWeight: 700,
-                            border: 'none',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '6px',
-                            transition: 'all 0.15s ease',
-                          }}
+                          className={`library-btn library-btn--soft ${isApplied ? 'is-done' : ''}`}
+                          title={`Place on ${PLACEMENT_LABEL[kind]}`}
                         >
-                          {isArtApplied ? (
-                            <>
-                              <span>✓</span>
-                              <span>Placed on {actionTarget}!</span>
-                            </>
-                          ) : (
-                            <>
-                              <span className="text-xs">
-                                {isBack ? '👕' : isSleeve ? '🦾' : '🎽'}
-                              </span>
-                              <span>Apply to {actionTarget}</span>
-                            </>
-                          )}
+                          {isApplied ? 'Applied' : `Apply ${PLACEMENT_LABEL[kind]}`}
                         </button>
-
-                        {/* Optional alternate side override */}
-                        {isBack ? (
-                          <button
-                            type="button"
-                            onClick={() => handleApplyArtwork(activeDesign, art, 'front-center')}
-                            style={{
-                              padding: '8px 10px',
-                              borderRadius: '8px',
-                              background: 'rgba(255, 255, 255, 0.05)',
-                              color: 'rgba(255, 255, 255, 0.8)',
-                              fontSize: '10.5px',
-                              fontWeight: 600,
-                              border: '1px solid rgba(255, 255, 255, 0.1)',
-                              cursor: 'pointer',
-                            }}
-                            title="Place this graphic on Front instead"
-                          >
-                            + Put on Front
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => handleApplyArtwork(activeDesign, art, 'back-center')}
-                            style={{
-                              padding: '8px 10px',
-                              borderRadius: '8px',
-                              background: 'rgba(255, 255, 255, 0.05)',
-                              color: 'rgba(255, 255, 255, 0.8)',
-                              fontSize: '10.5px',
-                              fontWeight: 600,
-                              border: '1px solid rgba(255, 255, 255, 0.1)',
-                              cursor: 'pointer',
-                            }}
-                            title="Place this graphic on Back instead"
-                          >
-                            + Put on Back
-                          </button>
-                        )}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleApplyArtwork(
+                              activeDesign,
+                              art,
+                              kind === 'back' ? 'front-center' : 'back-center'
+                            )
+                          }
+                          className="library-btn library-btn--ghost library-btn--sm"
+                          title={kind === 'back' ? 'Place on the front instead' : 'Place on the back instead'}
+                        >
+                          {kind === 'back' ? '→ Front' : '→ Back'}
+                        </button>
                       </div>
                     </div>
                   );
@@ -559,124 +421,95 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
               </div>
             </div>
           ) : (
-            /* ── GRID CATALOG VIEW ── */
-            <div className="p-3 sm:p-4">
-              <div className="flex items-center justify-between text-[11px] text-white/50 mb-3 px-1 font-mono">
+            /* ── Catalog grid ── */
+            <div className="library-grid-wrap">
+              <div className="library-results">
                 <span>
-                  Showing {filteredDesigns.length} of {CURATED_CLOTHING_DESIGNS.length} Designs
+                  {filteredDesigns.length} of {CURATED_CLOTHING_DESIGNS.length} designs
                 </span>
-                {selectedCategory !== 'all' && (
+                {(selectedCategory !== 'all' || searchQuery) && (
                   <button
                     type="button"
-                    onClick={() => setSelectedCategory('all')}
-                    className="text-indigo-400 hover:text-indigo-300 hover:underline font-semibold"
+                    onClick={() => {
+                      setSelectedCategory('all');
+                      setSearchQuery('');
+                    }}
+                    className="library-reset"
                   >
-                    Reset Filter
+                    Reset filters
                   </button>
                 )}
               </div>
 
               {filteredDesigns.length > 0 ? (
-                <div className="clothing-drawer-grid">
+                <div className="library-grid">
                   {filteredDesigns.map((design) => {
                     const artCount = design.artworks.length;
                     const isApplied = appliedDesignId === design.id;
 
                     return (
-                      <div
-                        key={design.id}
-                        className="clothing-design-grid-card group"
-                        onClick={() => setActiveDesign(design)}
-                      >
-                        {/* Artwork Thumbnail Container */}
-                        <div className="clothing-design-thumb-wrap">
+                      <article key={design.id} className="library-card">
+                        <button
+                          type="button"
+                          className="library-card-media"
+                          onClick={() => setActiveDesign(design)}
+                          aria-label={`View ${design.name}`}
+                        >
                           <img
                             src={design.previewUrl}
                             alt={design.name}
                             loading="lazy"
-                            className="clothing-design-thumb-img"
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              maxWidth: '100%',
-                              maxHeight: '100%',
-                              objectFit: 'contain',
-                            }}
+                            onLoad={(e) => { e.currentTarget.classList.add('is-loaded'); e.currentTarget.parentElement?.classList.add('is-loaded'); }}
                           />
-                          <span className="clothing-design-cat-badge">
-                            <span className="opacity-90">{CATEGORY_SYMBOLS[design.themeCategory] || '❖'}</span>
-                            <span>{design.themeCategory}</span>
+                          <span className="library-tag library-tag--float">{design.themeCategory}</span>
+                          <span className="library-card-count">
+                            {artCount} {artCount === 1 ? 'art' : 'arts'}
                           </span>
-                          <span className="clothing-design-arts-badge">
-                            <span className="opacity-70">⊞</span> {artCount} {artCount === 1 ? 'Artwork' : 'Artworks'}
-                          </span>
-                        </div>
+                        </button>
 
-                        {/* Title & Included Art Summary */}
-                        <div className="p-2.5 flex flex-col gap-0.5 flex-1">
-                          <h4 className="text-xs font-bold text-white truncate group-hover:text-indigo-300 transition-colors">
+                        <div className="library-card-body">
+                          <h3 className="library-card-title" title={design.name}>
                             {design.name}
-                          </h4>
-                          <span className="text-[10px] text-white/40 truncate font-mono">
-                            {design.artworks.map((a) => a.name).join(' • ')}
-                          </span>
-                        </div>
+                          </h3>
+                          <p className="library-card-meta">
+                            {design.artworks
+                              .map((a) => PLACEMENT_LABEL[getPlacementKind(a.suggestedPlacement || 'front-center')])
+                              .join(' · ')}
+                          </p>
 
-                        {/* Card Actions (Proper, high-quality, fully functioning buttons) */}
-                        <div className="clothing-design-card-actions">
-                          {/* 1-Tap Complete Set Placement Button */}
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleApplyAllArtworks(design);
-                            }}
-                            className={`clothing-design-apply-btn ${isApplied ? 'applied' : ''}`}
-                            title={`Apply full ${design.name} configuration`}
-                          >
-                            {isApplied ? (
-                              <>
-                                <span>✓</span>
-                                <span>Applied!</span>
-                              </>
-                            ) : (
-                              <>
-                                <span>👕</span>
-                                <span>Apply Design</span>
-                              </>
-                            )}
-                          </button>
-
-                          {/* Detail View Trigger */}
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveDesign(design);
-                            }}
-                            className="clothing-design-view-btn"
-                            title="Inspect individual artworks and customize placement"
-                          >
-                            <span>View Artworks ({artCount})</span>
-                            <span className="opacity-60">→</span>
-                          </button>
+                          <div className="library-card-actions">
+                            <button
+                              type="button"
+                              onClick={() => handleApplyAllArtworks(design)}
+                              className={`library-btn library-btn--primary library-btn--sm ${isApplied ? 'is-done' : ''}`}
+                            >
+                              {isApplied ? 'Applied' : 'Apply set'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setActiveDesign(design)}
+                              className="library-btn library-btn--ghost library-btn--sm"
+                            >
+                              Details
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      </article>
                     );
                   })}
                 </div>
               ) : (
-                <div className="py-20 text-center flex flex-col items-center justify-center gap-2">
-                  <p className="text-sm text-white/70">No designs match your search.</p>
+                <div className="library-empty">
+                  <p>No designs match “{searchQuery}”.</p>
                   <button
                     type="button"
                     onClick={() => {
                       setSearchQuery('');
                       setSelectedCategory('all');
                     }}
-                    className="text-xs text-indigo-400 underline mt-1"
+                    className="library-btn library-btn--ghost library-btn--sm"
                   >
-                    Clear search filters
+                    Clear filters
                   </button>
                 </div>
               )}
@@ -684,19 +517,11 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
           )}
         </div>
 
-        {/* ── Drawer Footer ── */}
-        <div className="clothing-drawer-footer">
-          <span className="flex items-center gap-1.5 font-medium text-[11px] text-white/70">
-            <span className="text-emerald-400 text-sm">🏷️</span>
-            <span>StarBy Official Collections</span>
-          </span>
-          <span className="font-mono text-[10px] text-sky-400/90 flex items-center gap-1.5 font-semibold">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 12a9 9 0 11-9-9c2.52 0 4.8 1.03 6.45 2.7L21 8" />
-              <polyline points="21 3 21 8 16 8" />
-            </svg>
-            <span>360° Studio Ready</span>
-          </span>
+        {/* ── Footer ── */}
+        <div className="library-footer">
+          <span>StarBy Official Collections</span>
+          <span className="library-footer-sep" />
+          <span>360° studio ready</span>
         </div>
       </aside>
     </>

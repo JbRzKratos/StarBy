@@ -10,7 +10,7 @@ import { isSuperAdminEmail } from '@/lib/auth-constants';
  * ClothingMockupIframe
  *
  * Bridge component that embeds the self-contained Clothing-Mockup-Feature
- * (2D canvas editor + 3D garment studio) as a same-origin iframe.
+ * (3D garment studio) as a same-origin iframe.
  *
  * Layout strategy:
  *  - The host Navigation is ~60 px tall (py-3.5 + icon height).
@@ -175,12 +175,18 @@ export function ClothingMockupIframe({
     sp.delete('admin');
     sp.delete('designerAuth');
 
+    // The studio reads the curated design from `designId`. Accept the shorter
+    // `design` alias as well so both spellings load the right artwork.
+    if (!sp.has('designId') && sp.has('design')) {
+      sp.set('designId', sp.get('design') as string);
+    }
+
     const qs = sp.toString();
     return qs ? `/tools/clothing-mockup/index.html?${qs}` : '/tools/clothing-mockup/index.html';
   }, [searchParams, productId, productName, basePrice, isPlain]);
 
   // Apply body class while the studio is mounted and aggressively suppress
-  // the Tawk.to widget, WhatsApp button, and other floating UI in both 2D and 3D.
+  // the Tawk.to widget, WhatsApp button, and other floating UI in the studio.
   useEffect(() => {
     document.body.classList.add('mockup-studio-active');
 
@@ -540,10 +546,10 @@ export function ClothingMockupIframe({
                 ? '/images/mockups/tee-black-front.webp'
                 : candidateImage;
 
-            const is2d = payload.mode === '2d';
-            const variantPrefix = is2d ? 'mockup-2d' : 'mockup-3d';
-            const defaultPlacementTitle = is2d ? 'Custom 2D Studio Mockup' : 'Custom 3D Studio Mockup';
-            const defaultInstructions = is2d ? 'Custom 2D Studio Placement' : 'Custom 3D Studio Placement';
+            // The studio is 3D-only now: one variant prefix, one placement label.
+            const variantPrefix = 'mockup-3d';
+            const defaultPlacementTitle = 'Custom 3D Studio Mockup';
+            const defaultInstructions = 'Custom 3D Studio Placement';
 
             const customArtworkCount =
               typeof payload.customArtworkCount === 'number'
@@ -591,9 +597,8 @@ export function ClothingMockupIframe({
                 customPrintFee,
                 basePrice: itemBasePrice,
                 isPlain: isCustomUpload,
-                is3dMockup: !is2d,
-                is2dMockup: is2d,
-                mode: payload.mode || '3d',
+                is3dMockup: true,
+                mode: '3d',
               },
             };
 

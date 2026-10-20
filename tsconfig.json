@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "scripts", "docs", ".next", "Clothing-Mockup-Feature"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next-dev/types/**/*.ts"],
+  "exclude": ["node_modules", "scripts", "docs", ".next", ".next-dev", "Clothing-Mockup-Feature"]
 }

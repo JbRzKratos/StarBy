@@ -55,7 +55,7 @@ StarBy's database is hosted on **Supabase PostgreSQL** and modeled using **Prism
 - **`currency`**: Default `"INR"`
 - **`status`**: Current fulfillment state (`pending_payment`, `placed`, `processing`, `shipped`, `delivered`, `cancelled`)
 - **`paymentStatus`**: Gateway settlement state (`pending`, `paid`, `failed`, `refunded`)
-- **`paymentProvider`**: `"cashfree"`, `"cod"`, or historical `"razorpay"`
+- **`paymentProvider`**: `"cashfree"` (legacy rows may still show `"cod"` or `"razorpay"`)
 - **`paymentGatewayOrderId`**: Cashfree order ID (e.g. `STB_2026_92817AB`)
 - **`paymentGatewayPaymentId`**: Cashfree payment ID reference
 - **`shippingAddress`**: Immutable JSON snapshot of the customer's shipping address

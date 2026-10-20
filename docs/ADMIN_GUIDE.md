@@ -20,7 +20,7 @@ The StarBy Admin Portal (`/admin`) is gated with server-side RBAC:
                                    -> [ cancelled ] / [ refunded ]
 ```
 
-1. **New Orders**: Appear automatically in the **Orders Manager** with `placed` (for COD or confirmed Cashfree payments) or `pending_payment` (awaiting payment).
+1. **New Orders**: Appear automatically in the **Orders Manager** with `pending_payment` (awaiting online payment) and switch to `placed` once Cashfree confirms the payment.
 2. **Order Details**: Click on any order to view:
    - Customer shipping details and contact information
    - Gateway information (Cashfree Order ID, Payment Ref)

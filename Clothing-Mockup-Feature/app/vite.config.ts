@@ -4,12 +4,10 @@ import path from 'path';
 import fs from 'fs';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Clothing-Mockup-Feature – portable Vite config
+// Clothing-Mockup-Feature — portable Vite config
 //
 // Asset roots (relative to THIS file):
 //   ../assets/3d-assets/   → served as  /3d-assets/…
-//   ../assets/2d-assets/   → served as  /designs/…  /backgrounds/…  /gobo/…
-//   ../assets/2d-catalog.json → served as /2d-catalog.json
 //
 // To mount the app under a sub-path on your host server set the BASE env var:
 //   BASE=/tools/clothing-mockup npm run build
@@ -63,17 +61,9 @@ export default defineConfig(({command}) => ({
 
           let targetPath: string | null = null;
 
-          if (
-            cleanUrl.startsWith('/designs/') ||
-            cleanUrl.startsWith('/backgrounds/') ||
-            cleanUrl.startsWith('/gobo/')
-          ) {
-            targetPath = path.resolve(ASSETS_ROOT, '2d-assets', '.' + cleanUrl);
-          } else if (cleanUrl.startsWith('/3d-assets/')) {
+          if (cleanUrl.startsWith('/3d-assets/')) {
             const relPath = cleanUrl.replace(/^\/3d-assets\//, '');
             targetPath = path.resolve(ASSETS_ROOT, '3d-assets', relPath);
-          } else if (cleanUrl === '/2d-catalog.json') {
-            targetPath = path.resolve(ASSETS_ROOT, '2d-catalog.json');
           } else if (cleanUrl.startsWith('/reference/')) {
             targetPath = path.resolve(ASSETS_ROOT, '.' + cleanUrl);
           }

@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { DashboardClient } from '@/components/admin/dashboard/dashboard-client';
+import { formatPaymentProvider } from '@/lib/payment-display';
 
 export const dynamic = 'force-dynamic';
 
@@ -158,7 +159,7 @@ export default async function AdminDashboardPage() {
             },
             status: o.status,
             paymentStatus: o.paymentStatus,
-            paymentProvider: o.paymentProvider || 'Cashfree',
+            paymentProvider: formatPaymentProvider(o.paymentProvider),
             total: o.total,
             createdAt: o.createdAt ? o.createdAt.toISOString() : new Date().toISOString(),
             itemCount: Array.isArray(o.items)

@@ -4,7 +4,6 @@ import { rateLimit } from '@/lib/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import { Prisma } from '@prisma/client';
-import { dispatchNotification } from '@/lib/notifications';
 import { createCashfreeOrder, generatePublicOrderId, getCashfreeEnvironment } from '@/lib/cashfree';
 import { uploadBufferToR2, getR2PublicUrl } from '@/lib/r2';
 import { getLayoutById, FREGORO_LAYOUTS } from '@/lib/wall-studio/layouts-data';
@@ -53,6 +52,17 @@ export async function POST(request: Request) {
     }
 
     const { items, address, paymentMethod, couponCode } = validation.data;
+
+    // Cash on Delivery has been removed — only online payment is supported.
+    if (paymentMethod !== 'cashfree') {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Only online payment is available. Please complete the payment via UPI, card, netbanking or wallet.',
+        },
+        { status: 400 },
+      );
+    }
 
     // 3. Get Authenticated User or Fallback to Guest Checkout
     let userId: string | null = null;
@@ -296,7 +306,9 @@ export async function POST(request: Request) {
         continue;
       }
 
-      // ──── Check if this is a 3D or 2D Mockup Custom Garment ────
+      // ──── Check if this is a Studio Mockup Custom Garment ────
+      // `mockup-2d-` is legacy (the studio is 3D-only now) but is still
+      // accepted so carts saved before the 2D editor was removed still price.
       if (
         customData?.is3dMockup ||
         customData?.is2dMockup ||
@@ -763,112 +775,107 @@ export async function POST(request: Request) {
     const estimatedDeliveryDate = new Date();
     estimatedDeliveryDate.setDate(estimatedDeliveryDate.getDate() + 5);
 
-    const isCod = paymentMethod === 'cod';
-
     // 9. ──── Handle Cashfree payment order creation ────
     let paymentGatewayOrderId: string | null = null;
     let paymentSessionId: string | null = null;
 
-    if (!isCod) {
-      try {
-        // Create unique Cashfree order ID based on public order ID
-        const cfOrderId = publicOrderId.replace(/[^a-zA-Z0-9_-]/g, '_');
+    try {
+      // Create unique Cashfree order ID based on public order ID
+      const cfOrderId = publicOrderId.replace(/[^a-zA-Z0-9_-]/g, '_');
 
-        // Clean phone number for Cashfree API (Cashfree requires standard 10-digit Indian phone)
-        const rawPhone = (address.phone || '').replace(/[^0-9]/g, '');
-        let cleanPhone = '9999999999';
-        if (rawPhone.length === 10) {
-          cleanPhone = rawPhone;
-        } else if (rawPhone.length === 12 && rawPhone.startsWith('91')) {
-          cleanPhone = rawPhone.slice(2);
-        } else if (rawPhone.length >= 10) {
-          cleanPhone = rawPhone.slice(-10);
-        }
-
-        // Cashfree production strictly enforces HTTPS for return_url and notify_url
-        const cfEnvironment = getCashfreeEnvironment();
-        const siteUrl = getSiteUrl(request);
-        const isLocal = siteUrl.includes('localhost') || siteUrl.includes('127.0.0.1');
-
-        let returnUrl = `${siteUrl}/payment/status?order_id=${cfOrderId}`;
-        if (cfEnvironment === 'production' && returnUrl.startsWith('http://')) {
-          if (isLocal) {
-            returnUrl = `https://fregorostudios.com/payment/status?order_id=${cfOrderId}`;
-          } else {
-            returnUrl = returnUrl.replace(/^http:\/\//i, 'https://');
-          }
-        }
-
-        const notifyUrl =
-          !isLocal && siteUrl.startsWith('https://')
-            ? `${siteUrl}/api/webhooks/cashfree`
-            : undefined;
-
-        // Clean customer_id for Cashfree API: alphanumeric, min 3 chars, max 80 chars
-        const rawCustId = userId || `guest_${cleanPhone || Date.now()}`;
-        const cleanCustId = rawCustId.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80) || `cust_${Date.now()}`;
-
-        // Clean customer name for Cashfree API: min 3 chars
-        const rawName = (address.name || 'Valued Customer').trim().replace(/[^a-zA-Z0-9 ._-]/g, '');
-        const cleanName = rawName.length >= 3 ? rawName.slice(0, 90) : 'Valued Customer';
-
-        // Clean customer email
-        const rawEmail = (address.email || '').trim().toLowerCase();
-        const cleanEmail = rawEmail.includes('@') ? rawEmail : 'customer@fregorostudios.com';
-
-        // Clean order amount: Cashfree requires minimum ₹1.00
-        const orderAmount = Math.max(1, Math.round(totalAmount * 100) / 100);
-
-        const cfOrder = await createCashfreeOrder({
-          order_id: cfOrderId,
-          order_amount: orderAmount,
-          order_currency: 'INR',
-          customer_details: {
-            customer_id: cleanCustId,
-            customer_name: cleanName,
-            customer_email: cleanEmail,
-            customer_phone: cleanPhone,
-          },
-          order_meta: {
-            return_url: returnUrl,
-            ...(notifyUrl ? { notify_url: notifyUrl } : {}),
-          },
-          order_note: `Fregoro Studios Order ${publicOrderId}`.slice(0, 200),
-        });
-
-        paymentGatewayOrderId = cfOrderId;
-        paymentSessionId = cfOrder.payment_session_id;
-      } catch (err) {
-        const rawErrMsg = err instanceof Error ? err.message : String(err);
-        console.error('Cashfree order creation failed:', rawErrMsg);
-
-        let errorMsg = rawErrMsg || 'Payment gateway error. Please try again or contact support.';
-        if (err instanceof Error && err.message) {
-          try {
-            const jsonStart = err.message.indexOf('{');
-            if (jsonStart !== -1) {
-              const parsed = JSON.parse(err.message.slice(jsonStart));
-              if (parsed.message) errorMsg = parsed.message;
-            }
-          } catch {}
-        }
-
-        if (errorMsg.toLowerCase().includes('authentication failed')) {
-          errorMsg =
-            'Payment gateway authentication failed. Please verify your Cashfree credentials.';
-        }
-
-        return NextResponse.json(
-          {
-            success: false,
-            message: errorMsg,
-          },
-          { status: 500 },
-        );
+      // Clean phone number for Cashfree API (Cashfree requires standard 10-digit Indian phone)
+      const rawPhone = (address.phone || '').replace(/[^0-9]/g, '');
+      let cleanPhone = '9999999999';
+      if (rawPhone.length === 10) {
+        cleanPhone = rawPhone;
+      } else if (rawPhone.length === 12 && rawPhone.startsWith('91')) {
+        cleanPhone = rawPhone.slice(2);
+      } else if (rawPhone.length >= 10) {
+        cleanPhone = rawPhone.slice(-10);
       }
+
+      // Cashfree production strictly enforces HTTPS for return_url and notify_url
+      const cfEnvironment = getCashfreeEnvironment();
+      const siteUrl = getSiteUrl(request);
+      const isLocal = siteUrl.includes('localhost') || siteUrl.includes('127.0.0.1');
+
+      let returnUrl = `${siteUrl}/payment/status?order_id=${cfOrderId}`;
+      if (cfEnvironment === 'production' && returnUrl.startsWith('http://')) {
+        if (isLocal) {
+          returnUrl = `https://fregorostudios.com/payment/status?order_id=${cfOrderId}`;
+        } else {
+          returnUrl = returnUrl.replace(/^http:\/\//i, 'https://');
+        }
+      }
+
+      const notifyUrl =
+        !isLocal && siteUrl.startsWith('https://')
+          ? `${siteUrl}/api/webhooks/cashfree`
+          : undefined;
+
+      // Clean customer_id for Cashfree API: alphanumeric, min 3 chars, max 80 chars
+      const rawCustId = userId || `guest_${cleanPhone || Date.now()}`;
+      const cleanCustId = rawCustId.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80) || `cust_${Date.now()}`;
+
+      // Clean customer name for Cashfree API: min 3 chars
+      const rawName = (address.name || 'Valued Customer').trim().replace(/[^a-zA-Z0-9 ._-]/g, '');
+      const cleanName = rawName.length >= 3 ? rawName.slice(0, 90) : 'Valued Customer';
+
+      // Clean customer email
+      const rawEmail = (address.email || '').trim().toLowerCase();
+      const cleanEmail = rawEmail.includes('@') ? rawEmail : 'customer@fregorostudios.com';
+
+      // Clean order amount: Cashfree requires minimum ₹1.00
+      const orderAmount = Math.max(1, Math.round(totalAmount * 100) / 100);
+
+      const cfOrder = await createCashfreeOrder({
+        order_id: cfOrderId,
+        order_amount: orderAmount,
+        order_currency: 'INR',
+        customer_details: {
+          customer_id: cleanCustId,
+          customer_name: cleanName,
+          customer_email: cleanEmail,
+          customer_phone: cleanPhone,
+        },
+        order_meta: {
+          return_url: returnUrl,
+          ...(notifyUrl ? { notify_url: notifyUrl } : {}),
+        },
+        order_note: `Fregoro Studios Order ${publicOrderId}`.slice(0, 200),
+      });
+
+      paymentGatewayOrderId = cfOrderId;
+      paymentSessionId = cfOrder.payment_session_id;
+    } catch (err) {
+      const rawErrMsg = err instanceof Error ? err.message : String(err);
+      console.error('Cashfree order creation failed:', rawErrMsg);
+
+      let errorMsg = rawErrMsg || 'Payment gateway error. Please try again or contact support.';
+      if (err instanceof Error && err.message) {
+        try {
+          const jsonStart = err.message.indexOf('{');
+          if (jsonStart !== -1) {
+            const parsed = JSON.parse(err.message.slice(jsonStart));
+            if (parsed.message) errorMsg = parsed.message;
+          }
+        } catch {}
+      }
+
+      if (errorMsg.toLowerCase().includes('authentication failed')) {
+        errorMsg =
+          'Payment gateway authentication failed. Please verify your Cashfree credentials.';
+      }
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: errorMsg,
+        },
+        { status: 500 },
+      );
     }
 
-    // 10. ──── Save Order to Database ────
     const createOrderData = (targetUserId: string | null) => ({
       publicOrderId,
       userId: targetUserId,
@@ -878,12 +885,11 @@ export async function POST(request: Request) {
       tax,
       total: totalAmount,
       currency: 'INR',
-      status: isCod ? 'placed' : 'pending_payment',
-      paymentStatus: isCod ? 'pending' : 'pending',
-      paymentProvider: isCod ? 'cod' : 'cashfree',
-      paymentGatewayOrderId: isCod
-        ? null
-        : paymentGatewayOrderId || publicOrderId.replace(/[^a-zA-Z0-9_-]/g, '_'),
+      status: 'pending_payment',
+      paymentStatus: 'pending',
+      paymentProvider: 'cashfree',
+      paymentGatewayOrderId:
+        paymentGatewayOrderId || publicOrderId.replace(/[^a-zA-Z0-9_-]/g, '_'),
       shippingAddress: address as unknown as Prisma.InputJsonValue,
       couponCode: couponCode?.toUpperCase() || null,
       estimatedDeliveryDate,
@@ -971,21 +977,19 @@ export async function POST(request: Request) {
       statusHistory: {
         create: {
           oldStatus: null,
-          newStatus: isCod ? 'placed' : 'pending_payment',
+          newStatus: 'pending_payment',
           changedBy: 'system',
-          note: isCod ? 'COD order placed' : 'Online payment order created',
+          note: 'Online payment order created',
         },
       },
     });
 
     let orderId: string;
-    let createdOrderDate = new Date();
     try {
       const newOrder = await prisma.order.create({
         data: createOrderData(userId),
       });
       orderId = newOrder.id;
-      createdOrderDate = newOrder.createdAt;
     } catch (dbError) {
       console.warn('First order creation DB attempt failed, attempting reconnect and retry...', dbError);
       try {
@@ -994,7 +998,6 @@ export async function POST(request: Request) {
           data: createOrderData(userId),
         });
         orderId = newOrder.id;
-        createdOrderDate = newOrder.createdAt;
       } catch (retryDbError) {
         console.error('Final DB order creation error (after retry):', retryDbError);
         const errMsg = retryDbError instanceof Error ? retryDbError.message : String(retryDbError);
@@ -1005,68 +1008,6 @@ export async function POST(request: Request) {
       }
     }
 
-    // 11. ──── COD post-order side effects ────
-    if (isCod) {
-      // Decrement stock
-      for (const item of validatedItems) {
-        if (item.variantId && item.variantId !== 'default') {
-          await prisma.productVariant.updateMany({
-            where: { id: item.variantId, stockQuantity: { gt: 0 } },
-            data: { stockQuantity: { decrement: item.quantity } },
-          });
-        }
-      }
-
-      // Increment coupon usage
-      if (couponCode) {
-        await prisma.coupon.update({
-          where: { code: couponCode.toUpperCase() },
-          data: { usageCount: { increment: 1 } },
-        });
-      }
-
-      // Send confirmation notifications for COD orders with full item manifest
-      try {
-        const orderAddress = address as Record<string, string> | null;
-        const mappedItems = validatedItems.map((item) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const cust = item.customization as Record<string, any> | null;
-          return {
-            id: item.productId,
-            name: item.productNameSnapshot || `Product #${item.productId}`,
-            variant: item.variantId,
-            size: item.size,
-            quantity: item.quantity,
-            unitPrice: item.unitPrice,
-            totalPrice: item.unitPrice * item.quantity,
-            customization: cust,
-            previewUrl: (cust?.previewFileUrl || cust?.frontPreviewFileUrl || cust?.thumbnail) || null,
-            designFileUrl: (cust?.designFileUrl || cust?.frontDesignFileUrl || cust?.imageUrl) || null,
-          };
-        });
-
-        await dispatchNotification('ORDER_CREATED', {
-          orderId,
-          publicOrderId: publicOrderId || undefined,
-          customerName: orderAddress?.name || 'Valued Customer',
-          customerEmail: orderAddress?.email || undefined,
-          customerPhone: orderAddress?.phone || undefined,
-          total: totalAmount,
-          subtotal,
-          shippingFee,
-          discount: discountAmount,
-          couponCode: couponCode || undefined,
-          paymentMethod: 'Cash on Delivery (COD)',
-          paymentStatus: 'Pending (COD)',
-          shippingAddress: orderAddress,
-          items: mappedItems,
-          createdAt: createdOrderDate,
-        });
-      } catch (codNotifErr) {
-        console.warn('COD notification dispatch error (non-critical):', codNotifErr);
-      }
-    }
-
     // 12. ──── Return response ────
     return NextResponse.json({
       success: true,
@@ -1074,10 +1015,9 @@ export async function POST(request: Request) {
       orderId,
       publicOrderId,
       paymentSessionId, // Cashfree payment session ID for frontend SDK
-      cashfreeOrderId: isCod ? null : publicOrderId.replace(/[^a-zA-Z0-9_-]/g, '_'),
+      cashfreeOrderId: publicOrderId.replace(/[^a-zA-Z0-9_-]/g, '_'),
       cashfreeEnvironment: getCashfreeEnvironment(),
       amount: totalAmount,
-      isCod,
     });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
