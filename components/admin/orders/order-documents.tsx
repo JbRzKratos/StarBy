@@ -32,7 +32,7 @@ function buttonClass(variant: ButtonVariant, className: string) {
   return `${base} ${className}`;
 }
 
-/** Download the customer tax invoice / packing slip as a PDF. */
+/** Download the customer invoice / packing slip as a PDF. */
 export function AdminDownloadInvoiceButton({
   orderId,
   className = '',
@@ -43,7 +43,7 @@ export function AdminDownloadInvoiceButton({
     <a
       href={`/api/orders/${encodeURIComponent(orderId)}/invoice`}
       download
-      title="Download the tax invoice / packing slip PDF"
+      title="Download the invoice / packing slip PDF"
       onClick={(event) => event.stopPropagation()}
       className={buttonClass(variant, className)}
     >

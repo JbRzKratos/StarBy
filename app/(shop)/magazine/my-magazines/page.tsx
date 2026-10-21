@@ -4,13 +4,18 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { MagazineDocument } from '@/types/magazine';
-import { downloadMagazinePdf } from '@/lib/magazine/pdf-generator';
+import {
+  downloadMagazinePdf,
+  generateMagazinePdf,
+} from '@/lib/magazine/pdf-generator';
+import { uploadMagazinePrintPdf } from '@/lib/magazine/upload-print-pdf';
 import { useCartStore } from '@/lib/stores/cart-store';
 
 export default function MyMagazinesDashboard() {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
   const [magazines, setMagazines] = useState<MagazineDocument[]>([]);
+  const [orderingId, setOrderingId] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -41,37 +46,75 @@ export default function MyMagazinesDashboard() {
     }
   };
 
-  const handleOrder = (doc: MagazineDocument) => {
-    const isFirstFashion =
-      doc.templateId === 'tpl_fashion_1' ||
-      doc.templateId === 'fashion-magazine-1' ||
-      doc.title?.toLowerCase().includes('fashion magazine 1') ||
-      doc.title?.toLowerCase().includes('fashion editorial');
+  const handleOrder = async (doc: MagazineDocument) => {
+    if (orderingId) return;
+    setOrderingId(doc.id);
 
-    addItem({
-      productId: 'prod_mag_01',
-      variantId: 'v_mag_12p',
-      name: isFirstFashion
-        ? `Fashion Magazine 1 (Test ₹1) · ${doc.title}`
-        : `FREGORO Magazine · ${doc.title}`,
-      price: isFirstFashion ? 1 : 499,
-      image:
-        doc.pages[0]?.elements?.find((e) => e.type === 'image')?.content ||
-        '/templates/canva/fashion-1/thumbnail.webp',
-      quantity: 1,
-      size: 'A4 Portrait',
-      customization: {
-        magazineId: doc.id,
-        magazineTitle: doc.title,
-        templateId: doc.templateId,
-        pageCount: doc.pages.length,
-        coverFinish: doc.coverFinish,
-        paperWeight: doc.paperWeight,
-        bindingType: doc.bindingType,
-        document: doc,
-      },
-    });
-    router.push('/checkout');
+    try {
+      const isFirstFashion =
+        doc.templateId === 'tpl_fashion_1' ||
+        doc.templateId === 'fashion-magazine-1' ||
+        doc.title?.toLowerCase().includes('fashion magazine 1') ||
+        doc.title?.toLowerCase().includes('fashion editorial');
+
+      // Generate the 300 DPI print file and upload it so the admin e-mail,
+      // invoice and order record all point at the exact PDF the customer sent.
+      let printPdfUrl: string | null = null;
+      try {
+        const pdfBlob = await generateMagazinePdf(doc, { includeBleed: true });
+        printPdfUrl = await uploadMagazinePrintPdf(
+          pdfBlob,
+          `Magazine_Print_${doc.id}.pdf`,
+        );
+      } catch (pdfErr) {
+        console.warn('Could not generate or upload print PDF:', pdfErr);
+      }
+
+      addItem({
+        productId: 'prod_mag_01',
+        variantId: 'v_mag_12p',
+        name: isFirstFashion
+          ? `Fashion Magazine 1 (Test ₹1) · ${doc.title}`
+          : `FREGORO Magazine · ${doc.title}`,
+        price: isFirstFashion ? 1 : 499,
+        image:
+          doc.pages[0]?.elements?.find((e) => e.type === 'image')?.content ||
+          '/templates/canva/fashion-1/thumbnail.webp',
+        quantity: 1,
+        size: 'A4 Portrait',
+        customization: {
+          magazineId: doc.id,
+          magazineTitle: doc.title,
+          templateId: doc.templateId,
+          pageCount: doc.pages.length,
+          coverFinish: doc.coverFinish,
+          paperWeight: doc.paperWeight,
+          bindingType: doc.bindingType,
+          printPdfUrl: printPdfUrl || undefined,
+          designFileUrl: printPdfUrl || undefined,
+          document: doc,
+          pagesData: doc.pages.map((p, idx) => ({
+            pageNumber: idx + 1,
+            title: p.title,
+            layoutType: p.layoutType,
+            backgroundColor: p.backgroundColor,
+            backgroundImage: p.backgroundImage,
+            elements: (p.elements || []).map((el) => ({
+              id: el.id,
+              type: el.type,
+              name: el.name,
+              label: el.name,
+              text: el.type === 'text' ? el.content : '',
+              src: el.type === 'image' ? el.content : '',
+              userInstructions: '',
+            })),
+          })),
+        },
+      });
+      router.push('/checkout');
+    } finally {
+      setOrderingId(null);
+    }
   };
 
   return (
@@ -176,9 +219,10 @@ export default function MyMagazinesDashboard() {
                   <div className="flex items-center justify-between pt-1">
                     <button
                       onClick={() => handleOrder(doc)}
-                      className="font-mono text-xs text-[#0057FF] hover:text-white font-bold uppercase transition-colors"
+                      disabled={Boolean(orderingId)}
+                      className="font-mono text-xs text-[#0057FF] hover:text-white font-bold uppercase transition-colors disabled:opacity-50"
                     >
-                      Order Print →
+                      {orderingId === doc.id ? 'Preparing PDF…' : 'Order Print →'}
                     </button>
                     <button
                       onClick={() => handleDelete(doc.id)}

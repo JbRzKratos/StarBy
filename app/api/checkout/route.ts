@@ -443,11 +443,19 @@ export async function POST(request: Request) {
           'designFileUrl',
           'frontDesignFileUrl',
           'backDesignFileUrl',
+          'leftSleeveDesignFileUrl',
+          'rightSleeveDesignFileUrl',
           'previewFileUrl',
+          'currentPreviewFileUrl',
           'frontPreviewFileUrl',
           'backPreviewFileUrl',
+          'leftSleevePreviewFileUrl',
+          'rightSleevePreviewFileUrl',
           'frontPreviewUrl',
           'backPreviewUrl',
+          'currentPreviewUrl',
+          'leftSleevePreviewUrl',
+          'rightSleevePreviewUrl',
           'thumbnail',
           'imageUrl',
         ];
@@ -591,11 +599,19 @@ export async function POST(request: Request) {
           'designFileUrl',
           'frontDesignFileUrl',
           'backDesignFileUrl',
+          'leftSleeveDesignFileUrl',
+          'rightSleeveDesignFileUrl',
           'previewFileUrl',
+          'currentPreviewFileUrl',
           'frontPreviewFileUrl',
           'backPreviewFileUrl',
+          'leftSleevePreviewFileUrl',
+          'rightSleevePreviewFileUrl',
           'frontPreviewUrl',
           'backPreviewUrl',
+          'currentPreviewUrl',
+          'leftSleevePreviewUrl',
+          'rightSleevePreviewUrl',
           'thumbnail',
           'imageUrl',
         ];
@@ -686,6 +702,25 @@ export async function POST(request: Request) {
                 }
               }
             }
+            if (
+              page.backgroundImage &&
+              typeof page.backgroundImage === 'string' &&
+              page.backgroundImage.startsWith('data:image/')
+            ) {
+              try {
+                const matches = page.backgroundImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                if (matches && matches.length === 3) {
+                  const { objectKey } = await uploadBufferToR2(
+                    Buffer.from(matches[2], 'base64'),
+                    `magazine_${item.productId}_p${page.pageNumber || pIdx + 1}_bg.png`,
+                    matches[1],
+                  );
+                  page.backgroundImage = getR2PublicUrl(objectKey);
+                }
+              } catch (e) {
+                console.error('Error uploading magazine page background to R2:', e);
+              }
+            }
           }
         }
 
@@ -699,9 +734,12 @@ export async function POST(request: Request) {
             if (Array.isArray(page.elements)) {
               for (let elIdx = 0; elIdx < page.elements.length; elIdx++) {
                 const el = page.elements[elIdx];
-                if (el.src && typeof el.src === 'string' && el.src.startsWith('data:image/')) {
+                const candidate =
+                  el.src ||
+                  (el.type === 'image' && typeof el.content === 'string' ? el.content : null);
+                if (candidate && typeof candidate === 'string' && candidate.startsWith('data:image/')) {
                   try {
-                    const matches = el.src.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                    const matches = candidate.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
                     if (matches && matches.length === 3) {
                       const contentType = matches[1];
                       const base64Data = matches[2];
@@ -711,12 +749,33 @@ export async function POST(request: Request) {
                         `magdoc_${item.productId}_p${pIdx + 1}_el${elIdx}.png`,
                         contentType,
                       );
-                      el.src = getR2PublicUrl(objectKey);
+                      const uploadedUrl = getR2PublicUrl(objectKey);
+                      if (el.src) el.src = uploadedUrl;
+                      else el.content = uploadedUrl;
                     }
                   } catch (e) {
                     console.error('Error uploading document page element image to R2:', e);
                   }
                 }
+              }
+            }
+            if (
+              page.backgroundImage &&
+              typeof page.backgroundImage === 'string' &&
+              page.backgroundImage.startsWith('data:image/')
+            ) {
+              try {
+                const matches = page.backgroundImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                if (matches && matches.length === 3) {
+                  const { objectKey } = await uploadBufferToR2(
+                    Buffer.from(matches[2], 'base64'),
+                    `magdoc_${item.productId}_p${pIdx + 1}_bg.png`,
+                    matches[1],
+                  );
+                  page.backgroundImage = getR2PublicUrl(objectKey);
+                }
+              } catch (e) {
+                console.error('Error uploading document page background to R2:', e);
               }
             }
           }
@@ -933,7 +992,11 @@ export async function POST(request: Request) {
               cust.imageUrl ||
               null;
             previewFileUrl =
-              cust.previewFileUrl || cust.thumbnail || cust.frontPreviewFileUrl || null;
+              cust.currentPreviewFileUrl ||
+              cust.previewFileUrl ||
+              cust.frontPreviewFileUrl ||
+              cust.thumbnail ||
+              null;
             printInstructions =
               cust.printInstructions ||
               (cust.bindingType

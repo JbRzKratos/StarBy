@@ -2222,6 +2222,7 @@ input[type='range']::-webkit-slider-thumb:hover {
 
 .preview-view-toggle {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   background: rgba(255, 255, 255, 0.04);
   padding: 4px;
@@ -2230,7 +2231,8 @@ input[type='range']::-webkit-slider-thumb:hover {
 }
 
 .preview-tab-btn {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 74px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2238,9 +2240,9 @@ input[type='range']::-webkit-slider-thumb:hover {
   background: transparent;
   border: none;
   color: #92a0b8;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 600;
-  padding: 7px 10px;
+  padding: 7px 8px;
   border-radius: 7px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -2336,10 +2338,15 @@ input[type='range']::-webkit-slider-thumb:hover {
 .preview-both-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
   width: 100%;
   height: 100%;
   gap: 2px;
   background: rgba(0, 0, 0, 0.3);
+}
+
+.preview-both-grid.four-up {
+  grid-template-rows: 1fr 1fr;
 }
 
 .preview-both-card {

@@ -9,6 +9,7 @@ import { DEFAULT_THEME } from '@/types/magazine';
 import { getWizardSchema, getPageCompletion } from '@/lib/magazine/wizard-schema';
 import { useCartStore } from '@/lib/stores/cart-store';
 import { generateMagazinePdf } from '@/lib/magazine/pdf-generator';
+import { uploadMagazinePrintPdf } from '@/lib/magazine/upload-print-pdf';
 
 function ReviewInner() {
   const searchParams = useSearchParams();
@@ -141,27 +142,10 @@ function ReviewInner() {
       let printPdfUrl: string | null = null;
       try {
         const pdfBlob = await generateMagazinePdf(doc, { includeBleed: true });
-        const reader = new FileReader();
-        const pdfDataUrl = await new Promise<string>((resolve, reject) => {
-          reader.onloadend = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(pdfBlob);
-        });
-
-        const uploadRes = await fetch('/api/customizer/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            magazinePdf: pdfDataUrl,
-            filename: `Magazine_Print_${doc.id}.pdf`,
-          }),
-        });
-        if (uploadRes.ok) {
-          const uploadJson = await uploadRes.json();
-          if (uploadJson.printPdfUrl) {
-            printPdfUrl = uploadJson.printPdfUrl;
-          }
-        }
+        printPdfUrl = await uploadMagazinePrintPdf(
+          pdfBlob,
+          `Magazine_Print_${doc.id}.pdf`,
+        );
       } catch (pdfErr) {
         console.warn('Could not generate or upload print PDF during add to cart:', pdfErr);
       }
@@ -189,6 +173,10 @@ function ReviewInner() {
           document: doc,
           pagesData: populatedPages.map((p, idx) => ({
             pageNumber: idx + 1,
+            title: p.title,
+            layoutType: p.layoutType,
+            backgroundColor: p.backgroundColor,
+            backgroundImage: p.backgroundImage,
             elements: p.elements.map((el) => ({
               id: el.id,
               type: el.type,

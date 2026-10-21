@@ -134,55 +134,72 @@ function buildCustomizationEmailHtml(
     `);
   }
 
-  // 2. Visual Mockup Proofs (Front and Back side-by-side using table columns)
+  // 2. Visual Mockup Proofs (Studio View, Front, Back and sleeve proofs)
   const frontMockup = c.frontPreviewFileUrl || c.previewFileUrl || item.previewUrl;
   const backMockup = c.backPreviewFileUrl;
   const is2d = Boolean(c.is2dMockup || c.mode === '2d');
   const studioTypeLabel = is2d ? '2D Studio Placement Proofs' : '3D Studio Placement Proofs';
   const proofTag = is2d ? '2D' : '3D';
 
-  if (frontMockup || backMockup) {
-    const absFront = frontMockup ? toAbsoluteUrl(frontMockup) : '';
-    const absBack = backMockup ? toAbsoluteUrl(backMockup) : '';
+  const seenProofUrls = new Set<string>();
+  const proofItems = [
+    { label: 'Studio View', url: c.currentPreviewFileUrl },
+    { label: 'Front', url: frontMockup },
+    { label: 'Back', url: backMockup },
+    { label: 'Left Sleeve', url: c.leftSleevePreviewFileUrl },
+    { label: 'Right Sleeve', url: c.rightSleevePreviewFileUrl },
+  ]
+    .filter((proof): proof is { label: string; url: string } => {
+      if (typeof proof.url !== 'string' || !proof.url) return false;
+      const absolute = toAbsoluteUrl(proof.url);
+      if (!absolute || seenProofUrls.has(absolute)) return false;
+      seenProofUrls.add(absolute);
+      proof.url = absolute;
+      return true;
+    });
+
+  if (proofItems.length > 0) {
+    const proofRows: typeof proofItems[] = [];
+    for (let i = 0; i < proofItems.length; i += 2) {
+      proofRows.push(proofItems.slice(i, i + 2));
+    }
 
     blocks.push(`
       <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px; margin-bottom: 10px; background-color: #131520; border: 1px solid #282C3D; border-radius: 8px;">
         <tr>
           <td style="padding: 10px 14px; border-bottom: 1px solid #212536;">
             <div style="font-size: 11px; font-weight: 800; color: #10B981; text-transform: uppercase; letter-spacing: 0.6px;">
-              👕 ${studioTypeLabel} (Front &amp; Back Render Proofs):
+              👕 ${studioTypeLabel} (Studio, Front, Back &amp; Sleeve Proofs):
             </div>
           </td>
         </tr>
         <tr>
           <td style="padding: 12px;">
             <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                ${absFront ? `
-                  <td align="center" width="${absBack ? '50%' : '100%'}" style="vertical-align: top; padding: 6px;">
-                    <a href="${absFront}" target="_blank" style="text-decoration: none; display: inline-block;">
-                      <img src="${absFront}" alt="Front ${proofTag} Proof" style="width: 130px; height: 130px; object-fit: contain; background-color: #0B0D13; border: 1px solid #2563EB; border-radius: 6px; display: block;" />
-                    </a>
-                    <div style="margin-top: 6px;">
-                      <a href="${absFront}" target="_blank" style="font-size: 11px; color: #60A5FA; font-weight: 700; text-decoration: none;">
-                        🔍 View Front ${proofTag} Proof ↗
+              ${proofRows
+                .map(
+                  (row) => `
+                <tr>
+                  ${row
+                    .map(
+                      (proof) => `
+                    <td align="center" width="${row.length === 1 ? '100%' : '50%'}" style="vertical-align: top; padding: 6px;">
+                      <a href="${proof.url}" target="_blank" style="text-decoration: none; display: inline-block;">
+                        <img src="${proof.url}" alt="${proof.label} ${proofTag} Proof" style="width: 130px; height: 130px; object-fit: contain; background-color: #0B0D13; border: 1px solid #2563EB; border-radius: 6px; display: block;" />
                       </a>
-                    </div>
-                  </td>
-                ` : ''}
-                ${absBack ? `
-                  <td align="center" width="${absFront ? '50%' : '100%'}" style="vertical-align: top; padding: 6px;">
-                    <a href="${absBack}" target="_blank" style="text-decoration: none; display: inline-block;">
-                      <img src="${absBack}" alt="Back ${proofTag} Proof" style="width: 130px; height: 130px; object-fit: contain; background-color: #0B0D13; border: 1px solid #2563EB; border-radius: 6px; display: block;" />
-                    </a>
-                    <div style="margin-top: 6px;">
-                      <a href="${absBack}" target="_blank" style="font-size: 11px; color: #60A5FA; font-weight: 700; text-decoration: none;">
-                        🔍 View Back ${proofTag} Proof ↗
-                      </a>
-                    </div>
-                  </td>
-                ` : ''}
-              </tr>
+                      <div style="margin-top: 6px;">
+                        <a href="${proof.url}" target="_blank" style="font-size: 11px; color: #60A5FA; font-weight: 700; text-decoration: none;">
+                          🔍 View ${proof.label} ${proofTag} Proof ↗
+                        </a>
+                      </div>
+                    </td>
+                  `,
+                    )
+                    .join('')}
+                </tr>
+              `,
+                )
+                .join('')}
             </table>
           </td>
         </tr>
@@ -287,22 +304,29 @@ function buildCustomizationEmailHtml(
   const isMagazine = Boolean(c.magazineTitle || Array.isArray(c.pagesData) || c.document);
   if (isMagazine) {
     const magTitle = c.magazineTitle || item.name;
-    const magPages = c.pageCount || (Array.isArray(c.pagesData) ? c.pagesData.length : 12);
+    const magPages =
+      c.pageCount ||
+      (Array.isArray(c.pagesData) && c.pagesData.length > 0 ? c.pagesData.length : null) ||
+      (c.document && Array.isArray(c.document.pages) ? c.document.pages.length : 12);
     const paperWeight = c.paperWeight || '170gsm Silk';
     const coverFinish = c.coverFinish || 'Soft Touch Matte';
     const bindingType = c.bindingType || 'Saddle Stitch';
-    const printPdf = c.printPdfUrl ? toAbsoluteUrl(c.printPdfUrl) : (c.designFileUrl ? toAbsoluteUrl(c.designFileUrl) : null);
+    const printPdf = c.printPdfUrl
+      ? toAbsoluteUrl(c.printPdfUrl)
+      : typeof c.designFileUrl === 'string' && /\.pdf(\?|$)/i.test(c.designFileUrl)
+        ? toAbsoluteUrl(c.designFileUrl)
+        : null;
 
     let pagesHtml = '';
     const pagesArr = Array.isArray(c.pagesData)
       ? c.pagesData
       : (c.document && Array.isArray(c.document.pages) ? c.document.pages : []);
 
-    if (forAdmin && pagesArr.length > 0) {
+    if (pagesArr.length > 0) {
       pagesHtml = `
         <div style="margin-top: 14px;">
           <div style="font-size: 11px; font-weight: 800; color: #60A5FA; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">
-            📑 Page-by-Page Editorial Content &amp; Instructions (${pagesArr.length} Pages):
+            📑 ${forAdmin ? 'Production' : 'Your'} Page-by-Page Editorial Content &amp; Instructions (${pagesArr.length} Pages):
           </div>
           <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
             ${pagesArr.map((p: any, pIdx: number) => {
@@ -812,6 +836,9 @@ export async function sendOrderConfirmationEmail(
         unitPrice: item.unitPrice,
         totalPrice: item.totalPrice,
         price: item.unitPrice,
+        variant: item.variant,
+        size: item.size,
+        customization: item.customization,
       })),
       discount: details?.discount,
       couponCode: details?.couponCode,
@@ -1140,6 +1167,9 @@ export async function sendAdminNewOrderEmail(
         unitPrice: item.unitPrice,
         totalPrice: item.totalPrice,
         price: item.unitPrice,
+        variant: item.variant,
+        size: item.size,
+        customization: item.customization,
       })),
       discount: details?.discount,
       couponCode: details?.couponCode,
@@ -1164,25 +1194,27 @@ export async function sendAdminNewOrderEmail(
       const is2d = Boolean(cust.is2dMockup || cust.mode === '2d');
       const proofPrefix = is2d ? '2D_Mockup_Proof' : '3D_Mockup_Proof';
 
-      // 1. Attach Front Mockup
-      const frontMockupUrl = cust.frontPreviewFileUrl || cust.previewFileUrl || item.previewUrl;
-      if (frontMockupUrl && typeof frontMockupUrl === 'string') {
-        const buf = await fetchAttachmentBuffer(frontMockupUrl);
-        if (buf && buf.length > 0 && buf.length < 10 * 1024 * 1024) {
-          finalAttachments.push({
-            filename: `${proofPrefix}_Front_${safeOrderId}_Item${i + 1}.png`,
-            content: buf,
-          });
+      // 1. Attach Studio View, Front, Back and sleeve mockup proofs
+      const proofCandidates = [
+        { label: 'Studio_View', url: cust.currentPreviewFileUrl },
+        {
+          label: 'Front',
+          url: cust.frontPreviewFileUrl || cust.previewFileUrl || item.previewUrl,
+        },
+        { label: 'Back', url: cust.backPreviewFileUrl },
+        { label: 'Left_Sleeve', url: cust.leftSleevePreviewFileUrl },
+        { label: 'Right_Sleeve', url: cust.rightSleevePreviewFileUrl },
+      ];
+      const attachedProofs = new Set<string>();
+      for (const proof of proofCandidates) {
+        if (typeof proof.url !== 'string' || !proof.url || attachedProofs.has(proof.url)) {
+          continue;
         }
-      }
-
-      // 2. Attach Back Mockup
-      const backMockupUrl = cust.backPreviewFileUrl;
-      if (backMockupUrl && typeof backMockupUrl === 'string') {
-        const buf = await fetchAttachmentBuffer(backMockupUrl);
+        attachedProofs.add(proof.url);
+        const buf = await fetchAttachmentBuffer(proof.url);
         if (buf && buf.length > 0 && buf.length < 10 * 1024 * 1024) {
           finalAttachments.push({
-            filename: `${proofPrefix}_Back_${safeOrderId}_Item${i + 1}.png`,
+            filename: `${proofPrefix}_${proof.label}_${safeOrderId}_Item${i + 1}.png`,
             content: buf,
           });
         }
@@ -1207,17 +1239,29 @@ export async function sendAdminNewOrderEmail(
         }
       } else if (cust.designFileUrl || cust.frontDesignFileUrl || item.designFileUrl) {
         const primaryArtUrl = cust.designFileUrl || cust.frontDesignFileUrl || item.designFileUrl;
-        const buf = await fetchAttachmentBuffer(primaryArtUrl);
-        if (buf && buf.length > 0 && buf.length < 15 * 1024 * 1024) {
-          finalAttachments.push({
-            filename: `Original_Artwork_${safeOrderId}_Item${i + 1}.png`,
-            content: buf,
-          });
+        const primaryIsPdf =
+          typeof primaryArtUrl === 'string' && /\.pdf(\?|$)/i.test(primaryArtUrl);
+        // Magazine orders use designFileUrl for the print-ready PDF. That file
+        // is attached with the correct .pdf name below; never label it as PNG.
+        if (!primaryIsPdf) {
+          const buf = await fetchAttachmentBuffer(primaryArtUrl);
+          if (buf && buf.length > 0 && buf.length < 15 * 1024 * 1024) {
+            finalAttachments.push({
+              filename: `Original_Artwork_${safeOrderId}_Item${i + 1}.png`,
+              content: buf,
+            });
+          }
         }
       }
 
-      // 4. Attach Magazine 300 DPI Print-Ready PDF to Admin Email
-      const magPdfUrl = cust.printPdfUrl || (cust.magazineTitle ? cust.designFileUrl : null);
+      // 4. Attach Magazine 300 DPI Print-Ready PDF to Admin Email.
+      // Never attach a cover image / thumbnail with a .pdf filename.
+      const isPdfAsset = (url: unknown): url is string =>
+        typeof url === 'string' &&
+        (url.startsWith('data:application/pdf') || /\.pdf(\?|$)/i.test(url));
+      const magPdfUrl =
+        (isPdfAsset(cust.printPdfUrl) ? cust.printPdfUrl : null) ||
+        (cust.magazineTitle && isPdfAsset(cust.designFileUrl) ? cust.designFileUrl : null);
       if (magPdfUrl && typeof magPdfUrl === 'string') {
         const buf = await fetchAttachmentBuffer(magPdfUrl);
         if (buf && buf.length > 0 && buf.length < 25 * 1024 * 1024) {
@@ -1259,7 +1303,23 @@ export async function sendAdminNewOrderEmail(
     }
 
     if (finalAttachments.length > 0) {
-      attachments = finalAttachments;
+      // Resend rejects oversized payloads (~40 MB). Budget conservatively so a
+      // large print PDF plus proof images never causes the admin mail to fail.
+      const MAX_TOTAL_ATTACHMENT_BYTES = 35 * 1024 * 1024;
+      let totalAttachmentBytes = 0;
+      const budgetedAttachments = finalAttachments.filter((attachment) => {
+        if (totalAttachmentBytes + attachment.content.length > MAX_TOTAL_ATTACHMENT_BYTES) {
+          console.warn(
+            `[email] Skipping attachment ${attachment.filename}: total email attachments exceed 35 MB`,
+          );
+          return false;
+        }
+        totalAttachmentBytes += attachment.content.length;
+        return true;
+      });
+      if (budgetedAttachments.length > 0) {
+        attachments = budgetedAttachments;
+      }
     }
   } catch (pdfErr) {
     console.warn('Could not generate attachments for admin email:', pdfErr);

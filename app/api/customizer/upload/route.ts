@@ -58,16 +58,22 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const {
+      currentSnapshot,
       frontSnapshot,
       backSnapshot,
+      leftSleeveSnapshot,
+      rightSleeveSnapshot,
       uploadedArtworks = [],
       garmentId = 'tee',
       magazinePdf,
       filename,
     } = body;
 
+    let currentPreviewUrl: string | null = null;
     let frontPreviewUrl: string | null = null;
     let backPreviewUrl: string | null = null;
+    let leftSleevePreviewUrl: string | null = null;
+    let rightSleevePreviewUrl: string | null = null;
     let printPdfUrl: string | null = null;
     const processedArtworks: Array<{
       name: string;
@@ -75,6 +81,26 @@ export async function POST(request: Request) {
       side: string;
       placement?: string;
     }> = [];
+
+    const uploadSnapshot = async (
+      snapshot: unknown,
+      suffix: string,
+    ): Promise<string | null> => {
+      if (!snapshot || typeof snapshot !== 'string') return null;
+      if (!snapshot.startsWith('data:image/')) return snapshot;
+      const parsed = parseBase64DataUrl(snapshot);
+      if (!parsed) return null;
+      try {
+        return await uploadOrFallback(
+          parsed.buffer,
+          `mockup_3d_${garmentId}_${suffix}.png`,
+          parsed.contentType,
+        );
+      } catch (err) {
+        console.error(`Failed to upload ${suffix} 3D mockup snapshot:`, err);
+        return null;
+      }
+    };
 
     // 0. Upload Magazine Print-Ready PDF if provided
     if (magazinePdf && typeof magazinePdf === 'string') {
@@ -98,41 +124,12 @@ export async function POST(request: Request) {
       }
     }
 
-    // 1. Upload Front 3D Mockup Snapshot
-    if (frontSnapshot && typeof frontSnapshot === 'string' && frontSnapshot.startsWith('data:image/')) {
-      const parsed = parseBase64DataUrl(frontSnapshot);
-      if (parsed) {
-        try {
-          frontPreviewUrl = await uploadOrFallback(
-            parsed.buffer,
-            `mockup_3d_${garmentId}_front.png`,
-            parsed.contentType,
-          );
-        } catch (err) {
-          console.error('Failed to upload front 3D mockup snapshot:', err);
-        }
-      }
-    } else if (frontSnapshot && typeof frontSnapshot === 'string') {
-      frontPreviewUrl = frontSnapshot;
-    }
-
-    // 2. Upload Back 3D Mockup Snapshot
-    if (backSnapshot && typeof backSnapshot === 'string' && backSnapshot.startsWith('data:image/')) {
-      const parsed = parseBase64DataUrl(backSnapshot);
-      if (parsed) {
-        try {
-          backPreviewUrl = await uploadOrFallback(
-            parsed.buffer,
-            `mockup_3d_${garmentId}_back.png`,
-            parsed.contentType,
-          );
-        } catch (err) {
-          console.error('Failed to upload back 3D mockup snapshot:', err);
-        }
-      }
-    } else if (backSnapshot && typeof backSnapshot === 'string') {
-      backPreviewUrl = backSnapshot;
-    }
+    // 1. Upload the exact studio view and fixed-angle proofs
+    currentPreviewUrl = await uploadSnapshot(currentSnapshot, 'current');
+    frontPreviewUrl = await uploadSnapshot(frontSnapshot, 'front');
+    backPreviewUrl = await uploadSnapshot(backSnapshot, 'back');
+    leftSleevePreviewUrl = await uploadSnapshot(leftSleeveSnapshot, 'left_sleeve');
+    rightSleevePreviewUrl = await uploadSnapshot(rightSleeveSnapshot, 'right_sleeve');
 
     // 3. Upload Original Customer Artwork Files (Multiple artworks supported)
     if (Array.isArray(uploadedArtworks)) {
@@ -163,27 +160,42 @@ export async function POST(request: Request) {
           name: art.name || `Graphic #${i + 1}`,
           url: finalArtworkUrl,
           side: art.side || 'front',
-          placement: art.placement || undefined,
+          placement: art.placementTarget || art.placement || undefined,
         });
       }
     }
 
-    // Find front and back primary design files from processed artworks
+    // Find front, back and sleeve primary design files from processed artworks
     const frontArt = processedArtworks.find((a) => a.side === 'front') || processedArtworks[0];
     const backArt = processedArtworks.find((a) => a.side === 'back');
+    const leftSleeveArt = processedArtworks.find((a) => a.side === 'left-sleeve');
+    const rightSleeveArt = processedArtworks.find((a) => a.side === 'right-sleeve');
 
     const frontDesignFileUrl = frontArt?.url || null;
     const backDesignFileUrl = backArt?.url || null;
-    const designFileUrl = printPdfUrl || frontDesignFileUrl || backDesignFileUrl || null;
+    const leftSleeveDesignFileUrl = leftSleeveArt?.url || null;
+    const rightSleeveDesignFileUrl = rightSleeveArt?.url || null;
+    const designFileUrl =
+      printPdfUrl ||
+      frontDesignFileUrl ||
+      backDesignFileUrl ||
+      leftSleeveDesignFileUrl ||
+      rightSleeveDesignFileUrl ||
+      null;
 
     return NextResponse.json({
       success: true,
       printPdfUrl,
+      currentPreviewUrl,
       frontPreviewUrl,
       backPreviewUrl,
-      previewFileUrl: frontPreviewUrl || backPreviewUrl,
+      leftSleevePreviewUrl,
+      rightSleevePreviewUrl,
+      previewFileUrl: currentPreviewUrl || frontPreviewUrl || backPreviewUrl,
       frontDesignFileUrl,
       backDesignFileUrl,
+      leftSleeveDesignFileUrl,
+      rightSleeveDesignFileUrl,
       designFileUrl,
       uploadedArtworks: processedArtworks,
     });

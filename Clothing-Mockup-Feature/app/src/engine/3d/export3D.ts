@@ -5,7 +5,7 @@ import type { TextureCompositor3D } from './textureCompositor';
 export type ExportResolutionPreset = 'cart' | 'standard' | 'high';
 
 export interface ExportStillOptions {
-  view: 'current' | 'front' | 'back';
+  view: 'current' | 'front' | 'back' | 'left' | 'right';
   transparent: boolean;
   resolution?: ExportResolutionPreset; // 'cart' = 600px, 'standard' = 2048px, 'high' = 4096px
   width?: number;   // explicit override
@@ -121,7 +121,8 @@ export class Export3DManager {
     const prevCameraFov = camera.fov;
 
     // ── 3. Optionally snap to a preset camera view ───────────────────────────
-    if (options.view === 'front' || options.view === 'back') {
+    let proofLightingApplied = false;
+    if (options.view !== 'current') {
       sceneManager.setCameraPreset(options.view);
       const anySm = sceneManager as any;
       if (anySm.targetCameraPos && anySm.targetControlsTarget) {
@@ -133,6 +134,13 @@ export class Export3DManager {
       camera.lookAt(controls.target);
       controls.update();
       camera.updateProjectionMatrix();
+
+      // The live key light faces +Z. Re-light back/sleeve proofs so they match
+      // the brightness of the view the customer approved in the studio.
+      if (options.view === 'back' || options.view === 'left' || options.view === 'right') {
+        sceneManager.applyProofLighting(options.view);
+        proofLightingApplied = true;
+      }
     }
 
     // ── 4. Apply export-time transparency setting ───────────────────────────
@@ -181,6 +189,12 @@ export class Export3DManager {
     renderer.setSize(exportW, exportH, false); // false = don't update CSS
     renderer.clear();
     renderer.render(scene, camera);
+
+    // Restore the live light rig immediately; the readback below does not need it.
+    if (proofLightingApplied) {
+      sceneManager.restoreProofLighting();
+      proofLightingApplied = false;
+    }
 
     // ── 9. Read pixels from GPU into a Uint8Array ────────────────────────────
     const pixelBuffer = new Uint8Array(exportW * exportH * 4);

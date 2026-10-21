@@ -21,6 +21,7 @@ export default function UploadPdfPortalPage() {
   const [binding, setBinding] = useState('saddle-stitch');
   const [quantity, setQuantity] = useState(1);
   const [livePrice, setLivePrice] = useState<number>(649);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetch('/api/products/prices')
@@ -60,30 +61,94 @@ export default function UploadPdfPortalPage() {
     });
   };
 
-  const handleOrder = () => {
-    if (!file || !inspection) return;
+  const handleOrder = async () => {
+    if (!file || !inspection || isSubmitting) return;
+    setIsSubmitting(true);
 
-    addItem({
-      productId: 'prod_mag_01',
-      variantId: 'v_mag_16p',
-      name: `FREGORO Print Order · ${file.name}`,
-      price: livePrice,
-      image:
-        'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80',
-      quantity,
-      size: pageSize,
-      customization: {
-        pdfType: 'customer_upload',
-        fileName: file.name,
-        fileSizeMb: inspection.fileSizeMb,
-        pageCount: inspection.pageCount,
-        coverFinish,
-        paperWeight,
-        binding,
-      },
-    });
+    try {
+      let printPdfUrl: string | null = null;
 
-    router.push('/checkout');
+      // 1. Direct presigned R2 upload (supports the full 50MB limit).
+      try {
+        const presignRes = await fetch('/api/magazine/upload-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileName: file.name,
+            fileType: 'application/pdf',
+            fileSize: file.size,
+          }),
+        });
+        if (presignRes.ok) {
+          const presign = await presignRes.json();
+          if (presign.success && presign.uploadUrl) {
+            const putRes = await fetch(presign.uploadUrl, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/pdf' },
+              body: file,
+            });
+            if (putRes.ok && presign.publicUrl) {
+              printPdfUrl = presign.publicUrl;
+            }
+          }
+        }
+      } catch (uploadError) {
+        console.warn('Presigned magazine PDF upload failed:', uploadError);
+      }
+
+      // 2. Small-file proxy fallback if direct R2 PUT was blocked.
+      if (!printPdfUrl && file.size <= 4 * 1024 * 1024) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const proxyRes = await fetch('/api/magazine/upload-pdf', {
+          method: 'POST',
+          body: formData,
+        });
+        if (proxyRes.ok) {
+          const proxy = await proxyRes.json();
+          if (proxy.success && proxy.publicUrl) {
+            printPdfUrl = proxy.publicUrl;
+          }
+        }
+      }
+
+      if (!printPdfUrl) {
+        alert(
+          'We could not upload your PDF. Please check your connection and try again. Your file has not been added to the cart.',
+        );
+        return;
+      }
+
+      addItem({
+        productId: 'prod_mag_01',
+        variantId: 'v_mag_16p',
+        name: `FREGORO Print Order · ${file.name}`,
+        price: livePrice,
+        image:
+          'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80',
+        quantity,
+        size: pageSize,
+        customization: {
+          pdfType: 'customer_upload',
+          fileName: file.name,
+          fileSizeMb: inspection.fileSizeMb,
+          pageCount: inspection.pageCount,
+          coverFinish,
+          paperWeight,
+          binding,
+          bindingType: binding,
+          magazineId: `uploaded-pdf-${Date.now()}`,
+          magazineTitle: file.name.replace(/\.pdf$/i, ''),
+          printPdfUrl,
+          designFileUrl: printPdfUrl,
+          pagesData: [],
+        },
+      });
+
+      router.push('/checkout');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -325,9 +390,10 @@ export default function UploadPdfPortalPage() {
 
                 <button
                   onClick={handleOrder}
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#0057FF] hover:bg-[#0046CC] font-mono text-xs font-bold text-white uppercase tracking-widest transition-all shadow-xl shadow-[#0057FF]/30 hover:scale-105"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#0057FF] hover:bg-[#0046CC] font-mono text-xs font-bold text-white uppercase tracking-widest transition-all shadow-xl shadow-[#0057FF]/30 hover:scale-105 disabled:opacity-60 disabled:hover:scale-100"
                 >
-                  Proceed to Checkout →
+                  {isSubmitting ? 'Uploading PDF…' : 'Proceed to Checkout →'}
                 </button>
               </div>
             </div>

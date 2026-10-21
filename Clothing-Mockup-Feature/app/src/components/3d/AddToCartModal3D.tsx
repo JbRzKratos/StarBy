@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import type { ArtworkLayer3D } from '../../types/threeD';
+import {
+  artworkSideLabel,
+  getArtworkSide,
+  type ArtworkSide,
+} from '../../engine/3d/artworkSides';
 
 export interface AddToCartModal3DProps {
   isOpen: boolean;
@@ -17,8 +22,12 @@ export interface AddToCartModal3DProps {
   customArtworkCount?: number;
   customPrintFee?: number;
   isCuratedDesign?: boolean;
+  /** Exact view the customer was looking at when they pressed Add to Bag. */
+  currentSnapshotUrl: string | null;
   frontSnapshotUrl: string | null;
   backSnapshotUrl: string | null;
+  leftSleeveSnapshotUrl: string | null;
+  rightSleeveSnapshotUrl: string | null;
   artworkLayers: ArtworkLayer3D[];
   isGeneratingSnapshots: boolean;
   onConfirmAddToCart: (data: {
@@ -26,6 +35,15 @@ export interface AddToCartModal3DProps {
     quantity: number;
     printInstructions: string;
   }) => void;
+}
+
+type PreviewSide = 'current' | ArtworkSide | 'both';
+
+interface ProofView {
+  id: Exclude<PreviewSide, 'both'>;
+  label: string;
+  url: string | null;
+  artworkCount: number;
 }
 
 const SIZE_OPTIONS = ['S', 'M', 'L', 'XL', 'XXL', '3XL'] as const;
@@ -53,13 +71,16 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   customArtworkCount = 0,
   customPrintFee = 0,
   isCuratedDesign = false,
+  currentSnapshotUrl,
   frontSnapshotUrl,
   backSnapshotUrl,
+  leftSleeveSnapshotUrl,
+  rightSleeveSnapshotUrl,
   artworkLayers,
   isGeneratingSnapshots,
   onConfirmAddToCart,
 }) => {
-  const [selectedSide, setSelectedSide] = useState<'front' | 'back' | 'both'>('front');
+  const [selectedSide, setSelectedSide] = useState<PreviewSide>('current');
   const [selectedSize, setSelectedSize] = useState<string>(initialSize || 'L');
   const [quantity, setQuantity] = useState<number>(1);
   const [instructions, setInstructions] = useState<string>('');
@@ -68,24 +89,58 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
 
   if (!isOpen) return null;
 
-  // Determine which layers belong to front vs back
-  const frontLayers = artworkLayers.filter(
-    (l) =>
-      l.regionId === 'front' ||
-      l.regionId?.toLowerCase().includes('front') ||
-      (l.u !== undefined && l.u < 0.5) ||
-      (l.regionId !== 'back' && !l.regionId?.toLowerCase().includes('back'))
+  const layersBySide = artworkLayers.reduce<Record<ArtworkSide, ArtworkLayer3D[]>>(
+    (acc, layer) => {
+      acc[getArtworkSide(layer)].push(layer);
+      return acc;
+    },
+    { front: [], back: [], 'left-sleeve': [], 'right-sleeve': [] },
   );
 
-  const backLayers = artworkLayers.filter(
-    (l) =>
-      l.regionId === 'back' ||
-      l.regionId?.toLowerCase().includes('back') ||
-      (l.u !== undefined && l.u >= 0.5)
-  );
+  const hasLeftSleeveArtwork = layersBySide['left-sleeve'].length > 0;
+  const hasRightSleeveArtwork = layersBySide['right-sleeve'].length > 0;
 
-  const hasFrontArtwork = frontLayers.length > 0;
-  const hasBackArtwork = backLayers.length > 0;
+  const proofViews: ProofView[] = [
+    {
+      id: 'current',
+      label: 'Studio View',
+      url: currentSnapshotUrl,
+      artworkCount: artworkLayers.length,
+    },
+    {
+      id: 'front',
+      label: 'Front',
+      url: frontSnapshotUrl,
+      artworkCount: layersBySide.front.length,
+    },
+    {
+      id: 'back',
+      label: 'Back',
+      url: backSnapshotUrl,
+      artworkCount: layersBySide.back.length,
+    },
+  ];
+
+  if (hasLeftSleeveArtwork || leftSleeveSnapshotUrl) {
+    proofViews.push({
+      id: 'left-sleeve',
+      label: 'Left Sleeve',
+      url: leftSleeveSnapshotUrl,
+      artworkCount: layersBySide['left-sleeve'].length,
+    });
+  }
+  if (hasRightSleeveArtwork || rightSleeveSnapshotUrl) {
+    proofViews.push({
+      id: 'right-sleeve',
+      label: 'Right Sleeve',
+      url: rightSleeveSnapshotUrl,
+      artworkCount: layersBySide['right-sleeve'].length,
+    });
+  }
+
+  const allProofs = proofViews.filter((proof) => proof.id !== 'current');
+  const activeProof =
+    proofViews.find((proof) => proof.id === selectedSide) || proofViews[0];
 
   const handleAppendInstruction = (tag: string) => {
     setInstructions((prev) => {
@@ -126,14 +181,20 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
     else adjustedBasePrice = 645;
   }
 
-  const effectivePrintFee = customPrintFee || (customArtworkCount * 49);
+  const effectivePrintFee = customPrintFee || customArtworkCount * 49;
   const unitPrice =
     typeof resolvePrice === 'function'
       ? resolvePrice(selectedSize)
       : isCuratedDesign
-        ? (typeof propUnitPrice === 'number' && propUnitPrice >= 0 ? propUnitPrice : 600)
-        : (adjustedBasePrice + effectivePrintFee);
+        ? typeof propUnitPrice === 'number' && propUnitPrice >= 0
+          ? propUnitPrice
+          : 600
+        : adjustedBasePrice + effectivePrintFee;
   const totalPrice = unitPrice * quantity;
+  const zoomUrl =
+    selectedSide === 'both'
+      ? frontSnapshotUrl || allProofs.find((proof) => proof.url)?.url || null
+      : activeProof?.url || null;
 
   return (
     <div
@@ -175,28 +236,25 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
           {/* Left Column: 3D Mockup Visual Proof & Uploaded Files */}
           <div className="add-to-cart-preview-col">
             <div className="preview-view-toggle">
-              <button
-                type="button"
-                className={`preview-tab-btn ${selectedSide === 'front' ? 'active' : ''}`}
-                onClick={() => setSelectedSide('front')}
-              >
-                <span>Front 3D Mockup</span>
-                {hasFrontArtwork && <span className="tab-pill-badge">Art Placed</span>}
-              </button>
-              <button
-                type="button"
-                className={`preview-tab-btn ${selectedSide === 'back' ? 'active' : ''}`}
-                onClick={() => setSelectedSide('back')}
-              >
-                <span>Back 3D Mockup</span>
-                {hasBackArtwork && <span className="tab-pill-badge">Art Placed</span>}
-              </button>
+              {proofViews.map((proof) => (
+                <button
+                  key={proof.id}
+                  type="button"
+                  className={`preview-tab-btn ${selectedSide === proof.id ? 'active' : ''}`}
+                  onClick={() => setSelectedSide(proof.id)}
+                >
+                  <span>{proof.label}</span>
+                  {proof.artworkCount > 0 && (
+                    <span className="tab-pill-badge">Art</span>
+                  )}
+                </button>
+              ))}
               <button
                 type="button"
                 className={`preview-tab-btn ${selectedSide === 'both' ? 'active' : ''}`}
                 onClick={() => setSelectedSide('both')}
               >
-                <span>Side by Side</span>
+                <span>All Proofs</span>
               </button>
             </div>
 
@@ -207,63 +265,48 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
                   <span className="animate-spin text-accent" style={{ fontSize: '28px', display: 'inline-block' }}>⟳</span>
                   <p className="preview-loading-text">Rendering 3D Mockup Snapshots…</p>
                   <span className="preview-loading-sub">
-                    Capturing front and back camera proof angles
+                    Capturing your exact studio view, front, back and sleeve proofs
                   </span>
                 </div>
               ) : selectedSide === 'both' ? (
-                <div className="preview-both-grid">
-                  <div className="preview-both-card">
-                    <div className="preview-card-tag">Front 3D Proof</div>
-                    {frontSnapshotUrl ? (
-                      <img
-                        src={frontSnapshotUrl}
-                        alt="Front 3D Mockup"
-                        className="preview-img"
-                      />
-                    ) : (
-                      <div className="preview-empty">No preview available</div>
-                    )}
-                  </div>
-                  <div className="preview-both-card">
-                    <div className="preview-card-tag">Back 3D Proof</div>
-                    {backSnapshotUrl ? (
-                      <img
-                        src={backSnapshotUrl}
-                        alt="Back 3D Mockup"
-                        className="preview-img"
-                      />
-                    ) : (
-                      <div className="preview-empty">No preview available</div>
-                    )}
-                  </div>
+                <div className={`preview-both-grid ${allProofs.length > 2 ? 'four-up' : ''}`}>
+                  {allProofs.map((proof) => (
+                    <div key={proof.id} className="preview-both-card">
+                      <div className="preview-card-tag">{proof.label} 3D Proof</div>
+                      {proof.url ? (
+                        <img
+                          src={proof.url}
+                          alt={`${proof.label} 3D Mockup`}
+                          className="preview-img"
+                        />
+                      ) : (
+                        <div className="preview-empty">No preview available</div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div className="preview-single-wrapper">
                   <div className="preview-side-indicator">
-                    {selectedSide === 'front' ? 'Front 3D View' : 'Back 3D View'}
+                    {activeProof?.id === 'current'
+                      ? 'Studio View · Exact 3D Preview'
+                      : `${activeProof?.label || 'Front'} 3D View`}
                   </div>
-                  {selectedSide === 'front' ? (
-                    frontSnapshotUrl ? (
-                      <img
-                        src={frontSnapshotUrl}
-                        alt="Front 3D Mockup Preview"
-                        className="preview-img"
-                      />
-                    ) : (
-                      <div className="preview-empty">Generating front 3D snapshot…</div>
-                    )
-                  ) : backSnapshotUrl ? (
+                  {activeProof?.url ? (
                     <img
-                      src={backSnapshotUrl}
-                      alt="Back 3D Mockup Preview"
+                      src={activeProof.url}
+                      alt={`${activeProof.label} 3D Mockup Preview`}
                       className="preview-img"
                     />
                   ) : (
-                    <div className="preview-empty">Generating back 3D snapshot…</div>
+                    <div className="preview-empty">
+                      {isGeneratingSnapshots
+                        ? `Generating ${activeProof?.label || 'front'} 3D snapshot…`
+                        : 'No preview available for this angle'}
+                    </div>
                   )}
 
-                  {((selectedSide === 'front' && frontSnapshotUrl) ||
-                    (selectedSide === 'back' && backSnapshotUrl)) && (
+                  {activeProof?.url && (
                     <button
                       type="button"
                       className="preview-zoom-btn"
@@ -290,31 +333,34 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
                 </p>
               ) : (
                 <div className="artwork-mini-list">
-                  {artworkLayers.map((layer, idx) => (
-                    <div key={layer.id || idx} className="artwork-mini-card">
-                      <div className="artwork-mini-thumb">
-                        <img src={layer.imageUrl} alt={layer.name || `Artwork ${idx + 1}`} />
-                      </div>
-                      <div className="artwork-mini-info">
-                        <span className="artwork-mini-name">{layer.name || `Graphic #${idx + 1}`}</span>
-                        <div className="artwork-mini-tags">
-                          <span className="artwork-tag-pill">
-                            {layer.regionId === 'back' ? 'Back View' : 'Front View'}
-                          </span>
-                          <span className="artwork-tag-pill subtle">Original File</span>
+                  {artworkLayers.map((layer, idx) => {
+                    const side = getArtworkSide(layer);
+                    return (
+                      <div key={layer.id || idx} className="artwork-mini-card">
+                        <div className="artwork-mini-thumb">
+                          <img src={layer.imageUrl} alt={layer.name || `Artwork ${idx + 1}`} />
                         </div>
+                        <div className="artwork-mini-info">
+                          <span className="artwork-mini-name">{layer.name || `Graphic #${idx + 1}`}</span>
+                          <div className="artwork-mini-tags">
+                            <span className="artwork-tag-pill">
+                              {artworkSideLabel(side)} View
+                            </span>
+                            <span className="artwork-tag-pill subtle">Original File</span>
+                          </div>
+                        </div>
+                        <a
+                          href={layer.imageUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="artwork-mini-link"
+                          title="View full source image"
+                        >
+                          <span>👁</span>
+                        </a>
                       </div>
-                      <a
-                        href={layer.imageUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="artwork-mini-link"
-                        title="View full source image"
-                      >
-                        <span>👁</span>
-                      </a>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -490,7 +536,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
       </div>
 
       {/* Inspect / Enlarge Modal */}
-      {isZoomModalOpen && (
+      {isZoomModalOpen && zoomUrl && (
         <div
           className="zoom-overlay"
           onClick={() => setIsZoomModalOpen(false)}
@@ -505,11 +551,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
               <span>✕</span>
             </button>
             <img
-              src={
-                selectedSide === 'front'
-                  ? frontSnapshotUrl || ''
-                  : backSnapshotUrl || ''
-              }
+              src={zoomUrl}
               alt="High-Res 3D Mockup Proof"
               className="zoom-img"
             />

@@ -13,12 +13,18 @@ export interface CartCustomization {
   // New production-grade customization fields
   designFileUrl?: string | null;
   previewFileUrl?: string | null;
+  currentPreviewFileUrl?: string | null;
   frontDesignFileUrl?: string | null;
   frontPreviewFileUrl?: string | null;
   backDesignFileUrl?: string | null;
   backPreviewFileUrl?: string | null;
+  leftSleeveDesignFileUrl?: string | null;
+  leftSleevePreviewFileUrl?: string | null;
+  rightSleeveDesignFileUrl?: string | null;
+  rightSleevePreviewFileUrl?: string | null;
   printPosition?: string | null;
   printInstructions?: string | null;
+  garmentId?: string | null;
 
   // Apparel customizer fields (legacy)
   thumbnail?: string | undefined;
@@ -85,6 +91,29 @@ interface CartActions {
 
 /* ── Store ── */
 
+function cartLineIdentity(item: CartItem): string {
+  const c = item.customization;
+  if (!c) return '';
+  return String(
+    c.designId ||
+      c.magazineId ||
+      c.printPdfUrl ||
+      c.magazineTitle ||
+      c.currentPreviewFileUrl ||
+      c.frontDesignFileUrl ||
+      '',
+  );
+}
+
+function isSameCartLine(left: CartItem, right: CartItem): boolean {
+  return (
+    left.productId === right.productId &&
+    left.variantId === right.variantId &&
+    left.size === right.size &&
+    cartLineIdentity(left) === cartLineIdentity(right)
+  );
+}
+
 export const useCartStore = create<CartState & CartActions>()(
   devtools(
     persist(
@@ -96,18 +125,11 @@ export const useCartStore = create<CartState & CartActions>()(
         /* Actions */
         addItem: (item) =>
           set((state) => {
-            const existing = state.items.find(
-              (i) =>
-                i.productId === item.productId &&
-                i.variantId === item.variantId &&
-                i.size === item.size,
-            );
+            const existing = state.items.find((i) => isSameCartLine(i, item));
             if (existing) {
               return {
                 items: state.items.map((i) =>
-                  i.productId === item.productId &&
-                  i.variantId === item.variantId &&
-                  i.size === item.size
+                  isSameCartLine(i, item)
                     ? { ...i, quantity: i.quantity + item.quantity }
                     : i,
                 ),
@@ -314,7 +336,7 @@ export const useCartStore = create<CartState & CartActions>()(
               typeof item.image === 'string' &&
               item.image.startsWith('data:') &&
               item.image.length > 50000
-                ? '/images/mockups/tee-black-front.png'
+                ? getPlainMockupFallback(item.customization)
                 : item.image,
             customization: sanitizeCustomizationForStorage(item.customization),
           })),
@@ -325,6 +347,24 @@ export const useCartStore = create<CartState & CartActions>()(
   ),
 );
 
+function getPlainMockupFallback(cust: CartCustomization | null): string {
+  const garment = String(cust?.garmentId || cust?.garment || '').toLowerCase();
+  const family = garment.includes('hoodie')
+    ? 'hoodie'
+    : garment.includes('oversized')
+      ? 'oversized-tee'
+      : 'tee';
+  const color = String(cust?.color || 'white').toLowerCase().replace('#', '');
+  const isDark =
+    color.length === 6
+      ? parseInt(color.slice(0, 2), 16) * 0.299 +
+          parseInt(color.slice(2, 4), 16) * 0.587 +
+          parseInt(color.slice(4, 6), 16) * 0.114 <
+        128
+      : /black|navy|charcoal|maroon|brown|grey|gray/.test(color);
+  return `/images/mockups/${family}-${isDark ? 'black' : 'white'}-front.webp`;
+}
+
 function sanitizeCustomizationForStorage(cust: CartCustomization | null): CartCustomization | null {
   if (!cust || typeof cust !== 'object') return cust;
   const copy: Record<string, unknown> = { ...cust };
@@ -332,9 +372,14 @@ function sanitizeCustomizationForStorage(cust: CartCustomization | null): CartCu
     'designFileUrl',
     'frontDesignFileUrl',
     'backDesignFileUrl',
+    'leftSleeveDesignFileUrl',
+    'rightSleeveDesignFileUrl',
     'previewFileUrl',
+    'currentPreviewFileUrl',
     'frontPreviewFileUrl',
     'backPreviewFileUrl',
+    'leftSleevePreviewFileUrl',
+    'rightSleevePreviewFileUrl',
     'thumbnail',
     'imageUrl',
   ];

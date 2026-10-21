@@ -28,6 +28,7 @@ import { UVCanvasEditor3D } from './components/3d/UVCanvasEditor3D';
 import { findPanelAtUV } from './engine/3d/garmentPanels';
 import { AddToCartModal3D } from './components/3d/AddToCartModal3D';
 import { Export3DManager } from './engine/3d/export3D';
+import { getArtworkSide } from './engine/3d/artworkSides';
 import type { SceneManager3D } from './engine/3d/sceneManager';
 import type { TextureCompositor3D } from './engine/3d/textureCompositor';
 import { ClothingDesignsDrawer, type ApplyDesignEvent } from './components/ClothingDesignsDrawer';
@@ -141,6 +142,14 @@ function resolveGarmentId(raw?: string | null): string {
   return 'regular-t-shirt';
 }
 
+type CartProofSet = {
+  current: string | null;
+  front: string | null;
+  back: string | null;
+  leftSleeve: string | null;
+  rightSleeve: string | null;
+};
+
 export const App: React.FC = () => {
   const [isDesignsLibraryOpen, setIsDesignsLibraryOpen] = useState<boolean>(false);
 
@@ -148,6 +157,9 @@ export const App: React.FC = () => {
   const [isCapturingCartSnapshots, setIsCapturingCartSnapshots] = useState(false);
   const [cartFrontSnapshot, setCartFrontSnapshot] = useState<string | null>(null);
   const [cartBackSnapshot, setCartBackSnapshot] = useState<string | null>(null);
+  const [cartCurrentSnapshot, setCartCurrentSnapshot] = useState<string | null>(null);
+  const [cartLeftSleeveSnapshot, setCartLeftSleeveSnapshot] = useState<string | null>(null);
+  const [cartRightSleeveSnapshot, setCartRightSleeveSnapshot] = useState<string | null>(null);
   const [export3DManager] = useState(() => new Export3DManager());
 
   // =========================================================================
@@ -2169,6 +2181,54 @@ export const App: React.FC = () => {
     }
   };
 
+  /**
+   * Capture the exact view the customer is looking at plus front/back proofs
+   * and, only when sleeve artwork exists, left/right sleeve proofs.
+   *
+   * The "current" capture deliberately does not force a 600×600 frame: keeping
+   * the live viewport aspect is what makes the cart/preview image match the 3D
+   * studio instead of looking zoomed or cropped.
+   */
+  const captureCartProofs = async (): Promise<CartProofSet> => {
+    const scene = sceneManager3DRef.current;
+    if (!scene) {
+      return { current: null, front: null, back: null, leftSleeve: null, rightSleeve: null };
+    }
+
+    const compositor = compositor3DRef.current ?? undefined;
+    const capture = async (
+      view: 'current' | 'front' | 'back' | 'left' | 'right',
+      square: boolean,
+    ): Promise<string | null> => {
+      try {
+        return await export3DManager.captureSnapshotDataUrl(
+          scene,
+          {
+            view,
+            transparent: false,
+            resolution: 'cart',
+            ...(square ? { width: 600, height: 600 } : {}),
+            format: 'jpeg',
+            quality: 0.9,
+          },
+          compositor,
+        );
+      } catch (err) {
+        console.warn(`[App] Failed to capture ${view} cart proof:`, err);
+        return null;
+      }
+    };
+
+    const sides = new Set(project3D.artworkLayers.map((layer) => getArtworkSide(layer)));
+    const current = await capture('current', false);
+    const front = await capture('front', true);
+    const back = await capture('back', true);
+    const leftSleeve = sides.has('left-sleeve') ? await capture('left', true) : null;
+    const rightSleeve = sides.has('right-sleeve') ? await capture('right', true) : null;
+
+    return { current, front, back, leftSleeve, rightSleeve };
+  };
+
   const handleOpenAddToCart = async () => {
     if (isAddingToCart) return;
 
@@ -2177,42 +2237,12 @@ export const App: React.FC = () => {
       setIsAddingToCart(true);
       setIsCapturingCartSnapshots(true);
       try {
-        let frontSnapshot: string | null = null;
-        let backSnapshot: string | null = null;
-
-        if (sceneManager3DRef.current) {
-          // Fast, high-clarity 600x600 cart snapshot (keeps storage under 50KB)
-          frontSnapshot = await export3DManager.captureSnapshotDataUrl(
-            sceneManager3DRef.current,
-            {
-              view: 'front',
-              transparent: false,
-              resolution: 'cart',
-              width: 600,
-              height: 600,
-              format: 'jpeg',
-              quality: 0.85,
-            },
-            compositor3DRef.current ?? undefined
-          );
-
-          backSnapshot = await export3DManager.captureSnapshotDataUrl(
-            sceneManager3DRef.current,
-            {
-              view: 'back',
-              transparent: false,
-              resolution: 'cart',
-              width: 600,
-              height: 600,
-              format: 'jpeg',
-              quality: 0.85,
-            },
-            compositor3DRef.current ?? undefined
-          );
-        }
-
-        setCartFrontSnapshot(frontSnapshot);
-        setCartBackSnapshot(backSnapshot);
+        const proofs = await captureCartProofs();
+        setCartCurrentSnapshot(proofs.current);
+        setCartFrontSnapshot(proofs.front);
+        setCartBackSnapshot(proofs.back);
+        setCartLeftSleeveSnapshot(proofs.leftSleeve);
+        setCartRightSleeveSnapshot(proofs.rightSleeve);
 
         await handleConfirmAddToCart(
           {
@@ -2220,8 +2250,7 @@ export const App: React.FC = () => {
             quantity: 1,
             printInstructions: 'Curated studio placement as shown.',
           },
-          frontSnapshot,
-          backSnapshot
+          proofs,
         );
       } catch (err) {
         console.error('[App] Direct add to cart for curated design failed:', err);
@@ -2235,42 +2264,19 @@ export const App: React.FC = () => {
     // For custom designs (user uploaded onto plain blank tee), open the review modal:
     setIsAddToCartOpen(true);
     setIsCapturingCartSnapshots(true);
+    setCartCurrentSnapshot(null);
     setCartFrontSnapshot(null);
     setCartBackSnapshot(null);
+    setCartLeftSleeveSnapshot(null);
+    setCartRightSleeveSnapshot(null);
 
     try {
-      if (sceneManager3DRef.current) {
-        // Fast, high-clarity 600x600 cart snapshot (keeps storage under 50KB)
-        const frontData = await export3DManager.captureSnapshotDataUrl(
-          sceneManager3DRef.current,
-          {
-            view: 'front',
-            transparent: false,
-            resolution: 'cart',
-            width: 600,
-            height: 600,
-            format: 'jpeg',
-            quality: 0.85,
-          },
-          compositor3DRef.current ?? undefined
-        );
-        setCartFrontSnapshot(frontData);
-
-        const backData = await export3DManager.captureSnapshotDataUrl(
-          sceneManager3DRef.current,
-          {
-            view: 'back',
-            transparent: false,
-            resolution: 'cart',
-            width: 600,
-            height: 600,
-            format: 'jpeg',
-            quality: 0.85,
-          },
-          compositor3DRef.current ?? undefined
-        );
-        setCartBackSnapshot(backData);
-      }
+      const proofs = await captureCartProofs();
+      setCartCurrentSnapshot(proofs.current);
+      setCartFrontSnapshot(proofs.front);
+      setCartBackSnapshot(proofs.back);
+      setCartLeftSleeveSnapshot(proofs.leftSleeve);
+      setCartRightSleeveSnapshot(proofs.rightSleeve);
     } catch (err) {
       console.error('[App] Failed to capture cart mockups:', err);
     } finally {
@@ -2284,44 +2290,25 @@ export const App: React.FC = () => {
       quantity: number;
       printInstructions: string;
     },
-    frontSnapshotOverride?: string | null,
-    backSnapshotOverride?: string | null
+    overrideProofs?: Partial<CartProofSet>
   ) => {
-    let frontSnapshot = frontSnapshotOverride || cartFrontSnapshot;
-    let backSnapshot = backSnapshotOverride || cartBackSnapshot;
+    let currentSnapshot = overrideProofs?.current ?? cartCurrentSnapshot;
+    let frontSnapshot = overrideProofs?.front ?? cartFrontSnapshot;
+    let backSnapshot = overrideProofs?.back ?? cartBackSnapshot;
+    let leftSleeveSnapshot = overrideProofs?.leftSleeve ?? cartLeftSleeveSnapshot;
+    let rightSleeveSnapshot = overrideProofs?.rightSleeve ?? cartRightSleeveSnapshot;
 
-    if ((!frontSnapshot || !backSnapshot) && sceneManager3DRef.current) {
+    if (
+      (!currentSnapshot || !frontSnapshot || !backSnapshot) &&
+      sceneManager3DRef.current
+    ) {
       try {
-        if (!frontSnapshot) {
-          frontSnapshot = await export3DManager.captureSnapshotDataUrl(
-            sceneManager3DRef.current,
-            {
-              view: 'front',
-              transparent: false,
-              resolution: 'cart',
-              width: 600,
-              height: 600,
-              format: 'jpeg',
-              quality: 0.85,
-            },
-            compositor3DRef.current ?? undefined
-          );
-        }
-        if (!backSnapshot) {
-          backSnapshot = await export3DManager.captureSnapshotDataUrl(
-            sceneManager3DRef.current,
-            {
-              view: 'back',
-              transparent: false,
-              resolution: 'cart',
-              width: 600,
-              height: 600,
-              format: 'jpeg',
-              quality: 0.85,
-            },
-            compositor3DRef.current ?? undefined
-          );
-        }
+        const captured = await captureCartProofs();
+        currentSnapshot = currentSnapshot || captured.current;
+        frontSnapshot = frontSnapshot || captured.front;
+        backSnapshot = backSnapshot || captured.back;
+        leftSleeveSnapshot = leftSleeveSnapshot || captured.leftSleeve;
+        rightSleeveSnapshot = rightSleeveSnapshot || captured.rightSleeve;
       } catch (err) {
         console.warn('[App] 3D mockup fallback snapshot warning:', err);
       }
@@ -2329,31 +2316,41 @@ export const App: React.FC = () => {
 
     let frontDesignUrl: string | null = null;
     let backDesignUrl: string | null = null;
-    const uploadedArtworks: { name: string; url: string; dataUrl?: string; side: string }[] = [];
+    let leftSleeveDesignUrl: string | null = null;
+    let rightSleeveDesignUrl: string | null = null;
+    const uploadedArtworks: {
+      name: string;
+      url: string;
+      dataUrl?: string;
+      side: string;
+      placementTarget?: string;
+    }[] = [];
 
     project3D.artworkLayers.forEach((l) => {
-      const isBack =
-        l.regionId === 'back' ||
-        l.regionId?.toLowerCase().includes('back') ||
-        (l.u !== undefined && l.u >= 0.5);
-      const side = isBack ? 'back' : 'front';
+      const side = getArtworkSide(l);
       uploadedArtworks.push({
         name: l.name || 'Artwork',
         url: l.imageUrl,
         side,
+        placementTarget: l.placementTarget,
       });
-      if (isBack && !backDesignUrl) {
-        backDesignUrl = l.imageUrl;
-      } else if (!isBack && !frontDesignUrl) {
+      if (side === 'front' && !frontDesignUrl) {
         frontDesignUrl = l.imageUrl;
+      } else if (side === 'back' && !backDesignUrl) {
+        backDesignUrl = l.imageUrl;
+      } else if (side === 'left-sleeve' && !leftSleeveDesignUrl) {
+        leftSleeveDesignUrl = l.imageUrl;
+      } else if (side === 'right-sleeve' && !rightSleeveDesignUrl) {
+        rightSleeveDesignUrl = l.imageUrl;
       }
     });
 
-    if (!frontDesignUrl && project3D.artworkLayers.length > 0) {
-      frontDesignUrl = project3D.artworkLayers[0].imageUrl;
+    if (!frontDesignUrl) {
+      frontDesignUrl = project3D.artworkLayers.find((l) => getArtworkSide(l) === 'front')?.imageUrl || null;
     }
 
-    const primaryDesignFileUrl = frontDesignUrl || backDesignUrl || null;
+    const primaryDesignFileUrl =
+      frontDesignUrl || backDesignUrl || leftSleeveDesignUrl || rightSleeveDesignUrl || null;
     const garmentName = currentGarmentConfig3D.name;
     const garmentId = project3D.garmentId;
     const garmentColor = project3D.garmentColor;
@@ -2386,9 +2383,14 @@ export const App: React.FC = () => {
       designId: initialDesignId || undefined,
       frontPreviewUrl: frontSnapshot,
       backPreviewUrl: backSnapshot,
-      previewFileUrl: frontSnapshot || backSnapshot,
+      currentPreviewUrl: currentSnapshot,
+      leftSleevePreviewUrl: leftSleeveSnapshot,
+      rightSleevePreviewUrl: rightSleeveSnapshot,
+      previewFileUrl: currentSnapshot || frontSnapshot || backSnapshot,
       frontDesignFileUrl: frontDesignUrl,
       backDesignFileUrl: backDesignUrl,
+      leftSleeveDesignFileUrl: leftSleeveDesignUrl,
+      rightSleeveDesignFileUrl: rightSleeveDesignUrl,
       designFileUrl: primaryDesignFileUrl,
       uploadedArtworks,
       printInstructions: data.printInstructions,
@@ -2880,6 +2882,9 @@ export const App: React.FC = () => {
         isCuratedDesign={isCuratedDesign}
         frontSnapshotUrl={cartFrontSnapshot}
         backSnapshotUrl={cartBackSnapshot}
+        currentSnapshotUrl={cartCurrentSnapshot}
+        leftSleeveSnapshotUrl={cartLeftSleeveSnapshot}
+        rightSleeveSnapshotUrl={cartRightSleeveSnapshot}
         artworkLayers={project3D.artworkLayers}
         isGeneratingSnapshots={isCapturingCartSnapshots}
         onConfirmAddToCart={handleConfirmAddToCart}

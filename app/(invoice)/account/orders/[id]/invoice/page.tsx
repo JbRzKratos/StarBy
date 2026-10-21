@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { PrintInvoiceButton, AutoPrintTrigger } from '@/components/print-invoice-button';
@@ -89,14 +90,25 @@ export default async function InvoicePage({
       {/* Invoice Document Sheet */}
       <div className="max-w-4xl mx-auto bg-white border border-slate-200 p-8 sm:p-12 rounded-lg shadow-sm print:shadow-none print:border-none print:p-0 print:w-full">
         {/* Invoice Header */}
-        <div className="flex justify-between items-start border-b border-slate-200 pb-6 mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6 border-b border-slate-300 pb-6 mb-8">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight mb-2">
-              TAX INVOICE
+            <Image
+              src="/images/fregoro-logo.png"
+              alt="Fregoro Studios"
+              width={180}
+              height={77}
+              priority
+              className="h-14 w-auto mb-4 print:h-14"
+            />
+            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-slate-500 mb-2">
+              Packing Slip · Order Document
+            </p>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-black tracking-tight mb-2">
+              INVOICE
             </h1>
             <p className="text-sm font-semibold text-slate-700">
               Invoice / Order Ref:{' '}
-              <span className="font-mono text-slate-900 font-bold">
+              <span className="font-mono text-black font-bold">
                 {order.publicOrderId || order.id}
               </span>
             </p>
@@ -109,10 +121,10 @@ export default async function InvoicePage({
               })}
             </p>
           </div>
-          <div className="text-right">
-            <h2 className="text-2xl font-bold text-slate-950 mb-1 font-display">Fregoro Studios</h2>
+          <div className="sm:text-right">
+            <h2 className="text-2xl font-bold text-black mb-1 font-display">Fregoro Studios</h2>
             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-              Engineered Custom Star Maps & Art Objects
+              Bespoke Print, Custom Apparel &amp; Editorial Studio
             </p>
             <p className="text-xs text-slate-700 leading-relaxed">Plot No: A-134, N.G.G.O Nagar</p>
             <p className="text-xs text-slate-700 leading-relaxed">
@@ -194,6 +206,39 @@ export default async function InvoicePage({
             <tbody className="divide-y divide-slate-200 text-sm">
               {order.items.map((item) => {
                 const itemPrice = item.unitPrice ?? item.totalPrice / item.quantity;
+                const customization = (item.customization ?? {}) as Record<string, unknown>;
+                const documentPages =
+                  customization.document &&
+                  typeof customization.document === 'object' &&
+                  Array.isArray((customization.document as { pages?: unknown }).pages)
+                    ? ((customization.document as { pages: unknown[] }).pages.length as number)
+                    : null;
+                const magazinePages =
+                  typeof customization.pageCount === 'number'
+                    ? customization.pageCount
+                    : Array.isArray(customization.pagesData)
+                      ? customization.pagesData.length
+                      : documentPages;
+                const printPdfUrl =
+                  typeof customization.printPdfUrl === 'string'
+                    ? customization.printPdfUrl
+                    : typeof customization.designFileUrl === 'string' &&
+                        /\.pdf(\?|$)/i.test(customization.designFileUrl)
+                      ? customization.designFileUrl
+                      : null;
+                const artworkSides = Array.isArray(customization.uploadedArtworks)
+                  ? Array.from(
+                      new Set(
+                        customization.uploadedArtworks
+                          .map((art) =>
+                            art && typeof art === 'object' && typeof (art as Record<string, unknown>).side === 'string'
+                              ? ((art as Record<string, unknown>).side as string)
+                              : null,
+                          )
+                          .filter((side): side is string => Boolean(side)),
+                      ),
+                    )
+                  : [];
                 return (
                   <tr key={item.id}>
                     <td className="py-4 px-1">
@@ -204,6 +249,49 @@ export default async function InvoicePage({
                         Variant: {item.variantId}
                         {item.size && ` · Size: ${item.size}`}
                       </p>
+                      {typeof customization.magazineTitle === 'string' && (
+                        <p className="text-xs text-slate-600 mt-1">
+                          Magazine: {customization.magazineTitle}
+                          {magazinePages ? ` · ${magazinePages} pages` : ''}
+                          {typeof customization.bindingType === 'string'
+                            ? ` · ${customization.bindingType}`
+                            : ''}
+                          {typeof customization.paperWeight === 'string'
+                            ? ` · ${customization.paperWeight}`
+                            : ''}
+                          {typeof customization.coverFinish === 'string'
+                            ? ` · ${customization.coverFinish}`
+                            : ''}
+                        </p>
+                      )}
+                      {artworkSides.length > 0 && (
+                        <p className="text-xs text-slate-600 mt-1">
+                          Artwork sides:{' '}
+                          {Array.from(
+                            new Set(
+                              artworkSides.map((side) =>
+                                side === 'left-sleeve'
+                                  ? 'Left Sleeve'
+                                  : side === 'right-sleeve'
+                                    ? 'Right Sleeve'
+                                    : side === 'back'
+                                      ? 'Back'
+                                      : 'Front',
+                              ),
+                            ),
+                          ).join(', ')}
+                        </p>
+                      )}
+                      {printPdfUrl && (
+                        <a
+                          href={printPdfUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-block text-[11px] font-semibold text-slate-700 underline underline-offset-2 mt-1"
+                        >
+                          Download print-ready PDF ↗
+                        </a>
+                      )}
                     </td>
                     <td className="py-4 px-1 text-center text-slate-800 font-medium">
                       {item.quantity}
@@ -229,18 +317,18 @@ export default async function InvoicePage({
               <span className="font-medium text-slate-900 font-mono">₹{subtotal.toFixed(2)}</span>
             </div>
             {order.discount && order.discount > 0 ? (
-              <div className="flex justify-between text-red-600">
+              <div className="flex justify-between text-slate-700">
                 <span>Discount {order.couponCode ? `(${order.couponCode})` : ''}</span>
-                <span className="font-medium font-mono">-₹{order.discount.toFixed(2)}</span>
+                <span className="font-medium font-mono text-slate-900">-₹{order.discount.toFixed(2)}</span>
               </div>
             ) : null}
             <div className="flex justify-between text-slate-700">
               <span>Shipping</span>
-              <span className="font-medium text-emerald-700">
+              <span className="font-medium text-slate-900">
                 {order.shippingFee > 0 ? `₹${order.shippingFee.toFixed(2)}` : 'Free'}
               </span>
             </div>
-            <div className="flex justify-between pt-3 border-t-2 border-slate-900 font-bold text-lg text-slate-950">
+            <div className="flex justify-between pt-3 border-t-2 border-black font-bold text-lg text-black">
               <span>Total Amount</span>
               <span className="font-mono">₹{order.total.toFixed(2)}</span>
             </div>

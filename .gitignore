@@ -32,6 +32,16 @@ dist/
 
 # Testing & Coverage
 coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# Local tooling caches
+.eslintcache
+.turbo/
+.vite/
+.cache/
+.parcel-cache/
 
 # Vercel
 .vercel

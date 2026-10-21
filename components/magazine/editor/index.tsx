@@ -22,6 +22,7 @@ import {
 } from '@/lib/magazine/editor-state';
 import { runPreflightCheck } from '@/lib/magazine/preflight';
 import { downloadMagazinePdf } from '@/lib/magazine/pdf-generator';
+import { uploadMagazinePrintPdf } from '@/lib/magazine/upload-print-pdf';
 import { TopToolbar } from './top-toolbar';
 import { LeftPanel } from './left-panel';
 import { CanvasWorkspace } from './canvas-workspace';
@@ -809,27 +810,7 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
     try {
       const { generateMagazinePdf } = await import('@/lib/magazine/pdf-generator');
       const blob = await generateMagazinePdf(doc, { includeBleed: true });
-      const reader = new FileReader();
-      const pdfDataUrl = await new Promise<string>((resolve, reject) => {
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-
-      const uploadRes = await fetch('/api/customizer/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          magazinePdf: pdfDataUrl,
-          filename: `Magazine_Print_${doc.id}.pdf`,
-        }),
-      });
-      if (uploadRes.ok) {
-        const uploadJson = await uploadRes.json();
-        if (uploadJson.printPdfUrl) {
-          printPdfUrl = uploadJson.printPdfUrl;
-        }
-      }
+      printPdfUrl = await uploadMagazinePrintPdf(blob, `Magazine_Print_${doc.id}.pdf`);
     } catch (pdfErr) {
       console.warn('Could not generate or upload print PDF in editor:', pdfErr);
     }
@@ -860,12 +841,19 @@ export function MagazineEditor({ initialDocument, templateId }: MagazineEditorPr
         document: doc,
         pagesData: doc.pages.map((p, idx) => ({
           pageNumber: idx + 1,
+          title: p.title,
+          layoutType: p.layoutType,
+          backgroundColor: p.backgroundColor,
+          backgroundImage: p.backgroundImage,
           elements: p.elements.map((el) => ({
             id: el.id,
             type: el.type,
             name: el.name,
+            label: el.name,
             text: el.type === 'text' ? el.content : '',
             src: el.type === 'image' ? el.content : '',
+            userInstructions:
+              (el as { userInstructions?: string }).userInstructions || '',
           })),
         })),
       },

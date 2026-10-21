@@ -288,11 +288,14 @@ export function ClothingMockupIframe({
               const layerName = typeof layer.name === 'string' ? layer.name : '';
               const layerId = typeof layer.id === 'string' ? layer.id : '';
 
+              const layerNameLower = layerName.toLowerCase();
               const tgt =
                 layerTarget ||
-                (layerRegion === 'back' || layerName.toLowerCase().includes('back')
+                (layerRegion === 'back' || layerNameLower.includes('back')
                   ? 'back-center'
-                  : layerName.toLowerCase().includes('sleeve')
+                  : layerNameLower.includes('right') && layerNameLower.includes('sleeve')
+                  ? 'right-sleeve'
+                  : layerNameLower.includes('sleeve')
                   ? 'left-sleeve'
                   : 'front-center');
               const artMatch = layerId.match(/art-\d+/i);
@@ -490,25 +493,34 @@ export function ClothingMockupIframe({
             // 1. Upload high-res snapshots and original uploaded artworks to Cloudflare R2
             // This prevents massive base64 strings in localStorage which causes quota errors.
             let uploadResult = {
+              currentPreviewUrl: payload.currentPreviewUrl || null,
               frontPreviewUrl: payload.frontPreviewUrl || null,
               backPreviewUrl: payload.backPreviewUrl || null,
-              previewFileUrl: payload.previewFileUrl || payload.frontPreviewUrl || null,
+              leftSleevePreviewUrl: payload.leftSleevePreviewUrl || null,
+              rightSleevePreviewUrl: payload.rightSleevePreviewUrl || null,
+              previewFileUrl:
+                payload.currentPreviewUrl || payload.frontPreviewUrl || payload.previewFileUrl || null,
               frontDesignFileUrl: payload.frontDesignFileUrl || null,
               backDesignFileUrl: payload.backDesignFileUrl || null,
+              leftSleeveDesignFileUrl: payload.leftSleeveDesignFileUrl || null,
+              rightSleeveDesignFileUrl: payload.rightSleeveDesignFileUrl || null,
               designFileUrl: payload.designFileUrl || payload.frontDesignFileUrl || null,
               uploadedArtworks: payload.uploadedArtworks || [],
             };
 
             try {
               const controller = new AbortController();
-              const timeoutId = setTimeout(() => controller.abort(), 8000);
+              const timeoutId = setTimeout(() => controller.abort(), 15000);
 
               const uploadRes = await fetch('/api/customizer/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                  currentSnapshot: payload.currentPreviewUrl,
                   frontSnapshot: payload.frontPreviewUrl,
                   backSnapshot: payload.backPreviewUrl,
+                  leftSleeveSnapshot: payload.leftSleevePreviewUrl,
+                  rightSleeveSnapshot: payload.rightSleevePreviewUrl,
                   uploadedArtworks: payload.uploadedArtworks || [],
                   garmentId: payload.garmentId || 'tee',
                 }),
@@ -520,11 +532,23 @@ export function ClothingMockupIframe({
                 const uploadJson = await uploadRes.json();
                 if (uploadJson.success) {
                   uploadResult = {
+                    currentPreviewUrl:
+                      uploadJson.currentPreviewUrl || uploadResult.currentPreviewUrl,
                     frontPreviewUrl: uploadJson.frontPreviewUrl || uploadResult.frontPreviewUrl,
                     backPreviewUrl: uploadJson.backPreviewUrl || uploadResult.backPreviewUrl,
+                    leftSleevePreviewUrl:
+                      uploadJson.leftSleevePreviewUrl || uploadResult.leftSleevePreviewUrl,
+                    rightSleevePreviewUrl:
+                      uploadJson.rightSleevePreviewUrl || uploadResult.rightSleevePreviewUrl,
                     previewFileUrl: uploadJson.previewFileUrl || uploadResult.previewFileUrl,
-                    frontDesignFileUrl: uploadJson.frontDesignFileUrl || uploadResult.frontDesignFileUrl,
-                    backDesignFileUrl: uploadJson.backDesignFileUrl || uploadResult.backDesignFileUrl,
+                    frontDesignFileUrl:
+                      uploadJson.frontDesignFileUrl || uploadResult.frontDesignFileUrl,
+                    backDesignFileUrl:
+                      uploadJson.backDesignFileUrl || uploadResult.backDesignFileUrl,
+                    leftSleeveDesignFileUrl:
+                      uploadJson.leftSleeveDesignFileUrl || uploadResult.leftSleeveDesignFileUrl,
+                    rightSleeveDesignFileUrl:
+                      uploadJson.rightSleeveDesignFileUrl || uploadResult.rightSleeveDesignFileUrl,
                     designFileUrl: uploadJson.designFileUrl || uploadResult.designFileUrl,
                     uploadedArtworks: uploadJson.uploadedArtworks || uploadResult.uploadedArtworks,
                   };
@@ -534,17 +558,31 @@ export function ClothingMockupIframe({
               console.warn('[ClothingMockupIframe] Upload error or timeout (using fallback):', uploadErr);
             }
 
-            // Ensure safe image for bag display: fallback to static mockup if string is oversized
-            const candidateImage =
+            // Choose a colour-matched stock fallback only when the upload failed
+            // entirely. Never replace a real studio proof with the old black tee.
+            const garmentKey = String(payload.garmentId || '').toLowerCase();
+            const mockupFamily = garmentKey.includes('hoodie')
+              ? 'hoodie'
+              : garmentKey.includes('oversized')
+                ? 'oversized-tee'
+                : 'tee';
+            const colorValue = String(payload.garmentColor || 'white').toLowerCase().replace('#', '');
+            const isDarkGarment =
+              colorValue.length === 6
+                ? parseInt(colorValue.slice(0, 2), 16) * 0.299 +
+                    parseInt(colorValue.slice(2, 4), 16) * 0.587 +
+                    parseInt(colorValue.slice(4, 6), 16) * 0.114 <
+                  128
+                : /black|navy|charcoal|maroon|brown|grey|gray/.test(colorValue);
+            const fallbackMockup = `/images/mockups/${mockupFamily}-${
+              isDarkGarment ? 'black' : 'white'
+            }-front.webp`;
+
+            const safeImage =
+              uploadResult.currentPreviewUrl ||
               uploadResult.frontPreviewUrl ||
               uploadResult.previewFileUrl ||
-              '/images/mockups/tee-black-front.webp';
-            const safeImage =
-              typeof candidateImage === 'string' &&
-              candidateImage.startsWith('data:') &&
-              candidateImage.length > 80000
-                ? '/images/mockups/tee-black-front.webp'
-                : candidateImage;
+              fallbackMockup;
 
             // The studio is 3D-only now: one variant prefix, one placement label.
             const variantPrefix = 'mockup-3d';
@@ -585,9 +623,14 @@ export function ClothingMockupIframe({
                 size: payload.size,
                 frontDesignFileUrl: uploadResult.frontDesignFileUrl,
                 backDesignFileUrl: uploadResult.backDesignFileUrl,
+                leftSleeveDesignFileUrl: uploadResult.leftSleeveDesignFileUrl,
+                rightSleeveDesignFileUrl: uploadResult.rightSleeveDesignFileUrl,
                 designFileUrl: uploadResult.designFileUrl,
+                currentPreviewFileUrl: uploadResult.currentPreviewUrl,
                 frontPreviewFileUrl: uploadResult.frontPreviewUrl,
                 backPreviewFileUrl: uploadResult.backPreviewUrl,
+                leftSleevePreviewFileUrl: uploadResult.leftSleevePreviewUrl,
+                rightSleevePreviewFileUrl: uploadResult.rightSleevePreviewUrl,
                 previewFileUrl: uploadResult.previewFileUrl,
                 printPosition: defaultPlacementTitle,
                 printInstructions: payload.printInstructions || defaultInstructions,
@@ -610,17 +653,23 @@ export function ClothingMockupIframe({
               // Clean any data URLs from cartItem to avoid localStorage quota issues
               const cleanItem: CartItem = {
                 ...cartItem,
-                image: cartItem.image && cartItem.image.startsWith('data:')
-                  ? '/images/mockups/tee-black-front.png'
-                  : cartItem.image,
+                image:
+                  cartItem.image && cartItem.image.startsWith('data:')
+                    ? fallbackMockup
+                    : cartItem.image,
                 customization: cartItem.customization ? {
                   ...cartItem.customization,
+                  currentPreviewFileUrl: cartItem.customization.currentPreviewFileUrl?.startsWith('data:') ? null : cartItem.customization.currentPreviewFileUrl,
                   frontPreviewFileUrl: cartItem.customization.frontPreviewFileUrl?.startsWith('data:') ? null : cartItem.customization.frontPreviewFileUrl,
                   backPreviewFileUrl: cartItem.customization.backPreviewFileUrl?.startsWith('data:') ? null : cartItem.customization.backPreviewFileUrl,
+                  leftSleevePreviewFileUrl: cartItem.customization.leftSleevePreviewFileUrl?.startsWith('data:') ? null : cartItem.customization.leftSleevePreviewFileUrl,
+                  rightSleevePreviewFileUrl: cartItem.customization.rightSleevePreviewFileUrl?.startsWith('data:') ? null : cartItem.customization.rightSleevePreviewFileUrl,
                   previewFileUrl: cartItem.customization.previewFileUrl?.startsWith('data:') ? null : cartItem.customization.previewFileUrl,
                   designFileUrl: cartItem.customization.designFileUrl?.startsWith('data:') ? null : cartItem.customization.designFileUrl,
                   frontDesignFileUrl: cartItem.customization.frontDesignFileUrl?.startsWith('data:') ? null : cartItem.customization.frontDesignFileUrl,
                   backDesignFileUrl: cartItem.customization.backDesignFileUrl?.startsWith('data:') ? null : cartItem.customization.backDesignFileUrl,
+                  leftSleeveDesignFileUrl: cartItem.customization.leftSleeveDesignFileUrl?.startsWith('data:') ? null : cartItem.customization.leftSleeveDesignFileUrl,
+                  rightSleeveDesignFileUrl: cartItem.customization.rightSleeveDesignFileUrl?.startsWith('data:') ? null : cartItem.customization.rightSleeveDesignFileUrl,
                   uploadedArtworks: Array.isArray(cartItem.customization.uploadedArtworks)
                     ? (cartItem.customization.uploadedArtworks as Array<{ name?: string; url?: string; side?: string }>).map((a) => ({
                         name: a.name || 'Artwork',

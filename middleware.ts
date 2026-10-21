@@ -93,10 +93,22 @@ export async function middleware(request: NextRequest) {
         }
       }
 
+      // Signed invoice e-mail links are allowed through the middleware so the
+      // invoice page itself can verify the token. Invalid/expired tokens still
+      // render notFound() inside the page.
+      const isSignedInvoiceLink =
+        /^\/account\/orders\/[^/]+\/invoice$/.test(path) &&
+        request.nextUrl.searchParams.has('email') &&
+        request.nextUrl.searchParams.has('token');
+
       // Protect /account and /checkout routes
-      if ((path.startsWith('/account') || path.startsWith('/checkout')) && !authUser) {
+      if (
+        (path.startsWith('/account') || path.startsWith('/checkout')) &&
+        !authUser &&
+        !isSignedInvoiceLink
+      ) {
         const redirectUrl = new URL('/login', request.url);
-        redirectUrl.searchParams.set('redirectTo', path);
+        redirectUrl.searchParams.set('redirectTo', `${path}${request.nextUrl.search}`);
         return NextResponse.redirect(redirectUrl);
       }
 

@@ -228,7 +228,7 @@ export function CartDrawer() {
                         }
                         alt={item.name || displayName}
                         fill
-                        className="object-cover"
+                        className="object-contain"
                         sizes="80px"
                       />
                     </div>
@@ -499,7 +499,7 @@ export function CartDrawer() {
                         }
                         alt={item.name || displayName}
                         fill
-                        className="object-cover"
+                        className="object-contain"
                         sizes="128px"
                       />
                     </div>

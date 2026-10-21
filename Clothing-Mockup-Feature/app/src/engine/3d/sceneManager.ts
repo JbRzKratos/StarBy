@@ -17,6 +17,16 @@ export class SceneManager3D {
   private shadowPlane: THREE.Mesh;
   private hdrLoader: HDRLoader;
 
+  /** Saved light rig while an off-screen proof is rendered from a new angle. */
+  private proofLightBackup: {
+    keyPosition: THREE.Vector3;
+    keyIntensity: number;
+    fillPosition: THREE.Vector3;
+    fillIntensity: number;
+    rimPosition: THREE.Vector3;
+    rimIntensity: number;
+  } | null = null;
+
   private currentTarget: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
   private currentDistance = 7.5;
   private targetCameraPos: THREE.Vector3 | null = null;
@@ -216,6 +226,56 @@ export class SceneManager3D {
       this.scene.background = bgColor;
       this.renderer.setClearColor(bgColor, 1);
     }
+  }
+
+  /**
+   * Re-light the garment for an off-screen proof captured from a fixed angle.
+   *
+   * The live studio has its key light in front (+Z). A dead-on back or sleeve
+   * capture would therefore be lit only by the rim/ambient/HDR and look much
+   * darker than the view the customer approved. This temporarily mirrors the
+   * key/fill/rim rig toward the proof camera. Call restoreProofLighting() after
+   * the capture so the live viewport is unchanged.
+   */
+  public applyProofLighting(view: 'back' | 'left' | 'right'): void {
+    if (!this.proofLightBackup) {
+      this.proofLightBackup = {
+        keyPosition: this.keyLight.position.clone(),
+        keyIntensity: this.keyLight.intensity,
+        fillPosition: this.fillLight.position.clone(),
+        fillIntensity: this.fillLight.intensity,
+        rimPosition: this.rimLight.position.clone(),
+        rimIntensity: this.rimLight.intensity,
+      };
+    }
+
+    const keyPosition: Record<'back' | 'left' | 'right', [number, number, number]> = {
+      back: [3, 7, -5],
+      left: [-5, 7, 3],
+      right: [5, 7, 3],
+    };
+    const [x, y, z] = keyPosition[view];
+
+    this.keyLight.position.set(x, y, z);
+    // Keep the fill on the camera-facing side so dark garments retain detail.
+    this.fillLight.position.set(-x * 0.8, 2, z * 0.8);
+    // The rim stays opposite the key for edge separation.
+    this.rimLight.position.set(-x * 0.6, 6, -z * 0.6);
+    this.keyLight.intensity = Math.max(this.keyLight.intensity, 0.85);
+    this.fillLight.intensity = Math.max(this.fillLight.intensity, 0.38);
+    this.rimLight.intensity = Math.max(this.rimLight.intensity, 0.38);
+  }
+
+  public restoreProofLighting(): void {
+    if (!this.proofLightBackup) return;
+    const backup = this.proofLightBackup;
+    this.keyLight.position.copy(backup.keyPosition);
+    this.keyLight.intensity = backup.keyIntensity;
+    this.fillLight.position.copy(backup.fillPosition);
+    this.fillLight.intensity = backup.fillIntensity;
+    this.rimLight.position.copy(backup.rimPosition);
+    this.rimLight.intensity = backup.rimIntensity;
+    this.proofLightBackup = null;
   }
 
   public setCameraFraming(target: [number, number, number], distance: number, fov = 45, defaultPreset: CameraPreset3D = 'front'): void {

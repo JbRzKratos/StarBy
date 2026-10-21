@@ -571,89 +571,78 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                           </div>
                         )}
 
-                      {/* 3D Mockup Placement Visuals (Front & Back) */}
+                      {/* 3D Mockup Placement Visuals (Studio View, Front, Back & Sleeves) */}
                       {item.customization &&
-                        (item.customization.frontPreviewFileUrl ||
-                          item.customization.backPreviewFileUrl ||
-                          item.orderCustomization?.previewFileUrl) && (
-                          <div className="space-y-2 pt-1 border-t border-white/5 mt-2">
-                            <span className="font-mono text-[10px] text-white/50 uppercase tracking-wider font-bold block">
-                              3D Studio Garment Mockups (Placement Reference):
-                            </span>
-                            <div className="grid grid-cols-2 gap-2">
-                              {(item.customization.frontPreviewFileUrl ||
-                                item.orderCustomization?.previewFileUrl) && (
-                                <div className="p-2 bg-white/[0.02] border border-[#0057FF]/30 rounded-lg space-y-1.5">
-                                  <div className="flex items-center justify-between">
-                                    <span className="font-mono text-[10px] text-blue-400 font-semibold">
-                                      Front 3D Mockup
-                                    </span>
+                        (() => {
+                          const cust = item.customization as Record<string, unknown>;
+                          const orderPreview = item.orderCustomization?.previewFileUrl;
+                          const candidates = [
+                            {
+                              label: 'Studio View',
+                              url: cust.currentPreviewFileUrl || orderPreview,
+                            },
+                            {
+                              label: 'Front',
+                              url: cust.frontPreviewFileUrl || orderPreview,
+                            },
+                            { label: 'Back', url: cust.backPreviewFileUrl },
+                            { label: 'Left Sleeve', url: cust.leftSleevePreviewFileUrl },
+                            { label: 'Right Sleeve', url: cust.rightSleevePreviewFileUrl },
+                          ];
+                          const seen = new Set<string>();
+                          const proofs = candidates.filter(
+                            (proof): proof is { label: string; url: string } => {
+                              if (typeof proof.url !== 'string' || !proof.url) return false;
+                              if (seen.has(proof.url)) return false;
+                              seen.add(proof.url);
+                              return true;
+                            },
+                          );
+                          if (proofs.length === 0) return null;
+
+                          return (
+                            <div className="space-y-2 pt-1 border-t border-white/5 mt-2">
+                              <span className="font-mono text-[10px] text-white/50 uppercase tracking-wider font-bold block">
+                                3D Studio Garment Mockups (Placement Reference):
+                              </span>
+                              <div className="grid grid-cols-2 gap-2">
+                                {proofs.map((proof) => (
+                                  <div
+                                    key={proof.label}
+                                    className="p-2 bg-white/[0.02] border border-[#0057FF]/30 rounded-lg space-y-1.5"
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <span className="font-mono text-[10px] text-blue-400 font-semibold">
+                                        {proof.label} 3D Mockup
+                                      </span>
+                                      <a
+                                        href={proof.url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-[10px] text-[#0057FF] hover:underline font-mono"
+                                      >
+                                        View Full ↗
+                                      </a>
+                                    </div>
                                     <a
-                                      href={
-                                        (item.customization.frontPreviewFileUrl as string) ||
-                                        (item.orderCustomization?.previewFileUrl as string)
-                                      }
+                                      href={proof.url}
                                       target="_blank"
                                       rel="noreferrer"
-                                      className="text-[10px] text-[#0057FF] hover:underline font-mono"
+                                      className="block aspect-square rounded border border-white/10 overflow-hidden bg-black/60"
                                     >
-                                      View Full ↗
+                                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                                      <img
+                                        src={proof.url}
+                                        alt={`${proof.label} 3D mockup proof`}
+                                        className="w-full h-full object-contain"
+                                      />
                                     </a>
                                   </div>
-                                  <a
-                                    href={
-                                      (item.customization.frontPreviewFileUrl as string) ||
-                                      (item.orderCustomization?.previewFileUrl as string)
-                                    }
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="block aspect-square rounded border border-white/10 overflow-hidden bg-black/60"
-                                  >
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                      src={
-                                        (item.customization.frontPreviewFileUrl as string) ||
-                                        (item.orderCustomization?.previewFileUrl as string)
-                                      }
-                                      alt="Front 3D mockup proof"
-                                      className="w-full h-full object-contain"
-                                    />
-                                  </a>
-                                </div>
-                              )}
-                              {item.customization.backPreviewFileUrl && (
-                                <div className="p-2 bg-white/[0.02] border border-[#0057FF]/30 rounded-lg space-y-1.5">
-                                  <div className="flex items-center justify-between">
-                                    <span className="font-mono text-[10px] text-blue-400 font-semibold">
-                                      Back 3D Mockup
-                                    </span>
-                                    <a
-                                      href={item.customization.backPreviewFileUrl as string}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className="text-[10px] text-[#0057FF] hover:underline font-mono"
-                                    >
-                                      View Full ↗
-                                    </a>
-                                  </div>
-                                  <a
-                                    href={item.customization.backPreviewFileUrl as string}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="block aspect-square rounded border border-white/10 overflow-hidden bg-black/60"
-                                  >
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                      src={item.customization.backPreviewFileUrl as string}
-                                      alt="Back 3D mockup proof"
-                                      className="w-full h-full object-contain"
-                                    />
-                                  </a>
-                                </div>
-                              )}
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          );
+                        })()}
 
                       {/* Editorial Magazine Customer Data & Uploaded Images */}
                       {item.customization &&
@@ -745,11 +734,38 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                                           className="p-2.5 bg-white/5 border border-white/10 rounded-lg text-xs space-y-1.5"
                                         >
                                           <div className="font-bold text-white text-[11px] flex justify-between">
-                                            <span>Page {pageNum}</span>
+                                            <span>
+                                              Page {pageNum}
+                                              {typeof p.title === 'string' && p.title
+                                                ? ` · ${p.title}`
+                                                : ''}
+                                            </span>
                                             <span className="text-[10px] text-slate-400 font-normal">
                                               {images.length} images · {texts.length} text blocks
                                             </span>
                                           </div>
+
+                                          {typeof p.backgroundImage === 'string' &&
+                                            p.backgroundImage && (
+                                              <div className="pt-1">
+                                                <span className="text-slate-400 font-bold block text-[9px]">
+                                                  Page Background:
+                                                </span>
+                                                <a
+                                                  href={p.backgroundImage}
+                                                  target="_blank"
+                                                  rel="noreferrer"
+                                                  className="inline-block w-16 h-16 rounded border border-white/20 overflow-hidden bg-black/60 mt-1"
+                                                >
+                                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                  <img
+                                                    src={p.backgroundImage}
+                                                    alt={`P${pageNum} background`}
+                                                    className="w-full h-full object-cover"
+                                                  />
+                                                </a>
+                                              </div>
+                                            )}
 
                                           {/* Images */}
                                           {images.length > 0 && (

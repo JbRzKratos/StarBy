@@ -85,8 +85,9 @@ export default function CartPage() {
                 const displayVariant =
                   item.variant ?? variant?.name ?? item.variantId.replace(/[-_]/g, ' ');
                 const displayImage =
-                  item.image ??
+                  item.customization?.currentPreviewFileUrl ??
                   item.customization?.previewFileUrl ??
+                  item.image ??
                   item.customization?.thumbnail ??
                   item.customization?.imageUrl ??
                   variant?.images[0] ??
@@ -100,7 +101,7 @@ export default function CartPage() {
                     {/* Item Thumbnail */}
                     <div className="w-24 h-24 sm:w-28 sm:h-28 bg-[#1A1A1E] rounded-lg flex-shrink-0 relative overflow-hidden border border-[#F5F1EA]/10">
                       {displayImage ? (
-                        <Image src={displayImage} alt={displayName} fill className="object-cover" />
+                        <Image src={displayImage} alt={displayName} fill className="object-contain" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center font-mono text-xs text-[#F5F1EA]/40">
                           Custom
