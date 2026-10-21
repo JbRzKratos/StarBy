@@ -23,7 +23,7 @@ export function HeroThreeCharacters({ className = '' }: HeroThreeCharactersProps
     width: 1230,
     height: 977,
     quality: 72,
-    sizes: '(max-width: 767px) 80vw',
+    sizes: '(max-width: 767px) 96vw',
   });
   const desktop = getImageProps({
     src: desktopSrc,
@@ -31,7 +31,7 @@ export function HeroThreeCharacters({ className = '' }: HeroThreeCharactersProps
     width: 1230,
     height: 977,
     quality: 78,
-    sizes: '(min-width: 768px) 90vw',
+    sizes: '(min-width: 768px) 92vw',
   });
 
   return (
@@ -68,7 +68,7 @@ export function HeroThreeCharacters({ className = '' }: HeroThreeCharactersProps
           loading="eager"
           decoding="async"
           draggable={false}
-          className="w-full h-full object-contain object-bottom pointer-events-none"
+          className="w-full min-w-full h-full object-cover object-bottom -scale-x-100 pointer-events-none"
         />
       </picture>
     </div>

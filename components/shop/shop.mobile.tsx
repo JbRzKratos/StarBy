@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import type { Product } from '@/data/products';
+import type { CatalogDesignEntry } from '@/lib/clothing-designs/catalog-page';
 import { SHOP_CATEGORIES } from './shop.shared';
 import { CategoryComingSoonPage } from './category-coming-soon-page';
 import { getR2AssetUrl } from '@/lib/r2';
@@ -151,7 +152,19 @@ function MobileProductCard({
   );
 }
 
-export function ShopMobile({ category, products }: { category: string; products: Product[] }) {
+export function ShopMobile({
+  category,
+  products,
+  initialDesigns,
+  initialTotal,
+  initialTotalPages,
+}: {
+  category: string;
+  products: Product[];
+  initialDesigns?: CatalogDesignEntry[];
+  initialTotal?: number;
+  initialTotalPages?: number;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -400,6 +413,9 @@ export function ShopMobile({ category, products }: { category: string; products:
             category={activeTab as 'tees' | 'hoodies'}
             searchQuery={searchQuery}
             products={products}
+            initialDesigns={initialDesigns}
+            initialTotal={initialTotal}
+            initialTotalPages={initialTotalPages}
           />
         ) : (
           <div className="flex flex-col">

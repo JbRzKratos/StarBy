@@ -11,10 +11,24 @@ interface ClothingDesignCardProps {
   priority?: boolean;
 }
 
+/**
+ * Tiny neutral placeholder (8×10 PNG) shown while the real thumbnail
+ * decodes, so the grid never flashes an empty box.
+ */
+const BLUR_DATA_URL =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAKCAIAAAAGpYjXAAAAG0lEQVR4nGM0MLJgwAZY/v37R3OJ////D5jlAInyG42QnT1KAAAAAElFTkSuQmCC';
+
 export function ClothingDesignCard({ design, onSelect, priority = false }: ClothingDesignCardProps) {
   const [imageError, setImageError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeSurface, setActiveSurface] = useState<'front' | 'back' | 'sleeve'>(design.defaultSurface);
+
+  // The thumbnail is part of the server-rendered HTML, so it can finish
+  // decoding before React hydrates. In that case `onLoad` never fires and the
+  // card would stay on the spinner forever — check `complete` on mount.
+  const markLoadedIfCached = React.useCallback((node: HTMLImageElement | null) => {
+    if (node?.complete && node.naturalWidth > 0) setIsLoaded(true);
+  }, []);
 
   const activeArt = design.artworks?.find((a) => {
     if (activeSurface === 'back') return a.suggestedPlacement?.includes('back');
@@ -23,6 +37,7 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
   }) || design.artworks?.[0];
 
   const previewSrc =
+    (activeArt as { cdnThumbnailUrl?: string } | undefined)?.cdnThumbnailUrl ||
     activeArt?.previewUrl ||
     design.previewUrl ||
     getR2AssetUrl(`clothing-designs/${design.id}/previews/thumb_${activeArt?.id || design.defaultArtworkId || 'art-1'}.webp`);
@@ -75,6 +90,9 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
               alt={design.name}
               fill
               priority={priority}
+              ref={markLoadedIfCached}
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               onLoad={() => setIsLoaded(true)}
               onError={() => setImageError(true)}
               className={`object-contain transition-transform duration-500 ease-out group-hover:scale-105 ${

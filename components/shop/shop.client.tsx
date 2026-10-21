@@ -5,8 +5,21 @@ import { useDevice } from '@/lib/providers/device-provider';
 import { ShopDesktop } from './shop.desktop';
 import { ShopMobile } from './shop.mobile';
 import type { Product } from '@/data/products';
+import type { CatalogDesignEntry } from '@/lib/clothing-designs/catalog-page';
 
-export function ShopClient({ category, products }: { category: string; products: Product[] }) {
+export function ShopClient({
+  category,
+  products,
+  initialDesigns,
+  initialTotal,
+  initialTotalPages,
+}: {
+  category: string;
+  products: Product[];
+  initialDesigns?: CatalogDesignEntry[];
+  initialTotal?: number;
+  initialTotalPages?: number;
+}) {
   const device = useDevice();
   const [mounted, setMounted] = useState(false);
 
@@ -21,18 +34,42 @@ export function ShopClient({ category, products }: { category: string; products:
     return (
       <>
         <div className="hidden md:block">
-          <ShopDesktop category={category} products={products} />
+          <ShopDesktop
+            category={category}
+            products={products}
+            initialDesigns={initialDesigns}
+            initialTotal={initialTotal}
+            initialTotalPages={initialTotalPages}
+          />
         </div>
         <div className="block md:hidden">
-          <ShopMobile category={category} products={products} />
+          <ShopMobile
+            category={category}
+            products={products}
+            initialDesigns={initialDesigns}
+            initialTotal={initialTotal}
+            initialTotalPages={initialTotalPages}
+          />
         </div>
       </>
     );
   }
 
   return device === 'desktop' ? (
-    <ShopDesktop category={category} products={products} />
+    <ShopDesktop
+      category={category}
+      products={products}
+      initialDesigns={initialDesigns}
+      initialTotal={initialTotal}
+      initialTotalPages={initialTotalPages}
+    />
   ) : (
-    <ShopMobile category={category} products={products} />
+    <ShopMobile
+      category={category}
+      products={products}
+      initialDesigns={initialDesigns}
+      initialTotal={initialTotal}
+      initialTotalPages={initialTotalPages}
+    />
   );
 }

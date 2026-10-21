@@ -39,15 +39,18 @@ export function Hero() {
           <div className="relative w-full text-center px-2 flex items-center justify-center">
             <h1
               className="font-display font-black tracking-tighter text-[#0A0A0A] text-center select-none whitespace-nowrap uppercase opacity-90 md:opacity-95 leading-none"
-              style={{ fontSize: 'clamp(4rem, 17vw, 19rem)' }}
+              style={{ fontSize: 'clamp(4rem, 18vw, 20rem)' }}
             >
               FREGORO
             </h1>
           </div>
         </div>
 
-        {/* 3-Character Visual in Foreground (Enlarged & proportionally balanced) */}
-        <div className="relative z-10 w-auto h-full max-h-[clamp(320px,58vh,640px)] aspect-[1230/977] max-w-[min(94vw,1180px)] flex items-end justify-center pointer-events-none">
+        {/* 3-Character Visual in Foreground (Enlarged & proportionally balanced)
+            The source art carries ~12% transparent margin on each side, so the
+            frame uses the artwork's own content ratio and `object-cover` crops
+            that empty space away — the models then read much larger. */}
+        <div className="relative z-10 w-auto h-full max-h-[clamp(360px,66vh,760px)] aspect-[930/911] max-w-[min(98vw,1400px)] overflow-hidden flex items-end justify-center pointer-events-none">
           <HeroThreeCharacters />
         </div>
       </div>
@@ -73,7 +76,7 @@ export function Hero() {
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 md:gap-3.5 pt-1">
             <Link
-              href="/products/tees"
+              href="/products/all"
               className="group relative inline-flex items-center justify-center bg-[#0A0A0A] text-[#F5F1EA] py-3 px-6 sm:px-7 md:py-3.5 md:px-8 font-mono text-xs font-bold uppercase tracking-[0.2em] border-2 border-[#0A0A0A] transition-all duration-300 hover:bg-[#ED9518] hover:border-[#ED9518] hover:text-[#0A0A0A] hover:shadow-[0_0_25px_rgba(237,149,24,0.4)] active:bg-[#ED9518] active:border-[#ED9518] active:text-[#0A0A0A]"
             >
               <span className="relative z-10">SHOP NOW</span>

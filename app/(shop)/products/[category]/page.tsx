@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { ShopPage } from '@/components/shop';
 import { Suspense } from 'react';
+import { getCatalogPage, type CatalogDesignEntry } from '@/lib/clothing-designs/catalog-page';
 
 // ISR: Cache statically for 60 seconds with on-demand admin revalidation
 export const revalidate = 60;
@@ -60,9 +61,37 @@ export default async function CategoryPage({ params, searchParams: _searchParams
   // Fetch live products with real-time pricing from DB
   const liveProducts = await getLiveProducts();
 
+  // Render the first page of curated 3D designs on the server so the gallery
+  // thumbnails are part of the initial HTML. Without this the gallery only
+  // appears after a client-side round trip and every thumbnail pops in at once
+  // several seconds later.
+  let initialDesigns: CatalogDesignEntry[] | undefined;
+  let initialTotal: number | undefined;
+  let initialTotalPages: number | undefined;
+  if (params.category === 'tees' || params.category === 'hoodies') {
+    try {
+      const catalog = await getCatalogPage({
+        page: 1,
+        limit: 24,
+        garment: params.category === 'hoodies' ? 'hoodie' : undefined,
+      });
+      initialDesigns = catalog.designs;
+      initialTotal = catalog.total;
+      initialTotalPages = catalog.totalPages;
+    } catch (err) {
+      console.warn('[Shop] Could not pre-render clothing designs:', err);
+    }
+  }
+
   return (
     <Suspense fallback={<div className="min-h-screen bg-charcoal" />}>
-      <ShopPage category={params.category} products={liveProducts} />
+      <ShopPage
+        category={params.category}
+        products={liveProducts}
+        initialDesigns={initialDesigns}
+        initialTotal={initialTotal}
+        initialTotalPages={initialTotalPages}
+      />
     </Suspense>
   );
 }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
+import type { CatalogDesignEntry } from '@/lib/clothing-designs/catalog-page';
 import { ClothingDesignCard } from './clothing-design-card';
 // ClothingProductModal (~51 kB) — lazy loaded, only shown when a design card is clicked
 const ClothingProductModal = dynamic(
@@ -19,20 +20,35 @@ interface ClothingDesignsGalleryProps {
   category: 'tees' | 'hoodies';
   searchQuery?: string;
   products?: Product[];
+  /** First page of designs, rendered on the server so images load immediately. */
+  initialDesigns?: CatalogDesignEntry[];
+  initialTotal?: number;
+  initialTotalPages?: number;
 }
 
 export function ClothingDesignsGallery({
   category,
   searchQuery = '',
   products,
+  initialDesigns,
+  initialTotal,
+  initialTotalPages,
 }: ClothingDesignsGalleryProps) {
-  const [designs, setDesigns] = useState<ClothingDesignEntry[]>([]);
+  const [designs, setDesigns] = useState<ClothingDesignEntry[]>(
+    (initialDesigns as ClothingDesignEntry[] | undefined) || []
+  );
   const [activeTheme, setActiveTheme] = useState<string>('all');
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(initialTotalPages ?? 1);
+  const [totalCount, setTotalCount] = useState(initialTotal ?? 0);
+  const [isLoading, setIsLoading] = useState(!initialDesigns || initialDesigns.length === 0);
   const [selectedDesign, setSelectedDesign] = useState<ClothingDesignEntry | null>(null);
+
+  // The server already sent the first page for the default view, so the very
+  // first effect run must not trigger a duplicate round trip.
+  const skipInitialFetchRef = React.useRef(
+    Boolean(initialDesigns && initialDesigns.length > 0)
+  );
 
   const plainProductsForCategory = React.useMemo(() => {
     if (products && products.length > 0) {
@@ -100,6 +116,11 @@ export function ClothingDesignsGallery({
 
   // Initial and category/search change load
   useEffect(() => {
+    // The first page is already rendered on the server for the default view.
+    if (skipInitialFetchRef.current) {
+      skipInitialFetchRef.current = false;
+      return;
+    }
     fetchDesigns(1, true);
   }, [fetchDesigns]);
 
@@ -286,7 +307,7 @@ export function ClothingDesignsGallery({
               key={design.id}
               design={design}
               onSelect={setSelectedDesign}
-              priority={idx === 0}
+              priority={idx < 4}
             />
           ))}
         </div>
