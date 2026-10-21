@@ -580,6 +580,7 @@ export function ClothingMockupIframe({
               image: safeImage,
               customization: {
                 garment: payload.garmentName,
+                garmentId: payload.garmentId,
                 color: payload.garmentColor,
                 size: payload.size,
                 frontDesignFileUrl: uploadResult.frontDesignFileUrl,

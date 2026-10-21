@@ -191,12 +191,14 @@ export function ShopDesktop({
   initialDesigns,
   initialTotal,
   initialTotalPages,
+  shopTabs = SHOP_CATEGORIES,
 }: {
   category: string;
   products: Product[];
   initialDesigns?: CatalogDesignEntry[];
   initialTotal?: number;
   initialTotalPages?: number;
+  shopTabs?: { id: string; label: string }[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -361,7 +363,7 @@ export function ShopDesktop({
 
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar pb-4 border-b border-smoke/20">
-              {SHOP_CATEGORIES.map((tab) => (
+              {shopTabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => handleTabClick(tab.id)}

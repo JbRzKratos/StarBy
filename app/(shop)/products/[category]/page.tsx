@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { getCategoryBySlug, type Category } from '@/data/categories';
+import { getCategoryBySlug, categories as staticCategories, type Category } from '@/data/categories';
 import { getLiveProducts } from '@/lib/services/products-service';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { ShopPage } from '@/components/shop';
+import { SHOP_CATEGORIES } from '@/components/shop/shop.shared';
 import { Suspense } from 'react';
 import { getCatalogPage, type CatalogDesignEntry } from '@/lib/clothing-designs/catalog-page';
 
@@ -61,6 +62,29 @@ export default async function CategoryPage({ params, searchParams: _searchParams
   // Fetch live products with real-time pricing from DB
   const liveProducts = await getLiveProducts();
 
+  // Product types created in Admin → Categories automatically get a storefront
+  // tab. Established static categories keep the exact tabs they already had.
+  let shopTabs: { id: string; label: string }[] = SHOP_CATEGORIES;
+  try {
+    const dbCategories = await prisma.category.findMany({
+      select: { slug: true, name: true },
+      orderBy: { name: 'asc' },
+    });
+    const knownSlugs = new Set([
+      ...staticCategories.map((c) => c.slug.toLowerCase()),
+      ...SHOP_CATEGORIES.map((c) => c.id.toLowerCase()),
+      'all',
+    ]);
+    const extras = dbCategories
+      .filter((c) => c.slug && !knownSlugs.has(c.slug.toLowerCase()))
+      .map((c) => ({ id: c.slug, label: c.name || c.slug }));
+    if (extras.length > 0) {
+      shopTabs = [...SHOP_CATEGORIES, ...extras];
+    }
+  } catch {
+    /* keep the static tabs if the DB lookup fails */
+  }
+
   // Render the first page of curated 3D designs on the server so the gallery
   // thumbnails are part of the initial HTML. Without this the gallery only
   // appears after a client-side round trip and every thumbnail pops in at once
@@ -91,6 +115,7 @@ export default async function CategoryPage({ params, searchParams: _searchParams
         initialDesigns={initialDesigns}
         initialTotal={initialTotal}
         initialTotalPages={initialTotalPages}
+        shopTabs={shopTabs}
       />
     </Suspense>
   );

@@ -158,12 +158,14 @@ export function ShopMobile({
   initialDesigns,
   initialTotal,
   initialTotalPages,
+  shopTabs = SHOP_CATEGORIES,
 }: {
   category: string;
   products: Product[];
   initialDesigns?: CatalogDesignEntry[];
   initialTotal?: number;
   initialTotalPages?: number;
+  shopTabs?: { id: string; label: string }[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -360,7 +362,7 @@ export function ShopMobile({
         {/* Scrollable Category Tabs with Edge Fade Scroll Affordance */}
         <div className="relative">
           <div className="px-5 pb-2 flex items-center gap-5 overflow-x-auto hide-scrollbar snap-x snap-proximity scroll-smooth scroll-px-5 pr-12">
-            {SHOP_CATEGORIES.map((tab) => (
+            {shopTabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}

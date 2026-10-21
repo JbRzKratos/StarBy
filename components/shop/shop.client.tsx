@@ -13,12 +13,14 @@ export function ShopClient({
   initialDesigns,
   initialTotal,
   initialTotalPages,
+  shopTabs,
 }: {
   category: string;
   products: Product[];
   initialDesigns?: CatalogDesignEntry[];
   initialTotal?: number;
   initialTotalPages?: number;
+  shopTabs?: { id: string; label: string }[];
 }) {
   const device = useDevice();
   const [mounted, setMounted] = useState(false);
@@ -40,6 +42,7 @@ export function ShopClient({
             initialDesigns={initialDesigns}
             initialTotal={initialTotal}
             initialTotalPages={initialTotalPages}
+            shopTabs={shopTabs}
           />
         </div>
         <div className="block md:hidden">
@@ -49,6 +52,7 @@ export function ShopClient({
             initialDesigns={initialDesigns}
             initialTotal={initialTotal}
             initialTotalPages={initialTotalPages}
+            shopTabs={shopTabs}
           />
         </div>
       </>
@@ -62,6 +66,7 @@ export function ShopClient({
       initialDesigns={initialDesigns}
       initialTotal={initialTotal}
       initialTotalPages={initialTotalPages}
+      shopTabs={shopTabs}
     />
   ) : (
     <ShopMobile
@@ -70,6 +75,7 @@ export function ShopClient({
       initialDesigns={initialDesigns}
       initialTotal={initialTotal}
       initialTotalPages={initialTotalPages}
+      shopTabs={shopTabs}
     />
   );
 }

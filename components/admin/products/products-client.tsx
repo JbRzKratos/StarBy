@@ -179,7 +179,7 @@ export const CUSTOMER_SELLING_CATEGORIES: CustomerSellingCategory[] = [
 
 export function ProductsClient({
   products,
-  categories: _categories,
+  categories,
 }: {
   products: ProductRow[];
   categories: CategoryOption[];
@@ -196,6 +196,28 @@ export function ProductsClient({
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  // Every category that exists in the DB gets a chip, even ones created after
+  // this component shipped. This is what makes "add a product type" in
+  // Admin → Categories immediately usable in the products table.
+  const sellingCategories = useMemo<CustomerSellingCategory[]>(() => {
+    const known = new Set(
+      CUSTOMER_SELLING_CATEGORIES.flatMap((cat) => cat.categorySlugs.map((s) => s.toLowerCase())),
+    );
+    const extras = (categories || [])
+      .filter((cat) => cat?.slug && !known.has(cat.slug.toLowerCase()))
+      .map<CustomerSellingCategory>((cat) => ({
+        id: cat.slug,
+        name: cat.name || cat.slug,
+        icon: '🏷️',
+        categorySlugs: [cat.slug.toLowerCase()],
+        status: 'active',
+        description: `Products published under the ${cat.name || cat.slug} product type.`,
+        badge: 'Selling Live',
+        suggestedPrices: [],
+      }));
+    return [...CUSTOMER_SELLING_CATEGORIES, ...extras];
+  }, [categories]);
 
   // Product title/name editing state
   const [editingNameProductId, setEditingNameProductId] = useState<string | null>(null);
@@ -236,13 +258,13 @@ export function ProductsClient({
   // Compute product count per customer category
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = { all: productList.length };
-    CUSTOMER_SELLING_CATEGORIES.forEach((cat) => {
+    sellingCategories.forEach((cat) => {
       counts[cat.id] = productList.filter((p) =>
         cat.categorySlugs.includes(p.categorySlug.toLowerCase())
       ).length;
     });
     return counts;
-  }, [productList]);
+  }, [productList, sellingCategories]);
 
   // Filtered products list
   const filtered = useMemo(() => {
@@ -257,7 +279,7 @@ export function ProductsClient({
       // 2. Customer Selling Category Filter
       let matchCustomerCat = true;
       if (selectedCustomerCat !== 'all') {
-        const targetCat = CUSTOMER_SELLING_CATEGORIES.find((c) => c.id === selectedCustomerCat);
+        const targetCat = sellingCategories.find((c) => c.id === selectedCustomerCat);
         if (targetCat) {
           matchCustomerCat = targetCat.categorySlugs.includes(p.categorySlug.toLowerCase());
         } else {
@@ -322,13 +344,13 @@ export function ProductsClient({
 
       return matchSearch && matchCustomerCat && matchStatus && matchStock;
     });
-  }, [productList, search, selectedCustomerCat, sellingStatusFilter, stockFilter, sizeStockState]);
+  }, [productList, search, selectedCustomerCat, sellingCategories, sellingStatusFilter, stockFilter, sizeStockState]);
 
   // Current selected category metadata
   const currentCategoryMeta = useMemo(() => {
     if (selectedCustomerCat === 'all') return null;
-    return CUSTOMER_SELLING_CATEGORIES.find((c) => c.id === selectedCustomerCat) || null;
-  }, [selectedCustomerCat]);
+    return sellingCategories.find((c) => c.id === selectedCustomerCat) || null;
+  }, [selectedCustomerCat, sellingCategories]);
 
   // Stats for the currently selected customer category
   const categoryStats = useMemo(() => {
@@ -727,7 +749,7 @@ export function ProductsClient({
           </button>
 
           {/* Individual Customer Selling Categories */}
-          {CUSTOMER_SELLING_CATEGORIES.filter((cat) => {
+          {sellingCategories.filter((cat) => {
             if (sellingStatusFilter === 'active') return cat.status === 'active';
             if (sellingStatusFilter === 'coming-soon') return cat.status === 'coming-soon';
             return true;
@@ -818,7 +840,9 @@ export function ProductsClient({
               onClick={() => {
                 setBatchModalCategory(currentCategoryMeta);
                 setBatchPriceValue(
-                  categoryStats?.avg ? String(categoryStats.avg) : String(currentCategoryMeta.suggestedPrices[0])
+                  categoryStats?.avg
+                    ? String(categoryStats.avg)
+                    : String(currentCategoryMeta.suggestedPrices[0] ?? '')
                 );
               }}
               className="w-full md:w-auto px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-400 hover:text-emerald-300 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow cursor-pointer active:scale-95"

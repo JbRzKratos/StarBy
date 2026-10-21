@@ -8,6 +8,12 @@ export interface AddToCartModal3DProps {
   garmentColor: string;
   unitPrice?: number;
   basePrice?: number;
+  /** Size the studio was opened with (from the product page / URL). */
+  initialSize?: string;
+  /** Authoritative price resolver — recomputes per selected size. */
+  resolvePrice?: (size: string) => number;
+  /** Garment-only price for the selected size (shown in the breakdown). */
+  resolveBasePrice?: (size: string) => number;
   customArtworkCount?: number;
   customPrintFee?: number;
   isCuratedDesign?: boolean;
@@ -41,6 +47,9 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   garmentColor,
   unitPrice: propUnitPrice,
   basePrice,
+  initialSize,
+  resolvePrice,
+  resolveBasePrice,
   customArtworkCount = 0,
   customPrintFee = 0,
   isCuratedDesign = false,
@@ -51,7 +60,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   onConfirmAddToCart,
 }) => {
   const [selectedSide, setSelectedSide] = useState<'front' | 'back' | 'both'>('front');
-  const [selectedSize, setSelectedSize] = useState<string>('L');
+  const [selectedSize, setSelectedSize] = useState<string>(initialSize || 'L');
   const [quantity, setQuantity] = useState<number>(1);
   const [instructions, setInstructions] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -103,8 +112,13 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   };
 
   const is3XL = selectedSize === '3XL' || selectedSize === 'XXXL';
-  let adjustedBasePrice = typeof basePrice === 'number' && basePrice > 0 ? basePrice : 600;
-  if (is3XL && !isCuratedDesign) {
+  let adjustedBasePrice =
+    typeof resolveBasePrice === 'function'
+      ? resolveBasePrice(selectedSize)
+      : typeof basePrice === 'number' && basePrice > 0
+        ? basePrice
+        : 600;
+  if (typeof resolveBasePrice !== 'function' && is3XL && !isCuratedDesign) {
     const lowerName = garmentName.toLowerCase();
     if (lowerName.includes('oversized')) adjustedBasePrice = 699;
     else if (lowerName.includes('acid')) adjustedBasePrice = 720;
@@ -113,9 +127,12 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   }
 
   const effectivePrintFee = customPrintFee || (customArtworkCount * 49);
-  const unitPrice = isCuratedDesign
-    ? (typeof propUnitPrice === 'number' && propUnitPrice >= 0 ? propUnitPrice : 600)
-    : (adjustedBasePrice + effectivePrintFee);
+  const unitPrice =
+    typeof resolvePrice === 'function'
+      ? resolvePrice(selectedSize)
+      : isCuratedDesign
+        ? (typeof propUnitPrice === 'number' && propUnitPrice >= 0 ? propUnitPrice : 600)
+        : (adjustedBasePrice + effectivePrintFee);
   const totalPrice = unitPrice * quantity;
 
   return (
@@ -411,10 +428,15 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
               <div className="price-summary-block">
                 <span className="price-label">Total Price:</span>
                 <span className="price-val">₹{totalPrice.toLocaleString('en-IN')}</span>
-                {!isCuratedDesign && typeof basePrice === 'number' && (
+                {(typeof resolveBasePrice === 'function' || typeof basePrice === 'number') && (
                   <div style={{ fontSize: '11px', color: '#94a3b8', margin: '4px 0 2px 0', lineHeight: '1.4' }}>
-                    <div>Base Garment ({selectedSize}): <strong style={{ color: '#e2e8f0' }}>₹{adjustedBasePrice}</strong></div>
-                    {customArtworkCount > 0 ? (
+                    <div>
+                      {isCuratedDesign ? 'Garment' : 'Base Garment'} ({selectedSize}):{' '}
+                      <strong style={{ color: '#e2e8f0' }}>₹{adjustedBasePrice}</strong>
+                    </div>
+                    {isCuratedDesign ? (
+                      <div style={{ color: '#64748b' }}>Curated design price includes this garment</div>
+                    ) : customArtworkCount > 0 ? (
                       <div style={{ color: '#38bdf8' }}>
                         Custom Prints ({customArtworkCount} × ₹49): <strong style={{ color: '#38bdf8' }}>+₹{effectivePrintFee}</strong>
                       </div>

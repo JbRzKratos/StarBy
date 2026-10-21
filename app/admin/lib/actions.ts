@@ -639,6 +639,7 @@ export async function updateVariant(
     color?: string;
     colorHex?: string;
     price?: number;
+    images?: string[];
     inStock?: boolean;
     stockQuantity?: number;
     reorderThreshold?: number;

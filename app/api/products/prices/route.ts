@@ -5,6 +5,10 @@ import {
   setCachedPricesPayload,
   getLiveProductBySlug,
 } from '@/lib/services/products-service';
+import {
+  GARMENT_PRICING,
+  PLAIN_PRODUCT_TO_GARMENT,
+} from '@/lib/config/garment-pricing';
 
 export const dynamic = 'force-dynamic';
 
@@ -172,6 +176,26 @@ export async function GET(request: NextRequest) {
       variantPriceMap[v.id] = { price: v.price, inStock: v.inStock };
     }
 
+    // Live garment prices for the 3D studio. The four core garments follow the
+    // matching `plain_*` catalogue product so an admin price change is reflected
+    // inside the studio immediately; the remaining 3D models keep their table
+    // defaults.
+    const garments: Record<string, { basePrice: number; sizePrices: Record<string, number> }> = {};
+    for (const [id, entry] of Object.entries(GARMENT_PRICING)) {
+      garments[id] = { basePrice: entry.basePrice, sizePrices: entry.sizePrices };
+    }
+    for (const p of products) {
+      const garmentId = PLAIN_PRODUCT_TO_GARMENT[p.id] || PLAIN_PRODUCT_TO_GARMENT[p.slug];
+      if (!garmentId) continue;
+      garments[garmentId] = {
+        basePrice: p.basePrice > 0 ? p.basePrice : garments[garmentId]?.basePrice ?? 600,
+        sizePrices:
+          p.sizePrices && typeof p.sizePrices === 'object'
+            ? { ...garments[garmentId]?.sizePrices, ...(p.sizePrices as Record<string, number>) }
+            : garments[garmentId]?.sizePrices ?? {},
+      };
+    }
+
     const payload = {
       success: true,
       timestamp: Date.now(),
@@ -182,6 +206,7 @@ export async function GET(request: NextRequest) {
       variants: variantPriceMap,
       wallLayouts: wallLayoutPriceMap,
       prebuiltWalls: prebuiltPriceMap,
+      garments,
     };
     setCachedPricesPayload(payload);
 

@@ -8,6 +8,7 @@ import { createCashfreeOrder, generatePublicOrderId, getCashfreeEnvironment } fr
 import { uploadBufferToR2, getR2PublicUrl } from '@/lib/r2';
 import { getLayoutById, FREGORO_LAYOUTS } from '@/lib/wall-studio/layouts-data';
 import { calculateWallPrice } from '@/lib/wall-studio/pricing';
+import { getGarmentSizePrice, normalizeGarmentId, GARMENT_PRICING, PLAIN_PRODUCT_TO_GARMENT } from '@/lib/config/garment-pricing';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -169,6 +170,7 @@ export async function POST(request: Request) {
     }[] = [];
     let dbVariants: { id: string; productId: string; price: number; inStock: boolean; stockQuantity: number; name: string }[] = [];
     let dbWallLayouts: { id: string; slug: string; basePrice: number; compareAtPrice: number | null }[] = [];
+    let dbGarmentProducts: { id: string; basePrice: number; sizePrices: unknown }[] = [];
 
     const fetchCatalogData = async () => {
       return await Promise.all([
@@ -202,16 +204,22 @@ export async function POST(request: Request) {
               select: { id: true, slug: true, basePrice: true, compareAtPrice: true },
             })
           : Promise.resolve([]),
+        // Live garment prices (admin-editable `plain_*` products). Without this
+        // the studio and the checkout could disagree after a price change.
+        prisma.product.findMany({
+          where: { id: { in: Object.keys(PLAIN_PRODUCT_TO_GARMENT) } },
+          select: { id: true, basePrice: true, sizePrices: true },
+        }),
       ]);
     };
 
     try {
-      [dbProducts, dbVariants, dbWallLayouts] = await fetchCatalogData();
+      [dbProducts, dbVariants, dbWallLayouts, dbGarmentProducts] = await fetchCatalogData();
     } catch (firstErr) {
       console.warn('Initial DB catalog query failed, attempting reconnect and retry...', firstErr);
       try {
         await prisma.$connect().catch(() => {});
-        [dbProducts, dbVariants, dbWallLayouts] = await fetchCatalogData();
+        [dbProducts, dbVariants, dbWallLayouts, dbGarmentProducts] = await fetchCatalogData();
       } catch (retryErr) {
         console.error('Database query error in checkout (after retry):', retryErr);
         const errMsg = retryErr instanceof Error ? retryErr.message : String(retryErr);
@@ -240,6 +248,25 @@ export async function POST(request: Request) {
       ]),
     );
 
+    // Merge live admin garment prices over the shared price table.
+    const garmentPriceOverrides: Record<
+      string,
+      { basePrice: number; sizePrices: Record<string, number> }
+    > = {};
+    for (const gp of dbGarmentProducts) {
+      const garmentId = PLAIN_PRODUCT_TO_GARMENT[gp.id];
+      if (!garmentId) continue;
+      const table = GARMENT_PRICING[garmentId];
+      garmentPriceOverrides[garmentId] = {
+        basePrice: gp.basePrice > 0 ? gp.basePrice : table?.basePrice ?? 600,
+        sizePrices: {
+          ...(table?.sizePrices ?? {}),
+          ...(gp.sizePrices && typeof gp.sizePrices === 'object'
+            ? (gp.sizePrices as Record<string, number>)
+            : {}),
+        },
+      };
+    }
 
     // 5. ──── Validate products, variants, stock ────
     let subtotal = 0;
@@ -338,6 +365,8 @@ export async function POST(request: Request) {
           const garmentKey = (
             (typeof customData?.garment === 'string' ? customData.garment : '') +
             ' ' +
+            (typeof customData?.garmentId === 'string' ? customData.garmentId : '') +
+            ' ' +
             (typeof item.variantId === 'string' ? item.variantId : '') +
             ' ' +
             (typeof item.name === 'string' ? item.name : '') +
@@ -345,24 +374,28 @@ export async function POST(request: Request) {
             (typeof item.productId === 'string' ? item.productId : '')
           ).toLowerCase();
 
-          let garmentBasePrice = 600;
-          if (garmentKey.includes('3xl') || garmentKey.includes('xxxl')) {
-            if (garmentKey.includes('hoodie')) {
-              garmentBasePrice = 780;
-            } else if (garmentKey.includes('acid')) {
-              garmentBasePrice = 720;
-            } else if (garmentKey.includes('oversized') || garmentKey.includes('french-terry')) {
-              garmentBasePrice = 699;
-            } else {
-              garmentBasePrice = 645;
-            }
-          } else if (garmentKey.includes('hoodie')) {
-            garmentBasePrice = 750;
-          } else if (garmentKey.includes('acid')) {
-            garmentBasePrice = 699;
-          } else if (garmentKey.includes('oversized') || garmentKey.includes('french-terry')) {
-            garmentBasePrice = 670;
-          }
+          // Resolve the physical garment + size deterministically. Prices come
+          // from the shared table so the studio total and the charged total can
+          // never drift apart.
+          const resolvedGarmentId =
+            normalizeGarmentId(typeof customData?.garment === 'string' ? customData.garment : null) ||
+            normalizeGarmentId(typeof customData?.garmentId === 'string' ? customData.garmentId : null) ||
+            normalizeGarmentId(typeof item.variantId === 'string' ? item.variantId : null) ||
+            normalizeGarmentId(typeof item.name === 'string' ? item.name : null) ||
+            normalizeGarmentId(typeof item.productId === 'string' ? item.productId : null) ||
+            normalizeGarmentId(garmentKey) ||
+            'regular-t-shirt';
+
+          const garmentSize =
+            (typeof item.size === 'string' && item.size) ||
+            (typeof customData?.size === 'string' && customData.size) ||
+            'L';
+
+          const garmentBasePrice = getGarmentSizePrice(
+            resolvedGarmentId,
+            garmentSize,
+            garmentPriceOverrides,
+          );
 
           const isCurated = Boolean(customData?.designId && !customData?.isPlain);
 
@@ -377,18 +410,7 @@ export async function POST(request: Request) {
                 ? curatedDbProduct.basePrice
                 : 600;
 
-            if (garmentKey.includes('3xl') || garmentKey.includes('xxxl')) {
-              if (garmentKey.includes('hoodie')) unitPrice = Math.max(designBase, 780);
-              else if (garmentKey.includes('acid')) unitPrice = Math.max(designBase, 720);
-              else if (garmentKey.includes('oversized')) unitPrice = Math.max(designBase, 699);
-              else unitPrice = Math.max(designBase, 645);
-            } else if (garmentKey.includes('hoodie')) {
-              unitPrice = Math.max(designBase, 750);
-            } else if (garmentKey.includes('acid')) {
-              unitPrice = Math.max(designBase, 699);
-            } else {
-              unitPrice = designBase;
-            }
+            unitPrice = Math.max(designBase, garmentBasePrice);
           } else {
             const rawArtworkCount =
               typeof customData?.customArtworkCount === 'number'

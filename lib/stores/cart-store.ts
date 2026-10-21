@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
+import { getGarmentSizePrice } from '@/lib/config/garment-pricing';
 
 /* ── Types ── */
 
@@ -174,7 +175,11 @@ export const useCartStore = create<CartState & CartActions>()(
                 }
               }
 
-              // For custom clothing mockup items, preserve garment base price and print fees accurately
+              // For custom clothing mockup items, recalculate with the same
+              // rule the 3D studio and the checkout API use. Without this the
+              // bag silently fell back to the design's catalogue price (e.g.
+              // ₹600) after the customer picked a hoodie (₹750), so the header
+              // and the bag disagreed.
               if (
                 item.customization?.is3dMockup ||
                 item.customization?.is2dMockup ||
@@ -182,27 +187,41 @@ export const useCartStore = create<CartState & CartActions>()(
                 item.variantId?.startsWith('mockup-3d-') ||
                 item.variantId?.startsWith('mockup-2d-')
               ) {
-                if (item.customization?.designId === 'design-001' || item.productId === 'design-001') {
+                const custom = item.customization || {};
+                const designId =
+                  typeof custom.designId === 'string' ? custom.designId : undefined;
+                const isDesign001 =
+                  designId === 'design-001' || item.productId === 'design-001';
+                const size =
+                  item.size || (typeof custom.size === 'string' ? custom.size : 'L');
+                const isPlain = Boolean(custom.isPlain) || !designId;
+                const garmentKey =
+                  (typeof custom.garmentId === 'string' ? custom.garmentId : undefined) ||
+                  (typeof custom.garment === 'string' ? custom.garment : undefined) ||
+                  item.variantId;
+
+                const liveGarments = data.garments as
+                  | Record<string, { basePrice?: number; sizePrices?: Record<string, number> }>
+                  | undefined;
+                const garmentPrice = getGarmentSizePrice(garmentKey, size, liveGarments);
+
+                if (isDesign001) {
                   livePrice = 1;
-                } else if (item.customization?.isPlain || !item.customization?.designId) {
-                  if (typeof item.price === 'number' && item.price >= 1) {
-                    livePrice = item.price;
-                  } else {
-                    const base =
-                      typeof item.customization?.basePrice === 'number' && item.customization.basePrice > 0
-                        ? (item.customization.basePrice as number)
-                        : 600;
-                    const count =
-                      typeof item.customization?.customArtworkCount === 'number'
-                        ? (item.customization.customArtworkCount as number)
-                        : 0;
-                    livePrice = base + count * 29;
-                  }
-                } else if (item.customization?.designId) {
-                  const dId = item.customization.designId as string;
-                  livePrice = data.products?.[dId] ?? item.price;
+                } else if (isPlain) {
+                  // Garment price for the chosen size + ₹49 per custom print.
+                  const count =
+                    typeof custom.customArtworkCount === 'number'
+                      ? custom.customArtworkCount
+                      : 0;
+                  livePrice = garmentPrice + count * 49;
                 } else {
-                  livePrice = item.price;
+                  // Curated design: never below the garment price, exactly like
+                  // the checkout (`max(design price, garment size price)`).
+                  const cataloguePrice =
+                    designId && typeof data.products?.[designId] === 'number'
+                      ? data.products[designId]
+                      : 0;
+                  livePrice = Math.max(cataloguePrice, garmentPrice);
                 }
               }
 

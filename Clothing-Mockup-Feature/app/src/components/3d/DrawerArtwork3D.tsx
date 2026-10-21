@@ -297,19 +297,19 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
               ✦ Custom Print Pricing
             </span>
             <span style={{ fontSize: '11px', fontWeight: 800, color: '#38bdf8', fontFamily: 'monospace' }}>
-              +₹29 / design
+              +₹49 / design
             </span>
           </div>
           <div style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.82)', lineHeight: 1.4 }}>
-            Each design you upload adds ₹29 to the base tee. Place graphics on front, back, or sleeves!
+            Each design you upload adds ₹49 to the garment price. Place graphics on front, back, or sleeves!
           </div>
           {customArtworkCount > 0 ? (
             <div style={{ marginTop: '2px', fontSize: '11px', color: '#34d399', fontWeight: 700 }}>
-              ✓ {customArtworkCount} design{customArtworkCount > 1 ? 's' : ''} added (+₹{customPrintFee || customArtworkCount * 29})
+              ✓ {customArtworkCount} design{customArtworkCount > 1 ? 's' : ''} added (+₹{customPrintFee || customArtworkCount * 49})
             </div>
           ) : (
             <div style={{ marginTop: '2px', fontSize: '10px', color: '#94a3b8' }}>
-              Base Tee: ₹{basePrice || 600} · 0 designs added
+              Garment: ₹{basePrice || 600} · 0 designs added
             </div>
           )}
         </div>

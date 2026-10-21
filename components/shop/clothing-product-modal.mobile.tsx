@@ -293,7 +293,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                   key={art.id}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setActiveArtId(art.id);
+                    handleSelectArtwork(art);
                   }}
                   style={getPreviewPlacementStyles(artPlacement, artScale, true, coords)}
                   className={`z-10 flex items-center justify-center transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] cursor-pointer ${
@@ -536,7 +536,12 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                       onClick={(e) => {
                         e.stopPropagation();
                         setActiveArtId(art.id);
-                        handleUpdatePlacement('front-center');
+                        const savedTarget = art.calibratedPlacement?.placementTarget;
+                        const frontTarget =
+                          savedTarget && !isBackPlacement(savedTarget as DesignPlacementTarget)
+                            ? (savedTarget as DesignPlacementTarget)
+                            : 'front-center';
+                        handleUpdatePlacement(frontTarget, art.id);
                         setPreviewSide('front');
                       }}
                       className={`flex-1 py-1 rounded text-[9px] font-mono uppercase tracking-wider text-center transition-all ${
@@ -552,7 +557,12 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                       onClick={(e) => {
                         e.stopPropagation();
                         setActiveArtId(art.id);
-                        handleUpdatePlacement('back-center');
+                        const savedTarget = art.calibratedPlacement?.placementTarget;
+                        const backTarget =
+                          savedTarget && isBackPlacement(savedTarget as DesignPlacementTarget)
+                            ? (savedTarget as DesignPlacementTarget)
+                            : 'back-center';
+                        handleUpdatePlacement(backTarget, art.id);
                         setPreviewSide('back');
                       }}
                       className={`flex-1 py-1 rounded text-[9px] font-mono uppercase tracking-wider text-center transition-all ${

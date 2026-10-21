@@ -6,6 +6,10 @@ import { StatusBadge } from '@/components/admin/status-badge';
 import { RevenueChart } from './revenue-chart';
 import { StorageWidget } from './storage-widget';
 import { AdminPrintInvoiceButton } from '../orders/print-invoice-button';
+import {
+  AdminDownloadInvoiceButton,
+  AdminShippingLabelButton,
+} from '../orders/order-documents';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { X, User, MapPin, Phone, Mail, Package, Clock, ArrowRight } from 'lucide-react';
 
@@ -531,6 +535,8 @@ export function DashboardClient({
               >
                 Close
               </button>
+              <AdminShippingLabelButton orderId={selectedOrder.id} variant="secondary" />
+              <AdminDownloadInvoiceButton orderId={selectedOrder.id} variant="outline" />
               <AdminPrintInvoiceButton orderId={selectedOrder.id} variant="secondary" />
               <Link
                 href={`/admin/orders/${selectedOrder.id}`}

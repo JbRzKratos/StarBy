@@ -15,7 +15,18 @@ const nextConfig = {
   transpilePackages: ['gsap', '@gsap/react'],
   compress: true,
 
+  // pdfkit reads its standard-font metrics from node_modules at runtime. Since
+  // it is externalized below, trace those files so the PDF routes keep working
+  // in Vercel's serverless bundle.
   experimental: {
+    outputFileTracingIncludes: {
+      '/api/**/*': ['./node_modules/pdfkit/js/data/**/*'],
+    },
+    // pdfkit loads its built-in font metrics (.afm) from its own `data`
+    // directory at runtime. Bundling it rewrites __dirname to `.next/server`
+    // and breaks every PDF (invoice, shipping label) with an ENOENT. Keeping
+    // it external makes Node resolve the package from node_modules instead.
+    serverComponentsExternalPackages: ['pdfkit'],
     optimizePackageImports: [
       'lucide-react',       // icon library — large barrel, only subset used
       'recharts',           // chart library — only used in /admin

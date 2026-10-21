@@ -6,6 +6,11 @@ import { AdminBadge } from '../ui/badge';
 import { AdminToast, useToast } from '../ui/confirm-dialog';
 import { AdminPrintInvoiceButton } from './print-invoice-button';
 import {
+  AdminDownloadInvoiceButton,
+  AdminPrintShippingLabelButton,
+  AdminShippingLabelButton,
+} from './order-documents';
+import {
   updateOrderStatus,
   updateOrderInternalNotes,
   updateOrderTracking,
@@ -219,7 +224,9 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <AdminPrintInvoiceButton orderId={order.id} variant="primary" />
+          <AdminShippingLabelButton orderId={order.id} variant="primary" />
+          <AdminDownloadInvoiceButton orderId={order.id} variant="secondary" />
+          <AdminPrintInvoiceButton orderId={order.id} variant="outline" />
           <AdminBadge variant={order.paymentStatus === 'paid' ? 'paid' : 'pending'} />
           <select
             value={order.status}
@@ -836,8 +843,10 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                 <span>Grand Total</span>
                 <span>₹{order.total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
               </div>
-              <div className="pt-3 border-t border-white/5 flex justify-end">
-                <AdminPrintInvoiceButton orderId={order.id} variant="secondary" />
+              <div className="pt-3 border-t border-white/5 flex flex-wrap justify-end gap-2">
+                <AdminShippingLabelButton orderId={order.id} variant="secondary" />
+                <AdminDownloadInvoiceButton orderId={order.id} variant="outline" />
+                <AdminPrintInvoiceButton orderId={order.id} variant="outline" />
               </div>
             </div>
           </div>
@@ -1005,6 +1014,32 @@ export function OrderDetailClient({ order }: OrderDetailProps) {
                 >
                   Save Tracking
                 </button>
+              </div>
+
+              {/* Print-ready shipping documents for the packed parcel */}
+              <div className="pt-3 mt-3 border-t border-white/10 space-y-2">
+                <p className="text-[10px] uppercase tracking-wider text-ash/60">
+                  Shipping documents
+                </p>
+                <AdminShippingLabelButton
+                  orderId={order.id}
+                  variant="secondary"
+                  className="w-full"
+                />
+                <AdminPrintShippingLabelButton
+                  orderId={order.id}
+                  variant="outline"
+                  className="w-full"
+                />
+                <AdminDownloadInvoiceButton
+                  orderId={order.id}
+                  variant="outline"
+                  className="w-full"
+                />
+                <p className="text-[10px] leading-relaxed text-ash/50">
+                  Label is 4×6 in with the ship-to address, RTO return address and order barcode.
+                  Print on a thermal label or A4 (fit to page) and stick it on the parcel.
+                </p>
               </div>
             </div>
           </div>

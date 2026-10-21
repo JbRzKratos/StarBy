@@ -505,16 +505,39 @@ export function useClothingProductModalState({
       return next;
     });
 
-    const artPlacement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
-    const saved = getSavedPlacementForDesign(selectedGarment.garment3dId, art.id, artPlacement) || art.calibratedPlacement;
+    // Prefer the placement the designer saved over the manifest's suggestion.
+    // This is what makes clicking an artwork show exactly the saved front/back
+    // position instead of snapping to a generic side.
+    const candidateTarget =
+      (art.calibratedPlacement?.placementTarget as DesignPlacementTarget | undefined) ||
+      artworkPlacements[art.id] ||
+      art.suggestedPlacement ||
+      'front-center';
+    const saved =
+      getSavedPlacementForDesign(selectedGarment.garment3dId, art.id, candidateTarget) ||
+      art.calibratedPlacement;
+    const resolvedPlacement: DesignPlacementTarget =
+      (saved?.placementTarget as DesignPlacementTarget | undefined) ||
+      (saved?.regionId === 'back' ? 'back-center' : saved?.regionId === 'front' ? 'front-center' : candidateTarget);
+
     if (saved) {
       setArtworkCalibratedCoords((prev) => ({
         ...prev,
         [art.id]: saved,
       }));
+      setArtworkPlacements((prev) => ({
+        ...prev,
+        [art.id]: resolvedPlacement,
+      }));
+      if (saved.scalePreset) {
+        setArtworkScales((prev) => ({
+          ...prev,
+          [art.id]: saved.scalePreset as DesignScalePreset,
+        }));
+      }
     }
 
-    const isBack = isBackPlacement(artPlacement);
+    const isBack = isBackPlacement(resolvedPlacement) || saved?.regionId === 'back';
     setPreviewSide(isBack ? 'back' : 'front');
 
     if (!colorManuallySelectedRef.current) {
@@ -532,19 +555,34 @@ export function useClothingProductModalState({
     }
   };
 
-  const handleUpdatePlacement = (placement: DesignPlacementTarget) => {
-    if (!currentActiveArt) return;
+  /**
+   * Move an artwork to a placement target.
+   *
+   * `artId` is optional so callers that already know which card was clicked
+   * (the per-card Front/Back buttons) update *that* artwork. Relying on the
+   * active-artwork state here was racy: `setActiveArtId` is async, so the
+   * button always moved the previously active artwork instead of the clicked
+   * one.
+   */
+  const handleUpdatePlacement = (placement: DesignPlacementTarget, artId?: string) => {
+    const targetArt = artId
+      ? artworks.find((art) => art.id === artId) || currentActiveArt
+      : currentActiveArt;
+    if (!targetArt) return;
+
+    if (artId) setActiveArtId(targetArt.id);
+
     setArtworkPlacements((prev) => ({
       ...prev,
-      [currentActiveArt.id]: placement,
+      [targetArt.id]: placement,
     }));
 
     // Immediately resolve and apply calibrated coords for the newly selected target
-    const saved = getSavedPlacementForDesign(selectedGarment.garment3dId, currentActiveArt.id, placement);
+    const saved = getSavedPlacementForDesign(selectedGarment.garment3dId, targetArt.id, placement);
     if (saved) {
       setArtworkCalibratedCoords((prev) => ({
         ...prev,
-        [currentActiveArt.id]: saved,
+        [targetArt.id]: saved,
       }));
     }
 
@@ -720,20 +758,20 @@ export function useClothingProductModalState({
         getSavedPlacementForDesign(selectedGarment?.garment3dId || 'regular-t-shirt', primaryArtId, primaryPlacement) ||
         primaryArt?.calibratedPlacement;
 
-      const isOneRupee =
-        design.basePrice === 1 ||
-        (design.id === 'design-001' && selectedGarmentId !== 'hoodie') ||
-        ((design.id === 'design-001' || design.id === 'design-002') && selectedGarmentId === 'hoodie');
       const sUpper = (selectedSize || 'L').trim().toUpperCase();
       const customSizePrice =
         design.sizePrices && typeof design.sizePrices === 'object'
           ? (design.sizePrices[sUpper] ?? (sUpper === '3XL' || sUpper === 'XXXL' ? (design.sizePrices['3XL'] ?? design.sizePrices['XXXL']) : (design.sizePrices['2XL'] ?? design.sizePrices['XXL'])))
           : undefined;
-      const unitPrice = isOneRupee
-        ? 1
-        : typeof customSizePrice === 'number'
+      // Pass the design's own catalogue price to the studio. The studio (and
+      // the checkout) then applies max(design price, garment size price) so the
+      // total changes correctly when the garment is swapped.
+      const designSizePrice =
+        typeof customSizePrice === 'number' && customSizePrice > 0
           ? customSizePrice
-          : getApparelPrice(selectedGarmentId, selectedSize || 'L');
+          : design.basePrice && design.basePrice > 0
+            ? design.basePrice
+            : 600;
 
       const removedArtIds = (artworks || [])
         .filter((a) => !includedArtworks.has(a.id))
@@ -763,7 +801,7 @@ export function useClothingProductModalState({
         scale: primaryScale,
         previewUrl: primaryPreviewUrl,
         layers: JSON.stringify(layersToLoad),
-        price: unitPrice.toString(),
+        price: designSizePrice.toString(),
         ...(removedArtIds.length > 0 ? { removedArtIds: JSON.stringify(removedArtIds) } : {}),
         ...(primaryCalibrated?.u !== undefined ? { u: primaryCalibrated.u.toString() } : {}),
         ...(primaryCalibrated?.v !== undefined ? { v: primaryCalibrated.v.toString() } : {}),
@@ -972,20 +1010,20 @@ export function useClothingProductModalState({
       currentPlacement === 'back-collar' ||
       currentPlacement === 'full-back';
 
-  const isOneRupee =
-    design?.basePrice === 1 ||
-    (design?.id === 'design-001' && selectedGarmentId !== 'hoodie') ||
-    ((design?.id === 'design-001' || design?.id === 'design-002') && selectedGarmentId === 'hoodie');
+  const isOneRupee = design?.basePrice === 1 || design?.id === 'design-001';
   const selSizeUpper = (selectedSize || 'L').trim().toUpperCase();
   const customDesignSizePrice =
     design?.sizePrices && typeof design.sizePrices === 'object'
       ? (design.sizePrices[selSizeUpper] ?? (selSizeUpper === '3XL' || selSizeUpper === 'XXXL' ? (design.sizePrices['3XL'] ?? design.sizePrices['XXXL']) : (design.sizePrices['2XL'] ?? design.sizePrices['XXL'])))
       : undefined;
-  const unitPrice = isOneRupee
-    ? 1
-    : typeof customDesignSizePrice === 'number'
+  const designSizePrice =
+    typeof customDesignSizePrice === 'number' && customDesignSizePrice > 0
       ? customDesignSizePrice
-      : getApparelPrice(selectedGarmentId, selectedSize || 'L');
+      : design?.basePrice && design.basePrice > 0
+        ? design.basePrice
+        : 600;
+  const garmentSizePrice = getApparelPrice(selectedGarmentId, selectedSize || 'L');
+  const unitPrice = isOneRupee ? 1 : Math.max(designSizePrice, garmentSizePrice);
 
   return {
     mounted,

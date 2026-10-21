@@ -91,6 +91,56 @@ function getUrlDesignId(): string | null {
   }
 }
 
+/** Build a size -> price map for a garment with a 3XL surcharge. */
+function buildSizePriceMap(base: number, extended: number): Record<string, number> {
+  return {
+    S: base,
+    M: base,
+    L: base,
+    XL: base,
+    '2XL': base,
+    XXL: base,
+    '3XL': extended,
+    XXXL: extended,
+  };
+}
+
+/** Resolve the selected size against a size -> price map (aliases 2XL/XXL, 3XL/XXXL). */
+function lookupSizePrice(
+  map: Record<string, number> | undefined,
+  size: string | undefined,
+): number | undefined {
+  if (!map) return undefined;
+  const key = (size || 'L').trim().toUpperCase();
+  if (typeof map[key] === 'number') return map[key];
+  if (key === '2XL' && typeof map.XXL === 'number') return map.XXL;
+  if (key === 'XXL' && typeof map['2XL'] === 'number') return map['2XL'];
+  if (key === '3XL' && typeof map.XXXL === 'number') return map.XXXL;
+  if (key === 'XXXL' && typeof map['3XL'] === 'number') return map['3XL'];
+  const fallback = map.L ?? map.M ?? map.S;
+  return typeof fallback === 'number' ? fallback : undefined;
+}
+
+/** Normalise any garment string (id, name, variant id) to a known studio id. */
+function resolveGarmentId(raw?: string | null): string {
+  const value = (raw || '').toLowerCase();
+  if (!value) return 'regular-t-shirt';
+  if (value.includes('zip') && value.includes('hood')) return 'zip-hoodie';
+  if (value.includes('acid')) return 'acid-wash-t-shirt';
+  if (value.includes('oversized')) return 'oversized-t-shirt';
+  if (value.includes('sweatpant') || value.includes('jogger')) return 'sweatpants';
+  if (value.includes('sweatshirt') || value.includes('crewneck') || value.includes('crew neck')) {
+    return 'sweatshirt';
+  }
+  if (value.includes('jeans') || value.includes('denim')) return 'jeans';
+  if (value.includes('tank')) return 'tank-top';
+  if (value.includes('balaclava')) return 'balaclava';
+  if (value.includes('cap') || value.includes('hat')) return 'cap';
+  if (value.includes('hoodie') || value.includes('hood')) return 'hoodie';
+  if (value.includes('fitted')) return 'fitted-t-shirt';
+  return 'regular-t-shirt';
+}
+
 export const App: React.FC = () => {
   const [isDesignsLibraryOpen, setIsDesignsLibraryOpen] = useState<boolean>(false);
 
@@ -207,14 +257,33 @@ export const App: React.FC = () => {
     'regular-t-shirt': 600,
     'oversized-t-shirt': 670,
     'acid-wash-t-shirt': 699,
-    'hoodie': 750,
+    hoodie: 750,
+    'fitted-t-shirt': 620,
+    'zip-hoodie': 850,
+    sweatshirt: 800,
+    sweatpants: 700,
+    jeans: 999,
+    'tank-top': 500,
+    cap: 399,
+    balaclava: 349,
   };
 
-  const garmentPriceMapRef = useRef<Record<string, number>>({
-    'regular-t-shirt': 600,
-    'oversized-t-shirt': 670,
-    'acid-wash-t-shirt': 699,
-    'hoodie': 750,
+  // Size-aware default prices. Mirrors `lib/config/garment-pricing.ts` on the
+  // host. Live admin values are merged in from `/api/products/prices` below so
+  // an admin price edit is reflected here without rebuilding the bundle.
+  const garmentSizePriceMapRef = useRef<Record<string, Record<string, number>>>({
+    'regular-t-shirt': buildSizePriceMap(600, 645),
+    'oversized-t-shirt': buildSizePriceMap(670, 699),
+    'acid-wash-t-shirt': buildSizePriceMap(699, 720),
+    hoodie: buildSizePriceMap(750, 780),
+    'fitted-t-shirt': buildSizePriceMap(620, 665),
+    'zip-hoodie': buildSizePriceMap(850, 880),
+    sweatshirt: buildSizePriceMap(800, 830),
+    sweatpants: buildSizePriceMap(700, 750),
+    jeans: buildSizePriceMap(999, 1049),
+    'tank-top': buildSizePriceMap(500, 545),
+    cap: buildSizePriceMap(399, 399),
+    balaclava: buildSizePriceMap(349, 349),
   });
 
   const initialPriceRef = useRef<number | null>(null);
@@ -225,7 +294,9 @@ export const App: React.FC = () => {
         const p = sp.get('price');
         if (p !== null && !isNaN(Number(p)) && Number(p) > 0) return Number(p);
         const g = sp.get('garment');
-        if (g && GARMENT_DEFAULT_BASE_PRICES[g]) return GARMENT_DEFAULT_BASE_PRICES[g];
+        if (g && GARMENT_DEFAULT_BASE_PRICES[resolveGarmentId(g)]) {
+          return GARMENT_DEFAULT_BASE_PRICES[resolveGarmentId(g)];
+        }
       } catch {
         /* ignore */
       }
@@ -233,13 +304,17 @@ export const App: React.FC = () => {
     return 600;
   });
 
-  const [unitPrice, setUnitPrice] = useState<number>(() => {
+  // Catalogue price of the curated design itself (not the garment). The final
+  // unit price is max(designBasePrice, garmentSizePrice) — exactly the rule the
+  // checkout API applies, so the studio total is never lower than what is
+  // charged.
+  const [designBasePrice, setDesignBasePrice] = useState<number>(() => {
     if (typeof window !== 'undefined') {
       try {
         const sp = new URLSearchParams(window.location.search);
+        if ((sp.get('designId') || sp.get('design')) === 'design-001') return 1;
         const p = sp.get('price');
-        if (p !== null && !isNaN(Number(p))) return Number(p);
-        if (sp.get('designId') === 'design-001') return 1;
+        if (p !== null && !isNaN(Number(p)) && Number(p) > 0) return Number(p);
       } catch {
         /* ignore */
       }
@@ -261,6 +336,10 @@ export const App: React.FC = () => {
 
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
 
+  // Forces a re-render after the live price payload has been merged into the
+  // refs above (refs alone do not trigger one).
+  const [, setPricingTick] = useState(0);
+
   const isCuratedDesign = Boolean(
     !isPlainParam && (
       activeCuratedDesign ||
@@ -269,31 +348,51 @@ export const App: React.FC = () => {
     )
   );
 
+  const isDesign001 = initialDesignId === 'design-001' || getUrlDesignId() === 'design-001';
+
   useEffect(() => {
     fetch('/api/products/prices', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data?.success && data.products) {
-          const p = data.products;
-          if (typeof p['plain_regular_tee'] === 'number') garmentPriceMapRef.current['regular-t-shirt'] = p['plain_regular_tee'];
-          if (typeof p['regular-t-shirt'] === 'number') garmentPriceMapRef.current['regular-t-shirt'] = p['regular-t-shirt'];
-          if (typeof p['plain_oversized_tee'] === 'number') garmentPriceMapRef.current['oversized-t-shirt'] = p['plain_oversized_tee'];
-          if (typeof p['oversized-t-shirt'] === 'number') garmentPriceMapRef.current['oversized-t-shirt'] = p['oversized-t-shirt'];
-          if (typeof p['plain_acid_wash_tee'] === 'number') garmentPriceMapRef.current['acid-wash-t-shirt'] = p['plain_acid_wash_tee'];
-          if (typeof p['acid-wash-t-shirt'] === 'number') garmentPriceMapRef.current['acid-wash-t-shirt'] = p['acid-wash-t-shirt'];
-          if (typeof p['plain_hoodie'] === 'number') garmentPriceMapRef.current['hoodie'] = p['plain_hoodie'];
-          if (typeof p['hoodie'] === 'number') garmentPriceMapRef.current['hoodie'] = p['hoodie'];
+        if (!data?.success) return;
 
-          if (!isCuratedDesign) {
-            const currentG = project3D.garmentId || 'regular-t-shirt';
-            if (garmentPriceMapRef.current[currentG]) {
-              setBasePrice(garmentPriceMapRef.current[currentG]);
+        // Live garment prices for all 3D models (admin overrides included).
+        if (data.garments && typeof data.garments === 'object') {
+          Object.entries(
+            data.garments as Record<string, { basePrice?: number; sizePrices?: Record<string, number> }>
+          ).forEach(([id, entry]) => {
+            if (entry?.sizePrices && typeof entry.sizePrices === 'object') {
+              garmentSizePriceMapRef.current[id] = {
+                ...(garmentSizePriceMapRef.current[id] || {}),
+                ...entry.sizePrices,
+              };
+            } else if (typeof entry?.basePrice === 'number' && entry.basePrice > 0) {
+              garmentSizePriceMapRef.current[id] = buildSizePriceMap(entry.basePrice, entry.basePrice);
             }
-          }
+          });
         }
+
+        // Catalogue price for the curated design (authoritative over the URL
+        // `price`, which may have been the garment price for plain products).
+        const products = (data.products || {}) as Record<string, number>;
+        const designId = initialDesignId || getUrlDesignId();
+        if (designId && designId !== 'design-001' && typeof products[designId] === 'number' && products[designId] > 0) {
+          setDesignBasePrice(products[designId]);
+        }
+
+        // Keep the plain/custom garment price in sync with the live table.
+        if (!isCuratedDesign) {
+          const resolvedGarment = resolveGarmentId(project3D.garmentId);
+          const livePrice =
+            lookupSizePrice(garmentSizePriceMapRef.current[resolvedGarment], selectedGarmentSize) ??
+            GARMENT_DEFAULT_BASE_PRICES[resolvedGarment];
+          if (typeof livePrice === 'number') setBasePrice(livePrice);
+        }
+
+        setPricingTick((tick) => tick + 1);
       })
       .catch(() => {});
-  }, [isCuratedDesign, project3D.garmentId]);
+  }, [isCuratedDesign, project3D.garmentId, selectedGarmentSize, initialDesignId]);
 
   // Custom design uploads pricing (+₹49 for each custom design uploaded)
   const customArtworkCount3D = project3D.artworkLayers.filter(
@@ -302,9 +401,27 @@ export const App: React.FC = () => {
 
   const activeCustomArtworkCount = customArtworkCount3D;
   const customPrintFee = isCuratedDesign ? 0 : activeCustomArtworkCount * 49;
-  const effectivePrice = isCuratedDesign
-    ? (unitPrice ?? (initialDesignId === 'design-001' ? 1 : 600))
-    : (basePrice + customPrintFee);
+
+  /** Size-aware garment price (live values when available). */
+  const getGarmentPriceForSize = (garmentId: string, size?: string): number => {
+    const resolved = resolveGarmentId(garmentId);
+    const sizePrice = lookupSizePrice(garmentSizePriceMapRef.current[resolved], size);
+    if (typeof sizePrice === 'number') return sizePrice;
+    return GARMENT_DEFAULT_BASE_PRICES[resolved] ?? 600;
+  };
+
+  /**
+   * The price of one unit for a given size. Curated designs never drop below
+   * the garment price, custom artwork adds ₹49 per uploaded design.
+   */
+  const getUnitPriceForSize = (size?: string): number => {
+    const garmentPrice = getGarmentPriceForSize(project3D.garmentId, size);
+    if (!isCuratedDesign) return garmentPrice + customPrintFee;
+    if (isDesign001) return 1;
+    return Math.max(designBasePrice > 0 ? designBasePrice : 600, garmentPrice);
+  };
+
+  const effectivePrice = getUnitPriceForSize(selectedGarmentSize);
 
   // Modal Placement State
   const [modalSelectedArtId, setModalSelectedArtId] = useState<string | null>(null);
@@ -1108,7 +1225,7 @@ export const App: React.FC = () => {
       }
       if (parsedPrice !== null) {
         initialPriceRef.current = parsedPrice;
-        setUnitPrice(parsedPrice);
+        if (params.designId) setDesignBasePrice(parsedPrice);
       }
 
       const targetGarmentId =
@@ -1531,7 +1648,9 @@ export const App: React.FC = () => {
     const approvedColors = getApprovedColorsForGarment(garmentId);
 
     if (!isCuratedDesign) {
-      const livePrice = garmentPriceMapRef.current[garmentId] || GARMENT_DEFAULT_BASE_PRICES[garmentId];
+      const livePrice =
+        lookupSizePrice(garmentSizePriceMapRef.current[resolveGarmentId(garmentId)], selectedGarmentSize) ??
+        GARMENT_DEFAULT_BASE_PRICES[resolveGarmentId(garmentId)];
       if (livePrice) setBasePrice(livePrice);
     }
 
@@ -2239,17 +2358,9 @@ export const App: React.FC = () => {
     const garmentId = project3D.garmentId;
     const garmentColor = project3D.garmentColor;
 
-    const is3XL = (data.size || '').toUpperCase() === '3XL' || (data.size || '').toUpperCase() === 'XXXL';
-    let sizeAdjustedBasePrice = basePrice;
-    if (is3XL && !isCuratedDesign) {
-      if (garmentId === 'regular-t-shirt') sizeAdjustedBasePrice = 645;
-      else if (garmentId === 'oversized-t-shirt') sizeAdjustedBasePrice = 699;
-      else if (garmentId === 'acid-wash-t-shirt') sizeAdjustedBasePrice = 720;
-      else if (garmentId === 'hoodie') sizeAdjustedBasePrice = 780;
-      else sizeAdjustedBasePrice = basePrice + 45;
-    }
-
-    const finalPrice = isCuratedDesign ? effectivePrice : (sizeAdjustedBasePrice + customPrintFee);
+    const sizeForPricing = data.size || selectedGarmentSize || 'L';
+    const sizeAdjustedBasePrice = getGarmentPriceForSize(garmentId, sizeForPricing);
+    const finalPrice = getUnitPriceForSize(sizeForPricing);
 
     let urlProductId: string | null = null;
     if (typeof window !== 'undefined') {
@@ -2473,7 +2584,7 @@ export const App: React.FC = () => {
                         isCuratedDesign={isCuratedDesign}
                         customArtworkCount={activeCustomArtworkCount}
                         customPrintFee={customPrintFee}
-                        basePrice={basePrice}
+                        basePrice={getGarmentPriceForSize(project3D.garmentId, selectedGarmentSize)}
                         onToggleDesignerMode={isDesignerAuthorized ? handleToggleDesignerMode : undefined}
                       />
                     )}
@@ -2761,6 +2872,9 @@ export const App: React.FC = () => {
         garmentColor={project3D.garmentColor}
         unitPrice={effectivePrice}
         basePrice={basePrice}
+        initialSize={selectedGarmentSize}
+        resolvePrice={getUnitPriceForSize}
+        resolveBasePrice={(size) => getGarmentPriceForSize(project3D.garmentId, size)}
         customArtworkCount={activeCustomArtworkCount}
         customPrintFee={customPrintFee}
         isCuratedDesign={isCuratedDesign}

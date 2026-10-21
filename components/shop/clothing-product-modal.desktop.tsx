@@ -566,7 +566,12 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                               e.stopPropagation();
                               setActiveArtId(art.id);
                               setIncludedArtworks((prev: Set<string>) => new Set(prev).add(art.id));
-                              handleUpdatePlacement('front-center');
+                              const savedTarget = art.calibratedPlacement?.placementTarget;
+                              const frontTarget =
+                                savedTarget && !isBackPlacement(savedTarget as DesignPlacementTarget)
+                                  ? (savedTarget as DesignPlacementTarget)
+                                  : 'front-center';
+                              handleUpdatePlacement(frontTarget, art.id);
                               setPreviewSide('front');
                             }}
                             className={`flex-1 py-1 rounded text-[9px] font-mono uppercase tracking-wider text-center transition-all ${
@@ -583,7 +588,12 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                               e.stopPropagation();
                               setActiveArtId(art.id);
                               setIncludedArtworks((prev: Set<string>) => new Set(prev).add(art.id));
-                              handleUpdatePlacement('back-center');
+                              const savedTarget = art.calibratedPlacement?.placementTarget;
+                              const backTarget =
+                                savedTarget && isBackPlacement(savedTarget as DesignPlacementTarget)
+                                  ? (savedTarget as DesignPlacementTarget)
+                                  : 'back-center';
+                              handleUpdatePlacement(backTarget, art.id);
                               setPreviewSide('back');
                             }}
                             className={`flex-1 py-1 rounded text-[9px] font-mono uppercase tracking-wider text-center transition-all ${

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { Fragment, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminToast, useToast } from '../ui/confirm-dialog';
 import {
@@ -8,6 +8,7 @@ import {
   updateProduct,
   createVariant,
   deleteVariant,
+  updateVariant,
   updateVariantPrice,
   toggleVariantStock,
   updateVariantStockQuantity,
@@ -115,7 +116,100 @@ export function ProductFormClient({
   });
   const [variants, setVariants] = useState<VariantData[]>(initialVariants);
   const [newVariant, setNewVariant] = useState({ ...BLANK_VARIANT });
+  const [newVariantImagesInput, setNewVariantImagesInput] = useState('');
   const [showVariantForm, setShowVariantForm] = useState(false);
+
+  // Full inline editing for an existing variant (name / colour / images / price /
+  // stock). Prices are only sent when they actually change so STAFF accounts
+  // can still edit the non-price fields without hitting the admin-only guard.
+  const [editingVariantId, setEditingVariantId] = useState<string | null>(null);
+  const [variantDraft, setVariantDraft] = useState<{
+    name: string;
+    color: string;
+    colorHex: string;
+    price: number;
+    stockQuantity: number;
+    reorderThreshold: number;
+    inStock: boolean;
+    imagesInput: string;
+  } | null>(null);
+
+  function startEditVariant(v: VariantData) {
+    setEditingVariantId(v.id);
+    setVariantDraft({
+      name: v.name,
+      color: v.color,
+      colorHex: v.colorHex,
+      price: v.price,
+      stockQuantity: v.stockQuantity,
+      reorderThreshold: v.reorderThreshold,
+      inStock: v.inStock,
+      imagesInput: (v.images || []).join('\n'),
+    });
+  }
+
+  function cancelEditVariant() {
+    setEditingVariantId(null);
+    setVariantDraft(null);
+  }
+
+  function handleSaveVariant() {
+    if (!variantDraft || !editingVariantId) return;
+    const original = variants.find((v) => v.id === editingVariantId);
+    const images = variantDraft.imagesInput
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    startTransition(async () => {
+      try {
+        const payload: {
+          name?: string;
+          color?: string;
+          colorHex?: string;
+          price?: number;
+          images?: string[];
+          inStock?: boolean;
+          stockQuantity?: number;
+          reorderThreshold?: number;
+        } = {
+          name: variantDraft.name.trim(),
+          color: variantDraft.color.trim(),
+          colorHex: variantDraft.colorHex,
+          images,
+          inStock: variantDraft.inStock,
+          stockQuantity: variantDraft.stockQuantity,
+          reorderThreshold: variantDraft.reorderThreshold,
+        };
+
+        // Only include the price when it changed — keeps STAFF edits working.
+        if (!original || Number(original.price) !== Number(variantDraft.price)) {
+          payload.price = variantDraft.price;
+        }
+
+        const updated = await updateVariant(editingVariantId, payload);
+        setVariants((prev) =>
+          prev.map((item) =>
+            item.id === editingVariantId
+              ? {
+                  ...item,
+                  ...payload,
+                  images: updated.images || images,
+                  inStock: updated.inStock,
+                  stockQuantity: updated.stockQuantity,
+                  reorderThreshold: updated.reorderThreshold,
+                  price: updated.price,
+                }
+              : item,
+          ),
+        );
+        cancelEditVariant();
+        show('Variant updated', 'success');
+      } catch (e) {
+        show(e instanceof Error ? e.message : 'Failed to update variant', 'error');
+      }
+    });
+  }
 
   function handleSubmit() {
     startTransition(async () => {
@@ -176,7 +270,11 @@ export function ProductFormClient({
     }
     startTransition(async () => {
       try {
-        const created = await createVariant({ productId, ...newVariant });
+        const images = newVariantImagesInput
+          .split('\n')
+          .map((line) => line.trim())
+          .filter(Boolean);
+        const created = await createVariant({ productId, ...newVariant, images });
         setVariants((prev) => [
           ...prev,
           {
@@ -192,6 +290,7 @@ export function ProductFormClient({
           },
         ]);
         setNewVariant({ ...BLANK_VARIANT });
+        setNewVariantImagesInput('');
         setShowVariantForm(false);
         show('Variant added', 'success');
       } catch {
@@ -697,6 +796,21 @@ export function ProductFormClient({
                   className={inputClass}
                 />
               </div>
+              <div className="col-span-2">
+                <label className="block text-xs font-medium text-ash mb-1">
+                  Variant Images (one URL per line)
+                </label>
+                <textarea
+                  value={newVariantImagesInput}
+                  onChange={(e) => setNewVariantImagesInput(e.target.value)}
+                  rows={2}
+                  className={inputClass}
+                  placeholder={'https://…/front.webp\nhttps://…/back.webp'}
+                />
+                <p className="mt-1 text-[11px] text-ash/50">
+                  These are the photos customers see for this colour on the product page.
+                </p>
+              </div>
             </div>
             <button
               onClick={handleAddVariant}
@@ -713,96 +827,225 @@ export function ProductFormClient({
             <p className="text-sm text-ash/60 italic">No variants yet</p>
           )}
           {variants.map((v) => (
-            <div
-              key={v.id}
-              className="flex items-center gap-3 bg-black/40 rounded-lg px-4 py-2.5 border border-white/5"
-            >
-              <span
-                className="w-4 h-4 rounded-full border border-white/10 flex-shrink-0"
-                style={{ background: v.colorHex }}
-              />
-              <span className="text-sm text-bone/90 flex-1">
-                {v.name} — {v.color}
-              </span>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-ash/80">₹</span>
-                <input
-                  type="number"
-                  min={0}
-                  step="any"
-                  defaultValue={v.price}
-                  onBlur={async (e) => {
-                    const p = parseFloat(e.target.value);
-                    if (!isNaN(p) && p >= 0 && p !== v.price) {
-                      try {
-                        await updateVariantPrice(v.id, p);
-                        setVariants((prev) =>
-                          prev.map((item) => (item.id === v.id ? { ...item, price: p } : item)),
-                        );
-                        show(`Variant price updated to ₹${p}`, 'success');
-                      } catch (err: unknown) {
-                        const msg = err instanceof Error ? err.message : 'Failed to update price';
-                        show(msg, 'error');
+            <Fragment key={v.id}>
+              <div className="flex items-center gap-3 bg-black/40 rounded-lg px-4 py-2.5 border border-white/5">
+                <span
+                  className="w-4 h-4 rounded-full border border-white/10 flex-shrink-0"
+                  style={{ background: v.colorHex }}
+                />
+                {(v.images || []).slice(0, 2).map((src, idx) => (
+                  // Admin panel is allowed to use raw R2 assets directly.
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={`${v.id}-img-${idx}`}
+                    src={src}
+                    alt={`${v.name} ${idx + 1}`}
+                    className="w-8 h-8 rounded object-cover border border-white/10 flex-shrink-0"
+                    loading="lazy"
+                  />
+                ))}
+                <span className="text-sm text-bone/90 flex-1">
+                  {v.name} — {v.color}
+                  {(v.images?.length ?? 0) > 2 && (
+                    <span className="ml-1 text-[11px] text-ash/50">+{(v.images?.length ?? 0) - 2} photo(s)</span>
+                  )}                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-ash/80">₹</span>
+                  <input
+                    type="number"
+                    min={0}
+                    step="any"
+                    defaultValue={v.price}
+                    onBlur={async (e) => {
+                      const p = parseFloat(e.target.value);
+                      if (!isNaN(p) && p >= 0 && p !== v.price) {
+                        try {
+                          await updateVariantPrice(v.id, p);
+                          setVariants((prev) =>
+                            prev.map((item) => (item.id === v.id ? { ...item, price: p } : item)),
+                          );
+                          show(`Variant price updated to ₹${p}`, 'success');
+                        } catch (err: unknown) {
+                          const msg = err instanceof Error ? err.message : 'Failed to update price';
+                          show(msg, 'error');
+                        }
                       }
+                    }}
+                    className="w-20 px-2 py-1 text-xs bg-black/60 border border-white/20 rounded text-bone font-mono focus:border-[#3B5EFF] focus:outline-none"
+                  />
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-ash/70 font-mono">Stock:</span>
+                  <input
+                    type="number"
+                    min={0}
+                    defaultValue={v.stockQuantity}
+                    onBlur={async (e) => {
+                      const q = parseInt(e.target.value, 10);
+                      if (!isNaN(q) && q >= 0 && q !== v.stockQuantity) {
+                        try {
+                          await updateVariantStockQuantity(v.id, q);
+                          setVariants((prev) =>
+                            prev.map((item) =>
+                              item.id === v.id ? { ...item, stockQuantity: q, inStock: q > 0 } : item
+                            )
+                          );
+                          show(`Variant stock updated to ${q} units`, 'success');
+                        } catch (err: unknown) {
+                          const msg = err instanceof Error ? err.message : 'Failed to update stock';
+                          show(msg, 'error');
+                        }
+                      }
+                    }}
+                    className="w-16 px-2 py-1 text-xs bg-black/60 border border-white/20 rounded text-bone font-mono focus:border-[#3B5EFF] focus:outline-none text-center"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await toggleVariantStock(v.id, !v.inStock);
+                      setVariants((prev) =>
+                        prev.map((item) => (item.id === v.id ? { ...item, inStock: !v.inStock } : item))
+                      );
+                      show(`Variant marked ${!v.inStock ? 'in stock' : 'out of stock'}`, 'success');
+                    } catch (err: unknown) {
+                      show(err instanceof Error ? err.message : 'Failed to toggle stock', 'error');
                     }
                   }}
-                  className="w-20 px-2 py-1 text-xs bg-black/60 border border-white/20 rounded text-bone font-mono focus:border-[#3B5EFF] focus:outline-none"
-                />
+                  className={`text-xs px-2.5 py-1 rounded font-mono font-medium transition-colors ${
+                    v.inStock
+                      ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
+                      : 'bg-red-500/10 text-red-400 hover:bg-red-500/20'
+                  }`}
+                >
+                  {v.inStock ? 'In stock' : 'Out'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => (editingVariantId === v.id ? cancelEditVariant() : startEditVariant(v))}
+                  className="text-xs text-ash/80 hover:text-white px-2"
+                >
+                  {editingVariantId === v.id ? 'Close' : 'Edit'}
+                </button>
+                <button
+                  onClick={() => handleDeleteVariant(v.id)}
+                  className="text-xs text-red-400 hover:text-red-300 ml-2"
+                >
+                  Remove
+                </button>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-ash/70 font-mono">Stock:</span>
-                <input
-                  type="number"
-                  min={0}
-                  defaultValue={v.stockQuantity}
-                  onBlur={async (e) => {
-                    const q = parseInt(e.target.value, 10);
-                    if (!isNaN(q) && q >= 0 && q !== v.stockQuantity) {
-                      try {
-                        await updateVariantStockQuantity(v.id, q);
-                        setVariants((prev) =>
-                          prev.map((item) =>
-                            item.id === v.id ? { ...item, stockQuantity: q, inStock: q > 0 } : item
-                          )
-                        );
-                        show(`Variant stock updated to ${q} units`, 'success');
-                      } catch (err: unknown) {
-                        const msg = err instanceof Error ? err.message : 'Failed to update stock';
-                        show(msg, 'error');
-                      }
-                    }
-                  }}
-                  className="w-16 px-2 py-1 text-xs bg-black/60 border border-white/20 rounded text-bone font-mono focus:border-[#3B5EFF] focus:outline-none text-center"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={async () => {
-                  try {
-                    await toggleVariantStock(v.id, !v.inStock);
-                    setVariants((prev) =>
-                      prev.map((item) => (item.id === v.id ? { ...item, inStock: !v.inStock } : item))
-                    );
-                    show(`Variant marked ${!v.inStock ? 'in stock' : 'out of stock'}`, 'success');
-                  } catch (err: unknown) {
-                    show(err instanceof Error ? err.message : 'Failed to toggle stock', 'error');
-                  }
-                }}
-                className={`text-xs px-2.5 py-1 rounded font-mono font-medium transition-colors ${
-                  v.inStock
-                    ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
-                    : 'bg-red-500/10 text-red-400 hover:bg-red-500/20'
-                }`}
-              >
-                {v.inStock ? 'In stock' : 'Out'}
-              </button>
-              <button
-                onClick={() => handleDeleteVariant(v.id)}
-                className="text-xs text-red-400 hover:text-red-300 ml-2"
-              >
-                Remove
-              </button>
-            </div>
+
+              {editingVariantId === v.id && variantDraft && (
+                <div className="bg-black/50 rounded-lg p-4 border border-[#3B5EFF]/40 space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-ash mb-1">Variant Name</label>
+                      <input
+                        value={variantDraft.name}
+                        onChange={(e) => setVariantDraft({ ...variantDraft, name: e.target.value })}
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-ash mb-1">Color Name</label>
+                      <input
+                        value={variantDraft.color}
+                        onChange={(e) => setVariantDraft({ ...variantDraft, color: e.target.value })}
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-ash mb-1">Color Hex</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="color"
+                          value={variantDraft.colorHex}
+                          onChange={(e) => setVariantDraft({ ...variantDraft, colorHex: e.target.value })}
+                          className="w-10 h-10 rounded border border-white/10 cursor-pointer"
+                        />
+                        <input
+                          value={variantDraft.colorHex}
+                          onChange={(e) => setVariantDraft({ ...variantDraft, colorHex: e.target.value })}
+                          className={`${inputClass} flex-1 font-mono`}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-ash mb-1">Price (₹)</label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={variantDraft.price}
+                        onChange={(e) =>
+                          setVariantDraft({ ...variantDraft, price: parseFloat(e.target.value) || 0 })
+                        }
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-ash mb-1">Stock Qty</label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={variantDraft.stockQuantity}
+                        onChange={(e) =>
+                          setVariantDraft({
+                            ...variantDraft,
+                            stockQuantity: parseInt(e.target.value, 10) || 0,
+                          })
+                        }
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-ash mb-1">Reorder Threshold</label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={variantDraft.reorderThreshold}
+                        onChange={(e) =>
+                          setVariantDraft({
+                            ...variantDraft,
+                            reorderThreshold: parseInt(e.target.value, 10) || 0,
+                          })
+                        }
+                        className={inputClass}
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-xs font-medium text-ash mb-1">
+                        Variant Images (one URL per line)
+                      </label>
+                      <textarea
+                        value={variantDraft.imagesInput}
+                        onChange={(e) => setVariantDraft({ ...variantDraft, imagesInput: e.target.value })}
+                        rows={3}
+                        className={inputClass}
+                        placeholder={'https://…/front.webp\nhttps://…/back.webp'}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={handleSaveVariant}
+                      disabled={isPending}
+                      className="px-4 py-2 bg-[#3B5EFF] text-white text-sm font-medium rounded-lg hover:bg-[#2a4de8] transition-colors disabled:opacity-50"
+                    >
+                      {isPending ? 'Saving…' : 'Save Variant'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={cancelEditVariant}
+                      className="text-sm text-ash/70 hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </Fragment>
           ))}
         </div>
       </div>

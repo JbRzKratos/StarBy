@@ -7,6 +7,10 @@ import { ConfirmDialog, AdminToast, useToast } from '../ui/confirm-dialog';
 import { updateOrderStatus } from '@/app/admin/lib/actions';
 import { AdminPrintInvoiceButton } from './print-invoice-button';
 import {
+  AdminDownloadInvoiceButton,
+  AdminShippingLabelButton,
+} from './order-documents';
+import {
   Search,
   ChevronDown,
   ChevronUp,
@@ -319,7 +323,17 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
 
                       {/* Action */}
                       <td className="px-4 py-3.5 text-center">
-                        <div className="inline-flex items-center gap-1.5">
+                        <div className="inline-flex flex-wrap items-center justify-center gap-1.5">
+                          <AdminShippingLabelButton
+                            orderId={order.id}
+                            variant="compact"
+                            label="Label"
+                          />
+                          <AdminDownloadInvoiceButton
+                            orderId={order.id}
+                            variant="compact"
+                            label="Invoice"
+                          />
                           <AdminPrintInvoiceButton
                             orderId={order.id}
                             variant="compact"
@@ -484,9 +498,19 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                               </div>
 
                               <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2.5">
-                                <AdminPrintInvoiceButton
+                                <AdminShippingLabelButton
                                   orderId={order.id}
                                   variant="secondary"
+                                  className="w-full sm:w-auto"
+                                />
+                                <AdminDownloadInvoiceButton
+                                  orderId={order.id}
+                                  variant="outline"
+                                  className="w-full sm:w-auto"
+                                />
+                                <AdminPrintInvoiceButton
+                                  orderId={order.id}
+                                  variant="outline"
                                   className="w-full sm:w-auto"
                                 />
                                 <Link
