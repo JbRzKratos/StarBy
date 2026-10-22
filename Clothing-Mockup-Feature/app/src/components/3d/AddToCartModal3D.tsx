@@ -69,7 +69,7 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   resolvePrice,
   resolveBasePrice,
   customArtworkCount = 0,
-  customPrintFee = 0,
+  customPrintFee,
   isCuratedDesign = false,
   currentSnapshotUrl,
   frontSnapshotUrl,
@@ -184,10 +184,10 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   }
 
   const effectivePrintFee =
-    customPrintFee > 0
+    typeof customPrintFee === 'number'
       ? customPrintFee
-      : isTShirtGarment
-        ? customArtworkCount >= 2
+      : isCuratedDesign
+        ? isTShirtGarment && customArtworkCount >= 2
           ? 40
           : 0
         : customArtworkCount * 49;
@@ -492,15 +492,15 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
                     {isCuratedDesign && (
                       <div style={{ color: '#64748b' }}>Curated design price includes this garment</div>
                     )}
-                    {isTShirtGarment ? (
-                      customArtworkCount >= 2 ? (
+                    {isCuratedDesign && isTShirtGarment ? (
+                      effectivePrintFee > 0 ? (
                         <div style={{ color: '#38bdf8' }}>
-                          Artwork surcharge (2+ prints, fixed):{' '}
-                          <strong style={{ color: '#38bdf8' }}>+₹40</strong>
+                          Curated artwork surcharge (2+ prints):{' '}
+                          <strong style={{ color: '#38bdf8' }}>+₹{effectivePrintFee}</strong>
                         </div>
                       ) : (
                         <div style={{ color: '#64748b' }}>
-                          Artwork surcharge ({customArtworkCount} print
+                          Curated artwork surcharge ({customArtworkCount} print
                           {customArtworkCount === 1 ? '' : 's'}): +₹0
                         </div>
                       )

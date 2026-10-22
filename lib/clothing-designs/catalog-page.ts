@@ -184,13 +184,29 @@ export async function getCatalogPage(params: CatalogPageParams): Promise<Catalog
         return isCoordinatePhysicallyInRegion(targetGarment, expectedRegion, cand.u, cand.v);
       };
 
+      // An art-specific saved record knows its own side. The manifest
+      // suggestedPlacement is only a default and can disagree with where the
+      // designer actually saved the artwork (e.g. design-003's second art is
+      // named "Front Graphic" but saved on the back).
+      const isArtRegionConsistent = (cand?: SavedPlacementItem | null): boolean => {
+        if (!cand || typeof cand.u !== 'number' || typeof cand.v !== 'number') return false;
+        const candidateTarget = cand.placementTarget || '';
+        const candidateRegion: 'front' | 'back' | 'sleeve' =
+          cand.regionId === 'back' || candidateTarget.includes('back')
+            ? 'back'
+            : candidateTarget.includes('sleeve')
+            ? 'sleeve'
+            : 'front';
+        return isCoordinatePhysicallyInRegion(targetGarment, candidateRegion, cand.u, cand.v);
+      };
+
       const candArt = serverPlacements[artKey];
       const candTarget = serverPlacements[targetKey];
       const candFrontCenter = serverPlacements[`${d.id}__${targetGarment}__front-center`];
       const candRegion = serverPlacements[`${d.id}__${targetGarment}__${reqIsBack ? 'back' : 'front'}`];
 
       let savedPlacement: SavedPlacementItem | null = null;
-      if (isRegionConsistent(candArt)) {
+      if (isArtRegionConsistent(candArt)) {
         savedPlacement = candArt;
       } else if (isRegionConsistent(candTarget)) {
         savedPlacement = candTarget;
@@ -216,7 +232,7 @@ export async function getCatalogPage(params: CatalogPageParams): Promise<Catalog
         name: a.name,
         fileName: a.fileName,
         suggestedPlacement:
-          savedPlacement && isRegionConsistent(savedPlacement)
+          savedPlacement && isArtRegionConsistent(savedPlacement)
             ? savedPlacement.placementTarget || a.suggestedPlacement
             : a.suggestedPlacement,
         calibratedPlacement: savedPlacement || null,

@@ -20,12 +20,12 @@ export interface GarmentPricing {
 }
 
 /**
- * Fixed T-shirt artwork surcharge. The charge is applied once per qualifying
- * unit when two or more artwork placements are active, regardless of whether
- * the prints are on the front, back, sleeves, or split across sides.
+ * Curated T-shirt artwork surcharge. The charge is applied once per qualifying
+ * unit when two or more saved artwork placements are active, regardless of
+ * whether the prints are on the front, back, sleeves, or split across sides.
  *
- * Hoodies and the other 3D-only garment models keep the legacy per-artwork
- * custom-print fee below.
+ * Customer-uploaded artwork is different: it is charged at the per-artwork
+ * custom-print fee below, including on plain tees.
  */
 export const TSHIRT_ARTWORK_SURCHARGE = 40;
 export const LEGACY_CUSTOM_PRINT_FEE = 49;
@@ -139,10 +139,12 @@ export function isTShirtGarment(garmentId: string | null | undefined): boolean {
  * Artwork pricing shared by the storefront, cart, 3D studio hand-off and the
  * checkout API.
  *
- * - Regular / Oversized / Acid Wash tees: ₹40 once when 2+ active placements.
- * - Hoodies and other 3D-only garments: preserve the existing ₹49 per custom
- *   artwork fee for customer-uploaded artwork. Curated designs already include
- *   their artwork in the catalogue price.
+ * - Curated Regular / Oversized / Acid Wash tees: ₹40 once when 2+ saved
+ *   placements are active; 0 or 1 print is included.
+ * - Curated hoodies and other curated garments: artwork is included in the
+ *   catalogue price (₹0 extra).
+ * - Customer-uploaded artwork on any garment, including plain tees: ₹49 per
+ *   artwork, so 1 = ₹49, 2 = ₹98, 3 = ₹147, and so on.
  */
 export function getArtworkCharge(
   garmentId: string | null | undefined,
@@ -150,10 +152,12 @@ export function getArtworkCharge(
   options?: { curated?: boolean },
 ): number {
   const count = getActiveArtworkCount(activeArtworkCount);
-  if (isTShirtGarment(garmentId)) {
-    return count >= TSHIRT_ARTWORK_SURCHARGE_THRESHOLD ? TSHIRT_ARTWORK_SURCHARGE : 0;
+  if (options?.curated) {
+    if (isTShirtGarment(garmentId)) {
+      return count >= TSHIRT_ARTWORK_SURCHARGE_THRESHOLD ? TSHIRT_ARTWORK_SURCHARGE : 0;
+    }
+    return 0;
   }
-  if (options?.curated) return 0;
   return count * LEGACY_CUSTOM_PRINT_FEE;
 }
 

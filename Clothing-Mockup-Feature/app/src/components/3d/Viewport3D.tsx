@@ -1704,6 +1704,8 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
 
   // Determine hint text based on interaction state
   const hasSelectedLayer = !!selectedLayerId;
+  const selectedLayerForHint = artworkLayers.find((layer) => layer.id === selectedLayerId);
+  const isSelectedLayerLocked = !!selectedLayerForHint?.locked && !isDesignerMode;
 
   return (
     <div
@@ -1751,8 +1753,17 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
           textAlign: 'center',
           transition: 'opacity 0.25s ease, transform 0.25s ease',
         }}>
-          <span className="hint-text-desktop">Drag to move · Corner handles to resize · Circle handle to rotate</span>
-          <span className="hint-text-mobile">Drag to move · Corners to scale · Circle to rotate</span>
+          {isSelectedLayerLocked ? (
+            <>
+              <span className="hint-text-desktop">🔒 Placement locked by the artist · use Front / Back to inspect</span>
+              <span className="hint-text-mobile">🔒 Saved placement · view only</span>
+            </>
+          ) : (
+            <>
+              <span className="hint-text-desktop">Drag to move · Corner handles to resize · Circle handle to rotate</span>
+              <span className="hint-text-mobile">Drag to move · Corners to scale · Circle to rotate</span>
+            </>
+          )}
         </div>
       )}
 

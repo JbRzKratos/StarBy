@@ -48,7 +48,7 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
   isCuratedDesign = false,
   onToggleDesignerMode,
   customArtworkCount = 0,
-  customPrintFee = 0,
+  customPrintFee,
   basePrice,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -58,6 +58,19 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
   );
 
   const selectedLayer = artworkLayers.find((l) => l.id === selectedLayerId);
+  const activePrintCount = customArtworkCount ?? 0;
+  const isCuratedTee = isTShirtGarment && Boolean(isCuratedDesign);
+  const isCustomTee = isTShirtGarment && !isCuratedDesign;
+  const printFee =
+    typeof customPrintFee === 'number'
+      ? customPrintFee
+      : isCuratedDesign
+        ? isTShirtGarment && activePrintCount >= 2
+          ? 40
+          : 0
+        : activePrintCount * 49;
+  const curatedPrintsIncluded =
+    isCuratedTee && activePrintCount >= 2 && printFee === 0;
 
   const handleApplySmartPlacement = (text: string) => {
     if (!selectedLayer) return;
@@ -282,8 +295,8 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
         </button>
       )}
 
-      {/* Artwork pricing notice: fixed ₹40 for 2+ prints on tees, legacy
-          ₹49/design for customer-uploaded artwork on other garments. */}
+      {/* Artwork pricing notice: curated tees use the fixed ₹40 2+ print
+          threshold; customer-uploaded artwork is ₹49 per artwork. */}
       {(isTShirtGarment || !isCuratedDesign) && (
         <div
           style={{
@@ -298,29 +311,39 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span style={{ fontSize: '11px', fontWeight: 800, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              {isTShirtGarment ? '✦ Artwork Print Pricing' : '✦ Custom Print Pricing'}
+              {isCuratedDesign ? '✦ Artwork Print Pricing' : '✦ Custom Print Pricing'}
             </span>
             <span style={{ fontSize: '11px', fontWeight: 800, color: '#38bdf8', fontFamily: 'monospace' }}>
-              {isTShirtGarment ? '+₹40 fixed for 2+ prints' : '+₹49 / design'}
+              {isCuratedTee
+                ? curatedPrintsIncluded
+                  ? 'Curated prints included'
+                  : '+₹40 fixed for 2+ prints'
+                : '+₹49 / artwork'}
             </span>
           </div>
           <div style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.82)', lineHeight: 1.4 }}>
-            {isTShirtGarment
-              ? 'One print is included free. Two or more active prints add a single ₹40 surcharge per tee, not per print.'
-              : 'Each custom design you upload adds ₹49 to the garment price. Place graphics on front, back, or sleeves!'}
+            {isCuratedTee
+              ? curatedPrintsIncluded
+                ? 'This curated design includes its saved prints in the catalogue price. No additional artwork surcharge is applied.'
+                : 'One print is included free. Two or more active prints add a single ₹40 surcharge per tee, not per print.'
+              : 'Each uploaded artwork adds ₹49 to the garment price. One artwork is ₹49, two are ₹98, three are ₹147, and so on.'}
           </div>
           {isTShirtGarment ? (
             <div style={{ marginTop: '2px', fontSize: '11px', color: '#34d399', fontWeight: 700 }}>
-              ✓ {customArtworkCount} active print{customArtworkCount === 1 ? '' : 's'} ·{' '}
-              {customArtworkCount >= 2 ? '+₹40 surcharge' : '+₹0 surcharge'}
+              ✓ {activePrintCount} active print{activePrintCount === 1 ? '' : 's'} ·{' '}
+              {isCustomTee
+                ? `+₹${printFee} artwork fee`
+                : printFee > 0
+                  ? `+₹${printFee} surcharge`
+                  : '+₹0 surcharge'}
             </div>
-          ) : customArtworkCount > 0 ? (
+          ) : activePrintCount > 0 ? (
             <div style={{ marginTop: '2px', fontSize: '11px', color: '#34d399', fontWeight: 700 }}>
-              ✓ {customArtworkCount} design{customArtworkCount > 1 ? 's' : ''} added (+₹{customPrintFee || customArtworkCount * 49})
+              ✓ {activePrintCount} artwork{activePrintCount > 1 ? 's' : ''} added (+₹{printFee})
             </div>
           ) : (
             <div style={{ marginTop: '2px', fontSize: '10px', color: '#94a3b8' }}>
-              Garment: ₹{basePrice || 639} · 0 designs added
+              Garment: ₹{basePrice || 639} · 0 artworks added
             </div>
           )}
         </div>
@@ -487,6 +510,26 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                         <span
                           style={{
                             fontSize: '9px',
+                            color: '#c4b5fd',
+                            padding: '3px 6px',
+                            borderRadius: '4px',
+                            background: 'rgba(139, 92, 246, 0.12)',
+                            border: '1px solid rgba(139, 92, 246, 0.3)',
+                            fontWeight: 700,
+                            fontFamily: 'monospace',
+                            whiteSpace: 'nowrap',
+                          }}
+                          title="Saved placement side — view only"
+                        >
+                          {layer.regionId === 'back' || (layer.placementTarget || '').includes('back')
+                            ? 'BACK'
+                            : layer.regionId === 'sleeve' || (layer.placementTarget || '').includes('sleeve')
+                            ? 'SLEEVE'
+                            : 'FRONT'}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: '9px',
                             color: '#38bdf8',
                             padding: '3px 6px',
                             borderRadius: '4px',
@@ -499,34 +542,28 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
                             fontFamily: 'monospace',
                             whiteSpace: 'nowrap',
                           }}
-                          title="Placement locked by designer"
+                          title="Placement locked by designer — view only"
                         >
                           🔒 LOCKED
                         </span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const isCurrentlyHidden = layer.hidden === true || layer.opacity === 0;
-                            onUpdateLayer(layer.id, {
-                              opacity: isCurrentlyHidden ? 1.0 : 0,
-                              hidden: !isCurrentlyHidden,
-                            });
-                          }}
-                          style={{
-                            background: (layer.hidden || layer.opacity === 0) ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255, 255, 255, 0.08)',
-                            border: (layer.hidden || layer.opacity === 0) ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(255, 255, 255, 0.15)',
-                            borderRadius: '5px',
-                            color: (layer.hidden || layer.opacity === 0) ? '#f87171' : '#fff',
-                            cursor: 'pointer',
-                            padding: '4px 6px',
-                            fontSize: '12px',
-                            lineHeight: 1,
-                          }}
-                          title={(layer.hidden || layer.opacity === 0) ? 'Show Artwork' : 'Hide Artwork'}
-                        >
-                          {(layer.hidden || layer.opacity === 0) ? '👁‍🗨' : '👁'}
-                        </button>
+                        {(layer.hidden || layer.opacity === 0) && (
+                          <span
+                            style={{
+                              fontSize: '9px',
+                              color: 'rgba(255,255,255,0.55)',
+                              padding: '3px 6px',
+                              borderRadius: '4px',
+                              background: 'rgba(255,255,255,0.05)',
+                              border: '1px solid rgba(255,255,255,0.12)',
+                              fontWeight: 700,
+                              fontFamily: 'monospace',
+                              whiteSpace: 'nowrap',
+                            }}
+                            title="This saved alternate is not printed on the selected colour"
+                          >
+                            NOT PRINTED
+                          </span>
+                        )}
                       </div>
                     ) : (
                       <>

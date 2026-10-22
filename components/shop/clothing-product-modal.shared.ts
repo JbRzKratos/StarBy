@@ -63,6 +63,31 @@ export function getPlacementRegion(placement?: string): 'front' | 'back' | 'slee
   return 'front';
 }
 
+/** True for white / cream / other light garment swatches. */
+export function isLightGarmentHex(hex?: string): boolean {
+  const value = (hex || '').trim().replace(/^#/, '');
+  if (!/^[0-9a-f]{6}$/i.test(value)) return true;
+  const r = parseInt(value.slice(0, 2), 16);
+  const g = parseInt(value.slice(2, 4), 16);
+  const b = parseInt(value.slice(4, 6), 16);
+  return 0.299 * r + 0.587 * g + 0.114 * b >= 150;
+}
+
+/**
+ * Colour-specific artwork variants (design-002 and similar) must only print on
+ * the fabric colour they were drawn for. Artwork without a hint prints on all.
+ */
+export function isArtworkApplicableToColor(
+  colorHint: string | undefined,
+  garmentHex?: string
+): boolean {
+  if (!colorHint || colorHint === 'any') return true;
+  const isLight = isLightGarmentHex(garmentHex);
+  if (colorHint === 'black') return !isLight;
+  if (colorHint === 'white') return isLight;
+  return true;
+}
+
 export function isCoordinatePhysicallyInRegion(
   garment3dId: string,
   region: 'front' | 'back' | 'sleeve',
@@ -208,16 +233,17 @@ export function useClothingProductModalState({
   // swatches look broken: pick a colour, tap an artwork, and the colour
   // snapped back to black/white. A ref keeps the guard without re-running
   // the placement initialiser every time a swatch is clicked.
-  const colorManuallySelectedRef = useRef(false);
+  const colorManuallySelectedRef = useRef(Boolean(customColorHex));
   const handleSelectColor = useCallback((color: ApparelColorSwatch) => {
     colorManuallySelectedRef.current = true;
     setSelectedColor(color);
   }, []);
 
-  // A new design / garment starts from its recommended colour again.
+  // A new design / garment starts from its recommended colour again unless the
+  // host page supplied an explicit colour for this product.
   useEffect(() => {
-    colorManuallySelectedRef.current = false;
-  }, [design?.id, selectedGarmentId]);
+    colorManuallySelectedRef.current = Boolean(customColorHex);
+  }, [design?.id, selectedGarmentId, customColorHex]);
 
   // Size selection
   const [selectedSize, setSelectedSize] = useState<string>('L');
@@ -241,6 +267,31 @@ export function useClothingProductModalState({
   // Current preview view side ('front' | 'back')
   const [previewSide, setPreviewSide] = useState<'front' | 'back'>('front');
 
+  // Shown when a customer tries to move a calibrated artwork. Curated
+  // placements are view-only; custom placement lives in the standalone studio.
+  const [lockedPlacementNotice, setLockedPlacementNotice] = useState<string | null>(null);
+  const lockedNoticeTimeoutRef = useRef<number | null>(null);
+  const showLockedPlacementNotice = useCallback(() => {
+    setLockedPlacementNotice(
+      'This is a calibrated artwork for tees. Its placement is locked. For your own custom placement, go to the home page and click “Enter the Studio 360”.'
+    );
+    if (lockedNoticeTimeoutRef.current) {
+      window.clearTimeout(lockedNoticeTimeoutRef.current);
+    }
+    lockedNoticeTimeoutRef.current = window.setTimeout(() => {
+      setLockedPlacementNotice(null);
+      lockedNoticeTimeoutRef.current = null;
+    }, 7000);
+  }, []);
+  useEffect(
+    () => () => {
+      if (lockedNoticeTimeoutRef.current) {
+        window.clearTimeout(lockedNoticeTimeoutRef.current);
+      }
+    },
+    []
+  );
+
   // Natural Language text input state
   const [nlpInputText, setNlpInputText] = useState<string>('');
 
@@ -250,6 +301,31 @@ export function useClothingProductModalState({
       design.id.includes('fregor') ||
       Boolean(design.category))
   );
+
+  // Curated designs may contain alternate artwork for light / dark garments.
+  // Keep the raw saved inclusion set intact, but only count and render variants
+  // that apply to the colour currently selected.
+  const effectiveIncludedArtworks = useMemo(() => {
+    if (!isCuratedDesign) return includedArtworks;
+    const next = new Set<string>();
+    const colorHex = selectedColor?.hex || '#FFFFFF';
+    includedArtworks.forEach((id) => {
+      const art = artworks.find((a) => a.id === id);
+      if (art && isArtworkApplicableToColor(art.colorHint, colorHex)) {
+        next.add(id);
+      }
+    });
+    return next;
+  }, [isCuratedDesign, includedArtworks, artworks, selectedColor?.hex]);
+
+  // Keep the active artwork in sync when the customer switches to a colour that
+  // only has the alternate variant saved.
+  useEffect(() => {
+    if (!isCuratedDesign || effectiveIncludedArtworks.size === 0) return;
+    if (effectiveIncludedArtworks.has(activeArtId)) return;
+    const nextActive = artworks.find((art) => effectiveIncludedArtworks.has(art.id));
+    if (nextActive) setActiveArtId(nextActive.id);
+  }, [isCuratedDesign, effectiveIncludedArtworks, activeArtId, artworks]);
 
   // Calibrated coordinates per artwork: Record<artId, SavedPlacementItem>
   const [artworkCalibratedCoords, setArtworkCalibratedCoords] = useState<Record<string, SavedPlacementItem>>({});
@@ -345,11 +421,26 @@ export function useClothingProductModalState({
           return true;
         };
 
+        // An art-specific saved record knows its own side. Do not reject it just
+        // because the manifest's suggested placement is on a different panel
+        // (e.g. design-002's hoodie artwork was saved on the back).
+        const validateArtCandidate = (candidate: Partial<SavedPlacementItem> | null | undefined): boolean => {
+          if (!candidate || typeof candidate.u !== 'number' || typeof candidate.v !== 'number') return false;
+          const candidateTarget = candidate.placementTarget || '';
+          const candidateRegion: 'front' | 'back' | 'sleeve' =
+            candidate.regionId === 'back' || candidateTarget.includes('back')
+              ? 'back'
+              : candidateTarget.includes('sleeve')
+              ? 'sleeve'
+              : 'front';
+          return isCoordinatePhysicallyInRegion(normGarment, candidateRegion, candidate.u, candidate.v);
+        };
+
         // 1. Exact artId match IF it's physically in the correct garment panel
         if (artId) {
           const cleanArt = artId.toLowerCase().trim();
           const artKey = `${design.id}__${normGarment}__${cleanArt}`;
-          if (all[artKey] && validateCandidate(all[artKey])) return all[artKey];
+          if (all[artKey] && validateArtCandidate(all[artKey])) return all[artKey];
         }
 
         // 2. Exact placement target match (e.g. design-001__oversized-t-shirt__front-center)
@@ -419,12 +510,17 @@ export function useClothingProductModalState({
       initialPlacements[art.id] = initPlacement;
       initialScales[art.id] = initScale;
 
+      // Colour-specific variants are alternates for the same print slot. The
+      // saved hidden/zero-opacity flag usually belongs to the other fabric
+      // colour (e.g. design-002's white artwork was hidden when the designer
+      // saved on black), so let the selected colour decide whether it prints.
+      const isColorVariant = art.colorHint === 'black' || art.colorHint === 'white';
       const isRemovedOrHidden =
         art.removed === true ||
         art.hidden === true ||
         savedForArt?.removed === true ||
-        savedForArt?.hidden === true ||
-        savedForArt?.opacity === 0;
+        (!isColorVariant &&
+          (savedForArt?.hidden === true || savedForArt?.opacity === 0));
 
       if (!isRemovedOrHidden) {
         initialIncluded.add(art.id);
@@ -511,11 +607,15 @@ export function useClothingProductModalState({
   const handleSelectArtwork = (art: DesignArtworkOption) => {
     setActiveArtId(art.id);
 
-    setIncludedArtworks((prev) => {
-      const next = new Set(prev);
-      next.add(art.id);
-      return next;
-    });
+    // A curated design's saved inclusion is view-only. Keep hidden / alternate
+    // variants out of the print set even if a customer taps the card.
+    if (!isCuratedDesign) {
+      setIncludedArtworks((prev) => {
+        const next = new Set(prev);
+        next.add(art.id);
+        return next;
+      });
+    }
 
     // Prefer the placement the designer saved over the manifest's suggestion.
     // This is what makes clicking an artwork show exactly the saved front/back
@@ -577,6 +677,7 @@ export function useClothingProductModalState({
    * one.
    */
   const handleUpdatePlacement = (placement: DesignPlacementTarget, artId?: string) => {
+    if (isCuratedDesign) return;
     const targetArt = artId
       ? artworks.find((art) => art.id === artId) || currentActiveArt
       : currentActiveArt;
@@ -603,6 +704,7 @@ export function useClothingProductModalState({
   };
 
   const handleUpdateSide = (region: 'front' | 'back' | 'sleeve') => {
+    if (isCuratedDesign) return;
     if (!currentActiveArt) return;
     if (region === 'front') {
       setPreviewSide('front');
@@ -625,7 +727,7 @@ export function useClothingProductModalState({
   const handleSwitchSide = (side: 'front' | 'back') => {
     setPreviewSide(side);
     const artOnNewSide = artworks.find((art) => {
-      if (!includedArtworks.has(art.id)) return false;
+      if (!effectiveIncludedArtworks.has(art.id)) return false;
       const placement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
       return side === 'back' ? isBackPlacement(placement) : !isBackPlacement(placement);
     });
@@ -635,6 +737,7 @@ export function useClothingProductModalState({
   };
 
   const handleUpdateScale = (scale: DesignScalePreset) => {
+    if (isCuratedDesign) return;
     if (!currentActiveArt) return;
     setArtworkScales((prev) => ({
       ...prev,
@@ -643,6 +746,7 @@ export function useClothingProductModalState({
   };
 
   const handleNlpInputChange = (val: string) => {
+    if (isCuratedDesign) return;
     setNlpInputText(val);
     if (!val.trim() || !currentActiveArt) return;
 
@@ -665,11 +769,13 @@ export function useClothingProductModalState({
   };
 
   const handleApplyQuickPrompt = (promptText: string) => {
+    if (isCuratedDesign) return;
     setNlpInputText(promptText);
     handleNlpInputChange(promptText);
   };
 
   const handleToggleInclude = (artId: string) => {
+    if (isCuratedDesign) return;
     setIncludedArtworks((prev) => {
       const next = new Set(prev);
       if (next.has(artId)) {
@@ -685,6 +791,7 @@ export function useClothingProductModalState({
 
   // Click on 2D Garment Mockup plate to pinpoint placement
   const handleGarmentMockupClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (isCuratedDesign) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const relX = (e.clientX - rect.left) / rect.width;
     const relY = (e.clientY - rect.top) / rect.height;
@@ -718,6 +825,9 @@ export function useClothingProductModalState({
     if (!design) return;
 
     try {
+      // Send every saved artwork in the set, including the alternate black /
+      // white variant. The studio decides visibility from the current colour,
+      // so switching fabric colour keeps the saved print set intact.
       const layersToLoad = Array.from(includedArtworks).map((id, index) => {
         const art = artworks.find((a) => a.id === id) || (artworks && artworks.length > 0 ? artworks[0] : null);
         const artId = art?.id || id;
@@ -726,6 +836,10 @@ export function useClothingProductModalState({
         const scalePreset =
           artworkScales[artId] ||
           (placement === 'left-chest' || placement === 'right-chest' ? 'compact' : 'standard');
+        const isApplicableToColour = isArtworkApplicableToColor(
+          art?.colorHint,
+          selectedColor?.hex || '#FFFFFF'
+        );
         const calibrated =
           artworkCalibratedCoords[artId] ||
           getSavedPlacementForDesign(selectedGarment?.garment3dId || 'regular-t-shirt', artId, placement) ||
@@ -745,6 +859,9 @@ export function useClothingProductModalState({
           scale: scalePreset,
           curatedDesignId: design.id,
           isCurated: true,
+          colorHint: art?.colorHint,
+          hidden: !isApplicableToColour,
+          opacity: isApplicableToColour ? 1 : 0,
           ...(calibrated
             ? {
                 u: calibrated.u,
@@ -760,7 +877,13 @@ export function useClothingProductModalState({
         };
       });
 
-      const primaryArt = currentActiveArt || (artworks && artworks.length > 0 ? artworks[0] : null);
+      const primaryArt =
+        (currentActiveArt && effectiveIncludedArtworks.has(currentActiveArt.id)
+          ? currentActiveArt
+          : null) ||
+        artworks.find((art) => effectiveIncludedArtworks.has(art.id)) ||
+        currentActiveArt ||
+        (artworks && artworks.length > 0 ? artworks[0] : null);
       const primaryArtId = primaryArt?.id || 'art-1';
       const primaryPlacement =
         (primaryArt && artworkPlacements[primaryArt.id]) || primaryArt?.suggestedPlacement || 'front-center';
@@ -853,7 +976,15 @@ export function useClothingProductModalState({
     placement: DesignPlacementTarget,
     scale: DesignScalePreset,
     isMobile?: boolean,
-    calibrated?: { u?: number; v?: number; uvWidth?: number; scale?: number; rotation?: number; regionId?: string } | null,
+    calibrated?: {
+      u?: number;
+      v?: number;
+      uvWidth?: number;
+      scale?: number;
+      rotation?: number;
+      regionId?: string;
+      placementTarget?: string;
+    } | null,
     garmentIdOverride?: string
   ): CSSProperties => {
     let scaleMultiplier = isMobile ? 0.65 : 1.0;
@@ -867,9 +998,13 @@ export function useClothingProductModalState({
 
     const isBack = isBackPlacement(placement);
     const isSleeve = placement.includes('sleeve');
+    const calibratedTarget = calibrated?.placementTarget || '';
+    const calibratedIsBack = calibrated?.regionId === 'back' || calibratedTarget.includes('back');
+    const calibratedIsSleeve =
+      calibrated?.regionId === 'sleeve' || calibratedTarget.includes('sleeve');
     const isRegionMatch =
-      !calibrated?.regionId ||
-      (isBack ? calibrated.regionId === 'back' : isSleeve ? calibrated.regionId === 'sleeve' : calibrated.regionId === 'front');
+      (!calibrated?.regionId && !calibratedTarget) ||
+      (isBack ? calibratedIsBack : isSleeve ? calibratedIsSleeve : !calibratedIsBack && !calibratedIsSleeve);
 
     if (calibrated && typeof calibrated.u === 'number' && typeof calibrated.v === 'number' && isRegionMatch) {
       const g = (garmentIdOverride || selectedGarment?.garment3dId || 'regular-t-shirt').toLowerCase();
@@ -1036,9 +1171,9 @@ export function useClothingProductModalState({
         ? design.basePrice
         : 639;
   const garmentSizePrice = getApparelPrice(selectedGarmentId, selectedSize || 'L');
-  // `includedArtworks` already excludes deleted, hidden and zero-opacity
-  // placements, so its size is the active printed artwork count.
-  const activeArtworkCount = includedArtworks.size;
+  // `effectiveIncludedArtworks` excludes deleted, hidden, zero-opacity and
+  // colour-mismatched placements, so its size is the active print count.
+  const activeArtworkCount = effectiveIncludedArtworks.size;
   const artworkCharge = isOneRupee
     ? 0
     : getArtworkCharge(selectedGarmentId, activeArtworkCount, { curated: true });
@@ -1066,7 +1201,7 @@ export function useClothingProductModalState({
     artworkPlacements,
     artworkScales,
     artworkCalibratedCoords,
-    includedArtworks,
+    includedArtworks: effectiveIncludedArtworks,
     setIncludedArtworks,
     previewSide,
     setPreviewSide,
@@ -1093,6 +1228,8 @@ export function useClothingProductModalState({
     SCALE_PRESETS,
     QUICK_NLP_PROMPTS,
     isCuratedDesign,
+    lockedPlacementNotice,
+    showLockedPlacementNotice,
   };
 }
 

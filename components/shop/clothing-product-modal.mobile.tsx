@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import type { ClothingModalState } from './clothing-product-modal.shared';
-import { isBackPlacement, getPlacementRegion } from './clothing-product-modal.shared';
+import { isBackPlacement, getPlacementRegion, isArtworkApplicableToColor } from './clothing-product-modal.shared';
 import { getArtworkPreviewUrl } from './clothing-artwork-image';
 import type { DesignPlacementTarget } from '@/lib/clothing-designs/types';
 
@@ -48,6 +48,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
     SCALE_PRESETS,
     QUICK_NLP_PROMPTS,
     isCuratedDesign,
+    showLockedPlacementNotice,
   } = state;
 
   if (!design) return null;
@@ -122,12 +123,15 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
 
         {/* 2D Canvas Mockup Plate */}
         <div
-          onClick={handleGarmentMockupClick}
-          className="group relative w-full h-[180px] max-w-[280px] flex items-center justify-center select-none cursor-crosshair rounded-2xl border transition-all duration-300 shadow-xl overflow-hidden"
+          onClick={isCuratedDesign ? showLockedPlacementNotice : handleGarmentMockupClick}
+          className={`group relative w-full h-[180px] max-w-[280px] flex items-center justify-center select-none ${
+            isCuratedDesign ? 'cursor-default' : 'cursor-crosshair'
+          } rounded-2xl border transition-all duration-300 shadow-xl overflow-hidden`}
           style={{
             backgroundColor: selectedColor.hex === '#FFFFFF' ? '#F4F4F6' : selectedColor.hex,
             borderColor: selectedColor.hex === '#FFFFFF' ? '#33353F' : 'rgba(255,255,255,0.08)',
           }}
+          title={isCuratedDesign ? 'Viewing the designer-saved placement' : undefined}
         >
           {/* Real Plain Garment Mockup Image */}
           {(() => {
@@ -161,8 +165,8 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
             {previewSide === 'front' ? 'FRONT VIEW' : 'BACK VIEW'}
           </span>
 
-          {/* Interactive Hotspot Targets on Garment Panel */}
-          {previewSide === 'front' ? (
+          {/* Interactive Hotspot Targets on Garment Panel (custom only) */}
+          {!isCuratedDesign && (previewSide === 'front' ? (
             <>
               {/* Wearer Left Chest */}
               <button
@@ -274,7 +278,7 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                 <span className="text-[10px] font-bold">+</span>
               </button>
             </>
-          )}
+          ))}
 
           {/* Render Graphics with Placement & Scale Applied for current side */}
           {artworks
@@ -314,8 +318,9 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
               );
             })}
 
-          {/* If no graphic is on the current side, show tap-to-move prompt for active artwork */}
-          {currentActiveArt &&
+          {/* If no graphic is on the current side, show prompt (custom only) */}
+          {!isCuratedDesign &&
+            currentActiveArt &&
             !artworks.some((art) => {
               if (!includedArtworks.has(art.id)) return false;
               const placement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
@@ -333,6 +338,18 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                   Graphic on {previewSide === 'front' ? 'Back' : 'Front'} &bull;{' '}
                   <strong className="text-emerald-400 underline">Tap to move here</strong>
                 </span>
+              </div>
+            )}
+
+          {isCuratedDesign &&
+            currentActiveArt &&
+            !artworks.some((art) => {
+              if (!includedArtworks.has(art.id)) return false;
+              const placement = artworkPlacements[art.id] || art.suggestedPlacement || 'front-center';
+              return previewSide === 'back' ? isBackPlacement(placement) : !isBackPlacement(placement);
+            }) && (
+              <div className="z-20 px-3 py-1.5 bg-neutral-900/90 border border-white/15 rounded-xl text-center shadow-xl pointer-events-none">
+                <span className="font-mono text-[9px] text-white/70">No saved print on this side</span>
               </div>
             )}
 
@@ -406,8 +423,16 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
               Color: <span className="text-white">{selectedColor.name}</span>
             </label>
             {currentActiveArt?.colorHint && currentActiveArt.colorHint !== 'any' && (
-              <span className="font-mono text-[9px] text-emerald-400">
-                ★ Best for {currentActiveArt.colorHint}
+              <span
+                className={`font-mono text-[9px] ${
+                  isArtworkApplicableToColor(currentActiveArt.colorHint, selectedColor.hex)
+                    ? 'text-emerald-400'
+                    : 'text-amber-400'
+                }`}
+              >
+                {isArtworkApplicableToColor(currentActiveArt.colorHint, selectedColor.hex)
+                  ? `★ Best for ${currentActiveArt.colorHint}`
+                  : `★ Switch to ${currentActiveArt.colorHint} to print`}
               </span>
             )}
           </div>
@@ -486,7 +511,9 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
               <span className="text-white/50 text-xs">⊞</span>
               <span>Artwork Images in this Design ({artworks.length})</span>
             </label>
-            <span className="font-mono text-[9px] text-white/40">Tap to select</span>
+            <span className="font-mono text-[9px] text-white/40">
+              {isCuratedDesign ? 'Saved placement · view only' : 'Tap to select'}
+            </span>
           </div>
 
           <div className="grid grid-cols-2 gap-2.5">
@@ -533,73 +560,104 @@ export function ClothingProductModalMobile({ state }: { state: ClothingModalStat
                     </span>
                   </div>
 
-                  {/* Front / Back Chooser */}
-                  <div className="flex items-center gap-1 pt-1 border-t border-white/5">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveArtId(art.id);
-                        const savedTarget = art.calibratedPlacement?.placementTarget;
-                        const frontTarget =
-                          savedTarget && !isBackPlacement(savedTarget as DesignPlacementTarget)
-                            ? (savedTarget as DesignPlacementTarget)
-                            : 'front-center';
-                        handleUpdatePlacement(frontTarget, art.id);
-                        setPreviewSide('front');
-                      }}
-                      className={`flex-1 py-1 rounded text-[9px] font-mono uppercase tracking-wider text-center transition-all ${
-                        !isBackPlacement(artPlacement)
-                          ? 'bg-emerald-500 text-black font-bold shadow-sm'
-                          : 'bg-white/5 text-white/50 active:text-white'
-                      }`}
-                    >
-                      Front
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveArtId(art.id);
-                        const savedTarget = art.calibratedPlacement?.placementTarget;
-                        const backTarget =
-                          savedTarget && isBackPlacement(savedTarget as DesignPlacementTarget)
-                            ? (savedTarget as DesignPlacementTarget)
-                            : 'back-center';
-                        handleUpdatePlacement(backTarget, art.id);
-                        setPreviewSide('back');
-                      }}
-                      className={`flex-1 py-1 rounded text-[9px] font-mono uppercase tracking-wider text-center transition-all ${
-                        isBackPlacement(artPlacement)
-                          ? 'bg-emerald-500 text-black font-bold shadow-sm'
-                          : 'bg-white/5 text-white/50 active:text-white'
-                      }`}
-                    >
-                      Back
-                    </button>
-                  </div>
-
-                  {/* Multi-artwork include checkbox */}
-                  {artworks.length > 1 && (
-                    <div
-                      className="pt-1 mt-auto border-t border-white/5 flex items-center justify-between"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToggleInclude(art.id);
-                      }}
-                    >
-                      <span className="font-mono text-[9px] text-white/50">Print on tee</span>
-                      <div
-                        className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition-colors ${
-                          isIncluded
-                            ? 'bg-emerald-500 border-emerald-400 text-black'
-                            : 'bg-transparent border-white/20'
+                  {/* Saved side badge (curated) / Front-Back chooser (custom) */}
+                  {isCuratedDesign ? (
+                    <div className="flex items-center justify-between gap-1 pt-1 border-t border-white/5">
+                      <span className="font-mono text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-white/50">
+                        🔒 Saved {isBackPlacement(artPlacement) ? 'Back' : 'Front'}
+                      </span>
+                      <span className="font-mono text-[8px] uppercase tracking-wider text-white/30">
+                        View only
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1 pt-1 border-t border-white/5">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveArtId(art.id);
+                          const savedTarget = art.calibratedPlacement?.placementTarget;
+                          const frontTarget =
+                            savedTarget && !isBackPlacement(savedTarget as DesignPlacementTarget)
+                              ? (savedTarget as DesignPlacementTarget)
+                              : 'front-center';
+                          handleUpdatePlacement(frontTarget, art.id);
+                          setPreviewSide('front');
+                        }}
+                        className={`flex-1 py-1 rounded text-[9px] font-mono uppercase tracking-wider text-center transition-all ${
+                          !isBackPlacement(artPlacement)
+                            ? 'bg-emerald-500 text-black font-bold shadow-sm'
+                            : 'bg-white/5 text-white/50 active:text-white'
                         }`}
                       >
-                        {isIncluded && <span className="text-[10px] font-bold">✓</span>}
-                      </div>
+                        Front
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveArtId(art.id);
+                          const savedTarget = art.calibratedPlacement?.placementTarget;
+                          const backTarget =
+                            savedTarget && isBackPlacement(savedTarget as DesignPlacementTarget)
+                              ? (savedTarget as DesignPlacementTarget)
+                              : 'back-center';
+                          handleUpdatePlacement(backTarget, art.id);
+                          setPreviewSide('back');
+                        }}
+                        className={`flex-1 py-1 rounded text-[9px] font-mono uppercase tracking-wider text-center transition-all ${
+                          isBackPlacement(artPlacement)
+                            ? 'bg-emerald-500 text-black font-bold shadow-sm'
+                            : 'bg-white/5 text-white/50 active:text-white'
+                        }`}
+                      >
+                        Back
+                      </button>
                     </div>
                   )}
+
+                  {/* Include row: saved state for curated, toggle for custom */}
+                  {artworks.length > 1 &&
+                    (isCuratedDesign ? (
+                      <div className="pt-1 mt-auto border-t border-white/5 flex items-center justify-between">
+                        <span className="font-mono text-[9px] text-white/50">
+                          {isIncluded ? 'Saved print' : 'Not printed'}
+                        </span>
+                        <div
+                          className={`w-3.5 h-3.5 rounded flex items-center justify-center border ${
+                            isIncluded
+                              ? 'bg-emerald-500 border-emerald-400 text-black'
+                              : 'bg-transparent border-white/20 text-white/30'
+                          }`}
+                        >
+                          {isIncluded ? (
+                            <span className="text-[10px] font-bold">✓</span>
+                          ) : (
+                            <span className="text-[9px] font-bold">—</span>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        className="pt-1 mt-auto border-t border-white/5 flex items-center justify-between"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleToggleInclude(art.id);
+                        }}
+                      >
+                        <span className="font-mono text-[9px] text-white/50">Print on tee</span>
+                        <div
+                          className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition-colors ${
+                            isIncluded
+                              ? 'bg-emerald-500 border-emerald-400 text-black'
+                              : 'bg-transparent border-white/20'
+                          }`}
+                        >
+                          {isIncluded && <span className="text-[10px] font-bold">✓</span>}
+                        </div>
+                      </div>
+                    ))}
                 </div>
               );
             })}

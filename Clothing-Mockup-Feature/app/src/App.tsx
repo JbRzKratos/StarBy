@@ -93,9 +93,11 @@ function getUrlDesignId(): string | null {
 }
 
 /**
- * T-shirt artwork pricing mirrors the host storefront and checkout:
- * ₹40 once per qualifying tee unit when 2+ active placements are printed.
- * Other garments keep the legacy ₹49 per custom artwork fee.
+ * Artwork pricing mirrors the host storefront and checkout:
+ * - Curated tees: ₹40 once when 2+ saved prints are active (0/1 free).
+ * - Curated hoodies/other garments: artwork included in the design price.
+ * - Customer-uploaded artwork on any garment, including plain tees: ₹49 per
+ *   artwork, so the fee grows by ₹49 for every added print.
  */
 const TSHIRT_ARTWORK_SURCHARGE = 40;
 const LEGACY_CUSTOM_PRINT_FEE = 49;
@@ -111,10 +113,13 @@ function getArtworkCharge(
   isCurated: boolean,
 ): number {
   const count = Math.min(100, Math.max(0, Math.trunc(activeArtworkCount || 0)));
-  if (TSHIRT_GARMENT_IDS.has(resolveGarmentId(garmentId))) {
-    return count >= 2 ? TSHIRT_ARTWORK_SURCHARGE : 0;
+  if (isCurated) {
+    if (TSHIRT_GARMENT_IDS.has(resolveGarmentId(garmentId))) {
+      return count >= 2 ? TSHIRT_ARTWORK_SURCHARGE : 0;
+    }
+    return 0;
   }
-  return isCurated ? 0 : count * LEGACY_CUSTOM_PRINT_FEE;
+  return count * LEGACY_CUSTOM_PRINT_FEE;
 }
 
 /** Build a size -> price map for a garment with a 3XL surcharge. */
@@ -165,6 +170,25 @@ function resolveGarmentId(raw?: string | null): string {
   if (value.includes('hoodie') || value.includes('hood')) return 'hoodie';
   if (value.includes('fitted')) return 'fitted-t-shirt';
   return 'regular-t-shirt';
+}
+
+/** True for white / cream / other light fabric colours. */
+function isLightGarmentHex(hex?: string): boolean {
+  const value = (hex || '').trim().replace(/^#/, '');
+  if (!/^[0-9a-f]{6}$/i.test(value)) return true;
+  const r = parseInt(value.slice(0, 2), 16);
+  const g = parseInt(value.slice(2, 4), 16);
+  const b = parseInt(value.slice(4, 6), 16);
+  return 0.299 * r + 0.587 * g + 0.114 * b >= 150;
+}
+
+/** A colour-specific variant only prints on the fabric it was drawn for. */
+function matchesArtworkColorHint(hint: string | undefined, garmentHex: string): boolean {
+  if (!hint || hint === 'any') return true;
+  const isLight = isLightGarmentHex(garmentHex);
+  if (hint === 'black') return !isLight;
+  if (hint === 'white') return isLight;
+  return true;
 }
 
 type CartProofSet = {
@@ -446,6 +470,9 @@ export const App: React.FC = () => {
     activeArtworkCount3D,
     isCuratedDesign,
   );
+  // design-001 is a ₹1 catalogue special and never carries an artwork fee.
+  // Keep the cart payload untouched, but show the real charge in the UI.
+  const displayPrintFee = isDesign001 ? 0 : customPrintFee;
 
   /** Size-aware garment price (live values when available). */
   const getGarmentPriceForSize = (garmentId: string, size?: string): number => {
@@ -457,8 +484,8 @@ export const App: React.FC = () => {
 
   /**
    * The price of one unit for a given size. Curated designs never drop below
-   * the garment price. T-shirts add a single fixed ₹40 charge when two or more
-   * active prints are present; other custom garments retain ₹49 per artwork.
+   * the garment price and use the curated tee threshold (₹40 once for 2+
+   * prints). Customer-uploaded artwork adds ₹49 per artwork on every garment.
    */
   const getUnitPriceForSize = (size?: string): number => {
     const garmentPrice = getGarmentPriceForSize(project3D.garmentId, size);
@@ -896,6 +923,7 @@ export const App: React.FC = () => {
         scalePreset?: string | null;
         curatedDesignId?: string | null;
         isCurated?: boolean;
+        colorHint?: 'any' | 'black' | 'white' | string;
         opacity?: number;
         hidden?: boolean;
         removed?: boolean;
@@ -963,14 +991,22 @@ export const App: React.FC = () => {
       const finalRot = typeof (input as any).rotation === 'number' ? (input as any).rotation : (calibrated.rotation ?? 0);
       const finalRegion = (input as any).regionId || calibrated.regionId || baseLayer.regionId;
 
-      const isExplicitlyHidden =
-        (input as any).hidden === true ||
-        (input as any).opacity === 0 ||
-        calibrated?.hidden === true ||
-        calibrated?.opacity === 0;
+      const inputColorHint = input.colorHint;
+      const isColorVariant = inputColorHint === 'black' || inputColorHint === 'white';
+      // Colour variants carry their own visibility from the active fabric
+      // colour. Their saved row may still say hidden/opacity:0 because the
+      // designer saved it while the other variant was selected.
+      const isExplicitlyHidden = isColorVariant
+        ? (input as any).hidden === true || (input as any).opacity === 0
+        : (input as any).hidden === true ||
+          (input as any).opacity === 0 ||
+          calibrated?.hidden === true ||
+          calibrated?.opacity === 0;
 
       const finalOpacity = isExplicitlyHidden
         ? 0
+        : isColorVariant
+        ? 1.0
         : typeof (input as any).opacity === 'number'
         ? (input as any).opacity
         : 1.0;
@@ -991,6 +1027,7 @@ export const App: React.FC = () => {
         offsetY: parseFloat(((finalV - 0.5) * 2).toFixed(3)),
         isCurated,
         curatedDesignId: designId || undefined,
+        colorHint: input.colorHint,
         locked: isCurated ? !(isDesignerAuthorized && isDesignerMode) : false,
       };
     },
@@ -1015,7 +1052,7 @@ export const App: React.FC = () => {
               : l.name.toLowerCase().includes('sleeve')
               ? 'left-sleeve'
               : 'front-center');
-          return (
+          const mapped =
             computePlacementLayer(
               garmentId,
               {
@@ -1026,10 +1063,18 @@ export const App: React.FC = () => {
                 scale: l.scalePreset || 'standard',
                 curatedDesignId: l.curatedDesignId,
                 isCurated: l.isCurated,
+                colorHint: l.colorHint,
               },
               idx
-            ) || l
-          );
+            ) || l;
+          if (!l.colorHint || l.colorHint === 'any') return mapped;
+          const colorMatches = matchesArtworkColorHint(l.colorHint, newColor);
+          return {
+            ...mapped,
+            colorHint: l.colorHint,
+            hidden: !colorMatches,
+            opacity: colorMatches ? 1.0 : 0,
+          };
         });
         return {
           ...prev,
@@ -1043,7 +1088,19 @@ export const App: React.FC = () => {
   );
 
   const handleModalChangeColor = useCallback((hex: string) => {
-    setProject3D((prev) => ({ ...prev, garmentColor: hex }));
+    setProject3D((prev) => {
+      const nextLayers = prev.artworkLayers.map((layer) => {
+        if (!layer.isCurated || !layer.colorHint || layer.colorHint === 'any') return layer;
+        const matches = matchesArtworkColorHint(layer.colorHint, hex);
+        if (matches) {
+          if (layer.hidden !== true && layer.opacity > 0) return layer;
+          return { ...layer, hidden: false, opacity: 1.0 };
+        }
+        if (layer.hidden === true && layer.opacity === 0) return layer;
+        return { ...layer, hidden: true, opacity: 0 };
+      });
+      return { ...prev, garmentColor: hex, artworkLayers: nextLayers };
+    });
   }, []);
 
   const handleModalPlaceArtwork = useCallback(
@@ -1235,6 +1292,9 @@ export const App: React.FC = () => {
                     if (matchedArt) artId = matchedArt.id.toLowerCase();
                   }
                   const dId = params.designId || layer.curatedDesignId || (curated ? curated.id : undefined);
+                  const artDef = artId
+                    ? curated?.artworks.find((a) => a.id.toLowerCase() === artId)
+                    : undefined;
                   const calibrated = getCuratedPlacement(
                     dId,
                     prev.garmentId,
@@ -1242,7 +1302,10 @@ export const App: React.FC = () => {
                     artId
                   );
                   if (!calibrated) return layer;
-                  const isHidden = calibrated.hidden === true || calibrated.opacity === 0;
+                  const isColorVariant = artDef?.colorHint === 'black' || artDef?.colorHint === 'white';
+                  const isHidden = isColorVariant
+                    ? !matchesArtworkColorHint(artDef?.colorHint, prev.garmentColor)
+                    : calibrated.hidden === true || calibrated.opacity === 0;
                   return {
                     ...layer,
                     u: calibrated.u,
@@ -1253,7 +1316,14 @@ export const App: React.FC = () => {
                     rotation: calibrated.rotation ?? 0,
                     regionId: calibrated.regionId || layer.regionId,
                     placementTarget: calibrated.placementTarget || layer.placementTarget,
-                    opacity: isHidden ? 0 : (typeof calibrated.opacity === 'number' ? calibrated.opacity : layer.opacity),
+                    colorHint: artDef?.colorHint || layer.colorHint,
+                    opacity: isHidden
+                      ? 0
+                      : isColorVariant
+                      ? 1.0
+                      : typeof calibrated.opacity === 'number'
+                      ? calibrated.opacity
+                      : layer.opacity,
                     hidden: isHidden,
                     offsetX: parseFloat(((calibrated.u - 0.5) * 2).toFixed(3)),
                     offsetY: parseFloat(((calibrated.v - 0.5) * 2).toFixed(3)),
@@ -1316,13 +1386,24 @@ export const App: React.FC = () => {
             if (matchedArt) artId = matchedArt.id.toLowerCase();
           }
 
-          const designId = params.designId || item.curatedDesignId || (curated ? curated.id : undefined);
+          // `layers` is used for curated designs and for plain garments with
+          // preloaded customer uploads. Only curated layers should be locked.
+          const isCuratedLayer = !isPlainParam && Boolean(params.designId || item.curatedDesignId || curated);
+          const designId = isCuratedLayer
+            ? params.designId || item.curatedDesignId || (curated ? curated.id : undefined)
+            : undefined;
           const calibrated = getCuratedPlacement(designId, targetGarmentId, item.placement, artId);
           if (calibrated?.removed) return;
-          const isHidden = calibrated?.hidden === true || calibrated?.opacity === 0 || item.hidden === true || item.opacity === 0;
+          const artDef = artId
+            ? curated?.artworks.find((a) => a.id.toLowerCase() === artId)
+            : undefined;
+          const isColorVariant = artDef?.colorHint === 'black' || artDef?.colorHint === 'white';
+          const isHidden = isColorVariant
+            ? !matchesArtworkColorHint(artDef?.colorHint, targetColor)
+            : calibrated?.hidden === true || calibrated?.opacity === 0 || item.hidden === true || item.opacity === 0;
 
           let placement = item.placement;
-          if (curated) {
+          if (isCuratedLayer && curated) {
             const matchedArt = curated.artworks.find(
               (a) => item.id?.includes(a.id) || (item.name && item.name.toLowerCase().includes(a.name.toLowerCase()))
             );
@@ -1344,8 +1425,15 @@ export const App: React.FC = () => {
               ...item,
               placement: placement || 'front-center',
               curatedDesignId: designId,
-              isCurated: true,
-              opacity: isHidden ? 0 : (typeof item.opacity === 'number' ? item.opacity : 1.0),
+              isCurated: isCuratedLayer,
+              colorHint: artDef?.colorHint || item.colorHint,
+              opacity: isHidden
+                ? 0
+                : isColorVariant
+                ? 1.0
+                : typeof item.opacity === 'number'
+                ? item.opacity
+                : 1.0,
               hidden: isHidden,
             },
             idx
@@ -1353,6 +1441,7 @@ export const App: React.FC = () => {
           if (mapped) newLayers.push(mapped);
         });
       } else if (params.previewUrl) {
+        const isCuratedPreview = !isPlainParam && Boolean(params.designId || curated);
         const mapped = computePlacementLayer(
           targetGarmentId,
           {
@@ -1362,8 +1451,10 @@ export const App: React.FC = () => {
             placement: params.placement || 'front-center',
             scale: params.scale,
             scalePreset: params.scalePreset,
-            curatedDesignId: params.designId || (curated ? curated.id : undefined),
-            isCurated: true,
+            curatedDesignId: isCuratedPreview
+              ? params.designId || (curated ? curated.id : undefined)
+              : undefined,
+            isCurated: isCuratedPreview,
           },
           0
         );
@@ -1375,7 +1466,10 @@ export const App: React.FC = () => {
           // If this artwork was explicitly removed by the user on this garment, SKIP it!
           if (calibrated?.removed) return;
 
-          const isHidden = calibrated?.hidden === true || calibrated?.opacity === 0;
+          const isColorVariant = art.colorHint === 'black' || art.colorHint === 'white';
+          const isHidden = isColorVariant
+            ? !matchesArtworkColorHint(art.colorHint, targetColor)
+            : calibrated?.hidden === true || calibrated?.opacity === 0;
 
           const mapped = computePlacementLayer(
             targetGarmentId,
@@ -1385,10 +1479,17 @@ export const App: React.FC = () => {
               previewUrl: art.studioPreviewUrl || art.previewUrl,
               placement: curated.artworks.length === 1 && params.placement ? params.placement : (calibrated?.placementTarget || placement),
               scale: calibrated?.scale ?? (placement === 'left-chest' || placement === 'back-collar' ? 'compact' : 'standard'),
-              opacity: isHidden ? 0 : (typeof calibrated?.opacity === 'number' ? calibrated.opacity : 1.0),
+              opacity: isHidden
+                ? 0
+                : isColorVariant
+                ? 1.0
+                : typeof calibrated?.opacity === 'number'
+                ? calibrated.opacity
+                : 1.0,
               hidden: isHidden,
               curatedDesignId: curated.id,
               isCurated: true,
+              colorHint: art.colorHint,
               u: calibrated?.u,
               v: calibrated?.v,
               uvWidth: calibrated?.uvWidth,
@@ -1426,13 +1527,21 @@ export const App: React.FC = () => {
           setSelectedLayerId3D(finalLayers[0].id);
         }
 
-        const hasBackOnly =
-          newLayers.length > 0 &&
-          newLayers.every((l) => l.regionId === 'back') &&
-          !newLayers.some((l) => l.regionId === 'front');
-
-        const activeRegionId: 'front' | 'back' = hasBackOnly ? 'back' : 'front';
-        const cameraPreset: 'front' | 'back' = hasBackOnly ? 'back' : 'front';
+        const defaultArtMatch = curated?.defaultArtworkId
+          ?.toLowerCase()
+          .match(/art-\d+/i);
+        const defaultArtId = defaultArtMatch ? defaultArtMatch[0].toLowerCase() : null;
+        const primaryLayer = defaultArtId
+          ? newLayers.find((l) => l.id.toLowerCase().includes(defaultArtId))
+          : undefined;
+        const primarySide = primaryLayer ? getArtworkSide(primaryLayer) : null;
+        const hasBack = newLayers.some((l) => getArtworkSide(l) === 'back');
+        const hasFront = newLayers.some((l) => getArtworkSide(l) === 'front');
+        // Open on the side of the design's primary artwork. Mixed front/back
+        // designs used to always open on the front, which hid the main print.
+        const activeRegionId: 'front' | 'back' =
+          primarySide === 'back' || (!hasFront && hasBack) ? 'back' : 'front';
+        const cameraPreset: 'front' | 'back' = activeRegionId;
 
         return {
           ...prev,
@@ -1519,6 +1628,11 @@ export const App: React.FC = () => {
                 if (matchedArt) artId = matchedArt.id.toLowerCase();
               }
               const dId = e.data.designId || layer.curatedDesignId || (activeCuratedDesign ? activeCuratedDesign.id : undefined);
+              const artDef = artId
+                ? activeCuratedDesign?.artworks.find(
+                    (a: any) => a.id.toLowerCase() === artId
+                  )
+                : undefined;
               const calibrated = getCuratedPlacement(
                 dId,
                 prev.garmentId,
@@ -1526,7 +1640,10 @@ export const App: React.FC = () => {
                 artId
               );
               if (!calibrated) return layer;
-              const isHidden = calibrated.hidden === true || calibrated.opacity === 0;
+              const isColorVariant = artDef?.colorHint === 'black' || artDef?.colorHint === 'white';
+              const isHidden = isColorVariant
+                ? !matchesArtworkColorHint(artDef?.colorHint, prev.garmentColor)
+                : calibrated.hidden === true || calibrated.opacity === 0;
               return {
                 ...layer,
                 u: calibrated.u,
@@ -1537,7 +1654,14 @@ export const App: React.FC = () => {
                 rotation: calibrated.rotation ?? 0,
                 regionId: calibrated.regionId || layer.regionId,
                 placementTarget: calibrated.placementTarget || layer.placementTarget,
-                opacity: isHidden ? 0 : (typeof calibrated.opacity === 'number' ? calibrated.opacity : layer.opacity),
+                colorHint: artDef?.colorHint || layer.colorHint,
+                opacity: isHidden
+                  ? 0
+                  : isColorVariant
+                  ? 1.0
+                  : typeof calibrated.opacity === 'number'
+                  ? calibrated.opacity
+                  : layer.opacity,
                 hidden: isHidden,
                 offsetX: parseFloat(((calibrated.u - 0.5) * 2).toFixed(3)),
                 offsetY: parseFloat(((calibrated.v - 0.5) * 2).toFixed(3)),
@@ -1801,10 +1925,21 @@ export const App: React.FC = () => {
       const imgUrl = artwork.studioPreviewUrl || artwork.previewUrl;
       const finalPlacement = targetPlacement || artwork.suggestedPlacement || 'front-center';
 
+      // A colour-specific variant must be shown on the fabric it was drawn for.
+      // This is a preview colour switch only; the saved placement stays intact.
+      let targetColor = project3D.garmentColor;
+      if (artwork.colorHint === 'black' && isLightGarmentHex(targetColor)) {
+        targetColor = '#111216';
+      } else if (artwork.colorHint === 'white' && !isLightGarmentHex(targetColor)) {
+        targetColor = '#ffffff';
+      }
+
       const calibrated = getCuratedPlacement(design?.id, project3D.garmentId, finalPlacement, artwork.id);
       if (calibrated?.removed) return;
-      const isHidden = calibrated?.hidden === true || calibrated?.opacity === 0;
-
+      const isColorVariant = artwork.colorHint === 'black' || artwork.colorHint === 'white';
+      const isHidden = isColorVariant
+        ? !matchesArtworkColorHint(artwork.colorHint, targetColor)
+        : calibrated?.hidden === true || calibrated?.opacity === 0;
       const baseLayer = buildLayerFromPlacement(project3D.garmentId, {
         id: `layer-${design?.id || 'curated'}-${artwork.id}-${Date.now()}`,
         name: artwork.name,
@@ -1821,7 +1956,13 @@ export const App: React.FC = () => {
         uvHeight: calibrated.uvWidth,
         scale: calibrated.scale,
         rotation: calibrated.rotation ?? 0,
-        opacity: isHidden ? 0 : (typeof calibrated.opacity === 'number' ? calibrated.opacity : 1.0),
+        opacity: isHidden
+          ? 0
+          : isColorVariant
+          ? 1.0
+          : typeof calibrated.opacity === 'number'
+          ? calibrated.opacity
+          : 1.0,
         hidden: isHidden,
         regionId: calibrated.regionId || baseLayer.regionId,
         placementTarget: calibrated.placementTarget || finalPlacement,
@@ -1829,16 +1970,45 @@ export const App: React.FC = () => {
         offsetY: parseFloat(((calibrated.v - 0.5) * 2).toFixed(3)),
         isCurated: true,
         curatedDesignId: design?.id,
+        colorHint: artwork.colorHint,
         locked: !(isDesignerAuthorized && isDesignerMode),
       };
 
       const isBack = layer.regionId === 'back';
 
-      // Cleanly replace any previous design with the new selected artwork alone
+      // Keep other artworks from the same set so customers can also add a
+      // curated design one artwork at a time. Switching to another design
+      // replaces the previous set; the saved placements are never changed.
       setProject3D((prev) => {
+        const artPattern = new RegExp(`(^|-)${artwork.id.toLowerCase()}(-|$)`);
+        const keptLayers = prev.artworkLayers.filter(
+          (l) =>
+            !(
+              l.isCurated &&
+              l.curatedDesignId === design?.id &&
+              artPattern.test(l.id.toLowerCase())
+            )
+        );
+        const colourAdjustedLayers = keptLayers.map((l) => {
+          if (
+            !l.isCurated ||
+            l.curatedDesignId !== design?.id ||
+            !l.colorHint ||
+            l.colorHint === 'any'
+          ) {
+            return l;
+          }
+          const matches = matchesArtworkColorHint(l.colorHint, targetColor);
+          return {
+            ...l,
+            hidden: !matches,
+            opacity: matches ? (l.opacity && l.opacity > 0 ? l.opacity : 1.0) : 0,
+          };
+        });
         return {
           ...prev,
-          artworkLayers: [layer],
+          garmentColor: targetColor,
+          artworkLayers: [...colourAdjustedLayers, layer],
           activeRegionId: layer.regionId || prev.activeRegionId,
           camera: {
             ...prev.camera,
@@ -1849,7 +2019,7 @@ export const App: React.FC = () => {
 
       setSelectedLayerId3D(layer.id);
     },
-    [project3D.garmentId, isDesignerAuthorized, isDesignerMode]
+    [project3D.garmentId, project3D.garmentColor, isDesignerAuthorized, isDesignerMode]
   );
 
   const handleApplyAllArtworksFromDesign3D = useCallback(
@@ -1877,9 +2047,9 @@ export const App: React.FC = () => {
 
       let targetColor = project3D.garmentColor;
       const colorHint = design.artworks.find((a) => a.colorHint && a.colorHint !== 'any')?.colorHint;
-      if (colorHint === 'black' && targetColor === '#ffffff') {
+      if (colorHint === 'black' && isLightGarmentHex(targetColor)) {
         targetColor = '#111216';
-      } else if (colorHint === 'white' && (targetColor === '#111216' || targetColor === '#000000')) {
+      } else if (colorHint === 'white' && !isLightGarmentHex(targetColor)) {
         targetColor = '#ffffff';
       }
 
@@ -1891,7 +2061,13 @@ export const App: React.FC = () => {
 
         const calibrated = getCuratedPlacement(design.id, project3D.garmentId, placement, art.id);
         if (calibrated?.removed) return;
-        const isHidden = calibrated?.hidden === true || calibrated?.opacity === 0;
+        // For colour variants the saved hidden flag belongs to whichever fabric
+        // was active when the designer saved. Use the colour hint instead so
+        // the matching variant prints and the other one stays hidden.
+        const isColorVariant = art.colorHint === 'black' || art.colorHint === 'white';
+        const isHidden = isColorVariant
+          ? !matchesArtworkColorHint(art.colorHint, targetColor)
+          : calibrated?.hidden === true || calibrated?.opacity === 0;
 
         const layer = computePlacementLayer(
           project3D.garmentId,
@@ -1916,15 +2092,39 @@ export const App: React.FC = () => {
         );
 
         if (layer) {
+          // computePlacementLayer merges the saved hidden flag; colour variants
+          // need the explicit colour-aware state computed above instead.
+          layer.hidden = isHidden;
+          layer.opacity = isHidden
+            ? 0
+            : isColorVariant
+            ? 1.0
+            : typeof calibrated?.opacity === 'number'
+            ? calibrated.opacity
+            : 1.0;
+          layer.locked = !(isDesignerAuthorized && isDesignerMode);
+          layer.isCurated = true;
+          layer.curatedDesignId = design.id;
+          layer.colorHint = art.colorHint;
           newLayers.push(layer);
-          if (layer.regionId === 'back') hasBack = true;
-          if (layer.regionId === 'front') hasFront = true;
+          const isVisible = layer.opacity !== 0 && layer.hidden !== true;
+          if (isVisible && layer.regionId === 'back') hasBack = true;
+          if (isVisible && layer.regionId === 'front') hasFront = true;
         }
       });
 
       if (newLayers.length > 0) {
-        const initialCamera: 'front' | 'back' = !hasFront && hasBack ? 'back' : 'front';
-        const initialRegion: 'front' | 'back' = !hasFront && hasBack ? 'back' : 'front';
+        const defaultArtMatch = design.defaultArtworkId
+          ?.toLowerCase()
+          .match(/art-\d+/i);
+        const defaultArtId = defaultArtMatch ? defaultArtMatch[0].toLowerCase() : null;
+        const primaryLayer = defaultArtId
+          ? newLayers.find((l) => l.id.toLowerCase().includes(defaultArtId))
+          : undefined;
+        const primarySide = primaryLayer ? getArtworkSide(primaryLayer) : null;
+        const initialCamera: 'front' | 'back' =
+          primarySide === 'back' || (!hasFront && hasBack) ? 'back' : 'front';
+        const initialRegion: 'front' | 'back' = initialCamera;
 
         setProject3D((prev) => ({
           ...prev,
@@ -1937,7 +2137,9 @@ export const App: React.FC = () => {
           },
         }));
 
-        setSelectedLayerId3D(newLayers[0].id);
+        setSelectedLayerId3D(
+          (newLayers.find((l) => l.opacity !== 0 && l.hidden !== true) || newLayers[0]).id
+        );
         // Don't cover the freshly applied artwork with the guide modal — the
         // user already knows the studio. Mark it as seen so it stays hidden.
         try {
@@ -1960,6 +2162,8 @@ export const App: React.FC = () => {
   }, [project3D.artworkLayers.length]);
 
   const handleUpdateLayer3D = (id: string, updates: Partial<ArtworkLayer3D>) => {
+    const targetLayer = project3D.artworkLayers.find((l) => l.id === id);
+    if (targetLayer?.locked && !isDesignerMode) return;
     setProject3D((prev) => {
       let updatedLayerForSave: ArtworkLayer3D | null = null;
       const nextLayers = prev.artworkLayers.map((l) => {
@@ -2072,7 +2276,7 @@ export const App: React.FC = () => {
 
   const handleDuplicateLayer3D = (id: string) => {
     const layer = project3D.artworkLayers.find((l) => l.id === id);
-    if (!layer) return;
+    if (!layer || (layer.locked && !isDesignerMode)) return;
 
     const dup: ArtworkLayer3D = {
       ...layer,
@@ -2091,6 +2295,7 @@ export const App: React.FC = () => {
 
   const handleDeleteLayer3D = (id: string) => {
     const deletedLayer = project3D.artworkLayers.find((l) => l.id === id);
+    if (deletedLayer?.locked && !isDesignerMode) return;
     setProject3D((prev) => ({
       ...prev,
       artworkLayers: prev.artworkLayers.filter((l) => l.id !== id),
@@ -2624,7 +2829,7 @@ export const App: React.FC = () => {
                         isDesignerMode={isDesignerAuthorized ? isDesignerMode : false}
                         isCuratedDesign={isCuratedDesign}
                         customArtworkCount={activeCustomArtworkCount}
-                        customPrintFee={customPrintFee}
+                        customPrintFee={displayPrintFee}
                         basePrice={getGarmentPriceForSize(project3D.garmentId, selectedGarmentSize)}
                         onToggleDesignerMode={isDesignerAuthorized ? handleToggleDesignerMode : undefined}
                       />
@@ -2634,9 +2839,7 @@ export const App: React.FC = () => {
                       <DrawerColor3D
                         garmentId={project3D.garmentId}
                         garmentColor={project3D.garmentColor}
-                        onColorChange={(color) =>
-                          setProject3D((prev) => ({ ...prev, garmentColor: color }))
-                        }
+                        onColorChange={handleModalChangeColor}
                         roughness={project3D.roughness}
                         onRoughnessChange={(r) =>
                           setProject3D((prev) => ({ ...prev, roughness: r }))
@@ -2917,7 +3120,7 @@ export const App: React.FC = () => {
         resolvePrice={getUnitPriceForSize}
         resolveBasePrice={(size) => getGarmentPriceForSize(project3D.garmentId, size)}
         customArtworkCount={activeCustomArtworkCount}
-        customPrintFee={customPrintFee}
+        customPrintFee={displayPrintFee}
         isCuratedDesign={isCuratedDesign}
         frontSnapshotUrl={cartFrontSnapshot}
         backSnapshotUrl={cartBackSnapshot}
@@ -3056,7 +3259,7 @@ export const App: React.FC = () => {
               <p style={{ margin: 0, color: 'rgba(255,255,255,0.85)' }}>
                 {isCuratedDesign ? (
                   <>
-                    This design has been <strong>professionally calibrated and positioned</strong> by our design team for optimal drape and aesthetics. You can inspect all angles in 360°, check <strong>Front &amp; Back</strong> views, or freely adjust the scale, position, and rotation to make it your own!
+                    This design has been <strong>professionally calibrated and positioned</strong> by our design team for optimal drape and aesthetics. You can inspect all angles in 360° and check <strong>Front &amp; Back</strong> views. Placement, scale, and print are locked exactly as the artist saved them.
                   </>
                 ) : (
                   <>
@@ -3080,62 +3283,113 @@ export const App: React.FC = () => {
               }}
             >
               <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7B9EFF', fontWeight: 700 }}>
-                How to customize in 3D Studio:
+                {isCuratedDesign ? 'How to view this curated design:' : 'How to customize in 3D Studio:'}
               </span>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
-                  1
-                </span>
-                <span>
-                  <strong>Select Graphic:</strong> Click or tap directly on any artwork on the 3D garment to activate its boundary handles.
-                </span>
-              </div>
+              {isCuratedDesign ? (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      1
+                    </span>
+                    <span>
+                      <strong>Apply from the Library:</strong> Open <strong>Designs</strong> or <strong>Library</strong> and apply the complete saved set, or add individual artworks one at a time.
+                    </span>
+                  </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
-                  2
-                </span>
-                <span>
-                  <strong>Move &amp; Reposition:</strong> Drag anywhere inside the graphic to position it across the chest, back, sleeves, or hem.
-                </span>
-              </div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      2
+                    </span>
+                    <span>
+                      <strong>Saved placement:</strong> Every graphic keeps the artist&apos;s saved side, position, scale, and print state. These are view-only for customers.
+                    </span>
+                  </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
-                  3
-                </span>
-                <span>
-                  <strong>Scale &amp; Resize:</strong> Drag any of the 4 corner handles to make your artwork larger or smaller.
-                </span>
-              </div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      3
+                    </span>
+                    <span>
+                      <strong>Switch colours:</strong> Choose a garment colour and the matching black or white artwork variant is shown automatically.
+                    </span>
+                  </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
-                  4
-                </span>
-                <span>
-                  <strong>Rotate &amp; Straighten:</strong> Drag the circular top handle clockwise or counter-clockwise to rotate.
-                </span>
-              </div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      4
+                    </span>
+                    <span>
+                      <strong>Inspect all angles:</strong> Tap <strong>Front</strong>, <strong>Back</strong>, or <strong>3/4</strong> on the top bar to inspect every view.
+                    </span>
+                  </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
-                  5
-                </span>
-                <span>
-                  <strong>Inspect All Angles:</strong> Tap <strong>Front</strong>, <strong>Back</strong>, or <strong>3/4</strong> on the top bar to inspect every view.
-                </span>
-              </div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      5
+                    </span>
+                    <span>
+                      <strong>360° Studio Orbit:</strong> Drag anywhere on the background to orbit around the apparel in full 3D.
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      1
+                    </span>
+                    <span>
+                      <strong>Select Graphic:</strong> Click or tap directly on any artwork on the 3D garment to activate its boundary handles.
+                    </span>
+                  </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
-                  6
-                </span>
-                <span>
-                  <strong>360° Studio Orbit:</strong> Drag anywhere on the background to orbit around the apparel in full 3D.
-                </span>
-              </div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      2
+                    </span>
+                    <span>
+                      <strong>Move &amp; Reposition:</strong> Drag anywhere inside the graphic to position it across the chest, back, sleeves, or hem.
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      3
+                    </span>
+                    <span>
+                      <strong>Scale &amp; Resize:</strong> Drag any of the 4 corner handles to make your artwork larger or smaller.
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      4
+                    </span>
+                    <span>
+                      <strong>Rotate &amp; Straighten:</strong> Drag the circular top handle clockwise or counter-clockwise to rotate.
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      5
+                    </span>
+                    <span>
+                      <strong>Inspect All Angles:</strong> Tap <strong>Front</strong>, <strong>Back</strong>, or <strong>3/4</strong> on the top bar to inspect every view.
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <span style={{ background: '#3B5EFF', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, flexShrink: 0 }}>
+                      6
+                    </span>
+                    <span>
+                      <strong>360° Studio Orbit:</strong> Drag anywhere on the background to orbit around the apparel in full 3D.
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Dismiss Button */}

@@ -7,6 +7,12 @@ import { PrebuiltWallDetail } from '@/components/wall-studio/prebuilt-wall-detai
 import { prisma } from '@/lib/prisma';
 import { getDesignById } from '@/lib/clothing-designs/manifest';
 import { toClientSafeDesign } from '@/lib/clothing-designs/client-safe';
+import { getServerPlacementsForDesign } from '@/lib/clothing-designs/placements-store';
+import type {
+  ClothingDesignEntry,
+  DesignPlacementTarget,
+  SavedPlacementItem,
+} from '@/lib/clothing-designs/types';
 import { notFound } from 'next/navigation';
 
 // ISR: Cache statically for 60 seconds with on-demand admin revalidation
@@ -64,7 +70,42 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) return notFound();
 
   const clothingDesignRaw = getDesignById(product.id) || getDesignById(product.slug) || null;
-  const clothingDesign = clothingDesignRaw ? toClientSafeDesign(clothingDesignRaw) : null;
+
+  // Seeded placements let the modal open on the artist's saved side instead of
+  // flashing the manifest's suggested side until the client fetch completes.
+  let clothingDesign: ClothingDesignEntry | null = null;
+  if (clothingDesignRaw) {
+    const placementGarment = params.category.includes('hood')
+      ? 'hoodie'
+      : params.category.includes('oversized')
+        ? 'oversized-t-shirt'
+        : params.category.includes('acid')
+          ? 'acid-wash-t-shirt'
+          : 'regular-t-shirt';
+    const serverPlacements: Record<string, SavedPlacementItem> = await getServerPlacementsForDesign(
+      clothingDesignRaw.id,
+      placementGarment,
+    ).catch(() => ({}));
+    const enrichedDesign = {
+      ...clothingDesignRaw,
+      artworks: (clothingDesignRaw.artworks || []).map((art) => {
+        const artKey = `${clothingDesignRaw.id}__${placementGarment}__${art.id.toLowerCase()}`;
+        const targetKey = `${clothingDesignRaw.id}__${placementGarment}__${art.suggestedPlacement}`;
+        // Art-specific records are authoritative about their own side;
+        // the manifest's suggestedPlacement is only a fallback.
+        const saved = serverPlacements[artKey] || serverPlacements[targetKey];
+        if (!saved) return art;
+        return {
+          ...art,
+          suggestedPlacement: (saved.placementTarget || art.suggestedPlacement) as DesignPlacementTarget,
+          calibratedPlacement: saved,
+          hidden: saved.hidden === true || saved.opacity === 0,
+          removed: saved.removed === true,
+        };
+      }),
+    };
+    clothingDesign = toClientSafeDesign(enrichedDesign);
+  }
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const productUrl = `${baseUrl}/products/${params.category}/${params.slug}`;

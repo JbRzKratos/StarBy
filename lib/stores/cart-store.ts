@@ -244,8 +244,8 @@ export const useCartStore = create<CartState & CartActions>()(
                 if (isDesign001) {
                   livePrice = 1;
                 } else if (isPlain) {
-                  // Garment price for the size plus the shared artwork pricing:
-                  // fixed ₹40 for 2+ prints on tees, legacy ₹49/print otherwise.
+                  // Plain/custom garments add ₹49 for every uploaded artwork,
+                  // including on tees (1 = ₹49, 2 = ₹98, 3 = ₹147, ...).
                   livePrice =
                     garmentPrice +
                     getArtworkCharge(garmentKey, activeArtworkCount, { curated: false });

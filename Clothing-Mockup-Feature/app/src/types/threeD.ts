@@ -89,6 +89,7 @@ export interface ArtworkLayer3D {
   locked?: boolean;
   isCurated?: boolean;
   curatedDesignId?: string;
+  colorHint?: 'any' | 'black' | 'white' | string;
   hidden?: boolean;
   removed?: boolean;
 }

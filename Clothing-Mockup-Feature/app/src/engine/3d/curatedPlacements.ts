@@ -586,13 +586,23 @@ export function getCuratedPlacement(
     return true;
   };
 
+  // Art-specific records are authoritative about their own side. This lets a
+  // designer move an artwork to the back even when the manifest suggests front.
+  const isValidArtCandidate = (c: CalibratedPlacement | undefined): boolean => {
+    if (!c || typeof c.u !== 'number' || typeof c.v !== 'number') return false;
+    const candidateTarget =
+      c.placementTarget ||
+      (c.regionId === 'back' ? 'back-center' : 'front-center');
+    return isCoordinateInCorrectPanel(garmentKey, candidateTarget, c.u, c.v);
+  };
+
   // If a specific designId is given, check keyed variants in order of specificity
   if (designId) {
     // 1. By artId (e.g. design-001__regular-t-shirt__art-1)
     if (artId) {
       const cleanArt = artId.toLowerCase().trim();
       const artKey = `${designId}__${garmentKey}__${cleanArt}`;
-      if (saved[artKey] && isValidCandidate(saved[artKey], true)) {
+      if (saved[artKey] && isValidArtCandidate(saved[artKey])) {
         return { ...defaults, ...saved[artKey] };
       }
       const numMatch = cleanArt.match(/\d+/);
@@ -600,10 +610,10 @@ export function getCuratedPlacement(
         const num = parseInt(numMatch[0], 10);
         const alt1 = `${designId}__${garmentKey}__art-${num}`;
         const alt2 = `${designId}__${garmentKey}__art-0${num}`;
-        if (saved[alt1] && isValidCandidate(saved[alt1], true)) {
+        if (saved[alt1] && isValidArtCandidate(saved[alt1])) {
           return { ...defaults, ...saved[alt1] };
         }
-        if (saved[alt2] && isValidCandidate(saved[alt2], true)) {
+        if (saved[alt2] && isValidArtCandidate(saved[alt2])) {
           return { ...defaults, ...saved[alt2] };
         }
       }

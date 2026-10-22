@@ -359,8 +359,8 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
               </button>
 
               <p className="library-hint">
-                Applying a set replaces the artwork currently on the garment. Every graphic uses its
-                saved, artist-calibrated placement.
+                Apply the complete set or a single artwork. Every graphic keeps its saved side and
+                artist-calibrated placement — placements are view-only for customers.
               </p>
 
               <div className="library-section-title">Individual artworks</div>
@@ -396,23 +396,9 @@ export const ClothingDesignsDrawer: React.FC<ClothingDesignsDrawerProps> = ({
                           type="button"
                           onClick={() => handleApplyArtwork(activeDesign, art, target)}
                           className={`library-btn library-btn--soft ${isApplied ? 'is-done' : ''}`}
-                          title={`Place on ${PLACEMENT_LABEL[kind]}`}
+                          title={`Apply using the saved ${PLACEMENT_LABEL[kind]} placement`}
                         >
                           {isApplied ? 'Applied' : `Apply ${PLACEMENT_LABEL[kind]}`}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleApplyArtwork(
-                              activeDesign,
-                              art,
-                              kind === 'back' ? 'front-center' : 'back-center'
-                            )
-                          }
-                          className="library-btn library-btn--ghost library-btn--sm"
-                          title={kind === 'back' ? 'Place on the front instead' : 'Place on the back instead'}
-                        >
-                          {kind === 'back' ? '→ Front' : '→ Back'}
                         </button>
                       </div>
                     </div>
