@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { getManifest } from '@/lib/clothing-designs/manifest';
 import {
   getAllServerPlacements,
+  getServerPlacementsForDesign,
   isCoordinatePhysicallyInRegion,
   type SavedPlacementItem,
 } from '@/lib/clothing-designs/placements-store';
@@ -72,22 +73,48 @@ function withVersion(url: string | undefined, fallback: string): string {
 
 export async function getCatalogPage(params: CatalogPageParams): Promise<CatalogPageResult> {
   const manifest = getManifest();
-  let designs = manifest.designs;
+  const requestedId = params.id?.trim() || null;
+  let designs = requestedId
+    ? manifest.designs.filter((design) => design.id === requestedId)
+    : manifest.designs;
 
-  // Overlay live product prices and customised names from PostgreSQL
+  const page = Math.max(1, Math.floor(params.page || 1));
+  const limit = Math.min(100, Math.max(1, Math.floor(params.limit || 36)));
+
+  // A missing id is a real 404-ish result; don't pay for a database round-trip.
+  if (requestedId && designs.length === 0) {
+    return { page, limit, total: 0, totalPages: 0, designs: [] };
+  }
+
+  const targetGarment = (params.garment || 'regular-t-shirt').toLowerCase();
+
+  // Overlay live product prices and customised names from PostgreSQL. For a
+  // single-design lookup this is a primary-key read instead of scanning every
+  // design product in the catalogue.
+  const dbProductsPromise = requestedId
+    ? prisma.product
+        .findUnique({
+          where: { id: requestedId },
+          select: { id: true, name: true, basePrice: true },
+        })
+        .then((product) => (product ? [product] : []))
+    : prisma.product.findMany({
+        where: { id: { startsWith: 'design-' } },
+        select: { id: true, name: true, basePrice: true },
+      });
+
+  // Placements are independent of the product query, so start them now. A
+  // single-design request only needs that design's keys, not the whole table.
+  const placementsPromise = requestedId
+    ? getServerPlacementsForDesign(requestedId, targetGarment)
+    : getAllServerPlacements();
+
   const dbMap = new Map<string, { id: string; name: string; basePrice: number }>();
   try {
-    const dbProducts = await prisma.product.findMany({
-      where: { id: { startsWith: 'design-' } },
-      select: { id: true, name: true, basePrice: true },
-    });
+    const dbProducts = await dbProductsPromise;
     for (const p of dbProducts) dbMap.set(p.id, p);
   } catch {
     // The manifest still renders fine without the live price overlay.
-  }
-
-  if (params.id) {
-    designs = designs.filter((d) => d.id === params.id);
   }
 
   const q = params.q?.toLowerCase()?.trim();
@@ -109,19 +136,26 @@ export async function getCatalogPage(params: CatalogPageParams): Promise<Catalog
     designs = designs.filter((d) => d.tags.some((t) => t.toLowerCase() === theme));
   }
 
-  const garment = params.garment;
-  if (garment) {
-    designs = designs.filter((d) => d.compatibleGarments.some((g) => g === garment));
+  if (params.garment) {
+    designs = designs.filter((d) => d.compatibleGarments.some((g) => g === targetGarment));
   }
 
-  const page = Math.max(1, Math.floor(params.page || 1));
-  const limit = Math.min(100, Math.max(1, Math.floor(params.limit || 36)));
   const total = designs.length;
   const totalPages = Math.ceil(total / limit);
   const offset = (page - 1) * limit;
   const paginated = designs.slice(offset, offset + limit);
 
-  const serverPlacements = await getAllServerPlacements();
+  if (paginated.length === 0) {
+    void placementsPromise.catch(() => undefined);
+    return { page, limit, total, totalPages, designs: [] };
+  }
+
+  let serverPlacements: Record<string, SavedPlacementItem> = {};
+  try {
+    serverPlacements = await placementsPromise;
+  } catch {
+    // The catalog can render without calibrated placements.
+  }
 
   const sanitized: CatalogDesignEntry[] = paginated.map((d) => {
     const dbProduct = dbMap.get(d.id);
@@ -132,12 +166,11 @@ export async function getCatalogPage(params: CatalogPageParams): Promise<Catalog
         : isOneRupee
           ? 1
           : d.category === 'hoodies'
-            ? 1499
-            : 999;
+            ? 849
+            : 639;
     const liveName = dbProduct?.name || d.name;
 
     const artworks: CatalogArtworkOption[] = (d.artworks || []).map((a) => {
-      const targetGarment = (garment || 'regular-t-shirt').toLowerCase();
       const aId = a.id.toLowerCase();
       const artKey = `${d.id}__${targetGarment}__${aId}`;
       const targetKey = `${d.id}__${targetGarment}__${a.suggestedPlacement}`;

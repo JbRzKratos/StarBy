@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import type { ClothingModalState } from './clothing-product-modal.shared';
 import { isBackPlacement, getPlacementRegion } from './clothing-product-modal.shared';
+import { getArtworkPreviewUrl } from './clothing-artwork-image';
 import type { DesignPlacementTarget } from '@/lib/clothing-designs/types';
 
 export function ClothingProductModalDesktop({ state }: { state: ClothingModalState }) {
@@ -306,9 +307,11 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
                     }`}
                   >
                     <Image
-                      src={art.previewUrl}
+                      src={getArtworkPreviewUrl(art)}
                       alt={art.name}
                       fill
+                      unoptimized
+                      loading="eager"
                       className="object-contain pointer-events-none"
                       sizes="220px"
                     />
@@ -528,9 +531,10 @@ export function ClothingProductModalDesktop({ state }: { state: ClothingModalSta
 
                         <div className="relative w-full aspect-square rounded-xl bg-black/40 overflow-hidden flex items-center justify-center p-2">
                           <Image
-                            src={art.previewUrl}
+                            src={getArtworkPreviewUrl(art)}
                             alt={art.name}
                             fill
+                            unoptimized
                             className="object-contain p-1"
                             sizes="120px"
                           />

@@ -1,6 +1,10 @@
 import { create } from 'zustand';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
-import { getGarmentSizePrice } from '@/lib/config/garment-pricing';
+import {
+  getArtworkCharge,
+  getGarmentSizePrice,
+  PLAIN_PRODUCT_TO_GARMENT,
+} from '@/lib/config/garment-pricing';
 
 /* ── Types ── */
 
@@ -200,11 +204,13 @@ export const useCartStore = create<CartState & CartActions>()(
               // For custom clothing mockup items, recalculate with the same
               // rule the 3D studio and the checkout API use. Without this the
               // bag silently fell back to the design's catalogue price (e.g.
-              // ₹600) after the customer picked a hoodie (₹750), so the header
+              // ₹639) after the customer picked a hoodie (₹809), so the header
               // and the bag disagreed.
               if (
                 item.customization?.is3dMockup ||
                 item.customization?.is2dMockup ||
+                item.customization?.apparelId ||
+                PLAIN_PRODUCT_TO_GARMENT[item.productId] ||
                 item.productId === 'clothing-mockup' ||
                 item.variantId?.startsWith('mockup-3d-') ||
                 item.variantId?.startsWith('mockup-2d-')
@@ -219,23 +225,30 @@ export const useCartStore = create<CartState & CartActions>()(
                 const isPlain = Boolean(custom.isPlain) || !designId;
                 const garmentKey =
                   (typeof custom.garmentId === 'string' ? custom.garmentId : undefined) ||
+                  (typeof custom.apparelId === 'string' ? custom.apparelId : undefined) ||
                   (typeof custom.garment === 'string' ? custom.garment : undefined) ||
+                  PLAIN_PRODUCT_TO_GARMENT[item.productId] ||
                   item.variantId;
 
                 const liveGarments = data.garments as
                   | Record<string, { basePrice?: number; sizePrices?: Record<string, number> }>
                   | undefined;
                 const garmentPrice = getGarmentSizePrice(garmentKey, size, liveGarments);
+                const activeArtworkCount =
+                  typeof custom.customArtworkCount === 'number'
+                    ? custom.customArtworkCount
+                    : Array.isArray(custom.uploadedArtworks)
+                      ? custom.uploadedArtworks.length
+                      : 0;
 
                 if (isDesign001) {
                   livePrice = 1;
                 } else if (isPlain) {
-                  // Garment price for the chosen size + ₹49 per custom print.
-                  const count =
-                    typeof custom.customArtworkCount === 'number'
-                      ? custom.customArtworkCount
-                      : 0;
-                  livePrice = garmentPrice + count * 49;
+                  // Garment price for the size plus the shared artwork pricing:
+                  // fixed ₹40 for 2+ prints on tees, legacy ₹49/print otherwise.
+                  livePrice =
+                    garmentPrice +
+                    getArtworkCharge(garmentKey, activeArtworkCount, { curated: false });
                 } else {
                   // Curated design: never below the garment price, exactly like
                   // the checkout (`max(design price, garment size price)`).
@@ -243,7 +256,9 @@ export const useCartStore = create<CartState & CartActions>()(
                     designId && typeof data.products?.[designId] === 'number'
                       ? data.products[designId]
                       : 0;
-                  livePrice = Math.max(cataloguePrice, garmentPrice);
+                  livePrice =
+                    Math.max(cataloguePrice, garmentPrice) +
+                    getArtworkCharge(garmentKey, activeArtworkCount, { curated: true });
                 }
               }
 

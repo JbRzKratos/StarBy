@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
@@ -8,15 +8,21 @@ import type { Product } from '@/data/products';
 import type { CatalogDesignEntry } from '@/lib/clothing-designs/catalog-page';
 import { SHOP_CATEGORIES } from './shop.shared';
 import { CategoryComingSoonPage } from './category-coming-soon-page';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 import { usePrice } from '@/lib/hooks/usePrice';
 import dynamic from 'next/dynamic';
 import { isProductComingSoon, isCategoryComingSoon } from '@/data/categories';
 import { ClothingDesignsGallery } from './clothing-designs-gallery';
+import { ClothingProductModalLoading } from './clothing-product-modal-loading';
+import { prefetchClothingProductModal } from './clothing-product-modal-prefetch';
+import { getCachedDesign, loadDesign, prefetchDesign } from '@/lib/clothing-designs/client-cache';
 // Lazy loaded to keep initial mobile bundle minimal
 const ClothingProductModal = dynamic(
   () => import('./clothing-product-modal').then((m) => m.ClothingProductModal),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <ClothingProductModalLoading />,
+  },
 );
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
 import {
@@ -31,10 +37,14 @@ function MobileProductCard({
   product,
   index,
   onSelectDesign,
+  isOpening = false,
+  onPrefetch,
 }: {
   product: Product;
   index: number;
   onSelectDesign?: (designId: string) => void;
+  isOpening?: boolean;
+  onPrefetch?: () => void;
 }) {
   const { formatPrice } = usePrice();
   const isComingSoon = isProductComingSoon(product);
@@ -51,8 +61,14 @@ function MobileProductCard({
   if (isClothingDesign) {
     return (
       <div
-        onClick={() => onSelectDesign?.(product.id)}
+        onClick={() => {
+          if (!isOpening) onSelectDesign?.(product.id);
+        }}
+        onPointerEnter={onPrefetch}
+        onTouchStart={onPrefetch}
+        onFocus={onPrefetch}
         className="group flex flex-col gap-0 col-span-1 cursor-pointer"
+        aria-busy={isOpening}
       >
         <div className="relative aspect-[3/4] overflow-hidden bg-[#16161A] rounded-xl border border-white/5 active:border-emerald-500/40 transition-colors">
           <Image
@@ -68,6 +84,18 @@ function MobileProductCard({
             <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
             3D Studio
           </div>
+
+          {isOpening && (
+            <div
+              data-fregoro-card-pending
+              className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-black/75 backdrop-blur-sm animate-fadeIn"
+            >
+              <span className="h-7 w-7 rounded-full border-2 border-white/15 border-t-[#ED9518] animate-spin" />
+              <span className="font-mono text-[8px] font-bold uppercase tracking-widest text-white/90">
+                Opening product
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-0.5 mt-3">
@@ -180,36 +208,42 @@ export function ShopMobile({
   const [maxPrice, setMaxPrice] = useState('');
   const [visibleCount, setVisibleCount] = useState(12);
   const [selectedClothingDesign, setSelectedClothingDesign] = useState<ClothingDesignEntry | null>(null);
+  const [openingDesignId, setOpeningDesignId] = useState<string | null>(null);
+  const openRequestRef = useRef(0);
+
+  const handlePrefetchDesign = useCallback((designId: string) => {
+    void prefetchDesign(designId);
+    prefetchClothingProductModal();
+  }, []);
 
   const handleSelectDesign = async (designId: string) => {
-    // Instant cache check
-    if (typeof window !== 'undefined') {
-      const win = window as unknown as { _fregoroDesignCache?: Map<string, ClothingDesignEntry> };
-      if (!win._fregoroDesignCache) win._fregoroDesignCache = new Map();
-      const cached = win._fregoroDesignCache.get(designId);
-      if (cached) {
-        setSelectedClothingDesign(cached);
-        return;
-      }
+    const requestId = ++openRequestRef.current;
+    setOpeningDesignId(designId);
+
+    // Instant cache check (hover/touch prefetch usually fills this)
+    const cached = getCachedDesign(designId);
+    if (cached) {
+      setSelectedClothingDesign(cached);
+      if (requestId === openRequestRef.current) setOpeningDesignId(null);
+      return;
     }
 
     try {
-      const res = await fetch(`/api/clothing-designs?id=${designId}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.designs && data.designs.length > 0) {
-          if (typeof window !== 'undefined') {
-            const win = window as unknown as { _fregoroDesignCache?: Map<string, ClothingDesignEntry> };
-            win._fregoroDesignCache?.set(designId, data.designs[0]);
-          }
-          setSelectedClothingDesign(data.designs[0]);
-          return;
-        }
+      const design = await loadDesign(designId);
+      if (requestId !== openRequestRef.current) return;
+      if (design) {
+        setSelectedClothingDesign(design);
+        return;
       }
     } catch {
-      /* ignore */
+      /* fall through to the 3D studio */
+    } finally {
+      if (requestId === openRequestRef.current) setOpeningDesignId(null);
     }
-    router.push(`/customize/clothing-mockup?designId=${designId}`);
+
+    if (requestId === openRequestRef.current) {
+      router.push(`/customize/clothing-mockup?designId=${designId}`);
+    }
   };
 
   useEffect(() => {
@@ -454,6 +488,8 @@ export function ShopMobile({
                     product={product}
                     index={index}
                     onSelectDesign={handleSelectDesign}
+                    isOpening={openingDesignId === product.id}
+                    onPrefetch={() => handlePrefetchDesign(product.id)}
                   />
                 ))}
               </div>
@@ -626,11 +662,17 @@ export function ShopMobile({
         </select>
       </div>
 
+      {/* Full-screen acknowledgement while the single-design API responds. */}
+      {openingDesignId && !selectedClothingDesign && <ClothingProductModalLoading />}
+
       {/* Interactive Clothing Design Customization Modal */}
       {selectedClothingDesign && (
         <ClothingProductModal
           design={selectedClothingDesign}
-          onClose={() => setSelectedClothingDesign(null)}
+          onClose={() => {
+            setSelectedClothingDesign(null);
+            setOpeningDesignId(null);
+          }}
           defaultCategory={activeTab === 'hoodies' ? 'hoodies' : 'tees'}
         />
       )}

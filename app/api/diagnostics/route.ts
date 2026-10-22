@@ -4,7 +4,22 @@ import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req: Request) {
+  // Diagnostics expose infrastructure health and environment configuration.
+  // Keep the endpoint closed unless an operator explicitly enables it with a
+  // secret token; return 404 otherwise so its existence is not advertised.
+  const token = process.env.DIAGNOSTICS_TOKEN;
+  if (!token) {
+    return new NextResponse('Not found', { status: 404 });
+  }
+  const authorization = req.headers.get('authorization') || '';
+  const provided = authorization.startsWith('Bearer ')
+    ? authorization.slice('Bearer '.length)
+    : req.headers.get('x-diagnostics-token') || '';
+  if (provided !== token) {
+    return new NextResponse('Not found', { status: 404 });
+  }
+
   const envCheck = {
     DATABASE_URL: Boolean(process.env.DATABASE_URL),
     DIRECT_URL: Boolean(process.env.DIRECT_URL),

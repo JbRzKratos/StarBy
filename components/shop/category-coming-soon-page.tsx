@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 export interface ComingSoonConcept {
   id: string;

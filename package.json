@@ -11,6 +11,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
+    "generate:clothing-products": "node scripts/generate-clothing-products.mjs",
+    "prebuild": "npm run generate:clothing-products",
     "postinstall": "prisma generate"
   },
   "dependencies": {

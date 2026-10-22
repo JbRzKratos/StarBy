@@ -167,28 +167,37 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
   };
 
   const is3XL = selectedSize === '3XL' || selectedSize === 'XXXL';
+  const lowerGarmentName = garmentName.toLowerCase();
+  const isTShirtGarment =
+    /regular|oversized|acid/.test(lowerGarmentName) && !lowerGarmentName.includes('hoodie');
   let adjustedBasePrice =
     typeof resolveBasePrice === 'function'
       ? resolveBasePrice(selectedSize)
       : typeof basePrice === 'number' && basePrice > 0
         ? basePrice
-        : 600;
+        : 639;
   if (typeof resolveBasePrice !== 'function' && is3XL && !isCuratedDesign) {
-    const lowerName = garmentName.toLowerCase();
-    if (lowerName.includes('oversized')) adjustedBasePrice = 699;
-    else if (lowerName.includes('acid')) adjustedBasePrice = 720;
-    else if (lowerName.includes('hoodie')) adjustedBasePrice = 780;
-    else adjustedBasePrice = 645;
+    if (lowerGarmentName.includes('oversized')) adjustedBasePrice = 709;
+    else if (lowerGarmentName.includes('acid')) adjustedBasePrice = 720;
+    else if (lowerGarmentName.includes('hoodie')) adjustedBasePrice = 849;
+    else adjustedBasePrice = 659;
   }
 
-  const effectivePrintFee = customPrintFee || customArtworkCount * 49;
+  const effectivePrintFee =
+    customPrintFee > 0
+      ? customPrintFee
+      : isTShirtGarment
+        ? customArtworkCount >= 2
+          ? 40
+          : 0
+        : customArtworkCount * 49;
   const unitPrice =
     typeof resolvePrice === 'function'
       ? resolvePrice(selectedSize)
       : isCuratedDesign
         ? typeof propUnitPrice === 'number' && propUnitPrice >= 0
           ? propUnitPrice
-          : 600
+          : adjustedBasePrice + effectivePrintFee
         : adjustedBasePrice + effectivePrintFee;
   const totalPrice = unitPrice * quantity;
   const zoomUrl =
@@ -480,15 +489,31 @@ export const AddToCartModal3D: React.FC<AddToCartModal3DProps> = ({
                       {isCuratedDesign ? 'Garment' : 'Base Garment'} ({selectedSize}):{' '}
                       <strong style={{ color: '#e2e8f0' }}>₹{adjustedBasePrice}</strong>
                     </div>
-                    {isCuratedDesign ? (
+                    {isCuratedDesign && (
                       <div style={{ color: '#64748b' }}>Curated design price includes this garment</div>
-                    ) : customArtworkCount > 0 ? (
-                      <div style={{ color: '#38bdf8' }}>
-                        Custom Prints ({customArtworkCount} × ₹49): <strong style={{ color: '#38bdf8' }}>+₹{effectivePrintFee}</strong>
-                      </div>
-                    ) : (
-                      <div style={{ color: '#64748b' }}>No custom prints uploaded yet (+₹0)</div>
                     )}
+                    {isTShirtGarment ? (
+                      customArtworkCount >= 2 ? (
+                        <div style={{ color: '#38bdf8' }}>
+                          Artwork surcharge (2+ prints, fixed):{' '}
+                          <strong style={{ color: '#38bdf8' }}>+₹40</strong>
+                        </div>
+                      ) : (
+                        <div style={{ color: '#64748b' }}>
+                          Artwork surcharge ({customArtworkCount} print
+                          {customArtworkCount === 1 ? '' : 's'}): +₹0
+                        </div>
+                      )
+                    ) : !isCuratedDesign ? (
+                      customArtworkCount > 0 ? (
+                        <div style={{ color: '#38bdf8' }}>
+                          Custom Prints ({customArtworkCount} × ₹49):{' '}
+                          <strong style={{ color: '#38bdf8' }}>+₹{effectivePrintFee}</strong>
+                        </div>
+                      ) : (
+                        <div style={{ color: '#64748b' }}>No custom prints uploaded yet (+₹0)</div>
+                      )
+                    ) : null}
                   </div>
                 )}
                 <span className="price-sub">₹{unitPrice} / {garmentName.toLowerCase().includes('hoodie') ? 'hoodie' : 'tee'} · Inclusive of all taxes</span>

@@ -53,6 +53,9 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [nlpInput, setNlpInput] = useState<string>('');
+  const isTShirtGarment = ['regular-t-shirt', 'oversized-t-shirt', 'acid-wash-t-shirt'].includes(
+    garmentConfig.id,
+  );
 
   const selectedLayer = artworkLayers.find((l) => l.id === selectedLayerId);
 
@@ -279,8 +282,9 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
         </button>
       )}
 
-      {/* Custom Print Pricing Notice (Shown for custom/plain tee mode) */}
-      {!isCuratedDesign && (
+      {/* Artwork pricing notice: fixed ₹40 for 2+ prints on tees, legacy
+          ₹49/design for customer-uploaded artwork on other garments. */}
+      {(isTShirtGarment || !isCuratedDesign) && (
         <div
           style={{
             background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(139, 92, 246, 0.12) 100%)',
@@ -294,22 +298,29 @@ export const DrawerArtwork3D: React.FC<DrawerArtwork3DProps> = ({
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span style={{ fontSize: '11px', fontWeight: 800, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              ✦ Custom Print Pricing
+              {isTShirtGarment ? '✦ Artwork Print Pricing' : '✦ Custom Print Pricing'}
             </span>
             <span style={{ fontSize: '11px', fontWeight: 800, color: '#38bdf8', fontFamily: 'monospace' }}>
-              +₹49 / design
+              {isTShirtGarment ? '+₹40 fixed for 2+ prints' : '+₹49 / design'}
             </span>
           </div>
           <div style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.82)', lineHeight: 1.4 }}>
-            Each design you upload adds ₹49 to the garment price. Place graphics on front, back, or sleeves!
+            {isTShirtGarment
+              ? 'One print is included free. Two or more active prints add a single ₹40 surcharge per tee, not per print.'
+              : 'Each custom design you upload adds ₹49 to the garment price. Place graphics on front, back, or sleeves!'}
           </div>
-          {customArtworkCount > 0 ? (
+          {isTShirtGarment ? (
+            <div style={{ marginTop: '2px', fontSize: '11px', color: '#34d399', fontWeight: 700 }}>
+              ✓ {customArtworkCount} active print{customArtworkCount === 1 ? '' : 's'} ·{' '}
+              {customArtworkCount >= 2 ? '+₹40 surcharge' : '+₹0 surcharge'}
+            </div>
+          ) : customArtworkCount > 0 ? (
             <div style={{ marginTop: '2px', fontSize: '11px', color: '#34d399', fontWeight: 700 }}>
               ✓ {customArtworkCount} design{customArtworkCount > 1 ? 's' : ''} added (+₹{customPrintFee || customArtworkCount * 49})
             </div>
           ) : (
             <div style={{ marginTop: '2px', fontSize: '10px', color: '#94a3b8' }}>
-              Garment: ₹{basePrice || 600} · 0 designs added
+              Garment: ₹{basePrice || 639} · 0 designs added
             </div>
           )}
         </div>

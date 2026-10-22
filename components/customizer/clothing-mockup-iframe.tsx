@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useCartStore, type CartItem } from '@/lib/stores/cart-store';
 import { createClient } from '@/lib/supabase/client';
 import { isSuperAdminEmail } from '@/lib/auth-constants';
+import { getArtworkCharge } from '@/lib/config/garment-pricing';
 
 /**
  * ClothingMockupIframe
@@ -485,7 +486,7 @@ export function ClothingMockupIframe({
                     }
                   }
                 } catch {
-                  resolvedPrice = 600;
+                  resolvedPrice = 639;
                 }
               }
             }
@@ -593,14 +594,17 @@ export function ClothingMockupIframe({
               typeof payload.customArtworkCount === 'number'
                 ? payload.customArtworkCount
                 : (uploadResult.uploadedArtworks?.length || 0);
+            const isCuratedPayload = Boolean(payload.designId && !payload.plain);
             const customPrintFee =
               typeof payload.customPrintFee === 'number'
                 ? payload.customPrintFee
-                : customArtworkCount * 49;
+                : getArtworkCharge(payload.garmentId, customArtworkCount, {
+                    curated: isCuratedPayload,
+                  });
             const itemBasePrice =
               typeof payload.basePrice === 'number'
                 ? payload.basePrice
-                : (typeof resolvedPrice === 'number' ? resolvedPrice - customPrintFee : 600);
+                : (typeof resolvedPrice === 'number' ? resolvedPrice - customPrintFee : 639);
 
             const isCustomUpload = !payload.designId || Boolean(payload.plain);
             const itemDisplayName = isCustomUpload
@@ -613,7 +617,7 @@ export function ClothingMockupIframe({
               name: itemDisplayName,
               variant: `${payload.garmentColor || 'Custom'} / ${payload.size || 'L'}`,
               quantity: payload.quantity || 1,
-              price: typeof resolvedPrice === 'number' && resolvedPrice >= 0 ? resolvedPrice : 600,
+              price: typeof resolvedPrice === 'number' && resolvedPrice >= 0 ? resolvedPrice : 639,
               size: payload.size || 'L',
               image: safeImage,
               customization: {

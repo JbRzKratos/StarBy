@@ -4,7 +4,7 @@ import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 export default function SignUpPage() {
   const [fullName, setFullName] = useState('');

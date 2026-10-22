@@ -451,14 +451,15 @@ export function ProductFormClient({
                       const updated = { ...sizePrices };
                       parsedSizes.forEach((s) => {
                         const u = s.toUpperCase();
-                        updated[s] = u === '3XL' || u === 'XXXL' ? 645 : 600;
+                        const isExtended = u === '2XL' || u === 'XXL' || u === '3XL' || u === 'XXXL';
+                        updated[s] = isExtended ? 659 : 639;
                       });
                       setSizePrices(updated);
-                      show('Applied Regular Tee prices (₹600 / 3XL: ₹645)', 'success');
+                      show('Applied Regular Tee prices (₹639 / XXL+: ₹659)', 'success');
                     }}
                     className="text-[10px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-white/90 border border-white/10 cursor-pointer"
                   >
-                    Regular (600/645)
+                    Regular (639/659)
                   </button>
                   <button
                     type="button"
@@ -466,14 +467,15 @@ export function ProductFormClient({
                       const updated = { ...sizePrices };
                       parsedSizes.forEach((s) => {
                         const u = s.toUpperCase();
-                        updated[s] = u === '3XL' || u === 'XXXL' ? 699 : 670;
+                        const isExtended = u === '2XL' || u === 'XXL' || u === '3XL' || u === 'XXXL';
+                        updated[s] = isExtended ? 709 : 689;
                       });
                       setSizePrices(updated);
-                      show('Applied Oversized Tee prices (₹670 / 3XL: ₹699)', 'success');
+                      show('Applied Oversized Tee prices (₹689 / XXL+: ₹709)', 'success');
                     }}
                     className="text-[10px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-white/90 border border-white/10 cursor-pointer"
                   >
-                    Oversized (670/699)
+                    Oversized (689/709)
                   </button>
                   <button
                     type="button"
@@ -481,7 +483,8 @@ export function ProductFormClient({
                       const updated = { ...sizePrices };
                       parsedSizes.forEach((s) => {
                         const u = s.toUpperCase();
-                        updated[s] = u === '3XL' || u === 'XXXL' ? 720 : 699;
+                        const isExtended = u === '2XL' || u === 'XXL' || u === '3XL' || u === 'XXXL';
+                        updated[s] = isExtended ? 720 : 699;
                       });
                       setSizePrices(updated);
                       show('Applied Acid Wash prices (₹699 / 3XL: ₹720)', 'success');
@@ -496,14 +499,15 @@ export function ProductFormClient({
                       const updated = { ...sizePrices };
                       parsedSizes.forEach((s) => {
                         const u = s.toUpperCase();
-                        updated[s] = u === '3XL' || u === 'XXXL' ? 780 : 750;
+                        const isExtended = u === '2XL' || u === 'XXL' || u === '3XL' || u === 'XXXL';
+                        updated[s] = isExtended ? 849 : 809;
                       });
                       setSizePrices(updated);
-                      show('Applied Hoodie prices (₹750 / 3XL: ₹780)', 'success');
+                      show('Applied Hoodie prices (₹809 / XXL+: ₹849)', 'success');
                     }}
                     className="text-[10px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-white/90 border border-white/10 cursor-pointer"
                   >
-                    Hoodie (750/780)
+                    Hoodie (809/849)
                   </button>
                 </div>
               </div>

@@ -3,7 +3,7 @@
 import { useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 const VENOM_POSTER_IMAGE = getR2AssetUrl(
   'posters/Fregoro_Studios_Extend_the_existing_background_into_the_empty_87b422a5-0502-4254-a066-f733dc0af620_3.webp'

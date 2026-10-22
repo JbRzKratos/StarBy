@@ -5,7 +5,7 @@ import { useCustomizerStore } from '@/lib/stores/customizer-store';
 import type { ProductType } from '@/lib/config/printSpecs';
 import { FabricCanvas } from './fabric-canvas';
 import { ControlPanel } from './control-panel';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 import { products } from '@/data/products';
 

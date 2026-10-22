@@ -1455,15 +1455,16 @@ export function ProductsClient({
                             const current = { ...getProductSizePrices(product) };
                             product.sizes.forEach((s) => {
                               const u = s.toUpperCase();
-                              const val = u === '3XL' || u === 'XXXL' ? 645 : 600;
+                              const isExtended = u === '2XL' || u === 'XXL' || u === '3XL' || u === 'XXXL';
+                              const val = isExtended ? 659 : 639;
                               current[u] = val;
                             });
                             setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
-                            show('Applied Regular Tee rates (₹600 / 3XL: ₹645)', 'success');
+                            show('Applied Regular Tee rates (₹639 / XXL+: ₹659)', 'success');
                           }}
                           className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white cursor-pointer"
                         >
-                          Reg (600/645)
+                          Reg (639/659)
                         </button>
                         <button
                           type="button"
@@ -1472,15 +1473,16 @@ export function ProductsClient({
                             const current = { ...getProductSizePrices(product) };
                             product.sizes.forEach((s) => {
                               const u = s.toUpperCase();
-                              const val = u === '3XL' || u === 'XXXL' ? 699 : 670;
+                              const isExtended = u === '2XL' || u === 'XXL' || u === '3XL' || u === 'XXXL';
+                              const val = isExtended ? 709 : 689;
                               current[u] = val;
                             });
                             setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
-                            show('Applied Oversized Tee rates (₹670 / 3XL: ₹699)', 'success');
+                            show('Applied Oversized Tee rates (₹689 / XXL+: ₹709)', 'success');
                           }}
                           className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white cursor-pointer"
                         >
-                          Over (670/699)
+                          Over (689/709)
                         </button>
                         <button
                           type="button"
@@ -1489,7 +1491,8 @@ export function ProductsClient({
                             const current = { ...getProductSizePrices(product) };
                             product.sizes.forEach((s) => {
                               const u = s.toUpperCase();
-                              const val = u === '3XL' || u === 'XXXL' ? 720 : 699;
+                              const isExtended = u === '2XL' || u === 'XXL' || u === '3XL' || u === 'XXXL';
+                              const val = isExtended ? 720 : 699;
                               current[u] = val;
                             });
                             setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
@@ -1506,15 +1509,16 @@ export function ProductsClient({
                             const current = { ...getProductSizePrices(product) };
                             product.sizes.forEach((s) => {
                               const u = s.toUpperCase();
-                              const val = u === '3XL' || u === 'XXXL' ? 780 : 750;
+                              const isExtended = u === '2XL' || u === 'XXL' || u === '3XL' || u === 'XXXL';
+                              const val = isExtended ? 849 : 809;
                               current[u] = val;
                             });
                             setSizePricesState((prev) => ({ ...prev, [product.id]: current }));
-                            show('Applied Hoodie rates (₹750 / 3XL: ₹780)', 'success');
+                            show('Applied Hoodie rates (₹809 / XXL+: ₹849)', 'success');
                           }}
                           className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white cursor-pointer"
                         >
-                          Hoodie (750/780)
+                          Hoodie (809/849)
                         </button>
                       </div>
 

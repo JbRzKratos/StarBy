@@ -17,6 +17,7 @@ import {
   type ApparelProductConfig,
   type ApparelColorSwatch,
 } from '@/lib/config/apparel-variants';
+import { getArtworkCharge } from '@/lib/config/garment-pricing';
 
 export interface ClothingProductModalProps {
   design: ClothingDesignEntry | null;
@@ -171,10 +172,12 @@ export function useClothingProductModalState({
         name: design.name || 'Artwork',
         suggestedPlacement: (design.defaultSurface || 'front-center') as DesignPlacementTarget,
         colorHint: 'any' as const,
-        originalPath: 'artwork.png',
-        originalObjectKey: `clothing-designs/${design.id}/original/artwork.png`,
-        thumbnailObjectKey: `clothing-designs/${design.id}/previews/thumb_front.webp`,
-        previewObjectKey: `clothing-designs/${design.id}/previews/studio_front.webp`,
+        // Private print-file locations stay server-side. This fallback shape is
+        // compiled into the client bundle, so never embed an original R2 key.
+        originalPath: '',
+        originalObjectKey: '',
+        thumbnailObjectKey: '',
+        previewObjectKey: '',
         previewUrl: design.previewUrl || `/api/clothing-designs/${design.id}/preview?type=thumbnail&v=v3`,
         studioPreviewUrl:
           design.studioPreviewUrl || `/api/clothing-designs/${design.id}/preview?type=studio&v=v3`,
@@ -250,6 +253,14 @@ export function useClothingProductModalState({
 
   // Calibrated coordinates per artwork: Record<artId, SavedPlacementItem>
   const [artworkCalibratedCoords, setArtworkCalibratedCoords] = useState<Record<string, SavedPlacementItem>>({});
+  // Keep the latest calibrated coords in a ref so reading them does not change
+  // the identity of `getSavedPlacementForDesign` on every render. A changing
+  // callback identity used to retrigger the placement initialiser, which reset
+  // the customer's print-inclusion toggles immediately after they were clicked.
+  const artworkCalibratedCoordsRef = useRef<Record<string, SavedPlacementItem>>({});
+  useEffect(() => {
+    artworkCalibratedCoordsRef.current = artworkCalibratedCoords;
+  }, [artworkCalibratedCoords]);
 
   // Fetch persisted server placements on mount / design load and merge into localStorage
   useEffect(() => {
@@ -314,8 +325,9 @@ export function useClothingProductModalState({
           const raw2 = window.localStorage.getItem('fregoro_curated_placements_v2');
           if (raw2) Object.assign(all, JSON.parse(raw2));
         } catch {}
-        if (artworkCalibratedCoords && Object.keys(artworkCalibratedCoords).length > 0) {
-          Object.assign(all, artworkCalibratedCoords);
+        const calibratedCoords = artworkCalibratedCoordsRef.current;
+        if (calibratedCoords && Object.keys(calibratedCoords).length > 0) {
+          Object.assign(all, calibratedCoords);
         }
 
         const normGarment = garment3dId.toLowerCase();
@@ -363,7 +375,7 @@ export function useClothingProductModalState({
         return null;
       }
     },
-    [design, artworkCalibratedCoords]
+    [design]
   );
 
   // Initialize placements, scales, and included artworks when design changes or garment changes
@@ -771,7 +783,7 @@ export function useClothingProductModalState({
           ? customSizePrice
           : design.basePrice && design.basePrice > 0
             ? design.basePrice
-            : 600;
+            : 639;
 
       const removedArtIds = (artworks || [])
         .filter((a) => !includedArtworks.has(a.id))
@@ -802,6 +814,7 @@ export function useClothingProductModalState({
         previewUrl: primaryPreviewUrl,
         layers: JSON.stringify(layersToLoad),
         price: designSizePrice.toString(),
+        artworkCount: activeArtworkCount.toString(),
         ...(removedArtIds.length > 0 ? { removedArtIds: JSON.stringify(removedArtIds) } : {}),
         ...(primaryCalibrated?.u !== undefined ? { u: primaryCalibrated.u.toString() } : {}),
         ...(primaryCalibrated?.v !== undefined ? { v: primaryCalibrated.v.toString() } : {}),
@@ -1021,9 +1034,17 @@ export function useClothingProductModalState({
       ? customDesignSizePrice
       : design?.basePrice && design.basePrice > 0
         ? design.basePrice
-        : 600;
+        : 639;
   const garmentSizePrice = getApparelPrice(selectedGarmentId, selectedSize || 'L');
-  const unitPrice = isOneRupee ? 1 : Math.max(designSizePrice, garmentSizePrice);
+  // `includedArtworks` already excludes deleted, hidden and zero-opacity
+  // placements, so its size is the active printed artwork count.
+  const activeArtworkCount = includedArtworks.size;
+  const artworkCharge = isOneRupee
+    ? 0
+    : getArtworkCharge(selectedGarmentId, activeArtworkCount, { curated: true });
+  const unitPrice = isOneRupee
+    ? 1
+    : Math.max(designSizePrice, garmentSizePrice) + artworkCharge;
 
   return {
     mounted,
@@ -1032,6 +1053,8 @@ export function useClothingProductModalState({
     selectedGarmentId,
     setSelectedGarmentId,
     selectedGarment,
+    activeArtworkCount,
+    artworkCharge,
     unitPrice,
     selectedColor,
     setSelectedColor,

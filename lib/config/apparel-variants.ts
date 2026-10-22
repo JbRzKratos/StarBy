@@ -39,17 +39,17 @@ export const APPAREL_CONFIG: Record<string, ApparelProductConfig> = {
     garment3dId: 'regular-t-shirt',
     fabric: 'Cotton',
     gsm: 180,
-    basePrice: 600,
+    basePrice: 639,
     sizes: ['S', 'M', 'L', 'XL', 'XXL', '3XL'],
     sizePrices: {
-      S: 600,
-      M: 600,
-      L: 600,
-      XL: 600,
-      XXL: 600,
-      '2XL': 600,
-      '3XL': 645,
-      XXXL: 645,
+      S: 639,
+      M: 639,
+      L: 639,
+      XL: 639,
+      XXL: 659,
+      '2XL': 659,
+      '3XL': 659,
+      XXXL: 659,
     },
     defaultColorHex: '#FFFFFF',
     colors: [
@@ -103,17 +103,17 @@ export const APPAREL_CONFIG: Record<string, ApparelProductConfig> = {
     garment3dId: 'oversized-t-shirt',
     fabric: 'French Terry',
     gsm: 240,
-    basePrice: 670,
+    basePrice: 689,
     sizes: ['S', 'M', 'L', 'XL', 'XXL', '3XL'],
     sizePrices: {
-      S: 670,
-      M: 670,
-      L: 670,
-      XL: 670,
-      XXL: 670,
-      '2XL': 670,
-      '3XL': 699,
-      XXXL: 699,
+      S: 689,
+      M: 689,
+      L: 689,
+      XL: 689,
+      XXL: 709,
+      '2XL': 709,
+      '3XL': 709,
+      XXXL: 709,
     },
     defaultColorHex: '#FFFFFF',
     colors: [
@@ -174,8 +174,8 @@ export const APPAREL_CONFIG: Record<string, ApparelProductConfig> = {
       M: 699,
       L: 699,
       XL: 699,
-      XXL: 699,
-      '2XL': 699,
+      XXL: 720,
+      '2XL': 720,
       '3XL': 720,
       XXXL: 720,
     },
@@ -215,17 +215,17 @@ export const APPAREL_CONFIG: Record<string, ApparelProductConfig> = {
     garment3dId: 'hoodie',
     fabric: 'Heavy Fleece',
     gsm: 300,
-    basePrice: 750,
+    basePrice: 809,
     sizes: ['S', 'M', 'L', 'XL', 'XXL', '3XL'],
     sizePrices: {
-      S: 750,
-      M: 750,
-      L: 750,
-      XL: 750,
-      XXL: 750,
-      '2XL': 750,
-      '3XL': 780,
-      XXXL: 780,
+      S: 809,
+      M: 809,
+      L: 809,
+      XL: 809,
+      XXL: 849,
+      '2XL': 849,
+      '3XL': 849,
+      XXXL: 849,
     },
     defaultColorHex: '#111215',
     colors: [
@@ -259,7 +259,7 @@ export function getApparelConfig(id: string): ApparelProductConfig | undefined {
 export function getApparelPrice(garmentId: string, size?: string): number {
   const normGarment = (garmentId || 'regular-t-shirt').toLowerCase();
   const config = APPAREL_CONFIG[normGarment] || APPAREL_CONFIG['regular-t-shirt'];
-  if (!config) return 600;
+  if (!config) return 639;
 
   if (size && config.sizePrices) {
     const s = size.toUpperCase().trim();
@@ -280,7 +280,7 @@ export function getApparelPrice(garmentId: string, size?: string): number {
 export function getGarmentSizePrices(garmentId: string): Record<string, number> {
   const normGarment = (garmentId || 'regular-t-shirt').toLowerCase();
   const config = APPAREL_CONFIG[normGarment] || APPAREL_CONFIG['regular-t-shirt'];
-  return config?.sizePrices || { S: 600, M: 600, L: 600, XL: 600, '2XL': 600, '3XL': 645 };
+  return config?.sizePrices || { S: 639, M: 639, L: 639, XL: 639, '2XL': 659, '3XL': 659 };
 }
 
 export function validateApparelVariant(

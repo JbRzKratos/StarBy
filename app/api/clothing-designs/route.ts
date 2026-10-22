@@ -38,7 +38,12 @@ export async function GET(req: Request) {
       },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+          // Catalogue data is public and changes at the same cadence as the
+          // shop pages (ISR 60s). Let the browser revalidate and let Vercel's
+          // edge absorb repeated modal/product-card lookups.
+          'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
+          'CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+          'X-Content-Type-Options': 'nosniff',
         },
       },
     );

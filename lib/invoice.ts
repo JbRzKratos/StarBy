@@ -1,7 +1,7 @@
 import PDFDocument from 'pdfkit';
 import { BUSINESS_DETAILS, parseShippingAddress } from './business-details';
 import { formatPaymentProvider } from './payment-display';
-import { drawBrandLogo, drawCode128B, PRINT } from './pdf-branding';
+import { drawBrandLogo, drawCode128B, drawRegistrationMarks, PRINT } from './pdf-branding';
 import { PDF_FONTS, registerPdfFonts } from './pdf-fonts';
 
 export interface InvoiceItem {
@@ -135,23 +135,23 @@ function itemUnitPrice(item: InvoiceItem): number {
 }
 
 /**
- * Generate the customer invoice / packing slip.
+ * Generate a luxury editorial black-and-white customer invoice / packing slip.
  *
- * The document deliberately uses only black, white and neutral greys so it
- * matches the original clean invoice design. Business GST details are not
- * printed because the studio is not GST-registered.
+ * Adheres strictly to high-contrast monochrome aesthetics (black #000000,
+ * white #FFFFFF, crisp neutral tones) with architectural compartments,
+ * inverted header tags, scannable Code128 barcodes, and exact studio details.
  */
 export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({
         size: 'A4',
-        margins: { top: 35, bottom: 35, left: 36, right: 36 },
+        margins: { top: 28, bottom: 28, left: 32, right: 32 },
         autoFirstPage: true,
         info: {
-          Title: `Invoice ${order.invoiceNumber || order.publicOrderId || order.id}`,
+          Title: `Tax Invoice ${order.invoiceNumber || order.publicOrderId || order.id}`,
           Author: BUSINESS_DETAILS.name,
-          Subject: 'Invoice and packing slip',
+          Subject: 'Tax Invoice & Packing Slip',
         },
       });
 
@@ -162,9 +162,9 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
       doc.on('end', () => resolve(Buffer.concat(chunks)));
       doc.on('error', (err) => reject(err));
 
-      const pageLeft = 36;
-      const pageRight = 559;
-      const contentWidth = pageRight - pageLeft;
+      const pageLeft = 32;
+      const pageRight = 563;
+      const contentWidth = pageRight - pageLeft; // 531 pt
 
       const orderRef = order.publicOrderId || order.id;
       const invoiceNo =
@@ -200,254 +200,310 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
       const discount = order.discount || 0;
       const shippingFee = order.shippingFee || 0;
 
-      // ── Header ────────────────────────────────────────────────────────────
-      const logoWidth = 112;
-      drawBrandLogo(doc, pageLeft, 39, logoWidth);
+      // ── Outer Architectural Registration Marks ───────────────────────────
+      drawRegistrationMarks(doc, pageLeft - 6, 22, contentWidth + 12, 794, 5);
 
+      // ── Header: Brand Logo, Studio Info, and Document Title ───────────────
+      const logoWidth = 98;
+      drawBrandLogo(doc, pageLeft, 30, logoWidth);
+
+      // Studio Info under/beside logo
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(10.5)
+        .fontSize(11)
         .fillColor(PRINT.black)
-        .text('FREGORO STUDIOS', pageLeft + logoWidth + 11, 48);
+        .text('FREGORO STUDIOS', pageLeft, 76, { characterSpacing: 0.5 });
       doc
         .font(PDF_FONTS.sans)
         .fontSize(5.8)
-        .fillColor(PRINT.gray500)
-        .text('BESPOKE PRINT · CUSTOM APPAREL · EDITORIAL', pageLeft + logoWidth + 11, 62, {
-          width: 168,
+        .fillColor(PRINT.gray700)
+        .text('BESPOKE PRINT · CUSTOM APPAREL · EDITORIAL STUDIO', pageLeft, 89, {
+          characterSpacing: 0.3,
         });
-
-      const rightX = pageLeft + 300;
-      const rightWidth = pageRight - rightX;
-      doc
-        .font(PDF_FONTS.sansBold)
-        .fontSize(21)
-        .fillColor(PRINT.black)
-        .text('INVOICE', rightX, 37, { width: rightWidth, align: 'right' });
-      doc
-        .font(PDF_FONTS.sans)
-        .fontSize(6)
-        .fillColor(PRINT.gray500)
-        .text('PACKING SLIP · ORDER DOCUMENT', rightX, 62, {
-          width: rightWidth,
-          align: 'right',
-        });
-      doc
-        .font(PDF_FONTS.sansBold)
-        .fontSize(7)
-        .fillColor(PRINT.ink)
-        .text(`INVOICE NO.  ${invoiceNo}`, rightX, 74, { width: rightWidth, align: 'right' })
-        .text(`ORDER REF.  ${orderRef}`, rightX, 83, { width: rightWidth, align: 'right' })
-        .text(`DATE  ${formattedDate}`, rightX, 92, { width: rightWidth, align: 'right' });
 
       doc
         .font(PDF_FONTS.sans)
         .fontSize(6.4)
-        .fillColor(PRINT.gray700)
-        .text(BUSINESS_DETAILS.addressLine1, pageLeft, 95, { width: 270 })
-        .text(BUSINESS_DETAILS.addressLine2, pageLeft, 103.5, { width: 270 })
+        .fillColor(PRINT.ink)
+        .text(BUSINESS_DETAILS.addressLine1, pageLeft, 99)
+        .text(BUSINESS_DETAILS.addressLine2, pageLeft, 107.5)
         .text(
-          `${BUSINESS_DETAILS.phone}   ·   ${BUSINESS_DETAILS.email}`,
+          `TEL: ${BUSINESS_DETAILS.phone}   ·   EMAIL: ${BUSINESS_DETAILS.email}`,
           pageLeft,
-          112,
-          { width: 300 },
+          116,
+        );
+
+      // Right Header Block
+      const rightX = pageLeft + 310;
+      const rightWidth = pageRight - rightX;
+
+      // Inverted Badge Header
+      doc.rect(rightX, 30, rightWidth, 14).fill(PRINT.black);
+      doc
+        .font(PDF_FONTS.sansBold)
+        .fontSize(6.3)
+        .fillColor(PRINT.white)
+        .text('TAX INVOICE & PACKING SLIP', rightX, 34, {
+          width: rightWidth,
+          align: 'center',
+          characterSpacing: 0.8,
+        });
+
+      doc
+        .font(PDF_FONTS.sansBold)
+        .fontSize(22)
+        .fillColor(PRINT.black)
+        .text('INVOICE', rightX, 48, { width: rightWidth, align: 'right', characterSpacing: 0.5 });
+
+      // Invoice metadata box
+      const metaBoxY = 74;
+      doc
+        .rect(rightX, metaBoxY, rightWidth, 48)
+        .lineWidth(0.6)
+        .strokeColor(PRINT.black)
+        .stroke();
+      doc.rect(rightX, metaBoxY, rightWidth, 48).fill(PRINT.wash);
+
+      const metaRow = (label: string, val: string, yPos: number, isMono = false) => {
+        doc
+          .font(PDF_FONTS.sansBold)
+          .fontSize(6.2)
+          .fillColor(PRINT.gray700)
+          .text(label, rightX + 6, yPos, { width: 72 });
+        doc
+          .font(isMono ? PDF_FONTS.monoBold : PDF_FONTS.sansBold)
+          .fontSize(6.8)
+          .fillColor(PRINT.black)
+          .text(val, rightX + 80, yPos, { width: rightWidth - 86, align: 'right' });
+      };
+
+      metaRow('INVOICE NO.', invoiceNo, metaBoxY + 5, true);
+      metaRow('ORDER REF.', String(orderRef), metaBoxY + 16, true);
+      metaRow('DATE ISSUED', formattedDate, metaBoxY + 27, false);
+      metaRow('TAX TYPE', 'RETAIL INVOICE', metaBoxY + 37, false);
+
+      // Double divider rule
+      doc
+        .moveTo(pageLeft, 128)
+        .lineTo(pageRight, 128)
+        .lineWidth(1.2)
+        .strokeColor(PRINT.black)
+        .stroke();
+      doc
+        .moveTo(pageLeft, 131)
+        .lineTo(pageRight, 131)
+        .lineWidth(0.4)
+        .strokeColor(PRINT.black)
+        .stroke();
+
+      // ── Dispatch & Payment High-Contrast Strip ────────────────────────────
+      const stripY = 138;
+      const stripH = 34;
+
+      doc
+        .rect(pageLeft, stripY, contentWidth, stripH)
+        .lineWidth(0.8)
+        .strokeColor(PRINT.black)
+        .stroke();
+      doc.rect(pageLeft, stripY, contentWidth, stripH).fill(PRINT.wash);
+
+      // Inverted status tag
+      const badgeW = isCashOnDelivery ? 120 : 110;
+      doc.rect(pageLeft + 8, stripY + 6, badgeW, 12).fill(PRINT.black);
+      doc
+        .font(PDF_FONTS.sansBold)
+        .fontSize(6.5)
+        .fillColor(PRINT.white)
+        .text(
+          isCashOnDelivery ? '[ CASH ON DELIVERY ]' : '[ PREPAID SHIPMENT ]',
+          pageLeft + 8,
+          stripY + 8.5,
+          { width: badgeW, align: 'center', characterSpacing: 0.5 },
         );
 
       doc
-        .moveTo(pageLeft, 126)
-        .lineTo(pageRight, 126)
-        .lineWidth(0.9)
-        .strokeColor(PRINT.black)
-        .stroke();
-
-      // ── Payment / dispatch strip ──────────────────────────────────────────
-      const stripY = 136;
-      const stripH = 34;
-      doc.rect(pageLeft, stripY, contentWidth, stripH).fill(PRINT.wash);
-      doc
-        .rect(pageLeft, stripY, contentWidth, stripH)
-        .lineWidth(0.7)
-        .strokeColor(PRINT.black)
-        .stroke();
-
-      doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(9.2)
+        .fontSize(7.5)
         .fillColor(PRINT.black)
-        .text(isCashOnDelivery ? 'CASH ON DELIVERY' : 'PREPAID SHIPMENT', pageLeft + 8, stripY + 6, {
-          width: 300,
-        });
-      doc
-        .font(PDF_FONTS.sansBold)
-        .fontSize(7)
-        .fillColor(PRINT.gray700)
         .text(
           isCashOnDelivery
-            ? `COLLECT ${money(order.total)} FROM CUSTOMER`
-            : 'ZERO AMOUNT DUE — DO NOT COLLECT CASH',
+            ? `COLLECT ${money(order.total)} FROM CUSTOMER AT DOORSTEP`
+            : 'ZERO AMOUNT DUE — DO NOT COLLECT CASH AT DELIVERY',
           pageLeft + 8,
-          stripY + 19,
+          stripY + 21,
           { width: 320 },
         );
 
-      const barcodeWidth = 184;
+      // Scannable barcode on the right
+      const barcodeWidth = 175;
       const barcodeX = pageRight - barcodeWidth - 8;
       drawCode128B(doc, barcodeX, stripY + 5, barcodeWidth, 16, String(orderRef));
       doc
-        .font(PDF_FONTS.mono)
+        .font(PDF_FONTS.monoBold)
         .fontSize(6)
-        .fillColor(PRINT.gray700)
+        .fillColor(PRINT.black)
         .text(`*${orderRef}*`, barcodeX, stripY + 23, {
           width: barcodeWidth,
           align: 'center',
         });
 
-      // ── Addresses and fulfilment ──────────────────────────────────────────
-      const addressY = 184;
-      const addressGap = 24;
-      const leftWidth = (contentWidth - addressGap) / 2;
-      const rightColX = pageLeft + leftWidth + addressGap;
-      const rightColWidth = pageRight - rightColX;
-      const valueX = rightColX + 74;
-      const valueWidth = rightColWidth - 74;
+      // ── Addresses & Fulfilment Specifications Grid ────────────────────────
+      const addressY = 180;
+      const addressGap = 14;
+      const colWidth = (contentWidth - addressGap) / 2;
+      const rightColX = pageLeft + colWidth + addressGap;
+      const boxHeight = 116;
 
-      const sectionLabel = (label: string, x: number, width: number) => {
-        doc
-          .font(PDF_FONTS.sansBold)
-          .fontSize(6.5)
-          .fillColor(PRINT.black)
-          .text(label, x, addressY, { width, characterSpacing: 0.35 });
-        doc
-          .moveTo(x, addressY + 10)
-          .lineTo(x + width, addressY + 10)
-          .lineWidth(0.55)
-          .strokeColor(PRINT.black)
-          .stroke();
-      };
-
-      sectionLabel('BILLED TO / SHIPPED TO', pageLeft, leftWidth);
-      sectionLabel('PAYMENT & FULFILMENT', rightColX, rightColWidth);
-
-      let leftY = addressY + 18;
+      // Left Box: Billed / Shipped To
+      doc
+        .rect(pageLeft, addressY, colWidth, boxHeight)
+        .lineWidth(0.6)
+        .strokeColor(PRINT.black)
+        .stroke();
+      doc.rect(pageLeft, addressY, colWidth, 14).fill(PRINT.black);
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(10)
+        .fontSize(6.4)
+        .fillColor(PRINT.white)
+        .text('BILLED TO / SHIPPED TO', pageLeft + 6, addressY + 4, {
+          characterSpacing: 0.6,
+        });
+
+      let addrCursorY = addressY + 20;
+      doc
+        .font(PDF_FONTS.sansBold)
+        .fontSize(9.5)
         .fillColor(PRINT.black)
-        .text(addr.name || 'Valued Customer', pageLeft, leftY, { width: leftWidth });
-      leftY += 14;
+        .text(addr.name || 'Valued Customer', pageLeft + 8, addrCursorY, {
+          width: colWidth - 16,
+          lineBreak: false,
+          ellipsis: true,
+        });
+      addrCursorY += 13;
 
       for (const line of [addr.streetLine1, addr.streetLine2].filter(Boolean)) {
         doc
           .font(PDF_FONTS.sans)
-          .fontSize(8.3)
+          .fontSize(7.6)
           .fillColor(PRINT.ink)
-          .text(line, pageLeft, leftY, { width: leftWidth, lineGap: 1 });
-        leftY += doc.heightOfString(line, { width: leftWidth, lineGap: 1 }) + 1.5;
+          .text(line, pageLeft + 8, addrCursorY, { width: colWidth - 16, lineGap: 1 });
+        addrCursorY += doc.heightOfString(line, { width: colWidth - 16, lineGap: 1 }) + 1;
       }
 
       if (addr.cityStateZip) {
         doc
           .font(PDF_FONTS.sansBold)
-          .fontSize(8.3)
+          .fontSize(8)
           .fillColor(PRINT.black)
-          .text(addr.cityStateZip, pageLeft, leftY, { width: leftWidth });
-        leftY += 12;
+          .text(addr.cityStateZip, pageLeft + 8, addrCursorY, { width: colWidth - 16 });
+        addrCursorY += 11;
       }
+
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(7.2)
+        .fontSize(7)
         .fillColor(PRINT.gray700)
-        .text(addr.country || 'India', pageLeft, leftY);
-      leftY += 11.5;
+        .text(addr.country || 'India', pageLeft + 8, addrCursorY);
+      addrCursorY += 10;
+
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(7.8)
-        .fillColor(PRINT.ink)
-        .text(`Phone: ${addr.phone || 'Not provided'}`, pageLeft, leftY, {
-          width: leftWidth,
+        .fontSize(7.5)
+        .fillColor(PRINT.black)
+        .text(`Phone: ${addr.phone || 'Not provided'}`, pageLeft + 8, addrCursorY, {
+          width: colWidth - 16,
         });
-      leftY += 10.5;
+      addrCursorY += 10;
+
       if (email) {
         doc
           .font(PDF_FONTS.sans)
-          .fontSize(6.8)
+          .fontSize(6.6)
           .fillColor(PRINT.gray700)
-          .text(`Email: ${email}`, pageLeft, leftY, { width: leftWidth, ellipsis: true });
-        leftY += 9;
+          .text(`Email: ${email}`, pageLeft + 8, addrCursorY, {
+            width: colWidth - 16,
+            ellipsis: true,
+          });
       }
 
-      let rightY = addressY + 18;
-      const kv = (label: string, value: string) => {
-        doc
-          .font(PDF_FONTS.sans)
-          .fontSize(6.2)
-          .fillColor(PRINT.gray500)
-          .text(label.toUpperCase(), rightColX, rightY, { width: 70 });
+      // Right Box: Payment & Fulfilment Specifications
+      doc
+        .rect(rightColX, addressY, colWidth, boxHeight)
+        .lineWidth(0.6)
+        .strokeColor(PRINT.black)
+        .stroke();
+      doc.rect(rightColX, addressY, colWidth, 14).fill(PRINT.black);
+      doc
+        .font(PDF_FONTS.sansBold)
+        .fontSize(6.4)
+        .fillColor(PRINT.white)
+        .text('PAYMENT & FULFILMENT SPECIFICATIONS', rightColX + 6, addressY + 4, {
+          characterSpacing: 0.6,
+        });
+
+      let specY = addressY + 19;
+      const specRow = (label: string, value: string, isMono = false) => {
         doc
           .font(PDF_FONTS.sansBold)
-          .fontSize(6.9)
-          .fillColor(PRINT.ink)
-          .text(value, valueX, rightY, { width: valueWidth, ellipsis: true, height: 9 });
-        rightY += 9.6;
+          .fontSize(5.9)
+          .fillColor(PRINT.gray700)
+          .text(label.toUpperCase(), rightColX + 8, specY, { width: 78 });
+        doc
+          .font(isMono ? PDF_FONTS.monoBold : PDF_FONTS.sansBold)
+          .fontSize(6.4)
+          .fillColor(PRINT.black)
+          .text(value, rightColX + 86, specY, {
+            width: colWidth - 94,
+            ellipsis: true,
+            height: 9,
+          });
+        specY += 12;
       };
 
-      kv('Payment mode', paymentMode);
-      kv('Payment status', paymentStatus);
-      if (order.paymentGatewayPaymentId) kv('Transaction ID', order.paymentGatewayPaymentId);
-      kv('Order status', orderStatus);
-      kv('Shipped by', 'Fregoro Studios Hub, Thiruvallur');
-      kv('Dispatch', 'Within 24 – 48 hours');
+      specRow('Payment Mode', paymentMode);
+      specRow('Payment Status', paymentStatus);
+      if (order.paymentGatewayPaymentId) {
+        specRow('Transaction ID', order.paymentGatewayPaymentId, true);
+      }
+      specRow('Order Status', orderStatus);
+      specRow('Fulfilment Hub', 'Fregoro Studios Hub, Thiruvallur');
+      specRow('Dispatch SLA', 'Within 24 – 48 Hours');
       const carrier = order.carrier || order.shippingCarrier;
       if (carrier || order.trackingNumber) {
-        kv(
+        specRow(
           'Courier / AWB',
-          `${carrier || 'Courier to be assigned'}${
-            order.trackingNumber ? ` · AWB ${order.trackingNumber}` : ''
-          }`,
+          `${carrier || 'Courier Assigned'}${order.trackingNumber ? ` · ${order.trackingNumber}` : ''}`,
+          true,
         );
       }
 
-      const addressBottom = Math.max(leftY, rightY) + 8;
-      doc
-        .moveTo(pageLeft, addressBottom)
-        .lineTo(pageRight, addressBottom)
-        .lineWidth(0.55)
-        .strokeColor(PRINT.rule)
-        .stroke();
-
-      // ── Items ─────────────────────────────────────────────────────────────
-      const colNo = pageLeft + 2;
-      const colDesc = pageLeft + 20;
-      const colSku = pageLeft + 274;
-      const colQty = pageLeft + 354;
-      const colRate = pageLeft + 386;
-      const colAmount = pageLeft + 462;
+      // ── Itemized Table ────────────────────────────────────────────────────
+      const colNo = pageLeft + 6;
+      const colDesc = pageLeft + 24;
+      const colSku = pageLeft + 276;
+      const colQty = pageLeft + 356;
+      const colRate = pageLeft + 394;
+      const colAmount = pageLeft + 466;
 
       const drawItemsHeader = (y: number) => {
-        doc.rect(pageLeft, y, contentWidth, 18).fill(PRINT.wash);
+        doc.rect(pageLeft, y, contentWidth, 17).fill(PRINT.black);
         doc
-          .moveTo(pageLeft, y)
-          .lineTo(pageRight, y)
-          .lineWidth(0.75)
+          .rect(pageLeft, y, contentWidth, 17)
+          .lineWidth(0.8)
           .strokeColor(PRINT.black)
           .stroke();
-        doc
-          .moveTo(pageLeft, y + 18)
-          .lineTo(pageRight, y + 18)
-          .lineWidth(0.75)
-          .strokeColor(PRINT.black)
-          .stroke();
-        doc.font(PDF_FONTS.sansBold).fontSize(6.2).fillColor(PRINT.black);
-        doc.text('#', colNo, y + 6, { width: 12 });
-        doc.text('ITEM DESCRIPTION', colDesc, y + 6, { width: 248 });
-        doc.text('SKU / CODE', colSku, y + 6, { width: 76 });
-        doc.text('QTY', colQty, y + 6, { width: 28, align: 'center' });
-        doc.text('UNIT PRICE', colRate, y + 6, { width: 62, align: 'right' });
-        doc.text('AMOUNT', colAmount, y + 6, { width: 67, align: 'right' });
-        return y + 18;
+
+        doc.font(PDF_FONTS.sansBold).fontSize(6.2).fillColor(PRINT.white);
+        doc.text('#', colNo, y + 5, { width: 14 });
+        doc.text('ITEM DESCRIPTION & SPECIFICATIONS', colDesc, y + 5, { width: 248 });
+        doc.text('SKU / REF', colSku, y + 5, { width: 76 });
+        doc.text('QTY', colQty, y + 5, { width: 32, align: 'center' });
+        doc.text('UNIT PRICE', colRate, y + 5, { width: 66, align: 'right' });
+        doc.text('AMOUNT', colAmount, y + 5, { width: 62, align: 'right' });
+        return y + 17;
       };
 
-      let tableTop = addressBottom + 16;
+      let tableTop = addressY + boxHeight + 12;
       let currentY = drawItemsHeader(tableTop);
 
       items.forEach((item, index) => {
@@ -502,19 +558,20 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
         const specLine = specParts.join(' · ');
         const rowHeight = specLine ? 29 : 23;
 
-        if (currentY + rowHeight > 650) {
+        if (currentY + rowHeight > 660) {
           doc.addPage();
-          tableTop = 50;
+          drawRegistrationMarks(doc, pageLeft - 6, 22, contentWidth + 12, 794, 5);
+          tableTop = 45;
           currentY = drawItemsHeader(tableTop);
         }
 
         if (index % 2 === 1) {
-          doc.rect(pageLeft, currentY, contentWidth, rowHeight).fill('#FAFAFA');
+          doc.rect(pageLeft, currentY, contentWidth, rowHeight).fill('#FBFBFB');
         }
         doc
           .moveTo(pageLeft, currentY + rowHeight)
           .lineTo(pageRight, currentY + rowHeight)
-          .lineWidth(0.35)
+          .lineWidth(0.4)
           .strokeColor(PRINT.rule)
           .stroke();
 
@@ -524,22 +581,24 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
           item.productNameSnapshot || item.product?.name || `Product #${item.productId}`;
 
         doc
-          .font(PDF_FONTS.sans)
-          .fontSize(7.2)
-          .fillColor(PRINT.gray500)
-          .text(String(index + 1), colNo, currentY + 6, { width: 12 });
+          .font(PDF_FONTS.mono)
+          .fontSize(6.8)
+          .fillColor(PRINT.gray700)
+          .text(String(index + 1).padStart(2, '0'), colNo, currentY + 6, { width: 14 });
+
         doc
           .font(PDF_FONTS.sansBold)
           .fontSize(8.2)
           .fillColor(PRINT.black)
-          .text(title, colDesc, currentY + 5, { width: 244, height: 11, ellipsis: true });
+          .text(title, colDesc, currentY + 5, { width: 246, height: 11, ellipsis: true });
+
         if (specLine) {
           doc
             .font(PDF_FONTS.sans)
-            .fontSize(6.3)
-            .fillColor(PRINT.gray500)
+            .fontSize(6.2)
+            .fillColor(PRINT.gray700)
             .text(specLine, colDesc, currentY + 16, {
-              width: 244,
+              width: 246,
               height: 9,
               ellipsis: true,
             });
@@ -548,24 +607,27 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
         const sku = item.skuSnapshot || item.variant || item.productId;
         doc
           .font(PDF_FONTS.mono)
-          .fontSize(6.2)
-          .fillColor(PRINT.gray700)
+          .fontSize(6.4)
+          .fillColor(PRINT.black)
           .text(String(sku).slice(0, 18), colSku, currentY + 7, { width: 74, ellipsis: true });
+
         doc
           .font(PDF_FONTS.sansBold)
           .fontSize(8)
           .fillColor(PRINT.black)
-          .text(String(item.quantity), colQty, currentY + 6, { width: 28, align: 'center' });
+          .text(String(item.quantity), colQty, currentY + 6, { width: 32, align: 'center' });
+
         doc
           .font(PDF_FONTS.sans)
           .fontSize(7.8)
           .fillColor(PRINT.ink)
-          .text(money(price), colRate, currentY + 6, { width: 62, align: 'right' });
+          .text(money(price), colRate, currentY + 6, { width: 66, align: 'right' });
+
         doc
           .font(PDF_FONTS.sansBold)
           .fontSize(7.8)
           .fillColor(PRINT.black)
-          .text(money(lineTotal), colAmount, currentY + 6, { width: 67, align: 'right' });
+          .text(money(lineTotal), colAmount, currentY + 6, { width: 62, align: 'right' });
 
         currentY += rowHeight;
       });
@@ -581,181 +643,228 @@ export async function generateInvoicePdf(order: InvoiceOrder): Promise<Buffer> {
         currentY += 24;
       }
 
-      // ── Totals and amount in words ────────────────────────────────────────
-      let totalsY = currentY + 16;
-      if (totalsY + 100 > 755) {
-        doc.addPage();
-        totalsY = 55;
-      }
-
+      // Outer table border
       doc
-        .font(PDF_FONTS.sansBold)
-        .fontSize(6.3)
-        .fillColor(PRINT.black)
-        .text('AMOUNT IN WORDS', pageLeft, totalsY + 2, { width: 270 });
-      doc
-        .moveTo(pageLeft, totalsY + 12)
-        .lineTo(pageLeft + 280, totalsY + 12)
-        .lineWidth(0.55)
+        .rect(pageLeft, tableTop, contentWidth, currentY - tableTop)
+        .lineWidth(0.6)
         .strokeColor(PRINT.black)
         .stroke();
+
+      // ── Totals and Amount in Words Block ──────────────────────────────────
+      let totalsY = currentY + 14;
+      if (totalsY + 110 > 750) {
+        doc.addPage();
+        drawRegistrationMarks(doc, pageLeft - 6, 22, contentWidth + 12, 794, 5);
+        totalsY = 45;
+      }
+
+      // Left Box: Amount in Words & Payment Note
+      const wordsBoxWidth = 285;
+      doc
+        .rect(pageLeft, totalsY, wordsBoxWidth, 76)
+        .lineWidth(0.6)
+        .strokeColor(PRINT.black)
+        .stroke();
+      doc.rect(pageLeft, totalsY, wordsBoxWidth, 13).fill(PRINT.black);
+      doc
+        .font(PDF_FONTS.sansBold)
+        .fontSize(6.2)
+        .fillColor(PRINT.white)
+        .text('AMOUNT IN WORDS', pageLeft + 6, totalsY + 3.5, { characterSpacing: 0.6 });
+
       doc
         .font(PDF_FONTS.sansBold)
         .fontSize(7.6)
-        .fillColor(PRINT.ink)
-        .text(numberToWordsINR(order.total), pageLeft, totalsY + 19, { width: 280 });
+        .fillColor(PRINT.black)
+        .text(numberToWordsINR(order.total), pageLeft + 8, totalsY + 19, {
+          width: wordsBoxWidth - 16,
+          lineGap: 1.5,
+        });
+
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(6.1)
-        .fillColor(PRINT.gray500)
+        .fontSize(6)
+        .fillColor(PRINT.gray700)
         .text(
           isCashOnDelivery
-            ? 'The courier will collect the total shown here at delivery. Please keep exact change ready.'
-            : 'Payment has been recorded against the order reference above. No further amount is due at delivery.',
-          pageLeft,
-          totalsY + 46,
-          { width: 280, lineGap: 1.2 },
+            ? 'The delivery agent will collect the exact total amount shown at doorstep. Please keep exact cash change ready.'
+            : 'Payment recorded in full against order reference. No additional charges or doorstep payment are due upon delivery.',
+          pageLeft + 8,
+          totalsY + 48,
+          { width: wordsBoxWidth - 16, lineGap: 1.2 },
         );
 
-      const totalsX = pageRight - 210;
-      let rowY = totalsY + 4;
+      // Right Box: Totals Breakdown & Grand Total
+      const totalsBoxX = pageRight - 226;
+      const totalsBoxW = 226;
+      doc
+        .rect(totalsBoxX, totalsY, totalsBoxW, 76)
+        .lineWidth(0.6)
+        .strokeColor(PRINT.black)
+        .stroke();
+
+      let rowY = totalsY + 6;
       const totalRow = (label: string, value: string, bold = false) => {
         doc
           .font(bold ? PDF_FONTS.sansBold : PDF_FONTS.sans)
-          .fontSize(7.6)
+          .fontSize(7.5)
           .fillColor(bold ? PRINT.black : PRINT.gray700)
-          .text(label, totalsX, rowY, { width: 120 });
+          .text(label, totalsBoxX + 10, rowY, { width: 120 });
         doc
-          .font(PDF_FONTS.sansBold)
-          .fontSize(7.6)
+          .font(bold ? PDF_FONTS.sansBold : PDF_FONTS.sans)
+          .fontSize(7.5)
           .fillColor(PRINT.black)
-          .text(value, totalsX + 110, rowY, { width: 100, align: 'right' });
-        rowY += 11.5;
+          .text(value, totalsBoxX + 130, rowY, { width: totalsBoxW - 140, align: 'right' });
+        rowY += 12;
       };
 
-      totalRow('Item subtotal', money(subtotal));
+      totalRow('Item Subtotal', money(subtotal));
       if (discount > 0) {
-        totalRow(`Discount${order.couponCode ? ` (${order.couponCode})` : ''}`, `- ${money(discount)}`);
+        totalRow(
+          `Discount${order.couponCode ? ` (${order.couponCode})` : ''}`,
+          `- ${money(discount)}`,
+          true,
+        );
       }
-      totalRow('Shipping & packaging', shippingFee > 0 ? money(shippingFee) : 'FREE');
+      totalRow('Shipping & Packaging', shippingFee > 0 ? money(shippingFee) : 'FREE');
 
-      doc
-        .moveTo(totalsX, rowY + 1)
-        .lineTo(pageRight, rowY + 1)
-        .lineWidth(0.8)
-        .strokeColor(PRINT.black)
-        .stroke();
+      // Highlighted Grand Total Bar
+      const grandTotalY = totalsY + 48;
+      doc.rect(totalsBoxX, grandTotalY, totalsBoxW, 28).fill(PRINT.black);
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(8.4)
-        .fillColor(PRINT.black)
-        .text('TOTAL', totalsX, rowY + 8, { width: 100 });
+        .fontSize(8)
+        .fillColor(PRINT.white)
+        .text('TOTAL AMOUNT', totalsBoxX + 10, grandTotalY + 9, {
+          characterSpacing: 0.5,
+        });
       doc
         .font(PDF_FONTS.sansBold)
         .fontSize(11.5)
-        .fillColor(PRINT.black)
-        .text(money(order.total), totalsX + 70, rowY + 5, {
-          width: 140,
+        .fillColor(PRINT.white)
+        .text(money(order.total), totalsBoxX + 90, grandTotalY + 7, {
+          width: totalsBoxW - 100,
           align: 'right',
         });
 
-      // ── Support terms and signatory ───────────────────────────────────────
-      let termsY = totalsY + 96;
+      // ── Customer Support Terms & Authorised Signatory ─────────────────────
+      let termsY = totalsY + 88;
       if (termsY + 78 > 760) {
         doc.addPage();
-        termsY = 55;
+        drawRegistrationMarks(doc, pageLeft - 6, 22, contentWidth + 12, 794, 5);
+        termsY = 45;
       }
 
       doc
         .moveTo(pageLeft, termsY)
         .lineTo(pageRight, termsY)
-        .lineWidth(0.55)
-        .strokeColor(PRINT.rule)
+        .lineWidth(0.8)
+        .strokeColor(PRINT.black)
         .stroke();
 
-      const termsWidth = 300;
+      const termsWidth = 310;
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(6.4)
+        .fontSize(6.6)
         .fillColor(PRINT.black)
-        .text('CUSTOMER SUPPORT & RETURNS', pageLeft, termsY + 8);
+        .text('CUSTOMER SUPPORT & REPLACEMENT POLICY', pageLeft, termsY + 8, {
+          characterSpacing: 0.5,
+        });
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(6.2)
+        .fontSize(6.1)
         .fillColor(PRINT.gray700)
         .text(
           [
-            '1. Please inspect the parcel on delivery and report courier damage within 24 hours.',
-            '2. Personalised and custom-printed pieces are made specifically for you.',
-            `3. Support: WhatsApp / Phone ${BUSINESS_DETAILS.phone} or ${BUSINESS_DETAILS.email}.`,
-            '4. Keep this invoice and packing slip for any warranty or replacement request.',
+            '1. Inspect the parcel upon delivery. Report any courier damage within 24 hours of receipt.',
+            '2. Bespoke and custom-printed goods are crafted exclusively according to your order specs.',
+            `3. Support Desk: WhatsApp / Call ${BUSINESS_DETAILS.phone}   ·   Email: ${BUSINESS_DETAILS.email}`,
+            '4. Retain this invoice and packing slip for any warranty or exchange enquiries.',
           ].join('\n'),
           pageLeft,
-          termsY + 18,
-          { width: termsWidth, lineGap: 1.6 },
+          termsY + 19,
+          { width: termsWidth, lineGap: 1.8 },
         );
 
-      const signX = pageLeft + 322;
+      const signX = pageLeft + 335;
       const signWidth = pageRight - signX;
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(6.4)
+        .fontSize(6.6)
         .fillColor(PRINT.black)
-        .text('FOR FREGORO STUDIOS', signX, termsY + 8, { width: signWidth });
+        .text('FOR FREGORO STUDIOS', signX, termsY + 8, {
+          width: signWidth,
+          characterSpacing: 0.5,
+        });
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(6.2)
+        .fontSize(6)
         .fillColor(PRINT.gray700)
         .text('Authorised Fulfilment Centre, Thiruvallur', signX, termsY + 18, {
           width: signWidth,
         });
+
+      // Stylized digital mark
       doc
-        .font(PDF_FONTS.sans)
+        .font(PDF_FONTS.sansBold)
         .fontSize(8.8)
-        .fillColor(PRINT.ink)
-        .text('Fregoro Studios Fulfilment', signX + 8, termsY + 34, { width: signWidth - 16 });
+        .fillColor(PRINT.black)
+        .text('Fregoro Studios Fulfilment', signX + 4, termsY + 34, { width: signWidth - 8 });
+
       doc
         .moveTo(signX, termsY + 49)
         .lineTo(pageRight, termsY + 49)
-        .lineWidth(0.55)
+        .lineWidth(0.5)
         .strokeColor(PRINT.black)
         .stroke();
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(6)
-        .fillColor(PRINT.gray500)
-        .text('Authorised Signatory · Computer Generated', signX, termsY + 53, {
+        .fontSize(5.8)
+        .fillColor(PRINT.gray700)
+        .text('Authorised Signatory · Computer-Generated Document', signX, termsY + 53, {
           width: signWidth,
           align: 'center',
         });
 
-      // ── Packing-slip footer ───────────────────────────────────────────────
-      const footerY = 770;
-      doc.rect(pageLeft, footerY, contentWidth, 28).fill(PRINT.wash);
+      // ── Packing Slip Perforated Pouch Strip ───────────────────────────────
+      const footerY = 774;
+      doc.save();
+      doc.dash(3, { space: 3 });
       doc
         .moveTo(pageLeft, footerY)
         .lineTo(pageRight, footerY)
-        .lineWidth(0.55)
+        .lineWidth(0.6)
         .strokeColor(PRINT.black)
         .stroke();
+      doc.restore();
+
+      doc.rect(pageLeft, footerY + 4, contentWidth, 24).fill(PRINT.wash);
+      doc
+        .rect(pageLeft, footerY + 4, contentWidth, 24)
+        .lineWidth(0.6)
+        .strokeColor(PRINT.black)
+        .stroke();
+
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(6.2)
-        .fillColor(PRINT.ink)
-        .text('PACKING SLIP · STICK OR PLACE SECURELY INSIDE PARCEL POUCH', pageLeft, footerY + 5, {
-          width: contentWidth,
-          align: 'center',
-        });
+        .fontSize(6)
+        .fillColor(PRINT.black)
+        .text(
+          'PACKING SLIP · ATTACH SECURELY TO PARCEL OR INSERT IN SHIPMENT POUCH',
+          pageLeft,
+          footerY + 8,
+          { width: contentWidth, align: 'center', characterSpacing: 0.5 },
+        );
       doc
-        .font(PDF_FONTS.sans)
-        .fontSize(5.9)
+        .font(PDF_FONTS.mono)
+        .fontSize(5.8)
         .fillColor(PRINT.gray700)
         .text(
-          `Order Ref: ${orderRef}  ·  Customer: ${addr.name}  ·  PIN: ${
+          `ORDER REF: ${orderRef}  ·  CUSTOMER: ${addr.name}  ·  PIN: ${
             addr.zip || 'India'
-          }  ·  Thank you for choosing Fregoro Studios`,
+          }  ·  THANK YOU FOR CHOOSING FREGORO STUDIOS`,
           pageLeft,
-          footerY + 14,
+          footerY + 17,
           { width: contentWidth, align: 'center' },
         );
 

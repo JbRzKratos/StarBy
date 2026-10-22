@@ -3,31 +3,55 @@ import { Redis } from '@upstash/redis';
 
 // Module-level singletons: instantiated once per serverless warm instance
 // (Upstash uses HTTP so there's no persistent TCP socket to leak)
-let _ratelimit: Ratelimit | null = null;
+let _redis: Redis | null = null;
+const _ratelimiters = new Map<string, Ratelimit>();
 
-function getRatelimit(): Ratelimit | null {
+function getRatelimit(limit: number, windowSeconds: number): Ratelimit | null {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
   if (!url || !token || url.includes('YOUR_UPSTASH')) return null;
 
-  if (!_ratelimit) {
-    const redis = new Redis({ url, token });
-    _ratelimit = new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(10, '60 s'),
-      analytics: true,
-    });
+  const cacheKey = `${limit}:${windowSeconds}`;
+  const existing = _ratelimiters.get(cacheKey);
+  if (existing) return existing;
+
+  if (!_redis) {
+    _redis = new Redis({ url, token });
   }
 
-  return _ratelimit;
+  // The limiter must be built for the requested budget. A single hard-coded
+  // 10/minute limiter made every caller (including previews at 300/minute)
+  // silently share the same tiny budget.
+  const limiter = new Ratelimit({
+    redis: _redis,
+    limiter: Ratelimit.slidingWindow(limit, `${windowSeconds} s`),
+    analytics: true,
+  });
+  _ratelimiters.set(cacheKey, limiter);
+  return limiter;
 }
 
 // Memory fallback store for when Upstash Redis is not yet configured
 const inMemoryStore = new Map<string, { count: number; expires: number }>();
 
 export async function rateLimit(identifier: string, limit = 10, windowMs = 60 * 1000) {
-  const ratelimitInstance = getRatelimit();
+  const windowSeconds = Math.max(1, Math.ceil(windowMs / 1000));
+  const ratelimitInstance = getRatelimit(limit, windowSeconds);
+
+  if (ratelimitInstance) {
+    try {
+      const result = await ratelimitInstance.limit(identifier);
+      return {
+        success: result.success,
+        limit: result.limit,
+        remaining: result.remaining,
+        reset: result.reset,
+      };
+    } catch (e) {
+      console.warn('Upstash Rate Limit warning, falling back to in-memory store:', e);
+    }
+  }
 
   if (ratelimitInstance) {
     try {

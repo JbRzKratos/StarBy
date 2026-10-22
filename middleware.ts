@@ -135,6 +135,11 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    // Raw master artwork must be intercepted even for image extensions. The
+    // broad matcher below intentionally excludes static assets, so this
+    // explicit route is required to stop /t_shirt_designs/*.png bypassing the
+    // block above.
+    '/t_shirt_designs/:path*',
     /*
      * Match all request paths EXCEPT:
      *  - _next/static  (static files, JS chunks, CSS)

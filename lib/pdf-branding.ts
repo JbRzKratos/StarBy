@@ -126,3 +126,29 @@ export function drawCode128B(
   doc.restore();
   return true;
 }
+
+/** Draw architectural corner registration crosshairs (+) for print authenticity. */
+export function drawRegistrationMarks(
+  doc: PDFKit.PDFDocument,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  size = 5,
+): void {
+  doc.save();
+  doc.lineWidth(0.4).strokeColor(PRINT.black);
+  // Top-left
+  doc.moveTo(x - size, y).lineTo(x + size, y).stroke();
+  doc.moveTo(x, y - size).lineTo(x, y + size).stroke();
+  // Top-right
+  doc.moveTo(x + width - size, y).lineTo(x + width + size, y).stroke();
+  doc.moveTo(x + width, y - size).lineTo(x + width, y + size).stroke();
+  // Bottom-left
+  doc.moveTo(x - size, y + height).lineTo(x + size, y + height).stroke();
+  doc.moveTo(x, y + height - size).lineTo(x, y + height + size).stroke();
+  // Bottom-right
+  doc.moveTo(x + width - size, y + height).lineTo(x + width + size, y + height).stroke();
+  doc.moveTo(x + width, y + height - size).lineTo(x + width, y + height + size).stroke();
+  doc.restore();
+}

@@ -11,8 +11,8 @@ export const BUSINESS_DETAILS = {
   tagline: 'Bespoke Print, Custom Apparel & Editorial Studio',
   addressLine1: 'Plot No: A-134, N.G.G.O Nagar, Selai Village',
   addressLine2: 'Thiruvallur - 631203, Tamil Nadu, India',
-  phone: '+91 98765 43210',
-  email: 'support@fregorostudios.com',
+  phone: '+91 86809 91921',
+  email: 'fregorostudios@gmail.com',
   gstin: '33AAECF1234F1Z5',
   cin: 'U74999TN2024PTC123456',
 } as const;

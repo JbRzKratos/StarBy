@@ -1,24 +1,18 @@
 import { NextResponse } from 'next/server';
-import { getR2PublicUrl } from '@/lib/r2';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const key = searchParams.get('key');
-
-    if (!key) {
-      return NextResponse.json({ error: 'Missing key parameter' }, { status: 400 });
-    }
-
-    // Instantly generate the public CDN URL (no AWS SDK call needed)
-    const publicUrl = getR2PublicUrl(key);
-
-    // Redirect the browser/client directly to the Cloudflare CDN
-    return NextResponse.redirect(publicUrl, 302);
-  } catch (error) {
-    console.error('Error generating public URL:', error);
-    return NextResponse.json({ error: 'Failed to retrieve file' }, { status: 500 });
-  }
+/**
+ * Legacy open redirect. It let anyone turn an arbitrary R2 key into a public
+ * CDN URL (including original print artwork). The storefront now uses the
+ * browser-safe R2 URL helpers directly, so this endpoint is intentionally gone.
+ */
+export async function GET() {
+  return new NextResponse('Not found', {
+    status: 404,
+    headers: {
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+    },
+  });
 }

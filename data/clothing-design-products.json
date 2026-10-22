@@ -1,0 +1,6426 @@
+[
+  {
+    "id": "design-001",
+    "slug": "design-001",
+    "name": "Ben 10: Omnitrix Evolution",
+    "tagline": "3 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 1,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "ben-10",
+      "cartoons",
+      "pop-culture",
+      "nostalgia",
+      "cartoon-network",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 1,
+      "M": 1,
+      "L": 1,
+      "XL": 1,
+      "2XL": 1,
+      "XXL": 1,
+      "3XL": 1,
+      "XXXL": 1
+    },
+    "variants": [
+      {
+        "id": "v-design-001-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 1,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-001/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-001-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 1,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-001/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-002",
+    "slug": "design-002",
+    "name": "Not Rich Yet",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "streetwear",
+      "chibi",
+      "typography",
+      "urban",
+      "hustle",
+      "relatable",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-002-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-002/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-002-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-002/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-003",
+    "slug": "design-003",
+    "name": "Tom & Jerry: Big Trouble",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "tom-and-jerry",
+      "cartoons",
+      "retro",
+      "cheese",
+      "nostalgia",
+      "comedy",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-003-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-003/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-003-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-003/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-004",
+    "slug": "design-004",
+    "name": "Zenitsu: Thunder Blade",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "demon-slayer",
+      "kimetsu-no-yaiba",
+      "zenitsu",
+      "thunder-breathing",
+      "anime",
+      "katana",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-004-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-004/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-004-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-004/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-005",
+    "slug": "design-005",
+    "name": "LUCK Jackpot Cylinder",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "luck",
+      "jackpot",
+      "slot-machine",
+      "cyberpunk",
+      "graphic-art",
+      "streetwear",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-005-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-005/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-005-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-005/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-006",
+    "slug": "design-006",
+    "name": "Think Outside The Box",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "minimalist",
+      "typography",
+      "graffiti",
+      "creativity",
+      "chalk",
+      "street-art",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-006-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-006/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-006-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-006/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-007",
+    "slug": "design-007",
+    "name": "MOVE Streetwear Silhouette",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "streetwear",
+      "urban",
+      "oversized",
+      "fashion",
+      "bucket-hat",
+      "orange",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-007-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-007/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-007-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-007/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-008",
+    "slug": "design-008",
+    "name": "Four Seasons Panorama",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "aesthetic",
+      "nature",
+      "aesthetic",
+      "minimalist",
+      "landscape",
+      "seasons",
+      "serene",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-008-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-008/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-008-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-008/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-009",
+    "slug": "design-009",
+    "name": "Lone Samurai Under Moon",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "samurai",
+      "japanese",
+      "full-moon",
+      "bushido",
+      "ronin",
+      "calligraphy",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-009-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-009/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-009-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-009/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-010",
+    "slug": "design-010",
+    "name": "Pro Controller Matrix",
+    "tagline": "4 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "gaming",
+      "gaming",
+      "controller",
+      "playstation",
+      "xbox",
+      "tech",
+      "gamer",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-010-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-010/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-010-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-010/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-011",
+    "slug": "design-011",
+    "name": "SM Monogram Minimalist",
+    "tagline": "6 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "monogram",
+      "geometric",
+      "minimalist",
+      "luxury",
+      "brand-mark",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-011-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-011/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-011-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-011/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-012",
+    "slug": "design-012",
+    "name": "GTA VI Vice Neon",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "gaming",
+      "gta-6",
+      "grand-theft-auto",
+      "gaming",
+      "vice-city",
+      "neon",
+      "rockstar",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-012-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-012/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-012-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-012/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-013",
+    "slug": "design-013",
+    "name": "Human After All Emo Anime",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "anime",
+      "emo",
+      "streetwear",
+      "aesthetic",
+      "sad-boy",
+      "relatable",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-013-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-013/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-013-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-013/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-014",
+    "slug": "design-014",
+    "name": "MONEY Stack Ribbon",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "money",
+      "typography",
+      "dollar",
+      "streetwear",
+      "hustle",
+      "urban",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-014-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-014/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-014-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-014/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-015",
+    "slug": "design-015",
+    "name": "Luffy: Most Wanted Pirate",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "one-piece",
+      "luffy",
+      "straw-hat",
+      "anime",
+      "manga",
+      "bounty",
+      "shonen",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-015-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-015/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-015-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-015/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-016",
+    "slug": "design-016",
+    "name": "CHILL Bubblegum Wave",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "chill",
+      "typography",
+      "bubblegum",
+      "retro",
+      "liquid",
+      "groovy",
+      "pink",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-016-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-016/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-016-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-016/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-017",
+    "slug": "design-017",
+    "name": "Kawaii Kittens Stack",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "aesthetic",
+      "cats",
+      "cute",
+      "kawaii",
+      "animals",
+      "kittens",
+      "playful",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-017-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-017/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-017-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-017/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-018",
+    "slug": "design-018",
+    "name": "ROSES Dark Romance",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "aesthetic",
+      "roses",
+      "botanical",
+      "floral",
+      "dark-romance",
+      "nature",
+      "elegance",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-018-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-018/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-018-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-018/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-019",
+    "slug": "design-019",
+    "name": "Please Do Not Disturb Cat",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "cat",
+      "humor",
+      "coffee",
+      "sarcasm",
+      "relatable",
+      "introvert",
+      "funny",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-019-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-019/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-019-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-019/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-020",
+    "slug": "design-020",
+    "name": "McLaren Speedmark Supercar",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "automotive",
+      "mclaren",
+      "supercars",
+      "racing",
+      "f1",
+      "speed",
+      "automotive",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-020-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-020/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-020-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-020/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-021",
+    "slug": "design-021",
+    "name": "Good vs Bad Dual Contrast",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "minimalist",
+      "typography",
+      "contrast",
+      "philosophy",
+      "dark-mode",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-021-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-021/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-021-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-021/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-022",
+    "slug": "design-022",
+    "name": "You Might Be Drunk Kinetic",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "humor",
+      "kinetic",
+      "party",
+      "typography",
+      "motion-blur",
+      "funny",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-022-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-022/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-022-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-022/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-023",
+    "slug": "design-023",
+    "name": "Break Da Rules Ripped Art",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "streetwear",
+      "grunge",
+      "graffiti",
+      "break-rules",
+      "urban",
+      "rebel",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-023-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-023/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-023-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-023/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-024",
+    "slug": "design-024",
+    "name": "Trust The Process Heavy Metal",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "gym",
+      "motivational",
+      "fitness",
+      "hardcore",
+      "metal",
+      "discipline",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-024-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-024/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-024-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-024/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-025",
+    "slug": "design-025",
+    "name": "Fill In The Blanks Crossword",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "humor",
+      "puzzle",
+      "sarcasm",
+      "crossword",
+      "playful",
+      "comedy",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-025-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-025/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-025-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-025/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-026",
+    "slug": "design-026",
+    "name": "Focus On Purpose Mindset",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "mindset",
+      "motivational",
+      "discipline",
+      "focus",
+      "typography",
+      "gym",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-026-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-026/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-026-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-026/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-027",
+    "slug": "design-027",
+    "name": "The Camera Sutra",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "photography",
+      "camera",
+      "photographer",
+      "humor",
+      "dslr",
+      "funny",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-027-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-027/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-027-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-027/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-028",
+    "slug": "design-028",
+    "name": "TVS Ronin Scrambler Moto",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "automotive",
+      "motorcycle",
+      "scrambler",
+      "biker",
+      "ronin",
+      "moto",
+      "dark-aesthetic",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-028-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-028/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-028-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-028/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-029",
+    "slug": "design-029",
+    "name": "Continental GT 650 Cafe Racer",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "automotive",
+      "royal-enfield",
+      "gt650",
+      "motorcycle",
+      "cafe-racer",
+      "biker",
+      "twin",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-029-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-029/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-029-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-029/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-030",
+    "slug": "design-030",
+    "name": "DISOBEY Stand Out Sheep",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "disobey",
+      "minimalist",
+      "individuality",
+      "black-sheep",
+      "rebel",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-030-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-030/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-030-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-030/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-031",
+    "slug": "design-031",
+    "name": "Equation Clock Matrix",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "math",
+      "science",
+      "geek",
+      "nerd",
+      "calculus",
+      "physics",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-031-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-031/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-031-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-031/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-032",
+    "slug": "design-032",
+    "name": "Skulls & Roses Skate Decks",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "skate",
+      "gothic",
+      "tattoo",
+      "roses",
+      "skulls",
+      "snakes",
+      "streetwear",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-032-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-032/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-032-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-032/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-033",
+    "slug": "design-033",
+    "name": "I'm Fine Drowning Thumbs Up",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "dark-humor",
+      "sarcasm",
+      "relatable",
+      "im-fine",
+      "funny",
+      "minimalist",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-033-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-033/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-033-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-033/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-034",
+    "slug": "design-034",
+    "name": "Disturbed Cat Coffee Club",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "cat",
+      "humor",
+      "animals",
+      "coffee",
+      "attitude",
+      "sarcastic",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-034-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-034/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-034-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-034/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-035",
+    "slug": "design-035",
+    "name": "Porsche Wordmark Heritage",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "automotive",
+      "porsche",
+      "automotive",
+      "supercars",
+      "luxury",
+      "german-engineering",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-035-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-035/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-035-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-035/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-036",
+    "slug": "design-036",
+    "name": "Barely Managing Grocery Shopper",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "relatable",
+      "humor",
+      "lifestyle",
+      "funny",
+      "groceries",
+      "adulting",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-036-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-036/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-036-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-036/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-037",
+    "slug": "design-037",
+    "name": "Perspective Lunar Alignment",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "aesthetic",
+      "moon",
+      "astronomy",
+      "perspective",
+      "minimalist",
+      "lunar",
+      "sacred",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-037-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-037/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-037-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-037/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-038",
+    "slug": "design-038",
+    "name": "FOCUS Chrome Red Mirror",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "focus",
+      "typography",
+      "chrome",
+      "streetwear",
+      "reflection",
+      "red",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-038-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-038/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-038-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-038/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-039",
+    "slug": "design-039",
+    "name": "Toyota GR Supra Racing Edition",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "automotive",
+      "supra",
+      "toyota",
+      "jdm",
+      "racing",
+      "gr-supra",
+      "drift",
+      "turbo",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-039-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-039/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-039-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-039/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-040",
+    "slug": "design-040",
+    "name": "Spider-Man Metallic Chrome",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "spider-man",
+      "marvel",
+      "superhero",
+      "chrome",
+      "insignia",
+      "peter-parker",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-040-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-040/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-040-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-040/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-041",
+    "slug": "design-041",
+    "name": "Monday to Friday Evolution",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "weekend",
+      "beer",
+      "humor",
+      "workplace",
+      "friday",
+      "evolution",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-041-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-041/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-041-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-041/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-042",
+    "slug": "design-042",
+    "name": "Green Heart Acid Chrome",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "cyberpunk",
+      "acid-graphics",
+      "y2k",
+      "streetwear",
+      "chrome",
+      "green",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-042-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-042/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-042-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-042/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-043",
+    "slug": "design-043",
+    "name": "Dodge Challenger SRT Racing Stripes",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "automotive",
+      "dodge",
+      "challenger",
+      "srt",
+      "muscle-car",
+      "automotive",
+      "hemi",
+      "racing",
+      "v8",
+      "stripes",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-043-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-043/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-043-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-043/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-044",
+    "slug": "design-044",
+    "name": "The Weeknd XO Glow Signature",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "the-weeknd",
+      "xo",
+      "music",
+      "pop-culture",
+      "neon",
+      "after-hours",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-044-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-044/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-044-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-044/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-045",
+    "slug": "design-045",
+    "name": "Crimson Spider Symbiote",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "spider-man",
+      "carnage",
+      "marvel",
+      "insignia",
+      "symbiote",
+      "crimson",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-045-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-045/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-045-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-045/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-046",
+    "slug": "design-046",
+    "name": "PLZ USE IT Brain Offering",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "sarcasm",
+      "humor",
+      "funny",
+      "stickman",
+      "brain",
+      "logic",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-046-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-046/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-046-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-046/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-047",
+    "slug": "design-047",
+    "name": "F*CK Breakdown Pie Chart",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "humor",
+      "attitude",
+      "sarcasm",
+      "streetwear",
+      "pie-chart",
+      "grunge",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-047-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-047/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-047-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-047/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-048",
+    "slug": "design-048",
+    "name": "BLURRED Liquid Metal Ring",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "chrome",
+      "cyberpunk",
+      "y2k",
+      "typography",
+      "blurred",
+      "liquid-metal",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-048-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-048/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-048-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-048/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-049",
+    "slug": "design-049",
+    "name": "God Is A Designer Creative",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "designer",
+      "creative",
+      "artist",
+      "typography",
+      "graphic-design",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-049-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-049/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-049-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-049/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-050",
+    "slug": "design-050",
+    "name": "DISCIPLINE Minimalist Cross",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "discipline",
+      "minimalist",
+      "gym",
+      "focus",
+      "clean",
+      "subtle",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-050-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-050/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-050-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-050/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-051",
+    "slug": "design-051",
+    "name": "Thalapathy Vijay Blockbuster",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "indian-cinema",
+      "thalapathy",
+      "vijay",
+      "kollywood",
+      "cinema",
+      "leo",
+      "master",
+      "star",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-051-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-051/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-051-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-051/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-052",
+    "slug": "design-052",
+    "name": "What's Up Danger (Spider-Verse)",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "miles-morales",
+      "spider-verse",
+      "marvel",
+      "danger",
+      "spider-man",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-052-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-052/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-052-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-052/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-053",
+    "slug": "design-053",
+    "name": "Heisenberg: Breaking Bad",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "cinema",
+      "breaking-bad",
+      "heisenberg",
+      "walter-white",
+      "series",
+      "chemistry",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-053-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-053/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-053-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-053/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-054",
+    "slug": "design-054",
+    "name": "Another F*cking Day 3D",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "humor",
+      "relatable",
+      "streetwear",
+      "graffiti",
+      "3d-type",
+      "daily-grind",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-054-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-054/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-054-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-054/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-055",
+    "slug": "design-055",
+    "name": "Spotify Vibes Music Walk",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "aesthetic",
+      "music",
+      "spotify",
+      "aesthetic",
+      "playlist",
+      "vibes",
+      "lo-fi",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-055-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-055/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-055-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-055/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-056",
+    "slug": "design-056",
+    "name": "Forever Ethereal Smoke Lovers",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "aesthetic",
+      "couple",
+      "romance",
+      "love",
+      "aesthetic",
+      "smoke-art",
+      "forever",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-056-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-056/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-056-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-056/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-057",
+    "slug": "design-057",
+    "name": "Meiyazhagan Cinema Heritage",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "indian-cinema",
+      "meiyazhagan",
+      "karthi",
+      "cinema",
+      "tamil",
+      "heritage",
+      "kollywood",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-057-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-057/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-057-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-057/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-058",
+    "slug": "design-058",
+    "name": "IMPROVE IT Kinetic Slash",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "motivational",
+      "improve",
+      "fitness",
+      "typography",
+      "kinetic",
+      "speed",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-058-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-058/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-058-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-058/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-059",
+    "slug": "design-059",
+    "name": "When Life Hurts... Thoongu!",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "tamil-meme",
+      "thoongu",
+      "humor",
+      "relatable",
+      "sleep",
+      "stress-relief",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-059-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-059/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-059-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-059/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-060",
+    "slug": "design-060",
+    "name": "Spring In Action Liquid Type",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "spring",
+      "liquid",
+      "typography",
+      "bold",
+      "orange",
+      "warped",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-060-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-060/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-060-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-060/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-061",
+    "slug": "design-061",
+    "name": "Sweetheart Chibi Couple Set",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "aesthetic",
+      "couple",
+      "chibi",
+      "love",
+      "cute",
+      "sweetheart",
+      "boy-girl",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-061-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-061/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-061-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-061/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-062",
+    "slug": "design-062",
+    "name": "Anime Flora & Gaze",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "anime",
+      "eyes",
+      "lilies",
+      "aesthetic",
+      "manga-gaze",
+      "butterflies",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-062-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-062/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-062-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-062/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-063",
+    "slug": "design-063",
+    "name": "Sorry But I Don't Care",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "attitude",
+      "humor",
+      "sarcasm",
+      "smiley",
+      "unbothered",
+      "streetwear",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-063-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-063/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-063-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-063/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-064",
+    "slug": "design-064",
+    "name": "Ghost Rider Flaming Inferno",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "ghost-rider",
+      "marvel",
+      "flames",
+      "comics",
+      "hellfire",
+      "antihero",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-064-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-064/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-064-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-064/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-065",
+    "slug": "design-065",
+    "name": "Spider-Man Angular Red Crest",
+    "tagline": "3 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "spider-man",
+      "marvel",
+      "insignia",
+      "superhero",
+      "geometric",
+      "red",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-065-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-065/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-065-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-065/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-066",
+    "slug": "design-066",
+    "name": "IT IS ME Red Statement",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "statement",
+      "minimalist",
+      "typography",
+      "bold",
+      "confidence",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-066-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-066/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-066-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-066/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-067",
+    "slug": "design-067",
+    "name": "Make Things Happen Orbit",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "space",
+      "astronomy",
+      "orbit",
+      "motivational",
+      "planetary",
+      "cosmos",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-067-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-067/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-067-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-067/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-068",
+    "slug": "design-068",
+    "name": "Formula 1 Racing Speed",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "automotive",
+      "f1",
+      "formula-1",
+      "racing",
+      "motorsport",
+      "speed",
+      "grand-prix",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-068-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-068/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-068-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-068/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-069",
+    "slug": "design-069",
+    "name": "The Incredible HULK Green Fury",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "hulk",
+      "marvel",
+      "comics",
+      "superhero",
+      "avengers",
+      "green-fury",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-069-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-069/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-069-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-069/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-070",
+    "slug": "design-070",
+    "name": "Roronoa Zoro: Three Swords",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "zoro",
+      "one-piece",
+      "anime",
+      "samurai",
+      "swordsman",
+      "bamboo",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-070-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-070/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-070-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-070/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-071",
+    "slug": "design-071",
+    "name": "Spider-Man Web Frequency",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "spider-man",
+      "marvel",
+      "mandala",
+      "sacred-geometry",
+      "superhero",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-071-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-071/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-071-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-071/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-072",
+    "slug": "design-072",
+    "name": "Venom: Dual Nature Neon",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "venom",
+      "marvel",
+      "symbiote",
+      "neon",
+      "antihero",
+      "spider-man",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-072-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-072/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-072-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-072/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-073",
+    "slug": "design-073",
+    "name": "I AM DOPE Positive Energy",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "dope",
+      "streetwear",
+      "typography",
+      "urban",
+      "positive-energy",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-073-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-073/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-073-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-073/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-074",
+    "slug": "design-074",
+    "name": "LIF@ Social Connected",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "humor",
+      "social-media",
+      "life",
+      "digital",
+      "concept",
+      "whatsapp",
+      "instagram",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-074-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-074/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-074-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-074/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-075",
+    "slug": "design-075",
+    "name": "La Casa De Papel Heist",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "cinema",
+      "money-heist",
+      "netflix",
+      "series",
+      "dali",
+      "professor",
+      "bella-ciao",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-075-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-075/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-075-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-075/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-076",
+    "slug": "design-076",
+    "name": "Miles Morales: Glitch Hero",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "miles-morales",
+      "spider-man",
+      "marvel",
+      "glitch",
+      "spider-verse",
+      "neon",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-076-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-076/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-076-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-076/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-077",
+    "slug": "design-077",
+    "name": "One Piece Straw Hat Banner",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "one-piece",
+      "luffy",
+      "anime",
+      "pirates",
+      "straw-hat",
+      "jolly-roger",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-077-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-077/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-077-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-077/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-078",
+    "slug": "design-078",
+    "name": "Tony Stark / RDJ Signature",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "iron-man",
+      "rdj",
+      "marvel",
+      "signature",
+      "avengers",
+      "tony-stark",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-078-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-078/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-078-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-078/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-079",
+    "slug": "design-079",
+    "name": "Do It With Love Ribbon",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "typography",
+      "love",
+      "calligraphy",
+      "typography",
+      "metallic",
+      "pink",
+      "cursive",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-079-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-079/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-079-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-079/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-080",
+    "slug": "design-080",
+    "name": "Doctor Doom Latverian Green",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "marvel",
+      "dr-doom",
+      "marvel",
+      "villain",
+      "comics",
+      "fantastic-four",
+      "latveria",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-080-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-080/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-080-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-080/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-081",
+    "slug": "design-081",
+    "name": "Kratos: God of War PS5",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "gaming",
+      "god-of-war",
+      "kratos",
+      "gaming",
+      "playstation",
+      "norse",
+      "sparta",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-081-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-081/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-081-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-081/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-082",
+    "slug": "design-082",
+    "name": "Uchiha Clan Sharingan Crest",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "naruto",
+      "uchiha",
+      "sasuke",
+      "anime",
+      "itachi",
+      "sharingan",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-082-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-082/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-082-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-082/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-083",
+    "slug": "design-083",
+    "name": "ARISE: Solo Leveling Monarch",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "solo-leveling",
+      "sung-jin-woo",
+      "arise",
+      "anime",
+      "shadow-monarch",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-083-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-083/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-083-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-083/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-084",
+    "slug": "design-084",
+    "name": "Flame Kanji Crimson Blaze",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "kanji",
+      "fire",
+      "japanese",
+      "anime",
+      "calligraphy",
+      "blaze",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-084-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-084/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-084-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-084/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-085",
+    "slug": "design-085",
+    "name": "Jujutsu Kaisen Cursed Energy",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "jujutsu-kaisen",
+      "jjk",
+      "gojo",
+      "sukuna",
+      "anime",
+      "curse",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-085-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-085/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-085-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-085/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-086",
+    "slug": "design-086",
+    "name": "Cyber Samurai Tokyo Ronin",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "cyber-samurai",
+      "cyberpunk",
+      "katana",
+      "tokyo",
+      "armor",
+      "samurai",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-086-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-086/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-086-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-086/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-087",
+    "slug": "design-087",
+    "name": "Straw Hat Crew Vintage Manga",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "one-piece",
+      "straw-hat",
+      "luffy",
+      "vintage-manga",
+      "retro-anime",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-087-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-087/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-087-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-087/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-088",
+    "slug": "design-088",
+    "name": "Zoro Santoryu Katana Crest",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "zoro",
+      "santoryu",
+      "one-piece",
+      "swordsman",
+      "three-swords",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-088-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-088/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-088-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-088/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-089",
+    "slug": "design-089",
+    "name": "Zoro Fierce Gaze Box",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "anime",
+      "zoro",
+      "anime-eyes",
+      "one-piece",
+      "manga",
+      "gaze",
+      "katana",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-089-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-089/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-089-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-089/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-090",
+    "slug": "design-090",
+    "name": "Red Dead Redemption II Outlaw",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "gaming",
+      "rdr2",
+      "rockstar",
+      "arthur-morgan",
+      "gaming",
+      "outlaw",
+      "western",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-090-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-090/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-090-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-090/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-091",
+    "slug": "design-091",
+    "name": "Manual Transmission H-Pattern",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "automotive",
+      "manual-transmission",
+      "stick-shift",
+      "cars",
+      "jdm",
+      "gearbox",
+      "petrolhead",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-091-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-091/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-091-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-091/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-092",
+    "slug": "design-092",
+    "name": "Angry Birds Feathered Fury",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "gaming",
+      "angry-birds",
+      "mobile-gaming",
+      "cartoons",
+      "nostalgia",
+      "birds",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-092-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-092/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-092-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-092/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-093",
+    "slug": "design-093",
+    "name": "C. Joseph Vijay Leader Edition",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "indian-cinema",
+      "vijay",
+      "thalapathy",
+      "tvk",
+      "kollywood",
+      "leader",
+      "tamil-nadu",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-093-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-093/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-093-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-093/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-094",
+    "slug": "design-094",
+    "name": "Protect Your Peace Urban",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "streetwear",
+      "protect-your-peace",
+      "streetwear",
+      "urban",
+      "portrait",
+      "red-slash",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-094-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-094/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-094-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-094/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-095",
+    "slug": "design-095",
+    "name": "Thalaivar Nirandharam Gold",
+    "tagline": "2 Artwork Files • 3D Customizer",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "indian-cinema",
+      "rajinikanth",
+      "thalaivar",
+      "superstar",
+      "kollywood",
+      "gold-typography",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-095-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-095/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-095-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-095/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  },
+  {
+    "id": "design-096",
+    "slug": "design-096",
+    "name": "Canon EOS Pro Optics Rig",
+    "tagline": "240 GSM Heavyweight Tee",
+    "description": "Premium graphic design tailored on heavyweight cotton. Click to choose garment cut, approved fabric color, and place in interactive 3D.",
+    "categorySlug": "tees",
+    "basePrice": 639,
+    "customizable": true,
+    "tags": [
+      "apparel",
+      "featured",
+      "clothing-design",
+      "creative",
+      "canon",
+      "camera",
+      "photography",
+      "lens",
+      "optics",
+      "dslr",
+      "apparel",
+      "clothing-design"
+    ],
+    "featured": true,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "sizePrices": {
+      "S": 639,
+      "M": 639,
+      "L": 639,
+      "XL": 639,
+      "2XL": 659,
+      "XXL": 659,
+      "3XL": 659,
+      "XXXL": 659
+    },
+    "variants": [
+      {
+        "id": "v-design-096-white",
+        "name": "White",
+        "color": "white",
+        "colorHex": "#FFFFFF",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-096/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      },
+      {
+        "id": "v-design-096-black",
+        "name": "Black",
+        "color": "black",
+        "colorHex": "#111216",
+        "price": 639,
+        "images": [
+          "https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev/clothing-designs/design-096/previews/thumb_art-1.webp"
+        ],
+        "inStock": true
+      }
+    ]
+  }
+]

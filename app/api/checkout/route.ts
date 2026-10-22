@@ -8,7 +8,13 @@ import { createCashfreeOrder, generatePublicOrderId, getCashfreeEnvironment } fr
 import { uploadBufferToR2, getR2PublicUrl } from '@/lib/r2';
 import { getLayoutById, FREGORO_LAYOUTS } from '@/lib/wall-studio/layouts-data';
 import { calculateWallPrice } from '@/lib/wall-studio/pricing';
-import { getGarmentSizePrice, normalizeGarmentId, GARMENT_PRICING, PLAIN_PRODUCT_TO_GARMENT } from '@/lib/config/garment-pricing';
+import {
+  getArtworkCharge,
+  getGarmentSizePrice,
+  normalizeGarmentId,
+  GARMENT_PRICING,
+  PLAIN_PRODUCT_TO_GARMENT,
+} from '@/lib/config/garment-pricing';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -258,7 +264,7 @@ export async function POST(request: Request) {
       if (!garmentId) continue;
       const table = GARMENT_PRICING[garmentId];
       garmentPriceOverrides[garmentId] = {
-        basePrice: gp.basePrice > 0 ? gp.basePrice : table?.basePrice ?? 600,
+        basePrice: gp.basePrice > 0 ? gp.basePrice : table?.basePrice ?? 639,
         sizePrices: {
           ...(table?.sizePrices ?? {}),
           ...(gp.sizePrices && typeof gp.sizePrices === 'object'
@@ -340,6 +346,8 @@ export async function POST(request: Request) {
         customData?.is3dMockup ||
         customData?.is2dMockup ||
         Boolean(customData?.garment) ||
+        Boolean(customData?.apparelId) ||
+        Boolean(PLAIN_PRODUCT_TO_GARMENT[item.productId]) ||
         item.variantId?.startsWith('mockup-3d-') ||
         item.variantId?.startsWith('mockup-2d-') ||
         item.productId === 'clothing-mockup' ||
@@ -357,7 +365,7 @@ export async function POST(request: Request) {
         // `customData.basePrice` are never trusted — both are editable in the
         // browser. Prices below come from the DB catalogue or the fixed garment
         // price table in this file.
-        let unitPrice = 600;
+        let unitPrice = 639;
 
         if (isDesign001) {
           unitPrice = 1;
@@ -380,6 +388,7 @@ export async function POST(request: Request) {
           const resolvedGarmentId =
             normalizeGarmentId(typeof customData?.garment === 'string' ? customData.garment : null) ||
             normalizeGarmentId(typeof customData?.garmentId === 'string' ? customData.garmentId : null) ||
+            normalizeGarmentId(typeof customData?.apparelId === 'string' ? customData.apparelId : null) ||
             normalizeGarmentId(typeof item.variantId === 'string' ? item.variantId : null) ||
             normalizeGarmentId(typeof item.name === 'string' ? item.name : null) ||
             normalizeGarmentId(typeof item.productId === 'string' ? item.productId : null) ||
@@ -398,6 +407,15 @@ export async function POST(request: Request) {
           );
 
           const isCurated = Boolean(customData?.designId && !customData?.isPlain);
+          const rawArtworkCount =
+            typeof customData?.customArtworkCount === 'number'
+              ? customData.customArtworkCount
+              : Array.isArray(customData?.uploadedArtworks)
+                ? customData.uploadedArtworks.length
+                : 0;
+          const artworkCharge = getArtworkCharge(resolvedGarmentId, rawArtworkCount, {
+            curated: isCurated,
+          });
 
           if (isCurated) {
             const curatedDbProduct = customData?.designId
@@ -408,19 +426,11 @@ export async function POST(request: Request) {
               typeof curatedDbProduct.basePrice === 'number' &&
               curatedDbProduct.basePrice > 0
                 ? curatedDbProduct.basePrice
-                : 600;
+                : 639;
 
-            unitPrice = Math.max(designBase, garmentBasePrice);
+            unitPrice = Math.max(designBase, garmentBasePrice) + artworkCharge;
           } else {
-            const rawArtworkCount =
-              typeof customData?.customArtworkCount === 'number'
-                ? customData.customArtworkCount
-                : Array.isArray(customData?.uploadedArtworks)
-                  ? customData.uploadedArtworks.length
-                  : 0;
-            const artworkCount = Math.min(20, Math.max(0, Math.trunc(rawArtworkCount)));
-            const printFee = artworkCount * 49;
-            unitPrice = garmentBasePrice + printFee;
+            unitPrice = garmentBasePrice + artworkCharge;
           }
         }
 

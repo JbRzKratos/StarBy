@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 import type { Category } from '@/data/categories';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 export const CATEGORY_TAGLINES: Record<string, string> = {
   tees: 'Heavyweight custom essentials.',

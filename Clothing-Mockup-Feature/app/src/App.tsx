@@ -92,6 +92,31 @@ function getUrlDesignId(): string | null {
   }
 }
 
+/**
+ * T-shirt artwork pricing mirrors the host storefront and checkout:
+ * ₹40 once per qualifying tee unit when 2+ active placements are printed.
+ * Other garments keep the legacy ₹49 per custom artwork fee.
+ */
+const TSHIRT_ARTWORK_SURCHARGE = 40;
+const LEGACY_CUSTOM_PRINT_FEE = 49;
+const TSHIRT_GARMENT_IDS = new Set([
+  'regular-t-shirt',
+  'oversized-t-shirt',
+  'acid-wash-t-shirt',
+]);
+
+function getArtworkCharge(
+  garmentId: string | undefined,
+  activeArtworkCount: number,
+  isCurated: boolean,
+): number {
+  const count = Math.min(100, Math.max(0, Math.trunc(activeArtworkCount || 0)));
+  if (TSHIRT_GARMENT_IDS.has(resolveGarmentId(garmentId))) {
+    return count >= 2 ? TSHIRT_ARTWORK_SURCHARGE : 0;
+  }
+  return isCurated ? 0 : count * LEGACY_CUSTOM_PRINT_FEE;
+}
+
 /** Build a size -> price map for a garment with a 3XL surcharge. */
 function buildSizePriceMap(base: number, extended: number): Record<string, number> {
   return {
@@ -99,8 +124,8 @@ function buildSizePriceMap(base: number, extended: number): Record<string, numbe
     M: base,
     L: base,
     XL: base,
-    '2XL': base,
-    XXL: base,
+    '2XL': extended,
+    XXL: extended,
     '3XL': extended,
     XXXL: extended,
   };
@@ -266,10 +291,10 @@ export const App: React.FC = () => {
   });
 
   const GARMENT_DEFAULT_BASE_PRICES: Record<string, number> = {
-    'regular-t-shirt': 600,
-    'oversized-t-shirt': 670,
+    'regular-t-shirt': 639,
+    'oversized-t-shirt': 689,
     'acid-wash-t-shirt': 699,
-    hoodie: 750,
+    hoodie: 809,
     'fitted-t-shirt': 620,
     'zip-hoodie': 850,
     sweatshirt: 800,
@@ -284,10 +309,10 @@ export const App: React.FC = () => {
   // host. Live admin values are merged in from `/api/products/prices` below so
   // an admin price edit is reflected here without rebuilding the bundle.
   const garmentSizePriceMapRef = useRef<Record<string, Record<string, number>>>({
-    'regular-t-shirt': buildSizePriceMap(600, 645),
-    'oversized-t-shirt': buildSizePriceMap(670, 699),
+    'regular-t-shirt': buildSizePriceMap(639, 659),
+    'oversized-t-shirt': buildSizePriceMap(689, 709),
     'acid-wash-t-shirt': buildSizePriceMap(699, 720),
-    hoodie: buildSizePriceMap(750, 780),
+    hoodie: buildSizePriceMap(809, 849),
     'fitted-t-shirt': buildSizePriceMap(620, 665),
     'zip-hoodie': buildSizePriceMap(850, 880),
     sweatshirt: buildSizePriceMap(800, 830),
@@ -313,7 +338,7 @@ export const App: React.FC = () => {
         /* ignore */
       }
     }
-    return 600;
+    return 639;
   });
 
   // Catalogue price of the curated design itself (not the garment). The final
@@ -331,7 +356,7 @@ export const App: React.FC = () => {
         /* ignore */
       }
     }
-    return 600;
+    return 639;
   });
 
   const [selectedGarmentSize, setSelectedGarmentSize] = useState<string>(() => {
@@ -406,31 +431,45 @@ export const App: React.FC = () => {
       .catch(() => {});
   }, [isCuratedDesign, project3D.garmentId, selectedGarmentSize, initialDesignId]);
 
-  // Custom design uploads pricing (+₹49 for each custom design uploaded)
-  const customArtworkCount3D = project3D.artworkLayers.filter(
-    (l) => !l.isCurated && !l.curatedDesignId && !l.hidden && (l.opacity === undefined || l.opacity > 0)
+  // Count every active printed placement, not just customer-uploaded files.
+  // Deleted layers are removed from the array; hidden / zero-opacity layers are
+  // filtered here. Duplicated layers count separately because they print
+  // separately, while moving one layer between front and back does not change
+  // the count.
+  const activeArtworkCount3D = project3D.artworkLayers.filter(
+    (l) => !l.hidden && (l.opacity === undefined || l.opacity > 0)
   ).length;
 
-  const activeCustomArtworkCount = customArtworkCount3D;
-  const customPrintFee = isCuratedDesign ? 0 : activeCustomArtworkCount * 49;
+  const activeCustomArtworkCount = activeArtworkCount3D;
+  const customPrintFee = getArtworkCharge(
+    project3D.garmentId,
+    activeArtworkCount3D,
+    isCuratedDesign,
+  );
 
   /** Size-aware garment price (live values when available). */
   const getGarmentPriceForSize = (garmentId: string, size?: string): number => {
     const resolved = resolveGarmentId(garmentId);
     const sizePrice = lookupSizePrice(garmentSizePriceMapRef.current[resolved], size);
     if (typeof sizePrice === 'number') return sizePrice;
-    return GARMENT_DEFAULT_BASE_PRICES[resolved] ?? 600;
+    return GARMENT_DEFAULT_BASE_PRICES[resolved] ?? 639;
   };
 
   /**
    * The price of one unit for a given size. Curated designs never drop below
-   * the garment price, custom artwork adds ₹49 per uploaded design.
+   * the garment price. T-shirts add a single fixed ₹40 charge when two or more
+   * active prints are present; other custom garments retain ₹49 per artwork.
    */
   const getUnitPriceForSize = (size?: string): number => {
     const garmentPrice = getGarmentPriceForSize(project3D.garmentId, size);
-    if (!isCuratedDesign) return garmentPrice + customPrintFee;
     if (isDesign001) return 1;
-    return Math.max(designBasePrice > 0 ? designBasePrice : 600, garmentPrice);
+    const artworkCharge = getArtworkCharge(
+      project3D.garmentId,
+      activeArtworkCount3D,
+      isCuratedDesign,
+    );
+    if (!isCuratedDesign) return garmentPrice + artworkCharge;
+    return Math.max(designBasePrice > 0 ? designBasePrice : 639, garmentPrice) + artworkCharge;
   };
 
   const effectivePrice = getUnitPriceForSize(selectedGarmentSize);
@@ -3241,10 +3280,10 @@ export const App: React.FC = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
                 {[
-                  { id: 'regular-t-shirt', name: 'Regular T-Shirt', tag: '240 GSM • ₹999' },
-                  { id: 'oversized-t-shirt', name: 'Oversized Tee', tag: 'Drop Shoulder • ₹1,099' },
-                  { id: 'acid-wash-t-shirt', name: 'Acid Wash Tee', tag: 'Mineral Wash • ₹1,199' },
-                  { id: 'hoodie', name: 'Pullover Hoodie', tag: '380 GSM Fleece • ₹1,499' },
+                  { id: 'regular-t-shirt', name: 'Regular T-Shirt', tag: '240 GSM • ₹639' },
+                  { id: 'oversized-t-shirt', name: 'Oversized Tee', tag: 'Drop Shoulder • ₹689' },
+                  { id: 'acid-wash-t-shirt', name: 'Acid Wash Tee', tag: 'Mineral Wash • ₹699' },
+                  { id: 'hoodie', name: 'Pullover Hoodie', tag: '380 GSM Fleece • ₹809' },
                 ].map((item) => {
                   const isSelected = project3D.garmentId === item.id;
                   return (

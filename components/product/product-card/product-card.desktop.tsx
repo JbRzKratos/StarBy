@@ -6,15 +6,20 @@ import Image from 'next/image';
 import type { Product } from '@/data/products';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 import { isProductComingSoon } from '@/data/categories';
 
 interface ProductCardProps {
   product: Product;
   onCardClick?: (e: React.MouseEvent) => void;
+  onPrefetch?: () => void;
 }
 
-export const ProductCardDesktop = memo(function ProductCardDesktop({ product, onCardClick }: ProductCardProps) {
+export const ProductCardDesktop = memo(function ProductCardDesktop({
+  product,
+  onCardClick,
+  onPrefetch,
+}: ProductCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mockupRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +36,13 @@ export const ProductCardDesktop = memo(function ProductCardDesktop({ product, on
   const href = `/products/${product.categorySlug}/${product.slug || product.id}`;
 
   return (
-    <div ref={cardRef} className="group block relative" data-cursor-hover>
+    <div
+      ref={cardRef}
+      className="group block relative"
+      data-cursor-hover
+      onPointerEnter={onPrefetch}
+      onFocus={onPrefetch}
+    >
       <Link
         href={href}
         onClick={(e) => {

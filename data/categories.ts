@@ -1,4 +1,4 @@
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 export interface Category {
   slug: string;

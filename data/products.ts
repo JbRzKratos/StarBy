@@ -1,5 +1,5 @@
-import { getR2AssetUrl } from '@/lib/r2';
-import { getClothingDesignProducts } from '@/lib/clothing-designs/clothing-products';
+import { getR2AssetUrl } from '@/lib/r2-public';
+import clothingDesignProducts from './clothing-design-products.json';
 import { plainApparelProducts } from './plain-apparel-products';
 
 export interface ProductVariant {
@@ -31,7 +31,7 @@ export interface Product {
 
 export const products: Product[] = [
   ...plainApparelProducts,
-  ...getClothingDesignProducts(),
+  ...(clothingDesignProducts as Product[]),
   {
     id: 'prod_022',
     slug: 'phantom-skin',

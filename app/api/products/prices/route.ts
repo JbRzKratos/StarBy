@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
       const garmentId = PLAIN_PRODUCT_TO_GARMENT[p.id] || PLAIN_PRODUCT_TO_GARMENT[p.slug];
       if (!garmentId) continue;
       garments[garmentId] = {
-        basePrice: p.basePrice > 0 ? p.basePrice : garments[garmentId]?.basePrice ?? 600,
+        basePrice: p.basePrice > 0 ? p.basePrice : garments[garmentId]?.basePrice ?? 639,
         sizePrices:
           p.sizePrices && typeof p.sizePrices === 'object'
             ? { ...garments[garmentId]?.sizePrices, ...(p.sizePrices as Record<string, number>) }

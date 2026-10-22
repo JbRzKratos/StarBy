@@ -5,10 +5,15 @@ import dynamic from 'next/dynamic';
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
 import type { CatalogDesignEntry } from '@/lib/clothing-designs/catalog-page';
 import { ClothingDesignCard } from './clothing-design-card';
+import { ClothingProductModalLoading } from './clothing-product-modal-loading';
+import { prefetchClothingProductModal } from './clothing-product-modal-prefetch';
 // ClothingProductModal (~51 kB) — lazy loaded, only shown when a design card is clicked
 const ClothingProductModal = dynamic(
   () => import('./clothing-product-modal').then((m) => m.ClothingProductModal),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <ClothingProductModalLoading />,
+  },
 );
 import Link from 'next/link';
 import { PlainApparelCard } from './plain-apparel-card';
@@ -43,6 +48,23 @@ export function ClothingDesignsGallery({
   const [totalCount, setTotalCount] = useState(initialTotal ?? 0);
   const [isLoading, setIsLoading] = useState(!initialDesigns || initialDesigns.length === 0);
   const [selectedDesign, setSelectedDesign] = useState<ClothingDesignEntry | null>(null);
+  const [openingDesignId, setOpeningDesignId] = useState<string | null>(null);
+
+  // Warm the modal chunk during idle time so the first tap on a phone does not
+  // have to wait for a JavaScript download. It is a small chunk and is shared
+  // by every card on the page.
+  useEffect(() => {
+    const win = window as Window & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    if (win.requestIdleCallback) {
+      const handle = win.requestIdleCallback(() => prefetchClothingProductModal(), { timeout: 2500 });
+      return () => win.cancelIdleCallback?.(handle);
+    }
+    const timer = window.setTimeout(prefetchClothingProductModal, 2500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   // The server already sent the first page for the default view, so the very
   // first effect run must not trigger a duplicate round trip.
@@ -306,7 +328,11 @@ export function ClothingDesignsGallery({
             <ClothingDesignCard
               key={design.id}
               design={design}
-              onSelect={setSelectedDesign}
+              onSelect={(selected) => {
+                setOpeningDesignId(selected.id);
+                setSelectedDesign(selected);
+              }}
+              isOpening={openingDesignId === design.id}
               priority={idx < 4}
             />
           ))}
@@ -356,7 +382,10 @@ export function ClothingDesignsGallery({
       {selectedDesign && (
         <ClothingProductModal
           design={selectedDesign}
-          onClose={() => setSelectedDesign(null)}
+          onClose={() => {
+            setSelectedDesign(null);
+            setOpeningDesignId(null);
+          }}
           defaultCategory={category}
         />
       )}

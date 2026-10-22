@@ -4,7 +4,7 @@ import { isProductComingSoon } from '@/data/categories';
 import { ClothingMockupIframe } from '@/components/customizer/clothing-mockup-iframe';
 import { SimpleCustomizerLayout } from '@/components/customizer/simple-customizer-layout';
 import type { ProductType } from '@/lib/config/printSpecs';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 interface CustomizePageProps {
   params: { productId: string };

@@ -17,16 +17,22 @@ import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
 import {
   APPAREL_CONFIG,
   APPAREL_LIST,
+  getApparelPrice,
   type ApparelProductConfig,
   type ApparelColorSwatch,
 } from '@/lib/config/apparel-variants';
 import { isProductComingSoon } from '@/data/categories';
+import { ClothingProductModalLoading } from '@/components/shop/clothing-product-modal-loading';
+import { prefetchClothingProductModal } from '@/components/shop/clothing-product-modal-prefetch';
 
 // ── Lazy-loaded modals: only downloaded when the user triggers them ───────────
 // ClothingProductModal (~51 kB) — only for design- products, on button click
 const ClothingProductModal = dynamic(
   () => import('@/components/shop/clothing-product-modal').then((m) => m.ClothingProductModal),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => <ClothingProductModalLoading />,
+  },
 );
 // SizeFinderModal (~12 kB) — only for apparel, on "Find my size" click
 const SizeFinderModal = dynamic(
@@ -172,6 +178,11 @@ export function ProductDetailClient({
     const initial = product.sizes?.[0] ?? 'L';
     return initial === 'XXL' ? '2XL' : initial;
   });
+  const isOneRupeeDesign =
+    product.id === 'design-001' || product.basePrice === 1 || clothingDesign?.basePrice === 1;
+  const selectedApparelPrice = isOneRupeeDesign
+    ? 1
+    : getApparelPrice(selectedGarmentId, selectedSize);
   const [sizeFinder, setSizeFinder] = useState(false);
   const [sizeChart, setSizeChart] = useState(false);
   const [isClothingModalOpen, setIsClothingModalOpen] = useState(false);
@@ -315,7 +326,7 @@ export function ProductDetailClient({
         variant: `${selectedGarment.name} / ${selectedApparelColor.name}`,
         image: apparelImg,
         quantity: 1,
-        price: selectedGarment.basePrice,
+        price: selectedApparelPrice,
         size: selectedSize,
         customization: {
           apparelId: selectedGarment.id,
@@ -404,7 +415,7 @@ export function ProductDetailClient({
             ) : (
               <div className="flex items-baseline gap-3">
                 <span className="font-mono text-display-sm text-bone">
-                  {formatPrice(isApparel ? selectedGarment.basePrice : (variant?.price ?? product.basePrice))}
+                  {formatPrice(isApparel ? selectedApparelPrice : (variant?.price ?? product.basePrice))}
                 </span>
                 <span className="font-mono text-caption text-ash">Incl. taxes</span>
               </div>
@@ -443,7 +454,7 @@ export function ProductDetailClient({
                               {apparel.name}
                             </span>
                             <span className="font-mono text-[11px] text-bone font-semibold">
-                              ₹{apparel.basePrice}
+                              ₹{isOneRupeeDesign ? 1 : apparel.basePrice}
                             </span>
                           </div>
                           <span className="font-mono text-[10px] text-ash">
@@ -715,6 +726,8 @@ export function ProductDetailClient({
                         <button
                           type="button"
                           onClick={() => setIsClothingModalOpen(true)}
+                          onPointerEnter={prefetchClothingProductModal}
+                          onFocus={prefetchClothingProductModal}
                           className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold shadow-lg"
                         >
                           <span className="text-sm text-bone">✦</span>
@@ -724,7 +737,7 @@ export function ProductDetailClient({
                         <Link
                           href={
                             isApparel
-                              ? `/customize/clothing-mockup?garment=${encodeURIComponent(selectedGarment.garment3dId || selectedGarmentId)}&garmentName=${encodeURIComponent(selectedGarment.name)}&color=${encodeURIComponent(selectedApparelColor.hex)}&colorName=${encodeURIComponent(selectedApparelColor.name)}&size=${encodeURIComponent(selectedSize)}&price=${selectedGarment.basePrice || product.basePrice}&productId=${encodeURIComponent(product.id)}&plain=true`
+                              ? `/customize/clothing-mockup?garment=${encodeURIComponent(selectedGarment.garment3dId || selectedGarmentId)}&garmentName=${encodeURIComponent(selectedGarment.name)}&color=${encodeURIComponent(selectedApparelColor.hex)}&colorName=${encodeURIComponent(selectedApparelColor.name)}&size=${encodeURIComponent(selectedSize)}&price=${selectedApparelPrice || product.basePrice}&productId=${encodeURIComponent(product.id)}&plain=true`
                               : `/customize/${product.id}`
                           }
                           className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-cobalt text-bone font-mono text-caption uppercase tracking-widest hover:bg-cobalt/90 transition-colors font-bold"

@@ -6,6 +6,7 @@ import { getPrebuiltWallBySlug } from '@/lib/wall-studio/prebuilt-walls-data';
 import { PrebuiltWallDetail } from '@/components/wall-studio/prebuilt-wall-detail';
 import { prisma } from '@/lib/prisma';
 import { getDesignById } from '@/lib/clothing-designs/manifest';
+import { toClientSafeDesign } from '@/lib/clothing-designs/client-safe';
 import { notFound } from 'next/navigation';
 
 // ISR: Cache statically for 60 seconds with on-demand admin revalidation
@@ -62,7 +63,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = await getLiveProductBySlug(params.slug);
   if (!product) return notFound();
 
-  const clothingDesign = getDesignById(product.id) || getDesignById(product.slug) || null;
+  const clothingDesignRaw = getDesignById(product.id) || getDesignById(product.slug) || null;
+  const clothingDesign = clothingDesignRaw ? toClientSafeDesign(clothingDesignRaw) : null;
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const productUrl = `${baseUrl}/products/${params.category}/${params.slug}`;

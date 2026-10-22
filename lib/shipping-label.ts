@@ -1,6 +1,6 @@
 import PDFDocument from 'pdfkit';
 import { BUSINESS_DETAILS, parseShippingAddress } from './business-details';
-import { drawBrandLogo, drawCode128B, PRINT } from './pdf-branding';
+import { drawBrandLogo, drawCode128B, drawRegistrationMarks, PRINT } from './pdf-branding';
 import { PDF_FONTS, registerPdfFonts } from './pdf-fonts';
 
 export interface ShippingLabelOrder {
@@ -41,9 +41,9 @@ function truncateToWidth(doc: PDFKit.PDFDocument, text: string, width: number): 
 /**
  * Generate a 4×6 inch (288 × 432 pt) courier shipping label.
  *
- * Visual language matches the invoice/packing slip: white stock, black type,
- * thin rules and neutral grey section bands. Everything is monochrome so the
- * label prints cleanly on a thermal printer.
+ * Engineered for high-contrast thermal and laser monochrome printing:
+ * pure black (#000000) and white (#FFFFFF) with architectural framing,
+ * inverted header badges, high-visibility sorting hubs, and scannable barcodes.
  */
 export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promise<Buffer> {
   return new Promise((resolve, reject) => {
@@ -55,7 +55,7 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
         info: {
           Title: `Shipping Label ${order.publicOrderId || order.id}`,
           Author: BUSINESS_DETAILS.name,
-          Subject: 'Courier shipping label and return instructions',
+          Subject: 'Courier Shipping Label and Return Routing',
         },
       });
 
@@ -80,127 +80,140 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
         order.paymentMethod?.toLowerCase().includes('cod') ||
         order.paymentMethod?.toLowerCase().includes('cash');
 
-      const left = 8;
-      const right = 280;
-      const innerLeft = 16;
-      const innerRight = 272;
-      const innerWidth = innerRight - innerLeft;
+      const outerLeft = 8;
+      const outerRight = 280;
+      const outerWidth = outerRight - outerLeft; // 272 pt
+      const innerLeft = 14;
+      const innerRight = 274;
+      const innerWidth = innerRight - innerLeft; // 260 pt
 
-      // ── Outer frame ────────────────────────────────────────────────────────
-      doc.rect(left, 8, right - left, 416).lineWidth(1.1).strokeColor(PRINT.black).stroke();
+      // ── Outer Frame & Architectural Registration Marks ────────────────────
+      doc
+        .rect(outerLeft, 8, outerWidth, 416)
+        .lineWidth(1.2)
+        .strokeColor(PRINT.black)
+        .stroke();
+      doc
+        .rect(outerLeft + 2, 10, outerWidth - 4, 412)
+        .lineWidth(0.4)
+        .strokeColor(PRINT.black)
+        .stroke();
 
-      // ── Header: logo + wordmark + label title ─────────────────────────────
-      drawBrandLogo(doc, innerLeft, 11, 76);
+      drawRegistrationMarks(doc, outerLeft + 6, 14, outerWidth - 12, 404, 3.5);
+
+      // ── Header: Logo, Branding & Label Badge ──────────────────────────────
+      const logoWidth = 66;
+      drawBrandLogo(doc, innerLeft, 14, logoWidth);
+
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(8.6)
+        .fontSize(8.5)
         .fillColor(PRINT.black)
-        .text('FREGORO STUDIOS', 98, 14);
+        .text('FREGORO STUDIOS', 86, 16, { characterSpacing: 0.4 });
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(5.1)
-        .fillColor(PRINT.gray500)
-        .text('CUSTOM PRINTED APPAREL', 98, 25);
+        .fontSize(5)
+        .fillColor(PRINT.gray700)
+        .text('CUSTOM APPAREL & EDITORIAL', 86, 26, { characterSpacing: 0.3 });
 
+      // Inverted label badge
+      const headerRightW = 86;
+      const headerRightX = innerRight - headerRightW;
+      doc.rect(headerRightX, 14, headerRightW, 12).fill(PRINT.black);
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(6.4)
-        .fillColor(PRINT.black)
-        .text('SHIPPING LABEL', 172, 13, { width: 100, align: 'right' });
-      doc
-        .font(PDF_FONTS.sans)
-        .fontSize(4.9)
-        .fillColor(PRINT.gray500)
-        .text('ORDER REFERENCE', 172, 24, { width: 100, align: 'right' });
+        .fontSize(5.8)
+        .fillColor(PRINT.white)
+        .text('SHIPPING LABEL', headerRightX, 17, {
+          width: headerRightW,
+          align: 'center',
+          characterSpacing: 0.6,
+        });
+
       doc
         .font(PDF_FONTS.monoBold)
-        .fontSize(6.3)
-        .fillColor(PRINT.ink)
-        .text(truncateToWidth(doc, String(orderRef), 100), 172, 31, {
-          width: 100,
+        .fontSize(6.5)
+        .fillColor(PRINT.black)
+        .text(truncateToWidth(doc, String(orderRef), headerRightW), headerRightX, 28, {
+          width: headerRightW,
           align: 'right',
           lineBreak: false,
         });
 
       doc
-        .moveTo(left, 50)
-        .lineTo(right, 50)
+        .moveTo(outerLeft, 42)
+        .lineTo(outerRight, 42)
         .lineWidth(0.8)
         .strokeColor(PRINT.black)
         .stroke();
 
-      // ── FROM / return address ──────────────────────────────────────────────
-      const fromY = 55;
-      const fromH = 60;
+      // ── FROM / Return Address Box ──────────────────────────────────────────
+      const fromY = 46;
+      const fromH = 58;
       doc
-        .rect(left + 4, fromY, right - left - 8, fromH)
+        .rect(outerLeft + 3, fromY, outerWidth - 6, fromH)
         .lineWidth(0.6)
         .strokeColor(PRINT.black)
         .stroke();
-      doc.rect(left + 4, fromY, right - left - 8, 12).fill(PRINT.washStrong);
-      doc
-        .moveTo(left + 4, fromY + 12)
-        .lineTo(right - 4, fromY + 12)
-        .lineWidth(0.4)
-        .strokeColor(PRINT.rule)
-        .stroke();
+
+      // Inverted FROM Header Tab
+      doc.rect(outerLeft + 3, fromY, outerWidth - 6, 11).fill(PRINT.black);
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(5.4)
-        .fillColor(PRINT.black)
-        .text(
-          'FROM / RETURN ADDRESS — IF UNDELIVERABLE, RETURN TO SENDER',
-          innerLeft,
-          fromY + 3.5,
-          { width: innerWidth },
-        );
+        .fontSize(5.2)
+        .fillColor(PRINT.white)
+        .text('FROM: FREGORO STUDIOS (IF UNDELIVERABLE RETURN TO SENDER)', innerLeft, fromY + 3, {
+          width: innerWidth,
+          characterSpacing: 0.4,
+        });
 
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(7.2)
+        .fontSize(7)
         .fillColor(PRINT.black)
-        .text(BUSINESS_DETAILS.name.toUpperCase(), innerLeft, fromY + 16);
+        .text(BUSINESS_DETAILS.name.toUpperCase(), innerLeft, fromY + 14);
+
       doc
         .font(PDF_FONTS.sans)
         .fontSize(5.6)
         .fillColor(PRINT.ink)
-        .text(BUSINESS_DETAILS.addressLine1, innerLeft, fromY + 25.5, { width: innerWidth });
-      doc.text(BUSINESS_DETAILS.addressLine2, innerLeft, fromY + 32.5, { width: innerWidth });
+        .text(BUSINESS_DETAILS.addressLine1, innerLeft, fromY + 23, { width: innerWidth })
+        .text(BUSINESS_DETAILS.addressLine2, innerLeft, fromY + 30.5, { width: innerWidth });
+
       doc
         .font(PDF_FONTS.sansBold)
         .fontSize(5.6)
-        .fillColor(PRINT.ink)
+        .fillColor(PRINT.black)
         .text(
-          `Phone: ${BUSINESS_DETAILS.phone}  ·  ${BUSINESS_DETAILS.email}`,
+          `TEL: ${BUSINESS_DETAILS.phone}   ·   EMAIL: ${BUSINESS_DETAILS.email}`,
           innerLeft,
-          fromY + 41,
+          fromY + 39,
           { width: innerWidth },
         );
 
-      // ── SHIP TO ────────────────────────────────────────────────────────────
-      const shipY = 120;
-      const shipHeaderH = 15;
-      doc.rect(left + 4, shipY, right - left - 8, shipHeaderH).fill(PRINT.washStrong);
       doc
-        .rect(left + 4, shipY, right - left - 8, shipHeaderH)
-        .lineWidth(1.3)
-        .strokeColor(PRINT.black)
-        .stroke();
-      doc
-        .moveTo(left + 4, shipY + shipHeaderH)
-        .lineTo(right - 4, shipY + shipHeaderH)
-        .lineWidth(0.6)
-        .strokeColor(PRINT.black)
-        .stroke();
+        .font(PDF_FONTS.mono)
+        .fontSize(4.8)
+        .fillColor(PRINT.gray700)
+        .text('HUB: SELAI VILLAGE, THIRUVALLUR - 631203, TAMIL NADU', innerLeft, fromY + 48, {
+          width: innerWidth,
+        });
+
+      // ── SHIP TO / Deliver To Compartment ───────────────────────────────────
+      const shipY = 108;
+      const shipHeaderH = 13;
+
+      // Inverted SHIP TO Header
+      doc.rect(outerLeft + 3, shipY, outerWidth - 6, shipHeaderH).fill(PRINT.black);
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(6.7)
-        .fillColor(PRINT.black)
-        .text('SHIP TO / DELIVER TO', innerLeft, shipY + 4.5);
+        .fontSize(6.4)
+        .fillColor(PRINT.white)
+        .text('SHIP TO / DELIVER TO', innerLeft, shipY + 3.5, { characterSpacing: 0.6 });
 
-      // Recipient name — biggest text on the label so it is readable from arm's length.
-      const nameY = shipY + 21;
-      doc.font(PDF_FONTS.sansBold).fontSize(12.2).fillColor(PRINT.black);
+      // Recipient Name - Hero element for easy identification
+      const nameY = shipY + 18;
+      doc.font(PDF_FONTS.sansBold).fontSize(11.8).fillColor(PRINT.black);
       const nameLine = truncateToWidth(doc, addr.name, innerWidth);
       doc.text(nameLine, innerLeft, nameY, {
         width: innerWidth,
@@ -208,11 +221,10 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
         ellipsis: true,
       });
 
-      // Street address block. Lines flow on a fixed grid; long addresses shrink
-      // one step before being elided, so the city and phone below never drift.
+      // Street Address Block
       const streetText = [addr.streetLine1, addr.streetLine2].filter(Boolean).join('\n');
       const addressTop = nameY + 15;
-      const addressCap = 31;
+      const addressCap = 30;
       let addressFont = 8.2;
       let addressHeight = doc
         .font(PDF_FONTS.sans)
@@ -225,6 +237,7 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
           .fontSize(addressFont)
           .heightOfString(streetText, { width: innerWidth, lineGap: 1 });
       }
+
       doc
         .font(PDF_FONTS.sans)
         .fontSize(addressFont)
@@ -236,11 +249,14 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
           lineGap: 1,
         });
 
-      // City / state / PIN — bold and large for courier sorting.
+      // Destination Sorting Hub Line: City, State - PINCODE (High visibility for couriers)
       const renderedAddressHeight = Math.min(addressHeight, addressCap);
-      const cityY = addressTop + renderedAddressHeight + 6;
+      const cityY = addressTop + renderedAddressHeight + 5;
       const cityLineRaw = [addr.city, addr.state].filter(Boolean).join(', ');
-      const cityLine = addr.zip ? `${cityLineRaw}${cityLineRaw ? ' - ' : ''}${addr.zip}` : cityLineRaw;
+      const cityLine = addr.zip
+        ? `${cityLineRaw}${cityLineRaw ? ' - ' : ''}${addr.zip}`
+        : cityLineRaw;
+
       doc
         .font(PDF_FONTS.sansBold)
         .fontSize(10.6)
@@ -251,19 +267,18 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
           ellipsis: true,
         });
 
-      const countryY = cityY + 12.5;
+      const countryY = cityY + 13;
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(6.1)
-        .fillColor(PRINT.gray500)
+        .fontSize(6.2)
+        .fillColor(PRINT.gray700)
         .text(addr.country || 'India', innerLeft, countryY);
 
-      // Phone and email sit immediately below the address rather than being
-      // pushed to the bottom of the box, which left a large dead gap.
-      const phoneY = cityY + 23;
+      // Phone & Email block
+      const phoneY = countryY + 9;
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(9.4)
+        .fontSize(9.2)
         .fillColor(PRINT.black)
         .text(
           addr.phone ? `PHONE: ${addr.phone}` : 'PHONE: NOT PROVIDED',
@@ -271,12 +286,13 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
           phoneY,
           { width: innerWidth, lineBreak: false, ellipsis: true },
         );
-      const emailY = phoneY + 12;
+
+      const emailY = phoneY + 11.5;
       if (addr.email) {
         doc
           .font(PDF_FONTS.sans)
           .fontSize(6.2)
-          .fillColor(PRINT.gray500)
+          .fillColor(PRINT.gray700)
           .text(truncateToWidth(doc, addr.email, innerWidth), innerLeft, emailY, {
             width: innerWidth,
             lineBreak: false,
@@ -284,101 +300,131 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
           });
       }
 
-      // Box height follows the content so short and long addresses both have
-      // even padding and the sections below stay tightly stacked.
-      const shipContentBottom = addr.email ? emailY + 8 : phoneY + 12;
-      const shipH = Math.max(104, shipContentBottom - shipY + 6);
+      const shipContentBottom = addr.email ? emailY + 8 : phoneY + 11;
+      const shipH = Math.max(106, shipContentBottom - shipY + 4);
       doc
-        .rect(left + 4, shipY, right - left - 8, shipH)
-        .lineWidth(1.3)
+        .rect(outerLeft + 3, shipY, outerWidth - 6, shipH)
+        .lineWidth(1.2)
         .strokeColor(PRINT.black)
         .stroke();
 
-      // ── Payment strip ──────────────────────────────────────────────────────
-      const payY = shipY + shipH + 6;
-      const payH = 31;
-      doc.rect(left + 4, payY, right - left - 8, payH).fill(PRINT.wash);
-      doc
-        .rect(left + 4, payY, right - left - 8, payH)
-        .lineWidth(0.9)
-        .strokeColor(PRINT.black)
-        .stroke();
+      // ── Payment Status Strip ──────────────────────────────────────────────
+      const payY = shipY + shipH + 5;
+      const payH = 32;
 
       if (isCashOnDelivery) {
         doc
+          .rect(outerLeft + 3, payY, outerWidth - 6, payH)
+          .lineWidth(1.2)
+          .strokeColor(PRINT.black)
+          .stroke();
+        doc.rect(outerLeft + 3, payY, outerWidth - 6, payH).fill(PRINT.wash);
+
+        doc
           .font(PDF_FONTS.sansBold)
-          .fontSize(9.4)
+          .fontSize(9.5)
           .fillColor(PRINT.black)
-          .text('CASH ON DELIVERY', innerLeft, payY + 5.5);
+          .text('[ CASH ON DELIVERY ]', innerLeft, payY + 5.5);
         doc
           .font(PDF_FONTS.sansBold)
           .fontSize(6.8)
-          .fillColor(PRINT.ink)
+          .fillColor(PRINT.black)
           .text(`COLLECT ${inr(order.total)} FROM CUSTOMER`, innerLeft, payY + 18.5);
+
+        doc
+          .font(PDF_FONTS.sans)
+          .fontSize(5)
+          .fillColor(PRINT.gray700)
+          .text('INVOICE VALUE', innerLeft, payY + 5.5, {
+            width: innerWidth,
+            align: 'right',
+          });
+        doc
+          .font(PDF_FONTS.sansBold)
+          .fontSize(7.5)
+          .fillColor(PRINT.black)
+          .text(inr(order.total), innerLeft, payY + 13, {
+            width: innerWidth,
+            align: 'right',
+          });
+        doc
+          .font(PDF_FONTS.sans)
+          .fontSize(4.8)
+          .fillColor(PRINT.gray700)
+          .text('DOORSTEP CASH', innerLeft, payY + 22, {
+            width: innerWidth,
+            align: 'right',
+          });
       } else {
+        // Solid black prepaid container for unmissable warehouse & courier recognition
+        doc.rect(outerLeft + 3, payY, outerWidth - 6, payH).fill(PRINT.black);
+
         doc
           .font(PDF_FONTS.sansBold)
           .fontSize(10)
-          .fillColor(PRINT.black)
-          .text('PREPAID', innerLeft, payY + 5);
+          .fillColor(PRINT.white)
+          .text('[ PREPAID SHIPMENT ]', innerLeft, payY + 5.5, { characterSpacing: 0.5 });
         doc
           .font(PDF_FONTS.sansBold)
           .fontSize(6.6)
-          .fillColor(PRINT.ink)
+          .fillColor(PRINT.white)
           .text('ZERO AMOUNT DUE — DO NOT COLLECT CASH', innerLeft, payY + 18.5);
+
+        doc
+          .font(PDF_FONTS.sans)
+          .fontSize(5)
+          .fillColor(PRINT.gray300)
+          .text('INVOICE VALUE', innerLeft, payY + 5.5, {
+            width: innerWidth,
+            align: 'right',
+          });
+        doc
+          .font(PDF_FONTS.sansBold)
+          .fontSize(7.5)
+          .fillColor(PRINT.white)
+          .text(inr(order.total), innerLeft, payY + 13, {
+            width: innerWidth,
+            align: 'right',
+          });
+        doc
+          .font(PDF_FONTS.sans)
+          .fontSize(4.8)
+          .fillColor(PRINT.gray300)
+          .text('PAID ONLINE', innerLeft, payY + 22, {
+            width: innerWidth,
+            align: 'right',
+          });
       }
 
-      doc
-        .font(PDF_FONTS.sans)
-        .fontSize(4.9)
-        .fillColor(PRINT.gray500)
-        .text('INVOICE VALUE', innerLeft, payY + 5, {
-          width: innerWidth,
-          align: 'right',
-        });
-      doc
-        .font(PDF_FONTS.sansBold)
-        .fontSize(7)
-        .fillColor(PRINT.black)
-        .text(inr(order.total), innerLeft, payY + 12, {
-          width: innerWidth,
-          align: 'right',
-        })
-        .font(PDF_FONTS.sans)
-        .fontSize(4.9)
-        .fillColor(PRINT.gray500)
-        .text(isCashOnDelivery ? 'PAYABLE AT DOORSTEP' : 'PAID ONLINE', innerLeft, payY + 21, {
-          width: innerWidth,
-          align: 'right',
-        });
+      // ── Order Meta & Routing Strip ────────────────────────────────────────
+      const metaY = payY + payH + 5;
+      const metaH = 40;
+      const metaTopH = 22;
+      const metaWidth = outerWidth - 6;
+      const colW = metaWidth / 3;
 
-      // ── Order meta strip ───────────────────────────────────────────────────
-      const metaY = payY + payH + 6;
-      const metaH = 42;
-      const metaTopH = 24;
-      const metaWidth = right - left - 8;
-      const colWidth = metaWidth / 3;
       doc
-        .rect(left + 4, metaY, metaWidth, metaH)
+        .rect(outerLeft + 3, metaY, metaWidth, metaH)
         .lineWidth(0.6)
         .strokeColor(PRINT.black)
         .stroke();
       doc
-        .moveTo(left + 4, metaY + metaTopH)
-        .lineTo(right - 4, metaY + metaTopH)
-        .lineWidth(0.45)
+        .moveTo(outerLeft + 3, metaY + metaTopH)
+        .lineTo(outerRight - 3, metaY + metaTopH)
+        .lineWidth(0.4)
+        .strokeColor(PRINT.rule)
+        .stroke();
+
+      doc
+        .moveTo(outerLeft + 3 + colW, metaY)
+        .lineTo(outerLeft + 3 + colW, metaY + metaTopH)
+        .lineWidth(0.4)
         .strokeColor(PRINT.rule)
         .stroke();
       doc
-        .moveTo(left + 4 + colWidth, metaY)
-        .lineTo(left + 4 + colWidth, metaY + metaTopH)
-        .lineWidth(0.45)
-        .strokeColor(PRINT.rule)
-        .stroke();
-      doc
-        .moveTo(left + 4 + colWidth * 2, metaY)
-        .lineTo(left + 4 + colWidth * 2, metaY + metaTopH)
-        .lineWidth(0.45)
+        .moveTo(outerLeft + 3 + colW * 2, metaY)
+        .lineTo(outerLeft + 3 + colW * 2, metaY + metaTopH)
+        .lineWidth(0.4)
         .strokeColor(PRINT.rule)
         .stroke();
 
@@ -388,18 +434,18 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
         { label: 'ORDER DATE', value: orderDate },
       ];
       meta.forEach((entry, index) => {
-        const x = left + 10 + colWidth * index;
+        const x = outerLeft + 8 + colW * index;
         doc
-          .font(PDF_FONTS.sans)
-          .fontSize(4.9)
-          .fillColor(PRINT.gray500)
-          .text(entry.label, x, metaY + 4);
+          .font(PDF_FONTS.sansBold)
+          .fontSize(4.8)
+          .fillColor(PRINT.gray700)
+          .text(entry.label, x, metaY + 3.5);
         doc
           .font(PDF_FONTS.monoBold)
           .fontSize(6.8)
           .fillColor(PRINT.black)
-          .text(truncateToWidth(doc, String(entry.value), colWidth - 12), x, metaY + 11, {
-            width: colWidth - 12,
+          .text(truncateToWidth(doc, String(entry.value), colW - 10), x, metaY + 10.5, {
+            width: colW - 10,
             lineBreak: false,
             ellipsis: true,
           });
@@ -408,10 +454,10 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
       const carrier = order.carrier || order.shippingCarrier || '';
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(5.2)
-        .fillColor(PRINT.gray700)
+        .fontSize(5.4)
+        .fillColor(PRINT.black)
         .text(
-          `COURIER: ${carrier || 'To be assigned'}${
+          `COURIER: ${carrier || 'Courier Assigned'}${
             order.trackingNumber ? `   AWB: ${order.trackingNumber}` : ''
           }`,
           innerLeft,
@@ -419,83 +465,86 @@ export async function generateShippingLabelPdf(order: ShippingLabelOrder): Promi
           { width: innerWidth, lineBreak: false, ellipsis: true },
         );
 
-      // ── Order barcode ──────────────────────────────────────────────────────
-      const barcodeY = metaY + metaH + 10;
+      // ── Scannable Barcode ──────────────────────────────────────────────────
+      const barcodeY = metaY + metaH + 7;
       drawCode128B(doc, innerLeft, barcodeY, innerWidth, 25, String(orderRef));
       const barcodeTextY = barcodeY + 27;
       doc
         .font(PDF_FONTS.monoBold)
-        .fontSize(6.2)
-        .fillColor(PRINT.ink)
+        .fontSize(6.4)
+        .fillColor(PRINT.black)
         .text(`*${orderRef}*`, innerLeft, barcodeTextY, {
           width: innerWidth,
           align: 'center',
         });
 
-      // ── Handling line ─────────────────────────────────────────────────────
+      // ── Handling Advisory Strip ───────────────────────────────────────────
       const handlingY = barcodeTextY + 10;
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(5.6)
+        .fontSize(5.4)
         .fillColor(PRINT.black)
-        .text('HANDLE WITH CARE · KEEP DRY · DO NOT BEND · CUSTOM PRINTED APPAREL', innerLeft, handlingY, {
-          width: innerWidth,
-          align: 'center',
-        });
+        .text(
+          '[ HANDLE WITH CARE · KEEP DRY · DO NOT BEND · BESPOKE PRINT & APPAREL ]',
+          innerLeft,
+          handlingY,
+          { width: innerWidth, align: 'center', characterSpacing: 0.4 },
+        );
 
-      // ── RTO / return instructions ─────────────────────────────────────────
+      // ── RTO / Return Routing Instructions ─────────────────────────────────
       const rtoY = handlingY + 8;
       const rtoH = Math.max(34, 420 - rtoY);
+
       doc
-        .rect(left + 4, rtoY, right - left - 8, rtoH)
+        .rect(outerLeft + 3, rtoY, outerWidth - 6, rtoH)
         .lineWidth(0.6)
         .strokeColor(PRINT.black)
         .stroke();
+
+      // Top title
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(5.3)
+        .fontSize(5.2)
         .fillColor(PRINT.black)
-        .text('RETURN / RTO — IF UNDELIVERABLE, RETURN TO SENDER', innerLeft, rtoY + 3.5, {
+        .text('RETURN / RTO INSTRUCTIONS (IF UNDELIVERABLE RETURN TO SENDER)', innerLeft, rtoY + 3.5, {
           width: innerWidth,
+          characterSpacing: 0.3,
         });
 
-      // Split the footer into instructions and a dedicated RTO contact block.
-      // This keeps the box balanced instead of leaving a large blank area.
-      const rtoSplit = innerLeft + 174;
+      const rtoSplit = innerLeft + 168;
       const rtoBodyTop = rtoY + 11;
       doc
-        .moveTo(rtoSplit, rtoBodyTop - 1)
-        .lineTo(rtoSplit, rtoY + rtoH - 5)
+        .moveTo(rtoSplit, rtoBodyTop)
+        .lineTo(rtoSplit, rtoY + rtoH - 4)
         .lineWidth(0.35)
         .strokeColor(PRINT.rule)
         .stroke();
+
       doc
         .font(PDF_FONTS.sans)
-        .fontSize(5)
+        .fontSize(4.8)
         .fillColor(PRINT.gray700)
         .text(
-          'If the recipient is unavailable, refuses delivery, or the address is incomplete, mark RTO and return this parcel to the FROM address above. Do not abandon the parcel.',
+          'If the recipient is unavailable, refuses delivery, or the address is incomplete, initiate RTO and return parcel directly to sender at FROM address. Do not abandon.',
           innerLeft,
           rtoBodyTop,
-          { width: 166, height: rtoH - 14, ellipsis: true, lineGap: 1 },
+          { width: 160, height: rtoH - 14, ellipsis: true, lineGap: 1 },
         );
+
       doc
         .font(PDF_FONTS.sansBold)
-        .fontSize(4.7)
+        .fontSize(4.8)
         .fillColor(PRINT.black)
-        .text('RTO CONTACT', rtoSplit + 6, rtoBodyTop, {
-          width: innerRight - (rtoSplit + 6),
-        });
+        .text('RTO HOTLINE', rtoSplit + 6, rtoBodyTop);
       doc
+        .font(PDF_FONTS.sansBold)
+        .fontSize(4.6)
+        .fillColor(PRINT.black)
+        .text(BUSINESS_DETAILS.phone, rtoSplit + 6, rtoBodyTop + 6)
         .font(PDF_FONTS.sans)
-        .fontSize(4.5)
+        .fontSize(4.4)
         .fillColor(PRINT.gray700)
-        .text(
-          `${BUSINESS_DETAILS.phone}\n${BUSINESS_DETAILS.email}`,
-          rtoSplit + 6,
-          rtoBodyTop + 6,
-          { width: innerRight - (rtoSplit + 6), lineGap: 1 },
-        );
+        .text(BUSINESS_DETAILS.email, rtoSplit + 6, rtoBodyTop + 12);
 
       doc.end();
     } catch (error) {

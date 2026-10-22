@@ -7,7 +7,7 @@ import { useCartStore } from '@/lib/stores/cart-store';
 import { usePrice } from '@/lib/hooks/usePrice';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 export function CartDrawer() {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import type { ElementCrop, ImageStyle } from '@/types/magazine';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 interface ImageCropOverlayProps {
   src: string;

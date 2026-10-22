@@ -10,24 +10,23 @@ import {
 } from './clothing-product-modal.shared';
 import { ClothingProductModalDesktop } from './clothing-product-modal.desktop';
 import { ClothingProductModalMobile } from './clothing-product-modal.mobile';
+import { useDevice } from '@/lib/providers/device-provider';
 
 export { isBackPlacement, getPlacementRegion };
 export type { ClothingProductModalProps };
 
 export function ClothingProductModal(props: ClothingProductModalProps) {
   const state = useClothingProductModalState(props);
+  const device = useDevice();
 
   if (!state.mounted || !state.design) return null;
 
   return createPortal(
-    <>
-      <div className="hidden md:block">
-        <ClothingProductModalDesktop state={state} />
-      </div>
-      <div className="block md:hidden">
-        <ClothingProductModalMobile state={state} />
-      </div>
-    </>,
+    device === 'desktop' ? (
+      <ClothingProductModalDesktop state={state} />
+    ) : (
+      <ClothingProductModalMobile state={state} />
+    ),
     document.body
   );
 }

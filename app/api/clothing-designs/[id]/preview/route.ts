@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getPreviewImageStream, getDesignById } from '@/lib/clothing-designs/service';
 import { rateLimit } from '@/lib/rate-limit';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
+import { getStaffUser } from '@/app/admin/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,6 +40,23 @@ export async function GET(req: Request, { params }: RouteProps) {
       typeReq === 'original' ? 'original' : typeReq === 'studio' ? 'studio' : 'thumbnail';
     const artIdParam = searchParams.get('artId') || searchParams.get('surface') || design.defaultArtworkId;
     const isDownload = searchParams.get('download') === '1' || searchParams.has('download');
+    const isPrivateAsset = typeParam === 'original' || isDownload;
+
+    // Print-quality originals and forced downloads are staff-only. Public
+    // storefront views only receive the small derivative previews.
+    if (isPrivateAsset) {
+      const staff = await getStaffUser();
+      if (!staff) {
+        return new NextResponse('Forbidden', {
+          status: 403,
+          headers: {
+            'Cache-Control': 'no-store',
+            'X-Content-Type-Options': 'nosniff',
+            'X-Robots-Tag': 'noindex, nofollow',
+          },
+        });
+      }
+    }
 
     // Serve directly with CORS headers so Three.js / WebGL / Canvas2D can safely composite textures without cross-origin blocks
     if (!isDownload && typeParam !== 'original') {
@@ -101,12 +119,18 @@ export async function GET(req: Request, { params }: RouteProps) {
 
     const headers: Record<string, string> = {
       'Content-Type': result.contentType,
-      'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
+      'Cache-Control': isPrivateAsset
+        ? 'private, no-store, max-age=0'
+        : 'public, max-age=86400, stale-while-revalidate=604800',
       'X-Content-Type-Options': 'nosniff',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
-      'Access-Control-Allow-Headers': '*',
-      'Vary': 'Origin',
+      ...(isPrivateAsset
+        ? { 'X-Robots-Tag': 'noindex, nofollow' }
+        : {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            Vary: 'Origin',
+          }),
     };
 
     if (isDownload) {

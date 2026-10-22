@@ -5,7 +5,7 @@
  * The four core garments are live-editable from the admin panel (they map to
  * the `plain_*` products in Postgres). The remaining entries cover the extra
  * models the 3D studio can load from a deep link so a garment never falls back
- * to a silent ₹600 default.
+ * to a silent ₹639 default.
  *
  * Keep this table in sync with `Clothing-Mockup-Feature/app/src/App.tsx`
  * (`GARMENT_DEFAULT_BASE_PRICES`). The studio additionally receives the live
@@ -19,12 +19,31 @@ export interface GarmentPricing {
   sizePrices: Record<string, number>;
 }
 
+/**
+ * Fixed T-shirt artwork surcharge. The charge is applied once per qualifying
+ * unit when two or more artwork placements are active, regardless of whether
+ * the prints are on the front, back, sleeves, or split across sides.
+ *
+ * Hoodies and the other 3D-only garment models keep the legacy per-artwork
+ * custom-print fee below.
+ */
+export const TSHIRT_ARTWORK_SURCHARGE = 40;
+export const LEGACY_CUSTOM_PRINT_FEE = 49;
+export const TSHIRT_ARTWORK_SURCHARGE_THRESHOLD = 2;
+
+const TSHIRT_GARMENT_IDS = new Set([
+  'regular-t-shirt',
+  'oversized-t-shirt',
+  'acid-wash-t-shirt',
+]);
+
 const STANDARD_SIZES = ['S', 'M', 'L', 'XL', '2XL', 'XXL', '3XL', 'XXXL'] as const;
 
 function sizeMap(base: number, extended: number): Record<string, number> {
   const map: Record<string, number> = {};
   for (const size of STANDARD_SIZES) {
-    map[size] = size === '3XL' || size === 'XXXL' ? extended : base;
+    map[size] =
+      size === '2XL' || size === 'XXL' || size === '3XL' || size === 'XXXL' ? extended : base;
   }
   return map;
 }
@@ -39,10 +58,10 @@ function garment(
 }
 
 export const GARMENT_PRICING: Record<string, GarmentPricing> = {
-  'regular-t-shirt': garment('regular-t-shirt', 'Regular T-Shirt', 600, 645),
-  'oversized-t-shirt': garment('oversized-t-shirt', 'Oversized T-Shirt', 670, 699),
+  'regular-t-shirt': garment('regular-t-shirt', 'Regular T-Shirt', 639, 659),
+  'oversized-t-shirt': garment('oversized-t-shirt', 'Oversized T-Shirt', 689, 709),
   'acid-wash-t-shirt': garment('acid-wash-t-shirt', 'Acid Wash T-Shirt', 699, 720),
-  hoodie: garment('hoodie', 'Hoodie', 750, 780),
+  hoodie: garment('hoodie', 'Hoodie', 809, 849),
   'fitted-t-shirt': garment('fitted-t-shirt', 'Fitted T-Shirt', 620, 665),
   'zip-hoodie': garment('zip-hoodie', 'Zip-Up Hoodie', 850, 880),
   sweatshirt: garment('sweatshirt', 'Crewneck Sweatshirt', 800, 830),
@@ -97,6 +116,45 @@ export function normalizeGarmentId(raw?: string | null): string | null {
 
 function normalizeSize(size?: string | null): string {
   return (size || 'L').trim().toUpperCase();
+}
+
+/** Clamp an incoming artwork count before it is used for pricing. */
+export function getActiveArtworkCount(raw: unknown): number {
+  const value =
+    typeof raw === 'number'
+      ? raw
+      : typeof raw === 'string' && raw.trim() !== ''
+        ? Number(raw)
+        : 0;
+  if (!Number.isFinite(value)) return 0;
+  return Math.min(100, Math.max(0, Math.trunc(value)));
+}
+
+export function isTShirtGarment(garmentId: string | null | undefined): boolean {
+  const resolvedId = normalizeGarmentId(garmentId);
+  return resolvedId ? TSHIRT_GARMENT_IDS.has(resolvedId) : false;
+}
+
+/**
+ * Artwork pricing shared by the storefront, cart, 3D studio hand-off and the
+ * checkout API.
+ *
+ * - Regular / Oversized / Acid Wash tees: ₹40 once when 2+ active placements.
+ * - Hoodies and other 3D-only garments: preserve the existing ₹49 per custom
+ *   artwork fee for customer-uploaded artwork. Curated designs already include
+ *   their artwork in the catalogue price.
+ */
+export function getArtworkCharge(
+  garmentId: string | null | undefined,
+  activeArtworkCount: unknown,
+  options?: { curated?: boolean },
+): number {
+  const count = getActiveArtworkCount(activeArtworkCount);
+  if (isTShirtGarment(garmentId)) {
+    return count >= TSHIRT_ARTWORK_SURCHARGE_THRESHOLD ? TSHIRT_ARTWORK_SURCHARGE : 0;
+  }
+  if (options?.curated) return 0;
+  return count * LEGACY_CUSTOM_PRINT_FEE;
 }
 
 function lookupSizePrice(

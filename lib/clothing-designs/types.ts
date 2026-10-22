@@ -41,6 +41,8 @@ export interface DesignArtworkOption {
   originalObjectKey: string;
   thumbnailObjectKey: string;
   previewObjectKey: string;
+  /** Direct R2 CDN URL for the small preview (set by the catalog builder). */
+  cdnThumbnailUrl?: string;
   previewUrl: string; // /api/clothing-designs/{id}/preview?artId={artId}&type=thumbnail
   studioPreviewUrl: string; // /api/clothing-designs/{id}/preview?artId={artId}&type=studio
   calibratedPlacement?: SavedPlacementItem;

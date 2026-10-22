@@ -18,6 +18,9 @@ import {
   DeleteObjectsCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { getR2AssetUrl, getR2PublicUrl } from './r2-public';
+
+export { getR2AssetUrl, getR2PublicUrl };
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
@@ -52,38 +55,6 @@ function getBucketName(): string {
   const bucket = process.env.R2_BUCKET_NAME;
   if (!bucket) throw new Error('R2_BUCKET_NAME not configured');
   return bucket;
-}
-
-// ─── Public CDN URL Builder ──────────────────────────────────────────────────
-// Use this to build direct Cloudflare R2 URLs for images — zero Vercel involved.
-// Requires NEXT_PUBLIC_R2_PUBLIC_URL to be set (e.g. your r2.dev or custom domain).
-
-export function getR2PublicUrl(objectKey: string): string {
-  const base =
-    process.env.NEXT_PUBLIC_R2_PUBLIC_URL ||
-    (process.env.R2_ACCOUNT_ID
-      ? `https://pub-${process.env.R2_ACCOUNT_ID}.r2.dev`
-      : 'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev');
-  // Strip leading slashes from objectKey for safety
-  const cleanKey = objectKey.replace(/^\/+/, '');
-  return `${base}/${cleanKey}`;
-}
-
-// ─── Asset URL Builder ────────────────────────────────────────────────────────
-// Converts a local public-folder path like '/images/products/foo.webp' or
-// '3d-models/tshirt.glb' into a full Cloudflare R2 CDN URL.
-// This is the primary replacement for all Next.js <Image src="/images/…"> usage.
-// Safe to call from both client and server code.
-
-export function getR2AssetUrl(assetPath: string): string {
-  if (!assetPath) return '';
-  if (assetPath.startsWith('http://') || assetPath.startsWith('https://')) {
-    return assetPath;
-  }
-  const base =
-    process.env.NEXT_PUBLIC_R2_PUBLIC_URL || 'https://pub-911817f7f441483a9ef72eecab9dbf49.r2.dev';
-  const cleanPath = assetPath.replace(/^\/+/, '');
-  return `${base.replace(/\/+$/, '')}/${cleanPath}`;
 }
 
 // ─── Types ──────────────────────────────────────────────────────────────────

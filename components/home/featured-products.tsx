@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/data/products';
 import { isProductComingSoon } from '@/data/categories';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 import { ProductCard } from '@/components/product/product-card';
 import dynamic from 'next/dynamic';
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';

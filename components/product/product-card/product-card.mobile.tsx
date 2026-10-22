@@ -6,15 +6,20 @@ import Image from 'next/image';
 import type { Product } from '@/data/products';
 import { useWishlistStore } from '@/lib/stores/wishlist-store';
 import { usePrice } from '@/lib/hooks/usePrice';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 import { isProductComingSoon } from '@/data/categories';
 
 interface ProductCardProps {
   product: Product;
   onCardClick?: (e: React.MouseEvent) => void;
+  onPrefetch?: () => void;
 }
 
-export const ProductCardMobile = memo(function ProductCardMobile({ product, onCardClick }: ProductCardProps) {
+export const ProductCardMobile = memo(function ProductCardMobile({
+  product,
+  onCardClick,
+  onPrefetch,
+}: ProductCardProps) {
   const toggleWishlist = useWishlistStore((state) => state.toggleItem);
   const isWishlisted = useWishlistStore((state) => state.items.includes(product.id));
   const { formatPrice } = usePrice();
@@ -28,7 +33,13 @@ export const ProductCardMobile = memo(function ProductCardMobile({ product, onCa
   const href = `/products/${product.categorySlug}/${product.slug || product.id}`;
 
   return (
-    <div className="group block relative" data-cursor-hover>
+    <div
+      className="group block relative"
+      data-cursor-hover
+      onPointerEnter={onPrefetch}
+      onTouchStart={onPrefetch}
+      onFocus={onPrefetch}
+    >
       <Link
         href={href}
         onClick={(e) => {

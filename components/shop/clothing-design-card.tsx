@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import type { ClothingDesignEntry } from '@/lib/clothing-designs/types';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
+import { prefetchClothingProductModal } from './clothing-product-modal-prefetch';
 
 interface ClothingDesignCardProps {
   design: ClothingDesignEntry;
   onSelect: (design: ClothingDesignEntry) => void;
   priority?: boolean;
+  isOpening?: boolean;
 }
 
 /**
@@ -18,7 +20,12 @@ interface ClothingDesignCardProps {
 const BLUR_DATA_URL =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAKCAIAAAAGpYjXAAAAG0lEQVR4nGM0MLJgwAZY/v37R3OJ////D5jlAInyG42QnT1KAAAAAElFTkSuQmCC';
 
-export function ClothingDesignCard({ design, onSelect, priority = false }: ClothingDesignCardProps) {
+export function ClothingDesignCard({
+  design,
+  onSelect,
+  priority = false,
+  isOpening = false,
+}: ClothingDesignCardProps) {
   const [imageError, setImageError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeSurface, setActiveSurface] = useState<'front' | 'back' | 'sleeve'>(design.defaultSurface);
@@ -44,13 +51,18 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
 
   return (
     <div
-      onClick={() => onSelect(design)}
+      onClick={() => {
+        if (!isOpening) onSelect(design);
+      }}
+      onPointerEnter={prefetchClothingProductModal}
+      onFocus={prefetchClothingProductModal}
       className="group relative flex flex-col bg-[#111216] border border-white/5 hover:border-white/20 rounded-2xl overflow-hidden cursor-pointer transition-[border-color,box-shadow] duration-300 hover:shadow-2xl hover:shadow-black/50"
       style={{ perspective: '1000px' }}
       role="button"
       tabIndex={0}
+      aria-busy={isOpening}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if ((e.key === 'Enter' || e.key === ' ') && !isOpening) {
           e.preventDefault();
           onSelect(design);
         }
@@ -143,6 +155,20 @@ export function ClothingDesignCard({ design, onSelect, priority = false }: Cloth
             360° Studio • Oversized &amp; Hoodie
           </span>
         </div>
+
+        {/* Immediate click acknowledgement. Removed as soon as the modal shell
+            is mounted (the modal itself then owns the loading state). */}
+        {isOpening && (
+          <div
+            data-fregoro-card-pending
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 bg-black/75 backdrop-blur-sm animate-fadeIn"
+          >
+            <span className="h-9 w-9 rounded-full border-2 border-white/15 border-t-[#ED9518] animate-spin" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white/90">
+              Opening product
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Info Bar: Engineered for perfect, non-overlapping responsive flow */}

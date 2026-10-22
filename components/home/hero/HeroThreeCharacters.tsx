@@ -1,5 +1,5 @@
 import { getImageProps } from 'next/image';
-import { getR2AssetUrl } from '@/lib/r2';
+import { getR2AssetUrl } from '@/lib/r2-public';
 
 interface HeroThreeCharactersProps {
   className?: string;
